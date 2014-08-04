@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+	
+    <groupId>com.ozguryazilim.mutfak</groupId>
+    <artifactId>telve-parent</artifactId>
+    <version>4.0.0-SNAPSHOT</version> 
+    <name>${project.groupId} : ${project.artifactId} : ${project.version}</name>
+    <description>Telve Parent POM</description>
+    <url>http://www.ozguryazilim.com.tr/</url>
+    <packaging>pom</packaging> 
+
+    <properties>
+        <jdk.debug>true</jdk.debug>
+        <jdk.optimize>false</jdk.optimize>
+        <jdk.source>1.7</jdk.source>
+        <jdk.target>1.7</jdk.target>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>telve-bom</artifactId>
+                <version>${project.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.spec.javax.ejb</groupId>
+            <artifactId>jboss-ejb-api_3.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.faces</groupId>
+            <artifactId>jboss-jsf-api_2.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.1</version>
+                    <configuration>
+                        <source>${jdk.source}</source>
+                        <target>${jdk.target}</target>
+                        <encoding>utf-8</encoding>
+                        <debug>${jdk.debug}</debug>
+                        <optimize>${jdk.optimize}</optimize>
+                    </configuration>
+                </plugin>
+                
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-ejb-plugin</artifactId>
+                    <version>2.3</version>
+                    <configuration>
+                        <ejbVersion>3.1</ejbVersion>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+        
+    
+    <issueManagement>
+        <system>Redmine</system>
+        <url>https://islergucler.ozguryazilim.com.tr/projects/mutfak</url>
+    </issueManagement>
+	
+    <scm>
+        <connection>scm:git:ssh://git@lab.ozguryazilim.com.tr/telveng</connection>
+        <developerConnection>scm:git:ssh://git@lab.ozguryazilim.com.tr/telveng</developerConnection>
+        <url>http://cgit.ozguryazilim.com.tr/cezve/</url>
+    </scm>
+	 
+    <organization>
+        <name>Özgür Yazılım A.Ş.</name>
+        <url>http://www.ozguryazilim.com.tr/</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>LGPL 3</name>
+            <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+
+    <developers>
+        <developer>
+            <id>hakan.uygun@ozguryazilim.com.tr#no</id>
+            <name>Hakan Uygun</name>
+            <email>hakan.uygun@ozguryazilim.com.tr#no</email>
+            <organization>Özgür Yazılım A.Ş.</organization>
+            <organizationUrl>http://www.ozguryazilim.com.tr</organizationUrl>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>GMT +2</timezone>
+        </developer>
+    </developers>
+    
+    <modules>
+        <module>telve-core</module>
+    </modules>
+</project>
