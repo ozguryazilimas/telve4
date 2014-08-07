@@ -23,4 +23,6 @@ public class DefaultResourceProducer {
     public FacesContext produceFacesContext() {
         return FacesContext.getCurrentInstance();
     }
+    
+    
 }
