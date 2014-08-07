@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    </h:head>
+
+    <h:body>
+
+        <ui:fragment rendered="#{identity.loggedIn}">
+            <div>Congratulations! You are currently logged in as: <b>#{identity.account.loginName}</b></div>
+
+            <h:form>
+                <h:commandButton id="logout" value="Log out" action="#{identity.logout}"/>
+            </h:form>
+        </ui:fragment>
+
+        <h:form id="loginForm" rendered="#{not identity.loggedIn}">
+            <h:messages globalOnly="true"/>
+
+            <div class="loginRow">
+                <h:outputLabel for="name" value="Username" styleClass="loginLabel"/>
+                <h:inputText id="name" value="#{loginCredentials.userId}"/>
+            </div>
+
+            <div class="loginRow">
+                <h:outputLabel for="password" value="Password" styleClass="loginLabel"/>
+                <h:inputSecret id="password" value="#{loginCredentials.password}" redisplay="true"/>
+            </div>
+
+            <div class="loginRow">
+
+            </div>
+
+            <div class="buttons">
+                <h:commandButton id="login" value="Login" action="#{identity.login}" styleClass="loginButton"/>
+            </div>
+
+            Tip: you can login with a username/password of telve/telve.
+
+        </h:form>
+
+        <br style="clear:both"/>
+    </h:body>
+</html>

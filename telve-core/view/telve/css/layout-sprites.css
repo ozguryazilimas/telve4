@@ -1,0 +1,63 @@
+[class*="ly-icon-"] {
+	display: inline-block;
+	width: 32px;
+	height: 32px;
+	background-image: url("#{resource['telve:img/layout-sprites.png']}") !important;
+	background-repeat: no-repeat;
+}
+.ly-icon-layout1 {
+	background-position: 0 0;
+	width: 32px;
+}
+.ly-icon-layout2 {
+	background-position: -48px 0;
+	width: 32px;
+}
+.ly-icon-layout3 {
+	background-position: -96px 0;
+	width: 32px;
+}
+.ly-icon-layout4 {
+	background-position: -144px 0;
+	width: 32px;
+}
+.ly-icon-layout15 {
+	background-position: -192px 0;
+	width: 32px;
+}
+.ly-icon-layout16 {
+	background-position: -240px 0;
+	width: 32px;
+}
+.ly-icon-layout17 {
+	background-position: -288px 0;
+	width: 32px;
+}
+.ly-icon-layout0 {
+	background-position: -336px 0;
+	width: 32px;
+}
+.ly-icon-layout5 {
+	background-position: -384px 0;
+	width: 32px;
+}
+.ly-icon-layout6 {
+	background-position: -432px 0;
+	width: 32px;
+}
+.ly-icon-layout11 {
+	background-position: -480px 0;
+	width: 32px;
+}
+.ly-icon-layout12 {
+	background-position: -528px 0;
+	width: 32px;
+}
+.ly-icon-layout7 {
+	background-position: -576px 0;
+	width: 32px;
+}
+.ly-icon-layout14 {
+	background-position: -624px 0;
+	width: 32px;
+}

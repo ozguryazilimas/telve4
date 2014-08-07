@@ -1,0 +1,2150 @@
+[class*="tv-icon-"] {
+	background-image: url("#{resource['telve:img/telve-sprites.png']}") !important;
+	background-repeat: no-repeat;
+}
+.tv-icon-glass {
+	background-position: 0 0;
+	width: 15px;
+}
+.tv-icon-music {
+	background-position: -31px 0;
+	width: 15px;
+}
+.tv-icon-search {
+	background-position: -62px 0;
+	width: 13px;
+}
+.tv-icon-envelope {
+	background-position: -91px 0;
+	width: 15px;
+}
+.tv-icon-heart {
+	background-position: -122px 0;
+	width: 14px;
+}
+.tv-icon-star {
+	background-position: -152px 0;
+	width: 16px;
+}
+.tv-icon-star-empty {
+	background-position: -184px 0;
+	width: 13px;
+}
+.tv-icon-user {
+	background-position: -213px 0;
+	width: 13px;
+}
+.tv-icon-film {
+	background-position: -242px 0;
+	width: 13px;
+}
+.tv-icon-th-large {
+	background-position: -271px 0;
+	width: 13px;
+}
+.tv-icon-th {
+	background-position: -300px 0;
+	width: 14px;
+}
+.tv-icon-th-list {
+	background-position: -330px 0;
+	width: 13px;
+}
+.tv-icon-ok {
+	background-position: -359px 0;
+	width: 13px;
+}
+.tv-icon-remove {
+	background-position: -388px 0;
+	width: 15px;
+}
+.tv-icon-zoom-in {
+	background-position: -419px 0;
+	width: 17px;
+}
+.tv-icon-zoom-out {
+	background-position: -452px 0;
+	width: 15px;
+}
+.tv-icon-off {
+	background-position: 0 -28px;
+}
+.tv-icon-signal {
+	background-position: -31px -28px;
+}
+.tv-icon-cog {
+	background-position: -62px -28px;
+}
+.tv-icon-trash {
+	background-position: -91px -28px;
+}
+.tv-icon-home {
+	background-position: -122px -28px;
+}
+.tv-icon-file {
+	background-position: -152px -28px;
+}
+.tv-icon-time {
+	background-position: -184px -28px;
+}
+.tv-icon-road {
+	background-position: -213px -28px;
+}
+.tv-icon-download-alt {
+	background-position: -242px -28px;
+}
+.tv-icon-download {
+	background-position: -271px -28px;
+}
+.tv-icon-upload {
+	background-position: -300px -28px;
+}
+.tv-icon-inbox {
+	background-position: -330px -28px;
+}
+.tv-icon-play-circle {
+	background-position: -359px -28px;
+}
+.tv-icon-repeat {
+	background-position: -388px -28px;
+}
+.tv-icon-refresh {
+	background-position: -419px -28px;
+}
+.tv-icon-list-alt {
+	background-position: -452px -28px;
+}
+.tv-icon-lock {
+	background-position: 0 -56px;
+}
+.tv-icon-flag {
+	background-position: -31px -56px;
+}
+.tv-icon-headphones {
+	background-position: -62px -56px;
+}
+.tv-icon-volume-off {
+	background-position: -91px -56px;
+}
+.tv-icon-volume-down {
+	background-position: -122px -56px;
+}
+.tv-icon-volume-up {
+	background-position: -152px -56px;
+}
+.tv-icon-qrcode {
+	background-position: -184px -56px;
+}
+.tv-icon-barcode {
+	background-position: -213px -56px;
+}
+.tv-icon-tag {
+	background-position: -242px -56px;
+}
+.tv-icon-tags {
+	background-position: -271px -56px;
+}
+.tv-icon-book {
+	background-position: -300px -56px;
+}
+.tv-icon-bookmark {
+	background-position: -330px -56px;
+}
+.tv-icon-print {
+	background-position: -359px -56px;
+}
+.tv-icon-camera {
+	background-position: -388px -56px;
+}
+.tv-icon-font {
+	background-position: -419px -56px;
+}
+.tv-icon-bold {
+	background-position: -452px -56px;
+}
+.tv-icon-italic {
+	background-position: 0 -84px;
+}
+.tv-icon-text-height {
+	background-position: -31px -84px;
+}
+.tv-icon-text-width {
+	background-position: -62px -84px;
+}
+.tv-icon-align-left {
+	background-position: -91px -84px;
+}
+.tv-icon-align-center {
+	background-position: -122px -84px;
+}
+.tv-icon-align-right {
+	background-position: -152px -84px;
+}
+.tv-icon-align-justify {
+	background-position: -184px -84px;
+}
+.tv-icon-list {
+	background-position: -213px -84px;
+}
+.tv-icon-indent-left {
+	background-position: -242px -84px;
+}
+.tv-icon-indent-right {
+	background-position: -271px -84px;
+}
+.tv-icon-facetime-video {
+	background-position: -300px -84px;
+}
+.tv-icon-picture {
+	background-position: -330px -84px;
+}
+.tv-icon-pencil {
+	background-position: -359px -84px;
+}
+.tv-icon-map-marker {
+	background-position: -388px -84px;
+}
+.tv-icon-adjust {
+	background-position: -419px -84px;
+}
+.tv-icon-tint {
+	background-position: -452px -84px;
+}
+.tv-icon-edit {
+	background-position: 0 -112px;
+}
+.tv-icon-share {
+	background-position: -31px -112px;
+}
+.tv-icon-check {
+	background-position: -62px -112px;
+}
+.tv-icon-move {
+	background-position: -91px -112px;
+}
+.tv-icon-step-backward {
+	background-position: -122px -112px;
+}
+.tv-icon-fast-backward {
+	background-position: -152px -112px;
+}
+.tv-icon-backward {
+	background-position: -184px -112px;
+}
+.tv-icon-play {
+	background-position: -213px -112px;
+}
+.tv-icon-pause {
+	background-position: -242px -112px;
+}
+.tv-icon-stop {
+	background-position: -271px -112px;
+}
+.tv-icon-forward {
+	background-position: -300px -112px;
+}
+.tv-icon-fast-forward {
+	background-position: -330px -112px;
+}
+.tv-icon-step-forward {
+	background-position: -359px -112px;
+}
+.tv-icon-eject {
+	background-position: -388px -112px;
+}
+.tv-icon-chevron-left {
+	background-position: -419px -112px;
+}
+.tv-icon-chevron-right {
+	background-position: -452px -112px;
+}
+.tv-icon-plus-sign {
+	background-position: 0 -140px;
+}
+.tv-icon-minus-sign {
+	background-position: -31px -140px;
+}
+.tv-icon-remove-sign {
+	background-position: -62px -140px;
+}
+.tv-icon-ok-sign {
+	background-position: -91px -140px;
+}
+.tv-icon-question-sign {
+	background-position: -122px -140px;
+}
+.tv-icon-info-sign {
+	background-position: -152px -140px;
+}
+.tv-icon-screenshot {
+	background-position: -184px -140px;
+}
+.tv-icon-remove-circle {
+	background-position: -213px -140px;
+}
+.tv-icon-ok-circle {
+	background-position: -242px -140px;
+}
+.tv-icon-ban-circle {
+	background-position: -271px -140px;
+}
+.tv-icon-arrow-left {
+	background-position: -300px -140px;
+}
+.tv-icon-arrow-right {
+	background-position: -330px -140px;
+}
+.tv-icon-arrow-up {
+	background-position: -359px -140px;
+}
+.tv-icon-arrow-down {
+	background-position: -388px -140px;
+}
+.tv-icon-share-alt {
+	background-position: -419px -140px;
+}
+.tv-icon-resize-full {
+	background-position: -452px -140px;
+}
+.tv-icon-resize-small {
+	background-position: 0 -168px;
+}
+.tv-icon-plus {
+	background-position: -31px -168px;
+}
+.tv-icon-minus {
+	background-position: -62px -168px;
+}
+.tv-icon-asterisk {
+	background-position: -91px -168px;
+}
+.tv-icon-exclamation-sign {
+	background-position: -122px -168px;
+}
+.tv-icon-gift {
+	background-position: -152px -168px;
+}
+.tv-icon-leaf {
+	background-position: -184px -168px;
+}
+.tv-icon-fire {
+	background-position: -213px -168px;
+}
+.tv-icon-eye-open {
+	background-position: -242px -168px;
+}
+.tv-icon-eye-close {
+	background-position: -271px -168px;
+}
+.tv-icon-warning-sign {
+	background-position: -300px -168px;
+}
+.tv-icon-plane {
+	background-position: -330px -168px;
+}
+.tv-icon-calendar {
+	background-position: -359px -168px;
+}
+.tv-icon-random {
+	background-position: -388px -168px;
+}
+.tv-icon-comment {
+	background-position: -419px -168px;
+}
+.tv-icon-magnet {
+	background-position: -452px -168px;
+}
+.tv-icon-chevron-up {
+	background-position: 0 -196px;
+}
+.tv-icon-chevron-down {
+	background-position: -31px -196px;
+}
+.tv-icon-retweet {
+	background-position: -62px -196px;
+}
+.tv-icon-shopping-cart {
+	background-position: -91px -196px;
+}
+.tv-icon-folder-close {
+	background-position: -122px -196px;
+}
+.tv-icon-folder-open {
+	background-position: -152px -196px;
+}
+.tv-icon-resize-vertical {
+	background-position: -184px -196px;
+}
+.tv-icon-resize-horizontal {
+	background-position: -213px -196px;
+}
+.tv-icon-bar-chart {
+	background-position: -242px -196px;
+}
+.tv-icon-twitter-sign {
+	background-position: -271px -196px;
+}
+.tv-icon-facebook-sign {
+	background-position: -300px -196px;
+}
+.tv-icon-camera-retro {
+	background-position: -330px -196px;
+}
+.tv-icon-key {
+	background-position: -359px -196px;
+}
+.tv-icon-cogs {
+	background-position: -388px -196px;
+}
+.tv-icon-comments {
+	background-position: -419px -196px;
+}
+.tv-icon-thumbs-up {
+	background-position: -452px -196px;
+}
+.tv-icon-thumbs-down {
+	background-position: 0 -224px;
+}
+.tv-icon-star-half {
+	background-position: -31px -224px;
+}
+.tv-icon-heart-empty {
+	background-position: -62px -224px;
+}
+.tv-icon-signout {
+	background-position: -91px -224px;
+}
+.tv-icon-linkedin-sign {
+	background-position: -122px -224px;
+}
+.tv-icon-pushpin {
+	background-position: -152px -224px;
+}
+.tv-icon-external-link {
+	background-position: -184px -224px;
+}
+.tv-icon-signin {
+	background-position: -213px -224px;
+}
+.tv-icon-trophy {
+	background-position: -242px -224px;
+}
+.tv-icon-github-sign {
+	background-position: -271px -224px;
+}
+.tv-icon-upload-alt {
+	background-position: -300px -224px;
+}
+.tv-icon-lemon {
+	background-position: -330px -224px;
+}
+.tv-icon-phone {
+	background-position: -359px -224px;
+}
+.tv-icon-check-empty {
+	background-position: -388px -224px;
+}
+.tv-icon-bookmark-empty {
+	background-position: -419px -224px;
+}
+.tv-icon-phone-sign {
+	background-position: -452px -224px;
+}
+.tv-icon-twitter {
+	background-position: 0 -252px;
+}
+.tv-icon-facebook {
+	background-position: -31px -252px;
+}
+.tv-icon-github {
+	background-position: -62px -252px;
+}
+.tv-icon-unlock {
+	background-position: -91px -252px;
+}
+.tv-icon-credit {
+	background-position: -122px -252px;
+}
+.tv-icon-rss {
+	background-position: -152px -252px;
+}
+.tv-icon-hdd {
+	background-position: -184px -252px;
+}
+.tv-icon-bullhorn {
+	background-position: -213px -252px;
+}
+.tv-icon-bell {
+	background-position: -242px -252px;
+}
+.tv-icon-certificate {
+	background-position: -271px -252px;
+}
+.tv-icon-hand-right {
+	background-position: -300px -252px;
+}
+.tv-icon-hand-left {
+	background-position: -330px -252px;
+}
+.tv-icon-hand-up {
+	background-position: -359px -252px;
+}
+.tv-icon-hand-down {
+	background-position: -388px -252px;
+}
+.tv-icon-circle-arrow-left {
+	background-position: -419px -252px;
+}
+.tv-icon-circle-arrow-right {
+	background-position: -452px -252px;
+}
+.tv-icon-circle-arrow-up {
+	background-position: 0 -280px;
+}
+.tv-icon-circle-arrow-down {
+	background-position: -31px -280px;
+}
+.tv-icon-globe {
+	background-position: -62px -280px;
+}
+.tv-icon-wrench {
+	background-position: -91px -280px;
+}
+.tv-icon-tasks {
+	background-position: -122px -280px;
+}
+.tv-icon-filter {
+	background-position: -152px -280px;
+}
+.tv-icon-briefcase {
+	background-position: -184px -280px;
+}
+.tv-icon-fullscreen {
+	background-position: -213px -280px;
+}
+.tv-icon-group {
+	background-position: -242px -280px;
+}
+.tv-icon-link {
+	background-position: -271px -280px;
+}
+.tv-icon-cloud {
+	background-position: -300px -280px;
+}
+.tv-icon-beaker {
+	background-position: -330px -280px;
+}
+.tv-icon-cut {
+	background-position: -359px -280px;
+}
+.tv-icon-copy {
+	background-position: -388px -280px;
+}
+.tv-icon-paper-clip {
+	background-position: -419px -280px;
+}
+.tv-icon-save {
+	background-position: -452px -280px;
+}
+.tv-icon-sign-blank {
+	background-position: 0 -308px;
+}
+.tv-icon-reorder {
+	background-position: -31px -308px;
+}
+.tv-icon-list-ul {
+	background-position: -62px -308px;
+}
+.tv-icon-list-ol {
+	background-position: -91px -308px;
+}
+.tv-icon-strikethrough {
+	background-position: -122px -308px;
+}
+.tv-icon-underline {
+	background-position: -152px -308px;
+}
+.tv-icon-table {
+	background-position: -184px -308px;
+}
+.tv-icon-magic {
+	background-position: -213px -308px;
+}
+.tv-icon-truck {
+	background-position: -242px -308px;
+}
+.tv-icon-pinterest {
+	background-position: -271px -308px;
+}
+.tv-icon-pinterest-sign {
+	background-position: -300px -308px;
+}
+.tv-icon-google-plus-sign {
+	background-position: -330px -308px;
+}
+.tv-icon-google-plus {
+	background-position: -359px -308px;
+}
+.tv-icon-money {
+	background-position: -388px -308px;
+}
+.tv-icon-caret-down {
+	background-position: -419px -308px;
+}
+.tv-icon-caret-up {
+	background-position: -452px -308px;
+}
+.tv-icon-caret-left {
+	background-position: 0 -336px;
+}
+.tv-icon-caret-right {
+	background-position: -31px -336px;
+}
+.tv-icon-columns {
+	background-position: -62px -336px;
+}
+.tv-icon-sort {
+	background-position: -91px -336px;
+}
+.tv-icon-sort-down {
+	background-position: -122px -336px;
+}
+.tv-icon-sort-up {
+	background-position: -152px -336px;
+}
+.tv-icon-envelope-alt {
+	background-position: -184px -336px;
+}
+.tv-icon-linkedin {
+	background-position: -213px -336px;
+}
+.tv-icon-undo {
+	background-position: -242px -336px;
+}
+.tv-icon-legal {
+	background-position: -271px -336px;
+}
+.tv-icon-dashboard {
+	background-position: -300px -336px;
+}
+.tv-icon-comment-alt {
+	background-position: -330px -336px;
+}
+.tv-icon-comments-alt {
+	background-position: -359px -336px;
+}
+.tv-icon-bolt {
+	background-position: -388px -336px;
+}
+.tv-icon-sitemap {
+	background-position: -419px -336px;
+}
+.tv-icon-umbrella {
+	background-position: -452px -336px;
+}
+.tv-icon-paste {
+	background-position: 0 -364px;
+}
+.tv-icon-lightbulb {
+	background-position: -31px -364px;
+}
+.tv-icon-exchange {
+	background-position: -62px -364px;
+}
+.tv-icon-cloud-download {
+	background-position: -91px -364px;
+}
+.tv-icon-cloud-upload {
+	background-position: -122px -364px;
+}
+.tv-icon-user-md {
+	background-position: -152px -364px;
+}
+.tv-icon-stethoscope {
+	background-position: -184px -364px;
+}
+.tv-icon-suitcase {
+	background-position: -213px -364px;
+}
+.tv-icon-bell-alt {
+	background-position: -242px -364px;
+}
+.tv-icon-coffee {
+	background-position: -271px -364px;
+}
+.tv-icon-food {
+	background-position: -300px -364px;
+}
+.tv-icon-file-alt {
+	background-position: -330px -364px;
+}
+.tv-icon-building {
+	background-position: -359px -364px;
+}
+.tv-icon-hospital {
+	background-position: -388px -364px;
+}
+.tv-icon-ambulance {
+	background-position: -419px -364px;
+}
+.tv-icon-medkit {
+	background-position: -452px -364px;
+}
+.tv-icon-fighter-jet {
+	background-position: 0 -392px;
+}
+.tv-icon-beer {
+	background-position: -31px -392px;
+}
+.tv-icon-h-sign {
+	background-position: -62px -392px;
+}
+.tv-icon-plus-sign2 {
+	background-position: -91px -392px;
+}
+.tv-icon-double-angle-left {
+	background-position: -122px -392px;
+}
+.tv-icon-double-angle-right {
+	background-position: -152px -392px;
+}
+.tv-icon-double-angle-up {
+	background-position: -184px -392px;
+}
+.tv-icon-double-angle-down {
+	background-position: -213px -392px;
+}
+.tv-icon-angle-left {
+	background-position: -242px -392px;
+}
+.tv-icon-angle-right {
+	background-position: -271px -392px;
+}
+.tv-icon-angle-up {
+	background-position: -300px -392px;
+}
+.tv-icon-angle-down {
+	background-position: -330px -392px;
+}
+.tv-icon-desktop {
+	background-position: -359px -392px;
+}
+.tv-icon-laptop {
+	background-position: -388px -392px;
+}
+.tv-icon-tablet {
+	background-position: -419px -392px;
+}
+.tv-icon-mobile {
+	background-position: -452px -392px;
+}
+.tv-icon-circle-blank {
+	background-position: 0 -420px;
+}
+.tv-icon-quote-left {
+	background-position: -31px -420px;
+}
+.tv-icon-quote-right {
+	background-position: -62px -420px;
+}
+.tv-icon-spinner {
+	background-position: -91px -420px;
+}
+.tv-icon-circle {
+	background-position: -122px -420px;
+}
+.tv-icon-reply {
+	background-position: -152px -420px;
+}
+.tv-icon-github-alt {
+	background-position: -184px -420px;
+}
+.tv-icon-folder-close-alt {
+	background-position: -213px -420px;
+}
+.tv-icon-folder-open-alt {
+	background-position: -242px -420px;
+}
+.tv-icon-expand-alt {
+	background-position: -271px -420px;
+}
+.tv-icon-collapse-alt {
+	background-position: -300px -420px;
+}
+.tv-icon-smile {
+	background-position: -330px -420px;
+}
+.tv-icon-frown {
+	background-position: -359px -420px;
+}
+.tv-icon-meh {
+	background-position: -388px -420px;
+}
+.tv-icon-gamepad {
+	background-position: -419px -420px;
+}
+.tv-icon-keyboard {
+	background-position: -452px -420px;
+}
+.tv-icon-flag-alt {
+	background-position: 0 -448px;
+}
+.tv-icon-flag-checkered {
+	background-position: -31px -448px;
+}
+.tv-icon-terminal {
+	background-position: -62px -448px;
+}
+.tv-icon-code {
+	background-position: -91px -448px;
+}
+.tv-icon-reply-all {
+	background-position: -122px -448px;
+}
+.tv-icon-star-half-full {
+	background-position: -152px -448px;
+}
+.tv-icon-location-arrow {
+	background-position: -184px -448px;
+}
+.tv-icon-crop {
+	background-position: -213px -448px;
+}
+.tv-icon-code-fork {
+	background-position: -242px -448px;
+}
+.tv-icon-unlink {
+	background-position: -271px -448px;
+}
+.tv-icon-question {
+	background-position: -300px -448px;
+}
+.tv-icon-info {
+	background-position: -330px -448px;
+}
+.tv-icon-exclamation {
+	background-position: -359px -448px;
+}
+.tv-icon-superscript {
+	background-position: -388px -448px;
+}
+.tv-icon-subscript {
+	background-position: -419px -448px;
+}
+.tv-icon-eraser {
+	background-position: -452px -448px;
+}
+.tv-icon-puzzle {
+	background-position: 0 -476px;
+}
+.tv-icon-microphone {
+	background-position: -31px -476px;
+}
+.tv-icon-microphone-off {
+	background-position: -62px -476px;
+}
+.tv-icon-shield {
+	background-position: -91px -476px;
+}
+.tv-icon-calendar-empty {
+	background-position: -122px -476px;
+}
+.tv-icon-fire-extinguisher {
+	background-position: -152px -476px;
+}
+.tv-icon-rocket {
+	background-position: -184px -476px;
+}
+.tv-icon-maxcdn {
+	background-position: -213px -476px;
+}
+.tv-icon-chevron-sign-left {
+	background-position: -242px -476px;
+}
+.tv-icon-chevron-sign-right {
+	background-position: -271px -476px;
+}
+.tv-icon-chevron-sign-up {
+	background-position: -300px -476px;
+}
+.tv-icon-chevron-sign-down {
+	background-position: -330px -476px;
+}
+.tv-icon-html5 {
+	background-position: -359px -476px;
+}
+.tv-icon-css3 {
+	background-position: -388px -476px;
+}
+.tv-icon-anchor {
+	background-position: -419px -476px;
+}
+.tv-icon-unlock-alt {
+	background-position: -452px -476px;
+}
+.tv-icon-bullseye {
+	background-position: 0 -504px;
+}
+.tv-icon-ellipsis-horizontal {
+	background-position: -31px -504px;
+}
+.tv-icon-ellipsis-vertical {
+	background-position: -62px -504px;
+}
+.tv-icon-rss-sign {
+	background-position: -91px -504px;
+}
+.tv-icon-play-sign {
+	background-position: -122px -504px;
+}
+.tv-icon-ticket {
+	background-position: -152px -504px;
+}
+.tv-icon-minus-sign-alt {
+	background-position: -184px -504px;
+}
+.tv-icon-check-minus {
+	background-position: -213px -504px;
+}
+.tv-icon-level-up {
+	background-position: -242px -504px;
+}
+.tv-icon-level-down {
+	background-position: -271px -504px;
+}
+.tv-icon-check-sign {
+	background-position: -300px -504px;
+}
+.tv-icon-edit-sign {
+	background-position: -330px -504px;
+}
+.tv-icon-external-link-sign {
+	background-position: -359px -504px;
+}
+.tv-icon-share-sign {
+	background-position: -388px -504px;
+}
+.tv-icon-compass {
+	background-position: -419px -504px;
+}
+.tv-icon-collapse {
+	background-position: -452px -504px;
+}
+.tv-icon-collapse-top {
+	background-position: 0 -532px;
+}
+.tv-icon-expand {
+	background-position: -31px -532px;
+}
+.tv-icon-euro {
+	background-position: -62px -532px;
+}
+.tv-icon-gbp {
+	background-position: -91px -532px;
+}
+.tv-icon-dollar {
+	background-position: -122px -532px;
+}
+.tv-icon-rupee {
+	background-position: -152px -532px;
+}
+.tv-icon-yen {
+	background-position: -184px -532px;
+}
+.tv-icon-renminbi {
+	background-position: -213px -532px;
+}
+.tv-icon-won {
+	background-position: -242px -532px;
+}
+.tv-icon-bitcoin {
+	background-position: -271px -532px;
+}
+.tv-icon-file2 {
+	background-position: -300px -532px;
+}
+.tv-icon-file-text {
+	background-position: -330px -532px;
+}
+.tv-icon-sort-by-alphabet {
+	background-position: -359px -532px;
+}
+.tv-icon-sort-by-alphabet-alt {
+	background-position: -388px -532px;
+}
+.tv-icon-sort-by-attributes {
+	background-position: -419px -532px;
+}
+.tv-icon-sort-by-attributes-alt {
+	background-position: -452px -532px;
+}
+.tv-icon-sort-by-order {
+	background-position: 0 -560px;
+}
+.tv-icon-sort-by-order-alt {
+	background-position: -31px -560px;
+}
+.tv-icon-thumbs-up2 {
+	background-position: -62px -560px;
+}
+.tv-icon-thumbs-down2 {
+	background-position: -91px -560px;
+}
+.tv-icon-youtube-sign {
+	background-position: -122px -560px;
+}
+.tv-icon-youtube {
+	background-position: -152px -560px;
+}
+.tv-icon-xing {
+	background-position: -184px -560px;
+}
+.tv-icon-xing-sign {
+	background-position: -213px -560px;
+}
+.tv-icon-youtube-play {
+	background-position: -242px -560px;
+}
+.tv-icon-dropbox {
+	background-position: -271px -560px;
+}
+.tv-icon-stackexchange {
+	background-position: -300px -560px;
+}
+.tv-icon-instagram {
+	background-position: -330px -560px;
+}
+.tv-icon-flickr {
+	background-position: -359px -560px;
+}
+.tv-icon-adn {
+	background-position: -388px -560px;
+}
+.tv-icon-bitbucket {
+	background-position: -419px -560px;
+}
+.tv-icon-bitbucket-sign {
+	background-position: -452px -560px;
+}
+.tv-icon-tumblr {
+	background-position: 0 -588px;
+}
+.tv-icon-tumblr-sign {
+	background-position: -31px -588px;
+}
+.tv-icon-long-arrow-down {
+	background-position: -62px -588px;
+}
+.tv-icon-long-arrow-up {
+	background-position: -91px -588px;
+}
+.tv-icon-long-arrow-left {
+	background-position: -122px -588px;
+}
+.tv-icon-long-arrow-right {
+	background-position: -152px -588px;
+}
+.tv-icon-apple {
+	background-position: -184px -588px;
+}
+.tv-icon-windows {
+	background-position: -213px -588px;
+}
+.tv-icon-android {
+	background-position: -242px -588px;
+}
+.tv-icon-linux {
+	background-position: -271px -588px;
+}
+.tv-icon-dribbble {
+	background-position: -300px -588px;
+}
+.tv-icon-skype {
+	background-position: -330px -588px;
+}
+.tv-icon-foursquare {
+	background-position: -359px -588px;
+}
+.tv-icon-trello {
+	background-position: -388px -588px;
+}
+.tv-icon-female {
+	background-position: -419px -588px;
+}
+.tv-icon-male {
+	background-position: -452px -588px;
+}
+.tv-icon-gittip {
+	background-position: 0 -616px;
+}
+.tv-icon-sun {
+	background-position: -31px -616px;
+}
+.tv-icon-moon {
+	background-position: -62px -616px;
+}
+.tv-icon-archive {
+	background-position: -91px -616px;
+}
+.tv-icon-bug {
+	background-position: -122px -616px;
+}
+.tv-icon-vk {
+	background-position: -152px -616px;
+}
+.tv-icon-weibo {
+	background-position: -184px -616px;
+}
+.tv-icon-renren {
+	background-position: -213px -616px;
+}
+.tv-icon-number {
+	background-position: -242px -616px;
+}
+.tv-icon-number2 {
+	background-position: -271px -616px;
+}
+.tv-icon-number3 {
+	background-position: -300px -616px;
+}
+.tv-icon-number4 {
+	background-position: -330px -616px;
+}
+.tv-icon-number5 {
+	background-position: -359px -616px;
+}
+.tv-icon-number6 {
+	background-position: -388px -616px;
+}
+.tv-icon-number7 {
+	background-position: -419px -616px;
+}
+.tv-icon-number8 {
+	background-position: -452px -616px;
+}
+.tv-icon-number9 {
+	background-position: 0 -644px;
+}
+.tv-icon-number10 {
+	background-position: -31px -644px;
+}
+.tv-icon-number11 {
+	background-position: -62px -644px;
+}
+.tv-icon-number12 {
+	background-position: -91px -644px;
+}
+.tv-icon-number13 {
+	background-position: -122px -644px;
+}
+.tv-icon-number14 {
+	background-position: -152px -644px;
+}
+.tv-icon-number15 {
+	background-position: -184px -644px;
+}
+.tv-icon-number16 {
+	background-position: -213px -644px;
+}
+.tv-icon-number17 {
+	background-position: -242px -644px;
+}
+.tv-icon-number18 {
+	background-position: -271px -644px;
+}
+.tv-icon-number19 {
+	background-position: -300px -644px;
+}
+.tv-icon-number20 {
+	background-position: -330px -644px;
+}
+.tv-icon-quote {
+	background-position: -359px -644px;
+}
+.tv-icon-quote2 {
+	background-position: -388px -644px;
+}
+.tv-icon-tag2 {
+	background-position: -419px -644px;
+}
+.tv-icon-tag3 {
+	background-position: -452px -644px;
+}
+.tv-icon-link2 {
+	background-position: 0 -672px;
+}
+.tv-icon-link3 {
+	background-position: -31px -672px;
+}
+.tv-icon-cabinet {
+	background-position: -62px -672px;
+}
+.tv-icon-cabinet2 {
+	background-position: -91px -672px;
+}
+.tv-icon-calendar2 {
+	background-position: -122px -672px;
+}
+.tv-icon-calendar3 {
+	background-position: -152px -672px;
+}
+.tv-icon-calendar4 {
+	background-position: -184px -672px;
+}
+.tv-icon-file3 {
+	background-position: -213px -672px;
+}
+.tv-icon-file4 {
+	background-position: -242px -672px;
+}
+.tv-icon-file5 {
+	background-position: -271px -672px;
+}
+.tv-icon-files {
+	background-position: -300px -672px;
+}
+.tv-icon-phone2 {
+	background-position: -330px -672px;
+}
+.tv-icon-tablet2 {
+	background-position: -359px -672px;
+}
+.tv-icon-window {
+	background-position: -388px -672px;
+}
+.tv-icon-monitor {
+	background-position: -419px -672px;
+}
+.tv-icon-ipod {
+	background-position: -452px -672px;
+}
+.tv-icon-tv {
+	background-position: 0 -700px;
+}
+.tv-icon-camera2 {
+	background-position: -31px -700px;
+}
+.tv-icon-camera3 {
+	background-position: -62px -700px;
+}
+.tv-icon-camera4 {
+	background-position: -91px -700px;
+}
+.tv-icon-film2 {
+	background-position: -122px -700px;
+}
+.tv-icon-film3 {
+	background-position: -152px -700px;
+}
+.tv-icon-film4 {
+	background-position: -184px -700px;
+}
+.tv-icon-microphone2 {
+	background-position: -213px -700px;
+}
+.tv-icon-microphone3 {
+	background-position: -242px -700px;
+}
+.tv-icon-microphone4 {
+	background-position: -271px -700px;
+}
+.tv-icon-drink {
+	background-position: -300px -700px;
+}
+.tv-icon-drink2 {
+	background-position: -330px -700px;
+}
+.tv-icon-drink3 {
+	background-position: -359px -700px;
+}
+.tv-icon-drink4 {
+	background-position: -388px -700px;
+}
+.tv-icon-coffee2 {
+	background-position: -419px -700px;
+}
+.tv-icon-mug {
+	background-position: -452px -700px;
+}
+.tv-icon-ice cream {
+	background-position: 0 -728px;
+}
+.tv-icon-cake {
+	background-position: -31px -728px;
+}
+.tv-icon-inbox2 {
+	background-position: -62px -728px;
+}
+.tv-icon-download2 {
+	background-position: -91px -728px;
+}
+.tv-icon-upload2 {
+	background-position: -122px -728px;
+}
+.tv-icon-inbox3 {
+	background-position: -152px -728px;
+}
+.tv-icon-checkmark {
+	background-position: -184px -728px;
+}
+.tv-icon-checkmark2 {
+	background-position: -213px -728px;
+}
+.tv-icon-cancel {
+	background-position: -242px -728px;
+}
+.tv-icon-cancel2 {
+	background-position: -271px -728px;
+}
+.tv-icon-plus2 {
+	background-position: -300px -728px;
+}
+.tv-icon-plus3 {
+	background-position: -330px -728px;
+}
+.tv-icon-minus2 {
+	background-position: -359px -728px;
+}
+.tv-icon-minus3 {
+	background-position: -388px -728px;
+}
+.tv-icon-notice {
+	background-position: -419px -728px;
+}
+.tv-icon-notice2 {
+	background-position: -452px -728px;
+}
+.tv-icon-cog2 {
+	background-position: 0 -756px;
+}
+.tv-icon-cogs2 {
+	background-position: -31px -756px;
+}
+.tv-icon-cog3 {
+	background-position: -62px -756px;
+}
+.tv-icon-warning {
+	background-position: -91px -756px;
+}
+.tv-icon-health {
+	background-position: -122px -756px;
+}
+.tv-icon-suitcase2 {
+	background-position: -152px -756px;
+}
+.tv-icon-suitcase3 {
+	background-position: -184px -756px;
+}
+.tv-icon-suitcase4 {
+	background-position: -213px -756px;
+}
+.tv-icon-picture2 {
+	background-position: -242px -756px;
+}
+.tv-icon-pictures {
+	background-position: -271px -756px;
+}
+.tv-icon-pictures2 {
+	background-position: -300px -756px;
+}
+.tv-icon-android2 {
+	background-position: -330px -756px;
+}
+.tv-icon-marvin {
+	background-position: -359px -756px;
+}
+.tv-icon-pacman {
+	background-position: -388px -756px;
+}
+.tv-icon-cassette {
+	background-position: -419px -756px;
+}
+.tv-icon-watch {
+	background-position: -452px -756px;
+}
+.tv-icon-chronometer {
+	background-position: 0 -784px;
+}
+.tv-icon-watch2 {
+	background-position: -31px -784px;
+}
+.tv-icon-alarm clock {
+	background-position: -62px -784px;
+}
+.tv-icon-time2 {
+	background-position: -91px -784px;
+}
+.tv-icon-time3 {
+	background-position: -122px -784px;
+}
+.tv-icon-headphones2 {
+	background-position: -152px -784px;
+}
+.tv-icon-wallet {
+	background-position: -184px -784px;
+}
+.tv-icon-checkmark3 {
+	background-position: -213px -784px;
+}
+.tv-icon-cancel3 {
+	background-position: -242px -784px;
+}
+.tv-icon-eye {
+	background-position: -271px -784px;
+}
+.tv-icon-position {
+	background-position: -300px -784px;
+}
+.tv-icon-site map {
+	background-position: -330px -784px;
+}
+.tv-icon-site map2 {
+	background-position: -359px -784px;
+}
+.tv-icon-cloud2 {
+	background-position: -388px -784px;
+}
+.tv-icon-upload3 {
+	background-position: -419px -784px;
+}
+.tv-icon-chart {
+	background-position: -452px -784px;
+}
+.tv-icon-chart2 {
+	background-position: 0 -812px;
+}
+.tv-icon-chart3 {
+	background-position: -31px -812px;
+}
+.tv-icon-chart4 {
+	background-position: -62px -812px;
+}
+.tv-icon-chart5 {
+	background-position: -91px -812px;
+}
+.tv-icon-chart6 {
+	background-position: -122px -812px;
+}
+.tv-icon-location {
+	background-position: -152px -812px;
+}
+.tv-icon-download3 {
+	background-position: -184px -812px;
+}
+.tv-icon-basket {
+	background-position: -213px -812px;
+}
+.tv-icon-folder {
+	background-position: -242px -812px;
+}
+.tv-icon-gamepad2 {
+	background-position: -271px -812px;
+}
+.tv-icon-alarm {
+	background-position: -300px -812px;
+}
+.tv-icon-alarm-cancel {
+	background-position: -330px -812px;
+}
+.tv-icon-phone3 {
+	background-position: -359px -812px;
+}
+.tv-icon-phone4 {
+	background-position: -388px -812px;
+}
+.tv-icon-image {
+	background-position: -419px -812px;
+}
+.tv-icon-open {
+	background-position: -452px -812px;
+}
+.tv-icon-sale {
+	background-position: 0 -840px;
+}
+.tv-icon-direction {
+	background-position: -31px -840px;
+}
+.tv-icon-map {
+	background-position: -62px -840px;
+}
+.tv-icon-trashcan {
+	background-position: -91px -840px;
+}
+.tv-icon-vote {
+	background-position: -122px -840px;
+}
+.tv-icon-graduate {
+	background-position: -152px -840px;
+}
+.tv-icon-lab {
+	background-position: -184px -840px;
+}
+.tv-icon-tie {
+	background-position: -213px -840px;
+}
+.tv-icon-football {
+	background-position: -242px -840px;
+}
+.tv-icon-eight ball {
+	background-position: -271px -840px;
+}
+.tv-icon-bowling {
+	background-position: -300px -840px;
+}
+.tv-icon-bowling pin {
+	background-position: -330px -840px;
+}
+.tv-icon-baseball {
+	background-position: -359px -840px;
+}
+.tv-icon-soccer {
+	background-position: -388px -840px;
+}
+.tv-icon-3d glasses {
+	background-position: -419px -840px;
+}
+.tv-icon-microwave {
+	background-position: -452px -840px;
+}
+.tv-icon-refrigerator {
+	background-position: 0 -868px;
+}
+.tv-icon-oven {
+	background-position: -31px -868px;
+}
+.tv-icon-washing machine {
+	background-position: -62px -868px;
+}
+.tv-icon-mouse {
+	background-position: -91px -868px;
+}
+.tv-icon-smiley {
+	background-position: -122px -868px;
+}
+.tv-icon-sad {
+	background-position: -152px -868px;
+}
+.tv-icon-mute {
+	background-position: -184px -868px;
+}
+.tv-icon-hand {
+	background-position: -213px -868px;
+}
+.tv-icon-radio {
+	background-position: -242px -868px;
+}
+.tv-icon-satellite {
+	background-position: -271px -868px;
+}
+.tv-icon-medal {
+	background-position: -300px -868px;
+}
+.tv-icon-medal2 {
+	background-position: -330px -868px;
+}
+.tv-icon-switch {
+	background-position: -359px -868px;
+}
+.tv-icon-key2 {
+	background-position: -388px -868px;
+}
+.tv-icon-cord {
+	background-position: -419px -868px;
+}
+.tv-icon-locked {
+	background-position: -452px -868px;
+}
+.tv-icon-unlocked {
+	background-position: 0 -896px;
+}
+.tv-icon-locked2 {
+	background-position: -31px -896px;
+}
+.tv-icon-unlocked2 {
+	background-position: -62px -896px;
+}
+.tv-icon-magnifier {
+	background-position: -91px -896px;
+}
+.tv-icon-zoom in {
+	background-position: -122px -896px;
+}
+.tv-icon-zoom out {
+	background-position: -152px -896px;
+}
+.tv-icon-stack {
+	background-position: -184px -896px;
+}
+.tv-icon-stack2 {
+	background-position: -213px -896px;
+}
+.tv-icon-stack3 {
+	background-position: -242px -896px;
+}
+.tv-icon-david star {
+	background-position: -271px -896px;
+}
+.tv-icon-cross {
+	background-position: -300px -896px;
+}
+.tv-icon-moon{
+	background-position: -330px -896px;
+}
+.tv-icon-transformers {
+	background-position: -359px -896px;
+}
+.tv-icon-batman {
+	background-position: -388px -896px;
+}
+.tv-icon-space invaders {
+	background-position: -419px -896px;
+}
+.tv-icon-skeletor {
+	background-position: -452px -896px;
+}
+.tv-icon-lamp {
+	background-position: 0 -924px;
+}
+.tv-icon-lamp2 {
+	background-position: -31px -924px;
+}
+.tv-icon-umbrella2 {
+	background-position: -62px -924px;
+}
+.tv-icon-street light {
+	background-position: -91px -924px;
+}
+.tv-icon-bomb {
+	background-position: -122px -924px;
+}
+.tv-icon-archive2 {
+	background-position: -152px -924px;
+}
+.tv-icon-battery {
+	background-position: -184px -924px;
+}
+.tv-icon-battery2 {
+	background-position: -213px -924px;
+}
+.tv-icon-battery3 {
+	background-position: -242px -924px;
+}
+.tv-icon-battery4 {
+	background-position: -271px -924px;
+}
+.tv-icon-battery5 {
+	background-position: -300px -924px;
+}
+.tv-icon-megaphone {
+	background-position: -330px -924px;
+}
+.tv-icon-megaphone2 {
+	background-position: -359px -924px;
+}
+.tv-icon-patch {
+	background-position: -388px -924px;
+}
+.tv-icon-pil {
+	background-position: -419px -924px;
+}
+.tv-icon-injection {
+	background-position: -452px -924px;
+}
+.tv-icon-thermometer {
+	background-position: 0 -952px;
+}
+.tv-icon-lamp3 {
+	background-position: -31px -952px;
+}
+.tv-icon-lamp4 {
+	background-position: -62px -952px;
+}
+.tv-icon-lamp5 {
+	background-position: -91px -952px;
+}
+.tv-icon-cube {
+	background-position: -122px -952px;
+}
+.tv-icon-box {
+	background-position: -152px -952px;
+}
+.tv-icon-box2 {
+	background-position: -184px -952px;
+}
+.tv-icon-diamond {
+	background-position: -213px -952px;
+}
+.tv-icon-bag {
+	background-position: -242px -952px;
+}
+.tv-icon-money bag {
+	background-position: -271px -952px;
+}
+.tv-icon-grid {
+	background-position: -300px -952px;
+}
+.tv-icon-grid2 {
+	background-position: -330px -952px;
+}
+.tv-icon-list2 {
+	background-position: -359px -952px;
+}
+.tv-icon-list3 {
+	background-position: -388px -952px;
+}
+.tv-icon-ruler {
+	background-position: -419px -952px;
+}
+.tv-icon-ruler2 {
+	background-position: -452px -952px;
+}
+.tv-icon-layout {
+	background-position: 0 -980px;
+}
+.tv-icon-layout2 {
+	background-position: -31px -980px;
+}
+.tv-icon-layout3 {
+	background-position: -62px -980px;
+}
+.tv-icon-layout4 {
+	background-position: -91px -980px;
+}
+.tv-icon-layout5 {
+	background-position: -122px -980px;
+}
+.tv-icon-layout6 {
+	background-position: -152px -980px;
+}
+.tv-icon-layout7 {
+	background-position: -184px -980px;
+}
+.tv-icon-layout8 {
+	background-position: -213px -980px;
+}
+.tv-icon-layout9 {
+	background-position: -242px -980px;
+}
+.tv-icon-layout10 {
+	background-position: -271px -980px;
+}
+.tv-icon-layout11 {
+	background-position: -300px -980px;
+}
+.tv-icon-layout12 {
+	background-position: -330px -980px;
+}
+.tv-icon-layout13 {
+	background-position: -359px -980px;
+}
+.tv-icon-layout14 {
+	background-position: -388px -980px;
+}
+.tv-icon-tools {
+	background-position: -419px -980px;
+}
+.tv-icon-screwdriver {
+	background-position: -452px -980px;
+}
+.tv-icon-paint {
+	background-position: 0 -1008px;
+}
+.tv-icon-hammer {
+	background-position: -31px -1008px;
+}
+.tv-icon-brush {
+	background-position: -62px -1008px;
+}
+.tv-icon-pen {
+	background-position: -91px -1008px;
+}
+.tv-icon-chat {
+	background-position: -122px -1008px;
+}
+.tv-icon-comments2 {
+	background-position: -152px -1008px;
+}
+.tv-icon-chat2 {
+	background-position: -184px -1008px;
+}
+.tv-icon-chat3 {
+	background-position: -213px -1008px;
+}
+.tv-icon-volume {
+	background-position: -242px -1008px;
+}
+.tv-icon-volume2 {
+	background-position: -271px -1008px;
+}
+.tv-icon-volume3 {
+	background-position: -300px -1008px;
+}
+.tv-icon-equalizer {
+	background-position: -330px -1008px;
+}
+.tv-icon-resize {
+	background-position: -359px -1008px;
+}
+.tv-icon-resize2 {
+	background-position: -388px -1008px;
+}
+.tv-icon-stretch {
+	background-position: -419px -1008px;
+}
+.tv-icon-narrow {
+	background-position: -452px -1008px;
+}
+.tv-icon-resize3 {
+	background-position: 0 -1036px;
+}
+.tv-icon-download4 {
+	background-position: -31px -1036px;
+}
+.tv-icon-calculator {
+	background-position: -62px -1036px;
+}
+.tv-icon-library {
+	background-position: -91px -1036px;
+}
+.tv-icon-auction {
+	background-position: -122px -1036px;
+}
+.tv-icon-justice {
+	background-position: -152px -1036px;
+}
+.tv-icon-stats {
+	background-position: -184px -1036px;
+}
+.tv-icon-stats2 {
+	background-position: -213px -1036px;
+}
+.tv-icon-attachment {
+	background-position: -242px -1036px;
+}
+.tv-icon-hourglass {
+	background-position: -271px -1036px;
+}
+.tv-icon-abacus {
+	background-position: -300px -1036px;
+}
+.tv-icon-pencil2 {
+	background-position: -330px -1036px;
+}
+.tv-icon-pen2 {
+	background-position: -359px -1036px;
+}
+.tv-icon-pin {
+	background-position: -388px -1036px;
+}
+.tv-icon-pin2 {
+	background-position: -419px -1036px;
+}
+.tv-icon-discout {
+	background-position: -452px -1036px;
+}
+.tv-icon-edit2 {
+	background-position: 0 -1064px;
+}
+.tv-icon-scissors {
+	background-position: -31px -1064px;
+}
+.tv-icon-profile {
+	background-position: -62px -1064px;
+}
+.tv-icon-profile2 {
+	background-position: -91px -1064px;
+}
+.tv-icon-profile3 {
+	background-position: -122px -1064px;
+}
+.tv-icon-rotate {
+	background-position: -152px -1064px;
+}
+.tv-icon-rotate2 {
+	background-position: -184px -1064px;
+}
+.tv-icon-reply2 {
+	background-position: -213px -1064px;
+}
+.tv-icon-forward2 {
+	background-position: -242px -1064px;
+}
+.tv-icon-retweet2 {
+	background-position: -271px -1064px;
+}
+.tv-icon-shuffle {
+	background-position: -300px -1064px;
+}
+.tv-icon-loop {
+	background-position: -330px -1064px;
+}
+.tv-icon-crop2 {
+	background-position: -359px -1064px;
+}
+.tv-icon-square {
+	background-position: -388px -1064px;
+}
+.tv-icon-square2 {
+	background-position: -419px -1064px;
+}
+.tv-icon-circle2 {
+	background-position: -452px -1064px;
+}
+.tv-icon-dollar2 {
+	background-position: 0 -1092px;
+}
+.tv-icon-dollar3 {
+	background-position: -31px -1092px;
+}
+.tv-icon-coins {
+	background-position: -62px -1092px;
+}
+.tv-icon-pig {
+	background-position: -91px -1092px;
+}
+.tv-icon-bookmark2 {
+	background-position: -122px -1092px;
+}
+.tv-icon-bookmark3 {
+	background-position: -152px -1092px;
+}
+.tv-icon-address book {
+	background-position: -184px -1092px;
+}
+.tv-icon-address book2 {
+	background-position: -213px -1092px;
+}
+.tv-icon-safe {
+	background-position: -242px -1092px;
+}
+.tv-icon-envelope2 {
+	background-position: -271px -1092px;
+}
+.tv-icon-envelope3 {
+	background-position: -300px -1092px;
+}
+.tv-icon-radio active {
+	background-position: -330px -1092px;
+}
+.tv-icon-music2 {
+	background-position: -359px -1092px;
+}
+.tv-icon-presentation {
+	background-position: -388px -1092px;
+}
+.tv-icon-male2 {
+	background-position: -419px -1092px;
+}
+.tv-icon-female2 {
+	background-position: -452px -1092px;
+}
+.tv-icon-aids {
+	background-position: 0 -1120px;
+}
+.tv-icon-heart2 {
+	background-position: -31px -1120px;
+}
+.tv-icon-info2 {
+	background-position: -62px -1120px;
+}
+.tv-icon-info3 {
+	background-position: -91px -1120px;
+}
+.tv-icon-piano {
+	background-position: -122px -1120px;
+}
+.tv-icon-rain {
+	background-position: -152px -1120px;
+}
+.tv-icon-snow {
+	background-position: -184px -1120px;
+}
+.tv-icon-lightning {
+	background-position: -213px -1120px;
+}
+.tv-icon-sun2 {
+	background-position: -242px -1120px;
+}
+.tv-icon-moon2 {
+	background-position: -271px -1120px;
+}
+.tv-icon-cloudy {
+	background-position: -300px -1120px;
+}
+.tv-icon-cloudy2 {
+	background-position: -330px -1120px;
+}
+.tv-icon-car {
+	background-position: -359px -1120px;
+}
+.tv-icon-bike {
+	background-position: -388px -1120px;
+}
+.tv-icon-truck2 {
+	background-position: -419px -1120px;
+}
+.tv-icon-bus {
+	background-position: -452px -1120px;
+}
+.tv-icon-bike2 {
+	background-position: 0 -1148px;
+}
+.tv-icon-plane2 {
+	background-position: -31px -1148px;
+}
+.tv-icon-paper plane {
+	background-position: -62px -1148px;
+}
+.tv-icon-rocket2 {
+	background-position: -91px -1148px;
+}
+.tv-icon-book2 {
+	background-position: -122px -1148px;
+}
+.tv-icon-book3 {
+	background-position: -152px -1148px;
+}
+.tv-icon-barcode2 {
+	background-position: -184px -1148px;
+}
+.tv-icon-barcode3 {
+	background-position: -213px -1148px;
+}
+.tv-icon-expand2 {
+	background-position: -242px -1148px;
+}
+.tv-icon-collapse2 {
+	background-position: -271px -1148px;
+}
+.tv-icon-pop out {
+	background-position: -300px -1148px;
+}
+.tv-icon-pop in {
+	background-position: -330px -1148px;
+}
+.tv-icon-target {
+	background-position: -359px -1148px;
+}
+.tv-icon-badge {
+	background-position: -388px -1148px;
+}
+.tv-icon-badge2 {
+	background-position: -419px -1148px;
+}
+.tv-icon-ticket2 {
+	background-position: -452px -1148px;
+}
+.tv-icon-ticket3 {
+	background-position: 0 -1176px;
+}
+.tv-icon-ticket4 {
+	background-position: -31px -1176px;
+}
+.tv-icon-microphone5 {
+	background-position: -62px -1176px;
+}
+.tv-icon-cone {
+	background-position: -91px -1176px;
+}
+.tv-icon-blocked {
+	background-position: -122px -1176px;
+}
+.tv-icon-stop2 {
+	background-position: -152px -1176px;
+}
+.tv-icon-keyboard2 {
+	background-position: -184px -1176px;
+}
+.tv-icon-keyboard3 {
+	background-position: -213px -1176px;
+}
+.tv-icon-radio2 {
+	background-position: -242px -1176px;
+}
+.tv-icon-printer {
+	background-position: -271px -1176px;
+}
+.tv-icon-checked {
+	background-position: -300px -1176px;
+}
+.tv-icon-error {
+	background-position: -330px -1176px;
+}
+.tv-icon-add {
+	background-position: -359px -1176px;
+}
+.tv-icon-minus4 {
+	background-position: -388px -1176px;
+}
+.tv-icon-alert {
+	background-position: -419px -1176px;
+}
+.tv-icon-pictures3 {
+	background-position: -452px -1176px;
+}
+.tv-icon-atom {
+	background-position: 0 -1204px;
+}
+.tv-icon-eyedropper {
+	background-position: -31px -1204px;
+}
+.tv-icon-globe2 {
+	background-position: -62px -1204px;
+}
+.tv-icon-globe3 {
+	background-position: -91px -1204px;
+}
+.tv-icon-shipping {
+	background-position: -122px -1204px;
+}
+.tv-icon-ying yang {
+	background-position: -152px -1204px;
+}
+.tv-icon-compass2 {
+	background-position: -184px -1204px;
+}
+.tv-icon-zip {
+	background-position: -213px -1204px;
+}
+.tv-icon-zip2 {
+	background-position: -242px -1204px;
+}
+.tv-icon-anchor2 {
+	background-position: -271px -1204px;
+}
+.tv-icon-locked heart {
+	background-position: -300px -1204px;
+}
+.tv-icon-magnet2 {
+	background-position: -330px -1204px;
+}
+.tv-icon-navigation {
+	background-position: -359px -1204px;
+}
+.tv-icon-tags2 {
+	background-position: -388px -1204px;
+}
+.tv-icon-heart3 {
+	background-position: -419px -1204px;
+}
+.tv-icon-heart4 {
+	background-position: -452px -1204px;
+}
+.tv-icon-usb {
+	background-position: 0 -1232px;
+}
+.tv-icon-clipboard {
+	background-position: -31px -1232px;
+}
+.tv-icon-clipboard2 {
+	background-position: -62px -1232px;
+}
+.tv-icon-clipboard3 {
+	background-position: -91px -1232px;
+}
+.tv-icon-switch2 {
+	background-position: -122px -1232px;
+}
+.tv-icon-ruler3 {
+	background-position: -152px -1232px;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>    
+
+        <title>#{systemProperties.properties['app.title']} - #{conversation.description}</title>
+        <ui:include src="/layout/templateHeader.xhtml" />
+
+        <script type="text/javascript">
+            // initialise plugins
+            jQuery(document).ready(function() {
+
+                jQuery('#ribbon').ribbon({
+                    timeout: 500
+                });
+
+                initAcordionTabs();
+            });
+        </script>
+
+    </h:head>
+
+    <h:body>
+        
+        <ui:insert name="outerspace"></ui:insert>
+        
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north"  size="164" style="padding: 0px; z-index: 1;" >
+                <ui:include src="/layout/ribbon.xhtml" />
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center"  style="padding: 0 0.4em !important;">
+                <ui:insert name="body"/>
+                <ui:remove>
+                    <div style="clear:both">
+                        <div class="wrap body">
+
+                            <ui:insert name="body"/>
+
+                        </div>
+                    </div>
+                </ui:remove>
+            </p:layoutUnit>
+            <p:layoutUnit position="south" size="51" >
+                <div class="footer">
+                    <ui:remove>
+                    <ui:include src="/branding/footer.xhtml" />
+                    </ui:remove>
+                </div>	
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</html>

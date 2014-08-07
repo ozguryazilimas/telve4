@@ -1,1 +1,4 @@
 /telve-core/target/
+/telve-facelets/target/
+/telve-core-test/target/
+/telve-core-model/target/

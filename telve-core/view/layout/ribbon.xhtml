@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ut="http://utech.com/jsf/comps"
+                xmlns:r="http://richfaces.org/rich"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+    <div id="ribbon" class="wrap">
+        <ui:remove>TODO: Bu satırı temizlemek lazım</ui:remove>
+        <span class="ribbon-window-title">#{systemProperties.properties['app.title']} - #{conversation.description}</span>
+
+        <div class="ribbon-tab color-blue" id="currentView">
+            <span class="ribbon-title">#{messages['İşlemler']}</span>
+
+            <div class="ribbon-section right">
+                <a href="#{helpManager.helpPath}" target="HelpWinId" onclick="openHelp();" class="ribbon-button ribbon-button-small">
+                    <span class="button-title">#{messages['module.caption.Help']}</span> 
+                    <h:graphicImage library="img" url="/ribbon/small/help.png" styleClass="ribbon-icon ribbon-normal"/>
+                </a>
+                <ui:remove> s:link yerine h:link olması lazım
+                <!-- h:link view="/branding/about.xhtml" styleClass="ribbon-button ribbon-button-small">
+                    <span class="button-title">#{messages['general.button.About']}</span> 
+                    <h:graphicImage url="/img/ribbon/small/help.png" styleClass="ribbon-icon ribbon-normal"/>
+                </h:link -->
+                
+                <!-- h:link action="#{identity.logout()}" styleClass="ribbon-button ribbon-button-small">
+                    <span class="button-title">#{messages['general.button.Logout']}</span> 
+                    <h:graphicImage url="/img/exit.gif" styleClass="ribbon-icon ribbon-normal"/>
+                </h:link -->
+                    </ui:remove>
+                
+            </div>
+            
+            <div class="ribbon-section right">
+                <h:form id="quickLauncher">
+                    <div class="ribbon-button-small">
+                    <p:outputLabel value="Hızlı Arama :" styleClass="name" style="font-size: 8pt; font-weight: normal;"/>
+                    <p:inputText id="launcherkey" value="#{quickLauncher.key}" onkeypress="if (event.keyCode == 13) { jQuery('#quickLauncher\\:launcherbtn').click(); return false;}" style="width: 120px !important; font-size: 8pt;" styleClass="value button-title"/>
+                    <p:commandButton id="launcherbtn" action="#{quickLauncher.redirect()}" style="display: none;"/>
+                    </div>
+                </h:form>
+            </div>
+
+            <ui:insert name="ribbon-actions"/>
+
+            <c:forEach id="secrepeater" items="#{ribbonContextController.getContextSections()}" var="section" varStatus="rowCounter1">
+                
+                
+                <ui:insert name="ribbon-section-before" />
+                
+                <div class="ribbon-section #{section.alignment}">
+                    
+                    <span class="section-title">#{messages[section.label]}</span>
+                    
+                    <ui:insert name="ribbon-section-action-before" />
+
+                    <ui:remove> FIXME: UT'ler gelecek
+                    <c:forEach id="actrepeater" items="#{section.actions}" var="action" varStatus="rowCounter2">
+                        <ut:ribbonAction action="#{action.action}" buttonType="#{action.type}" counter="#{rowCounter2}" classifier="#{action.classifier}" params="#{action.params}"/>
+                    </c:forEach>
+                        </ui:remove>
+                    
+                    <ui:insert name="ribbon-section-action-after" />
+                    
+                </div>
+                    
+                <ui:insert name="ribbon-section-after" />
+            </c:forEach>
+            
+            <ui:insert name="ribbon-actions-after"/>
+
+        </div>
+
+        <ui:remove>
+            TODO: Cache yapmalı
+        </ui:remove>
+        <c:forEach id="tabrepeater" items="#{ribbonControler.getTabs()}"
+                  var="tab" varStatus="tabCounter">
+
+            <div class="ribbon-tab #{tab.id eq 'workspace' ? 'color-orange' : '' }" id="#{tab.id}">
+                <span class="ribbon-title">#{messages[tab.label]}</span>
+                <c:forEach id="secrepeater" items="#{tab.sections}"
+                          var="section" varStatus="rowCounter1">
+                    <div class="ribbon-section">
+                        <span class="section-title">#{messages[section.label]}</span>
+
+                        <c:forEach id="actrepeater" items="#{section.actions}"
+                                  var="action" varStatus="rowCounter2">
+                            <ut:ribbonAction action="#{action.action}" buttonType="#{action.type}" counter="#{rowCounter2}" params="#{action.params}"/>
+                        </c:forEach>
+
+                    </div>
+                </c:forEach>
+            </div>
+        </c:forEach>
+    </div>
+</ui:composition>

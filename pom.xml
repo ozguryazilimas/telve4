@@ -52,6 +52,11 @@
             <artifactId>hibernate-jpa-2.1-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -124,5 +129,7 @@
     
     <modules>
         <module>telve-core</module>
+        <module>telve-core-test</module>
+        <module>telve-core-model</module>
     </modules>
 </project>
