@@ -22,10 +22,12 @@ import org.apache.deltaspike.jsf.api.config.view.Folder;
 @Folder(name = "./")
 public interface Pages {
     
-    @SecuredPage
+    @SecuredPage @PageTitle("Ana Sayfa")
     class Home implements ViewConfig {};
+    @PageTitle("Giriş Sayfası")
     class Login implements ViewConfig {};
+    @PageTitle("Hata Sayfası")
     class Error extends DefaultErrorView {};
-    @SecuredPage
+    @SecuredPage @PageTitle("Deneme")
     class Deneme implements ViewConfig {};
 }

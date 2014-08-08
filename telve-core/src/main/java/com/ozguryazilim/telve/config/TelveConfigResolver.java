@@ -9,6 +9,7 @@ package com.ozguryazilim.telve.config;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Any;
 import javax.inject.Inject;
+import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.picketlink.Identity;
 
@@ -20,6 +21,7 @@ import org.picketlink.Identity;
  * @author Hakan Uygun
  */
 @ApplicationScoped
+@Named
 public class TelveConfigResolver {
     
     @Inject

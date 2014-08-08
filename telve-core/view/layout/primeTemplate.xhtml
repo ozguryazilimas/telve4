@@ -3,13 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ds="http://deltaspike.apache.org/jsf">
     <h:head>    
 
-        <ui:remove>
-            FIXME: Düzelt
-        <title>#{systemProperties.properties['app.title']} - #{conversation.description}</title>
-        </ui:remove>
+        
+        <title>#{telveConfigResolver.getProperty('app.title')} - #{ pageTitleResolver.getPageTitle( view.viewId )}</title>
+        
         <ui:include src="/layout/templateHeader.xhtml" />
 
         <script type="text/javascript">
@@ -27,6 +27,8 @@
     </h:head>
 
     <h:body>
+        
+        <ds:windowId />
         
         <ui:insert name="outerspace"></ui:insert>
         

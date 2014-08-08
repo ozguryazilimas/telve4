@@ -10,6 +10,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
+import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 
 /**
  *
@@ -22,6 +23,8 @@ public class NewSessionBean {
     @Inject
     TelveModuleExtention telveModules;
     
+    @Inject
+    private ViewConfigResolver viewConfigResolver;
     
     @Inject @Named("messages")
     Map<String,String> messages;
@@ -42,4 +45,9 @@ public class NewSessionBean {
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
 
+    
+    public void test(){
+        //viewConfigResolver.getViewConfigDescriptor("").getMetaData().
+    }
+    
 }
