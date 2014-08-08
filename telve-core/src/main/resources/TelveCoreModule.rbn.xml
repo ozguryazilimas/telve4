@@ -5,7 +5,7 @@
                 <action id="dashboard" 
 				label="module.caption.Dashboard" 
 				img="desktop.png" 
-				url="/base/home.xhtml" 
+				url="/home.xhtml" 
 				permission="dashboard" 
 				type="browse" />
 		<action id="reports" 

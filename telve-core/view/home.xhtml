@@ -7,6 +7,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 template="/layout/primeTemplate.xhtml">
 
 
@@ -28,6 +29,7 @@
 
         <h1>Home Baybi!</h1>
         #{ribbonController.getTabs()}
+        
 
         <ui:remove>
             <ui:include src="/layout/messages.xhtml" />

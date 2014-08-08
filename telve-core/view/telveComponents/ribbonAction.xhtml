@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+
+    <composite:interface>
+        <composite:attribute name="actionItem" required="true"/>
+        <composite:attribute name="classifier" required="true"/>
+        <composite:attribute name="buttonType" required="true"/>
+        <composite:attribute name="params" required="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+
+
+        <ui:fragment rendered="#{cc.attrs.actionItem.type ne 'dropdown' and cc.attrs.classifier ne 'paramNew' }">
+            <h:link  outcome="#{ cc.attrs.actionItem.type eq 'browse' and cc.attrs.classifier eq 'new' ? cc.attrs.actionItem.editUrl : cc.attrs.actionItem.url }" 
+                     styleClass="ribbon-button ribbon-button-#{cc.attrs.buttonType}" >
+
+                <ui:remove>
+                    FIXME: Propagation yerine ne gelecek?
+                    propagation="#{( cc.attrs.actionItem.type eq 'param' ) or ( cc.attrs.actionItem.type eq 'browse' and cc.attrs.classifier eq 'new') ? 'begin' : 'none' }" 
+                </ui:remove>
+
+                <ui:remove>
+                    Burada böyle çalışmadı kontroller'a kaldı
+                    <f:param name="eid" value="0" rendered="#{cc.attrs.classifier eq 'new'}"/>
+                </ui:remove>
+
+                <ui:remove>
+                    <c:forEach items="#{cc.attrs.params}" var="entry">
+                        <f:param name="#{entry.key}" value="#{entry.value}"/>
+                    </c:forEach>
+                </ui:remove>
+
+
+                <span class="button-title">#{messages[cc.attrs.actionItem.label]}</span> 
+                <span class="button-help">#{messages[cc.attrs.actionItem.hint]}</span>
+                <h:graphicImage value="/img/ribbon/#{cc.attrs.buttonType}/#{cc.attrs.actionItem.img}" styleClass="ribbon-icon ribbon-normal" />
+                <h:graphicImage value="/img/ribbon/bullet_add.png" styleClass="ribbon-icon ribbon-overlay" rendered="#{cc.attrs.classifier eq 'new'}"/>
+            </h:link>
+        </ui:fragment>
+
+
+
+        <ui:fragment rendered="#{cc.attrs.actionItem.type eq 'dropdown' and cc.attrs.classifier ne 'paramNew'}">
+            <div class="ribbon-button ribbon-button-#{cc.attrs.buttonType}">
+                <span class="button-title">#{messages[cc.attrs.actionItem.label]}</span> 
+                <span class="button-help">#{messages[cc.attrs.actionItem.hint]}</span>
+                <h:graphicImage value="/img/ribbon/#{cc.attrs.buttonType}/#{cc.attrs.actionItem.img}" styleClass="ribbon-icon ribbon-normal" />
+                <h:graphicImage value="/img/ribbon/bullet_add.png" styleClass="ribbon-icon ribbon-overlay" rendered="#{cc.attrs.classifier eq 'new'}"/>
+
+                <div class="ribbon-sub-menu">
+
+                    <ui:include src="#{cc.attrs.actionItem.dropdownTemplate()}" >
+                        <ui:param name="action" value="#{cc.attrs.actionItem}" />
+                    </ui:include>
+
+                </div>
+            </div>
+        </ui:fragment>
+
+
+
+        <ui:fragment rendered="#{cc.attrs.classifier eq 'paramNew'}">
+            <div id="paramNewButton" class="ribbon-button ribbon-button-#{cc.attrs.buttonType}" >
+
+                <h:graphicImage value="/img/ribbon/#{cc.attrs.buttonType}/#{cc.attrs.actionItem.img}" styleClass="ribbon-icon ribbon-normal" />
+                <h:graphicImage value="/img/ribbon/bullet_add.png" styleClass="ribbon-icon ribbon-overlay" />
+
+                <span class="button-title">#{messages[cc.attrs.actionItem.label]}</span> 
+                <span class="button-help">#{messages[cc.attrs.actionItem.hint]}</span>
+
+            </div>
+        </ui:fragment> 
+
+
+    </composite:implementation>
+
+</html>
