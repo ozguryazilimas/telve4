@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ozguryazilim.mutfak.telve.messages;
+package com.ozguryazilim.telve.messages;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;

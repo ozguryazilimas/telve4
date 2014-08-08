@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ozguryazilim.mutfak.telve;
+package com.ozguryazilim.telve;
 
-import com.ozguryazilim.mutfak.telve.view.Pages;
+import com.ozguryazilim.telve.view.Pages;
 import javax.faces.component.UIViewRoot;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;

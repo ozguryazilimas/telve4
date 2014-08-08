@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.ozguryazilim.mutfak.telve;
+package com.ozguryazilim.telve;
 
 import com.ozguryazilim.telve.ribbon.RibbonUtils;
 import com.ozguryazilim.telve.ribbon.model.RibbonTab;

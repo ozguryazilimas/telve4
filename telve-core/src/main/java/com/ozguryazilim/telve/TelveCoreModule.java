@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.ozguryazilim.mutfak.telve;
+package com.ozguryazilim.telve;
 
 import com.ozguryazilim.telve.api.module.TelveModule;
 import javax.annotation.PostConstruct;

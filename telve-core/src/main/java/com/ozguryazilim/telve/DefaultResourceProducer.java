@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ozguryazilim.mutfak.telve;
+package com.ozguryazilim.telve;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;

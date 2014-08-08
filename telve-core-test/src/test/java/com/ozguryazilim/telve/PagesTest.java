@@ -6,7 +6,7 @@
 
 package com.ozguryazilim.telve;
 
-import com.ozguryazilim.mutfak.telve.view.Pages;
+import com.ozguryazilim.telve.view.Pages;
 import java.io.File;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;

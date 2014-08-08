@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ozguryazilim.mutfak.telve.auth;
+package com.ozguryazilim.telve.auth;
 
-import com.ozguryazilim.mutfak.telve.auth.model.ResourcePermission;
+import com.ozguryazilim.telve.auth.model.ResourcePermission;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;

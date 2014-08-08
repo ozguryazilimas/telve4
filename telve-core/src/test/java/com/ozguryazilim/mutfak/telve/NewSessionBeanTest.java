@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.mutfak.telve;
 
+import com.ozguryazilim.telve.NewSessionBean;
 import java.io.File;
 import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;

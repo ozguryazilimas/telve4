@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ozguryazilim.mutfak.telve;
+package com.ozguryazilim.telve;
 
 import com.ozguryazilim.telve.impl.module.TelveModuleExtention;
 import java.util.Map;

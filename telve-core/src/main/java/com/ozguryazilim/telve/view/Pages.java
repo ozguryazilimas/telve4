@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-package com.ozguryazilim.mutfak.telve.view;
+package com.ozguryazilim.telve.view;
 
-import com.ozguryazilim.mutfak.telve.auth.SecuredPage;
+import com.ozguryazilim.telve.auth.SecuredPage;
 import javax.enterprise.context.ApplicationScoped;
 import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;

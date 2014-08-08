@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.ozguryazilim.mutfak.telve.config;
+package com.ozguryazilim.telve.config;
 
 import com.ozguryazilim.telve.entities.Option;
 import java.util.HashMap;

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.ozguryazilim.mutfak.telve.auth;
+package com.ozguryazilim.telve.auth;
 
 import java.io.Serializable;
 import javax.enterprise.context.ApplicationScoped;
