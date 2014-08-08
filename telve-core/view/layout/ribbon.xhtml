@@ -10,7 +10,7 @@
 
     <div id="ribbon" class="wrap">
         <ui:remove>TODO: Bu satırı temizlemek lazım</ui:remove>
-        <span class="ribbon-window-title">#{telveConfigResolver.getProperty('app.title')} - #{ pageTitleResolver.getPageTitle( view.viewId )}</span>
+        <span class="ribbon-window-title">#{telveConfigResolver.getProperty('app.title')} - #{ pageTitleResolver.pageTitle }</span>
 
         <div class="ribbon-tab color-blue" id="currentView">
             <span class="ribbon-title">#{messages['menu.main.Context']}</span>

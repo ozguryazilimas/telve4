@@ -8,6 +8,7 @@ package com.ozguryazilim.telve.view;
 
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigDescriptor;
@@ -24,6 +25,9 @@ public class PageTitleResolver {
    
     @Inject
     private ViewConfigResolver viewConfigResolver;
+    
+    @Inject
+    private FacesContext facesContext;
     
     /**
      * Verilen view ID DeltaSpike ViewConfig kapsamında ve PageTitle ile işaretlenmişse title döndürür.
@@ -46,6 +50,14 @@ public class PageTitleResolver {
         }
         
         return "";
+    }
+    
+    /**
+     * Mevcut View için DeltaSpike ViewConfig kapsamında ve PageTitle ile işaretlenmişse title döndürür.
+     * @return 
+     */
+    public String getPageTitle(){
+        return getPageTitle( facesContext.getViewRoot().getViewId());
     }
     
 }
