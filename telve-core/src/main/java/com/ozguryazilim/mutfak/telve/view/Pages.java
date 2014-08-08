@@ -26,5 +26,6 @@ public interface Pages {
     class Home implements ViewConfig {};
     class Login implements ViewConfig {};
     class Error extends DefaultErrorView {};
-    
+    @SecuredPage
+    class Deneme implements ViewConfig {};
 }

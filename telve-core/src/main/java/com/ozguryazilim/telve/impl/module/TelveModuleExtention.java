@@ -32,13 +32,29 @@ public class TelveModuleExtention implements Extension {
     <T> void processBean(@Observes ProcessBean<T> event) {
         if (event.getAnnotated().isAnnotationPresent(TelveModule.class)) {
             TelveModule a = event.getAnnotated().getAnnotation(TelveModule.class);
-            String moduleName = a.value();
+            String moduleName = a.name();
             if( moduleName.isEmpty() ){
                 moduleName = event.getBean().getBeanClass().getName();
             }
             System.out.println("Found Module: " + moduleName);
             startupBeans.add(event.getBean());
-            TelveModuleRegistery.register(moduleName);
+            
+            String ribbonFile = a.ribbon();
+            if( ribbonFile.isEmpty() ){
+                ribbonFile = moduleName + ".rbn.xml";
+            }
+            
+            String permFile = a.permissions();
+            if( permFile.isEmpty() ){
+                permFile = moduleName + ".perm.xml";
+            }
+            
+            String messageFile = a.messages();
+            if( messageFile.isEmpty() ){
+                messageFile = moduleName + "-messages";
+            }
+            
+            TelveModuleRegistery.register(moduleName, permFile, ribbonFile, messageFile);
         }
     }
 

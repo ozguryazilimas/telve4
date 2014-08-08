@@ -59,7 +59,7 @@
 
                     <ui:remove> FIXME: UT'ler gelecek
                     <c:forEach id="actrepeater" items="#{section.actions}" var="action" varStatus="rowCounter2">
-                        <ut:ribbonAction action="#{action.action}" buttonType="#{action.type}" counter="#{rowCounter2}" classifier="#{action.classifier}" params="#{action.params}"/>
+                        <!-- ut:ribbonAction action="#{action.action}" buttonType="#{action.type}" counter="#{rowCounter2}" classifier="#{action.classifier}" params="#{action.params}"/ -->
                     </c:forEach>
                         </ui:remove>
                     
@@ -77,7 +77,7 @@
         <ui:remove>
             TODO: Cache yapmalı
         </ui:remove>
-        <c:forEach id="tabrepeater" items="#{ribbonControler.getTabs()}"
+        <c:forEach id="tabrepeater" items="#{ribbonController.getTabs()}"
                   var="tab" varStatus="tabCounter">
 
             <div class="ribbon-tab #{tab.id eq 'workspace' ? 'color-orange' : '' }" id="#{tab.id}">
@@ -89,7 +89,7 @@
 
                         <c:forEach id="actrepeater" items="#{section.actions}"
                                   var="action" varStatus="rowCounter2">
-                            <ut:ribbonAction action="#{action.action}" buttonType="#{action.type}" counter="#{rowCounter2}" params="#{action.params}"/>
+                            <!-- ut:ribbonAction action="#{action.action}" buttonType="#{action.type}" counter="#{rowCounter2}" params="#{action.params}"/ -->
                         </c:forEach>
 
                     </div>

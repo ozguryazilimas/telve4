@@ -9,7 +9,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import org.picketlink.annotations.PicketLink;
 import org.picketlink.authentication.BaseAuthenticator;
 import org.picketlink.credential.DefaultLoginCredentials;
 import org.picketlink.idm.model.basic.User;
@@ -22,7 +21,6 @@ import org.picketlink.idm.model.basic.User;
  * @author Hakan Uygun
  */
 @RequestScoped
-@PicketLink
 public class SimpleAuthtenticator extends BaseAuthenticator {
 
     @Inject

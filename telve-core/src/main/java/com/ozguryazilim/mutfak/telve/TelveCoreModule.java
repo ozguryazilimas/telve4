@@ -14,7 +14,7 @@ import javax.annotation.PostConstruct;
  * 
  * @author Hakan Uygun
  */
-@TelveModule("TelveCoreModule")
+@TelveModule(name="TelveCoreModule")
 public class TelveCoreModule {
    
     private String testMessage;

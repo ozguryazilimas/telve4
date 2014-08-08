@@ -1,15 +1,45 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        
-    </h:head>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.org/schema/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/primeTemplate.xhtml">
 
-    <h:body>
-        <h1>Deneme</h1>
-    </h:body>
-</html>
+
+    <ui:remove>
+        <ui:define name="ribbon-actions">
+            <div class="ribbon-section">
+                <c:forEach items="#{dashboardManager.dashboards}" var="dashboard" varStatus="loop">
+                    <s:link id="dashborad#{loop.index}" view="/base/home.xhtml" propagation="none" styleClass="ribbon-button ribbon-button-large">
+                        <f:param name="board" value="#{loop.index}" />
+                        <span class="button-title">#{dashboard.name}</span> 
+                        <h:graphicImage url="/img/ribbon/large/dashboard.png" styleClass="ribbon-icon ribbon-normal"/>
+                    </s:link>
+                </c:forEach>
+            </div>
+        </ui:define>
+    </ui:remove>
+
+    <ui:define name="body">
+
+        <h1>Home Baybi!</h1>
+        #{ribbonController.getTabs()}
+
+        <ui:remove>
+            <ui:include src="/layout/messages.xhtml" />
+            <p:dashboard model="#{dashboardManager.getDashboardModel()}">
+                <p:ajax event="reorder" listener="#{dashboardManager.handleReorder}" /> 
+
+                <c:forEach items="#{dashboardManager.getDashlets()}" var="dashlet" varStatus="loop" >
+                    <ui:include src="/dashlets/#{dashlet}.xhtml" />
+                </c:forEach>
+            </p:dashboard>
+        </ui:remove>
+
+    </ui:define> 
+
+</ui:composition>

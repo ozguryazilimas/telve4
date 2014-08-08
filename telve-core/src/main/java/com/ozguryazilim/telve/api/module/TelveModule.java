@@ -28,5 +28,29 @@ public @interface TelveModule {
      * Eğer verilmezse sınıf adını alır.
      * @return 
      */
-    String value() default "";
+    String name() default "";
+    
+    /**
+     * rbn.xml dosyasının adı.
+     * 
+     * Eğer verilmezde moduladı.rbn.xml arayacaktır.
+     * @return 
+     */
+    String ribbon() default "";
+    
+    /**
+     * perm.xml dosyasının adı.
+     * 
+     * Eğer verilmezde moduladı.perm.xml arayacaktır.
+     * @return 
+     */
+    String permissions() default "";
+    
+    /**
+     * Messages dosyasının adı.
+     * 
+     * Eğer verilmezde moduladı-messages.properties arayacaktır.
+     * @return 
+     */
+    String messages() default "";
 }

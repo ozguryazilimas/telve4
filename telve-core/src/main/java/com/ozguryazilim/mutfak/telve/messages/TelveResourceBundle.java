@@ -80,8 +80,7 @@ public class TelveResourceBundle extends java.util.ResourceBundle {
 
         System.out.println("Bundle içinden " + TelveModuleRegistery.getModuleNames());
 
-        for (String moduleName : TelveModuleRegistery.getModuleNames()) {
-            String bundleName = moduleName + "-messages";
+        for (String bundleName : TelveModuleRegistery.getMessageBundleNames()) {
             ResourceBundle bundle = loadBundle(bundleName);
             if (bundle != null) {
                 bundles.add(bundle);
