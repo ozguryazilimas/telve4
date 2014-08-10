@@ -16,7 +16,7 @@ import org.apache.deltaspike.data.api.criteria.Criteria;
  */
 public class StringFilter<E> extends Filter<E, String> {
 
-    public StringFilter(SingularAttribute<E, String> attribute, String label) {
+    public StringFilter(SingularAttribute< ? super E, String> attribute, String label) {
         super(attribute, label);
 
         setOperands(Operands.getStringOperands());

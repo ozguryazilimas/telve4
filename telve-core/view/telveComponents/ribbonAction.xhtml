@@ -32,11 +32,9 @@
                     <f:param name="eid" value="0" rendered="#{cc.attrs.classifier eq 'new'}"/>
                 </ui:remove>
 
-                <ui:remove>
-                    <c:forEach items="#{cc.attrs.params}" var="entry">
-                        <f:param name="#{entry.key}" value="#{entry.value}"/>
-                    </c:forEach>
-                </ui:remove>
+                <c:forEach items="#{cc.attrs.params}" var="entry">
+                    <f:param name="#{entry.key}" value="#{entry.value}"/>
+                </c:forEach>
 
 
                 <span class="button-title">#{messages[cc.attrs.actionItem.label]}</span> 

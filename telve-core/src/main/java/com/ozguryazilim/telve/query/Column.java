@@ -18,7 +18,7 @@ public abstract class Column<E> implements Serializable {
     /**
      * Kolon adı : bean.name
      */
-    private SingularAttribute<E, ?> attribute;
+    private SingularAttribute<? super E, ?> attribute;
     /**
      * bean.name.subname Burayı nasıl yapsak?
      */
@@ -27,16 +27,16 @@ public abstract class Column<E> implements Serializable {
     private String permission;
     private String keyPrefix;
 
-    public Column(SingularAttribute<E, ?> attribute, String labelKey) {
+    public Column(SingularAttribute<? super E, ?> attribute, String labelKey) {
         this.attribute = attribute;
         this.labelKey = labelKey;
     }
 
-    public SingularAttribute<E, ?> getAttribute() {
+    public SingularAttribute<? super E, ?> getAttribute() {
         return attribute;
     }
 
-    public void setAttribute(SingularAttribute<E, ?> attribute) {
+    public void setAttribute(SingularAttribute<? super E, ?> attribute) {
         this.attribute = attribute;
     }
     

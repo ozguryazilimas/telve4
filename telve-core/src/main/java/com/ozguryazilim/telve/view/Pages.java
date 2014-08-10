@@ -20,7 +20,7 @@ import org.apache.deltaspike.jsf.api.config.view.Folder;
 @ApplicationScoped
 @ViewConfigRoot
 @Folder(name = "./")
-public interface Pages {
+public interface Pages extends ViewConfig {
     
     @SecuredPage @PageTitle("Ana Sayfa")
     class Home implements ViewConfig {};

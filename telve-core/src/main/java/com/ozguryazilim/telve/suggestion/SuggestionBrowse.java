@@ -8,22 +8,20 @@ package com.ozguryazilim.telve.suggestion;
 
 import com.ozguryazilim.telve.entities.SuggestionItem;
 import com.ozguryazilim.telve.entities.SuggestionItem_;
+import com.ozguryazilim.telve.forms.Browse;
 import com.ozguryazilim.telve.query.FilteredQuerySupport;
 import com.ozguryazilim.telve.query.QueryControllerBase;
 import com.ozguryazilim.telve.query.QueryDefinition;
 import com.ozguryazilim.telve.query.StringFilter;
 import com.ozguryazilim.telve.query.TextColumn;
 import javax.inject.Inject;
-import javax.inject.Named;
-import org.apache.deltaspike.core.api.scope.WindowScoped;
 
 /**
  * Suggestion Item Browse win controller.
  * 
  * @author Hakan Uygun
  */
-@WindowScoped
-@Named
+@Browse
 public class SuggestionBrowse extends QueryControllerBase<SuggestionItem, SuggestionItem>{
 
     @Inject

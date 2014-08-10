@@ -16,7 +16,7 @@ import javax.persistence.metamodel.SingularAttribute;
  */
 public class TextColumn<E> extends Column<E>{
 
-    public TextColumn(SingularAttribute<E, ?> attribute, String labelKey) {
+    public TextColumn(SingularAttribute<? super E, ?> attribute, String labelKey) {
         super(attribute, labelKey);
     }
 

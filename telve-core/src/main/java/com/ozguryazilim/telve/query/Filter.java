@@ -22,7 +22,7 @@ public abstract class Filter<E, X> {
     /**
      * Model üzerinde hangi alanı ilgilendirdiği
      */
-    private SingularAttribute<E, X> attribute;
+    private SingularAttribute<? super E, X> attribute;
     
     /**
      * Ekranda hangi metni gösterecek
@@ -48,16 +48,16 @@ public abstract class Filter<E, X> {
      */
     private X value;
 
-    public Filter( SingularAttribute<E, X> attribute, String label ){
+    public Filter( SingularAttribute<? super E, X> attribute, String label ){
         this.attribute = attribute;
         this.labelKey = label;
     }
     
-    public SingularAttribute<E, X> getAttribute() {
+    public SingularAttribute<? super E, X> getAttribute() {
         return attribute;
     }
 
-    public void setAttribute(SingularAttribute<E, X> attribute) {
+    public void setAttribute(SingularAttribute<? super E, X> attribute) {
         this.attribute = attribute;
     }
 

@@ -9,6 +9,7 @@
     <composite:interface>
         <composite:attribute name="value" required="true"/>
         <composite:attribute name="label" required="true"/>
+        <composite:attribute name="placeholder" required="false"/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="readonly" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="columnClass" required="false" default="large-6 medium-6 small-6"/>
@@ -22,7 +23,7 @@
                 
                 <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
                 <span class="value">
-                <p:inputTextarea id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}" />
+                    <p:inputTextarea id="#{cc.id}_inp" value="#{cc.attrs.value}" placeholder="#{cc.attrs.placeholder}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}" />
                 </span>
                 <p:message for="#{cc.id}_inp" display="icon" />
             </div>
