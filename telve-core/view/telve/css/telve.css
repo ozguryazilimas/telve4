@@ -357,3 +357,9 @@ td{
     display: block !important;
     padding: 0.4em;
 }
+
+.ui-message-info, .ui-message-error, .ui-message-warn, .ui-message-fatal{
+    float: left;
+    margin: 0;
+    padding: 0;
+}

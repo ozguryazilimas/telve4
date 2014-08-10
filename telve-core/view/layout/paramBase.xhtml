@@ -1,0 +1,120 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/primeTemplate.xhtml">
+
+
+    <ui:define name="outerspace">
+        <ui:insert name="includes" />
+    </ui:define>
+    
+    <ui:define name="body">
+        <ui:remove>
+            <h1><h:outputText value="#{messages[moduleCaption]}" /></h1>
+        </ui:remove>
+
+        <script>
+            jQuery(document).ready(function() {
+                jQuery('#paramNewButton').click(function() {
+                    if (this.isEnabled()) {
+                        newParameter();
+                    }
+                });
+            });
+        </script>
+
+        <p:layout >
+            <ui:remove>
+            <f:facet name="header">
+                <p:row>
+                    <p:column style="text-align: left">
+                        #{messages['general.caption.List']}
+                    </p:column>
+                    <p:column style="text-align: left">
+                        <h:outputText value="#{messages[formCaption]}" />
+                    </p:column>
+                </p:row>
+            </f:facet>
+                </ui:remove>
+            
+            <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="true" resizable="true">
+                    <h:form id="listForm">
+                        <p:remoteCommand name="newParameter" update=":form" action="#{homeBean.createNew()}"  partialSubmit="true" process="@this" />
+                        <p:dataTable id="itemlist" 
+                                     var="item"
+                                     value="#{itemList}" 
+                                     rowKey="rowKey"
+                                     emptyMessage="#{messages['general.hint.EmptyList']}"
+                                     rows="15"
+                                     filteredValue="#{homeBean.filteredList}"
+                                     paginatorAlwaysVisible="false"
+                                     paginator="true"
+                                     paginatorPosition="bottom"
+                                     paginatorTemplate="{PageLinks}">
+                            <p:column filterBy="#{item[itemCaption]}" 
+                                      filterMatchMode="contains">
+                                <p:commandLink action="#{homeBean.edit(item)}" ajax="true" partialSubmit="true" process="@this" update=":form">
+                                    <h:outputText value="#{item[itemCaption]}" />
+                                </p:commandLink>
+
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+                </p:layoutUnit>
+            <p:layoutUnit position="center"  >
+                <ui:include src="/layout/messages.xhtml" />
+                <p:panel header="#{messages[formCaption]}">
+                    <h:form id="form" >
+                      
+                            <ui:insert name="form" />
+
+                            <div class="actionButtons">
+                                <p:commandButton id="saveAndNew" 
+                                                 value="#{messages['general.button.SaveAndNew']}" 
+                                                 action="#{homeBean.saveAndNew()}"
+                                                 rendered="#{identity.hasPermission( entityName, 'update') }"
+                                                 ajax="false"
+                                                 validateClient="true"
+                                                 icon="ui-icon-disk"/>  
+
+                                <p:commandButton id="save" 
+                                                 value="#{messages['general.button.Save']}" 
+                                                 action="#{homeBean.save()}"
+                                                 rendered="#{identity.hasPermission( entityName, 'insert')}"
+                                                 ajax="false"
+                                                 validateClient="true"
+                                                 icon="ui-icon-disk" />  
+
+
+
+                                <p:commandButton id="delete" 
+                                                 value="#{messages['general.button.Delete']}" 
+                                                 action="#{homeBean.delete()}"
+                                                 rendered="#{not empty entity.id and identity.hasPermission( entityName, 'delete') }"
+                                                 onclick="if (!confirm('#{messages['general.message.confirm.Delete']}'))
+                                                             return false;"
+                                                 ajax="false"
+                                                 validateClient="true"
+                                                 icon="ui-icon-trash"/>
+                                <p:commandButton id="close" 
+                                                 value="#{messages['general.button.Close']}" 
+                                                 action="#{homeBean.close()}"
+                                                 ajax="false"
+                                                 partialSubmit="true"
+                                                 process="this"
+                                                 icon="ui-icon-cancel"/>
+                            </div>
+                    </h:form>
+                    </p:panel>
+            </p:layoutUnit>
+        </p:layout>
+
+
+
+    </ui:define>
+</ui:composition>

@@ -34,7 +34,7 @@ public class TelveModuleExtention implements Extension {
             TelveModule a = event.getAnnotated().getAnnotation(TelveModule.class);
             String moduleName = a.name();
             if( moduleName.isEmpty() ){
-                moduleName = event.getBean().getBeanClass().getName();
+                moduleName = event.getBean().getBeanClass().getSimpleName();
             }
             System.out.println("Found Module: " + moduleName);
             startupBeans.add(event.getBean());

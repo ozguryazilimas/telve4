@@ -35,6 +35,7 @@
                 </div>
             </h:form>
 
+            <ui:remove>
             <div class="ribbon-section right">
                 <h:form id="quickLauncher">
                     <div class="ribbon-button-small">
@@ -48,6 +49,7 @@
                     </div>
                 </h:form>
             </div>
+                </ui:remove>
 
             <ui:insert name="ribbon-actions"/>
 
@@ -64,7 +66,7 @@
 
 
                     <c:forEach id="actrepeater" items="#{section.actions}" var="action" varStatus="rowCounter2">
-                        <t:ribbonAction action="#{action.action}" buttonType="#{action.type}" counter="#{rowCounter2}" classifier="#{action.classifier}" params="#{action.params}"/>
+                        <t:ribbonAction actionItem="#{action.action}" buttonType="#{action.type}" counter="#{rowCounter2}" classifier="#{action.classifier}" params="#{action.params}"/>
                     </c:forEach>
 
 

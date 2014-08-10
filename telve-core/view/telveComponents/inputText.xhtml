@@ -22,9 +22,11 @@
                 
                 <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
                 <span class="value">
-                <p:inputText id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}" />
+                <p:inputText id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}" >
+                    <p:clientValidator />
+                </p:inputText>
                 </span>
-                <p:message for="#{cc.id}_inp" display="icon" />
+                <p:message for="#{cc.id}_inp" display="text"/>
             </div>
         </ui:fragment>
     </composite:implementation>

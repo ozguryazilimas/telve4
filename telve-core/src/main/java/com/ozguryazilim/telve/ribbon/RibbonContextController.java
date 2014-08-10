@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Any;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.picketlink.Identity;
@@ -56,8 +57,7 @@ public class RibbonContextController {
      */
     protected void initContextTab() {
 
-        //FIXME: Current viewID'yi nasıl bulacağız?
-        String currentView = ""; //Conversation.instance().getViewId();
+        String currentView = FacesContext.getCurrentInstance().getViewRoot().getViewId(); 
 
         initedForView = currentView;
 
@@ -152,8 +152,8 @@ public class RibbonContextController {
      * @return
      */
     public List<RibbonSection> getContextSections() {
-        //FIXME: Current view ID'yi nasıl bulacağız?
-        String currentView = ""; //Conversation.instance().getViewId();
+        
+        String currentView = FacesContext.getCurrentInstance().getViewRoot().getViewId(); 
 
         LOG.debug("Ribbon Context requested for #0", currentView);
 
