@@ -30,4 +30,10 @@ public interface Pages {
     class Error extends DefaultErrorView {};
     @SecuredPage @PageTitle("Deneme")
     class Deneme implements ViewConfig {};
+    
+    @SecuredPage
+    interface Admin extends ViewConfig{
+        @PageTitle("Suggestion Browse")
+        class SuggestionBrowse implements Admin {};
+    }
 }

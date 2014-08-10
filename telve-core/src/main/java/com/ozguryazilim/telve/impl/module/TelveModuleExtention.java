@@ -66,7 +66,7 @@ public class TelveModuleExtention implements Extension {
     void afterDeploymentValidation(@Observes AfterDeploymentValidation event, BeanManager manager) {
         for (Bean<?> bean : startupBeans) {
             // the call to toString() is a cheat to force the bean to be initialized
-            //manager.getReference(bean, bean.getBeanClass(), manager.createCreationalContext(bean)).toString();
+            manager.getReference(bean, bean.getBeanClass(), manager.createCreationalContext(bean)).toString();
         }
     }
 

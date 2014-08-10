@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:s="http://jboss.org/schema/seam/taglib"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="prop">
+
+        <p:outputLabel styleClass="name #{invalid?'errors':''}">
+            <ui:insert name="label" />
+            <h:panelGroup layout="span" styleClass="required" rendered="#{required}">*</h:panelGroup>
+        </p:outputLabel>
+
+        <span class="value #{invalid?'errors':''}"> 
+                <ui:insert />
+        </span>
+
+        <ui:remove>
+        <p:message styleClass="warning" />
+        </ui:remove>
+
+    </div>
+
+</ui:composition>

@@ -1,0 +1,72 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.ozguryazilim.telve.query;
+
+/**
+ * Filtreler için operand türleri.
+ *
+ * @author Hakan Uygun
+ */
+public enum FilterOperand {
+
+    /**
+     * Hiçbiri
+     */
+    None,
+    /**
+     * Hepsi
+     */
+    All,
+    /**
+     * Eşit
+     */
+    Equal,
+    /**
+     * Eşit Değil
+     */
+    NotEqual,
+    /**
+     * Büyük
+     */
+    Greater,
+    /**
+     * Büyük Eşit
+     */
+    GreaterOrEqual,
+    /**
+     * Küçük
+     */
+    Lesser,
+    /**
+     * Küçük Eşit
+     */
+    LesserOrEqual,
+    /**
+     * String - içerir
+     */
+    Contains,
+    /**
+     * String - içermez
+     */
+    NotContains,
+    /**
+     * String - başlar
+     */
+    BeginsWith,
+    /**
+     * String - Biter
+     */
+    EndsWith,
+    /**
+     * Bir aralık, lise içinde bulunma hali. Tarih tipi için özel olarak hafta,
+     * ay gibi tarih aralığı demek
+     */
+    In,
+    /**
+     * İki değer arasında olma hali. Tarih, sayısal değerler için
+     */
+    Between
+}

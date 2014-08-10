@@ -5,11 +5,13 @@
  */
 package com.ozguryazilim.telve.auth;
 
+import com.ozguryazilim.telve.view.Pages;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
 import org.picketlink.Identity;
 import org.picketlink.Identity.AuthenticationResult;
 
@@ -26,6 +28,10 @@ public class LoginController {
     @Inject
     private FacesContext facesContext;
 
+    @Inject
+    private ViewNavigationHandler viewNavigationHandler;
+    
+    
     public void login() {
         AuthenticationResult result = identity.login();
         if (AuthenticationResult.FAILED.equals(result)) {
@@ -33,6 +39,8 @@ public class LoginController {
                     null,
                     new FacesMessage("Authentication was unsuccessful. Please check your username and password "
                             + "before trying again."));
+        } else {
+            viewNavigationHandler.navigateTo(Pages.Home.class);
         }
     }
 }

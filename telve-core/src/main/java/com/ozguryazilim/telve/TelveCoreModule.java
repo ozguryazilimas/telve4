@@ -7,6 +7,7 @@
 package com.ozguryazilim.telve;
 
 import com.ozguryazilim.telve.api.module.TelveModule;
+import com.ozguryazilim.telve.suggestion.SuggestionGroupRegistery;
 import javax.annotation.PostConstruct;
 
 /**
@@ -23,6 +24,7 @@ public class TelveCoreModule {
     public void init(){
         System.out.println("TelveCore inited");
         testMessage = "Inited";
+        SuggestionGroupRegistery.intance().addGroup("Genel", Boolean.FALSE);
         
     }
     

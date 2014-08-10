@@ -1,0 +1,92 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/browseBase.xhtml">
+
+    <ui:param name="moduleCaption" value="module.caption.Suggestion" />
+    <ui:param name="bean" value="#{suggestionBrowse}" />
+    <ui:param name="advanceEnabled" value="true" />
+    <ui:param name="saveEnabled" value="true" />
+    <ui:param name="filterEnabled" value="true" />
+    <ui:param name="permission" value="suggestion" />
+    <ui:param name="onSelectUpdate" value="" />
+    <ui:param name="onSelectEnabled" value="#editSuggestion, #deleteSuggestion" />
+    <ui:param name="viewId" value="/admin/suggestionView.xhtml" />
+
+    <ui:define name="ribbon-actions">
+
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+
+                jQuery('#newSuggestion').click(function() {
+                    if (this.isEnabled()) {
+                        newSuggestion();
+
+                    }
+                });
+                jQuery('#editSuggestion').click(function() {
+                    if (this.isEnabled()) {
+                        editSuggestion();
+                    }
+                });
+                jQuery('#deleteSuggestion').click(function() {
+                    if (this.isEnabled()) {
+                        deleteSuggestion();
+                    }
+                });
+            });
+        </script> 
+
+        <h:form id="actionForm">
+            <p:remoteCommand name="newSuggestion" update=":suggestionPopup" actionListener="#{suggestionBrowse.newSuggestion}" oncomplete="PF('suggestionPopup').show();"/>
+            <p:remoteCommand name="editSuggestion" update=":suggestionPopup" actionListener="#{suggestionBrowse.editSuggestion}" oncomplete="PF('suggestionPopup').show();"/>
+            <p:remoteCommand name="deleteSuggestion" update=":browseListForm:results" actionListener="#{suggestionBrowse.deleteSuggestion}" />
+        </h:form>
+
+
+        <div  class="ribbon-section left">
+            <span class="section-title" unselectable="on">#{messages['general.label.Actions']}</span>
+
+            <t:ribbonButton buttonId="newSuggestion" image="suggestion.png" classifier="add" label="general.button.New" />
+            <t:ribbonButton buttonId="editSuggestion" image="suggestion.png" classifier="edit" label="general.button.Edit" />
+            <t:ribbonButton buttonId="deleteSuggestion" image="suggestion.png" classifier="delete" label="general.button.Delete" />
+
+        </div>
+    </ui:define>
+
+
+    <ui:define name="includes">
+
+        <p:dialog id="suggestionPopup"  header="#{messages['module.caption.Suggestion']}" widgetVar="suggestionPopup" modal="true" width="420">
+            <h:form id="suggestionPopupForm">
+
+                <div class="row">
+                    <t:inputCombobox label="general.label.Group" value="#{suggestionBrowse.suggestionItem.group}" required="true">
+                        <f:selectItems value="#{suggestionGroupRegistery.getGroupNames()}" var="group" itemLabel="#{messages[ 'suggestionGroup.label.'.concat(group) ]}" itemValue="#{group}" />
+                    </t:inputCombobox>
+                        
+                    <t:inputText label="general.label.Data" value="#{suggestionBrowse.suggestionItem.data}" required="true" />
+                </div>
+
+                <div class="row">
+                    <t:inputCheckboxGroup label="general.label.Status">
+                        <p:selectBooleanCheckbox value="#{suggestionBrowse.suggestionItem.active}" itemLabel="#{messages['general.label.Active']}" />
+                    </t:inputCheckboxGroup>
+                    <t:inputTextarea label="general.label.Info" value="#{suggestionBrowse.suggestionItem.info}" />
+                </div>
+
+                <div class="actionButtons">
+                    <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{suggestionBrowse.closeDialog()}" update=":browseListForm:results" oncomplete="PF('suggestionPopup').hide();"/>
+                    <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{suggestionBrowse.cancelDialog()}" oncomplete="PF('suggestionPopup').hide();" partialSubmit="true" process="@this"/>
+                </div>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+
+</ui:composition>

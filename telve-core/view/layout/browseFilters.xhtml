@@ -1,0 +1,154 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <h:form id="pfilterForm">
+
+        <p:panel id="pffilter" header="#{messages[moduleCaption]}" toggleable="true">
+
+            <f:facet name="actions">  
+                <p:commandLink id="filterBtn" type="button" 
+                               styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" 
+                               title="#{messages['general.label.FilterItems']}"
+                               partialSubmit="true"
+                               process="@this">  
+                    <h:outputText styleClass="ui-icon tv-icon-filter" />  
+                </p:commandLink>  
+                <p:commandLink id="columnBtn" type="button" 
+                               styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" 
+                               title="#{messages['general.label.ResultColumns']}"
+                               partialSubmit="true"
+                               process="@this">  
+                    <h:outputText styleClass="ui-icon tv-icon-columns" />  
+                </p:commandLink>  
+                <ui:remove>
+                    TODO: Sorgu Saklama menüsü daha sonra düzenlenecek
+                    <p:menuButton value="#{bean.queryDefinition.queryName}">
+                        <c:forEach items="#{bean.queryNames}" var="qry" varStatus="loop">
+                            <p:menuitem value="#{qry}" action="#{bean.loadQuery(qry)}" 
+                                        partialSubmit="true"
+                                        process="@this"
+                                        update="pfilterForm"
+                                        icon="ui-icon-gear"/>
+                        </c:forEach>
+                        <p:menuitem id="querysaveMenu" value="Yeni Sorgu" onclick="PF('qrySave').show();" icon="ui-icon-wrench"/>
+                    </p:menuButton>
+                </ui:remove>
+            </f:facet>
+
+            <ui:remove>
+                TODO: Sorgu saklama kısmısı
+                <p:dialog id="qrySave" widgetVar="qrySave" header="Sorgu Sakla">
+                    <p>Bu dialog sorgu saklayacak</p>
+                    <!-- ut:inputText label="general.label.NewQueryName" value="#{bean.queryDefinition.newQueryName}" styleClass="middle" / -->
+                    <h:panelGroup id="dialogButtons" styleClass="actionButtons" layout="block">
+                        <p:commandButton id="saveQuery" value="#{messages['general.button.Save']}" action="#{bean.saveQuery()}" update="pfilterForm" />
+                    </h:panelGroup>
+                </p:dialog>
+            </ui:remove>
+
+
+            <p:overlayPanel id="filtersPop" for="filterBtn" hideEffect="fade" dynamic="true">  
+                <p>#{messages['general.label.FilterItems']}</p>
+                <h:panelGroup id="filterSelector" layout="block">
+                <ui:repeat value="#{bean.queryDefinition.allFilters}"
+                           var="filterr" varStatus="rowCounter">
+                    <p:commandLink action="#{bean.queryDefinition.toggleFilter(filterr)}" 
+                                   update=":pfilterForm:filterPanel, :pfilterForm:filterSelector" 
+                                   partialSubmit="true"
+                                   process="@this" style="display: block">
+                        <span class="ui-icon #{bean.queryDefinition.isVisible(filterr) ? 'tv-icon-check' : 'tv-icon-check-empty'}" style="display: inline-block"/>
+                        <ui:remove>
+                        <h:panelGroup rendered="#{bean.queryDefinition.isVisible(filterr)}" layout="span"><i class="ui-icon tv-icon-check" /></h:panelGroup>
+                        <h:panelGroup rendered="#{not bean.queryDefinition.isVisible(filterr)}" layout="span"><i class="ui-icon tv-icon-check-empty" /></h:panelGroup>
+                        </ui:remove>
+                        <h:outputText value="#{messages[filterr.labelKey]}" />
+                    </p:commandLink>
+                </ui:repeat>
+                    </h:panelGroup>
+                <ui:remove>
+                    <p:dataList id="filterSelector" value="#{bean.queryDefinition.allFilters}" var="filterr" itemType="disc" style="padding-left: 4px;">  
+                        <p:commandLink action="#{bean.queryDefinition.toggleFilter(filterr)}" 
+                                       update=":pfilterForm:filterPanel, filterSelector" 
+                                       partialSubmit="true"
+                                       process="@this">
+                            <h:panelGroup rendered="#{bean.queryDefinition.isVisible(filterr)}" layout="span"><i class="ui-icon tv-icon-check" /></h:panelGroup>
+                            <h:panelGroup rendered="#{not bean.queryDefinition.isVisible(filterr)}" layout="span"><i class="ui-icon tv-icon-check-empty" /></h:panelGroup>
+                            <h:outputText value="#{messages[filterr.labelKey]}" />
+                        </p:commandLink>
+                    </p:dataList>  
+                </ui:remove>
+            </p:overlayPanel>
+
+            <p:overlayPanel id="columnsPop" for="columnBtn" hideEffect="fade" dynamic="true">  
+                <div class="row">
+                    <p>#{messages['general.label.ResultColumns']}</p>
+                </div>
+                <div class="row">
+                    <p:pickList value="#{bean.queryDefinition.pickListColumns}" 
+                                var="item"
+                                itemValue="#{item}" itemLabel="#{messages[item.labelKey]}"
+                                showTargetControls="true"
+                                converter="ColumnConverter">
+                        <f:facet name="sourceCaption">#{messages['ListShuttle.label.SourceCaption']}</f:facet>  
+                        <f:facet name="targetCaption">#{messages['ListShuttle.label.TargetCaption']}</f:facet>
+                        <p:column>
+                            #{messages[item.labelKey]}
+                        </p:column>
+                    </p:pickList>
+                </div>
+                <h:panelGrid columns="2">
+                    <!-- ut:inputText label="general.label.ResultLimit" value="#{bean.queryDefinition.resultLimit}" / -->
+                    <!-- ut:inputText label="general.label.RowLimit" value="#{bean.queryDefinition.rowLimit}" / -->
+                </h:panelGrid>
+            </p:overlayPanel>
+
+            <p:outputPanel id="filterPanel">
+                <p:panelGrid>
+                    <f:facet name="header">  
+                        <p:row>  
+                            <p:column>#{messages['general.label.Field']}</p:column>  
+                            <p:column>#{messages['general.label.Operator']}</p:column>  
+                            <p:column>#{messages['general.label.Value']}</p:column>  
+                        </p:row>  
+                    </f:facet>
+
+                    <c:forEach id="filterRepeater2" items="#{bean.queryDefinition.filters}"
+                               var="filter" varStatus="rowCounter">
+                        <p:row>
+                            <ui:include src="/filterTemplates/#{filter.template}.xhtml" >
+                                <ui:param name="filter" value="#{filter}" />
+                                <ui:param name="idprefix" value="#{rowCounter.index}" />
+                            </ui:include>
+                        </p:row>
+                    </c:forEach>
+
+                </p:panelGrid>
+            </p:outputPanel>
+
+            <h:panelGroup id="actionButtons" styleClass="actionButtons" layout="block">
+                <p:commandButton value="#{messages['general.button.Search']}" actionListener="#{bean.search()}"  icon="ui-icon-search" update="@([id$=results]), actionButtons"/> 
+                <p:menuButton value="Export" rendered="#{not empty bean.entityList and identity.hasPermission( permission, 'export')}">
+                    <p:menuitem value="PDF" ajax="false" icon="ui-icon-note">
+                        <p:dataExporter type="pdf" target=":results" fileName="results" /> 
+                    </p:menuitem>
+                    <p:menuitem value="CSV" ajax="false" icon="ui-icon-note">
+                        <p:dataExporter type="csv" target=":results" fileName="results" /> 
+                    </p:menuitem>
+                    <p:menuitem value="XLS" ajax="false" icon="ui-icon-note">
+                        <p:dataExporter type="xls" target=":results" fileName="results" /> 
+                    </p:menuitem>
+                    <p:menuitem value="XML" ajax="false" icon="ui-icon-note">
+                        <p:dataExporter type="xml" target=":results" fileName="results" /> 
+                    </p:menuitem>
+                </p:menuButton>
+                <ui:insert name="extraButtons" />
+            </h:panelGroup>
+        </p:panel>
+
+    </h:form>
+</ui:composition>
