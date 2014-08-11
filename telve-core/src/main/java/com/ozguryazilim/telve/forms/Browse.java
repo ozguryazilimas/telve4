@@ -13,6 +13,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import javax.enterprise.inject.Stereotype;
 import javax.inject.Named;
+import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 
 /**
@@ -26,5 +27,19 @@ import org.apache.deltaspike.core.api.scope.WindowScoped;
 @Named
 @Documented
 public @interface Browse {
-    
+    /**
+     * Browse view'in hangisi olduğu
+     * @return 
+     */
+    Class<? extends ViewConfig> browsePage();
+    /**
+     * Edit View'in hangisi olduğu
+     * @return 
+     */
+    Class<? extends ViewConfig> editPage();
+    /**
+     * View View'in hangisi olduğu
+     * @return 
+     */
+    Class<? extends ViewConfig> viewContainerPage();
 }

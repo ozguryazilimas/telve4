@@ -4,56 +4,61 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ds="http://deltaspike.apache.org/jsf">
-    <h:head>    
+      xmlns:ds="http://deltaspike.apache.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:view >
+        <ui:insert name="metadata" />
 
-        
-        <title>#{telveConfigResolver.getProperty('app.title')} - #{ pageTitleResolver.pageTitle }</title>
-        
-        <ui:include src="/layout/templateHeader.xhtml" />
+        <h:head>    
 
-        <script type="text/javascript">
-            // initialise plugins
-            jQuery(document).ready(function() {
 
-                jQuery('#ribbon').ribbon({
-                    timeout: 500
+            <title>#{telveConfigResolver.getProperty('app.title')} - #{ pageTitleResolver.pageTitle }</title>
+
+            <ui:include src="/layout/templateHeader.xhtml" />
+
+            <script type="text/javascript">
+                // initialise plugins
+                jQuery(document).ready(function() {
+
+                    jQuery('#ribbon').ribbon({
+                        timeout: 500
+                    });
                 });
-            });
-        </script>
+            </script>
 
-    </h:head>
+        </h:head>
 
-    <h:body>
-        
-        <ds:windowId />
-        
-        <ui:insert name="outerspace"></ui:insert>
-        
-        <p:layout fullPage="true">
-            <p:layoutUnit position="north"  size="164" style="padding: 0px; z-index: 1;" >
-                <ui:include src="/layout/ribbon.xhtml" />
-            </p:layoutUnit>
+        <h:body>
 
-            <p:layoutUnit position="center"  style="padding: 0 0.4em !important;">
-                <ui:insert name="body"/>
-                <ui:remove>
-                    <div style="clear:both">
-                        <div class="wrap body">
+            <ds:windowId />
 
-                            <ui:insert name="body"/>
+            <ui:insert name="outerspace"></ui:insert>
 
-                        </div>
-                    </div>
-                </ui:remove>
-            </p:layoutUnit>
-            <p:layoutUnit position="south" size="51" >
-                <div class="footer">
+            <p:layout fullPage="true">
+                <p:layoutUnit position="north"  size="164" style="padding: 0px; z-index: 1;" >
+                    <ui:include src="/layout/ribbon.xhtml" />
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center"  style="padding: 0 0.4em !important;">
+                    <ui:insert name="body"/>
                     <ui:remove>
-                    <ui:include src="/branding/footer.xhtml" />
+                        <div style="clear:both">
+                            <div class="wrap body">
+
+                                <ui:insert name="body"/>
+
+                            </div>
+                        </div>
                     </ui:remove>
-                </div>	
-            </p:layoutUnit>
-        </p:layout>
-    </h:body>
+                </p:layoutUnit>
+                <p:layoutUnit position="south" size="51" >
+                    <div class="footer">
+                        <ui:remove>
+                            <ui:include src="/branding/footer.xhtml" />
+                        </ui:remove>
+                    </div>	
+                </p:layoutUnit>
+            </p:layout>
+        </h:body>
+    </f:view>
 </html>

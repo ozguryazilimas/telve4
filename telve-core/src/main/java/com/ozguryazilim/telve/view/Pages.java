@@ -12,6 +12,7 @@ import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.spi.config.view.ViewConfigRoot;
 import org.apache.deltaspike.jsf.api.config.view.Folder;
+import org.apache.deltaspike.jsf.api.config.view.View;
 
 /**
  * Sistem genelinde kullanılacak page root'u.
@@ -19,20 +20,20 @@ import org.apache.deltaspike.jsf.api.config.view.Folder;
  */
 @ApplicationScoped
 @ViewConfigRoot
-@Folder(name = "./")
+@Folder(name = "./") @View(navigation = View.NavigationMode.REDIRECT, viewParams = View.ViewParameterMode.INCLUDE)
 public interface Pages extends ViewConfig {
     
     @SecuredPage @PageTitle("Ana Sayfa")
-    class Home implements ViewConfig {};
+    class Home implements Pages {};
     @PageTitle("Giriş Sayfası")
-    class Login implements ViewConfig {};
+    class Login implements Pages {};
     @PageTitle("Hata Sayfası")
     class Error extends DefaultErrorView {};
     @SecuredPage @PageTitle("Deneme")
-    class Deneme implements ViewConfig {};
+    class Deneme implements Pages {};
     
     @SecuredPage
-    interface Admin extends ViewConfig{
+    interface Admin extends Pages{
         @PageTitle("Suggestion Browse")
         class SuggestionBrowse implements Admin {};
     }

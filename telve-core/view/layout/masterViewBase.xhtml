@@ -1,0 +1,36 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
+
+    <ui:insert name="content" />
+
+    <h:form>
+        <div class="actionButtons">
+            
+            <ui:insert name="extraButtons" />
+            
+            <p:commandButton id="edit" 
+                             value="#{messages['general.button.Edit']}"
+                             action="#{bean.edit()}"
+                             icon="ui-icon-close" 
+                             partialSubmit="true"
+                             process="@this"
+                             ajax="true"/>
+            <p:commandButton id="done" 
+                             value="#{messages['general.button.Close']}"
+                             action="#{bean.close()}"
+                             icon="ui-icon-close" 
+                             partialSubmit="true"
+                             process="@this"
+                             ajax="true"/>
+        </div>
+    </h:form>
+
+
+</ui:composition>

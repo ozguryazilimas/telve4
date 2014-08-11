@@ -6,11 +6,19 @@
 package com.ozguryazilim.telve.forms;
 
 import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.view.PageTitleResolver;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.enterprise.inject.Any;
 import javax.inject.Inject;
+import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
+import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.apache.deltaspike.data.api.AbstractEntityRepository;
+import org.picketlink.Identity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,50 +29,91 @@ import org.slf4j.LoggerFactory;
  * @param <E> Entity sınıfı
  * @param <PK> PK sınıfı
  */
-public abstract class FormBase<E, PK extends Long> implements Serializable {
+public abstract class FormBase<E , PK extends Long> implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(FormBase.class);
 
     private E entity;
 
-    private String selectedSubView;
-    
     private PK id;
 
     @Inject
     private GroupedConversation conversation;
-    
+
+    @Inject
+    private ViewConfigResolver viewConfigResolver;
+
+    @Inject
+    @Any
+    private Identity identity;
+
+    @Inject
+    private PageTitleResolver pageTitleResolver;
+
+    private List<String> subViewList = new ArrayList<String>();
+    private String selectedSubView;
+
+    @PostConstruct
+    public void init() {
+        initSubViews();
+    }
+
+    /**
+     * SubView'leri toparlar ve yetkiye göre sınırlar.
+     */
+    protected void initSubViews() {
+        //Önce mevcut ekran için registery'den subview'lar alınıyor.
+
+        String viewId = viewConfigResolver.getViewConfigDescriptor(getContainerViewPage()).getViewId();
+        List<SubView> ls = SubViewRegistery.getSubViews(viewId);
+        if (ls != null) {
+            for (SubView sv : ls) {
+
+                //Eğer kullanıcının yetkisi varsa listeye ekleniyor.
+                if (identity.hasPermission(sv.permission(), "select")) {
+                    subViewList.add(viewConfigResolver.getViewConfigDescriptor(sv.viewPage()).getViewId());
+                }
+            }
+        } 
+    }
+
     /**
      * Geriye kullanılacak olan repository'i döndürür.
      *
      * @return
      */
     protected abstract AbstractEntityRepository<E, PK> getRepository();
-    
+
+    /**
+     * Edit formuna gider.
+     *
+     * TODO: Yetki kontrolü
+     *
+     * @return
+     */
     public Class<? extends ViewConfig> edit() {
-        //FIXME: Edit View dönmeli
-        return null;
+        return getEditPage();
     }
 
     public Class<? extends ViewConfig> close() {
         conversation.close();
 
-        //FIXME: Duruma göre browse ya da view dönmeli
-        return null;
+        //FIXME: Eger edit formunda ise view'a mı dönse ama o zaman da conversation kapatılmamalı.
+        return getBrowsePage();
     }
 
     public Class<? extends ViewConfig> save() {
         if (entity == null) {
             //FIXME: Duruma göre hata ya da aynı sayfa
-            return null;
+            return DefaultErrorView.class;
         }
 
         //try {
-            beforeSave();
+        beforeSave();
 
-            getRepository().saveAndFlush(entity);
-            
-            postSave();
+        getRepository().saveAndFlush(entity);
+
+        postSave();
         //} catch (EntityExistsException e) {
         //    log.debug("Hata : #0", e);
         //    facesMessages.add("#{messages['general.message.record.NotUnique']}");
@@ -75,9 +124,8 @@ public abstract class FormBase<E, PK extends Long> implements Serializable {
         FacesMessages.info("#{messages['general.message.record.SaveSuccess']}");
 
         raiseRefreshBrowserEvent();
-        
-        //FIXME: Duruma göre view ya da browse
-        return null;
+
+        return getContainerViewPage();
     }
 
     /**
@@ -106,15 +154,14 @@ public abstract class FormBase<E, PK extends Long> implements Serializable {
         //log.debug("mesaj : refreshBrowser:" + getEntityClass().getName());
     }
 
-    
     public Class<? extends ViewConfig> delete() {
         if (entity == null) {
             //FIXME: Duruma göre aynı sayfa ya da hata
-            return null;
+            return DefaultErrorView.class;
         }
 
         //try {
-            getRepository().removeAndFlush(entity);
+        getRepository().removeAndFlush(entity);
         //} catch (Exception e) {
         //    log.debug("Hata : #0", e);
         //    facesMessages.add("#{messages['general.message.record.DeleteFaild']}");
@@ -128,13 +175,12 @@ public abstract class FormBase<E, PK extends Long> implements Serializable {
         raiseRefreshBrowserEvent();
 
         conversation.close();
-        //FIXME: Browse'a geri dönmeli
-        return null;
+
+        return getBrowsePage();
     }
 
-
     public E getEntity() {
-        if( entity == null ){
+        if (entity == null) {
             createNew();
         }
         return entity;
@@ -175,19 +221,10 @@ public abstract class FormBase<E, PK extends Long> implements Serializable {
     }
 
     public Class<? extends ViewConfig> saveAndNew() {
-        Class<? extends ViewConfig> s = save();
+        save();
         createNew();
+        //Aynı sayfada klamak lazım.
         return null;
-    }
-
-    public void edit(E e) {
-        LOG.debug("Edit edicedik : {}", e);
-        entity = e;
-    }
-
-    public void delete(E e) {
-        entity = e;
-        delete();
     }
 
     /* FIXME: eid=0 ile yeni entity?
@@ -237,31 +274,35 @@ public abstract class FormBase<E, PK extends Long> implements Serializable {
      this.sid = sid;
      }
      */
-    /* FIXME: SubView meselesini çözmek lazım
-    public SubView getSelectedSubView() {
+    public String getSelectedSubView() {
         return selectedSubView;
     }
 
-    public void setSelectedSubView(SubView selectedSubView) {
+    public void setSelectedSubView(String selectedSubView) {
         this.selectedSubView = selectedSubView;
     }
 
+    /**
+     * Seçili olan SubView'in ViewID'sini döndürür.
+     *
+     * @return
+     */
     public String getSubViewId() {
         if (selectedSubView != null) {
-            return selectedSubView.view();
+            return selectedSubView;
         }
 
         return getMasterSubViewId();
     }
-    */
 
     /**
      * View ekranında ilk gösterilecek olan sub view id sini döndürür. Alt
      * sınıflar tarafından ezilip sayfa id sinin döndürülmesi gerekir.
+     *
+     * @return Geriye gösterilecek olan view ID döner.
      */
     public String getMasterSubViewId() {
-        //FIXME: Bunu annotation üzerinden yapacağız...
-        return null;
+        return viewConfigResolver.getViewConfigDescriptor(getMasterViewPage()).getViewId();
     }
 
     public PK getId() {
@@ -269,12 +310,11 @@ public abstract class FormBase<E, PK extends Long> implements Serializable {
     }
 
     public void setId(PK id) {
-        if (entity != null) {
+        if (entity != null && id.equals(this.id)) {
             return;
         } //Zaten bu conv için entitymiz var elimizde...
 
-        this.id = id;
-        LOG.debug("ID ile setleniyor. ID : {0} ", id);
+        LOG.debug("ID ile setleniyor. ID : {} ", id);
 
         if (id == null || id == 0) {
             createNew();
@@ -285,12 +325,54 @@ public abstract class FormBase<E, PK extends Long> implements Serializable {
                 FacesMessages.error("İstenilen kayıt bulunamadı. Lütfen kontrol edip tekarar deneyiniz.");
                 createNew();
             } else {
-            	//Entity başarıyla yüklendi. Alt sınıflar bu aşamada birşey yapmak isterlerse postLoad() methodunu override edebilirler...
-            	postLoad();
+                //Entity başarıyla yüklendi. Alt sınıflar bu aşamada birşey yapmak isterlerse postLoad() methodunu override edebilirler...
+                postLoad();
             }
         }
         this.id = id;
     }
 
-    
+    /**
+     * Geriye FormEdit annotation'ı ile tanımlanmış BrowsePage'i döndürür.
+     *
+     * @return
+     */
+    public Class<? extends ViewConfig> getBrowsePage() {
+        return this.getClass().getAnnotation(FormEdit.class).browsePage();
+    }
+
+    /**
+     * Geriye FormEdit annotation'ı ile tanımlanmış EditPage'i döndürür.
+     *
+     * @return
+     */
+    public Class<? extends ViewConfig> getEditPage() {
+        return this.getClass().getAnnotation(FormEdit.class).editPage();
+    }
+
+    /**
+     * Geriye FormEdit annotation'ı ile tanımlanmış EditPage'i döndürür.
+     *
+     * @return
+     */
+    public Class<? extends ViewConfig> getContainerViewPage() {
+        return this.getClass().getAnnotation(FormEdit.class).viewContainerPage();
+    }
+
+    /**
+     * Geriye FormEdit annotation'ı ile tanımlanmış EditPage'i döndürür.
+     *
+     * @return
+     */
+    public Class<? extends ViewConfig> getMasterViewPage() {
+        return this.getClass().getAnnotation(FormEdit.class).masterViewPage();
+    }
+
+    public List<String> getSubViewList() {
+        return subViewList;
+    }
+
+    public String getPageTitle(String viewId) {
+        return pageTitleResolver.getPageTitle(viewId);
+    }
 }

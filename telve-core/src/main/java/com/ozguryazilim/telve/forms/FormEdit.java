@@ -42,11 +42,11 @@ public @interface FormEdit {
      * View View'in hangisi olduğu
      * @return 
      */
-    Class<? extends ViewConfig> viewPage();
+    Class<? extends ViewConfig> viewContainerPage();
     /**
      * Master Sub View'in hangisi olduğu
      * @return 
      */
-    Class<? extends ViewConfig> masterSubPage();
+    Class<? extends ViewConfig> masterViewPage();
     
 }

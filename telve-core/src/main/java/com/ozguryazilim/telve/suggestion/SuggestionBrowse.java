@@ -9,20 +9,24 @@ package com.ozguryazilim.telve.suggestion;
 import com.ozguryazilim.telve.entities.SuggestionItem;
 import com.ozguryazilim.telve.entities.SuggestionItem_;
 import com.ozguryazilim.telve.forms.Browse;
+import com.ozguryazilim.telve.forms.BrowseBase;
 import com.ozguryazilim.telve.query.FilteredQuerySupport;
-import com.ozguryazilim.telve.query.QueryControllerBase;
 import com.ozguryazilim.telve.query.QueryDefinition;
 import com.ozguryazilim.telve.query.StringFilter;
 import com.ozguryazilim.telve.query.TextColumn;
+import com.ozguryazilim.telve.view.Pages;
 import javax.inject.Inject;
+import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 
 /**
  * Suggestion Item Browse win controller.
  * 
+ * Bu browse'un edit/view kısmı olmadığı için editPage ve viewContainerPage'i DefaultErrorView'e
+ * 
  * @author Hakan Uygun
  */
-@Browse
-public class SuggestionBrowse extends QueryControllerBase<SuggestionItem, SuggestionItem>{
+@Browse(browsePage = Pages.Admin.SuggestionBrowse.class,editPage = DefaultErrorView.class, viewContainerPage = DefaultErrorView.class )
+public class SuggestionBrowse extends BrowseBase<SuggestionItem, SuggestionItem>{
 
     @Inject
     private SuggestionRepository repository;

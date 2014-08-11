@@ -38,11 +38,13 @@
                 <section label="menu.caption.UserManagement" order="0">
 			<action id="dashboard" type="large" />
 		</section>
-                
+            
+                <!--    
                 <section label="menu.caption.Reports" order="0">
                     <action id="reports" type="large" />
                     <action id="favReports" type="large" />
 		</section>
+                -->
         </ribbon>
         
         <ribbon id="admin" label="menu.main.Admin" permission="ribbon:admin" order="1000">
@@ -63,10 +65,12 @@
             </section>
         </ribbon-context>
         
+        <!--
         <ribbon-context view="/reports/">
             <section order="10">
                 <action id="reports" type="large" />
                 <action id="favReports" type="large" />
             </section>
         </ribbon-context>
+        -->
 </ribbon-def>

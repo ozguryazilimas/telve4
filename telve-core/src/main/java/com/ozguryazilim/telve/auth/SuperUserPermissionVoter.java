@@ -21,13 +21,11 @@ public class SuperUserPermissionVoter implements PermissionVoter{
 
     @Override
     public VotingResult hasPermission(IdentityType it, Object o, String string) {
-        System.out.println("SuperUserPermissionVoter çalıştı");
         return VotingResult.ALLOW;
     }
 
     @Override
     public VotingResult hasPermission(IdentityType it, Class<?> type, Serializable srlzbl, String string) {
-        System.out.println("SuperUserPermissionVoter çalıştı");
         return VotingResult.ALLOW;
     }
     

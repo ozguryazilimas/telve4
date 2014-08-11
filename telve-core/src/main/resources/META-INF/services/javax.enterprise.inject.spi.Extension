@@ -1,3 +1,4 @@
 # Telve Core CDI Extentions
 
 com.ozguryazilim.telve.impl.module.TelveModuleExtention
+com.ozguryazilim.telve.forms.SubViewExtention

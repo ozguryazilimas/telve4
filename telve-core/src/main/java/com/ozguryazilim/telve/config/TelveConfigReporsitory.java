@@ -52,12 +52,9 @@ public class TelveConfigReporsitory {
 
     public static TelveConfigReporsitory instance(){
         //Daha BeanManager init edilmeden önce çağrılırsa geriye null dönecek
-        System.out.println("TelveConfigReporsitory requested");
         try{
-            
             return BeanProvider.getContextualReference(TelveConfigReporsitory.class, true);
         } catch ( IllegalStateException e ){
-            System.out.println("TelveConfigReporsitory null");
             return null;
         }
     }

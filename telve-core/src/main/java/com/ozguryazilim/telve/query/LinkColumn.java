@@ -15,13 +15,13 @@ import javax.persistence.metamodel.SingularAttribute;
  */
 public class LinkColumn<E> extends Column<E>{
     
-    public LinkColumn( SingularAttribute<E, ?> attribute, String labelKey ){
+    public LinkColumn( SingularAttribute<? super E, ?> attribute, String labelKey ){
         super(attribute, labelKey);
     }
 
     @Override
     public String getTemplate() {
-        return "column";
+        return "linkcolumn";
     }
     
 }

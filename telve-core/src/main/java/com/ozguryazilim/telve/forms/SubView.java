@@ -33,7 +33,7 @@ public @interface SubView {
      * MasterFormun kim olduğu
      * @return 
      */
-    Class<? extends FormBase> master();
+    Class<? extends ViewConfig> containerPage();
     
     /**
      * SubView'in hangisi olduğu
