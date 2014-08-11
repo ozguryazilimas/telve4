@@ -117,7 +117,7 @@ public abstract class DocumentBase extends AuditBase{
      * Belgenin geçerli olup olmadığı
      * @return 
      */
-    public Boolean isActive() {
+    public Boolean getActive() {
         return active;
     }
 
