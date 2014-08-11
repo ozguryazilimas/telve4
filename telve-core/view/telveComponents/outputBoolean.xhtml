@@ -2,15 +2,15 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:composite="http://java.sun.com/jsf/composite">
 
 
     <composite:interface>
         <composite:attribute name="value" required="true"/>
         <composite:attribute name="label" required="true"/>
-        <composite:attribute name="placeholder" required="false"/>
-        <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
-        <composite:attribute name="readonly" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:attribute name="trueLabel" required="true"/>
+        <composite:attribute name="falseLabel" required="true"/>
         <composite:attribute name="columnClass" required="false" default="large-6 medium-6 small-6"/>
         <composite:attribute name="rendered" required="false" type="java.lang.Boolean" default="true"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
@@ -19,15 +19,11 @@
     <composite:implementation>
         <ui:fragment rendered="#{cc.attrs.rendered}">
 
-            <div id="#{cc.clientId}" class="prop #{cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
-                
-                <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
+            <div id="#{cc.clientId}" class="disprop #{cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
+                <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]} :" styleClass="name" />
                 <span class="value">
-                    <p:inputText id="#{cc.id}_inp" value="#{cc.attrs.value}" placeholder="#{cc.attrs.placeholder}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}" >
-                    <p:clientValidator />
-                </p:inputText>
+                    <h:outputText id="#{cc.id}_inp" value="#{messages[ cc.attrs.value ? cc.attrs.trueLabel : cc.attrs.falseLabel ]}" />
                 </span>
-                <p:message for="#{cc.id}_inp" display="text"/>
             </div>
         </ui:fragment>
     </composite:implementation>
