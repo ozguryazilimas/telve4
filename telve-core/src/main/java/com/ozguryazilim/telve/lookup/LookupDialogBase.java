@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 import javax.el.ValueExpression;
@@ -64,6 +65,12 @@ public abstract class LookupDialogBase<T extends EntityBase, F extends ViewModel
     @Inject
     private ViewConfigResolver viewConfigResolver;
     
+    
+    @PostConstruct
+    public void init(){
+        initModel();
+    }
+    
     /**
      * Geriye açılacak olan popup için view adı döndürür.
      *
@@ -87,6 +94,45 @@ public abstract class LookupDialogBase<T extends EntityBase, F extends ViewModel
 
     protected abstract RepositoryBase<T,F> getRepository();
     
+    public void initOverlay( String listener ){
+        initOverlay("", listener);
+    }
+    
+    public void initOverlay( String profile, String listener ){
+        setMultiSelect(false);
+        setProfile(profile);
+        setListener(listener);
+        search();
+    }
+    
+    public void closeOverlay(){
+        //FIXME: Burada ki kodu DRY'a tabi tut.
+        SelectTuple sl;
+        
+        if (isMultiSelect()) {
+
+            List<T> ls = new ArrayList<T>();
+
+            for (F o : selectedDatas) {
+                T e = getEntity(o);
+                if (e != null) {
+                    ls.add(e);
+                }
+            }
+            
+            //eğer .'dan sonra bir değer yoksa birinci değeri paslıyoruz
+            sl = new SelectTuple("", "", ls);
+            
+        } else {
+            T e = getEntity(selectedData);
+            sl = new SelectTuple("", "", e);
+        }
+        //Value değerini EL olarak da saklıyoruz.
+        sl.setExpression("#{" + listener + "}");
+        
+        setObject(sl.getExpression(), sl.getValue());
+    }
+    
     /**
      * İlgili sınıfa ait dialogu açar
      *
@@ -103,7 +149,6 @@ public abstract class LookupDialogBase<T extends EntityBase, F extends ViewModel
      * @param profile
      */
     public void openDialog(Boolean multiSelect, String profile, String listener) {
-        initModel();
         setMultiSelect(multiSelect);
         setProfile(profile);
         setListener(listener);
