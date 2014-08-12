@@ -5,6 +5,8 @@
  */
 package com.ozguryazilim.telve.forms;
 
+import com.ozguryazilim.telve.data.RepositoryBase;
+import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.view.Pages;
 import java.io.Serializable;
@@ -12,7 +14,7 @@ import java.util.List;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
-import org.apache.deltaspike.data.api.AbstractEntityRepository;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * @param <E> İşlenecek olan Entity sınıfı
  * @param <PK> PK kolon sınıfı
  */
-public abstract class ParamBase<E, PK extends Serializable> implements Serializable {
+public abstract class ParamBase<E extends EntityBase, PK extends Serializable> implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(ParamBase.class);
 
@@ -47,14 +49,22 @@ public abstract class ParamBase<E, PK extends Serializable> implements Serializa
      *
      * @return
      */
-    protected abstract AbstractEntityRepository<E, PK> getRepository();
+    protected abstract RepositoryBase<E, ?> getRepository();
 
     /**
      * TODO: Aslında bu methodu Repository'e taşımak lazım.
      *
      * @return
      */
-    protected abstract E getNewEntity();
+    protected E getNewEntity(){
+        try {
+            return getRepository().createNew();
+        } catch (InstantiationException | IllegalAccessException ex) {
+            LOG.error("Error on Instantiation");
+            //FIXME: Hata sayfasına yönlendirelim...
+            return null;
+        }
+    }
 
     public void createNew() {
         entity = getNewEntity();
@@ -76,6 +86,7 @@ public abstract class ParamBase<E, PK extends Serializable> implements Serializa
         delete();
     }
 
+    @Transactional
     @SuppressWarnings({"unchecked", "rawtypes"})
     public Class<? extends ViewConfig> save() {
         if (entity == null) {
@@ -106,6 +117,7 @@ public abstract class ParamBase<E, PK extends Serializable> implements Serializa
         return null;
     }
 
+    @Transactional
     public Class<? extends ViewConfig> delete() {
         if (entity == null) {
             return Pages.Home.class;

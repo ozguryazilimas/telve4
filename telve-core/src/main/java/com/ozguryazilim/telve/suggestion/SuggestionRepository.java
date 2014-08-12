@@ -6,11 +6,10 @@
 
 package com.ozguryazilim.telve.suggestion;
 
+import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.SuggestionItem;
-import com.ozguryazilim.telve.query.FilteredQuerySupport;
 import java.util.List;
 import javax.enterprise.context.Dependent;
-import org.apache.deltaspike.data.api.AbstractEntityRepository;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 
@@ -21,7 +20,7 @@ import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
  */
 @Repository
 @Dependent
-public abstract class SuggestionRepository extends AbstractEntityRepository<SuggestionItem, Long> implements CriteriaSupport<SuggestionItem>, FilteredQuerySupport<SuggestionItem>{
+public abstract class SuggestionRepository extends RepositoryBase<SuggestionItem, SuggestionItem> implements CriteriaSupport<SuggestionItem>{
     
     
     /**

@@ -6,6 +6,9 @@
 
 package com.ozguryazilim.telve.query;
 
+import com.ozguryazilim.telve.entities.ViewModel;
+import com.ozguryazilim.telve.data.RepositoryBase;
+import com.ozguryazilim.telve.entities.EntityBase;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +22,7 @@ import org.apache.deltaspike.data.api.criteria.Criteria;
  * @param <E> Entity sınıfı
  * @param <R> Result sınıfı
  */
-public abstract class QueryControllerBase<E,R> implements Serializable{
+public abstract class QueryControllerBase<E extends EntityBase,R extends ViewModel> implements Serializable{
     
     /**
      * Sorgu bilgilerini tutan sınıf
@@ -38,7 +41,7 @@ public abstract class QueryControllerBase<E,R> implements Serializable{
      */
     protected abstract void buildQueryDefinition( QueryDefinition<E, R> queryDefinition );
     
-    protected abstract FilteredQuerySupport<E> getRepository();
+    protected abstract RepositoryBase<E,R> getRepository();
     
     @PostConstruct
     public void init(){

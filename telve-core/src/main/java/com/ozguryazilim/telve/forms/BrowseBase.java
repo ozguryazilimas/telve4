@@ -6,7 +6,9 @@
 
 package com.ozguryazilim.telve.forms;
 
+import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.query.QueryControllerBase;
+import com.ozguryazilim.telve.entities.ViewModel;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
@@ -19,7 +21,7 @@ import org.apache.deltaspike.core.api.config.view.navigation.NavigationParameter
  * @param <E>
  * @param <R>
  */
-public abstract class BrowseBase<E,R> extends QueryControllerBase<E,R> {
+public abstract class BrowseBase<E extends EntityBase,R extends ViewModel> extends QueryControllerBase<E,R> {
    
     
     @Inject

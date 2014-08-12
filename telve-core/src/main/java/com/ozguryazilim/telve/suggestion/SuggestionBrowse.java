@@ -6,17 +6,18 @@
 
 package com.ozguryazilim.telve.suggestion;
 
+import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.SuggestionItem;
 import com.ozguryazilim.telve.entities.SuggestionItem_;
 import com.ozguryazilim.telve.forms.Browse;
 import com.ozguryazilim.telve.forms.BrowseBase;
-import com.ozguryazilim.telve.query.FilteredQuerySupport;
 import com.ozguryazilim.telve.query.QueryDefinition;
 import com.ozguryazilim.telve.query.StringFilter;
 import com.ozguryazilim.telve.query.TextColumn;
 import com.ozguryazilim.telve.view.Pages;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 
 /**
  * Suggestion Item Browse win controller.
@@ -49,7 +50,7 @@ public class SuggestionBrowse extends BrowseBase<SuggestionItem, SuggestionItem>
     }   
 
     @Override
-    protected FilteredQuerySupport<SuggestionItem> getRepository() {
+    protected RepositoryBase<SuggestionItem,SuggestionItem> getRepository() {
         return repository;
     }
 
@@ -71,7 +72,7 @@ public class SuggestionBrowse extends BrowseBase<SuggestionItem, SuggestionItem>
         suggestionItem = selectedItem;
     }
     
-    
+    @Transactional
     public void deleteSuggestion(){
         if( selectedItem != null ){
             repository.remove(suggestionItem);

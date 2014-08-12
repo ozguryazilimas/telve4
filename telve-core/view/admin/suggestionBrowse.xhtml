@@ -62,29 +62,32 @@
 
     <ui:define name="includes">
 
+
         <p:dialog id="suggestionPopup"  header="#{messages['module.caption.Suggestion']}" widgetVar="suggestionPopup" modal="true" width="420">
-            <h:form id="suggestionPopupForm">
+            <ui:fragment rendered="#{suggestionBrowse.suggestionItem ne null}">
+                <h:form id="suggestionPopupForm">
 
-                <div class="row">
-                    <t:inputCombobox label="general.label.Group" value="#{suggestionBrowse.suggestionItem.group}" required="true">
-                        <f:selectItems value="#{suggestionGroupRegistery.getGroupNames()}" var="group" itemLabel="#{messages[ 'suggestionGroup.label.'.concat(group) ]}" itemValue="#{group}" />
-                    </t:inputCombobox>
-                        
-                    <t:inputText label="general.label.Data" value="#{suggestionBrowse.suggestionItem.data}" required="true" />
-                </div>
+                    <div class="row">
+                        <t:inputCombobox label="general.label.Group" value="#{suggestionBrowse.suggestionItem.group}" required="true">
+                            <f:selectItems value="#{suggestionGroupRegistery.getGroupNames()}" var="group" itemLabel="#{messages[ 'suggestionGroup.label.'.concat(group) ]}" itemValue="#{group}" />
+                        </t:inputCombobox>
 
-                <div class="row">
-                    <t:inputCheckboxGroup label="general.label.Status">
-                        <p:selectBooleanCheckbox value="#{suggestionBrowse.suggestionItem.active}" itemLabel="#{messages['general.label.Active']}" />
-                    </t:inputCheckboxGroup>
-                    <t:inputTextarea label="general.label.Info" value="#{suggestionBrowse.suggestionItem.info}" />
-                </div>
+                        <t:inputText label="general.label.Data" value="#{suggestionBrowse.suggestionItem.data}" required="true" />
+                    </div>
 
-                <div class="actionButtons">
-                    <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{suggestionBrowse.closeDialog()}" update=":browseListForm:results" oncomplete="PF('suggestionPopup').hide();"/>
-                    <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{suggestionBrowse.cancelDialog()}" oncomplete="PF('suggestionPopup').hide();" partialSubmit="true" process="@this"/>
-                </div>
-            </h:form>
+                    <div class="row">
+                        <t:inputCheckboxGroup label="general.label.Status">
+                            <p:selectBooleanCheckbox value="#{suggestionBrowse.suggestionItem.active}" itemLabel="#{messages['general.label.Active']}" />
+                        </t:inputCheckboxGroup>
+                        <t:inputTextarea label="general.label.Info" value="#{suggestionBrowse.suggestionItem.info}" />
+                    </div>
+
+                    <div class="actionButtons">
+                        <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{suggestionBrowse.closeDialog()}" update=":browseListForm:results" oncomplete="PF('suggestionPopup').hide();"/>
+                        <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{suggestionBrowse.cancelDialog()}" oncomplete="PF('suggestionPopup').hide();" partialSubmit="true" process="@this"/>
+                    </div>
+                </h:form>
+            </ui:fragment>
         </p:dialog>
 
     </ui:define>

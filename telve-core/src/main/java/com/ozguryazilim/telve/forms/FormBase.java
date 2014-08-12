@@ -5,6 +5,8 @@
  */
 package com.ozguryazilim.telve.forms;
 
+import com.ozguryazilim.telve.data.RepositoryBase;
+import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.view.PageTitleResolver;
 import java.io.Serializable;
@@ -17,7 +19,7 @@ import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
-import org.apache.deltaspike.data.api.AbstractEntityRepository;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.picketlink.Identity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * @param <E> Entity sınıfı
  * @param <PK> PK sınıfı
  */
-public abstract class FormBase<E , PK extends Long> implements Serializable {
+public abstract class FormBase<E extends EntityBase, PK extends Long> implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(FormBase.class);
 
@@ -82,7 +84,7 @@ public abstract class FormBase<E , PK extends Long> implements Serializable {
      *
      * @return
      */
-    protected abstract AbstractEntityRepository<E, PK> getRepository();
+    protected abstract RepositoryBase<E, ?> getRepository();
 
     /**
      * Edit formuna gider.
@@ -102,6 +104,7 @@ public abstract class FormBase<E , PK extends Long> implements Serializable {
         return getBrowsePage();
     }
 
+    @Transactional
     public Class<? extends ViewConfig> save() {
         if (entity == null) {
             //FIXME: Duruma göre hata ya da aynı sayfa
@@ -154,6 +157,7 @@ public abstract class FormBase<E , PK extends Long> implements Serializable {
         //log.debug("mesaj : refreshBrowser:" + getEntityClass().getName());
     }
 
+    @Transactional
     public Class<? extends ViewConfig> delete() {
         if (entity == null) {
             //FIXME: Duruma göre aynı sayfa ya da hata
@@ -161,7 +165,7 @@ public abstract class FormBase<E , PK extends Long> implements Serializable {
         }
 
         //try {
-        getRepository().removeAndFlush(entity);
+        getRepository().remove(entity);
         //} catch (Exception e) {
         //    log.debug("Hata : #0", e);
         //    facesMessages.add("#{messages['general.message.record.DeleteFaild']}");
@@ -192,11 +196,19 @@ public abstract class FormBase<E , PK extends Long> implements Serializable {
     }
 
     /**
-     * TODO: Aslında bu methodu Repository'e taşımak lazım.
+     * Aslında bu methodu Repository'e taşımak lazım.
      *
      * @return
      */
-    protected abstract E getNewEntity();
+    protected E getNewEntity(){
+        try {
+            return getRepository().createNew();
+        } catch (InstantiationException | IllegalAccessException ex) {
+            LOG.error("Error on Instantiation");
+            //FIXME: Hata sayfasına yönlendirelim...
+            return null;
+        }
+    }
 
     public void createNew() {
         entity = getNewEntity();

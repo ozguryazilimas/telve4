@@ -6,9 +6,6 @@
 package com.ozguryazilim.telve.suggestion;
 
 import com.ozguryazilim.telve.entities.SuggestionItem;
-import com.ozguryazilim.telve.entities.SuggestionItem_;
-import com.ozguryazilim.telve.query.QueryDefinition;
-import com.ozguryazilim.telve.query.StringFilter;
 import java.util.List;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
@@ -217,26 +214,6 @@ public class SuggestionRepositoryTest {
         //Group2 Anahtar1 ile 0 adet kayıt var
         ls = repository.findByGroupAndKey("Group2", "Anahtar1");
         Assert.assertEquals(0, ls.size());
-    }
-    
-    @Test
-    public void test7() {
-
-        
-        QueryDefinition<SuggestionItem,SuggestionItem> qd = new QueryDefinition<>();
-        
-        
-        StringFilter<SuggestionItem> f = new StringFilter<>( SuggestionItem_.group, "bili");
-        f.setValue("Group1");
-        qd.addFilter(f, false, false );
-        
-        //repository.addFilter(f);
-        
-        //Group1 Anahtar1 ile 1 adet kayıt var
-        List<SuggestionItem> ls = repository.filteredQuery(qd.getAllFilters());
-        Assert.assertEquals(2, ls.size());
-
-        
     }
     
     /**

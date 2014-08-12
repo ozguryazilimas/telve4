@@ -1,0 +1,64 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/layout/dialogBase.xhtml">
+    <ui:define name="form" >
+        <h:form id="lookupForm">
+
+            <h:panelGrid columns="1">
+                <ui:fragment rendered="#{not hideStandartFilter}">
+                    <p:outputLabel for="search2" value="#{messages['general.label.SearchKey']}" />
+                    <h:panelGroup styleClass="ui-input-group" layout="block">
+                        <p:inputText value="#{bean.searchText}" />
+                        <p:commandButton id="search2" icon="ui-icon-search" action="#{bean.search()}" update="resultLists" styleClass="ui-icon-only" style="right: 0 !important;"/>
+                    </h:panelGroup>
+                </ui:fragment>
+                <ui:insert name="filters" />
+            </h:panelGrid>
+
+
+            <h:panelGroup id="resultLists" layout="block">
+                <ui:fragment rendered="#{bean.isMultiSelect()}" >
+                    <p:dataTable id="multiSelectDialog" var="item" value="#{bean.getModel()}" 
+                                 selection="#{bean.selectedDatas}" rows="10"  paginator="true"
+                                 paginatorPosition="bottom" 
+                                 paginatorAlwaysVisible="false">
+
+                        <p:column selectionMode="multiple" style="width:36px;" />  
+
+                        <c:forEach items="#{bean.model.columns.entrySet()}" var="col" varStatus="loop">
+                            <p:column headerText="#{messages[col.value]}">
+                                #{item[col.key]}
+                            </p:column>
+                        </c:forEach>
+                    </p:dataTable>
+                </ui:fragment>
+
+                <ui:fragment rendered="#{not bean.isMultiSelect()}" >
+                    <p:dataTable id="singleSelectDialog" var="item" value="#{bean.getModel()}" 
+                                 selection="#{bean.selectedData}" rows="10"  paginator="true"
+                                 paginatorPosition="bottom" 
+                                 paginatorAlwaysVisible="false">
+                        <p:column selectionMode="single" style="width:36px;" />  
+
+                        <c:forEach items="#{bean.model.columns.entrySet()}" var="col" varStatus="loop">
+                            <p:column headerText="#{messages[col.value]}">
+                                #{item[col.key]}
+                            </p:column>
+                        </c:forEach>
+                    </p:dataTable>
+                </ui:fragment>
+            </h:panelGroup>
+            <h:panelGroup styleClass="actionButtons" style="position: fixed; bottom: 8px; padding-right: 18px;" layout="block">
+                <ui:insert name="actionButtons" />
+                <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{bean.closeDialog()}" />
+                <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{bean.cancelDialog()}" />
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

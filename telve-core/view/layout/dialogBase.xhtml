@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>    
+
+        <title>#{title}</title>
+        <ui:include src="/layout/templateHeader.xhtml" />
+        
+        <style>
+            html {
+                background: none !important;
+            }
+        </style>
+        
+    </h:head>
+
+    <h:body>
+        <ui:insert name="form" />
+    </h:body>
+</html>
