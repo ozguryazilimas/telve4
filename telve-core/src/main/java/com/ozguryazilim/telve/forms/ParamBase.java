@@ -108,7 +108,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
             facesMessages.add("#{messages['general.message.record.SaveFail']}");
             return BaseConsts.FAIL;
         }*/
-        LOG.debug("Entity Saved : {0} ", entity);
+        LOG.debug("Entity Saved : {} ", entity);
         
         FacesMessages.info("#{messages['general.message.record.SaveSuccess']}");
         
@@ -124,10 +124,10 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
         }
 
         try {
-            getRepository().removeAndFlush(entity);
+            getRepository().remove(entity);
             
         } catch (Exception e) {
-            LOG.debug("Hata : #0", e);
+            LOG.error("Hata : {}", e);
             FacesMessages.error("#{messages['general.message.record.DeleteFaild']}");
             //facesMessages.add("#{messages['general.message.record.DeleteFaild']}");
             return null;
@@ -137,7 +137,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
         getEntityList().remove(entity);
         
         
-        LOG.debug("Entity Removed : {0} ", entity);
+        LOG.debug("Entity Removed : {} ", entity);
         
         //Mevcut silindi dolayısı ile null verdik
         entity = null;

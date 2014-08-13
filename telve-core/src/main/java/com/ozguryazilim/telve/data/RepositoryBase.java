@@ -20,6 +20,7 @@ import org.apache.deltaspike.data.impl.criteria.QueryCriteria;
  * @param <E> Üzerinde çalışılacak Entity
  * @param <R> Lookup, Browse v.b.'de kullanılacak olan View Model
  */
+//@Dependent
 public abstract class RepositoryBase<E extends EntityBase, R extends ViewModel> extends AbstractEntityRepository<E, Long> {
 
     /**

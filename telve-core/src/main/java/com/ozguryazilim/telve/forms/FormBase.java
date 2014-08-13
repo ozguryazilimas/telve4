@@ -19,6 +19,7 @@ import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
+import org.apache.deltaspike.core.util.ProxyUtils;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.picketlink.Identity;
 import org.slf4j.Logger;
@@ -98,10 +99,12 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     }
 
     public Class<? extends ViewConfig> close() {
+        
+        Class<? extends ViewConfig> result = getBrowsePage();
         conversation.close();
 
         //FIXME: Eger edit formunda ise view'a mı dönse ama o zaman da conversation kapatılmamalı.
-        return getBrowsePage();
+        return result;
     }
 
     @Transactional
@@ -350,7 +353,8 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public Class<? extends ViewConfig> getBrowsePage() {
-        return this.getClass().getAnnotation(FormEdit.class).browsePage();
+        return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).browsePage();
+        //return this.getClass().getAnnotation(FormEdit.class).browsePage();
     }
 
     /**
@@ -359,7 +363,8 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public Class<? extends ViewConfig> getEditPage() {
-        return this.getClass().getAnnotation(FormEdit.class).editPage();
+        return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).editPage();
+        //return this.getClass().getAnnotation(FormEdit.class).editPage();
     }
 
     /**
@@ -368,7 +373,8 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public Class<? extends ViewConfig> getContainerViewPage() {
-        return this.getClass().getAnnotation(FormEdit.class).viewContainerPage();
+        return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).viewContainerPage();
+        //return this.getClass().getAnnotation(FormEdit.class).viewContainerPage();
     }
 
     /**
@@ -377,7 +383,8 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public Class<? extends ViewConfig> getMasterViewPage() {
-        return this.getClass().getAnnotation(FormEdit.class).masterViewPage();
+        return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).masterViewPage();
+        //return this.getClass().getAnnotation(FormEdit.class).masterViewPage();
     }
 
     public List<String> getSubViewList() {

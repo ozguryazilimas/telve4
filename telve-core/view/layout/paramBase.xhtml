@@ -78,7 +78,10 @@
                                                  value="#{messages['general.button.SaveAndNew']}" 
                                                  action="#{homeBean.saveAndNew()}"
                                                  rendered="#{identity.hasPermission( entityName, 'update') }"
-                                                 ajax="false"
+                                                 ajax="true"
+                                                 partialSubmit="false"
+                                                 process="@form"
+                                                 update=":form,:listForm:itemlist"
                                                  validateClient="true"
                                                  icon="ui-icon-disk"/>  
 
@@ -86,7 +89,10 @@
                                                  value="#{messages['general.button.Save']}" 
                                                  action="#{homeBean.save()}"
                                                  rendered="#{identity.hasPermission( entityName, 'insert')}"
-                                                 ajax="false"
+                                                 ajax="true"
+                                                 partialSubmit="false"
+                                                 process="@form"
+                                                 update=":form,:listForm:itemlist"
                                                  validateClient="true"
                                                  icon="ui-icon-disk" />  
 
@@ -95,18 +101,21 @@
                                 <p:commandButton id="delete" 
                                                  value="#{messages['general.button.Delete']}" 
                                                  action="#{homeBean.delete()}"
-                                                 rendered="#{not empty entity.id and identity.hasPermission( entityName, 'delete') }"
-                                                 onclick="if (!confirm('#{messages['general.message.confirm.Delete']}'))
-                                                             return false;"
-                                                 ajax="false"
+                                                 rendered="#{not empty homeBean.entity.id and identity.hasPermission( entityName, 'delete') }"
+                                                 ajax="true"
+                                                 partialSubmit="false"
+                                                 process="@form"
+                                                 update=":form,:listForm:itemlist"
                                                  validateClient="true"
-                                                 icon="ui-icon-trash"/>
+                                                 icon="ui-icon-trash">
+                                    <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
+                                </p:commandButton>
                                 <p:commandButton id="close" 
                                                  value="#{messages['general.button.Close']}" 
                                                  action="#{homeBean.close()}"
-                                                 ajax="false"
+                                                 ajax="true"
                                                  partialSubmit="true"
-                                                 process="this"
+                                                 process="@this"
                                                  icon="ui-icon-cancel"/>
                             </div>
                     </h:form>

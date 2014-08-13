@@ -37,15 +37,17 @@
                                          action="#{homeBean.save()}"
                                          rendered="#{identity.hasPermission( entityName, 'insert')}"
                                          ajax="false"
+                                         validateClient="true"
                                          icon="ui-icon-disk" />  
 
                         <p:commandButton id="delete" 
                                          value="#{messages['general.button.Delete']}" 
                                          action="#{homeBean.delete()}"
                                          rendered="#{not empty entity.id and identity.hasPermission( entityName, 'delete') }"
-                                         onclick="if (!confirm('#{messages['general.message.confirm.Delete']}'))
-                                                     return false;"
-                                         icon="ui-icon-trash"/>
+                                         validateClient="true"
+                                         icon="ui-icon-trash">
+                            <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
+                        </p:commandButton>
 
                         <p:commandButton id="done" 
                                          value="#{messages['general.button.Close']}"

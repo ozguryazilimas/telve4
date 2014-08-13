@@ -10,7 +10,7 @@
     <properties>
         <deltaspike.version>1.0.1</deltaspike.version>
         <picketlink.version>2.6.1.Final</picketlink.version>
-        <primeface.version>5.1-OYAS1</primeface.version>
+        <primeface.version>5.1-OYAS2</primeface.version>
     </properties>
     
     <dependencyManagement>

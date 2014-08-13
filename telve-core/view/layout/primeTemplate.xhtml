@@ -32,6 +32,11 @@
 
             <ds:windowId />
 
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                <p:commandButton value="#{messages['general.button.Yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="#{messages['general.button.Yes']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+
             <ui:insert name="outerspace"></ui:insert>
 
             <p:layout fullPage="true">
