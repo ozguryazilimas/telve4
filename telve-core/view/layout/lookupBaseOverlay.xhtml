@@ -13,7 +13,7 @@
                 <p:fragment>
                     <p:outputLabel for="search2" value="#{messages['general.label.SearchKey']}" />
                     <h:panelGroup styleClass="ui-input-group" layout="block" >
-                        <p:inputText value="#{bean.searchText}" />
+                        <p:inputText value="#{bean.model.searchText}" />
                         <p:commandButton id="search2" icon="ui-icon-search" action="#{bean.search()}" update="resultLists" styleClass="ui-icon-only" />
                     </h:panelGroup>
                 </p:fragment>
@@ -24,9 +24,9 @@
         <p:fragment>
             <h:panelGroup id="resultLists" layout="block" styleClass="large-12 small-12 medium-12 columns">
 
-                <ui:fragment rendered="#{bean.isMultiSelect()}" >
-                    <p:dataTable id="multiSelectDialog" var="item" value="#{bean.getModel()}" 
-                                 selection="#{bean.selectedDatas}" rows="5"  paginator="true"
+                <c:if test="#{ bean.model.modelType eq 'Table' and bean.model.getMultiSelect()}" >
+                    <p:dataTable id="multiSelectDialog" var="item" value="#{bean.model.dataModel()}" 
+                                 selection="#{bean.model.selectedDatas}" rows="5"  paginator="true"
                                  paginatorPosition="bottom" 
                                  paginatorAlwaysVisible="false">
 
@@ -38,12 +38,12 @@
                             </p:column>
                         </c:forEach>
                     </p:dataTable>
-                </ui:fragment>
+                </c:if>
 
-                <ui:fragment rendered="#{not bean.isMultiSelect()}" >
+                <c:if test="#{ bean.model.modelType eq 'Table' and not bean.model.getMultiSelect()}" >
 
-                    <p:dataTable id="singleSelectDialog" var="item" value="#{bean.getModel()}" 
-                                 selection="#{bean.selectedData}" rows="5"  paginator="true"
+                    <p:dataTable id="singleSelectDialog" var="item" value="#{bean.model.dataModel()}" 
+                                 selection="#{bean.model.selectedData}" rows="5"  paginator="true"
                                  paginatorPosition="bottom" 
                                  paginatorAlwaysVisible="false">
 
@@ -55,17 +55,41 @@
                             </p:column>
                         </c:forEach>
                     </p:dataTable>
-                </ui:fragment>
+                </c:if>
+
+                <c:if test="#{bean.model.modelType eq 'Tree' and bean.model.getMultiSelect()}" >
+
+                    <p:tree id="multiSelectTreeDialog" value="#{bean.model.dataModel()}" var="node"  
+                            selectionMode="checkbox"  
+                            selection="#{bean.model.selectedDatas}"  styleClass="large-12 medium-12 small-12 columns" style="width: 100%; ; height: 350px;">  
+
+                        <p:treeNode>  
+                            <h:outputText value="#{node.caption}" />  
+                        </p:treeNode>  
+                    </p:tree> 
+                </c:if>
+
+                <c:if test="#{bean.model.modelType eq 'Tree' and not bean.model.getMultiSelect()}" >
+
+                    <p:tree id="singleSelectTreeDialog" value="#{bean.model.dataModel()}" var="node"  
+                            selectionMode="single"  
+                            selection="#{bean.model.selectedData}" styleClass="large-12 small-12 medium-12 columns" style="width: 100%; height: 350px;">  
+
+                        <p:treeNode>  
+                            <h:outputText value="#{node.caption}" />  
+                        </p:treeNode>  
+                    </p:tree>  
+                </c:if>
             </h:panelGroup>
             <h:panelGroup layout="block" styleClass="large-12 small-12 medium-12 columns">
-            <div class="actionButtons">
+                <div class="actionButtons">
                     <p:commandButton value="#{messages['general.button.Ok']}"  
-                                 action="#{demoParamLookup.closeOverlay()}" ajax="true" 
+                                     action="#{bean.closeOverlay()}" ajax="true" 
                                      onsuccess="PF('#{widgetVar}').hide();" update="#{update}"
                                      icon="ui-icon-check"/>
                     <p:commandButton value="#{messages['general.button.Cancel']}" type="button" onclick="PF('#{widgetVar}').hide();" 
                                      icon="ui-icon-close"/>
-            </div>
+                </div>
             </h:panelGroup>
         </p:fragment>
     </div>

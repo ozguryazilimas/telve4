@@ -1,0 +1,158 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.org/schema/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ut="http://utech.com/jsf/comps" template="/layout/primeTemplate.xhtml">
+
+    <ui:define name="outerspace">
+        <ui:remove>
+            <ui:include src="/general/ajaxLoadingPopup.xhtml" />
+        </ui:remove>
+        <ui:insert name="includes" />
+    </ui:define>
+
+    <ui:define name="body">
+
+        <ui:include src="/layout/messages.xhtml" />
+
+
+        <script>
+            jQuery(document).ready(function() {
+                jQuery('#paramNewButton').click(function() {
+                    if (this.isEnabled()) {
+                        newParameter();
+                    }
+                });
+            });
+        </script>
+
+
+        <h:form id="form">
+
+            <p:remoteCommand name="selectNode" update="nodeEditor,#{onSelectUpdate}" action="#{homeBean.selectItem()}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');#{onSelectEvent}" partialSubmit="true" process="@this" />
+            <p:remoteCommand name="search" update="treePanel" action="#{homeBean.search()}" partialSubmit="true" process="@this" />
+            <p:remoteCommand name="newParameter" update=":form:nodeEditor" action="#{homeBean.createNewChild()}"  partialSubmit="true" process="@this" />
+
+            <script>
+                function onSelect() {
+                    selectNode();
+                }
+            </script>
+
+            <p:layout style="height:98%" >
+                <ui:remove>
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column style="text-align: left">
+                                <p:outputPanel>
+                                    <span class="ui-icon tv-icon-filter" style="display: inline-block;vertical-align: middle"></span>
+                                    <p:inplace id="ajax" label="#{messages['general.label.Filter']} : #{homeBean.filter}" editor="true">
+                                        <p:ajax event="save" oncomplete="search();" />
+                                        <p:inputText value="#{homeBean.filter}" required="false" label="text" style="width:auto !important;"/>
+                                    </p:inplace>
+                                </p:outputPanel>
+                            </p:column>
+                            <p:column style="text-align: left">
+                                #{messages[ ''.concat( entityName ).concat('.caption.Form')]}
+                            </p:column>
+                            
+                        </p:row>
+                    </f:facet>
+                </ui:remove>
+                <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="true" resizable="true">
+                    <f:facet name="header">
+                        <p:outputPanel>
+                            <span class="ui-icon tv-icon-filter" style="display: inline-block;vertical-align: middle"></span>
+                            <p:inplace id="ajax" label="#{messages['general.label.Filter']} : #{homeBean.filter}" editor="true">
+                                <p:ajax event="save" oncomplete="search();" />
+                                <p:inputText value="#{homeBean.filter}" required="false" label="text" style="width:auto !important;"/>
+                            </p:inplace>
+                        </p:outputPanel>
+                    </f:facet>
+                    <h:panelGroup id="treePanel" layout="block">
+
+                        <ui:insert name="customFilter" />
+
+                        <p:tree id="paramTree" value="#{homeBean.treeModel.getRootNode()}" var="node"
+                                selectionMode="single"
+                                selection="#{homeBean.treeModel.selectedData}" style="border: 0px; width: auto;" rendered="#{not customTree}">
+
+                            <p:ajax event="select" oncomplete="selectNode();" partialSubmit="true" process="@this"/>
+
+                            <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+                                <h:outputText value="#{node.caption}"/>
+                            </p:treeNode>
+
+                        </p:tree>
+
+                        <ui:insert name="customTree"></ui:insert>
+                    </h:panelGroup>
+                </p:layoutUnit>
+                <p:layoutUnit position="center"  >
+                    <p:panel header="#{messages[ ''.concat( entityName ).concat( '.caption.Form')]}">
+                        <h:panelGroup id="nodeEditor" styleClass="row" layout="block">
+                            <div >
+                                <div class="ui-icon tv-icon-sitemap" style="display: inline-block;vertical-align: middle"></div>
+                                <h:outputText value="#{homeBean.getNodeCodePath()}" />
+                            </div>
+
+                            <h:panelGroup id="contentArea" layout="block">
+                                <ui:insert name="form"></ui:insert>
+                            </h:panelGroup>
+
+                            <div class="actionButtons">
+                                <p:commandButton id="saveAndNew"
+                                                 value="#{messages['general.button.SaveAndNew']}"
+                                                 action="#{homeBean.saveAndNew()}"
+                                                 rendered="#{identity.hasPermission( entityName, 'update') and identity.hasPermission( entityName, 'insert') }"
+                                                 ajax="true"
+                                                 partialSubmit="false"
+                                                 process="@form"
+                                                 update=":form"
+                                                 validateClient="true"
+                                                 icon="ui-icon-disk"/>
+
+                                <p:commandButton id="save"
+                                                 value="#{messages['general.button.Save']}"
+                                                 action="#{homeBean.save()}"
+                                                 rendered="#{identity.hasPermission( entityName, 'insert')}"
+                                                 ajax="true"
+                                                 partialSubmit="false"
+                                                 process="@form"
+                                                 update=":form"
+                                                 validateClient="true"
+                                                 icon="ui-icon-disk"/>
+
+
+                                <p:commandButton id="delete" value="#{messages['general.button.Delete']}"
+                                                 action="#{homeBean.delete()}"
+                                                 rendered="#{not empty homeBean.entity.id and identity.hasPermission(entityName, 'delete')}"
+                                                 ajax="true"
+                                                 partialSubmit="false"
+                                                 process="@form"
+                                                 update=":form"
+                                                 validateClient="true"
+                                                 icon="ui-icon-trash">
+                                    <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
+                                </p:commandButton>
+                                <p:commandButton id="close" 
+                                                 value="#{messages['general.button.Close']}" 
+                                                 action="#{homeBean.close()}"
+                                                 ajax="true"
+                                                 partialSubmit="true"
+                                                 process="@this"
+                                                 icon="ui-icon-close"/>
+
+                            </div>
+                        </h:panelGroup>
+                    </p:panel>
+                </p:layoutUnit>
+            </p:layout>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

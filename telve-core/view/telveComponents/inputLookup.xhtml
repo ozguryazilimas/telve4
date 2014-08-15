@@ -31,7 +31,7 @@
                     <div class="ui-input-group">
                         <h:inputHidden id="field" value="#{cc.attrs.value}" converter="entityConverter"  required="#{cc.attrs.required}" />
                         <p:fragment>
-                            <h:inputHidden id="st" value="#{cc.attrs.lookupBean.searchText}" />
+                            <h:inputHidden id="st" value="#{cc.attrs.lookupBean.model.searchText}" />
                             <h:panelGroup id="fieldW" layout="span">
                                 <input id="#{cc.clientId}field" type="text" value="#{cc.attrs.value[cc.attrs.caption]}" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all" placeholder="#{cc.attrs.placeholder}" autocomplete="off"/>
                             </h:panelGroup>

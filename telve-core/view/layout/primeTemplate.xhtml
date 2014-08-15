@@ -40,9 +40,11 @@
             <ui:insert name="outerspace"></ui:insert>
 
             <p:layout fullPage="true">
-                <p:layoutUnit position="north"  size="164" style="padding: 0px; z-index: 1;" >
-                    <ui:include src="/layout/ribbon.xhtml" />
-                </p:layoutUnit>
+                <ui:fragment rendered="#{param.forDialog ne 'true' }">
+                    <p:layoutUnit position="north"  size="164" style="padding: 0px; z-index: 1;" >
+                        <ui:include src="/layout/ribbon.xhtml" />
+                    </p:layoutUnit>
+                </ui:fragment>
 
                 <p:layoutUnit position="center"  style="padding: 0 0.4em !important;">
                     <ui:insert name="body"/>
@@ -56,13 +58,15 @@
                         </div>
                     </ui:remove>
                 </p:layoutUnit>
-                <p:layoutUnit position="south" size="51" >
-                    <div class="footer">
-                        <ui:remove>
-                            <ui:include src="/branding/footer.xhtml" />
-                        </ui:remove>
-                    </div>	
-                </p:layoutUnit>
+                <ui:fragment rendered="#{param.forDialog ne 'true' }">
+                    <p:layoutUnit position="south" size="51" >
+                        <div class="footer">
+                            <ui:remove>
+                                <ui:include src="/branding/footer.xhtml" />
+                            </ui:remove>
+                        </div>	
+                    </p:layoutUnit>
+                </ui:fragment>
             </p:layout>
         </h:body>
     </f:view>
