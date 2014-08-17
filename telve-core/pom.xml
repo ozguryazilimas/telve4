@@ -137,6 +137,16 @@
             <artifactId>jasperreports-fonts</artifactId>
         </dependency>
             
+        <dependency>
+                <groupId>org.ehcache</groupId>
+                <artifactId>jcache</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>org.jsr107.ri</groupId>
+                <artifactId>cache-annotations-ri-cdi</artifactId>
+            </dependency>
+            
         <!-- Test -->
         <dependency>
             <groupId>junit</groupId>

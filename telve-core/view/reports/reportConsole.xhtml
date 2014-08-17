@@ -47,13 +47,10 @@
             <p:layoutUnit position="center" header="Favoriler" >
                 <h:form id="rform">
                     <ui:repeat value="#{reportHome.getReportGroups().entrySet().toArray()}" var="group" varStatus="loop">
-                            #{group} #{group.key}
-                            <t:accordion label="#{group.getKey()}" icon="ui-icon-home">
-                            
+                        <t:accordion label="#{group.getKey()}" icon="ui-icon-home">
                             <div class="row">
                                 <ui:repeat value="#{group.getValue()}" var="item" varStatus="loop2">
-                                    #{item}
-                                    <div class="large-4 medium-6 small-12 columns">
+                                    <div class="large-4 medium-6 small-12 columns end">
                                         <div class="row">
                                             <div class="large-2 medium-2 small-2 columns">
                                                 <p:commandLink action="#{reportHome.execReport(item)}" ajax="true" partialSubmit="true" process="@this">
@@ -69,9 +66,9 @@
                                                         #{messages['report.desc.'.concat( item )]} 
                                                     </div>
                                                     <div class="large-12 medium-12 small-12 columns">
-                                                        <p:rating value="#{reportHome.reportRatings[ item ]}">
-                                                            <p:ajax event="rate" listener="#{reportHome.onrate}"  />
-                                                            <p:ajax event="cancel" listener="#{reportHome.oncancel}" />
+                                                        <p:rating value="#{reportHome.reportRatings[ item ]}" converter="javax.faces.Integer">
+                                                            <p:ajax event="rate" listener="#{reportHome.onrate}"  update=":rtform,:rform"/>
+                                                            <p:ajax event="cancel" listener="#{reportHome.oncancel}" update=":rtform,:rform"/>
                                                         </p:rating>
                                                     </div>
                                                 </div>

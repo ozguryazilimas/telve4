@@ -7,7 +7,9 @@ package com.ozguryazilim.telve.reports;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Splitter;
+import com.ozguryazilim.telve.config.TelveConfigRepository;
 import com.ozguryazilim.telve.config.TelveConfigResolver;
+import com.ozguryazilim.telve.entities.Option;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +42,7 @@ import org.slf4j.LoggerFactory;
 public class ReportHome implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportHome.class);
-    
+
     private static final String NAME_SPLITTER = " » ";
     private static final String FOLDER_TYPE = "folder";
 
@@ -63,11 +65,12 @@ public class ReportHome implements Serializable {
      * Favori raporlar için rapor rating bilgisi.
      */
     private Map<String, Integer> reportRatings = new HashMap<>();
-    
+
     /**
      * Rapor ağacı için root node
      */
     private final TreeNode rootNode = new DefaultTreeNode("Root");
+    private TreeNode favNode;
     private TreeNode selectedData;
 
     @Inject
@@ -77,9 +80,13 @@ public class ReportHome implements Serializable {
     @Inject
     private TelveConfigResolver configResolver;
 
-    @Inject @Named("messages")
+    @Inject
+    private TelveConfigRepository configRepository;
+
+    @Inject
+    @Named("messages")
     private transient Map<String, String> messages;
-    
+
     @PostConstruct
     public void init() {
         initTree();
@@ -92,6 +99,9 @@ public class ReportHome implements Serializable {
      */
     protected void initTree() {
 
+        favNode = new DefaultTreeNode(FOLDER_TYPE, "favorites", rootNode);
+        selectedData = favNode;
+        
         for (Entry<String, Report> e : ReportRegistery.getReports().entrySet()) {
             //Kullanıcının yetkisi var mı? Eğer permission tanımlanmamışsa Sınıf ismini kullan.
             String p = e.getValue().permission();
@@ -147,17 +157,30 @@ public class ReportHome implements Serializable {
     protected void initFavReports() {
         favReports.clear();
 
-        String fvcp = configResolver.getProperty("reports.fav.count");
-        if (fvcp == null) {
+        //Önce report ile başlayan şeyleri bir alalım.
+        configRepository.warmupUserAware("reports.");
+
+        Option o = configRepository.getUserAwareOption("reports.fav.count");
+        if (o == null) {
             //Kullanıcın favori raporu yok.
             return;
         }
 
-        Integer fvc = Integer.parseInt(fvcp);
+        Integer fvc = o.getAsInteger();
 
         for (int i = 0; i < fvc; i++) {
-            favReports.add(configResolver.getProperty("reports.fav." + i + ".name"));
-            //FIXME: Rating değerleri doldurulacak.
+            //İsmi kondu
+            o = configRepository.getUserAwareOption("reports.fav." + i + ".name");
+            String r = o.getAsString();
+            favReports.add(r);
+            //Rate'i de kondu.
+            o = configRepository.getUserAwareOption("reports.fav." + i + ".rate");
+            reportRatings.put(r, o.getAsInteger());
+        }
+
+        for (String s : favReports) {
+            //FIXME: Rapor tipini nasıl öğreneceğiz?
+            TreeNode rep = new DefaultTreeNode("JasperReport", s, favNode);
         }
     }
 
@@ -166,24 +189,21 @@ public class ReportHome implements Serializable {
      */
     public void saveFavReports() {
 
-        //configResolver.
-        /* FIXME: Option yapısını adam edince düzeltilecek.
-        
-         OpionManager om = OptionManager.instance();
-         List<Option> ls = new ArrayList<Option>();
+        int i = 0;
+        for (String r : favReports) {
+            Option o = configRepository.getUserAwareOption("reports.fav." + i + ".name", true);
+            o.setAsString(r);
+            configRepository.saveUserAvareOption(o);
 
-         Option o = om.getOption("reports.fav.count", "", true);
-         o.setAsInteger(favReports.size());
-         ls.add(o);
-         for (int i = 0; i < favReports.size(); i++) {
+            o = configRepository.getUserAwareOption("reports.fav." + i + ".rate", true);
+            o.setAsInteger(reportRatings.get(r));
+            configRepository.saveUserAvareOption(o);
 
-         o = om.getOption("reports.fav." + i + ".name", "", true);
-         o.setAsString(favReports.get(i));
-         ls.add(o);
-         }
+        }
 
-         om.updateOptions(ls);
-         */
+        Option o = configRepository.getUserAwareOption("reports.fav.count", true);
+        o.setAsInteger(favReports.size());
+        configRepository.saveUserAvareOption(o);
     }
 
     /**
@@ -254,7 +274,7 @@ public class ReportHome implements Serializable {
     private void buildChilds(String parentNamePath, TreeNode node) {
         if (FOLDER_TYPE.equals(node.getType())) {
             //Eğer Node hala folder ise namepath'e ekleyip childları çağırıyoruz.
-            String pp = parentNamePath + NAME_SPLITTER + messages.get( "report.folder." + node.getData().toString());
+            String pp = parentNamePath + NAME_SPLITTER + messages.get("report.folder." + node.getData().toString());
             for (TreeNode c : node.getChildren()) {
                 buildChilds(pp, c);
             }
@@ -275,8 +295,8 @@ public class ReportHome implements Serializable {
         while (parent != null) {
             //RootNode'u listeye eklemiyoruz
             if (parent != rootNode) {
-                sb.insert(0, NAME_SPLITTER + messages.get( "report.folder." + parent.getData().toString()));
-            } 
+                sb.insert(0, NAME_SPLITTER + messages.get("report.folder." + parent.getData().toString()));
+            }
             parent = parent.getParent();
         }
 
@@ -304,7 +324,8 @@ public class ReportHome implements Serializable {
 
     /**
      * Favori rporlar için rating mapi
-     * @return 
+     *
+     * @return
      */
     public Map<String, Integer> getReportRatings() {
         return reportRatings;
@@ -312,24 +333,51 @@ public class ReportHome implements Serializable {
 
     /**
      * Favori rporlar için rating mapi
-     * @param reportRatings 
+     *
+     * @param reportRatings
      */
     public void setReportRatings(Map<String, Integer> reportRatings) {
         this.reportRatings = reportRatings;
     }
 
+    /**
+     * Rating değerlerine göre favori raporları düzenler.
+     */
+    protected void checkFavReports() {
+
+        for (Entry<String, Integer> e : reportRatings.entrySet()) {
+            if (e.getValue() > 0) {
+                if (!favReports.contains(e.getKey())) {
+                    favReports.add(e.getKey());
+                    new DefaultTreeNode("JasperReport", e.getKey(), favNode);
+                }
+            } else {
+                if (favReports.contains(e.getKey())) {
+                    favReports.remove(e.getKey());
+                    for (TreeNode n : favNode.getChildren()) {
+                        if (e.getKey().equals(n.getData())) {
+                            favNode.getChildren().remove(n);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
     public void onrate(RateEvent rateEvent) {
         LOG.info("OnRate");
         LOG.info("Ratings : {}", reportRatings);
-        //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Rate Event", "You rated:" + ((Integer) rateEvent.getRating()).intValue());
-        //FacesContext.getCurrentInstance().addMessage(null, message);
+        checkFavReports();
+        saveFavReports();
     }
-     
+
     public void oncancel() {
         LOG.info("OnCancel : {}");
         LOG.info("Ratings : {}", reportRatings);
-        //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cancel Event", "Rate Reset");
-        //FacesContext.getCurrentInstance().addMessage(null, message);
+        checkFavReports();
+        saveFavReports();
     }
-    
+
 }

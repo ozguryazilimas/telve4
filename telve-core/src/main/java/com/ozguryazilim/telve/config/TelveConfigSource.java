@@ -24,14 +24,16 @@ public class TelveConfigSource implements ConfigSource{
 
     @Override
     public Map<String, String> getProperties() {
-        TelveConfigReporsitory r = TelveConfigReporsitory.instance();
-        return r == null ? Collections.EMPTY_MAP : r.getProperties();
+        //TelveConfigRepository r = TelveConfigRepository.instance();
+        //return r == null ? Collections.EMPTY_MAP : r.getProperties();
+        return Collections.EMPTY_MAP;
     }
 
     @Override
     public String getPropertyValue(String key) {
-        TelveConfigReporsitory r = TelveConfigReporsitory.instance();
-        return r == null ? null : r.getProperty(key);
+        //TelveConfigRepository r = TelveConfigRepository.instance();
+        //return r == null ? null : r.getProperty(key);
+        return null;
     }
 
     @Override
