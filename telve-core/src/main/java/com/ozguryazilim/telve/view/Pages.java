@@ -37,4 +37,10 @@ public interface Pages extends ViewConfig {
         @PageTitle("Suggestion Browse")
         class SuggestionBrowse implements Admin {};
     }
+    
+    @SecuredPage
+    interface Reports extends Pages{
+        @PageTitle("Suggestion Browse")
+        class ReportConsole implements Reports {};
+    }
 }

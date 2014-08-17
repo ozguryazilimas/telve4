@@ -19,6 +19,7 @@ import org.apache.deltaspike.core.api.provider.BeanProvider;
 /**
  * Telve ayar verilerini saklar.
  * 
+ * FIXME: Burada güncelleme performansı için bişiler yapmak lazım. COnfigResolver ile tam çalıştığına emin değilim...
  * 
  * @author Hakan Uygun
  */
@@ -50,6 +51,30 @@ public class TelveConfigReporsitory {
         return properties;
     }
 
+    public void setProperty( String key, String value){
+        properties.put(key, value);
+        List<Option> ls = entityManager.createQuery("select c from Option c where key = :key ")
+                .setParameter( "key", key)
+                .getResultList();
+        //Veri tabanında yok demek
+        if( ls.isEmpty() ){
+            Option o = new Option();
+            o.setKey(key);
+            o.setValue(value);
+            entityManager.persist(o);
+        } else {
+            Option o = ls.get(0);
+            o.setValue(value);
+            entityManager.merge(o);
+        }
+        entityManager.flush();
+    }
+    
+    
+    public void updateProperties( Map<String, String> props ){
+        //TODO: Burayı en optimize nasıl yazarız?
+    } 
+    
     public static TelveConfigReporsitory instance(){
         //Daha BeanManager init edilmeden önce çağrılırsa geriye null dönecek
         try{

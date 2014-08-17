@@ -11,7 +11,7 @@
 		<action id="reports" 
 				label="module.caption.Reports" 
 				img="report.png" 
-				url="/reports/reports.xhtml" 
+				url="/reports/reportConsole.xhtml" 
 				permission="reports" 
 				type="browse" />
                 <action id="favReports" 
@@ -37,6 +37,7 @@
         <ribbon id="workspace" label="menu.main.Workspace" permission="ribbon:workspace" order="0">
                 <section label="menu.caption.UserManagement" order="0">
 			<action id="dashboard" type="large" />
+                        <action id="reports" type="large" />
 		</section>
             
                 <!--    

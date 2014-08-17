@@ -2,3 +2,4 @@
 
 com.ozguryazilim.telve.impl.module.TelveModuleExtention
 com.ozguryazilim.telve.forms.SubViewExtention
+com.ozguryazilim.telve.reports.ReportExtention

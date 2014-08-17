@@ -253,7 +253,19 @@
                 <version>4.3.6.Final</version>
             </dependency>
 
-            
+            <dependency>
+                <groupId>net.sf.jasperreports</groupId>
+                <artifactId>jasperreports</artifactId>
+                <version>5.6.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.sf.jasperreports</groupId>
+                <artifactId>jasperreports-fonts</artifactId>
+                <version>4.0.0</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
     

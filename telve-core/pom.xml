@@ -127,6 +127,16 @@
             <version>${project.version}</version>
         </dependency>
         
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-fonts</artifactId>
+        </dependency>
+            
         <!-- Test -->
         <dependency>
             <groupId>junit</groupId>

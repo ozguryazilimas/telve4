@@ -32,7 +32,7 @@ public class SuggestionGroupRegistery implements Serializable{
      * Key alanında group isimi, boolean olarak da ek key verisine ihtyaç duyup
      * duymadığı durur.
      */
-    private Map<String, Boolean> groupRegistery = new HashMap<String, Boolean>();
+    private Map<String, Boolean> groupRegistery = new HashMap<>();
 
     /**
      *
@@ -52,7 +52,7 @@ public class SuggestionGroupRegistery implements Serializable{
      * @return
      */
     public List<String> getGroupNames() {
-        return new ArrayList<String>(groupRegistery.keySet());
+        return new ArrayList<>(groupRegistery.keySet());
     }
 
     /**
