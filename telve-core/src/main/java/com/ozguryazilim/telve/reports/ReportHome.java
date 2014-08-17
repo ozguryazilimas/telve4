@@ -10,6 +10,7 @@ import com.google.common.base.Splitter;
 import com.ozguryazilim.telve.config.TelveConfigRepository;
 import com.ozguryazilim.telve.config.TelveConfigResolver;
 import com.ozguryazilim.telve.entities.Option;
+import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,6 +21,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Any;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
@@ -27,7 +30,10 @@ import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.picketlink.Identity;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.RateEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.TreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,10 +41,13 @@ import org.slf4j.LoggerFactory;
 /**
  * Rapor Listesini sunan GUI'i Control Sınıfı.
  *
+ * TODO: FavReportlar rate'e göre sıralanmalı
+ * TODO: PDF.js ile inline PDF gösterelim. 
+ * 
  * @author Hakan Uygun
  */
 @Named
-@WindowScoped
+@WindowScoped //WindowScope'da p:madia çalışmıyor
 public class ReportHome implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(ReportHome.class);
@@ -72,6 +81,10 @@ public class ReportHome implements Serializable {
     private final TreeNode rootNode = new DefaultTreeNode("Root");
     private TreeNode favNode;
     private TreeNode selectedData;
+    
+    private byte[] reportData;
+    private Boolean showReport = false;
+    private StreamedContent media;
 
     @Inject
     @Any
@@ -198,7 +211,7 @@ public class ReportHome implements Serializable {
             o = configRepository.getUserAwareOption("reports.fav." + i + ".rate", true);
             o.setAsInteger(reportRatings.get(r));
             configRepository.saveUserAvareOption(o);
-
+            i++;
         }
 
         Option o = configRepository.getUserAwareOption("reports.fav.count", true);
@@ -243,6 +256,7 @@ public class ReportHome implements Serializable {
         if (isReport(s)) {
             //execReport(s);
         } else {
+            this.showReport = false;
             initReportGroups();
         }
     }
@@ -380,4 +394,46 @@ public class ReportHome implements Serializable {
         saveFavReports();
     }
 
+    public byte[] getReportData() {
+        return reportData;
+    }
+
+    public void setReportData(byte[] reportData) {
+        this.reportData = reportData;
+        media = new DefaultStreamedContent(new ByteArrayInputStream(this.reportData), "application/pdf", "Rapor");
+    }
+
+    public Boolean getShowReport() {
+        return false; //showReport; p:media ile embeded için 
+    }
+
+    public void setShowReport(Boolean showReport) {
+        this.showReport = showReport;
+    }
+
+    /**
+     * GUI'de rapor gösterilmesi için setler.
+     */
+    public void onReportRun(SelectEvent event){
+        LOG.info(event.getObject().toString());
+        this.showReport = true;
+    }
+
+    public StreamedContent getMedia() {
+        return media;
+    }
+    
+    public StreamedContent getStream(){
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        } else {
+            // So, browser is requesting the media. Return a real StreamedContent with the media bytes.
+            return media;
+        }
+    }
+
+    
 }

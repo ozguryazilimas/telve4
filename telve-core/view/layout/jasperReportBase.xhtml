@@ -9,13 +9,18 @@
                 template="/layout/reportFilterBase.xhtml">
 
     <ui:define name="form">
-        
-        <ui:insert name="filter"/>
-        
-        <div class="actionButtons">
-            <p:commandButton id="runPDF" value="#{messages['general.button.ExecPDF']}" icon="ui-icon-check" action="#{bean.closeDialog()}" />
-            <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{bean.cancelDialog()}" />
-        </div>
+        <h:form>
+            <ui:insert name="filter"/>
+
+            <div class="actionButtons">
+                <p:commandButton id="execPDF" value="#{messages['general.button.ExecPDF']}" icon="ui-icon-check" action="#{bean.execPDF()}" ajax="false"/>
+                <ui:remove>
+                    TODO: Doğru düzgün bir PDF.js ile olur bu iş sanırım.
+                    <p:commandButton id="runPDF" value="#{messages['general.button.ExecPDF']}" icon="ui-icon-check" action="#{bean.closeDialog()}" />
+                </ui:remove>
+                <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{bean.cancelDialog()}" />
+            </div>
+        </h:form>
     </ui:define>
-    
+
 </ui:composition>

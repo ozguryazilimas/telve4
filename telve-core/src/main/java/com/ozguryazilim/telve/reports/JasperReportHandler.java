@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -38,6 +39,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Hakan Uygun
  */
+@RequestScoped
 public class JasperReportHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(JasperReportHandler.class);
@@ -69,7 +71,7 @@ public class JasperReportHandler {
      * @throws net.sf.jasperreports.engine.JRException
      */
     @SuppressWarnings("rawtypes")
-    public void reportToPDF(String name, String fileName, Map params) throws JRException {
+    public byte[] reportToPDFBytes(String name, String fileName, Map params) throws JRException {
 
         LOG.info("Jasper Rapor Exec : {} {}", name, params);
 
@@ -78,7 +80,7 @@ public class JasperReportHandler {
         InputStream is = getReportSource(name);
         if (is == null) {
             LOG.warn("Dosya Bulunamadı : {}.jasper ", name);
-            return;
+            return null;
         }
 
         //Rapor üretiliyor
@@ -98,7 +100,7 @@ public class JasperReportHandler {
         } catch (SQLException ex) {
             LOG.error("Connection Error : ", ex);
             FacesMessages.error("Veri tabanı bağlantı hatası!");
-            return;
+            return null;
         } finally {
             if (conn != null) {
                 try {
@@ -110,6 +112,13 @@ public class JasperReportHandler {
             }
         }
 
+        return data;
+    }
+    
+    public void reportToPDF(String name, String fileName, Map params) throws JRException {
+
+        byte[] data = reportToPDFBytes( name, fileName, params );
+        
         //Üretilen rapor sonuç olarak gönderiliyor
         sendResponse(fileName, PDF, data);
     }
@@ -260,7 +269,7 @@ public class JasperReportHandler {
      * @return
      */
     protected InputStream getReportSource(String name) {
-        return Thread.currentThread().getContextClassLoader().getResourceAsStream("jasper/" + name + ".jasper");
+        return Thread.currentThread().getContextClassLoader().getResourceAsStream("/jasper/" + name + ".jasper");
     }
 
     /**
