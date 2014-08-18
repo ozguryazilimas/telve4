@@ -6,6 +6,7 @@
 package com.ozguryazilim.telve.messages;
 
 import com.ozguryazilim.telve.api.module.TelveModuleRegistery;
+import com.ozguryazilim.telve.config.LocaleSelector;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -153,7 +154,7 @@ public class TelveResourceBundle extends java.util.ResourceBundle {
 
     @Override
     public Locale getLocale() {
-        //FIXME: Locale problemini çöz
-        return Locale.US;
+        Locale l = LocaleSelector.instance().getLocale();
+        return l != null ? l : Locale.getDefault();
     }
 }

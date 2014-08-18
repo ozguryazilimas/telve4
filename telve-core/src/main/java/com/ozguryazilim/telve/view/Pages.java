@@ -32,10 +32,19 @@ public interface Pages extends ViewConfig {
     @SecuredPage @PageTitle("Deneme")
     class Deneme implements Pages {};
     
+    @SecuredPage @PageTitle("Ayarlar")
+    class Options implements Pages {};
+    
     @SecuredPage
     interface Admin extends Pages{
         @PageTitle("Suggestion Browse")
         class SuggestionBrowse implements Admin {};
+        
+        @PageTitle("All Options")
+        class AllOptionsPane implements Admin {};
+        
+        @PageTitle("GUI Options")
+        class GuiOptionPane implements Admin {};
     }
     
     @SecuredPage

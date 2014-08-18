@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.ozguryazilim.telve.config;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -14,31 +13,35 @@ import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.picketlink.Identity;
 
 /**
- * Kullanıcı ve ProjectStage gön önünde bulundurarak Sistem içinde tanımlı konfig bilgilerini ayarlar.
- * 
+ * Kullanıcı ve ProjectStage gön önünde bulundurarak Sistem içinde tanımlı
+ * konfig bilgilerini ayarlar.
+ *
  * DeltaSpike ConfigResolver üzerine Veri tabanını kullanır.
- * 
+ *
  * @author Hakan Uygun
  */
 @ApplicationScoped
 @Named
 public class TelveConfigResolver {
-    
+
     @Inject
     @Any
     private Identity identity;
-    
-    public String getProperty( String key ){
-        
-        String account = identity.getAccount().getId();
-        
-        String result = ConfigResolver.getPropertyValue( account + "." + key);
-        
-        if( result == null ){
-            result = ConfigResolver.getPropertyValue( key );
+
+    public String getProperty(String key) {
+
+        String account = "";
+        if (identity != null && identity.getAccount() != null ) {
+            account = identity.getAccount().getId();
         }
-        
+
+        String result = ConfigResolver.getPropertyValue(account + "." + key);
+
+        if (result == null) {
+            result = ConfigResolver.getPropertyValue(key);
+        }
+
         return result;
     }
-    
+
 }

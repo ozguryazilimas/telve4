@@ -1,77 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ribbon-def version="1.0">
 
-	<actions>
-                <action id="dashboard" 
-				label="module.caption.Dashboard" 
-				img="desktop.png" 
-				url="/home.xhtml" 
-				permission="dashboard" 
-				type="browse" />
-		<action id="reports" 
-				label="module.caption.Reports" 
-				img="report.png" 
-				url="/reports/reportConsole.xhtml" 
-				permission="reports" 
-				type="browse" />
-                <action id="favReports" 
-				label="module.caption.FavoriteReports" 
-				img="report.png" 
-				url="/reports/favoriteReports.xhtml" 
-				permission="reports" 
-				type="browse" />
-                <action id="suggestion" 
-				label="module.caption.Suggestion" 
-				img="suggestion.png" 
-				url="/admin/suggestionBrowse.xhtml" 
-				permission="suggestion" 
-				type="browse" />
-                <action id="dashboardEditor" 
-			label="module.caption.DashboardEditor" 
-			img="dashboard_edit.png" 
-			url="/dashboard/dashboardEditor.xhtml" 
-			permission="dashboard" 
-			type="browse" />
-	</actions>
+    <actions>
+        <action id="dashboard" 
+                        label="module.caption.Dashboard" 
+                        img="desktop.png" 
+                        url="/home.xhtml" 
+                        permission="dashboard" 
+                        type="browse" />
+        <action id="reports" 
+                        label="module.caption.Reports" 
+                        img="report.png" 
+                        url="/reports/reportConsole.xhtml" 
+                        permission="reports" 
+                        type="browse" />
+        <action id="favReports" 
+                        label="module.caption.FavoriteReports" 
+                        img="report.png" 
+                        url="/reports/favoriteReports.xhtml" 
+                        permission="reports" 
+                        type="browse" />
+        <action id="suggestion" 
+                        label="module.caption.Suggestion" 
+                        img="suggestion.png" 
+                        url="/admin/suggestionBrowse.xhtml" 
+                        permission="suggestion" 
+                        type="browse" />
+        <action id="dashboardEditor" 
+                        label="module.caption.DashboardEditor" 
+                        img="dashboard_edit.png" 
+                        url="/dashboard/dashboardEditor.xhtml" 
+                        permission="dashboard" 
+                        type="browse" />
+        <action id="options" 
+                        label="module.caption.Options" 
+                        img="options.png" 
+                        url="/options.xhtml" 
+                        permission="options" 
+                        type="browse" />
+    </actions>
 	
-        <ribbon id="workspace" label="menu.main.Workspace" permission="ribbon:workspace" order="0">
-                <section label="menu.caption.UserManagement" order="0">
-			<action id="dashboard" type="large" />
-                        <action id="reports" type="large" />
-		</section>
+    <ribbon id="workspace" label="menu.main.Workspace" permission="ribbon:workspace" order="0">
+        <section label="menu.caption.UserManagement" order="0">
+            <action id="dashboard" type="large" />
+            <action id="reports" type="large" />
+            <action id="options" type="large" />
+        </section>
             
-                <!--    
-                <section label="menu.caption.Reports" order="0">
-                    <action id="reports" type="large" />
-                    <action id="favReports" type="large" />
-		</section>
-                -->
-        </ribbon>
-        
-        <ribbon id="admin" label="menu.main.Admin" permission="ribbon:admin" order="1000">
-		<section label="menu.caption.Suggestions" order="1000">
-			<action id="suggestion" type="large" />
-		</section>
-	</ribbon>
-        
-        <ribbon-context view="/base/home">
-            <section align="right">
-                <action id="dashboardEditor" type="large" />
-            </section>
-        </ribbon-context>
-        
-        <ribbon-context view="/dashboard/">
-            <section order="10">
-                <action id="dashboard" type="large" />
-            </section>
-        </ribbon-context>
-        
-        <!--
-        <ribbon-context view="/reports/">
-            <section order="10">
-                <action id="reports" type="large" />
-                <action id="favReports" type="large" />
-            </section>
-        </ribbon-context>
+        <!--    
+        <section label="menu.caption.Reports" order="0">
+            <action id="reports" type="large" />
+            <action id="favReports" type="large" />
+        </section>
         -->
+    </ribbon>
+        
+    <ribbon id="admin" label="menu.main.Admin" permission="ribbon:admin" order="1000">
+        <section label="menu.caption.Suggestions" order="1000">
+            <action id="suggestion" type="large" />
+        </section>
+    </ribbon>
+        
+    <ribbon-context view="/base/home">
+        <section align="right">
+            <action id="dashboardEditor" type="large" />
+        </section>
+    </ribbon-context>
+        
+    <ribbon-context view="/dashboard/">
+        <section order="10">
+            <action id="dashboard" type="large" />
+        </section>
+    </ribbon-context>
+        
+    <!--
+    <ribbon-context view="/reports/">
+        <section order="10">
+            <action id="reports" type="large" />
+            <action id="favReports" type="large" />
+        </section>
+    </ribbon-context>
+    -->
 </ribbon-def>
