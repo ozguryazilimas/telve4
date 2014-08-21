@@ -1,0 +1,43 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ut="http://utech.com/jsf/comps"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:h="http://xmlns.jcp.org/jsf/html"
+                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <p:panel id="#{dashlet}" header="#{messages[ bean.caption ]}" 
+             toggleable="#{dashletRegistery.hasCapability( dashlet, 'canMinimize' )}" 
+             closable="#{dashletRegistery.hasCapability( dashlet, 'canHide' )}" widgetVar="#{dashlet}">
+
+        <p:ajax event="close" listener="#{dashboardManager.handleClose}"  />  
+
+        <f:facet name="actions">
+            <h:form style="display: inline;">
+                <ui:insert name="extraButtons" />
+                <p:commandLink onclick="jQuery('##{dashlet}editPane').slideToggle(500);" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+                               rendered="#{dashletRegistery.hasCapability( dashlet, 'canEdit' )}"><h:outputText styleClass="ui-icon ui-icon-pencil" /></p:commandLink>
+                <p:commandLink action="#{bean.refresh()}" update=":#{dashlet}" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+                               rendered="#{dashletRegistery.hasCapability( dashlet, 'canRefresh' )}"><h:outputText styleClass="ui-icon ui-icon-refresh" /></p:commandLink>
+            </h:form>
+        </f:facet>
+
+        <div id="#{dashlet}editPane" class="dashlet-edit">
+            <h:form>
+                <div class="row">
+                    <ui:insert name="edit" />
+                </div>
+                <div class="actionButtons">
+                    <p:commandButton action="#{bean.save()}" icon="ui-icon-check" ajax="true" partialSubmit="false" process="@form" update=":#{dashlet}"/>
+                    <p:commandButton onclick="jQuery('##{dashlet}editPane').slideToggle(500);" icon="ui-icon-close" type="button" />
+                </div>
+            </h:form>
+        </div>
+
+
+        <div id="viewPane">
+            <ui:insert name="view" />
+        </div>
+    </p:panel>
+
+</ui:composition>

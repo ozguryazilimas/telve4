@@ -4,3 +4,4 @@ com.ozguryazilim.telve.impl.module.TelveModuleExtention
 com.ozguryazilim.telve.forms.SubViewExtention
 com.ozguryazilim.telve.reports.ReportExtention
 com.ozguryazilim.telve.config.OptionPaneExtention
+com.ozguryazilim.telve.dashboard.DashletExtention

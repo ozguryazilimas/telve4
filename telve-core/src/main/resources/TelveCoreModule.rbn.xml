@@ -29,7 +29,7 @@
         <action id="dashboardEditor" 
                         label="module.caption.DashboardEditor" 
                         img="dashboard_edit.png" 
-                        url="/dashboard/dashboardEditor.xhtml" 
+                        url="dashboardEditor.xhtml" 
                         permission="dashboard" 
                         type="browse" />
         <action id="options" 
@@ -61,13 +61,13 @@
         </section>
     </ribbon>
         
-    <ribbon-context view="/base/home">
+    <ribbon-context view="/home">
         <section align="right">
             <action id="dashboardEditor" type="large" />
         </section>
     </ribbon-context>
         
-    <ribbon-context view="/dashboard/">
+    <ribbon-context view="/dashboardEditor">
         <section order="10">
             <action id="dashboard" type="large" />
         </section>

@@ -138,14 +138,14 @@
         </dependency>
             
         <dependency>
-                <groupId>org.ehcache</groupId>
-                <artifactId>jcache</artifactId>
-            </dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>jcache</artifactId>
+        </dependency>
 
-            <dependency>
-                <groupId>org.jsr107.ri</groupId>
-                <artifactId>cache-annotations-ri-cdi</artifactId>
-            </dependency>
+        <dependency>
+            <groupId>org.jsr107.ri</groupId>
+            <artifactId>cache-annotations-ri-cdi</artifactId>
+        </dependency>
             
         <!-- Test -->
         <dependency>
@@ -192,6 +192,10 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
         
+        <dependency>
+            <groupId>net.java.dev.rome</groupId>
+            <artifactId>rome</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

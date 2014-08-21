@@ -276,6 +276,13 @@
                 <artifactId>cache-annotations-ri-cdi</artifactId>
                 <version>1.0.0</version>
             </dependency>
+            
+            <dependency>
+                <groupId>net.java.dev.rome</groupId>
+                <artifactId>rome</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>

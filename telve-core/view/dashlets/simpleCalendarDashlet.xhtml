@@ -1,0 +1,16 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/dashletBase.xhtml">
+
+    <ui:param name="name" value="simpleCalendarDshlet" />
+    <ui:param name="bean" value="#{simpleCalendarDshlet}" />
+    <ui:define name="view">
+        <ui:remove>
+        <p:calendar mode="inline" />
+        </ui:remove>
+        <p:schedule id="scheduleLocale" value="#{scheduleView.eventModel}" locale="tr" />
+    </ui:define>
+</ui:composition>

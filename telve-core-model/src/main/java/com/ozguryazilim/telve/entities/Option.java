@@ -51,6 +51,18 @@ public class Option extends EntityBase {
     @Column(name = "OP_VALUE")
     private String value;
 
+    public Option() {
+    }
+    
+    public Option(String key, String value) {
+        this.key = key;
+        this.value = value;
+    }
+    
+    public Option(String key) {
+        this.key = key;
+    }
+    
     @Override
     public Long getId() {
         return id;

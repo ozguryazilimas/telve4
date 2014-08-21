@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/dashletBase.xhtml">
+
+    <ui:param name="name" value="appNewsDashlet" />
+    <ui:param name="bean" value="#{appNewsDashlet}" />
+
+    <ui:define name="edit">
+        <t:inputText label="general.label.FeedCount" value="#{appNewsDashlet.feedCount}" columnClass="large-12 medium-12 small-12"/>
+    </ui:define>
+
+    <ui:define name="view">
+        <p:outputPanel deferred="true">
+            <p:feedReader value="#{appNewsDashlet.newsURL}" var="feed" size="#{appNewsDashlet.feedCount}">  
+                <a href="#{feed.link}" target="_blank">
+                    <h:outputText value="#{feed.title}" style="font-weight: bold"/>  
+                </a>
+                <br />  
+                <h:outputText value="#{feed.description.value}" escape="false"/>  
+                <p:separator />  
+            </p:feedReader> 
+        </p:outputPanel>
+    </ui:define>
+</ui:composition>
