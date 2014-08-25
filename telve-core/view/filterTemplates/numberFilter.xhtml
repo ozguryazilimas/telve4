@@ -4,28 +4,56 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:pe="http://primefaces.org/ui/extensions" >
-    <p:column>
+    <ui:remove>
+        <p:column>
+            <h:outputText value="#{messages[filter.labelKey]}" />
+        </p:column>
+        <p:column>
+            <p:selectOneMenu id="strOp#{idprefix}" value="#{filter.operand}" styleClass="small" >
+                <f:selectItems value="#{filter.operands}" var="operand"
+                               itemLabel="#{messages['filter.operand.type.'.concat( operand )]}"/>
+                <p:ajax update="strInput#{idprefix}" partialSubmit="true" process="@this" />
+            </p:selectOneMenu>
+        </p:column>
+        <p:column>
+            <h:panelGroup id="strInput#{idprefix}" layout="block">
+                <h:panelGroup layout="block" styleClass="#{filter.operand eq 'Between' ? 'large-6 medium-6 small-12' : 'large-12 medium-12 small-12'}  columns" >
+                    <pe:inputNumber id="numINP#{idprefix}" value="#{filter.value}"
+                                    title="#{messages[filter.hintKey]}" decimalPlaces="#{filter.decimalPlaces}"
+                                    rendered="#{filter.operand ne 'All'}" />
+                </h:panelGroup>
+                <h:panelGroup layout="block" styleClass="large-6 medium-6 small-12 columns" rendered="#{filter.operand eq 'Between'}">
+                    <pe:inputNumber id="numINP2#{idprefix}" value="#{filter.value2}"
+                                    title="#{messages[filter.hintKey]}" decimalPlaces="#{filter.decimalPlaces}"
+                                    rendered="#{filter.operand eq 'Between'}" />
+                </h:panelGroup>
+            </h:panelGroup>
+        </p:column>
+    </ui:remove>
+
+    <div class="large-2 medium-2 small-2 columns">
         <h:outputText value="#{messages[filter.labelKey]}" />
-    </p:column>
-    <p:column>
+    </div>
+    <div class="large-2 medium-2 small-2 columns">
         <p:selectOneMenu id="strOp#{idprefix}" value="#{filter.operand}" styleClass="small" >
             <f:selectItems value="#{filter.operands}" var="operand"
                            itemLabel="#{messages['filter.operand.type.'.concat( operand )]}"/>
             <p:ajax update="strInput#{idprefix}" partialSubmit="true" process="@this" />
         </p:selectOneMenu>
-    </p:column>
-    <p:column>
-        <h:panelGroup id="strInput#{idprefix}" layout="block">
-            
-                    <pe:inputNumber id="numINP#{idprefix}" value="#{filter.value}"
-                                 title="#{messages[filter.hintKey]}" decimalPlaces="#{filter.decimalPlaces}"
-                         rendered="#{filter.operand ne 'All'}" />
-                    
-                    <pe:inputNumber id="numINP2#{idprefix}" value="#{filter.value2}"
-                         title="#{messages[filter.hintKey]}" decimalPlaces="#{filter.decimalPlaces}"
-                         rendered="#{filter.operand eq 'Between'}" />
-            
+    </div>
+    <div class="large-8 medium-8 small-8 columns">
+        <h:panelGroup id="strInput#{idprefix}" layout="block" styleClass="row">
+            <h:panelGroup layout="block" styleClass="#{filter.operand eq 'Between' ? 'large-6 medium-6 small-12' : 'large-12 medium-12 small-12'}  columns" >
+                <pe:inputNumber id="numINP#{idprefix}" value="#{filter.value}"
+                                title="#{messages[filter.hintKey]}" decimalPlaces="#{filter.decimalPlaces}"
+                                rendered="#{filter.operand ne 'All'}" />
+            </h:panelGroup>
+            <h:panelGroup layout="block" styleClass="large-6 medium-6 small-12 columns" rendered="#{filter.operand eq 'Between'}">
+                <pe:inputNumber id="numINP2#{idprefix}" value="#{filter.value2}"
+                                title="#{messages[filter.hintKey]}" decimalPlaces="#{filter.decimalPlaces}"
+                                rendered="#{filter.operand eq 'Between'}" />
+            </h:panelGroup>
         </h:panelGroup>
-    </p:column>
+    </div>
 
 </ui:composition>

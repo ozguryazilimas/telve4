@@ -271,4 +271,31 @@ public class DateFilter<E> extends Filter<E, Date> {
         this.valueType2 = valueType2;
     }
 
+    /**
+     * GUI düzenlemesi için Grid colon sınıflarını döndürür.
+     * @return 
+     */
+    public String getStyleClass(){
+        switch (getOperand()){
+            case All :
+                return "";
+            case Between :
+                if( getValueType().equals( DateValueType.Date ) && getValueType2().equals( DateValueType.Date ) ){
+                    return "large-3 medium-6 small-12";
+                } else if( getValueType().equals( DateValueType.Date ) && !getValueType2().equals( DateValueType.Date ) ){
+                    return "large-4 medium-6 small-12";
+                } else if( !getValueType().equals( DateValueType.Date ) && getValueType2().equals( DateValueType.Date ) ){
+                    return "large-4 medium-6 small-12";
+                } else if( !getValueType().equals( DateValueType.Date ) && !getValueType2().equals( DateValueType.Date ) ){
+                    return "large-6 medium-6 small-12";
+                }
+            default:
+                if( getValueType().equals( DateValueType.Date ) ){
+                    return "large-6 medium-6 small-12";
+                } else {
+                    return "large-12 medium-12 small-12";
+                }
+        }
+    }
+    
 }

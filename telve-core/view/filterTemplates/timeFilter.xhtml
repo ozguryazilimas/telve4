@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" >
+
+    <div class="large-2 medium-2 small-2 columns">
+        <h:outputText value="#{messages[filter.labelKey]}" />
+    </div>
+    <div class="large-2 medium-2 small-2 columns">
+        <p:selectOneMenu id="strOp#{idprefix}" value="#{filter.operand}" styleClass="small" >
+            <f:selectItems value="#{filter.operands}" var="operand"
+                           itemLabel="#{messages['filter.operand.type.'.concat( operand )]}"/>
+            <p:ajax update="strInput#{idprefix}" partialSubmit="true" process="@this" />
+        </p:selectOneMenu>
+    </div>
+    <div class="large-8 medium-8 small-8 columns">
+        <h:panelGroup id="strInput#{idprefix}" layout="block" styleClass="row">
+            <h:panelGroup layout="block" styleClass="#{filter.operand eq 'Between' ? 'large-6 medium-6 small-12' : 'large-12 medium-12 small-12'}  columns" >
+
+                <p:calendar id="valueDateINP#{idprefix}" value="#{filter.value}" 
+                            pattern="#{messages['general.format.Time']}" required="false"
+                            title="#{messages[filter.hintKey]}" 
+                            showOn="button" timeOnly="true"
+                            rendered="#{filter.operand ne 'All'}"/>
+
+            </h:panelGroup>
+            <h:panelGroup layout="block" styleClass="large-6 medium-6 small-12 columns" rendered="#{filter.operand eq 'Between'}">
+                <p:calendar id="valueDateINP2#{idprefix}" value="#{filter.value2}" 
+                            pattern="#{messages['general.format.Time']}" required="false"
+                            title="#{messages[filter.hintKey]}" 
+                            showOn="button" timeOnly="true"
+                            rendered="#{filter.operand eq 'Between'}"/>
+            </h:panelGroup>
+        </h:panelGroup>
+    </div>
+
+</ui:composition>

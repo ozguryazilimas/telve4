@@ -3,22 +3,45 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui">
-    <p:column>
+
+    <ui:remove>
+        <p:column>
+            <h:outputText value="#{messages[filter.labelKey]}" />
+        </p:column>
+        <p:column>
+            <p:selectOneMenu id="strOp#{idprefix}" value="#{filter.operand}" styleClass="small" >
+                <f:selectItems value="#{filter.operands}" var="operand"
+                               itemLabel="#{messages['filter.operand.type.'.concat( operand )]}"/>
+                <p:ajax update="strInput#{idprefix}" partialSubmit="true" process="@this" />
+            </p:selectOneMenu>
+        </p:column>
+        <p:column>
+            <h:panelGroup id="strInput#{idprefix}" layout="block" styleClass="large-12 medium-12 small-12 columns">
+                <p:inputText id="strINP#{idprefix}" value="#{filter.value}"
+                             title="#{messages[filter.hintKey]}"
+                             rendered="#{filter.operand ne 'All'}" />
+            </h:panelGroup>
+        </p:column>
+    </ui:remove>
+
+    <div class="large-2 medium-2 small-2 columns">
         <h:outputText value="#{messages[filter.labelKey]}" />
-    </p:column>
-    <p:column>
+    </div>
+    <div class="large-2 medium-2 small-2 columns">
         <p:selectOneMenu id="strOp#{idprefix}" value="#{filter.operand}" styleClass="small" >
             <f:selectItems value="#{filter.operands}" var="operand"
                            itemLabel="#{messages['filter.operand.type.'.concat( operand )]}"/>
             <p:ajax update="strInput#{idprefix}" partialSubmit="true" process="@this" />
         </p:selectOneMenu>
-    </p:column>
-    <p:column>
-        <h:panelGroup id="strInput#{idprefix}" layout="block">
-            <p:inputText id="strINP#{idprefix}" value="#{filter.value}"
-                         title="#{messages[filter.hintKey]}"
-                         rendered="#{filter.operand ne 'All'}" />
-        </h:panelGroup>
-    </p:column>
+    </div>
+    <div class="large-8 medium-8 small-8 columns">
+        <div class="row">
+            <h:panelGroup id="strInput#{idprefix}" layout="block" styleClass="large-12 medium-12 small-12 columns">
+                <p:inputText id="strINP#{idprefix}" value="#{filter.value}"
+                             title="#{messages[filter.hintKey]}"
+                             rendered="#{filter.operand ne 'All'}" />
+            </h:panelGroup>
+        </div>
+    </div>
 
 </ui:composition>

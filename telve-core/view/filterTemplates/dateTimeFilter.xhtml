@@ -28,7 +28,7 @@
 
                 <h:panelGroup id="valueDate#{idprefix}" styleClass="#{filter.styleClass} columns" layout="block" rendered="#{filter.valueType eq 'Date' and filter.operand ne 'All'}">
                     <p:calendar id="valueDateINP#{idprefix}" value="#{filter.value}" 
-                                pattern="#{messages['general.format.Date']}" required="false"
+                                pattern="#{messages['general.format.DateTime']}" required="false"
                                 title="#{messages[filter.hintKey]}" 
                                 showOn="button" navigator="true"/>
                 </h:panelGroup>
@@ -43,7 +43,7 @@
 
                 <h:panelGroup id="valueDate2#{idprefix}" styleClass="#{filter.styleClass} columns" layout="block" rendered="#{filter.valueType2 eq 'Date' and filter.operand eq 'Between'}">
                     <p:calendar id="valueDateINP2#{idprefix}" value="#{filter.value2}" 
-                                pattern="#{messages['general.format.Date']}" required="false"
+                                pattern="#{messages['general.format.DateTime']}" required="false"
                                 title="#{messages[filter.hintKey]}" 
                                 showOn="button" navigator="true"/>
                 </h:panelGroup>

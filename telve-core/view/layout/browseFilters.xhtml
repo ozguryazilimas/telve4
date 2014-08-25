@@ -55,21 +55,21 @@
             <p:overlayPanel id="filtersPop" for="filterBtn" hideEffect="fade" dynamic="true">  
                 <p>#{messages['general.label.FilterItems']}</p>
                 <h:panelGroup id="filterSelector" layout="block">
-                <ui:repeat value="#{bean.queryDefinition.allFilters}"
-                           var="filterr" varStatus="rowCounter">
-                    <p:commandLink action="#{bean.queryDefinition.toggleFilter(filterr)}" 
-                                   update=":pfilterForm:filterPanel, :pfilterForm:filterSelector" 
-                                   partialSubmit="true"
-                                   process="@this" style="display: block">
-                        <span class="ui-icon #{bean.queryDefinition.isVisible(filterr) ? 'tv-icon-check' : 'tv-icon-check-empty'}" style="display: inline-block"/>
-                        <ui:remove>
-                        <h:panelGroup rendered="#{bean.queryDefinition.isVisible(filterr)}" layout="span"><i class="ui-icon tv-icon-check" /></h:panelGroup>
-                        <h:panelGroup rendered="#{not bean.queryDefinition.isVisible(filterr)}" layout="span"><i class="ui-icon tv-icon-check-empty" /></h:panelGroup>
-                        </ui:remove>
-                        <h:outputText value="#{messages[filterr.labelKey]}" />
-                    </p:commandLink>
-                </ui:repeat>
-                    </h:panelGroup>
+                    <ui:repeat value="#{bean.queryDefinition.allFilters}"
+                               var="filterr" varStatus="rowCounter">
+                        <p:commandLink action="#{bean.queryDefinition.toggleFilter(filterr)}" 
+                                       update=":pfilterForm:filterPanel, :pfilterForm:filterSelector" 
+                                       partialSubmit="true"
+                                       process="@this" style="display: block">
+                            <span class="ui-icon #{bean.queryDefinition.isVisible(filterr) ? 'tv-icon-check' : 'tv-icon-check-empty'}" style="display: inline-block"/>
+                            <ui:remove>
+                                <h:panelGroup rendered="#{bean.queryDefinition.isVisible(filterr)}" layout="span"><i class="ui-icon tv-icon-check" /></h:panelGroup>
+                                <h:panelGroup rendered="#{not bean.queryDefinition.isVisible(filterr)}" layout="span"><i class="ui-icon tv-icon-check-empty" /></h:panelGroup>
+                            </ui:remove>
+                            <h:outputText value="#{messages[filterr.labelKey]}" />
+                        </p:commandLink>
+                    </ui:repeat>
+                </h:panelGroup>
                 <ui:remove>
                     <p:dataList id="filterSelector" value="#{bean.queryDefinition.allFilters}" var="filterr" itemType="disc" style="padding-left: 4px;">  
                         <p:commandLink action="#{bean.queryDefinition.toggleFilter(filterr)}" 
@@ -108,26 +108,53 @@
             </p:overlayPanel>
 
             <p:outputPanel id="filterPanel">
-                <p:panelGrid>
-                    <f:facet name="header">  
-                        <p:row>  
-                            <p:column>#{messages['general.label.Field']}</p:column>  
-                            <p:column>#{messages['general.label.Operator']}</p:column>  
-                            <p:column>#{messages['general.label.Value']}</p:column>  
-                        </p:row>  
-                    </f:facet>
+                <ui:remove>
+                    <p:panelGrid>
+                        <f:facet name="header">  
+                            <p:row>  
+                                <p:column>#{messages['general.label.Field']}</p:column>  
+                                <p:column>#{messages['general.label.Operator']}</p:column>  
+                                <p:column>#{messages['general.label.Value']}</p:column>  
+                            </p:row>  
+                        </f:facet>
 
-                    <c:forEach id="filterRepeater2" items="#{bean.queryDefinition.filters}"
-                               var="filter" varStatus="rowCounter">
-                        <p:row>
-                            <ui:include src="/filterTemplates/#{filter.template}.xhtml" >
-                                <ui:param name="filter" value="#{filter}" />
-                                <ui:param name="idprefix" value="#{rowCounter.index}" />
-                            </ui:include>
-                        </p:row>
-                    </c:forEach>
+                        <c:forEach id="filterRepeater2" items="#{bean.queryDefinition.filters}"
+                                   var="filter" varStatus="rowCounter">
+                            <p:row>
+                                <ui:include src="/filterTemplates/#{filter.template}.xhtml" >
+                                    <ui:param name="filter" value="#{filter}" />
+                                    <ui:param name="idprefix" value="#{rowCounter.index}" />
+                                </ui:include>
+                            </p:row>
+                        </c:forEach>
 
-                </p:panelGrid>
+                    </p:panelGrid>
+                </ui:remove>
+
+
+                <div class="row">
+                    <div class="large-2 medium-2 small-2 columns" style="font-weight: bold">
+                        #{messages['general.label.Field']}
+                    </div>
+                    <div class="large-2 medium-2 small-2 columns" style="font-weight: bold">
+                        #{messages['general.label.Operator']}
+                    </div>
+                    <div class="large-8 medium-8 small-8 columns" style="font-weight: bold">
+                        #{messages['general.label.Value']}
+                    </div>
+                </div>
+                
+                <c:forEach id="filterRepeater2" items="#{bean.queryDefinition.filters}"
+                           var="filter" varStatus="rowCounter">
+                    <div class="row">
+                        <ui:include src="/filterTemplates/#{filter.template}.xhtml" >
+                            <ui:param name="filter" value="#{filter}" />
+                            <ui:param name="idprefix" value="#{rowCounter.index}" />
+                        </ui:include>
+                    </div>
+                </c:forEach>
+
+
             </p:outputPanel>
 
             <h:panelGroup id="actionButtons" styleClass="actionButtons" layout="block">
