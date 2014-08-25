@@ -47,6 +47,11 @@ public abstract class Filter<E, X> {
      * Seçilen değer
      */
     private X value;
+    
+    /**
+     * Aralık tipi filtreler için ikinci değer
+     */
+    private X value2;
 
     public Filter( SingularAttribute<? super E, X> attribute, String label ){
         this.attribute = attribute;
@@ -99,6 +104,14 @@ public abstract class Filter<E, X> {
 
     public void setValue(X value) {
         this.value = value;
+    }
+
+    public X getValue2() {
+        return value2;
+    }
+
+    public void setValue2(X value2) {
+        this.value2 = value2;
     }
     
     public abstract void decorateCriteria( Criteria<E, ?> criteria );

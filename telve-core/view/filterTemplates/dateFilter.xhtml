@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" >
+    <p:column>
+        <h:outputText value="#{messages[filter.labelKey]}" />
+    </p:column>
+    <p:column>
+        <p:selectOneMenu id="strOp#{idprefix}" value="#{filter.operand}" styleClass="small" >
+            <f:selectItems value="#{filter.operands}" var="operand"
+                           itemLabel="#{messages['filter.operand.type.'.concat( operand )]}"/>
+            <p:ajax update="strInput#{idprefix}" partialSubmit="true" process="@this" />
+        </p:selectOneMenu>
+    </p:column>
+    <p:column>
+        <h:panelGroup id="strInput#{idprefix}" layout="block">
+
+            <h:panelGroup styleClass="large-6 medium-6 small-6 columns" layout="block" rendered="#{filter.operand ne 'All'}">
+                <p:selectOneMenu id="dateINP#{idprefix}" value="#{filter.valueType}" >
+                    <f:selectItems value="#{filter.valueTypes}" var="item"
+                                   itemLabel="#{messages['filter.dateValue.type.'.concat(item )]}"/>
+                    <p:ajax event="change" update="valueDate#{idprefix}" process="@this"/>
+                </p:selectOneMenu>
+            </h:panelGroup>
+
+            <h:panelGroup id="valueDate#{idprefix}" styleClass="large-6 medium-6 small-6 columns" layout="block" rendered="#{filter.valueType eq 'Date'}">
+                <p:calendar id="valueDateINP#{idprefix}" value="#{filter.value}" 
+                            pattern="#{messages['general.format.Date']}" required="false"
+                             title="#{messages[filter.hintKey]}" 
+                            showOn="button" navigator="true"/>
+            </h:panelGroup>
+            
+            <h:panelGroup styleClass="large-6 medium-6 small-6 columns" layout="block" rendered="#{filter.operand eq 'Between'}">
+                <p:selectOneMenu id="dateINP2#{idprefix}" value="#{filter.valueType2}" >
+                    <f:selectItems value="#{filter.valueTypes}" var="item"
+                                   itemLabel="#{messages['filter.dateValue.type.'.concat(item )]}"/>
+                    <p:ajax event="change" update="valueDate2#{idprefix}" process="@this"/>
+                </p:selectOneMenu>
+            </h:panelGroup>
+
+            <h:panelGroup id="valueDate2#{idprefix}" styleClass="large-6 medium-6 small-6 columns" layout="block" rendered="#{filter.valueType2 eq 'Date'}">
+                <p:calendar id="valueDateINP2#{idprefix}" value="#{filter.value2}" 
+                            pattern="#{messages['general.format.Date']}" required="false"
+                             title="#{messages[filter.hintKey]}" 
+                            showOn="button" navigator="true"/>
+            </h:panelGroup>
+
+        </h:panelGroup>
+    </p:column>
+
+</ui:composition>
