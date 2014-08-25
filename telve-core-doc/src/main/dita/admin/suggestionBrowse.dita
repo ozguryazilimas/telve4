@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN"
+"http://docs.oasis-open.org/dita/dtd/reference.dtd">
+<reference id="suggestion">
+    <title>Öneri Tanımları</title>
+    <refbody>
+        <refsyn>Uygulama içerisinde parametre olarak tanımlanmasına ihtiyaç olmamakla birlikte kullanıcıların sıkça aynı veriyi girmesi gereken yerler için geliştirilmiş bir yapıdır.  </refsyn>
+        <section>
+            <title>Kullanım Biçimi</title>
+            <image href="img/suggestionBrowse.png"/>
+            <p>Bu ekranda çeşitli filtreler kullanarak farklı gruplarda yer alan öneri bilgileri düzenlenebilir. Kullanıcılar öneri bilgilerini bu ekran üzerinde tanımlamak durumunda değillerdir.</p>
+        </section>
+        <properties>
+            <prophead>
+                <proptypehd>Alan</proptypehd>
+                <propvaluehd>Açıklama</propvaluehd>
+                <propdeschd>Ek Bilgi</propdeschd>
+            </prophead>
+            <property>
+                <proptype>Group</proptype>
+                <propvalue>Öneri Grubu</propvalue>
+                <propdesc>Her bir uygulama tarafından tanımlanmış bir grup içerisinde yer alır. Bu grup tanımına göre uygulamanın farklı yerlerinde kullanılırlar.</propdesc>
+            </property>
+            <property>
+                <proptype>Data</proptype>
+                <propvalue>Öneri verisi</propvalue>
+                <propdesc>İlgili öneri kalemi</propdesc>
+            </property>
+            <property>
+                <proptype>Info</proptype>
+                <propvalue>Veri ile ilgili açıklama</propvalue>
+                <propdesc>Seçimlik olarak girilebilecek veri ile ilgili ek açıklama bilgisi</propdesc>
+            </property>
+            <property>
+                <proptype>Anahtar</proptype>
+                <propvalue>Verinin bağlı olduğu anahtar</propvalue>
+                <propdesc>Bazı öneriler farklı bir bilgiye bağlı olabilir. Örneğin Müşteriye bağlı olarak depo sorumlusu gibi. Anahtar, bu önerinin bağlı olduğu bilgiyi taşır. Seçimlik bir bilgidir.</propdesc>
+            </property>
+            <property>
+                <proptype>Active</proptype>
+                <propvalue>Bu önerinin aktif olup olmadığı bilgisi</propvalue>
+                <propdesc>Eğer bir öneri aktif değilse, öneri listelerinde görünmeyecektir.</propdesc>
+            </property>
+        </properties>
+    </refbody>
+</reference>

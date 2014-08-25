@@ -146,5 +146,8 @@
         <module>telve-core</module>
         <module>telve-core-test</module>
         <module>telve-core-model</module>
+        <module>telve-core-doc</module>
+        <module>telve-doc</module>
+        <module>telve-help</module>
     </modules>
 </project>

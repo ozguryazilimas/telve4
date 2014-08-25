@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN"
+"http://docs.oasis-open.org/dita/dtd/map.dtd">
+<map>
+  <title>Temel Kullanım Özellikleri</title>
+
+  <topichead navtitle="Genel Bilgiler">
+    <topicref href="general/paramEdit.dita"/>
+  </topichead>
+  <topichead navtitle="Genel Ekranlar">
+    <topicref href="admin/suggestionBrowse.dita"/>
+  </topichead>
+</map>

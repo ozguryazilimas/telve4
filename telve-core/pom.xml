@@ -196,6 +196,12 @@
             <groupId>net.java.dev.rome</groupId>
             <artifactId>rome</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

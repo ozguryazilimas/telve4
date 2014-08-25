@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ozguryazilim.mutfak</groupId>
+        <artifactId>telve-parent</artifactId>
+        <version>4.0.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>telve-doc</artifactId>
+    <description>Online Help and Document Project Base POM</description>
+    <packaging>pom</packaging>
+    
+    <properties>
+        <dita.dir>${env.DITA_HOME}</dita.dir>
+        <transtype>oyas-pdf</transtype>
+    </properties>
+
+    <build>
+        <defaultGoal>package</defaultGoal>
+        <resources>
+            <resource>
+                <directory>src/main/dita</directory>
+            </resource>
+        </resources>
+    </build>
+    
+    <profiles>
+        <profile>
+            <id>doc</id>
+         
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-resources-plugin</artifactId>
+                            <executions>
+                                <execution>
+                                    <id>copy-proerties.temp</id>
+                                    <phase>initialize</phase>
+                                    <goals>
+                                        <goal>copy-resources</goal>
+                                    </goals>
+                                    <configuration>
+                                        <outputDirectory>${project.build.directory}</outputDirectory>
+                                        <resources>
+                                            <resource>
+                                                <directory>src/main/dita-resources</directory>
+                                                <filtering>true</filtering>
+                                                <includes>
+                                                    <include>dita.properties</include>
+                                                </includes>
+                                            </resource>
+                                        </resources>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+
+                        <plugin>
+                            <artifactId>exec-maven-plugin</artifactId>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <version>1.2.1</version>
+                            <executions>
+                                <execution>
+                                    <id>DITA</id>
+                                    <phase>prepare-package</phase>
+                                    <goals>
+                                        <goal>exec</goal>
+                                    </goals>
+                                    <configuration>
+                                        <executable>${dita.dir}/dita.sh</executable>
+                                        <arguments>
+                                            <argument>${project.build.directory}/dita.properties</argument>
+                                        </arguments>
+                                    </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+                
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                    </plugin>
+                    <plugin>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <groupId>org.codehaus.mojo</groupId>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                    </plugin>
+                </plugins>
+                
+            </build>
+        </profile>
+    </profiles>
+    
+</project>
