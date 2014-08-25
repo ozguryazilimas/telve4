@@ -158,7 +158,7 @@
             </p:outputPanel>
 
             <h:panelGroup id="actionButtons" styleClass="actionButtons" layout="block">
-                <p:commandButton value="#{messages['general.button.Search']}" actionListener="#{bean.search()}"  icon="ui-icon-search" update="@([id$=results]), actionButtons"/> 
+                <p:commandButton value="#{messages['general.button.Search']}" actionListener="#{bean.search()}" partialSubmit="false" process="@form" icon="ui-icon-search" update="@([id$=results]), actionButtons"/> 
                 <p:menuButton value="Export" rendered="#{not empty bean.entityList and identity.hasPermission( permission, 'export')}">
                     <p:menuitem value="PDF" ajax="false" icon="ui-icon-note">
                         <p:dataExporter type="pdf" target=":results" fileName="results" /> 
