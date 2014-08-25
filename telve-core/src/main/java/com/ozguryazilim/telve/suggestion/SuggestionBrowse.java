@@ -13,6 +13,7 @@ import com.ozguryazilim.telve.forms.Browse;
 import com.ozguryazilim.telve.forms.BrowseBase;
 import com.ozguryazilim.telve.query.QueryDefinition;
 import com.ozguryazilim.telve.query.StringFilter;
+import com.ozguryazilim.telve.query.StringListFilter;
 import com.ozguryazilim.telve.query.TextColumn;
 import com.ozguryazilim.telve.view.Pages;
 import javax.inject.Inject;
@@ -38,7 +39,7 @@ public class SuggestionBrowse extends BrowseBase<SuggestionItem, SuggestionItem>
     protected void buildQueryDefinition(QueryDefinition<SuggestionItem, SuggestionItem> queryDefinition) {
         
         queryDefinition
-                .addFilter(new StringFilter<>(SuggestionItem_.group, "general.label.Group"), true, true)
+                .addFilter(new StringListFilter<>(SuggestionItem_.group, SuggestionGroupRegistery.intance().getGroupNames(), "general.label.Group", "suggestionGroup.label."), true, true)
                 .addFilter(new StringFilter<>(SuggestionItem_.key, "general.label.Key"), true );
         
         queryDefinition.addColumn(new TextColumn<>(SuggestionItem_.group, "general.label.Group"),true);

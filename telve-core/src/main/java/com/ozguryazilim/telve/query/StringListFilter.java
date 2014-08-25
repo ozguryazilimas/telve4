@@ -1,0 +1,73 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.ozguryazilim.telve.query;
+
+import java.util.List;
+import javax.persistence.metamodel.SingularAttribute;
+import org.apache.deltaspike.data.api.criteria.Criteria;
+
+/**
+ * String filtresi fakat kullanıcıdan veri almak yerine verilen listeden seçtirir.
+ * 
+ * EnumFilter gibi davranır.
+ * 
+ * @author Hakan Uygun
+ */
+public class StringListFilter<E> extends Filter<E, String>{
+
+    private String keyPrefix;
+    private List<String> valueList;
+    
+    public StringListFilter(SingularAttribute<? super E, String> attribute, List<String> valueList, String label, String itemLabel ) {
+        super(attribute, label);
+        
+        keyPrefix = itemLabel;
+        this.valueList = valueList;
+        
+        setOperands(Operands.getEnumOperands());
+        setOperand(FilterOperand.Equal);
+    }
+
+    @Override
+    public void decorateCriteria(Criteria<E, ?> criteria) {
+        if (getValue() != null) {
+            switch (getOperand()) {
+                case Equal:
+                    criteria.eq(getAttribute(), getValue());
+                    break;
+                case NotEqual:
+                    criteria.notEq(getAttribute(), getValue());
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public String getTemplate() {
+        return "stringListFilter";
+    }
+
+    public String getKeyPrefix() {
+        return keyPrefix;
+    }
+
+    public void setKeyPrefix(String keyPrefix) {
+        this.keyPrefix = keyPrefix;
+    }
+
+    public List<String> getValueList() {
+        return valueList;
+    }
+
+    public void setValueList(List<String> valueList) {
+        this.valueList = valueList;
+    }
+
+    
+}
