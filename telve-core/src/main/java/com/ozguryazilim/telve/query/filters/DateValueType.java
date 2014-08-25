@@ -1,4 +1,4 @@
-package com.ozguryazilim.telve.query;
+package com.ozguryazilim.telve.query.filters;
 
 /**
  * Tarih filtreleri için parametrik tarih değerleri

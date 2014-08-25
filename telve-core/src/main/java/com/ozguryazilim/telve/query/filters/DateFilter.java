@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ozguryazilim.telve.query;
+package com.ozguryazilim.telve.query.filters;
 
+import com.ozguryazilim.telve.query.Operands;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

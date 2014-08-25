@@ -6,6 +6,7 @@
 
 package com.ozguryazilim.telve.query;
 
+import com.ozguryazilim.telve.query.filters.Filter;
 import com.ozguryazilim.telve.entities.ViewModel;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;

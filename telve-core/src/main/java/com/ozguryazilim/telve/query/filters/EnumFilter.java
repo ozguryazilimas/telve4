@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package com.ozguryazilim.telve.query;
+package com.ozguryazilim.telve.query.filters;
 
+import com.ozguryazilim.telve.query.Operands;
 import javax.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 

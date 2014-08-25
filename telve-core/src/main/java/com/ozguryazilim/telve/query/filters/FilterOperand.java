@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ozguryazilim.telve.query;
+package com.ozguryazilim.telve.query.filters;
 
 /**
  * Filtreler için operand türleri.
