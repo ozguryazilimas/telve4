@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.lookup;
 
+import com.google.common.base.Strings;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.entities.ViewModel;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.Entity;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
@@ -37,9 +39,14 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
 
     private LookupModel<R, ?> model;
 
+    private List<LookupSelectListener> listeners = new ArrayList<>();
+    
     @Inject
     private ViewConfigResolver viewConfigResolver;
 
+    @Inject @LookupSelect 
+    private Event<E> lookupSelectEvent;
+    
     @PostConstruct
     public void init() {
         initModel();
@@ -113,8 +120,12 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
 
         LookupSelectTuple sl = getLookupSelectTuple();
 
-        ELUtils.setObject(sl.getExpression(), sl.getValue());
+        if( !sl.getExpression().isEmpty() ){
+            ELUtils.setObject(sl.getExpression(), sl.getValue());
+        }
 
+        triggerListeners(sl.getValue());
+        lookupSelectEvent.fire((E)sl.getValue());
     }
 
     
@@ -171,15 +182,9 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
 
         LookupSelectTuple sl = getLookupSelectTuple();
 
-        /* FIXME: event mekanizması nasıl olacak?
-         //Eğer event varsa...
-         if (srcs.length > 1) {
-         //Bean.method formatında beklyoruz.
-         s = srcs[1].split("\\.");
-         sl.setEventBean(s[0]);
-         sl.setEventMethod(s[1]);
-         }
-         */
+        triggerListeners(sl.getValue());
+        lookupSelectEvent.fire((E)sl.getValue());
+        
         RequestContext.getCurrentInstance().closeDialog(sl);
 
     }
@@ -281,36 +286,12 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         if (sl == null) {
             return;
         }
+        
+        if( sl.getExpression().isEmpty() ) return;
+        
         //EL üzerinden değeri yazacağız
         ELUtils.setObject(sl.getExpression(), sl.getValue());
 
-
-        /* FIXME: Bu işi CDI ile birlikte nasıl yapalım?
-         //Eğer tanımlanmış bir event varsa, veri setledikten sonra onu çağırır.
-         if (!Strings.isNullOrEmpty(sl.getEventBean())) {
-
-            
-         Object eventBean = Component.getInstance(sl.getEventBean());
-
-         Method m;
-         try {
-         m = eventBean.getClass().getMethod(sl.getEventMethod());
-         m.invoke(eventBean);
-
-         } catch (NoSuchMethodException ex) {
-         LOG.error("Lookup Event Methodu Hatalı", ex);
-         } catch (SecurityException ex) {
-         LOG.error("Lookup Event Methodu Hatalı", ex);
-         } catch (IllegalAccessException ex) {
-         LOG.error("Lookup Event Methodu Hatalı", ex);
-         } catch (IllegalArgumentException ex) {
-         LOG.error("Lookup Event Methodu Hatalı", ex);
-         } catch (InvocationTargetException ex) {
-         LOG.error("Lookup Event Methodu Hatalı", ex);
-         }
-            
-         }
-         */
     }
 
     /**
@@ -321,7 +302,10 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
     protected LookupSelectTuple getLookupSelectTuple() {
         LookupSelectTuple sl;
 
-        String expression = "#{" + model.getListener() + "}";
+        String expression = "";
+        if( !Strings.isNullOrEmpty(model.getListener())){
+            expression = "#{" + model.getListener() + "}";
+        }
 
         if (model.getMultiSelect()) {
 
@@ -350,4 +334,33 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      * @return 
      */
     public abstract String getCaptionFieldName();
+    
+    /**
+     * Lookup için yeni bir select listener ekler.
+     * @param l 
+     */
+    public void registerListener( LookupSelectListener l ){
+        listeners.add(l);
+    }
+    
+    /**
+     * Lookupdan daha önce kaydedilmiş bir listener'ı çıkarır.
+     * @param l 
+     */
+    public void unregisterListener( LookupSelectListener l ){
+        listeners.remove(l);
+    }
+    
+    /**
+     * Seçim sonrası listener'la mesaj gönderilir.
+     * @param o 
+     */
+    protected void triggerListeners( Object o ){
+        
+        for( LookupSelectListener l : listeners ){
+            l.onSelect(o);
+        }
+        
+    }
+    
 }

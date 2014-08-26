@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="large-2 medium-2 small-2 columns">
+        <h:outputText value="#{messages[filter.labelKey]}" />
+    </div>
+    <div class="large-2 medium-2 small-2 columns">
+        <p:selectOneMenu id="strOp#{idprefix}" value="#{filter.operand}" styleClass="small" >
+            <f:selectItems value="#{filter.operands}" var="operand"
+                           itemLabel="#{messages['filter.operand.type.'.concat( operand )]}"/>
+            <p:ajax update="strInput#{idprefix}" partialSubmit="true" process="@this" />
+        </p:selectOneMenu>
+    </div>
+    <div class="large-8 medium-8 small-8 columns">
+        <div class="row">
+            <h:panelGroup id="strInput#{idprefix}" layout="block" styleClass="large-12 medium-12 small-12 columns">
+
+                <div class="ui-input-group">
+                        <p:autoComplete id="entInp#{idprefix}" value="#{filter.value}" 
+                                        forceSelection="true" 
+                                        completeMethod="#{filter.lookupBean.suggest}"
+                                        var="item"
+                                        itemLabel="#{item[filter.lookupBean.captionFieldName]}"
+                                        itemValue="#{item}"
+                                        queryDelay="500"
+                                        converter="entityConverter"
+                                        rendered="#{filter.operand ne 'All'}"
+                                        >
+                        </p:autoComplete>
+
+                        <p:commandButton action="#{filter.lookupBean.openDialog( false, filter.profile, '' )}" partialSubmit="true" process="@this" icon="ui-icon-search" styleClass="ui-icon-only" rendered="#{filter.operand ne 'All'}">
+                            <p:ajax event="dialogReturn"  update="entInp#{idprefix}" partialSubmit="true" process="@this" />   
+                        </p:commandButton>
+                    </div>
+            </h:panelGroup>
+        </div>
+    </div>
+
+</ui:composition>
