@@ -17,7 +17,7 @@ import javax.persistence.MappedSuperclass;
  * @author Hakan Uygun
  */
 @MappedSuperclass
-public abstract class EntityBase implements Serializable {
+public abstract class EntityBase implements Serializable, ViewModel {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,6 +26,7 @@ public abstract class EntityBase implements Serializable {
      *
      * @return
      */
+    @Override
     public abstract Long getId();
 
     /**

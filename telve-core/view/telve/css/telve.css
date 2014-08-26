@@ -221,15 +221,19 @@ td{
 }
 
 
-.ui-input-group .ui-button, .ui-datepicker-trigger{
+.ui-input-group .ui-button, .ui-datepicker-trigger, .ui-autocomplete-dropdown{
     /*border-left: 0px !important;*/
     border-bottom-left-radius: 0px !important;
     border-top-left-radius: 0px !important;
     vertical-align: top;
     height: 2em;
     position: absolute !important;
-    right: 10 !important;
+    right: 10px !important;
     width: 26px !important;
+}
+
+.ui-autocomplete-dropdown{
+    right: -1px !important;
 }
 
 .ui-selectonemenu-trigger{

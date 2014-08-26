@@ -344,4 +344,10 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
 
         return sl;
     }
+    
+    /**
+     * Geriye listelerde gösterim için hangi attributun kullanılacağı bilgisini döndürür.
+     * @return 
+     */
+    public abstract String getCaptionFieldName();
 }
