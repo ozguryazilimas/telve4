@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * TreeNode modeller için abstract katman
@@ -27,7 +28,18 @@ public abstract class TreeNodeEntityBase<E extends TreeNodeModel> extends Entity
     @Column(name = "CODE")
     @NotNull
     private String code;
-    
+
+    @Column(name = "NAME", length = 255, nullable = false)
+    @NotNull
+    @Size(min = 1, max = 255)
+    private String name;
+
+    @Column(name = "INFO", length = 255)
+    private String info;
+
+    @Column(name = "ISACTIVE")
+    private Boolean active = Boolean.TRUE;
+
     @Column(name = "PATH")
     private String path;
     
@@ -36,7 +48,7 @@ public abstract class TreeNodeEntityBase<E extends TreeNodeModel> extends Entity
     private E parent;
     
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<E> children = new ArrayList<E>();
+    private List<E> children = new ArrayList<>();
     
     /**
      * Node code alanını döndürür.
@@ -132,6 +144,31 @@ public abstract class TreeNodeEntityBase<E extends TreeNodeModel> extends Entity
     public void setChildren(List<E> children) {
         this.children = children;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
  
+
     
 }
