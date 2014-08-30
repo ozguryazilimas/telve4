@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<jboss-deployment-structure>  
+    <deployment>  
+        <dependencies>  
+            <module name="org.dom4j" export="true"/>
+            <module name="org.apache.commons.logging" export="true"/>
+            <module name="org.apache.commons.collections" export="true"/>
+            <module name="javax.faces.api" export="true"/>
+            <module name="com.sun.jsf-impl" export="true"/>
+        </dependencies>  
+    </deployment>  
+</jboss-deployment-structure>  
