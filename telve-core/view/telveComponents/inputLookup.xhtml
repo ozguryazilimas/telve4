@@ -8,7 +8,6 @@
     <composite:interface>
         <composite:attribute name="value" required="true"/>
         <composite:attribute name="label" required="true"/>
-        <composite:attribute name="caption" required="true" shortDescription="gösterilecek alan adı"/>
         <composite:attribute name="lookupBean" required="true"/>
         <composite:attribute name="lookupListener" required="true"/>
         <composite:attribute name="lookupProfile" required="false" default=""/>
@@ -21,42 +20,26 @@
 
     <composite:implementation>
         <ui:fragment rendered="#{cc.attrs.rendered}">
-            <h:outputScript library="telveComponents" name="inputLookup.js" target="head"/>
-
             <div id="#{cc.clientId}" class="prop #{cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
 
-                <p:outputLabel for="field" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
+                <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
                 <span class="value">
-
-                    <div class="ui-input-group">
-                        <h:inputHidden id="field" value="#{cc.attrs.value}" converter="entityConverter"  required="#{cc.attrs.required}" />
-                        <p:fragment>
-                            <h:inputHidden id="st" value="#{cc.attrs.lookupBean.model.searchText}" />
-                            <h:panelGroup id="fieldW" layout="span">
-                                <input id="#{cc.clientId}field" type="text" value="#{cc.attrs.value[cc.attrs.caption]}" class="ui-inputfield ui-inputtext ui-widget ui-state-default ui-corner-all" placeholder="#{cc.attrs.placeholder}" autocomplete="off"/>
-                            </h:panelGroup>
-                            
-                            <p:commandButton id="popdown" onclick="setLookSearchText('#{cc.clientId}field', '#{p:component('st')}')"  action="#{cc.attrs.lookupBean.initOverlay(cc.attrs.lookupProfile, cc.attrs.lookupListener)}" ajax="true" 
-                                             update="ovl1" onsuccess="PF('#{cc.id}lookupOverlay').loadContents();PF('#{cc.id}lookupOverlay').show()"
-                                             icon="ui-icon-search" styleClass="ui-icon-only"/>
-                        </p:fragment>
-                    </div>
-
-                    <p:overlayPanel id="ovl1" for="fieldW" 
-                                    showEvent="none"
-                                    hideEffect="fade" dynamic="true"  
-                                    appendToBody="false" at="left bottom"
-                                    showCloseIcon="false" widgetVar="#{cc.id}lookupOverlay">
-                        <ui:include src="/layout/lookupBaseOverlay.xhtml" >
-                            <ui:param name="bean" value="#{cc.attrs.lookupBean}" />
-                            <ui:param name="widgetVar" value="#{cc.id}lookupOverlay" />
-                            <ui:param name="update" value="fieldW, field" />
-                            <ui:param name="hideStandartFilter" value="true" />
-                        </ui:include>
-
-                    </p:overlayPanel>
+                    <p:autoComplete id="#{cc.id}_inp" value="#{cc.attrs.value}" 
+                                    forceSelection="true" 
+                                    completeMethod="#{cc.attrs.lookupBean.suggest}"
+                                    var="item"
+                                    itemLabel="#{item[cc.attrs.lookupBean.captionFieldName]}"
+                                    itemValue="#{item}"
+                                    queryDelay="500"
+                                    converter="entityConverter"
+                                    required="#{cc.attrs.required}"
+                                    disabled="#{cc.attrs.disabled}"
+                                    placeholder="#{cc.attrs.placeholder}"
+                                    dropdown="true">
+                        <p:clientValidator />
+                    </p:autoComplete>
                 </span>
-                <p:message for="field" display="text"/>
+                <p:message for="#{cc.id}_inp" display="text"/>
             </div>
         </ui:fragment>
     </composite:implementation>

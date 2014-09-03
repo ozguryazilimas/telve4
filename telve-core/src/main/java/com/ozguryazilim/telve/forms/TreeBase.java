@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.forms;
 
+import com.google.common.base.Strings;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.TreeNodeEntityBase;
 import com.ozguryazilim.telve.lookup.LookupTreeModel;
@@ -47,12 +48,12 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
      *
      * @return
      */
-    protected abstract RepositoryBase<E, ?> getRepository();
+    protected abstract RepositoryBase<E, E> getRepository();
 
     public List<E> getEntityList() {
         LOG.debug("super.getEntityList");
         if (entityList == null) {
-            entityList = getRepository().findAll();
+            populateData();
         }
         return entityList;
     }
@@ -150,8 +151,6 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
             return null;
         }
 
-        
-
         LOG.debug("Entity Removed : {} ", entity);
 
         //Mevcut silindi dolayısı ile null verdik
@@ -199,7 +198,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         treeModel = new LookupTreeModel<>();
         treeModel.setTypeSelector(this);
         treeModel.buildTreeModel(getEntityList());
-        
+
     }
 
     public LookupTreeModel<E> getTreeModel() {
@@ -236,5 +235,22 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         return CheckboxTreeNode.DEFAULT_TYPE;
     }
 
+    protected void populateData() {
+        if (Strings.isNullOrEmpty(getTreeModel().getSearchText())) {
+            entityList = getRepository().findAll();
+        } else {
+            entityList = getRepository().lookupQuery(getTreeModel().getSearchText());
+        }
+        getTreeModel().buildTreeModel(entityList);
+    }
+
+    public void search() {
+        entityList = null;
+        populateData();
+    }
+
+    public void setEntityList(List<E> entityList) {
+        this.entityList = entityList;
+    }
     
 }

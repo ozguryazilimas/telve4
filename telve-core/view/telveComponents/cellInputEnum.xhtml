@@ -1,0 +1,21 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:composite="http://java.sun.com/jsf/composite"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <composite:interface>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="itemLabel" required="true"/>
+        <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <p:selectOneMenu id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" >
+            <f:selectItems value="#{cc.attrs.value.values()}" var="item" itemLabel="#{messages[ ''.concat( cc.attrs.itemLabel ).concat( item )]}" itemValue="#{item}" />
+        </p:selectOneMenu>
+    </composite:implementation>
+
+</ui:composition>
