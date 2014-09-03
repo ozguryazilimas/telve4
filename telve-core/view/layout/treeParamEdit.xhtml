@@ -65,7 +65,7 @@
                 </ui:remove>
                 <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="true" resizable="true">
                     <f:facet name="header">
-                        <p:outputPanel>
+                        <p:outputPanel style="width: 90%; display: inline-block;">
                             <span class="ui-icon tv-icon-filter" style="display: inline-block;vertical-align: middle"></span>
                             <p:inplace id="ajax" label="#{messages['general.label.Filter']} : #{homeBean.filter}" editor="true">
                                 <p:ajax event="save" oncomplete="search();" />

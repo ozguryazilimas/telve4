@@ -5,11 +5,12 @@
  */
 package com.ozguryazilim.telve.forms;
 
-import com.ozguryazilim.telve.utils.TreeUtils;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.TreeNodeEntityBase;
-import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.lookup.LookupTreeModel;
+import com.ozguryazilim.telve.lookup.TreeNodeTypeSelector;
+import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.utils.TreeUtils;
 import com.ozguryazilim.telve.view.Pages;
 import java.io.Serializable;
 import java.util.List;
@@ -17,6 +18,7 @@ import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
+import org.primefaces.model.CheckboxTreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * @author Hakan Uygun
  * @param <E> TreeNodeEntityBase'den türemiş bir entity sınıfı
  */
-public abstract class TreeBase< E extends TreeNodeEntityBase> implements Serializable {
+public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNodeTypeSelector<E>, Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(TreeBase.class);
 
@@ -195,7 +197,9 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements Seriali
 
     public void initTreeModel() {
         treeModel = new LookupTreeModel<>();
+        treeModel.setTypeSelector(this);
         treeModel.buildTreeModel(getEntityList());
+        
     }
 
     public LookupTreeModel<E> getTreeModel() {
@@ -227,4 +231,10 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements Seriali
         }
     }
 
+    @Override
+    public String getNodeType(E node) {
+        return CheckboxTreeNode.DEFAULT_TYPE;
+    }
+
+    
 }

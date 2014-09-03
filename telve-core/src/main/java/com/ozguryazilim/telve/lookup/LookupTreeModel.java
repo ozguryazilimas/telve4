@@ -31,6 +31,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
     private String profile;
     private String listener;
     private String searchText;
+    private TreeNodeTypeSelector typeSelector;
     
 
     public TreeNode getRootNode() {
@@ -87,6 +88,9 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
      * @return 
      */
     protected String getNodeType(T node) {
+        if( typeSelector != null ){
+            return typeSelector.getNodeType(node);
+        }
         return CheckboxTreeNode.DEFAULT_TYPE;
     }
 
@@ -255,5 +259,12 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         return getRootNode();
     }
 
-    
+    public TreeNodeTypeSelector getTypeSelector() {
+        return typeSelector;
+    }
+
+    public void setTypeSelector(TreeNodeTypeSelector typeSelector) {
+        this.typeSelector = typeSelector;
+    }
+
 }
