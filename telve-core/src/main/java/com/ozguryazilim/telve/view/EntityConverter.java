@@ -37,7 +37,7 @@ public class EntityConverter implements Converter {
             String[] split = value.split(":");
             return em.find(Class.forName(split[0]), Long.valueOf(split[1]));
         } catch (NumberFormatException | ClassNotFoundException e) {
-            LOG.warn("Convert error : {} ", value );
+            LOG.warn("Convert error : {} {} ", value, e.getMessage() );
             return null;
         }
     }

@@ -14,9 +14,6 @@
     </ui:define>
     
     <ui:define name="body">
-        <ui:remove>
-            <h1><h:outputText value="#{messages[moduleCaption]}" /></h1>
-        </ui:remove>
 
         <script>
             jQuery(document).ready(function() {
@@ -29,19 +26,6 @@
         </script>
 
         <p:layout >
-            <ui:remove>
-            <f:facet name="header">
-                <p:row>
-                    <p:column style="text-align: left">
-                        #{messages['general.caption.List']}
-                    </p:column>
-                    <p:column style="text-align: left">
-                        <h:outputText value="#{messages[formCaption]}" />
-                    </p:column>
-                </p:row>
-            </f:facet>
-                </ui:remove>
-            
             <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="true" resizable="true">
                     <h:form id="listForm">
                         <p:remoteCommand name="newParameter" update=":form" action="#{homeBean.createNew()}"  partialSubmit="true" process="@this" />

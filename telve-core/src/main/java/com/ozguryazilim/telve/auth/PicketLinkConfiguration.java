@@ -9,7 +9,6 @@ import com.ozguryazilim.telve.auth.model.ResourcePermission;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
 import org.picketlink.event.PartitionManagerCreateEvent;
 import org.picketlink.idm.PartitionManager;
 import org.picketlink.idm.config.IdentityConfiguration;
@@ -26,7 +25,6 @@ import org.picketlink.idm.jpa.model.sample.simple.RelationshipTypeEntity;
 import org.picketlink.idm.jpa.model.sample.simple.RoleTypeEntity;
 import org.picketlink.idm.model.Relationship;
 import org.picketlink.idm.model.basic.Realm;
-import org.picketlink.internal.EEJPAContextInitializer;
 
 /**
  * PicketLink ayarlarını yapar.
@@ -36,9 +34,6 @@ import org.picketlink.internal.EEJPAContextInitializer;
 @ApplicationScoped
 public class PicketLinkConfiguration {
 
-    @Inject
-    private EEJPAContextInitializer contextInitializer;
-    
     private IdentityConfiguration identityConfig = null;
 
     @Produces
@@ -77,7 +72,7 @@ public class PicketLinkConfiguration {
                         AttributeTypeEntity.class,
                         ResourcePermission.class)
                 .supportGlobalRelationship(Relationship.class)
-                .addContextInitializer(this.contextInitializer)
+                //.addContextInitializer(this.contextInitializer)
                 // Specify that this identity store configuration supports all features
                 .supportAllFeatures();
         identityConfig = builder.build();
