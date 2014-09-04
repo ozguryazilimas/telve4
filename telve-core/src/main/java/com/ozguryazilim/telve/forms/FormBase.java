@@ -67,6 +67,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     protected void initSubViews() {
         //Önce mevcut ekran için registery'den subview'lar alınıyor.
 
+        /* FIXME: NPE geliyor. Sebebine bakıla
         String viewId = viewConfigResolver.getViewConfigDescriptor(getContainerViewPage()).getViewId();
         List<SubView> ls = SubViewRegistery.getSubViews(viewId);
         if (ls != null) {
@@ -78,6 +79,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
                 }
             }
         } 
+        */
     }
 
     /**

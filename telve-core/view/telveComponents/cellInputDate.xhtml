@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:composite="http://java.sun.com/jsf/composite">
+
+
+    <composite:interface>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="placeholder" required="false"/>
+        <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:attribute name="readonly" required="false" type="java.lang.Boolean" default="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+
+        <p:calendar id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}"
+                    placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.Date']}" showOn="button"
+                    navigator="true">
+            
+        </p:calendar>
+
+    </composite:implementation>
+
+</ui:composition>
