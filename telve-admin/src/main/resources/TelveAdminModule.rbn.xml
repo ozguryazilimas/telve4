@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ribbon-def version="1.0" depends="telve">
+
+	<actions>
+		<action id="user" 
+				label="module.caption.User" 
+				img="user.png" 
+				url="/admin/user.xhtml" 
+				permission="user" 
+				type="param" />
+				
+		<action id="userAdd" 
+				label="user.action.Add" 
+				img="user_add.png" 
+				url="/admin/user.xhtml" 
+				permission="user:insert" 
+				type="paramNew" />
+				
+		<action id="role" 
+				label="module.caption.Role" 
+				img="role.png" 
+				url="/admin/role.xhtml" 
+				permission="role" 
+				type="param" />
+                <action id="group" 
+				label="module.caption.Group" 
+				img="role.png" 
+				url="/admin/group.xhtml" 
+				permission="group" 
+				type="param" />
+                <action id="passwordEditor" 
+				label="module.caption.PasswordEditor" 
+				img="change_password.png" 
+				url="/admin/passwordEditor.xhtml" 
+				permission="system" 
+				type="param" />
+				
+	   <action id="auditReport" 
+                    label="reports.report.auditLogReport" 
+                    img="report.png" 
+                    url="/reports/auditLogReport.xhtml" 
+                    permission="auditReport" 
+                   type="browse" >
+           </action>
+				
+	</actions>
+	
+	<ribbon id="admin" label="menu.main.Admin" permission="ribbon:admin" order="1000">
+		<section label="menu.caption.UserManagement" >
+			<action id="user" type="large" />
+			<action id="role" type="large" />
+                        <action id="group" type="large" />
+		</section>
+                <!--
+		<section label="menu.caption.ApplicationProperties" >
+			<action id="systemProperties" type="large" />
+			<action id="userProperties" type="large" />
+		</section>
+                -->
+	</ribbon>
+        
+        <!--
+        <ribbon id="workspace" >
+            <section align="right">
+                <action id="userProperties" type="large" />
+                <action id="passwordEditor" type="large" />
+            </section>
+        </ribbon>
+        -->
+        
+        <!--
+        <ribbon-context view="/admin/user">
+            <section label="module.caption.New" order="0">
+		<action id="userAdd" type="large" />
+            </section>
+            <section label="module.caption.New" order="0">
+		<action id="role" type="large" />
+                <action id="auditReport" type="large" />
+            </section>
+        </ribbon-context>
+        
+        <ribbon-context view="/admin/role">
+            <section label="module.caption.New" order="0">
+		<action id="role" type="large" classifier="new" />
+            </section>
+            <section label="module.caption.New" order="0">
+		<action id="user" type="large" />
+                <action id="auditReport" type="large" />
+            </section>
+        </ribbon-context>
+	-->
+</ribbon-def>

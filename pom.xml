@@ -150,5 +150,6 @@
         <module>telve-doc</module>
         <module>telve-help</module>
     <module>telve-web</module>
+    <module>telve-admin</module>
   </modules>
 </project>
