@@ -6,15 +6,16 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 
-    <composite:interface>
+    <composite:interface componentType="inputEnum">
         <composite:attribute name="value" required="true"/>
         <composite:attribute name="itemLabel" required="true"/>
+        <composite:attribute name="hasNullValue" required="false" type="java.lang.Boolean" default="true"/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
     </composite:interface>
 
     <composite:implementation>
         <p:selectOneMenu id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" >
-            <f:selectItems value="#{cc.attrs.value.values()}" var="item" itemLabel="#{messages[ ''.concat( cc.attrs.itemLabel ).concat( item )]}" itemValue="#{item}" />
+            <f:selectItems value="#{cc.items}" var="item" itemLabel="#{messages[ ''.concat( cc.attrs.itemLabel ).concat( item )]}" itemValue="#{item}" />
         </p:selectOneMenu>
     </composite:implementation>
 
