@@ -6,7 +6,7 @@
 package com.ozguryazilim.telve;
 
 import com.ozguryazilim.telve.view.Pages;
-import javax.faces.component.UIViewRoot;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
@@ -25,6 +25,7 @@ import org.apache.deltaspike.security.api.authorization.ErrorViewAwareAccessDeni
  * @author Hakan Uygun
  */
 @ExceptionHandler
+@RequestScoped
 public class TelveExceptionHandler {
 
     @Inject
@@ -37,7 +38,6 @@ public class TelveExceptionHandler {
     private FacesContext facesContext;
     
     void logExceptions(@BeforeHandles ExceptionEvent<Throwable> evt) {
-        evt.getException().printStackTrace();
         //log.warning("Something bad happened: " + evt.getException().getMessage());
     }
 
@@ -47,11 +47,8 @@ public class TelveExceptionHandler {
      * @param evt 
      */
     void onSecurityExceptions(@Handles ExceptionEvent<ErrorViewAwareAccessDeniedException> evt) {
-
-        //SecurityViolationHandler
-        String viewId = viewConfigResolver.getViewConfigDescriptor(Pages.Login.class).getViewId();
-        UIViewRoot viewRoot = facesContext.getApplication().getViewHandler().createView(facesContext, viewId);
-        facesContext.setViewRoot(viewRoot);
+        
+        viewNavigationHandler.navigateTo(Pages.Login.class);
         
         evt.handled();
     }

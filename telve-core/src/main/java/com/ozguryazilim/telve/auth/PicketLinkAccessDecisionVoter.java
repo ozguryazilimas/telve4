@@ -6,10 +6,14 @@
 
 package com.ozguryazilim.telve.auth;
 
+import com.ozguryazilim.telve.view.Pages;
 import java.util.Set;
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Any;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import org.apache.deltaspike.core.api.config.view.ViewConfig;
+import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
+import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.apache.deltaspike.security.api.authorization.AbstractAccessDecisionVoter;
 import org.apache.deltaspike.security.api.authorization.AccessDecisionVoterContext;
 import org.apache.deltaspike.security.api.authorization.SecurityViolation;
@@ -19,9 +23,15 @@ import org.picketlink.Identity;
  * Sayfalara giriş yetkisi PicketLink API'leri kullanılarak belirlenir.
  * @author Hakan Uygun
  */
-@ApplicationScoped
+@WindowScoped
 public class PicketLinkAccessDecisionVoter extends AbstractAccessDecisionVoter{
 
+    
+    private Class<? extends ViewConfig> deniedPage = Pages.Home.class;
+    
+    @Inject
+    private ViewConfigResolver viewConfigResolver;
+    
     @Inject
     @Any
     private Identity identity;
@@ -36,6 +46,15 @@ public class PicketLinkAccessDecisionVoter extends AbstractAccessDecisionVoter{
                     return "Not Logged In;";
                 }
             });
+            deniedPage = viewConfigResolver.getViewConfigDescriptor(FacesContext.getCurrentInstance().getViewRoot().getViewId()).getConfigClass();
+        }
+    }
+    
+    public Class<? extends ViewConfig> getDeniedPage() {
+        try {
+            return deniedPage;
+        } finally {
+            deniedPage = Pages.Home.class;
         }
     }
     

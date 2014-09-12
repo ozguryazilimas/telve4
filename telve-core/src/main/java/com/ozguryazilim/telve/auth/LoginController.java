@@ -5,7 +5,6 @@
  */
 package com.ozguryazilim.telve.auth;
 
-import com.ozguryazilim.telve.view.Pages;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -39,8 +38,6 @@ public class LoginController {
                     null,
                     new FacesMessage("Authentication was unsuccessful. Please check your username and password "
                             + "before trying again."));
-        } else {
-            viewNavigationHandler.navigateTo(Pages.Home.class);
-        }
+        } 
     }
 }
