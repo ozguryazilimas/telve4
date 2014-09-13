@@ -367,3 +367,12 @@ td{
     margin: 0;
     padding: 0;
 }
+
+.login_bg {
+	background:url(../img/login.bg.png) no-repeat center 126px;
+}
+
+.login_bg #messages {
+	position:absolute;
+	width:948px;
+}

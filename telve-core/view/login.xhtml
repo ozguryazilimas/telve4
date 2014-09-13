@@ -4,47 +4,65 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ds="http://deltaspike.apache.org/jsf"
+      xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
+        <title>#{telveConfigResolver.getProperty('app.title')}</title>
+        <ui:include src="/layout/templateHeader.xhtml" />
     </h:head>
 
-    <h:body>
+    <h:body style="background: none;">
         <ds:windowId />
-        <ui:fragment rendered="#{identity.loggedIn}">
-            <div>Congratulations! You are currently logged in as: <b>#{identity.account.loginName}</b></div>
 
-            <h:form>
-                <h:commandButton id="logout" value="Log out" action="#{identity.logout}"/>
+
+        <div class="login_bg" style="margin-top: 200px; width: 600px; margin-left: auto; margin-right: auto; background-color: #FFF">
+
+            <ui:fragment rendered="#{identity.loggedIn}">
+                <div>Congratulations! You are currently logged in as: <b>#{identity.account.loginName}</b></div>
+
+                <h:form>
+                    <h:commandButton id="logout" value="Log out" action="#{identity.logout}"/>
+                </h:form>
+            </ui:fragment>
+
+            <h:form id="loginForm" rendered="#{not identity.loggedIn}" style="border-left: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC; box-shadow: 0 1px 3px #8B9097;">
+                <h:messages globalOnly="true"/>
+
+
+                <div class="row">
+
+                    <div class="large-4 medium-4 small-12 columns">
+
+                        <h:graphicImage value="/img/password.png" 
+                                        style="height:128px" />
+
+                    </div>
+                    <div class="large-8 medium-8 small-12 columns">
+                        <div class="row">
+                            <div class="large-12 medium-12 small-12 columns">
+                                <p>#{messages['general.label.PleaseEnterUserNameAndPassword']}</p>
+                            </div>
+
+                            <t:inputAny label="general.label.UserName" columnClass="large-12 medium-12 small-12">
+                                <h:inputText id="name" value="#{loginCredentials.userId}"/>
+                            </t:inputAny>
+
+                            <t:inputAny label="general.label.Password" columnClass="large-12 medium-12 small-12">
+                                <h:inputSecret id="password" value="#{loginCredentials.password}" redisplay="true"/>
+                            </t:inputAny>
+
+
+
+                            <div class="large-12 medium-12 small-12 columns">
+                                <p:commandButton id="login" value="#{messages['general.label.Login']}" action="#{loginController.login()}" 
+                                                 style="margin: 4px; width: 120px;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </h:form>
-        </ui:fragment>
-
-        <h:form id="loginForm" rendered="#{not identity.loggedIn}">
-            <h:messages globalOnly="true"/>
-
-            <div class="loginRow">
-                <h:outputLabel for="name" value="Username" styleClass="loginLabel"/>
-                <h:inputText id="name" value="#{loginCredentials.userId}"/>
-            </div>
-
-            <div class="loginRow">
-                <h:outputLabel for="password" value="Password" styleClass="loginLabel"/>
-                <h:inputSecret id="password" value="#{loginCredentials.password}" redisplay="true"/>
-            </div>
-
-            <div class="loginRow">
-
-            </div>
-
-            <div class="buttons">
-                <h:commandButton id="login" value="Login" action="#{loginController.login()}" styleClass="loginButton"/>
-            </div>
-
-            Tip: you can login with a username/password of telve/telve.
-
-        </h:form>
-
+        </div>
         <br style="clear:both"/>
     </h:body>
 </html>
