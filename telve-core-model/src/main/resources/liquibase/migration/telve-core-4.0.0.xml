@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    <changeSet author="haky (generated)" id="1410627987198-3">
+        <createTable tableName="GENERIC_SEQ">
+            <column autoIncrement="true" name="next_val" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="GENERICSEQPK"/>
+            </column>
+        </createTable>
+        <insert tableName="GENERIC_SEQ">
+            <column name="next_val" value="1" />
+        </insert>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1410627987198-1">
+        <createTable tableName="OPTIONS">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="OPTIONSPK"/>
+            </column>
+            <column name="OP_KEY" type="VARCHAR(255)"/>
+            <column name="OP_OWNER" type="VARCHAR(20)"/>
+            <column name="OP_VALUE" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1410627987198-2">
+        <createTable tableName="SUGGESTION_ITEM">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="SUGGESTION_ITPK"/>
+            </column>
+            <column name="ISACTIVE" type="BOOLEAN"/>
+            <column name="DATA" type="VARCHAR(255)"/>
+            <column name="CODE_GROUP" type="VARCHAR(255)"/>
+            <column name="INFO" type="VARCHAR(255)"/>
+            <column name="CODE_KEY" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

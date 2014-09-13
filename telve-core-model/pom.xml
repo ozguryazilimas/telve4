@@ -50,4 +50,50 @@
         </plugins>
     </build>
     
+    <profiles>
+        <profile>
+            <id>liquibase</id>
+            <build>
+                <resources>
+                    <resource>
+                        <directory>src/liquiconf</directory>
+                    </resource>
+                </resources>
+                <plugins>
+                    <plugin>
+                        
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>3.0.7</version>
+                        <configuration>
+                            <changeLogFile>src/main/resources/liquibase/telve-core.xml</changeLogFile>
+                            <diffChangeLogFile>src/main/resources/liquibase/migration/changelog-${maven.build.timestamp}.xml</diffChangeLogFile>
+                            <driver>${liquibase.driver}</driver>
+                            <url>${liquibase.url}</url>
+                            <defaultSchemaName>${liquibase.schema}</defaultSchemaName>
+                            <username>${liquibase.username}</username>
+                            <password>${liquibase.password}</password>
+                            <referenceUrl>hibernate:ejb3:telve</referenceUrl>
+                            <verbose>true</verbose>
+                            <logging>debug</logging>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.liquibase.ext</groupId>
+                                <artifactId>liquibase-hibernate4</artifactId>
+                                <version>3.2</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>mysql</groupId>
+                                <artifactId>mysql-connector-java</artifactId>
+                                <version>5.1.26</version>
+                            </dependency>
+                        </dependencies>
+                        
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    
 </project>

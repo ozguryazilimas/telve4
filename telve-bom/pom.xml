@@ -11,6 +11,11 @@
         <deltaspike.version>1.0.2</deltaspike.version>
         <picketlink.version>2.7.0.Beta1</picketlink.version>
         <primeface.version>5.1-OYAS2</primeface.version>
+        <liquibase.version>3.2.2</liquibase.version>
+        
+        <mysql.version>5.1.26</mysql.version>
+        
+        <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
     </properties>
     
     <dependencyManagement>
@@ -287,6 +292,18 @@
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
                 <version>2.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>${liquibase.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-cdi</artifactId>
+                <version>${liquibase.version}</version>
             </dependency>
 
 
