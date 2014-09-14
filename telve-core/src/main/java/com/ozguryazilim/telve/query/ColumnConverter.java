@@ -1,5 +1,6 @@
 package com.ozguryazilim.telve.query;
 
+import com.ozguryazilim.telve.query.columns.Column;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.FacesConverter;

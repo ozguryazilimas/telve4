@@ -1,0 +1,8 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:outputText value="#{item[col.name]}" >
+        <f:convertDateTime pattern="#{messages['general.format.Time']}" />
+    </h:outputText>
+</ui:composition>

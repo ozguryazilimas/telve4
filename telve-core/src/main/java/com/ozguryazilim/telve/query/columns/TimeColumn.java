@@ -3,27 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package com.ozguryazilim.telve.query.columns;
 
-package com.ozguryazilim.telve.query;
-
+import java.util.Date;
 import javax.persistence.metamodel.SingularAttribute;
 
 /**
- * Normal Text Out veren column tipi.
+ * Saat tipi veriler için kolon oluşturur.
  * 
  * @author Hakan Uygun
- * @param <E> Entitity Sınıfı
+ * @param <E>
  */
-public class TextColumn<E> extends Column<E>{
+public class TimeColumn<E> extends Column<E>{
 
-    public TextColumn(SingularAttribute<? super E, ?> attribute, String labelKey) {
+    public TimeColumn(SingularAttribute<? super E, ? extends Date> attribute, String labelKey) {
         super(attribute, labelKey);
     }
 
-    
     @Override
     public String getTemplate() {
-        return "column";
+        return "timeColumn";
     }
     
 }

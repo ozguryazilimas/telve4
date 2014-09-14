@@ -3,25 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package com.ozguryazilim.telve.query.columns;
 
-package com.ozguryazilim.telve.query;
-
+import java.util.Date;
 import javax.persistence.metamodel.SingularAttribute;
 
 /**
- * Link üretecek column tipi
+ * Tarih tipi alanlar için kolon oluşturur.
+ * 
  * @author Hakan Uygun
- * @param <E>
+ * @param <E> işlenecek olan Entity sınıfı
  */
-public class LinkColumn<E> extends Column<E>{
-    
-    public LinkColumn( SingularAttribute<? super E, ?> attribute, String labelKey ){
+public class DateColumn<E> extends Column<E>{
+
+    public DateColumn(SingularAttribute<? super E, ? extends Date> attribute, String labelKey) {
         super(attribute, labelKey);
     }
 
     @Override
     public String getTemplate() {
-        return "linkcolumn";
+        return "dateColumn";
     }
     
 }

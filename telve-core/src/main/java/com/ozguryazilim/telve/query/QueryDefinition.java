@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.query;
 
+import com.ozguryazilim.telve.query.columns.Column;
 import com.ozguryazilim.telve.query.filters.Filter;
 import java.util.ArrayList;
 import java.util.List;

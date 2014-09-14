@@ -1,4 +1,4 @@
-package com.ozguryazilim.telve.query;
+package com.ozguryazilim.telve.query.columns;
 
 import java.io.Serializable;
 import javax.persistence.metamodel.SingularAttribute;
@@ -19,10 +19,7 @@ public abstract class Column<E> implements Serializable {
      * Kolon adı : bean.name
      */
     private SingularAttribute<? super E, ?> attribute;
-    /**
-     * bean.name.subname Burayı nasıl yapsak?
-     */
-    private String subname;
+    
     private String labelKey;
     private String permission;
     private String keyPrefix;
@@ -64,14 +61,6 @@ public abstract class Column<E> implements Serializable {
 
     public void setPermission(String permission) {
         this.permission = permission;
-    }
-
-    public String getSubname() {
-        return subname;
-    }
-
-    public void setSubname(String subname) {
-        this.subname = subname;
     }
 
     public String getKeyPrefix() {

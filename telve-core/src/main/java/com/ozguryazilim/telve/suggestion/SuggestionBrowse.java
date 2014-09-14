@@ -14,7 +14,7 @@ import com.ozguryazilim.telve.forms.BrowseBase;
 import com.ozguryazilim.telve.query.QueryDefinition;
 import com.ozguryazilim.telve.query.filters.StringFilter;
 import com.ozguryazilim.telve.query.filters.StringListFilter;
-import com.ozguryazilim.telve.query.TextColumn;
+import com.ozguryazilim.telve.query.columns.TextColumn;
 import com.ozguryazilim.telve.view.Pages;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
