@@ -151,5 +151,6 @@
         <module>telve-help</module>
     <module>telve-web</module>
     <module>telve-admin</module>
-  </modules>
+        <module>telve-idm-model</module>
+    </modules>
 </project>
