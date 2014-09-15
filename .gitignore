@@ -1,9 +1,3 @@
-/telve-core/target/
-/telve-facelets/target/
-/telve-core-test/target/
-/telve-core-model/target/
-/telve-core-doc/target/
-/telve-help/target/
-/telve-web/target/
-/telve-admin/target/
-/telve-idm-model/target/
+nb-configuration.xml
+target
+faces-config.NavData

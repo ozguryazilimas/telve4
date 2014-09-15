@@ -10,6 +10,7 @@ import com.ozguryazilim.telve.admin.AbstractIdentityHome;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 import org.apache.deltaspike.core.api.scope.GroupedConversationScoped;
 import org.picketlink.idm.model.basic.Role;
 import org.picketlink.idm.model.basic.User;
@@ -60,6 +61,7 @@ public class UserHome extends AbstractIdentityHome<User>{
         return getIdentityManager().createIdentityQuery(Role.class).getResultList();
     }
 
+    @Transactional
     @Override
     public void save() {
         super.save(); 

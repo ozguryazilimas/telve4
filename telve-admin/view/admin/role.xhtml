@@ -5,6 +5,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:p="http://primefaces.org/ui"                   
                 template="/layout/primeTemplate.xhtml">
 
@@ -15,8 +16,8 @@
         </ui:remove>
 
         <script>
-            jQuery(document).ready(function() {
-                jQuery('#paramNewButton').click(function() {
+            jQuery(document).ready(function () {
+                jQuery('#paramNewButton').click(function () {
                     if (this.isEnabled()) {
                         newParameter();
                     }
@@ -58,7 +59,55 @@
                         <div class="row">
                             <t:inputText label="global.label.Name" value="#{roleHome.current.name}" required="true" />
                         </div>  
-                        
+
+                        <c:forEach id="groups" items="#{roleHome.permissions}"
+                                   var="pg" varStatus="pgs">
+                            <t:accordion label="#{messages[ 'permission.label.'.concat( pg.name )]}" >
+                                
+                                <p:dataTable value="#{pg.permissions}" var="pd" >
+                                    <p:column headerText="#{messages['role.label.Domain']}">
+                                        #{messages[ 'permission.label.'.concat( pd.definition.target)]}
+                                    </p:column>
+                                    <p:column style="width: 36px;">
+                                        <f:facet name="header">
+                                            <i class="ui-icon tv-icon-eye-open" title="#{messages['role.label.Select']}"></i>
+                                        </f:facet>
+                                        <p:selectBooleanCheckbox value="#{pd.select}" rendered="#{pd.definition.hasSelectAction()}"/>  
+                                    </p:column>
+                                    <p:column style="width: 36px;">
+                                        <f:facet name="header">
+                                            <i class="ui-icon ui-icon-plus" title="#{messages['role.label.Insert']}"></i>
+                                        </f:facet>
+                                        <p:selectBooleanCheckbox value="#{pd.insert}" rendered="#{pd.definition.hasInsertAction()}"/> 
+                                    </p:column>
+                                    <p:column  style="width: 36px;">
+                                        <f:facet name="header">
+                                            <i class="ui-icon ui-icon-disk" title="#{messages['role.label.Update']}"></i>
+                                        </f:facet>
+                                        <p:selectBooleanCheckbox value="#{pd.update}" rendered="#{pd.definition.hasUpdateAction()}"/> 
+                                    </p:column>
+                                    <p:column style="width: 36px;">
+                                        <f:facet name="header">
+                                            <i class="ui-icon ui-icon-trash" title="#{messages['role.label.Delete']}"></i>
+                                        </f:facet>
+                                        <p:selectBooleanCheckbox value="#{pd.delete}" rendered="#{pd.definition.hasDeleteAction()}"/> 
+                                    </p:column>
+                                    <p:column style="width: 36px;">
+                                        <f:facet name="header">
+                                            <i class="ui-icon ui-icon-extlink" title="#{messages['role.label.Export']}"></i>
+                                        </f:facet>
+                                        <p:selectBooleanCheckbox value="#{pd.export}" rendered="#{pd.definition.hasExportAction()}"/> 
+                                    </p:column>
+                                    <p:column style="width: 36px;">
+                                        <f:facet name="header">
+                                            <i class="ui-icon ui-icon-gear" title="#{messages['role.label.Exec']}"></i>
+                                        </f:facet>
+                                        <p:selectBooleanCheckbox value="#{pd.exec}" rendered="#{pd.definition.hasSelectAction()}"/> 
+                                    </p:column>
+                                </p:dataTable>
+                            </t:accordion>
+                        </c:forEach>
+
                         <div class="actionButtons">
                             <p:commandButton id="saveAndNew" 
                                              value="#{messages['general.button.SaveAndNew']}" 
