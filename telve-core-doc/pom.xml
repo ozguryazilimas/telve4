@@ -5,6 +5,7 @@
         <groupId>com.ozguryazilim.mutfak</groupId>
         <artifactId>telve-doc</artifactId>
         <version>4.0.0-SNAPSHOT</version>
+        <relativePath>../telve-doc/pom.xml</relativePath>
     </parent>
     <artifactId>telve-core-doc</artifactId>
     <packaging>jar</packaging>

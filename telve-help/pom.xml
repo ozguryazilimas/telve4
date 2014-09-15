@@ -5,6 +5,7 @@
         <groupId>org.tobarsegais</groupId>
         <artifactId>tobarsegais-parent</artifactId>
         <version>1.3-SNAPSHOT</version>
+        <relativePath></relativePath>
     </parent>
 
     <groupId>com.ozguryazilim.mutfak</groupId>
