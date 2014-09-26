@@ -19,17 +19,17 @@
     <ui:define name="body">
 
         <script type="text/javascript">
-            jQuery(document).ready(function() {
+            jQuery(document).ready(function () {
                 /*
                  jQuery(".ui-panelmenu-content").css("display", "block"); //shows the menuitems
                  jQuery(".ui-panelmenu-header").addClass("ui-state-active"); //sets the submenu header to active state
                  jQuery(".ui-icon-triangle-1-e").removeClass("ui-icon-triangle-1-e").addClass("ui-icon-triangle-1-s"); //sets the triangle icon to "expaned" version
                  */
-                jQuery(".ui-sidelink").each(function() {
+                jQuery(".ui-sidelink").each(function () {
                     jQuery(this).hover(
-                            function() {
+                            function () {
                                 jQuery(this).addClass("ui-state-hover");
-                            }, function() {
+                            }, function () {
                         jQuery(this).removeClass("ui-state-hover");
                     }
                     );
@@ -51,24 +51,23 @@
             </p:layoutUnit>
 
 
-            <ui:fragment rendered="#{not empty bean.subViewList}">
-                <p:layoutUnit position="west" header="#{messages['İlişkili İşlemler']}" collapsible="true" >
+            <p:layoutUnit position="west" header="#{messages['İlişkili İşlemler']}" size="300" collapsible="true"  rendered="#{not empty bean.subViewList}">
 
-                    <h:form id="subViewCommandForm" style="margin: 8px;">
+                <h:form id="subViewCommandForm" style="margin: 8px;">
 
-                        <p:commandLink  value="#{messages['general.caption.MasterView']}"
-                                        action="#{bean.setSelectedSubView(null)}" update=":viewarea" styleClass="ui-sidelink" />
+                    <p:commandLink  value="#{messages['general.caption.MasterView']}"
+                                    action="#{bean.setSelectedSubView(null)}" update=":viewarea" styleClass="ui-sidelink" />
 
-                        <c:forEach id="subViewRepeater" items="#{bean.subViewList}"
-                                   var="module" varStatus="rowCounter">
-                            <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
-                                           action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
-                                           styleClass="ui-sidelink "/>  
-                        </c:forEach>
+                    <c:forEach id="subViewRepeater" items="#{bean.subViewList}"
+                               var="module" varStatus="rowCounter">
+                        <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
+                                       action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
+                                       styleClass="ui-sidelink "/>  
+                    </c:forEach>
 
-                    </h:form>
-                </p:layoutUnit>
-            </ui:fragment>
+                </h:form>
+            </p:layoutUnit>
+
             <p:layoutUnit position="center" style="padding-right: 20px;" >
                 <p:outputPanel id="viewarea">
                     <ui:include src="#{bean.getSubViewId()}" />
