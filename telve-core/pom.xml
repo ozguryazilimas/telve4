@@ -4,12 +4,12 @@
     <parent>
         <artifactId>telve-parent</artifactId>
         <groupId>com.ozguryazilim.mutfak</groupId>
-        <version>4.0.0-SNAPSHOT</version>
+        <version>4.0.0.Alpha1</version>
     </parent>
 
     <groupId>com.ozguryazilim.mutfak</groupId>
     <artifactId>telve-core</artifactId>
-    <version>4.0.0-SNAPSHOT</version>
+    <version>4.0.0.Alpha1</version>
     <packaging>ejb</packaging>
 
     <name>telve-core</name>
