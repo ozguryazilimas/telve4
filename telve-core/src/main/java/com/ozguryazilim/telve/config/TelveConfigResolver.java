@@ -44,4 +44,7 @@ public class TelveConfigResolver {
         return result;
     }
 
+    public String getProperty(OptionKey key) {
+        return getProperty(key.getValue());
+    }
 }

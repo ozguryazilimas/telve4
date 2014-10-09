@@ -68,6 +68,11 @@ public class TelveConfigRepository {
         return o == null ? null : o.getAsString();
     }
     
+    
+    public String getProperty( OptionKey key ){
+        return getProperty(key.getValue());
+    }
+    
     /**
      * Boş map döner. 
      * Kullanılmamalı.
@@ -97,6 +102,10 @@ public class TelveConfigRepository {
         entityManager.flush();
     }
     
+    public void setProperty( OptionKey key, String value){
+        setProperty(key.getValue(), value);
+    }
+    
     /**
      * Verilen anahtar için option döner.
      * Eğer yoksa verilen defaultValue ile döner.
@@ -115,6 +124,9 @@ public class TelveConfigRepository {
         return o;
     }
     
+    public Option getOption( OptionKey key ){
+        return getOption( key.getValue(), key.getDefaultValue());
+    }
     
     /**
      * Verilen Anahtar için option döner.
@@ -228,6 +240,10 @@ public class TelveConfigRepository {
         return o;
     }
     
+    public Option getUserAwareOption( OptionKey key ){
+        return getUserAwareOption( key.getValue());
+    }
+    
     /**
      * Verilen anahtarın aktif kullanıcıya göre Option döndürür.
      * 
@@ -248,6 +264,10 @@ public class TelveConfigRepository {
         }
         
         return o;
+    }
+    
+    public Option getUserAwareOption( OptionKey key, boolean create ){
+        return getUserAwareOption( key.getValue(), create);
     }
     
     /**
