@@ -41,13 +41,13 @@ public class TimeFilter<E> extends Filter<E, Date> {
                     criteria.notEq(getAttribute(), getValue());
                     break;
                 case Greater:
-                    //criteria.gt(getAttribute(), getValue());
+                    criteria.gt(getAttribute(), getValue());
                     break;
                 case GreaterOrEqual:
                     criteria.gtOrEq(getAttribute(), getValue());
                     break;
                 case Lesser:
-                    //criteria.lt(getAttribute(), getValue());
+                    criteria.lt(getAttribute(), getValue());
                     break;
                 case LesserOrEqual:
                     criteria.ltOrEq(getAttribute(), getValue());

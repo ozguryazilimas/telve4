@@ -61,6 +61,14 @@ public abstract class RepositoryBase<E extends EntityBase, R extends ViewModel> 
     }
 
     /**
+     * Geriye aktif kayıtları döndürür.
+     * @return 
+     */
+    public List<E> findAllActives(){
+        return Collections.EMPTY_LIST;
+    }
+    
+    /**
      * Browse'ların kullanımı için Criteria döndürür.
      *
      * Eğer varsayılan filtre eklenmek istenirse override edilmelidir.

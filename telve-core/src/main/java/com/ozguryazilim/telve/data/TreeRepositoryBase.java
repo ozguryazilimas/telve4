@@ -31,6 +31,7 @@ public abstract class TreeRepositoryBase<E extends TreeNodeEntityBase> extends R
     public List<E> lookupQuery(String searchText) {
         return criteria()
                 .like( TreeNodeEntityBase_.code, "%" + searchText + "%")
+                .eq(TreeNodeEntityBase_.active, true)
                 .getResultList();
     }
     
@@ -38,7 +39,17 @@ public abstract class TreeRepositoryBase<E extends TreeNodeEntityBase> extends R
     public List<E> suggestion(String searchText) {
         return criteria()
                 .like(TreeNodeEntityBase_.code, "%" + searchText + "%")
+                .eq(TreeNodeEntityBase_.active, true)
                 .getResultList();
     }
+
+    @Override
+    public List<E> findAllActives() {
+        return criteria()
+                .eq(TreeNodeEntityBase_.active, true)
+                .getResultList();
+    }
+    
+    
     
 }

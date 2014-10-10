@@ -49,14 +49,14 @@ public class DateFilter<E> extends Filter<E, Date> {
                     break;
                 case Greater:
                     calcDates();
-                    //criteria.gt(getAttribute(), getValue());
+                    criteria.gt(getAttribute(), getValue());
                     break;
                 case GreaterOrEqual:
                     criteria.gtOrEq(getAttribute(), getValue());
                     break;
                 case Lesser:
                     calcDates();
-                    //criteria.lt(getAttribute(), getValue());
+                    criteria.lt(getAttribute(), getValue());
                     break;
                 case LesserOrEqual:
                     calcDates();
