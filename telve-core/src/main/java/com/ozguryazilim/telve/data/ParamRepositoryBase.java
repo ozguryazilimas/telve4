@@ -30,6 +30,8 @@ public abstract class ParamRepositoryBase<E extends ParamEntityBase, R extends V
      */
     protected abstract Class<R> getViewModelClass();
 
+    protected abstract SingularAttribute<? super E, Long> getIdAttribute(); 
+    
     protected abstract void buildProjection(Criteria<E, E> e);
 
     /**
@@ -50,7 +52,7 @@ public abstract class ParamRepositoryBase<E extends ParamEntityBase, R extends V
                 )
                 .eq(ParamEntityBase_.active, true)
                 .select(getViewModelClass(), 
-                        attribute(id),
+                        attribute(getIdAttribute()),
                         attribute(ParamEntityBase_.code),
                         attribute(ParamEntityBase_.name))
                 .getResultList();

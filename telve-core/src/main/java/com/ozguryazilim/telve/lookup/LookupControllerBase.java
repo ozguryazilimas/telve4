@@ -183,7 +183,8 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         LookupSelectTuple sl = getLookupSelectTuple();
 
         triggerListeners(sl.getValue());
-        lookupSelectEvent.fire((E)sl.getValue());
+        //Buraya listede gelebilir
+        //lookupSelectEvent.fire((E)sl.getValue());
         
         RequestContext.getCurrentInstance().closeDialog(sl);
 
