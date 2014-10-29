@@ -6,14 +6,15 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 xmlns:p="http://primefaces.org/ui"                   
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/layout/primeTemplate.xhtml">
 
 
     <ui:define name="body">
 
         <script>
-            jQuery(document).ready(function() {
-                jQuery('#paramNewButton').click(function() {
+            jQuery(document).ready(function () {
+                jQuery('#paramNewButton').click(function () {
                     if (this.isEnabled()) {
                         newParameter();
                     }
@@ -52,23 +53,49 @@
 
                 <p:panel header="#{messages['module.caption.User']}">
                     <h:form id="form" >
+                        <ui:fragment rendered="#{userHome.getUserTypes().size() gt 1}">
+                            <div class="row">
+                                <t:inputCombobox label="user.label.UserType" value="#{userHome.userType}" required="true" last="true">
+                                    <f:selectItems value="#{userHome.getUserTypes()}" var="ut" itemLabel="#{messages[ 'userType.label.'.concat(ut) ]}" itemValue="#{ut}" />
+                                    <ui:remove>
+                                        <p:ajax event="onchange" update=":form:extentions" />
+                                    </ui:remove>
+                                </t:inputCombobox>
+                            </div>
+                        </ui:fragment>
                         <div class="row">
-                            <t:inputText label="general.label.UserName" value="#{userHome.current.loginName}" required="true" />
-                            <t:inputText label="general.label.FirstName" value="#{userHome.current.firstName}" required="true" />
-                            <t:inputText label="general.label.LastName" value="#{userHome.current.lastName}" required="true" />
-                            <t:inputText label="general.label.Email" value="#{userHome.current.email}" required="true" />
+                            <t:inputText label="user.label.UserName" value="#{userHome.current.loginName}" required="true" />
+                            <t:inputText label="user.label.FirstName" value="#{userHome.current.firstName}" required="true" />
+                            <t:inputText label="user.label.Email" value="#{userHome.current.email}" required="true" />
+                            <t:inputText label="user.label.LastName" value="#{userHome.current.lastName}" required="true" />
                         </div>  
 
-                        <div class="row">
-                            <t:inputAny label="general.label.Roles" columnClass="large-6 middle-12 small-12">
-                                <p:pickList id="rolepicker" 
-                                            value="#{userHome.roleList}" 
-                                            var="role" 
-                                            itemLabel="#{role.name}" 
-                                            itemValue="#{role}"
-                                            converter="roleConverter"/>
-                            </t:inputAny>
+                        <div id="extentions">
+                            <c:forEach items="#{userHome.UIFragments}" var="fragment" varStatus="loop">
+                                <ui:include src="#{fragment}" />
+                            </c:forEach>
                         </div>
+
+
+                        <t:accordion label="#{messages['user.caption.Roles']}" hide="false">
+                            <div class="row">
+                                <t:inputAny label="general.label.Roles" columnClass="large-6 middle-12 small-12">
+                                    <p:pickList id="rolepicker" 
+                                                value="#{userHome.roleList}" 
+                                                var="role" 
+                                                itemLabel="#{role.name}" 
+                                                itemValue="#{role}"
+                                                showSourceFilter="true" 
+                                                showTargetFilter="true" 
+                                                showCheckbox="true"
+                                                filterMatchMode="contains"
+                                                converter="roleConverter">
+                                        <f:facet name="sourceCaption">Available</f:facet>
+                                        <f:facet name="targetCaption">Selected</f:facet>
+                                    </p:pickList>
+                                </t:inputAny>
+                            </div>
+                        </t:accordion>
 
                         <div class="actionButtons">
                             <p:commandButton id="saveAndNew" 

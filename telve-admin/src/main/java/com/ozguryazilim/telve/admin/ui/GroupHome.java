@@ -7,6 +7,8 @@
 package com.ozguryazilim.telve.admin.ui;
 
 import com.ozguryazilim.telve.admin.AbstractIdentityHome;
+import com.ozguryazilim.telve.auth.AbstractIdentityHomeExtender;
+import java.util.Collections;
 import java.util.List;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.scope.GroupedConversationScoped;
@@ -29,6 +31,11 @@ public class GroupHome extends AbstractIdentityHome<Group>{
     @Override
     public List<Group> getEntityList() {
         return getIdentityManager().createIdentityQuery(Group.class).getResultList();
+    }
+
+    @Override
+    public List<AbstractIdentityHomeExtender> getExtenders() {
+        return Collections.EMPTY_LIST;
     }
     
 }

@@ -10,13 +10,14 @@ import com.ozguryazilim.telve.api.module.TelveModuleRegistery;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.AfterDeploymentValidation;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Telve Module tanımlarını tarayıp bir yere toplar
@@ -25,7 +26,7 @@ import javax.enterprise.inject.spi.ProcessBean;
  */
 public class TelveModuleExtention implements Extension {
 
-    private static final Logger LOG = Logger.getLogger(TelveModuleExtention.class.getName());
+    private static final Logger LOG = LoggerFactory.getLogger(TelveModuleExtention.class);
 
     private final Set<Bean<?>> startupBeans = new LinkedHashSet<Bean<?>>();
     
@@ -36,7 +37,7 @@ public class TelveModuleExtention implements Extension {
             if( moduleName.isEmpty() ){
                 moduleName = event.getBean().getBeanClass().getSimpleName();
             }
-            System.out.println("Found Module: " + moduleName);
+            LOG.info("Found Module: " + moduleName);
             startupBeans.add(event.getBean());
             
             String ribbonFile = a.ribbon();

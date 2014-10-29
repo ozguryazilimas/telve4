@@ -6,10 +6,12 @@
 package com.ozguryazilim.telve.admin.ui;
 
 import com.ozguryazilim.telve.admin.AbstractIdentityHome;
+import com.ozguryazilim.telve.auth.AbstractIdentityHomeExtender;
 import com.ozguryazilim.telve.permisson.PermissionDefinition;
 import com.ozguryazilim.telve.permisson.PermissionGroup;
 import com.ozguryazilim.telve.permisson.PermissionRegistery;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +101,11 @@ public class RoleHome extends AbstractIdentityHome<Role> {
         PermissionUIModel pm = new PermissionUIModel();
         pm.setDefinition(pd);
         pgm.getPermissions().add(pm);
+    }
+
+    @Override
+    public List<AbstractIdentityHomeExtender> getExtenders() {
+        return Collections.EMPTY_LIST;
     }
 
 }
