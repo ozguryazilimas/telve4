@@ -179,4 +179,17 @@ public class PermissionUIModel implements Serializable {
     public List<String> otherActionList() {
         return new ArrayList<>(otherActions.keySet());
     }
+    
+    /**
+     * Hak değerlerinin hepsini false yapar.
+     */
+    public void clearValues(){
+        setDelete(false);
+        setExec(false);
+        setInsert(false);
+        setUpdate(false);
+        setSelect(false);
+        setExport(false);
+        //TODO: Ohter Actionları da boşaltmak lazım
+    }
 }

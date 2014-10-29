@@ -56,6 +56,11 @@ public class PermissionRegistery implements Serializable{
             LOG.info("Register file : {}", fd );
             is = this.getClass().getResourceAsStream("/"+fd);
 
+            if( is == null ){
+                LOG.warn("Permission file not found: {}", fd);
+                return;
+            }
+            
             SAXReader reader = new SAXReader();
             Document doc = reader.read(is);
             Element root = doc.getRootElement();
