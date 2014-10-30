@@ -72,7 +72,7 @@ public abstract class AbstractIdentityHome<E extends IdentityType> implements Se
      * Mevcut identity nesnesini saklar.
      * @return 
      */
-    @Transactional
+    @Transactional @org.apache.deltaspike.jpa.api.transaction.Transactional
     public boolean save(){
         if( !doBeforeSave() ){
             return false;
@@ -88,7 +88,7 @@ public abstract class AbstractIdentityHome<E extends IdentityType> implements Se
     /**
      * Mevcut identity nesnesini saklar ve yeni bir tane hazırlar.
      */
-    @Transactional
+    @Transactional @org.apache.deltaspike.jpa.api.transaction.Transactional
     public void saveAndNew(){
         if( save() ){
             doCreateNew();
@@ -98,7 +98,7 @@ public abstract class AbstractIdentityHome<E extends IdentityType> implements Se
     /**
      * Mevcut identity nesnesini siler.
      */
-    @Transactional
+    @Transactional @org.apache.deltaspike.jpa.api.transaction.Transactional
     public void delete(){
         //identityManager.
     }

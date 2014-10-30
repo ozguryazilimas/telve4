@@ -9,6 +9,5 @@
         <class>org.apache.deltaspike.jpa.impl.transaction.TransactionalInterceptor</class>
     </interceptors>
     <alternatives>
-        
     </alternatives>
 </beans>

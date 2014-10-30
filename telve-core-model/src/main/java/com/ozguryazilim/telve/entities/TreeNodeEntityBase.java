@@ -65,7 +65,7 @@ public abstract class TreeNodeEntityBase<E extends TreeNodeModel> extends Entity
      */
     @Override
     public Long getParentId() {
-        return getParent().getId();
+        return getParent() != null ? getParent().getId() : 0l;
     }
 
     /**
