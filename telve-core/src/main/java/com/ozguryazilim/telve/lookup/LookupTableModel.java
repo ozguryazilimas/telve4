@@ -205,5 +205,15 @@ public class LookupTableModel<T extends ViewModel> extends ListDataModel<T> impl
     public Object dataModel() {
         return this;
     }
+
+    @Override
+    public Boolean getLeafSelect() {
+        return false; //Tablo için bir anlamı yok
+    }
+
+    @Override
+    public void setLeafSelect(Boolean leafSelect) {
+        //Yapılacak bişi yok. tablo için leaf select anlamlı bir bilgi değil.
+    }
     
 }

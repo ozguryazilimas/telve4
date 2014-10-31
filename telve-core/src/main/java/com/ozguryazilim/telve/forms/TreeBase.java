@@ -110,6 +110,8 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
             return Pages.Home.class;
         }
 
+        if( !onBeforeSave() ) return null;
+        
         //boolean newRecord = !entity.isPersisted();
         //Path saklamak için ID'nin alınmaya ihtiyacı var o yüzden eğer persist değilse önce bir ID için kaydediyoruz.
         if (!entity.isPersisted()) {
@@ -123,6 +125,8 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
             getTreeModel().addTreeNode(entity);
         }
 
+        if( !onAfterSave() ) return null;
+        
         LOG.debug("Entity Saved : {} ", entity);
 
         FacesMessages.info("#{messages['general.message.record.SaveSuccess']}");
@@ -251,6 +255,23 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
 
     public void setEntityList(List<E> entityList) {
         this.entityList = entityList;
+    }
+
+    /**
+     * Save işleminden hemen önce yapılacak olan işler için çağrılır.
+     * 
+     * @return 
+     */
+    protected boolean onBeforeSave() {
+        return true;
+    }
+
+    /**
+     * Save işleminden hemen sonra yapılacak işler için çağrılır.
+     * @return 
+     */
+    protected boolean onAfterSave() {
+        return true;
     }
     
 }

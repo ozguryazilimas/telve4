@@ -13,6 +13,7 @@
         <composite:attribute name="lookupListener" required="true"/>
         <composite:attribute name="lookupProfile" required="false" default=""/>
         <composite:attribute name="placeholder" required="false"/>
+        <composite:attribute name="update" required="false"/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="columnClass" required="false" default="large-6 medium-6 small-6"/>
         <composite:attribute name="rendered" required="false" type="java.lang.Boolean" default="true"/>
@@ -56,7 +57,7 @@
                         <ui:include src="/layout/lookupBaseOverlay.xhtml" >
                             <ui:param name="bean" value="#{cc.attrs.lookupBean}" />
                             <ui:param name="widgetVar" value="#{cc.id}lookupOverlay" />
-                            <ui:param name="update" value="#{cc.id}_inp" />
+                            <ui:param name="update" value="#{cc.id}_inp, #{cc.attrs.update}" />
                             <ui:param name="hideStandartFilter" value="false" />
                         </ui:include>
 

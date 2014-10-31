@@ -9,6 +9,8 @@
         <composite:attribute name="value" required="true"/>
         <composite:attribute name="label" required="true"/>
         <composite:attribute name="caption" required="true" shortDescription="gösterilecek alan adı"/>
+        <composite:attribute name="multiSelect" required="false" default="false"/>
+        <composite:attribute name="leafSelect" required="false" default="false"/>
         <composite:attribute name="lookupBean" required="true"/>
         <composite:attribute name="lookupListener" required="true"/>
         <composite:attribute name="lookupProfile" required="false" default=""/>
@@ -43,7 +45,7 @@
                             <p:clientValidator />
                         </p:autoComplete>
 
-                        <p:commandButton action="#{cc.attrs.lookupBean.openDialog( false, cc.attrs.lookupProfile, cc.attrs.lookupListener )}" partialSubmit="true" process="@this" icon="ui-icon-search" styleClass="ui-icon-only">
+                        <p:commandButton action="#{cc.attrs.lookupBean.openDialog( cc.attrs.multiSelect, cc.attrs.leafSelect, cc.attrs.lookupProfile, cc.attrs.lookupListener )}" partialSubmit="true" process="@this" icon="ui-icon-search" styleClass="ui-icon-only">
                             <p:ajax event="dialogReturn"  listener="#{cc.attrs.lookupBean.onSelect}" update="#{cc.id}_inp" partialSubmit="true" process="@this" />   
                         </p:commandButton>
                     </div>

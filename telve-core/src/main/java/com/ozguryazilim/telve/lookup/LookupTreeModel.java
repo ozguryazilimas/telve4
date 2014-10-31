@@ -53,6 +53,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         for (T n : data) {
             addTreeNode(n);
         }
+        setSelectionStrategy( model );
     }
 
     /**
@@ -265,6 +266,25 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
 
     public void setTypeSelector(TreeNodeTypeSelector typeSelector) {
         this.typeSelector = typeSelector;
+    }
+
+    /**
+     * LeafSelect olup olmamasına göre seçim stratejisini belirler.
+     * 
+     * @param node 
+     */
+    private void setSelectionStrategy( TreeNode node ) {
+        
+        if( leafSelect ){
+            node.setSelectable( node.isLeaf() );
+        } else {
+            node.setSelectable(true);
+        }
+        
+        for( TreeNode n : node.getChildren() ){
+            setSelectionStrategy(n);
+        }
+        
     }
 
 }

@@ -21,6 +21,9 @@ public interface LookupModel<R extends ViewModel, S> {
     Boolean getMultiSelect();
     void setMultiSelect(Boolean multiSelect);
     
+    Boolean getLeafSelect();
+    void setLeafSelect(Boolean leafSelect);
+    
     String getProfile();
     void setProfile( String profile );
     
