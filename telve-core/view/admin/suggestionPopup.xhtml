@@ -1,0 +1,28 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/dialogBase.xhtml">
+    
+    <ui:param name="title" value="#{messages['suggestion.caption.Dialog']}" />
+    <ui:define name="form" >
+        <h:form id="suggestionPopup">
+            <div class="row">
+                <t:inputText label="general.label.Data" value="#{suggestionControl.data}" required="true" columnClass="small-12 middle-12 large-12"/>
+            </div>
+            <div class="row">
+                <t:inputTextarea label="general.label.Info" value="#{suggestionControl.info}" columnClass="small-12 middle-12 large-12"/>
+            </div>
+            
+            <h:panelGroup styleClass="actionButtons" layout="block">
+                <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{suggestionControl.closeDialog()}" />
+                <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{suggestionControl.cancelDialog()}" />
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+    
+</ui:composition>
