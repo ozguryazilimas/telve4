@@ -9,6 +9,7 @@ import com.ozguryazilim.telve.entities.TreeNodeModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -32,7 +33,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
     private String listener;
     private String searchText;
     private TreeNodeTypeSelector typeSelector;
-    
+    private Map<String,String> profileProperties;
 
     public TreeNode getRootNode() {
         return model;
@@ -287,4 +288,16 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         
     }
 
+    @Override
+    public Map<String, String> getProfileProperties() {
+        return profileProperties;
+    }
+
+    @Override
+    public void setProfileProperties(Map<String, String> profileProperties) {
+        this.profileProperties = profileProperties;
+    }
+
+    
+    
 }

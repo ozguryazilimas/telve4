@@ -35,6 +35,7 @@ public class LookupTableModel<T extends ViewModel> extends ListDataModel<T> impl
     private String profile;
     private String searchText;
     private String listener;
+    private Map<String,String> profileProperties;
     
     private Map<String, String> columns = new HashMap<String, String>();
     
@@ -215,5 +216,15 @@ public class LookupTableModel<T extends ViewModel> extends ListDataModel<T> impl
     public void setLeafSelect(Boolean leafSelect) {
         //Yapılacak bişi yok. tablo için leaf select anlamlı bir bilgi değil.
     }
-    
+
+    @Override
+    public Map<String, String> getProfileProperties() {
+        return profileProperties;
+    }
+
+    @Override
+    public void setProfileProperties(Map<String, String> profileProperties) {
+        this.profileProperties = profileProperties;
+    }
+
 }

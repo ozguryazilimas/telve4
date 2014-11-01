@@ -8,6 +8,7 @@ package com.ozguryazilim.telve.lookup;
 
 import com.ozguryazilim.telve.entities.ViewModel;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Lookup Controllerlar için Model Sınıf API'si
@@ -26,6 +27,9 @@ public interface LookupModel<R extends ViewModel, S> {
     
     String getProfile();
     void setProfile( String profile );
+    
+    Map<String,String> getProfileProperties();
+    void setProfileProperties( Map<String,String> prop );
     
     String getSearchText();
     void setSearchText( String searchText);

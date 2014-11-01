@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.lookup;
 
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
@@ -113,6 +114,10 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         model.setMultiSelect(false);
         model.setProfile(profile);
         model.setListener(listener);
+
+        parseProfile();
+        initProfile();
+        
         search();
     }
 
@@ -128,7 +133,12 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         lookupSelectEvent.fire((E)sl.getValue());
     }
 
-    
+    /**
+     * Gelen profile stringine göre bir şey yapılacaksa alt sınıflar tarafından override edilir.
+     */
+    public void initProfile(){
+        //Override edilmek üzere içi boş.
+    }
 
     /**
      * İlgili sınıfa ait dialogu açar
@@ -154,6 +164,9 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         model.setProfile(profile);
         model.setListener(listener);
 
+        parseProfile();
+        initProfile();
+        
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         //options.put("draggable", false);  
@@ -375,6 +388,19 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
             l.onSelect(o);
         }
         
+    }
+
+    /**
+     * Profile stringlerini parse edip properties olarak model sınıflarına koyar.
+     * 
+     * Profile string formatı :
+     * 
+     * key1:value1;key2:value2 şeklinde olur.
+     * 
+     */
+    protected void parseProfile(){
+        Map<String,String> prop = Splitter.on(';').omitEmptyStrings().trimResults().withKeyValueSeparator(':').split(model.getProfile());
+        model.setProfileProperties(prop);
     }
     
 }
