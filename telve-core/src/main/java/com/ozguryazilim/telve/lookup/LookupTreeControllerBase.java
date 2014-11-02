@@ -27,9 +27,7 @@ import java.util.List;
  */
 public abstract class LookupTreeControllerBase<E extends TreeNodeEntityBase, F extends TreeNodeModel> extends LookupControllerBase<E, F>{
     
-    private LookupTreeModel<F> model;
-
-    @Override
+        @Override
     protected void initModel() {
         LookupTreeModel<F> m = new LookupTreeModel<>();
         setModel(m);
@@ -37,8 +35,8 @@ public abstract class LookupTreeControllerBase<E extends TreeNodeEntityBase, F e
 
     @Override
     public void populateData() {
-        List<F> data = getRepository().lookupQuery(model.getSearchText());
-        model.setData(populateParentData(data));
+        List<F> data = getRepository().lookupQuery(getModel().getSearchText());
+        getModel().setData(populateParentData(data));
     }
     
     /**
