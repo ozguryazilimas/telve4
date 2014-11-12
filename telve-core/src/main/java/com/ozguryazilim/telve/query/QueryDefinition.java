@@ -23,19 +23,19 @@ import org.primefaces.model.DualListModel;
  */
 public class QueryDefinition<E, R> {
 
-    private List<Filter<E, ?>> allFilters = new ArrayList<Filter<E, ?>>();
-    private List<Filter<E, ?>> reqFilters = new ArrayList<Filter<E, ?>>();
-    private List<Filter<E, ?>> filters = new ArrayList<Filter<E, ?>>();
+    private List<Filter<E, ?>> allFilters = new ArrayList<>();
+    private List<Filter<E, ?>> reqFilters = new ArrayList<>();
+    private List<Filter<E, ?>> filters = new ArrayList<>();
 
     /**
      * Tüm kolonlar
      */
-    private List<Column<E>> allColumns = new ArrayList<>();
+    private List<Column<? super E>> allColumns = new ArrayList<>();
 
     /**
      * Görünen kolonlar
      */
-    private List<Column<E>> columns = new ArrayList<>();
+    private List<Column<? super E>> columns = new ArrayList<>();
 
     private Integer resultLimit = 100;
     private Integer rowLimit = 20;
@@ -71,7 +71,7 @@ public class QueryDefinition<E, R> {
         return addFilter(filter, false, false);
     }
 
-    public QueryDefinition<E, R> addColumn(Column<E> column, boolean visible) {
+    public QueryDefinition<E, R> addColumn(Column<? super E> column, boolean visible) {
         allColumns.add(column);
         if (visible) {
             columns.add(column);
@@ -79,7 +79,7 @@ public class QueryDefinition<E, R> {
         return this;
     }
 
-    public QueryDefinition<E, R> addColumn(Column<E> column) {
+    public QueryDefinition<E, R> addColumn(Column<? super E> column) {
         return addColumn(column, false);
     }
 
@@ -95,11 +95,11 @@ public class QueryDefinition<E, R> {
         return filters;
     }
 
-    public List<Column<E>> getAllColumns() {
+    public List<Column<? super E>> getAllColumns() {
         return allColumns;
     }
 
-    public List<Column<E>> getColumns() {
+    public List<Column<? super E>> getColumns() {
         return columns;
     }
 
@@ -143,9 +143,9 @@ public class QueryDefinition<E, R> {
      *
      * @return
      */
-    public DualListModel<Column<E>> getPickListColumns() {
+    public DualListModel<Column<? super E>> getPickListColumns() {
         //TODO: Burada bir performans problemi olabilir mi bir inceleyelim
-        DualListModel<Column<E>> pickListColumns = new DualListModel<Column<E>>(getAvailColumns(), getColumns());
+        DualListModel<Column<? super E>> pickListColumns = new DualListModel<Column<? super E>>(getAvailColumns(), getColumns());
         return pickListColumns;
     }
 
@@ -159,8 +159,8 @@ public class QueryDefinition<E, R> {
          */
     }
 
-    public List<Column<E>> getAvailColumns() {
-        List<Column<E>> ls = new ArrayList<Column<E>>();
+    public List<Column<? super E>> getAvailColumns() {
+        List<Column<? super E>> ls = new ArrayList<>();
 
         for (Column col : allColumns) {
             //TODO: Burada hak kontrolüne de bakılmalı...
@@ -172,7 +172,7 @@ public class QueryDefinition<E, R> {
         return ls;
     }
 
-    public void setAvailColumns(List<Column<E>> allColumns) {
+    public void setAvailColumns(List<Column<? super E>> allColumns) {
     }
     
     
