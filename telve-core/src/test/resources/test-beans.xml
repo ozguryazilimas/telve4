@@ -10,7 +10,7 @@
     </interceptors>
     -->
     <alternatives>
-        <class>com.ozguryazilim.telve.sequence.SequenceMemoryStore</class>
+        <!-- class>com.ozguryazilim.telve.sequence.SequenceMemoryStore</class -->
         <!-- class>org.apache.deltaspike.jpa.impl.transaction.BeanManagedUserTransactionStrategy</class -->
         <!-- class>com.ozguryazilim.telve.TelveUserTransactionStrategy</class -->
     </alternatives>
