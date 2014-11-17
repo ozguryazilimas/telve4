@@ -32,6 +32,17 @@
                         <span class="button-title">#{messages['general.button.Logout']}</span> 
                         <h:graphicImage url="/img/stop.png" styleClass="ribbon-icon ribbon-normal"/>
                     </h:commandLink>
+                    
+                    <p:commandLink action="#{notifyHandler.sendMessage('deneme!')}" styleClass="ribbon-button ribbon-button-small"
+                                   ajax="true" partialSubmit="true" process="@this">
+                        <span class="button-title">#{messages['general.button.Push']}</span> 
+                        <h:graphicImage url="/img/stop.png" styleClass="ribbon-icon ribbon-normal"/>
+                    </p:commandLink>
+                    
+            <p:commandButton value="Show" onclick="PF('notifyBar').show()" type="button" icon="ui-icon-arrow-1-s"/>
+<p:commandButton value="Hide" onclick="PF('notifyBar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
+                                
+
                 </div>
             </h:form>
 
@@ -84,7 +95,7 @@
         <ui:remove>
             TODO: Cache yapmalı
         </ui:remove>
-
+        <p:cache key="ribbon" region="ribbon-#{identity.account.id}">
         <c:forEach id="tabrepeater" items="#{ribbonController.getTabs()}"
                    var="tab" varStatus="tabCounter">
 
@@ -107,5 +118,6 @@
                 </c:forEach>
             </div>
         </c:forEach>
+        </p:cache>
     </div>
 </ui:composition>

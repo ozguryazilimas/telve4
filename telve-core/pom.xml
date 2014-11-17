@@ -131,7 +131,23 @@
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports-fonts</artifactId>
         </dependency>
+        
+        <dependency>
+                <groupId>com.hazelcast</groupId>
+                <artifactId>hazelcast</artifactId>
+            </dependency>
             
+            <dependency>
+                <groupId>com.hazelcast</groupId>
+                <artifactId>hazelcast-hibernate4</artifactId>
+            </dependency>
+            
+            <dependency>
+                <groupId>javax.cache</groupId>
+                <artifactId>cache-api</artifactId>
+            </dependency>
+        
+            <!--    
         <dependency>
             <groupId>org.ehcache</groupId>
             <artifactId>jcache</artifactId>
@@ -141,6 +157,7 @@
             <groupId>org.jsr107.ri</groupId>
             <artifactId>cache-annotations-ri-cdi</artifactId>
         </dependency>
+        -->
             
         <!-- Test -->
         <dependency>

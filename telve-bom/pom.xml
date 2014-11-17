@@ -305,6 +305,7 @@
                 <version>4.0.0</version>
             </dependency>
 
+            <!--
             <dependency>
                 <groupId>org.ehcache</groupId>
                 <artifactId>jcache</artifactId>
@@ -314,6 +315,26 @@
             <dependency>
                 <groupId>org.jsr107.ri</groupId>
                 <artifactId>cache-annotations-ri-cdi</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            -->
+            
+            
+            <dependency>
+                <groupId>com.hazelcast</groupId>
+                <artifactId>hazelcast</artifactId>
+                <version>3.3.3</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>com.hazelcast</groupId>
+                <artifactId>hazelcast-hibernate4</artifactId>
+                <version>3.3.3</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>javax.cache</groupId>
+                <artifactId>cache-api</artifactId>
                 <version>1.0.0</version>
             </dependency>
             
