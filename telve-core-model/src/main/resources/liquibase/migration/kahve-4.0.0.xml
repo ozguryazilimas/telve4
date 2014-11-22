@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet author="huygun" id="kahve-1">
+        <createTable tableName="KAHVE">
+            <column name="KV_KEY" type="VARCHAR(255)">
+                <constraints primaryKey="true" primaryKeyName="KAHVEPK"/>
+            </column>
+            <column name="KV_VAL" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    
+</databaseChangeLog>

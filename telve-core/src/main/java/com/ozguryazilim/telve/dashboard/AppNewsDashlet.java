@@ -6,8 +6,9 @@
 
 package com.ozguryazilim.telve.dashboard;
 
-import com.ozguryazilim.telve.config.TelveConfigRepository;
-import com.ozguryazilim.telve.entities.Option;
+import com.ozguryazilim.mutfak.kahve.Kahve;
+import com.ozguryazilim.mutfak.kahve.KahveEntry;
+import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 
@@ -24,8 +25,8 @@ public class AppNewsDashlet extends AbstractDashlet{
     
     private Integer feedCount = 3;
     
-    @Inject
-    private TelveConfigRepository configRepository;
+    @Inject @UserAware
+    private Kahve kahve;
     
     /**
      * Haberleri çekeceği URL'i  döndürür.
@@ -67,16 +68,16 @@ public class AppNewsDashlet extends AbstractDashlet{
     
     @Override
     public void load(){
-        Option o = configRepository.getUserAwareOption("appNewsDashlet.feedCount");
-        if( o != null ){
-            feedCount = o.getAsInteger();
+        KahveEntry ke = kahve.get("appNewsDashlet.feedCount");
+        if( ke != null ){
+            feedCount = ke.getAsInteger();
         }
     }
     
     @Override
     public void save(){
-        Option o = new Option("appNewsDashlet.feedCount");
-        o.setAsInteger(feedCount);
-        configRepository.saveUserAvareOption(o);
+        KahveEntry ke = new KahveEntry();
+        ke.setAsInteger(feedCount);
+        kahve.put( "appNewsDashlet.feedCount", ke);
     }
 }

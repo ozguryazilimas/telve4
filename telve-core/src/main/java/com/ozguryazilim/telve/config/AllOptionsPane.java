@@ -7,7 +7,6 @@
 package com.ozguryazilim.telve.config;
 
 import com.ozguryazilim.telve.entities.Option;
-import com.ozguryazilim.telve.view.Pages;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -15,10 +14,12 @@ import javax.persistence.EntityManager;
 
 /**
  * Sistem yöneticileri tarafından tüm optionların görülebileceği bir option paneli.
+ *
+ * FIXME: Kahve'ye göre yeniden düşünülmeli... 
  * 
  * @author Hakan Uygun
  */
-@OptionPane(optionPage = Pages.Admin.AllOptionsPane.class)
+//@OptionPane(optionPage = Pages.Admin.AllOptionsPane.class)
 public class AllOptionsPane extends AbstractOptionPane {
 
     private List<Option> options;

@@ -8,7 +8,6 @@ package com.ozguryazilim.telve.config;
 
 import com.ozguryazilim.telve.entities.Option;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -17,7 +16,6 @@ import javax.ejb.Singleton;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Any;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.picketlink.Identity;
@@ -33,14 +31,6 @@ import org.picketlink.Identity;
 @ApplicationScoped
 public class TelveConfigRepository {
     
-    /**
-     * Veri tabanında bulunan değerleri chacler.
-     */
-    private Map<String,String> properties;
-    
-    @Inject
-    private EntityManager entityManager;
-    
     @Inject 
     private Cache<String, Option> cache;
     
@@ -49,12 +39,14 @@ public class TelveConfigRepository {
     
     @PostConstruct
     public void init(){
+        /* Bunun yerine warm up bişi yapmak lazım...
         properties = new HashMap<>();
         List<Option> ls = entityManager.createQuery("select c from Option c").getResultList();
         for( Option o : ls ){
             properties.put(o.getKey(), o.getValue());
             cache.put(o.getKey(), o);
         }
+        */
     }
     
     /**
@@ -83,23 +75,17 @@ public class TelveConfigRepository {
     }
 
     public void setProperty( String key, String value){
-        properties.put(key, value);
         
-        List<Option> ls = entityManager.createQuery("select c from Option c where key = :key ")
-                .setParameter( "key", key)
-                .getResultList();
-        //Veri tabanında yok demek
-        if( ls.isEmpty() ){
-            Option o = new Option();
+        Option o = cache.get(key);
+        
+        if( o == null ){
+            o = new Option();
             o.setKey(key);
-            o.setValue(value);
-            entityManager.persist(o);
-        } else {
-            Option o = ls.get(0);
-            o.setValue(value);
-            entityManager.merge(o);
-        }
-        entityManager.flush();
+        } 
+        
+        o.setValue(value);
+        
+        cache.put(key, o);
     }
     
     public void setProperty( OptionKey key, String value){
@@ -134,30 +120,7 @@ public class TelveConfigRepository {
      * @return 
      */
     public Option getOption( String key ){
-        Option o = cache.get(key);
-        if( o == null ){
-            //Veri tabanına bak
-            o = getOptionFromEntity( key );
-            if( o != null ){
-                cache.put(key, o);
-            }
-        }
-        return o;
-    }
-    
-    /**
-     * İstenilen option'ı veri tabanından çeker.
-     * Bulamazsa null döner.
-     * 
-     * @param key
-     * @return 
-     */
-    protected Option getOptionFromEntity( String key ){
-        List<Option> ls = entityManager.createQuery("select c from Option c where key = :key ")
-                .setParameter( "key", key)
-                .getResultList();
-        
-        return  ls.isEmpty() ? null : ls.get(0);
+        return cache.get(key);
     }
     
     /**
@@ -166,21 +129,7 @@ public class TelveConfigRepository {
      */
     @Transactional
     public void saveOption( Option o ){
-        
-        Option o2 = getOption( o.getKey() );
-        
-        if( o2 != null ){
-            //Veri tabanında daha önce varmış...
-            if( !o2.getValue().equals( o.getValue() ) ){
-                //Değer zaten aynı ise niye saklayalım ki?
-                o2.setValue(o.getValue());
-                entityManager.merge(o2);
-            }
-        } else {
-            //Veri tabanında daha önce yokmuş
-            entityManager.persist(o);
-            cache.put(o.getKey(), o);
-        }
+        cache.put(o.getKey(), o);
     }
     
     public void updateProperties( List<Option> ls ){
@@ -190,36 +139,6 @@ public class TelveConfigRepository {
     } 
     
     
-    /**
-     * Verilen key'e göre cache'i ısıtır :)
-     * @param key 
-     */
-    public void warmup( String key ){
-        List<Option> ls = entityManager.createQuery("select c from Option c where key like :key ")
-                .setParameter( "key", key +"%")
-                .getResultList();
-        
-        for( Option o : ls ){
-            cache.put(o.getKey(), o);
-        }
-    }
-    
-    /**
-     * Verilen key'e göre cache'i ısıtır :)
-     * @param key 
-     */
-    public void warmupUserAware( String key ){
-        
-        key = identity.getAccount().getId() + "." + key;
-        
-        List<Option> ls = entityManager.createQuery("select c from Option c where key like :key ")
-                .setParameter( "key", key +"%")
-                .getResultList();
-        
-        for( Option o : ls ){
-            cache.put(o.getKey(), o);
-        }
-    }
     
     /**
      * Verilen anahtarın aktif kullanıcıya göre Option döndürür.

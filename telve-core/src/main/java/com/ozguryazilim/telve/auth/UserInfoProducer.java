@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.auth;
 
+import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,15 @@ public class UserInfoProducer implements Serializable{
         for (Grant grant : result) {
             roles.add(grant.getRole());
         }
+    }
+    
+    /**
+     * UserAware Kahve için gerekli
+     * @return 
+     */
+    @Produces @UserAware
+    public String produceUserName(){
+        return identity.getAccount().getId();
     }
     
 }

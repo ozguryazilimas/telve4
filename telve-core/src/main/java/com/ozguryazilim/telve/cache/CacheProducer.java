@@ -14,6 +14,9 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 
 /**
  * Sistemde kullanılacak Chache işleri için gerekli Bean'leri üretir.
@@ -23,6 +26,12 @@ import javax.enterprise.inject.Produces;
 @RequestScoped
 public class CacheProducer {
 
+    @Inject 
+    private OptionCacheRepository cacheRepository;
+    
+    @PersistenceUnit(unitName = "cacheStore")
+    EntityManagerFactory emf;
+    
     @Produces
     @ApplicationScoped
     public CacheManager procuceCacheManager() {
@@ -33,16 +42,25 @@ public class CacheProducer {
     @Default
     @ApplicationScoped
     public Cache<String, Option> produceOptionCache() {
-        return Caching.getCachingProvider().getCacheManager().createCache("OpCache",
+        Cache<String, Option> cache= Caching.getCachingProvider().getCacheManager().createCache("OpCache",
                 new MutableConfiguration<String, Option>()
                     .setStoreByValue(false)
                     .setStatisticsEnabled(true)
                     .setManagementEnabled(true)
                     .setTypes(String.class, Option.class));
+                    //.setWriteThrough(true)
+                    //.setReadThrough(true)
+                    //.setCacheLoaderFactory(FactoryBuilder.factoryOf( new OptionCacheLoader(new OptionRepository2(emf))))
+                    //.setCacheWriterFactory(FactoryBuilder.factoryOf( new OptionCacheWriter(optionRepository))));
             //.setExpiry(CacheConfiguration.ExpiryType.MODIFIED, new Duration(TimeUnit.MINUTES, 10))
         //.setStoreByValue(false)
         //.build();
         //return procuceCacheManager().createCache("Option-Cache", null);
+        
+        OptionCache opcache = new OptionCache(cache, cacheRepository);
+        opcache.loadAll();
+        return opcache;
     }
 
+    
 }

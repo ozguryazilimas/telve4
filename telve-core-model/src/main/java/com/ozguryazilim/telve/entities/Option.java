@@ -5,14 +5,14 @@
  */
 package com.ozguryazilim.telve.entities;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -33,20 +33,16 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "OPTIONS")
-public class Option extends EntityBase {
+public class Option implements Serializable{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "genericSeq")
-    @Column(name = "ID")
-    private Long id;
-
-    @Column(name = "OP_OWNER", length = 20)
-    @Size(max = 20)
-    private String owner;
-
     @Column(name = "OP_KEY", length = 255)
     @Size(max = 255)
     private String key;
+    
+    @Column(name = "OP_OWNER", length = 20)
+    @Size(max = 20)
+    private String owner;
 
     @Column(name = "OP_VALUE")
     private String value;
@@ -63,15 +59,6 @@ public class Option extends EntityBase {
         this.key = key;
     }
     
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getOwner() {
         return owner;
     }
@@ -165,4 +152,34 @@ public class Option extends EntityBase {
     }
 
     //TODO: DateTime, Time, v.b. alanlar yazılacak.
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 37 * hash + Objects.hashCode(this.key);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Option other = (Option) obj;
+        if (!Objects.equals(this.key, other.key)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Option{" + "key=" + key + ", value=" + value + '}';
+    }
+    
+    
+    
 }

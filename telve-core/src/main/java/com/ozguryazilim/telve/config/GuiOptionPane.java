@@ -6,7 +6,9 @@
 
 package com.ozguryazilim.telve.config;
 
-import com.ozguryazilim.telve.entities.Option;
+import com.ozguryazilim.mutfak.kahve.Kahve;
+import com.ozguryazilim.mutfak.kahve.KahveEntry;
+import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
 import com.ozguryazilim.telve.view.Pages;
 import java.util.HashMap;
 import java.util.List;
@@ -33,8 +35,8 @@ public class GuiOptionPane extends AbstractOptionPane{
     @Inject
     private LocaleSelector localeSelector;
     
-    @Inject
-    private TelveConfigRepository configRepository;
+    @Inject @UserAware
+    private Kahve kahve;
     
     @PostConstruct
     public void init(){
@@ -92,10 +94,7 @@ public class GuiOptionPane extends AbstractOptionPane{
     public void saveTheme() {  
         themeSelector.setTheme(theme);
         
-        Option o = new Option();
-        o.setKey("theme.name");
-        o.setAsString(theme);
-        configRepository.saveUserAvareOption(o);
+        kahve.put("theme.name", new KahveEntry(theme));
         
     }
 
@@ -113,9 +112,6 @@ public class GuiOptionPane extends AbstractOptionPane{
     
     public void saveLocale(){
         localeSelector.setLocaleString(locale);
-        Option o = new Option();
-        o.setKey("locale.name");
-        o.setAsString(locale);
-        configRepository.saveUserAvareOption(o);
+        kahve.put("locale.name", new KahveEntry(locale));
     }
 }

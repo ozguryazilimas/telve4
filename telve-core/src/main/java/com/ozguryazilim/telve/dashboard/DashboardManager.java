@@ -9,8 +9,9 @@ import com.google.common.base.CaseFormat;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.ozguryazilim.telve.config.TelveConfigRepository;
-import com.ozguryazilim.telve.entities.Option;
+import com.ozguryazilim.mutfak.kahve.Kahve;
+import com.ozguryazilim.mutfak.kahve.KahveEntry;
+import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,8 @@ public class DashboardManager implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(DashboardManager.class);
 
+    private static final String TAB_KEY = "dashboard.tab.";
+    
     private Integer board;
     private Integer currentBoard = 0;
     private List<DashboardDataModel> dashboards = new ArrayList<>();
@@ -78,8 +81,8 @@ public class DashboardManager implements Serializable {
     @Inject
     private DashletRegistery registery;
 
-    @Inject
-    private TelveConfigRepository repository;
+    @Inject @UserAware
+    private Kahve kahve;
 
     @Inject
     @Any
@@ -307,7 +310,7 @@ public class DashboardManager implements Serializable {
     //
     public void loadData() {
 
-        Option o = repository.getUserAwareOption("dashboard.tab.count");
+        KahveEntry o = kahve.get("dashboard.tab.count");
         if (o == null) {
             //Kullanıcı için tanımlı dashbord yok bir tane sistem defaultu ile oluşturalım
             initSystemDashbord();
@@ -318,22 +321,22 @@ public class DashboardManager implements Serializable {
         for (int i = 0; i < tc; i++) {
             DashboardDataModel t = new DashboardDataModel();
 
-            o = repository.getUserAwareOption("dashboard.tab." + i + ".name");
+            o = kahve.get(TAB_KEY + i + ".name");
             t.setName(o.getAsString());
 
-            o = repository.getUserAwareOption("dashboard.tab." + i + ".layout");
+            o = kahve.get(TAB_KEY + i + ".layout");
             t.setLayout(o.getAsInteger());
 
-            o = repository.getUserAwareOption("dashboard.tab." + i + ".col1");
+            o = kahve.get(TAB_KEY + i + ".col1");
 
             String col = o.getAsString();
             setColumnDashets(t.getColumn1(), col);
 
-            o = repository.getUserAwareOption("dashboard.tab." + i + ".col2");
+            o = kahve.get(TAB_KEY + i + ".col2");
             col = o.getAsString();
             setColumnDashets(t.getColumn2(), col);
 
-            o = repository.getUserAwareOption("dashboard.tab." + i + ".col3");
+            o = kahve.get(TAB_KEY + i + ".col3");
             col = o.getAsString();
             setColumnDashets(t.getColumn3(), col);
 
@@ -346,35 +349,29 @@ public class DashboardManager implements Serializable {
      */
     public void saveData() {
 
-        Option o = new Option("dashboard.tab.count");
-        o.setAsInteger(dashboards.size());
-        repository.saveUserAvareOption(o);
+        kahve.put("dashboard.tab.count", new KahveEntry(dashboards.size()));
 
         for (int i = 0; i < dashboards.size(); i++) {
 
             DashboardDataModel data = dashboards.get(i);
 
             //Tab ismi setleniyor
-            o = new Option("dashboard.tab." + i + ".name", data.getName());
-            repository.saveUserAvareOption(o);
+            kahve.put(TAB_KEY + i + ".name", data.getName());
 
             //Tab layoutIndex setleniyor
-            o = new Option("dashboard.tab." + i + ".layout");
-            o.setAsInteger(data.getLayout());
-            repository.saveUserAvareOption(o);
+            kahve.put(TAB_KEY + i + ".layout", data.getLayout());
+            
 
             //Tab colonları setleniyor
             String s = Joiner.on(",").join(data.getColumn1());
-            o = new Option("dashboard.tab." + i + ".col1", s);
-            repository.saveUserAvareOption(o);
+            kahve.put(TAB_KEY + i + ".col1", s);
 
             s = Joiner.on(",").join(data.getColumn2());
-            o = new Option("dashboard.tab." + i + ".col2", s);
-            repository.saveUserAvareOption(o);
+            kahve.put(TAB_KEY + i + ".col2", s);
+            
 
             s = Joiner.on(",").join(data.getColumn3());
-            o = new Option("dashboard.tab." + i + ".col3", s);
-            repository.saveUserAvareOption(o);
+            kahve.put(TAB_KEY + i + ".col3", s);
 
         }
     }

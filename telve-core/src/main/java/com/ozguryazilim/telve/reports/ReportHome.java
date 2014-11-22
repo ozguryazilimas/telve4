@@ -7,9 +7,10 @@ package com.ozguryazilim.telve.reports;
 
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Splitter;
-import com.ozguryazilim.telve.config.TelveConfigRepository;
+import com.ozguryazilim.mutfak.kahve.Kahve;
+import com.ozguryazilim.mutfak.kahve.KahveEntry;
+import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
 import com.ozguryazilim.telve.config.TelveConfigResolver;
-import com.ozguryazilim.telve.entities.Option;
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -93,8 +94,8 @@ public class ReportHome implements Serializable {
     @Inject
     private TelveConfigResolver configResolver;
 
-    @Inject
-    private TelveConfigRepository configRepository;
+    @Inject @UserAware
+    private Kahve kahve;
 
     @Inject
     @Named("messages")
@@ -170,10 +171,7 @@ public class ReportHome implements Serializable {
     protected void initFavReports() {
         favReports.clear();
 
-        //Önce report ile başlayan şeyleri bir alalım.
-        configRepository.warmupUserAware("reports.");
-
-        Option o = configRepository.getUserAwareOption("reports.fav.count");
+        KahveEntry o = kahve.get("reports.fav.count");
         if (o == null) {
             //Kullanıcın favori raporu yok.
             return;
@@ -183,11 +181,11 @@ public class ReportHome implements Serializable {
 
         for (int i = 0; i < fvc; i++) {
             //İsmi kondu
-            o = configRepository.getUserAwareOption("reports.fav." + i + ".name");
+            o = kahve.get("reports.fav." + i + ".name");
             String r = o.getAsString();
             favReports.add(r);
             //Rate'i de kondu.
-            o = configRepository.getUserAwareOption("reports.fav." + i + ".rate");
+            o = kahve.get("reports.fav." + i + ".rate");
             reportRatings.put(r, o.getAsInteger());
         }
 
@@ -204,19 +202,12 @@ public class ReportHome implements Serializable {
 
         int i = 0;
         for (String r : favReports) {
-            Option o = configRepository.getUserAwareOption("reports.fav." + i + ".name", true);
-            o.setAsString(r);
-            configRepository.saveUserAvareOption(o);
-
-            o = configRepository.getUserAwareOption("reports.fav." + i + ".rate", true);
-            o.setAsInteger(reportRatings.get(r));
-            configRepository.saveUserAvareOption(o);
+            kahve.put("reports.fav." + i + ".name", r);
+            kahve.put("reports.fav." + i + ".rate", reportRatings.get(r));
             i++;
         }
 
-        Option o = configRepository.getUserAwareOption("reports.fav.count", true);
-        o.setAsInteger(favReports.size());
-        configRepository.saveUserAvareOption(o);
+        kahve.put( "reports.fav.count", favReports.size());
     }
 
     /**

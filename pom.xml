@@ -183,7 +183,8 @@
         <module>telve-web</module>
         <module>telve-admin</module>
         <module>telve-idm-model</module>
-    </modules>
+    <module>kahve</module>
+  </modules>
     
     <distributionManagement>
         <repository>
