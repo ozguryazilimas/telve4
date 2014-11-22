@@ -23,6 +23,8 @@ import javax.inject.Named;
  * - SequenceJpaStore ( Kullanım için )
  * - İleride perfomans için Key-Value veri tabanı olabilir.
  * 
+ * Kahve üzerinden de bir Store yapıldı ama aslında bu işi doğrudan kahve üzerine almak lazım... Sayı işlemleri için AtomicInteger daha doğru.
+ * 
  * @author Hakan Uygun
  */
 @ApplicationScoped

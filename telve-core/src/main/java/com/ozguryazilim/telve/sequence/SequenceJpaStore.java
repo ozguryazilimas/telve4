@@ -8,6 +8,7 @@ package com.ozguryazilim.telve.sequence;
 import com.ozguryazilim.telve.entities.Sequence;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -17,7 +18,7 @@ import javax.transaction.Transactional;
  * 
  * @author Hakan Uygun
  */
-@RequestScoped
+@RequestScoped @Alternative
 public class SequenceJpaStore implements SequenceStore{
 
     @Inject
