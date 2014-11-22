@@ -7,6 +7,8 @@ package com.ozguryazilim.mutfak.kahve;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
@@ -92,6 +94,25 @@ public class KahveStoreTest {
         instance.save(s, o);
         
         KahveEntry o2 = instance.load("key-1");
+        assertEquals(o, o2);
+    }
+    
+    /**
+     * Test of save method, of class KahveStore.
+     */
+    @Test
+    public void testUpdate()  {
+        System.out.println("save");
+        String s = "key-2";
+        KahveEntry o = new KahveEntry( "value-1");
+        KahveStore instance = KahveStore.getInstance();
+        try {
+            instance.save(s, o);
+        } catch (SQLException ex) {
+            Logger.getLogger(KahveStoreTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        KahveEntry o2 = instance.load("key-2");
         assertEquals(o, o2);
     }
 

@@ -23,14 +23,14 @@ public class KahveStore {
 
     private final Connection connection;
 
-    public KahveStore( DataSource dataSource ) throws SQLException, NamingException {
+    public KahveStore(DataSource dataSource) throws SQLException, NamingException {
 
         connection = dataSource.getConnection();
     }
 
     private static KahveStore instance;
 
-    public static void createInstance( String ds ) throws NamingException{
+    public static void createInstance(String ds) throws NamingException {
         InitialContext ic = new InitialContext();
         DataSource dataSource = (DataSource) ic.lookup(ds);
         try {
@@ -39,22 +39,29 @@ public class KahveStore {
             Logger.getLogger(KahveStore.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public static void createInstance( DataSource dataSource ) {
+
+    public static void createInstance(DataSource dataSource) {
         try {
             instance = new KahveStore(dataSource);
         } catch (SQLException | NamingException ex) {
             Logger.getLogger(KahveStore.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public static KahveStore getInstance() {
         return instance;
     }
 
     public void save(String s, KahveEntry o) throws SQLException {
-        connection.createStatement().executeUpdate(
-                String.format("insert into KAHVE ( KV_KEY, KV_VAL ) values ( '%s', '%s' )", s, o.getValue()));
+        KahveEntry ke = load(s);
+
+        if (ke == null) {
+            connection.createStatement().executeUpdate(
+                    String.format("insert into KAHVE ( KV_KEY, KV_VAL ) values ( '%s', '%s' )", s, o.getValue()));
+        } else {
+            connection.createStatement().executeUpdate(
+                    String.format("update KAHVE set KV_VAL = '%s' where KV_KEY = '%s'", o.getValue(), s));
+        }
     }
 
     public void delete(String s) throws SQLException {

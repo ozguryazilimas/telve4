@@ -48,16 +48,59 @@ public class Kahve implements Serializable {
             return store.get(key);
         }
     }
+    
+    
+    public KahveEntry get( KahveCriteria criteria ) {
+        
+        for( String key : criteria.getKeys(identity)){
+            System.out.println("Search Key : " + key);
+            System.out.println("Identity : " + identity);
+            KahveEntry result = store.get(key);
+            if( result != null ) return result;
+        }
+        
+        if( criteria.hasDefaultValue() ){
+            put( criteria.getScopeKey(identity), criteria.getDefaultValue());
+            return criteria.getDefaultValue();
+        }
+        
+        return null;
+    }
+    
 
-    public KahveEntry get(String key, String defaultVal) {
+    public KahveEntry get(String key, KahveEntry defaultVal) {
         KahveEntry ke = get(key);
 
         if (ke == null) {
-            ke = new KahveEntry(defaultVal);
+            ke = defaultVal;
             put(key, ke);
         }
 
         return ke;
+    }
+    
+    public KahveEntry get(String key, String defaultVal) {
+        return get(key, new KahveEntry(defaultVal));
+    }
+    
+    public KahveEntry get(String key, Integer defaultVal) {
+        return get(key, new KahveEntry(defaultVal));
+    }
+    
+    public KahveEntry get(String key, Long defaultVal) {
+        return get(key, new KahveEntry(defaultVal));
+    }
+    
+    public KahveEntry get(String key, Boolean defaultVal) {
+        return get(key, new KahveEntry(defaultVal));
+    }
+    
+    public KahveEntry get(String key, BigDecimal defaultVal) {
+        return get(key, new KahveEntry(defaultVal));
+    }
+    
+    public KahveEntry get(String key, Date defaultVal) {
+        return get(key, new KahveEntry(defaultVal));
     }
 
     public KahveEntry get(KahveKey key) {
@@ -79,6 +122,10 @@ public class Kahve implements Serializable {
     }
 
     public void put(String key, Integer value) {
+        put( key, new KahveEntry(value));
+    }
+    
+    public void put(String key, Long value) {
         put( key, new KahveEntry(value));
     }
 
@@ -107,6 +154,10 @@ public class Kahve implements Serializable {
     }
     
     public void put(KahveKey key, Integer value) {
+        put( key, new KahveEntry(value));
+    }
+    
+    public void put(KahveKey key, Long value) {
         put( key, new KahveEntry(value));
     }
 
@@ -139,7 +190,7 @@ public class Kahve implements Serializable {
     protected String getUserAwareKey(String key) {
         System.out.println("Identity : " + identity);
 
-        return userAware ? identity + "." + key : key;
+        return userAware ? identity + "::" + key : key;
     }
 
     /**

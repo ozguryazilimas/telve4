@@ -50,6 +50,7 @@ public class KahveProducerTest {
                 .addClass(KahveTestResourceProducer.class)
                 .addClass(KahveKey.class)
                 .addClass(TestKahveKey.class)
+                .addClass(KahveCriteria.class)
                 .addAsWebInfResource("test-beans.xml",
                         ArchivePaths.create("beans.xml"))
                 .addAsWebInfResource("test-ds.xml",
@@ -85,7 +86,21 @@ public class KahveProducerTest {
         connection.createStatement().executeUpdate(
             "insert into KAHVE ( KV_KEY, KV_VAL ) values ( 'key-3', 'value-3' )");
         connection.createStatement().executeUpdate(
-            "insert into KAHVE ( KV_KEY, KV_VAL ) values ( 'Hakan.key-6', 'value-6' )");
+            "insert into KAHVE ( KV_KEY, KV_VAL ) values ( 'Hakan::key-6', 'value-6' )");
+        connection.createStatement().executeUpdate(
+            "insert into KAHVE ( KV_KEY, KV_VAL ) values ( 'admin::key-6', 'value-admin' )");
+        connection.createStatement().executeUpdate(
+            "insert into KAHVE ( KV_KEY, KV_VAL ) values ( 'merkez::key-6', 'value-merkez' )");
+        connection.createStatement().executeUpdate(
+            "insert into KAHVE ( KV_KEY, KV_VAL ) values ( 'key-6', 'value-system' )");
+        
+        
+        connection.createStatement().executeUpdate(
+            "insert into KAHVE ( KV_KEY, KV_VAL ) values ( 'admin::key-7', 'value-admin' )");
+        connection.createStatement().executeUpdate(
+            "insert into KAHVE ( KV_KEY, KV_VAL ) values ( 'merkez::key-7', 'value-merkez' )");
+        connection.createStatement().executeUpdate(
+            "insert into KAHVE ( KV_KEY, KV_VAL ) values ( 'key-7', 'value-system' )");
     }
     
     @Inject
@@ -320,4 +335,76 @@ public class KahveProducerTest {
         System.out.println( result );
         assertEquals(expResult, result);
     }
+    
+    /**
+     * KahveCriteria testi
+     */
+    @Test
+    public void test15(){
+        System.out.println( "Test 15" );
+        
+        KahveEntry expResult = new KahveEntry( "value-admin" );
+        
+        KahveCriteria kc = KahveCriteria.create().addScope("admin").addKey("key-6");
+        
+        System.out.println(kc);
+        
+        KahveEntry result = kahve.get(kc);
+        
+        System.out.println( result );
+        assertEquals(expResult, result);
+        
+        result = kahveUA.get(kc);
+        System.out.println( result );
+        assertEquals("value-6", result.getValue());
+    }
+    
+    /**
+     * KahveCriteria testi
+     */
+    @Test
+    public void test16(){
+        System.out.println( "Test 16" );
+        
+        KahveEntry expResult = new KahveEntry( "value-admin" );
+        
+        KahveCriteria kc = KahveCriteria.create().addScope("admin").addScope("merkez").addKey("key-7");
+        
+        System.out.println(kc);
+        
+        KahveEntry result = kahve.get(kc);
+        
+        System.out.println( result );
+        assertEquals(expResult, result);
+        
+        result = kahveUA.get(kc);
+        System.out.println( result );
+        assertEquals("value-admin", result.getValue());
+    }
+    
+    
+    /**
+     * KahveCriteria testi
+     */
+    @Test
+    public void test17(){
+        System.out.println( "Test 17" );
+        
+        KahveEntry expResult = new KahveEntry( "ABC" );
+        
+        KahveCriteria kc = KahveCriteria.create().addScope("admin").addScope("merkez").addKey("key-8")
+                .addDefaultValue(new KahveEntry("ABC"), "merkez");
+        
+        System.out.println(kc);
+        
+        KahveEntry result = kahve.get(kc);
+        
+        System.out.println( result );
+        assertEquals(expResult, result);
+        
+        result = kahveUA.get(kc);
+        System.out.println( result );
+        assertEquals("ABC", result.getValue());
+    }
+    
 }

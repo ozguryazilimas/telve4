@@ -33,6 +33,10 @@ public class KahveEntry implements Serializable{
         setAsInteger(value);
     }
     
+    public KahveEntry( Long value) {
+        setAsLong(value);
+    }
+    
     public KahveEntry( Date value) {
         setAsDate(value);
     }
@@ -75,6 +79,14 @@ public class KahveEntry implements Serializable{
     }
 
     public final void setAsInteger(Integer val) {
+        value = val.toString();
+    }
+    
+    public Long getAsLong() {
+        return Long.parseLong(value);
+    }
+
+    public final void setAsLong(Long val) {
         value = val.toString();
     }
 
