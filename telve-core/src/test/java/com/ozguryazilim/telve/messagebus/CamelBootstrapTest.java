@@ -5,6 +5,10 @@
  */
 package com.ozguryazilim.telve.messagebus;
 
+import com.ozguryazilim.telve.messagebus.command.Command;
+import com.ozguryazilim.telve.messagebus.command.CommandSender;
+import com.ozguryazilim.telve.messagebus.command.LogCommand;
+import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ArchivePaths;
@@ -16,43 +20,35 @@ import org.junit.runner.RunWith;
 
 /**
  * CDICamelContext Bootstrap Testi
- * 
+ *
  * @author Hakan Uygun
  */
 @RunWith(Arquillian.class)
 public class CamelBootstrapTest {
-   
+
     @Deployment
     public static WebArchive deployment() {
 
         WebArchive archive = ShrinkWrap.create(WebArchive.class)
                 .addClass(CamelBootstrap.class)
                 .addClass(TelveCamelContext.class)
-                .addClass(SimpleTestRoute.class)
-                .addClass(CamelBootstrapTest.class)
+                //.addClass(SimpleTestRoute.class)
+                .addClass(TestCommand.class)
+                //.addClass(CamelBootstrapTest.class)
+                .addPackage("com.ozguryazilim.telve.messagebus.command")
                 .addAsWebInfResource("apache-deltaspike.properties",
                         ArchivePaths.create("classes/META-INF/apache-deltaspike.properties"))
-                .addAsWebInfResource("test-persistence.xml",
-                        ArchivePaths.create("classes/META-INF/persistence.xml"))
-                .addAsWebInfResource("test-ds.xml",
-                        ArchivePaths.create("test-ds.xml"))
                 .addAsWebInfResource("test-beans.xml",
                         ArchivePaths.create("beans.xml"))
-                .addAsWebInfResource("test-orm.xml",
-                        ArchivePaths.create("classes/META-INF/orm.xml"));
+                .addAsWebInfResource("commandExtention",
+                        ArchivePaths.create("classes/META-INF/services/javax.enterprise.inject.spi.Extension"));
 
-        
         //Bağımlılıkları ekle
         archive.addAsLibraries(
                 Maven.resolver().loadPomFromFile("pom.xml").resolve(
                         "org.apache.deltaspike.core:deltaspike-core-api",
                         "org.apache.deltaspike.core:deltaspike-core-impl",
-                        "org.apache.deltaspike.modules:deltaspike-partial-bean-module-api",
-                        "org.apache.deltaspike.modules:deltaspike-partial-bean-module-impl",
-                        "org.apache.deltaspike.modules:deltaspike-jpa-module-api",
-                        "org.apache.deltaspike.modules:deltaspike-jpa-module-impl",
-                        "org.apache.deltaspike.modules:deltaspike-data-module-api",
-                        "org.apache.deltaspike.modules:deltaspike-data-module-impl",
+                        "com.google.guava:guava",
                         "org.apache.camel:camel-core",
                         "io.astefanutti.camel.cdi:camel-cdi")
                 .withTransitivity()
@@ -62,10 +58,43 @@ public class CamelBootstrapTest {
 
         return archive;
     }
-    
+
+    @Inject
+    private CommandSender commandSender;
+
     @Test
-    public void testCamelBootstrap(){
+    public void testCamelBootstrap() {
         System.out.println("testCamelBootstrap");
     }
+
+    @Test
+    public void testLogCommand() {
+        System.out.println("CMD1");
+        
+        commandSender.sendCommand(new LogCommand("--- Test 1 ------"));
+        System.out.println("CMD2");
+        commandSender.sendCommand(new LogCommand("--- Test 2 ------"));
+        System.out.println("CMD3");
+        commandSender.sendCommand(new LogCommand("--- Test 3 ------"));
+        System.out.println("CMD4");
+        commandSender.sendCommand(new LogCommand("--- Test 4 ------"));
+        System.out.println("CMD-END");
+    }
+    
+    
+    @Test
+    public void testDefaultCommand() {
+        System.out.println("DEF CMD1");
+        
+        commandSender.sendCommand(new Command() {});
+        System.out.println("CMD2");
+        commandSender.sendCommand(new Command() {});
+        System.out.println("CMD3");
+        commandSender.sendCommand(new TestCommand());
+        System.out.println("CMD4");
+        commandSender.sendCommand(new TestCommand());
+        System.out.println("DEF CMD-END");
+    }
+
     
 }
