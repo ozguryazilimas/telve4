@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<permissions>
+    <permissionGroup name="Admin">
+    	<permission target="user" >
+            <entityActions/>
+        </permission>
+        <permission target="role" >
+            <entityActions/>
+        </permission>
+        <permission target="system" >
+            <entityActions/>
+        </permission>
+        <permission target="useroptions" >
+            <entityActions/>
+        </permission>
+    </permissionGroup>
+</permissions>

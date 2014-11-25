@@ -72,6 +72,11 @@
             <artifactId>jboss-servlet-api_3.1_spec</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.batch</groupId>
+            <artifactId>jboss-batch-api_1.0_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -183,8 +188,10 @@
         <module>telve-web</module>
         <module>telve-admin</module>
         <module>telve-idm-model</module>
-    <module>kahve</module>
-  </modules>
+        <module>kahve</module>
+        <module>telve-batch</module>
+        <module>telve-batch-model</module>
+    </modules>
     
     <distributionManagement>
         <repository>
