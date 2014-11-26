@@ -12,7 +12,7 @@ package com.ozguryazilim.telve.messagebus.command;
  * 
  * @author Hakan Uygun
  */
-public class LogCommand implements Command{
+public class LogCommand extends AbstractCommand{
     
     private String log;
 

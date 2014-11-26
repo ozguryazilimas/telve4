@@ -14,7 +14,7 @@ import java.util.Date;
  * 
  * @author Hakan Uygun
  */
-public class ScheduledCommand implements Command{
+public class ScheduledCommand extends AbstractCommand{
     
     private String schedule;
     private Date createDate;

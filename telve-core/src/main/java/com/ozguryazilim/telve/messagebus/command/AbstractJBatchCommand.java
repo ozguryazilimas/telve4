@@ -1,0 +1,41 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.ozguryazilim.telve.messagebus.command;
+
+import java.util.Properties;
+
+/**
+ * JBtach ( jsr352 ) Job'larını çalıştıracak komutlar için taban sınıf.
+ * 
+ * @author Hakan Uygun
+ */
+public abstract class AbstractJBatchCommand extends AbstractStorableCommand{
+    
+    /**
+     * Geriye JBatch Job ismini döndürür.
+     * @return 
+     */
+    public abstract String getJobName();
+            
+    /**
+     * JBatch Job'una basılacak parametreler için properties oluşturulur.
+     * @param props 
+     */
+    protected abstract void buildProperties( Properties props );
+    
+    /**
+     * Geriye JBatch Job'una gönderileç parametreleri döndürür.
+     * @return 
+     */
+    public Properties getProperties(){
+        Properties props = new Properties();
+        
+        buildProperties(props);
+        
+        return props;
+    }
+    
+}

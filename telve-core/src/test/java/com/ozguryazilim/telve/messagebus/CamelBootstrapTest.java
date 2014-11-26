@@ -87,9 +87,21 @@ public class CamelBootstrapTest {
     public void testDefaultCommand() {
         System.out.println("DEF CMD1");
         
-        commandSender.sendCommand(new Command() {});
+        commandSender.sendCommand(new Command() {
+
+            @Override
+            public String getName() {
+                return "CDM1";
+            }
+        });
         System.out.println("CMD2");
-        commandSender.sendCommand(new Command() {});
+        commandSender.sendCommand(new Command() {
+
+            @Override
+            public String getName() {
+                return "CMD2";
+            }
+        });
         System.out.println("CMD3");
         commandSender.sendCommand(new TestCommand());
         System.out.println("CMD4");

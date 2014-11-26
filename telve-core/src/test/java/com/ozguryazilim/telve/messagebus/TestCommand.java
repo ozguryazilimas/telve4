@@ -12,5 +12,10 @@ import com.ozguryazilim.telve.messagebus.command.Command;
  * @author haky
  */
 public class TestCommand implements Command{
+
+    @Override
+    public String getName() {
+        return "TestCommand";
+    }
     
 }

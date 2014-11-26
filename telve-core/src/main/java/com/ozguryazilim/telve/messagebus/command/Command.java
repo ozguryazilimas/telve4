@@ -13,5 +13,11 @@ import java.io.Serializable;
  * @author Hakan Uygun
  */
 public interface Command extends Serializable{
+ 
+    /**
+     * Kullanıcı, log ve raporlarda görünecek komut adı
+     * @return 
+     */
+    String getName();
     
 }
