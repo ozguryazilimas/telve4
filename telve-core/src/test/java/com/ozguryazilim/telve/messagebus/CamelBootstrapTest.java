@@ -8,6 +8,7 @@ package com.ozguryazilim.telve.messagebus;
 import com.ozguryazilim.telve.messagebus.command.Command;
 import com.ozguryazilim.telve.messagebus.command.CommandSender;
 import com.ozguryazilim.telve.messagebus.command.LogCommand;
+import com.ozguryazilim.telve.messagebus.command.ScheduledCommand;
 import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -96,5 +97,14 @@ public class CamelBootstrapTest {
         System.out.println("DEF CMD-END");
     }
 
+    @Test
+    public void testScheduledCommand() throws InterruptedException {
+        System.out.println("testScheduledCommand");
+        
+        commandSender.sendCommand(new ScheduledCommand( "NA", "TestSuit", new LogCommand("Scheduled Log :)") ));
+        
+        System.out.println("testScheduledCommand end");
+        Thread.sleep(100000l);
+    }
     
 }
