@@ -13,7 +13,8 @@
     <include file="liquibase/migration/telve-core-4.0.0.xml" />
     <include file="liquibase/migration/option-change-20141121.xml" />
     <include file="liquibase/migration/kahve-4.0.0.xml" />
-    
+    <include file="liquibase/migration/changelog-20141126-1543.xml" />
+    <include file="liquibase/migration/changelog-20141127-0758.xml" />
         
 </databaseChangeLog>
 
