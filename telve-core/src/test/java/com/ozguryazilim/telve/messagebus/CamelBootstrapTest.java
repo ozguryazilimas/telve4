@@ -33,7 +33,7 @@ public class CamelBootstrapTest {
         WebArchive archive = ShrinkWrap.create(WebArchive.class)
                 .addClass(CamelBootstrap.class)
                 .addClass(TelveCamelContext.class)
-                //.addClass(SimpleTestRoute.class)
+                .addClass(SimpleTestRoute.class)
                 .addClass(TestCommand.class)
                 //.addClass(CamelBootstrapTest.class)
                 .addPackage("com.ozguryazilim.telve.messagebus.command")
@@ -116,7 +116,7 @@ public class CamelBootstrapTest {
         commandSender.sendCommand(new ScheduledCommand( "NA", "TestSuit", new LogCommand("Scheduled Log :)") ));
         
         System.out.println("testScheduledCommand end");
-        Thread.sleep(100000l);
+        Thread.sleep(1000l);
     }
     
 }

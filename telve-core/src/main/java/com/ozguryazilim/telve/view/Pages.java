@@ -37,6 +37,16 @@ public interface Pages extends ViewConfig {
     
     @SecuredPage
     interface Admin extends Pages{
+        
+        @PageTitle("Stored Command Browse")
+        class StoredCommandBrowse implements Admin {};
+        
+        @PageTitle("Execution Log Browse")
+        class ExecutionLogBrowse implements Admin {};
+        
+        @PageTitle("ExecutionLogClearCommand")
+        class ExecutionLogClearCommand implements Admin {};
+        
         @PageTitle("Suggestion Browse")
         class SuggestionBrowse implements Admin {};
         

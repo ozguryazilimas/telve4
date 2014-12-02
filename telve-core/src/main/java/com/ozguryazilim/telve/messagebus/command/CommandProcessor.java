@@ -41,7 +41,7 @@ public class CommandProcessor implements Processor{
             //Register olmadığı için default dinleyiciye gönderiyoruz...
             getTemplate().send("seda:" + Command.class.getName(), exchange);
         } else {
-            getTemplate().send( "seda:" + command, exchange);
+            getTemplate().send( CommandRegistery.getDispacher(command), exchange);
         }
     }
     

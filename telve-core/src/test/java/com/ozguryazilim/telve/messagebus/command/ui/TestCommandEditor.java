@@ -3,19 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ozguryazilim.telve.messagebus;
-
-import com.ozguryazilim.telve.messagebus.command.Command;
+package com.ozguryazilim.telve.messagebus.command.ui;
 
 /**
  *
  * @author haky
  */
-public class TestCommand implements Command{
+public class TestCommandEditor extends CommandEditorBase<TestCommand>{
 
     @Override
-    public String getName() {
-        return "TestCommand";
+    public TestCommand createNewCommand() {
+        return new TestCommand();
     }
-
+    
 }

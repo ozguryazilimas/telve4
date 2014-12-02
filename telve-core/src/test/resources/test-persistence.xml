@@ -11,6 +11,7 @@
         <class>com.ozguryazilim.telve.entities.Option</class>
         <class>com.ozguryazilim.telve.entities.SuggestionItem</class>
         <class>com.ozguryazilim.telve.entities.Sequence</class>
+        <class>com.ozguryazilim.telve.entities.StoredCommand</class>
         
         <properties>
             <!-- Properties for Hibernate -->

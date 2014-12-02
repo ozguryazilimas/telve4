@@ -26,6 +26,18 @@
                         url="/admin/suggestionBrowse.xhtml" 
                         permission="suggestion" 
                         type="browse" />
+        <action id="storedCommand" 
+                        label="module.caption.StoredCommand" 
+                        img="suggestion.png" 
+                        url="/admin/storedCommandBrowse.xhtml" 
+                        permission="storedCommand" 
+                        type="browse" />
+        <action id="executionLog" 
+                        label="module.caption.ExecutionLog" 
+                        img="suggestion.png" 
+                        url="/admin/executionLogBrowse.xhtml" 
+                        permission="executionLog" 
+                        type="browse" />
         <action id="dashboardEditor" 
                         label="module.caption.DashboardEditor" 
                         img="dashboard_edit.png" 
@@ -58,6 +70,8 @@
     <ribbon id="admin" label="menu.main.Admin" permission="ribbon:admin" order="1000">
         <section label="menu.caption.Suggestions" order="1000">
             <action id="suggestion" type="large" />
+            <action id="storedCommand" type="large" />
+            <action id="executionLog" type="large" />
         </section>
     </ribbon>
         

@@ -5,10 +5,10 @@
  */
 package com.ozguryazilim.telve.messagebus.command;
 
-import java.util.Date;
-
 /**
  * Kullanıcıdan / Servisler'den alınan verilerle saklanabilecek komut türlerini tanımlar.
+ * 
+ * Serializable gibi sadece bir işaretçi.
  * 
  * Özellikle Günsonu vb. tanımlanacak işler için kullanılır. Bu tür komutlar için CommandEditor'ler hazırlanabilir.
  * 
@@ -25,40 +25,4 @@ public interface StorableCommand extends Command{
      */
     void setName( String name );
     
-    /**
-     * Komut için varsa ek açıklama döndürür.
-     * 
-     * @return 
-     */
-    String getInfo();
-    
-    /**
-     * Komut için ek açıklama setler
-     * @param info 
-     */
-    void setInfo( String info );
-    
-    /**
-     * Komutun oluşturulma tarihini döndürür.
-     * @return 
-     */
-    Date getCreateDate();
-    
-    /**
-     * Komutun oluşturulma tarihini setler
-     * @param date 
-     */
-    void setCreateDate( Date date );
-    
-    /**
-     * Komutun kim tarafından oluşturulduğunu döndürür.
-     * @return 
-     */
-    String getCreateBy();
-    
-    /**
-     * Komutun kim tarafından oluşturulduğunu setler.
-     * @param createBy 
-     */
-    void setCreateBy( String createBy );
 }

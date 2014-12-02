@@ -5,8 +5,6 @@
  */
 package com.ozguryazilim.telve.messagebus.command;
 
-import java.util.Date;
-
 /**
  * StorableCommand türü için taban sınıf.
  * @author Hakan Uygun
@@ -14,9 +12,6 @@ import java.util.Date;
 public abstract class AbstractStorableCommand implements StorableCommand{
 
     private String name;
-    private String info;
-    private Date createDate;
-    private String createBy;
 
     @Override
     public String getName() {
@@ -26,36 +21,6 @@ public abstract class AbstractStorableCommand implements StorableCommand{
     @Override
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String getInfo() {
-        return info;
-    }
-
-    @Override
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
-    @Override
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    @Override
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    @Override
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    @Override
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
     }
     
 }

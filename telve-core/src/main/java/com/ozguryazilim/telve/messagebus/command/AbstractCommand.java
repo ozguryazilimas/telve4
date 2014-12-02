@@ -22,5 +22,5 @@ public abstract class AbstractCommand implements Command{
     public String getName(){
         return this.getClass().getSimpleName();
     }
-    
+
 }

@@ -34,16 +34,23 @@ public class CommandExtention implements Extension{
 
         CommandExecutor a = pat.getAnnotatedType().getAnnotation(CommandExecutor.class);
         
+        String beanName = pat.getAnnotatedType().getJavaClass().getSimpleName();
+        beanName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, beanName);
+        
         String name = a.command().getName();
         String endpoint = a.endpoint();
+        String dispacher = a.dispacher();
+        
         if( endpoint.isEmpty() ){
-            endpoint = pat.getAnnotatedType().getJavaClass().getSimpleName();
-            endpoint = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, endpoint);
-            endpoint = "bean:" + endpoint;
+            endpoint = "bean:" + beanName;
+        }
+        
+        if( dispacher.isEmpty() ){
+            dispacher = "seda:" + beanName;
         }
         
         LOG.debug("Registered Command {}", name );
-        CommandRegistery.register( name, endpoint);
+        CommandRegistery.register( name, dispacher, endpoint);
     }
     
 }

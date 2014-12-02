@@ -5,7 +5,8 @@
  */
 package com.ozguryazilim.telve.messagebus.command;
 
-import javax.enterprise.context.RequestScoped;
+import java.io.Serializable;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.camel.ProducerTemplate;
@@ -18,8 +19,8 @@ import org.apache.camel.cdi.Uri;
  * @author Hakan Uygun
  */
 @Named
-@RequestScoped
-public class CommandSender {
+@Dependent
+public class CommandSender implements Serializable{
     
     @Inject @ContextName("telve")
     @Uri("seda:command")

@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:composite="http://java.sun.com/jsf/composite"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <composite:interface>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="label" required="true"/>
+        <composite:attribute name="placeholder" required="false"/>
+        <composite:attribute name="update" required="false"/>
+        <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:attribute name="columnClass" required="false" default="large-6 medium-6 small-6"/>
+        <composite:attribute name="rendered" required="false" type="java.lang.Boolean" default="true"/>
+        <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <ui:fragment rendered="#{cc.attrs.rendered}">
+
+            <h:outputScript library="telveComponents" name="jqCron.js" target="head"/>
+            <h:outputScript library="telveComponents" name="jqCron.en.js" target="head"/>
+            <h:outputStylesheet library="telveComponents" name="jqCron.css" />
+            
+            <div id="#{cc.clientId}" class="prop #{cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
+
+                <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
+
+                <span class="value">
+
+                    <div class="ui-input-group">
+                        
+                        <p:inputText id="#{cc.id}_inp" value="" />
+
+                        <ui:remove>
+                        <input id="#{cc.clientId}_sc" value="30 16 * * *" />
+                        </ui:remove>
+                        
+                        <p:commandButton id="popdown"  ajax="true" 
+                                             update="ovl1" onsuccess="PF('#{cc.id}SheduleOverlay').show()"
+                                             icon="ui-icon-search" styleClass="ui-icon-only"/>
+                    </div>
+                    
+                    <p:dialog id="ovl1" 
+                                    hideEffect="fade" dynamic="true"  
+                                    modal="false" width="600"
+                                    widgetVar="#{cc.id}SheduleOverlay">
+                        
+                        
+                        <p:tabView >
+                            <p:tab title="Bir kez">
+                                Period giriş alanı gelecek : 2g8s sonra
+                            </p:tab>
+                            <p:tab title="Period">
+                                Period giriş alanı gelecek : 2g8s'de bir
+                            </p:tab>
+                            <p:tab title="Zamanalama">
+                        <input id="#{cc.clientId}_sc" value="30/5 16 * * *" />
+
+                        <script> 
+                            $(PrimeFaces.escapeClientId('#{cc.clientId}_sc')).jqCron();
+                        </script>
+                        </p:tab>
+                            <p:tab title="Gelişmiş">
+                                Buraya cron/quarzt string girilebilir alan gelecek
+                            </p:tab>
+                        </p:tabView>
+                    </p:dialog>
+                </span>
+                <p:message for="#{cc.id}_inp" display="text"/>
+            </div>
+            
+            
+        </ui:fragment>
+    </composite:implementation>
+
+</ui:composition>

@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.messagebus.command;
 
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.cdi.ContextName;
@@ -14,7 +15,7 @@ import org.apache.camel.cdi.ContextName;
  *
  * @author Hakan Uygun
  */
-@ContextName("telve")
+@Dependent @ContextName("telve")
 public class CommandRoute extends RouteBuilder {
 
 
@@ -30,7 +31,7 @@ public class CommandRoute extends RouteBuilder {
         
 
         for( String command : CommandRegistery.getCommands()){
-            from("seda:"+command)
+            from(CommandRegistery.getDispacher(command))
                .to(CommandRegistery.getEndpoint(command));
         }
         
