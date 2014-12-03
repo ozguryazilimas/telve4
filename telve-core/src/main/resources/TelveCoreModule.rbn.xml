@@ -28,13 +28,19 @@
                         type="browse" />
         <action id="storedCommand" 
                         label="module.caption.StoredCommand" 
-                        img="suggestion.png" 
+                        img="storedCommand.png" 
                         url="/admin/storedCommandBrowse.xhtml" 
                         permission="storedCommand" 
                         type="browse" />
+        <action id="scheduledCommand" 
+                        label="module.caption.ScheduledCommand" 
+                        img="scheduledCommand.png" 
+                        url="/admin/scheduledCommandBrowse.xhtml" 
+                        permission="scheduledCommand" 
+                        type="browse" />
         <action id="executionLog" 
                         label="module.caption.ExecutionLog" 
-                        img="suggestion.png" 
+                        img="executionLog.png" 
                         url="/admin/executionLogBrowse.xhtml" 
                         permission="executionLog" 
                         type="browse" />
@@ -71,9 +77,34 @@
         <section label="menu.caption.Suggestions" order="1000">
             <action id="suggestion" type="large" />
             <action id="storedCommand" type="large" />
+            <action id="scheduledCommand" type="large" />
             <action id="executionLog" type="large" />
         </section>
     </ribbon>
+        
+    <ribbon-context view="/admin/storedCommand">
+        <section order="10">
+            <action id="storedCommand" type="large" />
+            <action id="scheduledCommand" type="large" />
+            <action id="executionLog" type="large" />
+        </section>
+    </ribbon-context>
+    
+    <ribbon-context view="/admin/scheduledCommand">
+        <section order="10">
+            <action id="storedCommand" type="large" />
+            <action id="scheduledCommand" type="large" />
+            <action id="executionLog" type="large" />
+        </section>
+    </ribbon-context>
+    
+    <ribbon-context view="/admin/executionLog">
+        <section order="10">
+            <action id="storedCommand" type="large" />
+            <action id="scheduledCommand" type="large" />
+            <action id="executionLog" type="large" />
+        </section>
+    </ribbon-context>
         
     <ribbon-context view="/home">
         <section align="right">

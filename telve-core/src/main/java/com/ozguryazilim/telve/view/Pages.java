@@ -41,6 +41,9 @@ public interface Pages extends ViewConfig {
         @PageTitle("Stored Command Browse")
         class StoredCommandBrowse implements Admin {};
         
+        @PageTitle("Scheduled Command Browse")
+        class ScheduledCommandBrowse implements Admin {};
+        
         @PageTitle("Execution Log Browse")
         class ExecutionLogBrowse implements Admin {};
         

@@ -1,0 +1,33 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"                   
+                template="/layout/primeTemplate.xhtml">
+
+
+    <ui:define name="body">
+        <ui:include src="/layout/messages.xhtml" />
+        <p:dataTable value="#{scheduledCommandBrowse.timers}" var="timer">
+            <p:column headerText="#{messages['general.label.timeRemaining']}">
+                #{timer.timeRemaining}
+            </p:column>
+            <p:column headerText="#{messages['general.label.NextTimeout']}">
+                #{timer.nextTimeout}
+            </p:column>
+            <p:column headerText="#{messages['general.label.Name']}">
+                #{timer.scheduledCommand.command.name} 
+            </p:column>
+            <p:column headerText="#{messages['general.label.Schedule']}">
+                #{timer.schedule}
+            </p:column>
+            <p:column headerText="#{messages['general.label.Actions']}">
+                
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>
