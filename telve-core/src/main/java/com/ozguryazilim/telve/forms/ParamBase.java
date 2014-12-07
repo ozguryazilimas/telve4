@@ -77,8 +77,13 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
     }
 
     public void edit(E e) {
+        
         LOG.debug("Edit edicedik : {}", e);
+        
+        onBeforeLoad();
+        
         entity = e;
+        onAfterLoad();
     }
 
     public void delete(E e) {
@@ -93,6 +98,8 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
             return Pages.Home.class;
         }
 
+        if( !onBeforeSave() ) return null;
+        
         //try {
             getRepository().saveAndFlush(entity);
             if( !getEntityList().contains(entity) ){
@@ -108,6 +115,9 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
             facesMessages.add("#{messages['general.message.record.SaveFail']}");
             return BaseConsts.FAIL;
         }*/
+            
+        onAfterSave();
+        
         LOG.debug("Entity Saved : {} ", entity);
         
         FacesMessages.info("#{messages['general.message.record.SaveSuccess']}");
@@ -123,6 +133,8 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
             return Pages.Home.class;
         }
 
+        if( !onBeforeDelete() ) return null;
+        
         try {
             getRepository().remove(entity);
             
@@ -136,6 +148,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
         //Listeden de çıkaralım
         getEntityList().remove(entity);
         
+        onAfterDelete();
         
         LOG.debug("Entity Removed : {} ", entity);
         
@@ -186,6 +199,29 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
     public void setFilteredList(List<E> filteredList) {
         this.filteredList = filteredList;
     }
+
     
+    public boolean onBeforeSave(){
+        return true;
+    }
     
+    public boolean onAfterSave(){
+        return true;
+    }
+    
+    public boolean onBeforeLoad(){
+        return true;
+    }
+    
+    public boolean onAfterLoad(){
+        return true;
+    }
+    
+    public boolean onBeforeDelete(){
+        return true;
+    }
+    
+    public boolean onAfterDelete(){
+        return true;
+    }
 }
