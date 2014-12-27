@@ -113,11 +113,11 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         }
 
         //try {
-        beforeSave();
+        if( !onBeforeSave() ) return null;
 
         getRepository().saveAndFlush(entity);
 
-        postSave();
+        onAfterSave();
         //} catch (EntityExistsException e) {
         //    log.debug("Hata : #0", e);
         //    facesMessages.add("#{messages['general.message.record.NotUnique']}");
@@ -136,16 +136,18 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * Entity kaydedilmeden hemen önce atl sınıflar birşey yapmak isterlerse bu
      * methodu override edebilirler...
      */
-    public void beforeSave() {
+    public boolean onBeforeSave() {
         //Alt sınıflar için 
+        return true;
     }
 
     /**
      * Entity kaydedildikten hemen sonra atl sınıflar birşey yapmak isterlerse
      * bu methodu override edebilirler...
      */
-    public void postSave() {
+    public boolean onAfterSave() {
         //Alt sınıflar için 
+        return true;
     }
 
     public void reattachRequiredEntities() {
@@ -221,16 +223,18 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * Alt sınıfların clonlama sonra yapacağı iişler için override edilmesi
      * gerekir.
      */
-    public void postClone() {
+    public boolean onAfterClone() {
         //Alt sınıflarda kullanılır.
+        return true;
     }
 
     /**
      * Entity yüklendikten hemen sonra atl sınıflar birşey yapmak isterlerse bu
      * methodu override edebilirler...
      */
-    public void postLoad() {
+    public boolean onAfterLoad() {
         //Alt sınıflar için 
+        return true;
     }
 
     public Class<? extends ViewConfig> saveAndNew() {
@@ -339,7 +343,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
                 createNew();
             } else {
                 //Entity başarıyla yüklendi. Alt sınıflar bu aşamada birşey yapmak isterlerse postLoad() methodunu override edebilirler...
-                postLoad();
+                onAfterLoad();
             }
         }
         this.id = id;
