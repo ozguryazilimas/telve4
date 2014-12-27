@@ -20,5 +20,9 @@ public class TelvePropertyFileConfig implements PropertyFileConfig{
     public String getPropertyFileName() {
         return "telve.properties";
     }
-    
+
+    @Override
+    public boolean isOptional() {
+        return true;
+    }
 }

@@ -8,10 +8,11 @@
     <packaging>pom</packaging>
     
     <properties>
-        <deltaspike.version>1.1.0</deltaspike.version>
-        <picketlink.version>2.7.0.CR1</picketlink.version>
-        <primeface.version>5.1-OYAS2</primeface.version>
-        <liquibase.version>3.3.0</liquibase.version>
+        <deltaspike.version>1.2.1</deltaspike.version>
+        <picketlink.version>2.7.0.CR3</picketlink.version>
+        <primeface.version>5.2.OYAS1</primeface.version>
+        <primefaces-ext.version>3.0.0</primefaces-ext.version>
+        <liquibase.version>3.3.1</liquibase.version>
         
         <mysql.version>5.1.26</mysql.version>
         
@@ -205,7 +206,7 @@
             <dependency>
                 <groupId>org.primefaces</groupId>
                 <artifactId>primefaces</artifactId>
-                <version>5.1-OYAS1</version>
+                <version>${primeface.version}</version>
             </dependency>
                 
             <dependency>  
@@ -217,7 +218,7 @@
             <dependency>
                 <groupId>org.primefaces.extensions</groupId>
                 <artifactId>primefaces-extensions</artifactId>
-                <version>2.0.0</version>
+                <version>${primefaces-ext.version}</version>
             </dependency>
             
             <!-- Utilities-->
