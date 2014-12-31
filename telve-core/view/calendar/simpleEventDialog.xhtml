@@ -1,0 +1,125 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions" 
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/dialogBase.xhtml">
+    <ui:param name="title" value="#{messages['calendar.source.name.simpleEventSource']}" />
+    <ui:define name="form" >
+
+        <h:outputScript id="timeRangeScript" target="body">  
+            /* <![CDATA[ */  
+
+            function tpStartOnHourShowCallback(hour) {  
+            if (!PrimeFaces.widgets['endTimeWidget']) {  
+            return false;  
+            }  
+
+            var tpEndHour = parseInt(PF('endTimeWidget').getHours());  
+
+            // Check if proposed hour is prior or equal to selected end time hour  
+            if (parseInt(hour) <= tpEndHour) {  
+            return true;  
+            }  
+
+            // if hour did not match, it can not be selected  
+            return false;  
+            }  
+
+            function tpStartOnMinuteShowCallback(hour, minute) {  
+            if (!PrimeFaces.widgets['endTimeWidget']) {  
+            return false;  
+            }  
+
+            var tpEndHour = parseInt(PF('endTimeWidget').getHours());  
+            var tpEndMinute = parseInt(PF('endTimeWidget').getMinutes());  
+
+            // Check if proposed hour is prior to selected end time hour  
+            if (parseInt(hour) < tpEndHour) {  
+            return true;  
+            }  
+
+            // Check if proposed hour is equal to selected end time hour and minutes is prior  
+            if ((parseInt(hour) == tpEndHour) && (parseInt(minute) < tpEndMinute)) {  
+            return true;  
+            }  
+
+            // if minute did not match, it can not be selected  
+            return false;  
+            }  
+
+            function tpEndOnHourShowCallback(hour) {  
+            if (!PrimeFaces.widgets['startTimeWidget']) {  
+            return false;  
+            }  
+
+            var tpStartHour = parseInt(PF('startTimeWidget').getHours());  
+
+            // Check if proposed hour is after or equal to selected start time hour  
+            if (parseInt(hour) >= tpStartHour) {  
+            return true;  
+            }  
+
+            // if hour did not match, it can not be selected  
+            return false;  
+            }  
+
+            function tpEndOnMinuteShowCallback(hour, minute) {  
+            if (!PrimeFaces.widgets['startTimeWidget']) {  
+            return false;  
+            }  
+
+            var tpStartHour = parseInt(PF('startTimeWidget').getHours());  
+            var tpStartMinute = parseInt(PF('startTimeWidget').getMinutes());  
+
+            // Check if proposed hour is after selected start time hour  
+            if (parseInt(hour) > tpStartHour) {  
+            return true;  
+            }  
+
+            // Check if proposed hour is equal to selected start time hour and minutes is after  
+            if ((parseInt(hour) == tpStartHour) && (parseInt(minute) > tpStartMinute)) {  
+            return true;  
+            }  
+
+            // if minute did not match, it can not be selected  
+            return false;  
+            }  
+            /* ]]> */  
+        </h:outputScript>  
+
+        <h:form id="eventForm">
+            <div class="row">
+                <t:inputText value="#{simpleEventSource.calendarEvent.title}" label="general.label.Title" required="true" columnClass="large-12 medium-12 small-12"/>
+                <t:inputText value="#{simpleEventSource.data.location}" label="general.label.Location" columnClass="large-12 medium-12 small-12"/>
+                <t:inputDateTime value="#{simpleEventSource.calendarEvent.startDate}" label="general.label.StartDate" />
+
+                <ui:remove>
+                    <t:inputAny label="general.label.StartTime">
+                        <pe:timePicker value="#{simpleEventSource.calendarEvent.startDate}" mode="popup" onHourShow="tpStartOnHourShowCallback"  
+                                       onMinuteShow="tpStartOnMinuteShowCallback" widgetVar="startTimeWidget"/> 
+                    </t:inputAny>
+                </ui:remove>
+
+                <t:inputDateTime value="#{simpleEventSource.calendarEvent.endDate}" label="general.label.EndDate" />
+                <ui:remove>
+                    <t:inputAny label="general.label.EndTime">
+                        <pe:timePicker value="#{simpleEventSource.calendarEvent.endDate}" mode="popup" onHourShow="tpEndOnHourShowCallback"  
+                                       onMinuteShow="tpEndOnMinuteShowCallback" widgetVar="endTimeWidget"/> 
+                    </t:inputAny>
+                </ui:remove>
+
+                <t:inputTextarea value="#{simpleEventSource.calendarEvent.info}" label="general.label.Info" columnClass="large-12 medium-12 small-12" />
+            </div>
+            <h:panelGroup styleClass="actionButtons" layout="block">
+                <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{simpleEventSource.closeDialog()}" />
+                <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{simpleEventSource.cancelDialog()}" />
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

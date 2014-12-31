@@ -65,4 +65,13 @@ public interface Pages extends ViewConfig {
         @PageTitle("Suggestion Browse")
         class ReportConsole implements Reports {};
     }
+    
+    @SecuredPage
+    interface Calendar extends Pages{
+        @PageTitle("Calendar Consoler")
+        class CalendarConsole implements Calendar {};
+        
+        @PageTitle("Simple Event")
+        class SimpleEventDialog implements Calendar {};
+    }
 }

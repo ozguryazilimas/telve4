@@ -15,6 +15,7 @@
     <include file="liquibase/migration/kahve-4.0.0.xml" />
     <include file="liquibase/migration/changelog-20141126-1543.xml" />
     <include file="liquibase/migration/changelog-20141127-0758.xml" />
+    <include file="liquibase/migration/changelog-20141228-1940.xml" />
         
 </databaseChangeLog>
 

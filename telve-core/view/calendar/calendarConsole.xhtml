@@ -1,0 +1,150 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/primeTemplate.xhtml">
+
+    <ui:define name="outerspace">
+        <ui:remove>
+            <ui:include src="/layout/ajaxLoadingPopup.xhtml" />
+        </ui:remove>
+        <ui:insert name="includes" />
+
+        <p:dialog id="calendarFilterPopup"  header="#{messages['module.caption.CalendarFilterPopup']}" widgetVar="calendarFilterPopup" modal="true" width="420" height="300">
+
+            <h:form id="filterPopup">
+
+                <div class="row">
+
+                    <t:inputAny label="calendar.label.EventSources" columnClass="large-12 medium-12 small-12">
+
+                        <p:selectManyMenu id="advanced" value="#{calendarFilterModel.calendarSources}" 
+                                          var="t" filter="true" filterMatchMode="contains" showCheckbox="true">
+                            <f:selectItems value="#{calendarFilterModel.getRegisteredEventSources()}" var="es" itemLabel="#{messages[ 'calendar.source.name.'.concat( es ) ]}" itemValue="#{es}" />
+
+                            <p:column>
+                                <h:outputText styleClass="" value=" " />
+                            </p:column>
+
+                            <p:column>
+                                <h:outputText value="#{messages[ 'calendar.source.name.'.concat( t ) ]}" />
+                            </p:column>
+                        </p:selectManyMenu>
+
+                    </t:inputAny>
+
+
+                </div>
+                <div class="actionButtons" style="position: absolute;  width: 95%; bottom: 18px; padding-right: 18px;" >
+                    <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" ajax="true" process="@form" patialSubmit="false" oncomplete="PF('telveCalendar').update();PF('calendarFilterPopup').hide();"/>
+                    <p:button id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" onclick="PF('calendarFilterPopup').hide();"/>
+                </div>
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+
+    <ui:define name="ribbon-actions">
+
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+
+                jQuery('#newSimpleEvent').click(function () {
+                    if (this.isEnabled()) {
+                        newEvent([{name: 'eventSource', value: 'simpleEventSource'}]);
+                    }
+                });
+
+                jQuery('#monthView').click(function () {
+                    if (this.isEnabled()) {
+                        PF('telveCalendar').jqc.fullCalendar('changeView', 'month');
+                    }
+                });
+                jQuery('#agendaDayView').click(function () {
+                    if (this.isEnabled()) {
+                        PF('telveCalendar').jqc.fullCalendar('changeView', 'agendaDay');
+                    }
+                });
+                jQuery('#agendaWeekView').click(function () {
+                    if (this.isEnabled()) {
+                        PF('telveCalendar').jqc.fullCalendar('changeView', 'agendaWeek');
+                    }
+                });
+
+                jQuery('#calendarFilter').click(function () {
+                    if (this.isEnabled()) {
+                        PF('calendarFilterPopup').show();
+                    }
+                });
+            });
+        </script> 
+
+
+        <h:form id="actionForm">
+            <p:remoteCommand name="newEvent"  actionListener="#{calendarHome.newEvent}" />
+            <p:remoteCommand name="editEvent" actionListener="#{calendarHome.editEvent}" />
+
+            <ui:remove>
+                <p:remoteCommand name="editCommand" update=":editorPopup" actionListener="#{storedCommandBrowse.edit}" oncomplete="PF('editorPopup').show();"/>
+                <p:remoteCommand name="deleteCommand" update=":browseListForm:results" actionListener="#{storedCommandBrowse.delete}" />
+            </ui:remove>
+        </h:form>
+
+
+        <div  class="ribbon-section left">
+            <span class="section-title" unselectable="on">#{messages['general.label.Actions']}</span>
+
+            <t:ribbonButton buttonId="newSimpleEvent" image="calendar.png" classifier="add" label="calendar.button.SimpleEvent" />
+        </div>
+
+        <div  class="ribbon-section left">
+            <span class="section-title" unselectable="on">#{messages['general.label.View']}</span>
+
+            <t:ribbonButton buttonId="monthView" image="calendar_month.png" classifier="none" label="calendar.button.Month" />
+            <t:ribbonButton buttonId="agendaWeekView" image="calendar_week.png" classifier="none" label="calendar.button.Week" />
+            <t:ribbonButton buttonId="agendaDayView" image="calendar_day.png" classifier="none" label="calendar.button.Day" />
+
+
+        </div>
+
+        <div  class="ribbon-section left">
+            <span class="section-title" unselectable="on">#{messages['general.label.View']}</span>
+            <t:ribbonButton buttonId="calendarFilter" image="calendar_group.png" classifier="none" label="calendar.button.Filter" />
+
+        </div>
+
+        <div  class="ribbon-section left">
+            <h:form>
+                <div class="ribbon-button ribbon-button-small">
+                    <p:selectBooleanCheckbox value="#{calendarFilterModel.showClosedEvents}" itemLabel="#{messages['calendar.button.ShowClosed']}">
+                        <p:ajax oncomplete="PF('telveCalendar').update();" />
+                    </p:selectBooleanCheckbox>
+                </div>
+                <div class="ribbon-button ribbon-button-small">
+                    <p:selectBooleanCheckbox value="#{calendarFilterModel.showPersonalEvents}" itemLabel="#{messages['calendar.button.ShowPOT']}">
+                        <p:ajax oncomplete="PF('telveCalendar').update();" />
+                    </p:selectBooleanCheckbox>
+                </div>
+            </h:form>
+        </div>
+    </ui:define>
+
+    <ui:define name="body">
+
+
+        <ui:include src="/layout/messages.xhtml"/>
+
+        <h:form>
+            <p:schedule id="schedule" value="#{calendarHome.model}" widgetVar="telveCalendar" timeZone="GMT+2" rightHeaderTemplate="" tooltip="true" acpectRatio="0.5" >
+                <p:ajax event="eventSelect" listener="#{calendarHome.onEventSelect}" oncomplete="editEvent();"/>
+                <p:ajax event="viewChange" listener="#{calendarHome.onViewChange}" />
+            </p:schedule>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

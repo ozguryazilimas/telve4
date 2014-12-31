@@ -376,3 +376,44 @@ td{
 	position:absolute;
 	width:948px;
 }
+
+
+/*Renk Paletleri*/
+.tlv-yellow{
+    background-color: #fdeeb3 !important;
+    border-color: #F1C43F !important;
+    color: #FF6700 !important;
+}
+
+.tlv-red{
+    background-color: #fdd !important;
+}
+
+.tlv-blue{
+    background-color: #EAEDF1 !important;
+}
+
+
+.tlv-green{
+    background-color: #C7DB76 !important;
+}
+
+.tlv-orange{
+    background-color: moccasins !important;
+}
+
+
+.ui-timepicker-table td span {
+     width: auto ! important;
+}
+.ui-timepicker-table td a {
+    width: auto ! important;
+}
+
+.ui-dataList-content {
+    border: none !important;
+}
+
+.ui-dataList-data {
+    margin: 0 !important;
+}

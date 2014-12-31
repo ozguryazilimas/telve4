@@ -8,9 +8,6 @@
     <ui:param name="name" value="simpleCalendarDshlet" />
     <ui:param name="bean" value="#{simpleCalendarDshlet}" />
     <ui:define name="view">
-        <ui:remove>
         <p:calendar mode="inline" />
-        </ui:remove>
-        <p:schedule id="scheduleLocale" value="#{scheduleView.eventModel}" locale="tr" />
     </ui:define>
 </ui:composition>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    <changeSet author="haky (generated)" id="1419788437734-1">
+        <createTable tableName="TLV_CALENDAR">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="TLV_CALENDARPK"/>
+            </column>
+            <column name="ACTOR" type="VARCHAR(255)"/>
+            <column name="ALLDAY" type="BOOLEAN"/>
+            <column name="DONE" type="BOOLEAN"/>
+            <column name="EDITABLE" type="BOOLEAN"/>
+            <column name="END_DATE" type="datetime"/>
+            <column name="INFO" type="VARCHAR(255)"/>
+            <column name="SOURCE_DATA" type="VARCHAR(255)"/>
+            <column name="SOURCE_NAME" type="VARCHAR(255)"/>
+            <column name="START_DATE" type="datetime"/>
+            <column name="TITLE" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

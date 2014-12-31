@@ -14,6 +14,14 @@
                         url="/reports/reportConsole.xhtml" 
                         permission="reports" 
                         type="browse" />
+        
+        <action id="calendar" 
+                        label="module.caption.Calendar" 
+                        img="calendar.png" 
+                        url="/calendar/calendarConsole.xhtml" 
+                        permission="calendar" 
+                        type="browse" />
+        
         <action id="favReports" 
                         label="module.caption.FavoriteReports" 
                         img="report.png" 
@@ -61,6 +69,7 @@
     <ribbon id="workspace" label="menu.main.Workspace" permission="ribbon:workspace" order="0">
         <section label="menu.caption.UserManagement" order="0">
             <action id="dashboard" type="large" />
+            <action id="calendar" type="large" />
             <action id="reports" type="large" />
             <action id="options" type="large" />
         </section>

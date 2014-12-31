@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/dashletBase.xhtml">
+
+    <ui:param name="name" value="eventsDashlet" />
+    <ui:param name="bean" value="#{eventsDashlet}" />
+
+    <ui:define name="edit">
+
+    </ui:define>
+
+    <ui:define name="view">
+        <h:form id="eventsDashletForm">
+            <div class="row">
+                <div class="large-2 medium-2 small-2 columns">
+                    <span style="font-weight: bolder;font-size: 4em;">#{eventsDashlet.dateTime.dayOfMonth}</span>
+                </div>
+                <div class="large-10 medium-10 small-10 columns">
+                    <div class="row">
+                        <div class="large-6 medium-6 small-6 columns">
+                            <span style="font-weight: bold;font-size: 2em;">#{eventsDashlet.dateTime.dayOfWeek().getAsText(locale)}</span>
+                        </div>
+                        <div class="large-6 medium-6 small-6 columns">
+                            <div style="float: right">
+                                <p:commandButton id="prev" action="#{eventsDashlet.prevDay()}" icon="ui-icon-carat-1-w" ajax="true" process="@this" patialSubmit="true" update=":eventsDashletForm"/>
+                                <p:commandButton id="today" action="#{eventsDashlet.toDay()}" icon="ui-icon-radio-off" ajax="true" process="@this" patialSubmit="true" update=":eventsDashletForm"/>
+                                <p:commandButton id="next" action="#{eventsDashlet.nextDay()}" icon="ui-icon-carat-1-e" ajax="true" process="@this" patialSubmit="true" update=":eventsDashletForm"/>
+                            </div>
+                        </div>
+                        <div class="large-12 medium-12 small-12 columns">
+                            #{eventsDashlet.dateTime.monthOfYear().getAsText(locale)} #{eventsDashlet.dateTime.year}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <t:accordion label="Today">
+                    <p:dataList value="#{eventsDashlet.todayEvents}" var="event" type="unordered" itemType="none" style="border: none">
+                        <h:outputText value="#{event.startDate}">
+                            <f:convertDateTime pattern="#{messages['general.format.Time']}" />
+                        </h:outputText>
+                        <h:outputText value=" #{event.title}" />
+                    </p:dataList>                    
+                </t:accordion>
+                <t:accordion label="Tomorrow">
+                    <p:dataList value="#{eventsDashlet.tomorrowEvents}" var="event" type="unordered" itemType="none" style="border: none">
+                        <h:outputText value="#{event.startDate}">
+                            <f:convertDateTime pattern="#{messages['general.format.Time']}" />
+                        </h:outputText>
+                        <h:outputText value=" #{event.title}" />
+                    </p:dataList>                    
+                </t:accordion>
+                <t:accordion label="Soon">
+                    <p:dataList value="#{eventsDashlet.soonEvents}" var="event" type="unordered" itemType="none" style="border: none">
+                        <h:outputText value="#{event.startDate}">
+                            <f:convertDateTime pattern="#{messages['general.format.DateTime']}" />
+                        </h:outputText>
+                        <h:outputText value=" #{event.title}" />
+                    </p:dataList>                    
+                </t:accordion>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
