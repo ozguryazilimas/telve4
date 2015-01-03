@@ -114,6 +114,18 @@
                     </t:inputAny>
                 </ui:remove>
 
+                <t:inputCombobox label="Reminder" value="#{simpleEventSource.calendarEvent.reminderSchedule}" >
+                    <f:selectItem itemLabel="None" itemValue="" />
+                    <f:selectItem itemLabel="1 Minute Before" itemValue="1m" />
+                    <f:selectItem itemLabel="5 Minute Before" itemValue="5m" />
+                    <f:selectItem itemLabel="15 Minute Before" itemValue="15m" />
+                    <f:selectItem itemLabel="1 Hour Before" itemValue="1h" />
+                    <f:selectItem itemLabel="2 Hours Before" itemValue="2h" />
+                    <f:selectItem itemLabel="12 Hours Before" itemValue="12h" />
+                    <f:selectItem itemLabel="1 Day Before" itemValue="1d" />
+                    <f:selectItem itemLabel="2 Day Before" itemValue="2d" />
+                </t:inputCombobox>
+                
                 <t:inputTextarea value="#{simpleEventSource.calendarEvent.info}" label="general.label.Info" columnClass="large-12 medium-12 small-12" />
             </div>
             <h:panelGroup styleClass="actionButtons" layout="block">

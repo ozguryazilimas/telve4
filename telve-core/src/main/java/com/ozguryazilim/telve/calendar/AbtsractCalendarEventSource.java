@@ -8,7 +8,11 @@ package com.ozguryazilim.telve.calendar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ozguryazilim.telve.entities.CalendarEvent;
+import com.ozguryazilim.telve.reminder.ReminderService;
+import com.ozguryazilim.telve.utils.DateUtils;
+import com.ozguryazilim.telve.utils.ScheduleModel;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -32,6 +36,9 @@ public abstract class AbtsractCalendarEventSource<E> implements CalendarEventCon
     
     @Inject
     private CalendarEventRepository repository;
+    
+    @Inject
+    private ReminderService reminderService;
     
     private CalendarEvent calendarEvent;
     private E data;
@@ -153,6 +160,10 @@ public abstract class AbtsractCalendarEventSource<E> implements CalendarEventCon
         
         setContentData(calendarEvent, data);
         repository.save(calendarEvent);
+        
+        //Reminder Settings
+        Date d = DateUtils.getDateBeforePeriod(calendarEvent.getReminderSchedule(), calendarEvent.getStartDate());
+        reminderService.createReminder(calendarEvent.getTitle(), calendarEvent.getActor(), ScheduleModel.getOnceExpression(d));
         
         RequestContext.getCurrentInstance().closeDialog(null);
     }

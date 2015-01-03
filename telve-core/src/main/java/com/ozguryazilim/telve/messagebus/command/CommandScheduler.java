@@ -5,12 +5,12 @@
  */
 package com.ozguryazilim.telve.messagebus.command;
 
+import com.ozguryazilim.telve.utils.ScheduleModel;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
-import javax.ejb.ScheduleExpression;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.Timeout;
@@ -64,12 +64,26 @@ public class CommandScheduler {
     }
 
     public void addToSceduler(ScheduledCommand command) {
-        //FIXME: Schedule işini ne yapağız?
-        timerService.createCalendarTimer(
-                new ScheduleExpression().
-                hour("*").
-                minute("*").
-                second("*/10"), new TimerConfig(command, true));
+        
+        ScheduleModel sm = ScheduleModel.fromString(command.getSchedule());
+        
+        switch ( sm.getType() ){
+            case ScheduleExpression : 
+                timerService.createCalendarTimer( sm.getExpression(), new TimerConfig(command, true));
+                break;
+            case ShortSchedule :
+                //FIXME: bu da aslında normal bir Schedule Expresion olacak.
+                timerService.createCalendarTimer( sm.getExpression(), new TimerConfig(command, true));
+                break;
+            case Period :
+                //Period'u milisecond cinsine çeviriyoruz.
+                timerService.createIntervalTimer(sm.getStartDate(), sm.getPeriod().toStandardSeconds().getSeconds() * 1000, new TimerConfig(command, true));
+                break;
+            case Once :
+                //Bir kere verilen tarih saat içinde çalıştıracak
+                timerService.createSingleActionTimer(sm.getStartDate(), new TimerConfig(command, true));
+                break;
+        }
     }
 
     public void removeFromScedular(ScheduledCommand command) {

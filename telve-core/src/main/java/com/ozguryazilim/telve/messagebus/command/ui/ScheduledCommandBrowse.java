@@ -48,7 +48,9 @@ public class ScheduledCommandBrowse implements Serializable{
 
         public TimerPack( Timer timer) {
             this.nextTimeout = timer.getNextTimeout();
-            this.schedule = timer.getSchedule();
+            if( timer.isCalendarTimer() ){
+                this.schedule = timer.getSchedule();
+            }
             this.timeRemaining = timer.getTimeRemaining();
             this.scheduledCommand = (ScheduledCommand) timer.getInfo();
         }

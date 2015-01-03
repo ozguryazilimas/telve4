@@ -60,6 +60,12 @@ public class CalendarEvent extends EntityBase{
     private String sourceName;
     
     /**
+     * Kaynak tarafının bulması için anahtar alan
+     */
+    @Column(name = "SOURCE_KEY")
+    private String sourceKey;
+    
+    /**
      * event kaynağının anlayacağı veri. 
      * 
      * Event kaynağı tarafından verilen model json olarak saklanır.
@@ -73,6 +79,16 @@ public class CalendarEvent extends EntityBase{
      */
     @Column(name = "ACTOR")
     private String actor;
+    
+    /**
+     * Hatırlatma kuralı. 
+     * 
+     * Format ScheduleModel içindir. @see ScheduleModel
+     * 
+     * Null veya Empty ise reminder yoktur.
+     */
+    @Column(name = "REMINDER")
+    private String reminderSchedule;
     
     @Override
     public Long getId() {
@@ -162,6 +178,23 @@ public class CalendarEvent extends EntityBase{
     public void setActor(String actor) {
         this.actor = actor;
     }
+
+    public String getSourceKey() {
+        return sourceKey;
+    }
+
+    public void setSourceKey(String sourceKey) {
+        this.sourceKey = sourceKey;
+    }
+
+    public String getReminderSchedule() {
+        return reminderSchedule;
+    }
+
+    public void setReminderSchedule(String reminderSchedule) {
+        this.reminderSchedule = reminderSchedule;
+    }
+    
     
     
 }
