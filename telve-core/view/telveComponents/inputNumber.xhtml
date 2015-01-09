@@ -34,7 +34,10 @@
                                     symbol="#{cc.attrs.symbol}" symbolPosition="#{cc.attrs.symbolPosition}" emptyValue="#{cc.attrs.emptyValue}" 
                                     decimalPlaces="#{cc.attrs.decimalPlaces}" decimalSeparator="#{cc.attrs.decimalSeparator}" 
                                     maxValue="#{cc.attrs.maxValue}" minValue="#{cc.attrs.minValue}" >
-                        <p:clientValidator />
+                        <ui:remove>
+                            <!-- PF Ext 3.0 la birlikte çalışmaz olmuş-->
+                            <p:clientValidator />
+                        </ui:remove>
                     </pe:inputNumber>
                 </span>
                 <p:message for="#{cc.id}_inp" display="text"/>
