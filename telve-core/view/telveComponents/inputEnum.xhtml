@@ -13,27 +13,23 @@
         <composite:attribute name="hasNullValue" required="false" type="java.lang.Boolean" default="true"/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="columnClass" required="false" default="large-6 medium-6 small-6"/>
-        <composite:attribute name="rendered" required="false" type="java.lang.Boolean" default="true"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
         <composite:clientBehavior name="change" event="change" targets="#{cc.id}_inp" />
     </composite:interface>
 
     <composite:implementation>
-        <ui:fragment rendered="#{cc.attrs.rendered}">
+        <div id="#{cc.clientId}" class="prop #{ cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
 
-            <div id="#{cc.clientId}" class="prop #{ cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
-
-                <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
-                <span class="value">
-                    <p:selectOneMenu id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" >
-                        <f:selectItems value="#{cc.items}" var="item" 
-                                       itemLabel="#{messages[ ''.concat( cc.attrs.itemLabel ).concat( item )]}" 
-                                       itemValue="#{item}" />
-                    </p:selectOneMenu>
-                </span>
-                <p:message for="#{cc.id}_inp" display="icon" />
-            </div>
-        </ui:fragment>
+            <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
+            <span class="value">
+                <p:selectOneMenu id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" >
+                    <f:selectItems value="#{cc.items}" var="item" 
+                                   itemLabel="#{messages[ ''.concat( cc.attrs.itemLabel ).concat( item )]}" 
+                                   itemValue="#{item}" />
+                </p:selectOneMenu>
+            </span>
+            <p:message for="#{cc.id}_inp" display="icon" />
+        </div>
     </composite:implementation>
 
 </ui:composition>
