@@ -12,12 +12,11 @@
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="readonly" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="columnClass" required="false" default="large-6 medium-6 small-6"/>
-        <composite:attribute name="rendered" required="false" type="java.lang.Boolean" default="true"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
     </composite:interface>
 
     <composite:implementation>
-        <ui:fragment rendered="#{cc.attrs.rendered}">
+        
             <div id="#{cc.clientId}" class="prop #{ cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
                 <p:outputLabel value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
                 <span class="value">
@@ -27,7 +26,7 @@
                     <p:message for="#{cc.id}_inp" display="icon" />
                 </ui:remove>
             </div>
-        </ui:fragment>
+        
     </composite:implementation>
 
 </ui:composition>
