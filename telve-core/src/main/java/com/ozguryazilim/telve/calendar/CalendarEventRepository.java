@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import org.apache.deltaspike.data.api.Modifying;
+import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
@@ -80,4 +82,56 @@ public abstract class CalendarEventRepository extends RepositoryBase<CalendarEve
         return crit.getResultList();
     }
     
+    /**
+     * Verilen kaynak için tamamlanmamış eventleri döndürür.
+     * @param source
+     * @param startDate
+     * @param endDate
+     * @return 
+     */
+    public List<CalendarEvent> findUnDoneEvents( String source, Date startDate, Date endDate ){
+        
+        Criteria<CalendarEvent,CalendarEvent> crit = criteria()
+                .gtOrEq(CalendarEvent_.startDate, startDate )
+                .ltOrEq(CalendarEvent_.endDate, endDate )
+                .eq(CalendarEvent_.sourceName, source )
+                .eq(CalendarEvent_.done, Boolean.FALSE );
+        
+        return crit.getResultList();
+    }
+    
+    /**
+     * Verilen source ve sourcekey'leri kullanarak event listesi döndürür. 
+     * 
+     * sourceKey'i like ile arar. Sadece done=false olanları döndürür.
+     * 
+     * @param sourceName kaynak ismi
+     * @param sourceKey anahtar like için gerekli kuralları içermeli
+     * @param done tamamlanıp tamamlanmadığı
+     * @return 
+     */
+    public abstract List<CalendarEvent> findBySourceNameAndSourceKeyLikeAndDone( String sourceName, String sourceKey, Boolean done );
+    
+    /**
+     * Bir kaynaktan gelen eventleri toplu silmek için kullanılır.
+     * 
+     * @param sourceName
+     * @param sourceKey like ile kullanılır.
+     * @return 
+     */
+    @Modifying
+    @Query("delete CalendarEvent as p where p.sourceName = ?1 and p.sourceKey like ?2")
+    public abstract int deleteEvents(String sourceName, String sourceKey );
+    
+    
+    /**
+     * Eventleri toplu olarak tamalandı işaretlemek için kullanılır.
+     * 
+     * @param sourceName
+     * @param sourceKey like ile kullanılır.
+     * @return 
+     */
+    @Modifying
+    @Query("update CalendarEvent as p set p.done = true where p.sourceName = ?1 and p.sourceKey like ?2")
+    public abstract int doneEvents(String sourceName, String sourceKey );
 }

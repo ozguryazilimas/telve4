@@ -35,10 +35,10 @@ public abstract class AbtsractCalendarEventSource<E> implements CalendarEventCon
     private ViewConfigResolver viewConfigResolver;
     
     @Inject
-    private CalendarEventRepository repository;
+    protected CalendarEventRepository repository;
     
     @Inject
-    private ReminderService reminderService;
+    protected ReminderService reminderService;
     
     private CalendarEvent calendarEvent;
     private E data;
@@ -166,6 +166,11 @@ public abstract class AbtsractCalendarEventSource<E> implements CalendarEventCon
         reminderService.createReminder(calendarEvent.getTitle(), calendarEvent.getReminderTarget(), ScheduleModel.getOnceExpression(d));
         
         RequestContext.getCurrentInstance().closeDialog(null);
+    }
+
+    @Transactional
+    public void save( CalendarEvent event ){
+        repository.save(event);
     }
     
     public void cancelDialog(){
