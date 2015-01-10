@@ -30,7 +30,7 @@ public class EmailChannelDispacher {
         LOG.debug("MailMessage Dispach : {}", exchange.getIn().toString() );
     
         try {
-            emailSender.send(exchange.getIn().getHeader("target", String.class),
+            emailSender.send(exchange.getIn().getHeader("email", String.class),
                     exchange.getIn().getHeader("subject", String.class),
                     exchange.getIn().getBody(String.class));
         } catch (MessagingException ex) {

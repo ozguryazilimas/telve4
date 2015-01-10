@@ -43,7 +43,7 @@
                 <span id="notifyDetail"></span>
             </p:notificationBar>
 
-            <p:socket onMessage="handleMessage" channel="/notify/hakan" />
+            <p:socket onMessage="handleMessage" channel="/notify/#{identity.account.id}" />
 
             <script type="text/javascript">
                 

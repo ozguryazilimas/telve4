@@ -17,6 +17,7 @@
     <include file="liquibase/migration/changelog-20141127-0758.xml" />
     <include file="liquibase/migration/changelog-20141228-1940.xml" />
     <include file="liquibase/migration/changelog-20150103-1940.xml" />
+    <include file="liquibase/migration/changelog-20150110-1940.xml" />
         
 </databaseChangeLog>
 

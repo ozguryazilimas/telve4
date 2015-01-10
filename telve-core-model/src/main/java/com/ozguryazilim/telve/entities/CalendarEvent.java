@@ -90,6 +90,13 @@ public class CalendarEvent extends EntityBase{
     @Column(name = "REMINDER")
     private String reminderSchedule;
     
+    /**
+     * Hatırlatma hedef kitlesi için Contact sorgusu.
+     * @see ContactResolver
+     */
+    @Column(name = "REMINDER_TARGET")
+    private String reminderTarget;
+    
     @Override
     public Long getId() {
         return id;
@@ -194,7 +201,13 @@ public class CalendarEvent extends EntityBase{
     public void setReminderSchedule(String reminderSchedule) {
         this.reminderSchedule = reminderSchedule;
     }
-    
-    
+
+    public String getReminderTarget() {
+        return reminderTarget;
+    }
+
+    public void setReminderTarget(String reminderTarget) {
+        this.reminderTarget = reminderTarget;
+    }
     
 }

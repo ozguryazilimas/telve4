@@ -9,3 +9,4 @@ com.ozguryazilim.telve.auth.UserModelExtention
 com.ozguryazilim.telve.messagebus.command.CommandExtention
 com.ozguryazilim.telve.messagebus.command.ui.CommandEditorExtention
 com.ozguryazilim.telve.calendar.CalendarEventSourceExtention
+com.ozguryazilim.telve.contact.ContactSourceExtention

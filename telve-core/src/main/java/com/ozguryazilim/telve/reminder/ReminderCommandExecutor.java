@@ -6,6 +6,8 @@
 package com.ozguryazilim.telve.reminder;
 
 import com.ozguryazilim.telve.channel.Channel;
+import com.ozguryazilim.telve.contact.Contact;
+import com.ozguryazilim.telve.contact.ContactResolver;
 import com.ozguryazilim.telve.messagebus.command.AbstractCommandExecuter;
 import com.ozguryazilim.telve.messagebus.command.CommandExecutor;
 import java.util.ArrayList;
@@ -30,15 +32,17 @@ public class ReminderCommandExecutor extends AbstractCommandExecuter<ReminderCom
     @Inject
     private ReminderService reminderService;
     
+    @Inject
+    private ContactResolver contactResolver;
+    
     @Override
     public void execute(ReminderCommand command) {
-        //FIXME: Burada gelen komutun payload'una bakarak gerekli hatırlatma işlemleri yapılacak.
+        
         LOG.info("ReminderCommandExecutor execute : {}", command);
         
         //Önce target çözümlemesi yapılmalı. Hatırlatma kimlere yapılacak?
-        //Şimdilik sadece bir kişi kabul ediyoruz. Target üzerinde kullanıcının bilgisi var.
-        List<String> targets = new ArrayList<>();
-        targets.add(command.getTarget());
+        List<Contact> targets = new ArrayList<>();
+        targets.addAll(contactResolver.resolveContacts(command.getTarget()));
         
         //Hatırlatma türüne bakarak hangi kanalları kullanabileceğimize bakacağız ve bunların detay bilgilerini öğreneceğiz
         List<String> channels = reminderService.getReminderChannelList(command.getReminderClass());
@@ -46,13 +50,15 @@ public class ReminderCommandExecutor extends AbstractCommandExecuter<ReminderCom
         
         
         //Şimdi her kanal'a ilgili kişi ile birlikte ihtiyaç duyduğu detay bilgileri gönderiyoruz.
-        for( String t : targets ){
+        for( Contact t : targets ){
             //Hatırlatma yapılacak kişinin üzerinde bulunan kurallara bakıyoruz hangi kanalları kullanabiliriz.
             //FIXME: Kişiye ait geçerli kanallar alınacak
+            //FIXME: kanal için yeterli bilgi yoksa da atlanmalı
             
             for( String channelName : channels ){
                 Channel channel = (Channel) BeanProvider.getContextualReference(channelName);
-                channel.sendMessage( t, command.getSubject(), "", command.getParams());
+                t.pushToMap(command.getParams());
+                channel.sendMessage( t.toString(), command.getSubject(), "", command.getParams());
             }
         }
         

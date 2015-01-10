@@ -7,6 +7,7 @@ package com.ozguryazilim.telve.calendar.simple;
 
 import com.ozguryazilim.telve.calendar.AbtsractCalendarEventSource;
 import com.ozguryazilim.telve.calendar.CalendarEventSource;
+import com.ozguryazilim.telve.contact.Contact;
 import com.ozguryazilim.telve.entities.CalendarEvent;
 import com.ozguryazilim.telve.view.Pages;
 import java.io.Serializable;
@@ -29,7 +30,14 @@ public class SimpleEventSource extends AbtsractCalendarEventSource<SimpleEvent> 
     public void createNewModel() {
         CalendarEvent ce = new CalendarEvent();
         ce.setSourceName("simpleEventSource");
+        //FIXME: Burada activeUserContact alınmalı
+        Contact activeUserContact = new Contact();
+        activeUserContact.setId(identity.getAccount().getId());
+        activeUserContact.setFirstname("Hakan");
+        activeUserContact.setLastname("Uygun");
+        activeUserContact.setEmail("hakan.uygun@ozguryazilim.com.tr");
         ce.setActor(identity.getAccount().getId());
+        ce.setReminderTarget(activeUserContact.toString());
         
         DateTime dt = new DateTime();
         

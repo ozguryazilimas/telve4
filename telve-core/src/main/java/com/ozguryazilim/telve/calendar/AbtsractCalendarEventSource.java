@@ -163,7 +163,7 @@ public abstract class AbtsractCalendarEventSource<E> implements CalendarEventCon
         
         //Reminder Settings
         Date d = DateUtils.getDateBeforePeriod(calendarEvent.getReminderSchedule(), calendarEvent.getStartDate());
-        reminderService.createReminder(calendarEvent.getTitle(), calendarEvent.getActor(), ScheduleModel.getOnceExpression(d));
+        reminderService.createReminder(calendarEvent.getTitle(), calendarEvent.getReminderTarget(), ScheduleModel.getOnceExpression(d));
         
         RequestContext.getCurrentInstance().closeDialog(null);
     }

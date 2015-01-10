@@ -28,7 +28,7 @@ public class NotifyChannelDispacher {
     public void execute( Exchange exchange ){
         LOG.warn("NotifyMessage Dispach : {}", exchange.getIn().toString() );
     
-        notifyHandler.sendMessage(exchange.getIn().getHeader("target", String.class),
+        notifyHandler.sendMessage(exchange.getIn().getHeader("id", String.class),
                                   exchange.getIn().getHeader("subject", String.class),
                                   exchange.getIn().getBody(String.class));
     }
