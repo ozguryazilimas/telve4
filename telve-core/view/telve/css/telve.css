@@ -148,12 +148,12 @@ td{
 }
 
 .viewactions ul{
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .viewactions li{
-	margin: 0;
+    margin: 0;
     padding: 2px 0;
 }
 
@@ -291,9 +291,9 @@ td{
 }
 
 .accordion{
-	/*padding: 4px 4px 4px 16px;*/
-	/*font-size: 14px;
-	color: #447799; 	*/
+    /*padding: 4px 4px 4px 16px;*/
+    /*font-size: 14px;
+    color: #447799; 	*/
     border-bottom:   1px solid #CCCCCC;
 }
 
@@ -334,7 +334,7 @@ td{
     color: red;
 }
 
-                 
+
 .ui-layout-unit, .ui-layout-unit .ui-layout-content{
     padding: 0 0 !important;
     border: 0px none #DDDDDD !important;
@@ -369,12 +369,12 @@ td{
 }
 
 .login_bg {
-	background:url(../img/login.bg.png) no-repeat center 126px;
+    background:url(../img/login.bg.png) no-repeat center 126px;
 }
 
 .login_bg #messages {
-	position:absolute;
-	width:948px;
+    position:absolute;
+    width:948px;
 }
 
 
@@ -404,7 +404,7 @@ td{
 
 
 .ui-timepicker-table td span {
-     width: auto ! important;
+    width: auto ! important;
 }
 .ui-timepicker-table td a {
     width: auto ! important;
@@ -416,4 +416,28 @@ td{
 
 .ui-dataList-data {
     margin: 0 !important;
+}
+
+.bookmark{
+    margin: 0px;
+    padding: 0px;
+}
+
+.bookmark-item{
+    height: 28px;
+    vertical-align: central;
+    list-style-type: none;
+    padding: 4px;
+}
+
+.bookmark-item:hover{
+    vertical-align: central;
+    background-color: #EAEDF1;
+    list-style-type: none;
+}
+
+.bookmark-control{
+    float: right; 
+    clear: both;
+    display: none;
 }

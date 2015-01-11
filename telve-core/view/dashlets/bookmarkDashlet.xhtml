@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/dashletBase.xhtml">
+
+    <ui:param name="name" value="bookmarkDashlet" />
+    <ui:param name="bean" value="#{bookmarkDashlet}" />
+
+    <ui:define name="extraButtons">
+        <p:commandLink action="#{bookmarkDashlet.newBookmark()}" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
+                       ajax="true" partialSubmit="true" process="@this" includeViewParams="true"
+                       update=":bookmarkDashlet" oncomplete="jQuery('#bookmarkDashleteditPane').show(500);">
+            <h:outputText styleClass="ui-icon ui-icon-pencil" />
+        </p:commandLink>
+    </ui:define>
+
+    <ui:define name="edit">
+        <t:inputText id="btitle" label="general.label.Title" value="#{bookmarkDashlet.bookmark.title}" columnClass="large-12 medium-12 small-12"/>
+        <t:inputText id="blink" label="general.label.Link" value="#{bookmarkDashlet.bookmark.link}" columnClass="large-12 medium-12 small-12"/>
+    </ui:define>
+
+    <ui:define name="view">
+        <ui:remove>
+            <p:dataList value="#{bookmarkDashlet.bookmarks}" var="b" type="unordered" itemType="none">
+                <a href="#{b.link}"><span class="fa fa-link"></span>  #{b.title}</a>
+            </p:dataList>
+        </ui:remove>
+        <h:form>
+            <ul class="bookmark">
+                <ui:repeat value="#{bookmarkDashlet.bookmarks}" var="b" varStatus="vs">
+                    <li class="bookmark-item ui-corner-all" onmouseover="jQuery('.bookmark-control', this).show();" onmouseout="jQuery('.bookmark-control', this).hide();">
+
+                        <span class="bookmark-control">
+                            <p:commandLink action="#{bookmarkDashlet.edit( vs.index )}" styleClass="ribbon-button ribbon-button-small"
+                                           ajax="true" partialSubmit="true" process="@this" includeViewParams="true"
+                                           update=":bookmarkDashlet" oncomplete="jQuery('#bookmarkDashleteditPane').show(500);">
+                                <span class="fa fa-2x fa-pencil" style="color: silver"/>
+                            </p:commandLink>
+                            <p:commandLink action="#{bookmarkDashlet.delete( vs.index )}" styleClass="ribbon-button ribbon-button-small"
+                                           ajax="true" partialSubmit="true" process="@this" includeViewParams="true"
+                                           update=":bookmarkDashlet">
+                                <span class="fa fa-2x fa-trash" style="color: #d9534f"/>
+                            </p:commandLink>
+                        </span>
+                        <a href="#{b.link}"><span class="fa fa-bookmark-o"></span> #{b.title}</a>
+                    </li>
+                </ui:repeat>
+            </ul>
+        </h:form>
+    </ui:define>
+</ui:composition>

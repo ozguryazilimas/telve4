@@ -10,7 +10,7 @@
 
     <div id="ribbon" class="wrap">
         <ui:remove>TODO: Bu satırı temizlemek lazım</ui:remove>
-        <span class="ribbon-window-title">#{telveConfigResolver.getProperty('app.title')} - #{ pageTitleResolver.pageTitle }</span>
+        <span class="ribbon-window-title">#{telveConfigResolver.getProperty('app.title')} - #{ pageTitleResolver.pageTitle } [ #{ moduleCaption } ]</span>
 
         <div class="ribbon-tab color-blue" id="currentView">
             <span class="ribbon-title">#{messages['menu.main.Context']}</span>
@@ -33,15 +33,26 @@
                         <h:graphicImage url="/img/stop.png" styleClass="ribbon-icon ribbon-normal"/>
                     </h:commandLink>
                     
-                    <p:commandLink action="#{notifyHandler.sendMessage('deneme!')}" styleClass="ribbon-button ribbon-button-small"
+                    <ui:remove>
+                        <!-- 
+                        request.requestURI.concat( '?' ).concat(request.queryString) çalışması lazım ama ajax üzerinde redirect yaparken parametreleri kaybediyor
+                        o yüzden referer'ı kullanıyoruz.
+                        -->
+                    </ui:remove>
+                    <p:commandLink action="#{bookmarkDashlet.addBookmark(pageTitleResolver.pageTitle, moduleCaption, request.getHeader('Referer'))}" styleClass="ribbon-button ribbon-button-small"
+                                   ajax="true" partialSubmit="true" process="@this" includeViewParams="true">
+                        <span class="button-title">#{messages['general.button.Bookmark']}</span> 
+                        <h:graphicImage url="/img/ribbon/small/bookmark.png" styleClass="ribbon-icon ribbon-normal"/>
+                    </p:commandLink>
+                        <ui:remove>
+                        <!-- push test -->
+                    <p:commandLink action="#{emailChannel.sendMessage('hakan.uygun@ozguryazilim.com.tr', 'Deneme', 'Deneme Notify Mesajı')}" styleClass="ribbon-button ribbon-button-small"
                                    ajax="true" partialSubmit="true" process="@this">
                         <span class="button-title">#{messages['general.button.Push']}</span> 
                         <h:graphicImage url="/img/stop.png" styleClass="ribbon-icon ribbon-normal"/>
                     </p:commandLink>
-                    
-            <p:commandButton value="Show" onclick="PF('notifyBar').show()" type="button" icon="ui-icon-arrow-1-s"/>
-<p:commandButton value="Hide" onclick="PF('notifyBar').hide()" type="button" icon="ui-icon-arrow-1-n"/>
-                                
+                        
+                        </ui:remove>
 
                 </div>
             </h:form>
