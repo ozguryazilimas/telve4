@@ -16,6 +16,7 @@
             <span class="ribbon-title">#{messages['menu.main.Context']}</span>
 
             <h:form>
+                
                 <div class="ribbon-section right">
                     <a href="#{helpResolver.helpPath}" target="HelpWinId" onclick="openHelp();" class="ribbon-button ribbon-button-small">
                         <span class="button-title">#{messages['module.caption.Help']}</span> 
@@ -32,6 +33,35 @@
                         <span class="button-title">#{messages['general.button.Logout']}</span> 
                         <h:graphicImage url="/img/stop.png" styleClass="ribbon-icon ribbon-normal"/>
                     </h:commandLink>
+
+
+
+                    <ui:remove>
+                        <!-- push test -->
+                        <p:commandLink action="#{emailChannel.sendMessage('hakan.uygun@ozguryazilim.com.tr', 'Deneme', 'Deneme Notify Mesajı')}" styleClass="ribbon-button ribbon-button-small"
+                                       ajax="true" partialSubmit="true" process="@this">
+                            <span class="button-title">#{messages['general.button.Push']}</span> 
+                            <h:graphicImage url="/img/stop.png" styleClass="ribbon-icon ribbon-normal"/>
+                        </p:commandLink>
+
+                    </ui:remove>
+
+                </div>
+                
+                <div class="ribbon-section right">
+                    
+                    <p:commandLink action="#{noteController.openNotesDialog(''.concat(request.getHeader('Referer')))}" styleClass="ribbon-button ribbon-button-large"
+                                   ajax="true" partialSubmit="true" process="@this" includeViewParams="true" rendered="#{noteController.canAddNote()}">
+                        <span class="button-title">#{messages['general.button.Notes']}</span> 
+                        <h:graphicImage url="/img/ribbon/large/note.png" styleClass="ribbon-icon ribbon-normal" />
+                        <h:graphicImage value="/img/ribbon/bullet_valid.png" styleClass="ribbon-icon ribbon-overlay" rendered="#{noteController.hasNotes('')}"/>
+                    </p:commandLink>
+                    
+                    <p:commandLink action="#{noteController.openNewNoteDialog(request.getHeader('Referer'))}" styleClass="ribbon-button ribbon-button-small"
+                                   ajax="true" partialSubmit="true" process="@this" includeViewParams="true" rendered="#{noteController.canAddNote()}">
+                        <span class="button-title">#{messages['general.button.AddNote']}</span> 
+                        <h:graphicImage url="/img/ribbon/small/note_add.png" styleClass="ribbon-icon ribbon-normal"/>
+                    </p:commandLink>
                     
                     <ui:remove>
                         <!-- 
@@ -40,38 +70,36 @@
                         -->
                     </ui:remove>
                     <p:commandLink action="#{bookmarkDashlet.addBookmark(pageTitleResolver.pageTitle, moduleCaption, request.getHeader('Referer'))}" styleClass="ribbon-button ribbon-button-small"
-                                   ajax="true" partialSubmit="true" process="@this" includeViewParams="true">
+                                   ajax="true" partialSubmit="true" process="@this" includeViewParams="true" >
                         <span class="button-title">#{messages['general.button.Bookmark']}</span> 
                         <h:graphicImage url="/img/ribbon/small/bookmark.png" styleClass="ribbon-icon ribbon-normal"/>
                     </p:commandLink>
-                        <ui:remove>
-                        <!-- push test -->
-                    <p:commandLink action="#{emailChannel.sendMessage('hakan.uygun@ozguryazilim.com.tr', 'Deneme', 'Deneme Notify Mesajı')}" styleClass="ribbon-button ribbon-button-small"
-                                   ajax="true" partialSubmit="true" process="@this">
-                        <span class="button-title">#{messages['general.button.Push']}</span> 
-                        <h:graphicImage url="/img/stop.png" styleClass="ribbon-icon ribbon-normal"/>
-                    </p:commandLink>
-                        
-                        </ui:remove>
 
+
+                    
+
+                    
                 </div>
+                
             </h:form>
 
+            
+            
             <ui:remove>
-            <div class="ribbon-section right">
-                <h:form id="quickLauncher">
-                    <div class="ribbon-button-small">
-                        <p:outputLabel value="#{messages['general.label.QuickSearch']}" styleClass="name" style="font-size: 8pt; font-weight: normal;"/>
-                        <p:inputText id="launcherkey" value="#{quickLauncher.key}" onkeypress="if (event.keyCode == 13) {
+                <div class="ribbon-section right">
+                    <h:form id="quickLauncher">
+                        <div class="ribbon-button-small">
+                            <p:outputLabel value="#{messages['general.label.QuickSearch']}" styleClass="name" style="font-size: 8pt; font-weight: normal;"/>
+                            <p:inputText id="launcherkey" value="#{quickLauncher.key}" onkeypress="if (event.keyCode == 13) {
                                     jQuery('#quickLauncher\\:launcherbtn').click();
-                                return false;
-   
+                                    return false;
+
                                 }" style="width: 120px !important; font-size: 8pt;" styleClass="value button-title"/>
-                        <p:commandButton id="launcherbtn" action="#{quickLauncher.redirect()}" style="display: none;"/>
-                    </div>
-                </h:form>
-            </div>
-                </ui:remove>
+                            <p:commandButton id="launcherbtn" action="#{quickLauncher.redirect()}" style="display: none;"/>
+                        </div>
+                    </h:form>
+                </div>
+            </ui:remove>
 
             <ui:insert name="ribbon-actions"/>
 
@@ -107,28 +135,28 @@
             TODO: Cache yapmalı
         </ui:remove>
         <p:cache key="ribbon" region="ribbon-#{identity.account.id}">
-        <c:forEach id="tabrepeater" items="#{ribbonController.getTabs()}"
-                   var="tab" varStatus="tabCounter">
+            <c:forEach id="tabrepeater" items="#{ribbonController.getTabs()}"
+                       var="tab" varStatus="tabCounter">
 
-            <div class="ribbon-tab #{tab.id eq 'workspace' ? 'color-orange' : '' }" id="#{tab.id}">
-                <span class="ribbon-title">#{messages[tab.label]}</span>
-                <c:forEach id="secrepeater" items="#{tab.sections}"
-                           var="section" varStatus="rowCounter1">
-                    <div class="ribbon-section">
-                        <span class="section-title">#{messages[section.label]}</span>
+                <div class="ribbon-tab #{tab.id eq 'workspace' ? 'color-orange' : '' }" id="#{tab.id}">
+                    <span class="ribbon-title">#{messages[tab.label]}</span>
+                    <c:forEach id="secrepeater" items="#{tab.sections}"
+                               var="section" varStatus="rowCounter1">
+                        <div class="ribbon-section">
+                            <span class="section-title">#{messages[section.label]}</span>
 
 
-                        <c:forEach id="actrepeater" items="#{section.actions}"
-                                   var="action" varStatus="rowCounter2">
+                            <c:forEach id="actrepeater" items="#{section.actions}"
+                                       var="action" varStatus="rowCounter2">
 
-                            <t:ribbonAction actionItem="#{action.action}" classifier="#{classifier}" buttonType="#{action.type}" counter="#{rowCounter2}" params="#{action.params}"/>
+                                <t:ribbonAction actionItem="#{action.action}" classifier="#{classifier}" buttonType="#{action.type}" counter="#{rowCounter2}" params="#{action.params}"/>
 
-                        </c:forEach>
+                            </c:forEach>
 
-                    </div>
-                </c:forEach>
-            </div>
-        </c:forEach>
+                        </div>
+                    </c:forEach>
+                </div>
+            </c:forEach>
         </p:cache>
     </div>
 </ui:composition>
