@@ -5,8 +5,6 @@
  */
 package com.ozguryazilim.telve.calendar;
 
-import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
-import com.ozguryazilim.telve.auth.ActiveUserRoles;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.CalendarEvent;
 import com.ozguryazilim.telve.entities.CalendarEvent_;
@@ -14,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
 import org.apache.deltaspike.data.api.Modifying;
 import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.Repository;
@@ -31,29 +28,24 @@ public abstract class CalendarEventRepository extends RepositoryBase<CalendarEve
     
     
     /**
-     * Context üzerinde tanımlı filtre
-     */
-    @Inject
-    private CalendarFilterModel filterModel;
-    
-    @Inject @ActiveUserRoles
-    private List<String> userRoles;
-    
-    @Inject @UserAware
-    private String userId;
-    
-    /**
      * Verilen iki tarih arasındaki filtrelenmiş eventlerin listesini döndürür.
      * 
-     * @param startDate
-     * @param endDate
+     * @param startDate başlangıç tarihi
+     * @param endDate bitiş tarihi
+     * @param sources hangi kaynaklara bakılacak
+     * @param userId arama yapılacak olan kullanıcı 
+     * @param userRoles arama yapılacak roller
+     * @param onlyPersonalEvents sadece kişiye atanmış eventler bulunsun
+     * @param closedEvents kapalı eventlerde bulunsun
      * @return 
      */
-    public List<CalendarEvent> findFilteredEvents( Date startDate, Date endDate ){
+    public List<CalendarEvent> findFilteredEvents( Date startDate, Date endDate, 
+                                    List<String> sources, String userId, List<String> userRoles,
+                                    Boolean onlyPersonalEvents, Boolean closedEvents ){
 
         //Hangi kaynaklar taranacak bulunuyor
         //IN hata vermesin diye liste boşsa bir string ekliyoruz.
-        List<String> sources = filterModel.getCalendarSources();
+        //List<String> sources = filterModel.getCalendarSources();
         if( sources.isEmpty() ){
             sources.add("NONE");
         }
@@ -63,7 +55,7 @@ public abstract class CalendarEventRepository extends RepositoryBase<CalendarEve
         
         actors.add(userId);
         
-        if( filterModel.getShowPersonalEvents() ){
+        if( !onlyPersonalEvents ){
             actors.addAll(userRoles);
         }
         
@@ -75,7 +67,7 @@ public abstract class CalendarEventRepository extends RepositoryBase<CalendarEve
                 .in(CalendarEvent_.actor, actors.toArray(new String[]{}) );
             
         //Kapıları gösterecek miyiz?
-        if( !filterModel.getShowClosedEvents() ){
+        if( !closedEvents ){
             crit.eq(CalendarEvent_.done, Boolean.FALSE);
         }
         

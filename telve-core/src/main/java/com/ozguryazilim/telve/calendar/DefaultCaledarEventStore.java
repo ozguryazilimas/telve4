@@ -5,6 +5,8 @@
  */
 package com.ozguryazilim.telve.calendar;
 
+import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
+import com.ozguryazilim.telve.auth.ActiveUserRoles;
 import com.ozguryazilim.telve.entities.CalendarEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,6 +28,17 @@ import org.primefaces.model.ScheduleEvent;
 @SessionScoped
 public class DefaultCaledarEventStore implements CalendarEventStore, Serializable{
 
+    /**
+     * Context üzerinde tanımlı filtre
+     */
+    @Inject
+    private CalendarFilterModel filterModel;
+    
+    @Inject @ActiveUserRoles
+    private List<String> userRoles;
+    
+    @Inject @UserAware
+    private String userId;
     
     @Inject
     private CalendarEventRepository repository;
@@ -38,14 +51,14 @@ public class DefaultCaledarEventStore implements CalendarEventStore, Serializabl
     @Override
     public void loadEvents(LazyScheduleModel model, Date start, Date end) {
         
-        List<CalendarEvent> events = repository.findFilteredEvents(start, end);
+        List<CalendarEvent> events = repository.findFilteredEvents(start, end, filterModel.getCalendarSources(), userId, userRoles, filterModel.getShowPersonalEvents(), filterModel.getShowClosedEvents());
         for( CalendarEvent e : events ){
             model.addEvent(getScheduleEvent(e));
         }
     }
     
     public List<ScheduleEvent> getEvents( Date start, Date end ){
-        List<CalendarEvent> events = repository.findFilteredEvents(start, end);
+        List<CalendarEvent> events = repository.findFilteredEvents(start, end, filterModel.getCalendarSources(), userId, userRoles, filterModel.getShowPersonalEvents(), filterModel.getShowClosedEvents());
         List<ScheduleEvent> result = new ArrayList<>();
         
         for( CalendarEvent e : events ){
