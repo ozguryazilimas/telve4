@@ -34,7 +34,7 @@
                                        itemValue="#{item.data}" />
                     </p:selectOneMenu>
 
-                    <p:commandButton action="#{suggestionControl.openDialog( group, key, cc.attrs.listener )}" partialSubmit="true" process="@this" icon="ui-icon-plus" styleClass="ui-icon-only">
+                    <p:commandButton action="#{suggestionControl.openDialog( cc.attrs.group, cc.attrs.key, cc.attrs.listener )}" partialSubmit="true" process="@this" icon="ui-icon-plus" styleClass="ui-icon-only">
                         <p:ajax event="dialogReturn"  listener="#{suggestionControl.onSelect}" update="#{cc.id}_inp,#{cc.attrs.update}" partialSubmit="true" process="@this" />   
                     </p:commandButton>
                 </div>

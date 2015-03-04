@@ -70,6 +70,8 @@ public class SuggestionControl implements Serializable {
         this.group = group;
         this.key = key;
         this.listener = listener;
+        this.data = "";
+        this.info = "";
 
         RequestContext.getCurrentInstance().openDialog("/admin/suggestionPopup");
     }
@@ -137,6 +139,24 @@ public class SuggestionControl implements Serializable {
         return key;
     }
 
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    
+    
     /**
      * GUI'den seçilen bilgileri kullanarak seçim paketi oluşturur.
      *
