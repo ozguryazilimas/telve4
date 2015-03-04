@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    <changeSet author="haky" id="BASE-1">
+        <createTable tableName="GENERIC_SEQ">
+            <column autoIncrement="true" name="next_val" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="GENERICSEQPK"/>
+            </column>
+        </createTable>
+        <insert tableName="GENERIC_SEQ">
+            <column name="next_val" value="1" />
+        </insert>
+    </changeSet>
+    <changeSet author="haky" id="BASE-2">
+        <createTable tableName="hibernate_sequence">
+            <column autoIncrement="true" name="next_val" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="HIBSEQPK"/>
+            </column>
+        </createTable>
+        <insert tableName="hibernate_sequence">
+            <column name="next_val" value="1" />
+        </insert>
+    </changeSet>
     <changeSet author="haky (generated)" id="1425466158025-1">
         <createTable tableName="TLV_CALENDAR">
             <column autoIncrement="true" name="ID" type="BIGINT">

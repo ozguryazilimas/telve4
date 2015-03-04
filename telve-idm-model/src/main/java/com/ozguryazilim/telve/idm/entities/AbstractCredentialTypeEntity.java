@@ -20,6 +20,7 @@ package com.ozguryazilim.telve.idm.entities;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
@@ -41,7 +42,7 @@ public abstract class AbstractCredentialTypeEntity implements Serializable {
     private static final long serialVersionUID = -8032908635337756851L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "genericSeq")
     private Long id;
 
     @OwnerReference
