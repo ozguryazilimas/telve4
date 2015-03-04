@@ -27,6 +27,7 @@ import org.picketlink.idm.jpa.annotations.entity.ManagedCredential;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * <p>{@link javax.persistence.Entity} representing a {@link org.picketlink.idm.credential.Token}.</p>
@@ -35,6 +36,7 @@ import javax.persistence.Entity;
  */
 @ManagedCredential(TokenCredentialStorage.class)
 @Entity
+@Table(name = "PL_TOKEN_CREDENTIAL")
 public class TokenCredentialTypeEntity extends AbstractCredentialTypeEntity {
 
     @CredentialProperty

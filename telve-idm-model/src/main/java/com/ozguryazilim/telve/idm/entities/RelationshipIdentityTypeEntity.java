@@ -26,11 +26,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
+import javax.persistence.Table;
 
 /**
  * @author pedroigor
  */
 @Entity
+@Table(name = "PL_RELATIONSHIP_IDENTITY")
 public class RelationshipIdentityTypeEntity implements Serializable {
 
     private static final long serialVersionUID = -3619372498444894118L;

@@ -19,6 +19,7 @@ package com.ozguryazilim.telve.idm.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import org.picketlink.idm.credential.storage.X509CertificateStorage;
 import org.picketlink.idm.jpa.annotations.CredentialProperty;
 import org.picketlink.idm.jpa.annotations.entity.ManagedCredential;
@@ -30,6 +31,7 @@ import org.picketlink.idm.jpa.annotations.entity.ManagedCredential;
  */
 @ManagedCredential (X509CertificateStorage.class)
 @Entity
+@Table(name = "PL_X509_CREDENTIAL")
 public class X509CredentialTypeEntity extends AbstractCredentialTypeEntity {
 
     private static final long serialVersionUID = -8313462190592256324L;

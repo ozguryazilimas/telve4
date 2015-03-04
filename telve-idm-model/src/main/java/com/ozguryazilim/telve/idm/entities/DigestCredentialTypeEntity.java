@@ -18,6 +18,7 @@
 package com.ozguryazilim.telve.idm.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import org.picketlink.idm.credential.storage.DigestCredentialStorage;
 import org.picketlink.idm.jpa.annotations.CredentialProperty;
 import org.picketlink.idm.jpa.annotations.entity.ManagedCredential;
@@ -29,6 +30,7 @@ import org.picketlink.idm.jpa.annotations.entity.ManagedCredential;
  */
 @ManagedCredential (DigestCredentialStorage.class)
 @Entity
+@Table(name = "PL_DIGEST_CREDENTIAL")
 public class DigestCredentialTypeEntity extends AbstractCredentialTypeEntity {
 
     private static final long serialVersionUID = 8582138093637065019L;

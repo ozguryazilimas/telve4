@@ -31,6 +31,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import java.util.Date;
+import javax.persistence.Table;
 
 /**
  * @author pedroigor
@@ -38,6 +39,7 @@ import java.util.Date;
 @IdentityManaged (IdentityType.class)
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "PL_IDENTITY")
 public class IdentityTypeEntity extends AttributedTypeEntity {
 
     private static final long serialVersionUID = -6533395974259723600L;

@@ -19,6 +19,7 @@ package com.ozguryazilim.telve.idm.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import org.picketlink.idm.jpa.annotations.AttributeValue;
 import org.picketlink.idm.jpa.annotations.entity.IdentityManaged;
 import org.picketlink.idm.model.basic.Group;
@@ -28,6 +29,7 @@ import org.picketlink.idm.model.basic.Group;
  */
 @IdentityManaged (Group.class)
 @Entity
+@Table(name = "PL_GROUP")
 public class GroupTypeEntity extends IdentityTypeEntity {
 
     private static final long serialVersionUID = 158403858486164771L;

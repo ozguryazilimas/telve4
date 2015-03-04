@@ -5,9 +5,11 @@
  */
 package com.ozguryazilim.telve.idm.entities;
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import org.picketlink.idm.jpa.annotations.OwnerReference;
 import org.picketlink.idm.jpa.annotations.PermissionOperation;
 import org.picketlink.idm.jpa.annotations.PermissionResourceClass;
@@ -20,7 +22,8 @@ import org.picketlink.idm.jpa.annotations.entity.PermissionManaged;
  */
 @Entity
 @PermissionManaged
-public class ResourcePermission {
+@Table(name = "PL_RESOURCE_PERMISSION")
+public class ResourcePermission implements Serializable{
 
     private static final long serialVersionUID = -7409821749592191950L;
     @Id

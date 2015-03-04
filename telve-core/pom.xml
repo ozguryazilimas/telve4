@@ -153,6 +153,16 @@
                 <artifactId>cache-api</artifactId>
             </dependency>
         
+            <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+        
+            <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-cdi</artifactId>
+        </dependency>
+        
             <!--    
         <dependency>
             <groupId>org.ehcache</groupId>
@@ -232,8 +242,8 @@
         </dependency>
 
         <dependency>
-                <groupId>org.apache.camel</groupId>
-                <artifactId>camel-freemarker</artifactId>
+            <groupId>org.apache.camel</groupId>
+            <artifactId>camel-freemarker</artifactId>
         </dependency>
 
         <dependency>

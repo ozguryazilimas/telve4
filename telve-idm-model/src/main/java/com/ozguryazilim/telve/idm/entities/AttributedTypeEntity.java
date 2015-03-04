@@ -22,12 +22,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 import org.picketlink.idm.jpa.annotations.Identifier;
 
 /**
  * @author pedroigor
  */
 @Entity
+@Table(name = "PL_ATTRIBUTED")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class AttributedTypeEntity implements Serializable {
 

@@ -23,6 +23,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import org.picketlink.idm.jpa.annotations.AttributeClass;
 import org.picketlink.idm.jpa.annotations.AttributeName;
 import org.picketlink.idm.jpa.annotations.AttributeValue;
@@ -32,6 +33,7 @@ import org.picketlink.idm.jpa.annotations.OwnerReference;
  * @author pedroigor
  */
 @Entity
+@Table(name = "PL_ATTRIBUTE")
 public class AttributeTypeEntity implements Serializable {
 
     private static final long serialVersionUID = 5255050503622214581L;

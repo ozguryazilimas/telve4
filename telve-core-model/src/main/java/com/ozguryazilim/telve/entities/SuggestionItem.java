@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
  * @author Hakan Uygun
  */
 @Entity
-@Table(name = "SUGGESTION_ITEM")
+@Table(name = "TLV_SUGGESTION_ITEM")
 public class SuggestionItem extends EntityBase implements ViewModel{
     private static final long serialVersionUID = 1L;
 

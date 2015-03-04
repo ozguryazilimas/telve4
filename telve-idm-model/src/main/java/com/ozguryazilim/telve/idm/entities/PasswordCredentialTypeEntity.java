@@ -18,6 +18,7 @@
 package com.ozguryazilim.telve.idm.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import org.picketlink.idm.credential.storage.EncodedPasswordStorage;
 import org.picketlink.idm.jpa.annotations.CredentialProperty;
 import org.picketlink.idm.jpa.annotations.entity.ManagedCredential;
@@ -29,6 +30,7 @@ import org.picketlink.idm.jpa.annotations.entity.ManagedCredential;
  */
 @ManagedCredential (EncodedPasswordStorage.class)
 @Entity
+@Table(name = "PL_PASSWORD_CREDENTIAL")
 public class PasswordCredentialTypeEntity extends AbstractCredentialTypeEntity {
 
     private static final long serialVersionUID = -1073369096518010570L;

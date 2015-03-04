@@ -32,7 +32,7 @@ import javax.validation.constraints.Size;
  * @author Hakan Uygun
  */
 @Entity
-@Table(name = "OPTIONS")
+@Table(name = "TLV_OPTIONS")
 public class Option implements Serializable{
 
     @Id

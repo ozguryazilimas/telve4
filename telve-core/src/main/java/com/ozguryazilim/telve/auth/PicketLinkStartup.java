@@ -7,6 +7,7 @@ package com.ozguryazilim.telve.auth;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.DependsOn;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
@@ -21,6 +22,7 @@ import org.picketlink.idm.model.basic.User;
  */
 @Singleton
 @Startup
+@DependsOn("LiquibaseBootstrap")
 public class PicketLinkStartup {
 
     @Inject

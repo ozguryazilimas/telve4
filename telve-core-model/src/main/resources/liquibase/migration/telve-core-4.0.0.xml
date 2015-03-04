@@ -1,44 +1,93 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
-    <changeSet author="haky (generated)" id="1410627987198-3">
-        <createTable tableName="GENERIC_SEQ">
-            <column autoIncrement="true" name="next_val" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="GENERICSEQPK"/>
-            </column>
-        </createTable>
-        <insert tableName="GENERIC_SEQ">
-            <column name="next_val" value="1" />
-        </insert>
-    </changeSet>
-    <changeSet author="haky (generated)" id="1410627987198-1">
-        <createTable tableName="OPTIONS">
+    <changeSet author="haky (generated)" id="1425466158025-1">
+        <createTable tableName="TLV_CALENDAR">
             <column autoIncrement="true" name="ID" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="OPTIONSPK"/>
+                <constraints primaryKey="true" primaryKeyName="TLV_CALENDARPK"/>
             </column>
-            <column name="OP_KEY" type="VARCHAR(255)"/>
+            <column name="ACTOR" type="VARCHAR(255)"/>
+            <column name="ALLDAY" type="BOOLEAN"/>
+            <column name="DONE" type="BOOLEAN"/>
+            <column name="EDITABLE" type="BOOLEAN"/>
+            <column name="END_DATE" type="datetime"/>
+            <column name="INFO" type="VARCHAR(255)"/>
+            <column name="REMINDER" type="VARCHAR(255)"/>
+            <column name="REMINDER_TARGET" type="VARCHAR(255)"/>
+            <column name="SOURCE_DATA" type="VARCHAR(255)"/>
+            <column name="SOURCE_KEY" type="VARCHAR(255)"/>
+            <column name="SOURCE_NAME" type="VARCHAR(255)"/>
+            <column name="START_DATE" type="datetime"/>
+            <column name="TITLE" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1425466158025-2">
+        <createTable tableName="TLV_COMMANDS">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="TLV_COMMANDSPK"/>
+            </column>
+            <column name="COMMAND" type="CLOB"/>
+            <column name="CREATE_BY" type="VARCHAR(255)"/>
+            <column name="CREATE_DATE" type="datetime"/>
+            <column name="INFO" type="VARCHAR(255)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="SCHEDULE" type="BOOLEAN"/>
+            <column name="TYPE" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1425466158025-3">
+        <createTable tableName="TLV_EXEC_LOG">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="TLV_EXEC_LOGPK"/>
+            </column>
+            <column name="LOG_DATE" type="datetime"/>
+            <column name="EXEC_BY" type="VARCHAR(255)"/>
+            <column name="LOGGER" type="VARCHAR(255)"/>
+            <column name="MSG" type="VARCHAR(255)"/>
+            <column name="SEVERITY" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1425466158025-4">
+        <createTable tableName="TLV_NOTE">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="TLV_NOTEPK"/>
+            </column>
+            <column name="ATTACHMENT" type="VARCHAR(255)"/>
+            <column name="BODY" type="VARCHAR(255)"/>
+            <column name="CREATE_DATE" type="datetime"/>
+            <column name="OWNER" type="VARCHAR(255)"/>
+            <column name="PERMISSION" type="VARCHAR(255)"/>
+            <column name="PRIORITY" type="VARCHAR(255)"/>
+            <column name="SUBJECT" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1425466158025-5">
+        <createTable tableName="TLV_OPTIONS">
+            <column name="OP_KEY" type="VARCHAR(255)">
+                <constraints primaryKey="true" primaryKeyName="TLV_OPTIONSPK"/>
+            </column>
             <column name="OP_OWNER" type="VARCHAR(20)"/>
             <column name="OP_VALUE" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1410627987198-2">
-        <createTable tableName="SUGGESTION_ITEM">
+    <changeSet author="haky (generated)" id="1425466158025-6">
+        <createTable tableName="TLV_SEQUENCE">
             <column autoIncrement="true" name="ID" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="SUGGESTION_ITPK"/>
+                <constraints primaryKey="true" primaryKeyName="TLV_SEQUENCEPK"/>
+            </column>
+            <column name="SQ_KEY" type="VARCHAR(255)"/>
+            <column name="SQ_VALUE" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1425466158025-7">
+        <createTable tableName="TLV_SUGGESTION_ITEM">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="TLV_SUGGESTIOPK"/>
             </column>
             <column name="ISACTIVE" type="BOOLEAN"/>
             <column name="DATA" type="VARCHAR(255)"/>
             <column name="CODE_GROUP" type="VARCHAR(255)"/>
             <column name="INFO" type="VARCHAR(255)"/>
             <column name="CODE_KEY" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="haky (generated)" id="1410627987198-5">
-        <createTable tableName="TLV_SEQUENCE">
-            <column autoIncrement="true" name="ID" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="SEQUENCEPK"/>
-            </column>
-            <column name="SQ_KEY" type="VARCHAR(255)"/>
-            <column name="SQ_VALUE" type="BIGINT"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

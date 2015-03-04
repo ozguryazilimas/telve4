@@ -18,6 +18,7 @@
 package com.ozguryazilim.telve.idm.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import org.picketlink.idm.jpa.annotations.AttributeValue;
 import org.picketlink.idm.jpa.annotations.entity.IdentityManaged;
 import org.picketlink.idm.model.basic.Agent;
@@ -28,6 +29,7 @@ import org.picketlink.idm.model.basic.User;
  */
 @IdentityManaged ({User.class, Agent.class})
 @Entity
+@Table(name = "PL_ACCOUNT")
 public class AccountTypeEntity extends IdentityTypeEntity {
 
     private static final long serialVersionUID = -6121193632745759231L;

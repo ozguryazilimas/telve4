@@ -24,12 +24,14 @@ import org.picketlink.idm.jpa.annotations.entity.IdentityManaged;
 import org.picketlink.idm.model.Partition;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * @author pedroigor
  */
 @IdentityManaged (Partition.class)
 @Entity
+@Table(name = "PL_PARTITION")
 public class PartitionTypeEntity extends AttributedTypeEntity {
 
     private static final long serialVersionUID = -3619372498444894118L;
