@@ -146,7 +146,11 @@ public class RoleHome extends AbstractIdentityHome<Role> {
 
     public List<Permission> getCurrentPermmissions() {
         if (currentPermmissions == null) {
-            currentPermmissions = permissionManager.listPermissions(getCurrent());
+            if( getCurrent().getId() == null ){
+                currentPermmissions = Collections.EMPTY_LIST;
+            } else {
+                currentPermmissions = permissionManager.listPermissions(getCurrent());
+            }
         }
         return currentPermmissions;
     }
