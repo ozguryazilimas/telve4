@@ -11,7 +11,6 @@ import com.ozguryazilim.telve.view.Pages;
 import java.io.Serializable;
 import java.util.List;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.picketlink.idm.IdentityManager;
@@ -72,7 +71,7 @@ public abstract class AbstractIdentityHome<E extends IdentityType> implements Se
      * Mevcut identity nesnesini saklar.
      * @return 
      */
-    @Transactional @org.apache.deltaspike.jpa.api.transaction.Transactional
+    @org.apache.deltaspike.jpa.api.transaction.Transactional
     public boolean save(){
         if( !doBeforeSave() ){
             return false;
@@ -88,7 +87,7 @@ public abstract class AbstractIdentityHome<E extends IdentityType> implements Se
     /**
      * Mevcut identity nesnesini saklar ve yeni bir tane hazırlar.
      */
-    @Transactional @org.apache.deltaspike.jpa.api.transaction.Transactional
+    @org.apache.deltaspike.jpa.api.transaction.Transactional
     public void saveAndNew(){
         if( save() ){
             doCreateNew();
@@ -98,7 +97,7 @@ public abstract class AbstractIdentityHome<E extends IdentityType> implements Se
     /**
      * Mevcut identity nesnesini siler.
      */
-    @Transactional @org.apache.deltaspike.jpa.api.transaction.Transactional
+    @org.apache.deltaspike.jpa.api.transaction.Transactional
     public void delete(){
         //identityManager.
     }
