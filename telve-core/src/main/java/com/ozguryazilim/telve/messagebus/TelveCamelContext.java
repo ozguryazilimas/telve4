@@ -5,7 +5,10 @@
  */
 package com.ozguryazilim.telve.messagebus;
 
+import com.ozguryazilim.telve.workarounds.TelveCamelThreadPoolFactory;
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+import javax.enterprise.concurrent.ManagedThreadFactory;
 import javax.enterprise.context.ApplicationScoped;
 import org.apache.camel.cdi.CdiCamelContext;
 import org.apache.camel.cdi.ContextName;
@@ -20,6 +23,9 @@ import org.apache.camel.spi.ShutdownStrategy;
 @ContextName("telve")
 public class TelveCamelContext extends CdiCamelContext{
     
+    @Resource
+    ManagedThreadFactory mtf;
+    
     @PostConstruct
     public void init(){
         setTracing(Boolean.TRUE);
@@ -28,5 +34,8 @@ public class TelveCamelContext extends CdiCamelContext{
         //ss.setShutdownNowOnTimeout(true);
         ss.setTimeout(15l);
         setShutdownStrategy(ss);
+        
+        getExecutorServiceManager().setThreadPoolFactory(new TelveCamelThreadPoolFactory(mtf));
+        
     }
 }

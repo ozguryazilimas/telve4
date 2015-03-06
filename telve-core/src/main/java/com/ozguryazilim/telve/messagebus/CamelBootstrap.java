@@ -34,7 +34,9 @@ public class CamelBootstrap implements Serializable{
         LOG.info("Camel CDI Context Init");
         
         try {
+            LOG.info(" Poolfactory name {}", camelContext.getExecutorServiceManager().getThreadPoolFactory().getClass().getName());
             camelContext.start();
+            LOG.info(" Poolfactory name {}", camelContext.getExecutorServiceManager().getThreadPoolFactory().getClass().getName());
         } catch (Exception ex) {
             LOG.error("Camel cannot started!", ex);
         }
