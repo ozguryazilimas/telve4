@@ -2,3 +2,4 @@ nb-configuration.xml
 target
 faces-config.NavData
 *~
+*.versionsBackup
