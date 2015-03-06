@@ -49,7 +49,9 @@
 		<section label="menu.caption.UserManagement" >
 			<action id="user" type="large" />
 			<action id="role" type="large" />
+                        <!--
                         <action id="group" type="large" />
+                        -->
 		</section>
                 <!--
 		<section label="menu.caption.ApplicationProperties" >
@@ -68,17 +70,14 @@
         </ribbon>
         -->
         
-        <!--
-        <ribbon-context view="/admin/user">
+        <ribbon-context view="/admin/idm">
+            
             <section label="module.caption.New" order="0">
-		<action id="userAdd" type="large" />
-            </section>
-            <section label="module.caption.New" order="0">
+                <action id="user" type="large" />
 		<action id="role" type="large" />
-                <action id="auditReport" type="large" />
             </section>
         </ribbon-context>
-        
+        <!--
         <ribbon-context view="/admin/role">
             <section label="module.caption.New" order="0">
 		<action id="role" type="large" classifier="new" />
