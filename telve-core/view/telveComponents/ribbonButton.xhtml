@@ -11,7 +11,7 @@
     <composite:interface>
         <composite:attribute name="buttonId" required="true"/>
         <composite:attribute name="image" required="true"/>
-        <composite:attribute name="classifier" required="true"/>
+        <composite:attribute name="classifier" required="false" default="none"/>
         <composite:attribute name="label" required="false"/>
     </composite:interface>
 
@@ -20,7 +20,7 @@
         <div id="#{cc.attrs.buttonId}" class="ribbon-button ribbon-button-large">
 
             <h:graphicImage value="/img/ribbon/large/#{cc.attrs.image}" styleClass="ribbon-icon ribbon-normal ribbon-hot ribbon-disabled ribbon-implicit-disabled" />
-            <h:graphicImage value="/img/ribbon/bullet_#{cc.attrs.classifier}.png" styleClass="ribbon-icon ribbon-disabled ribbon-implicit-disabled ribbon-overlay" />
+            <h:graphicImage value="/img/ribbon/bullet_#{cc.attrs.classifier}.png" styleClass="ribbon-icon ribbon-disabled ribbon-implicit-disabled ribbon-overlay" rendered="#{cc.attrs.classifier ne 'none'}"/>
 
             <span class="button-title">#{messages[cc.attrs.label]}</span> 
             <span class="button-help">#{messages[cc.attrs.label]}</span>

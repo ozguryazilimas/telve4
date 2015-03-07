@@ -13,11 +13,12 @@
 
     <composite:implementation>
 
-        <p:calendar id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}"
-                    placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.Date']}" showOn="button"
-                    navigator="true">
-            
-        </p:calendar>
+        <div style="position: relative">
+            <p:calendar id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}"
+                        placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.Date']}" showOn="button"
+                        navigator="true" >
+            </p:calendar>
+        </div>
 
     </composite:implementation>
 

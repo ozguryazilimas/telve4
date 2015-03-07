@@ -327,13 +327,13 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     }
 
     public void setId(PK id) {
-        if (entity != null && id.equals(this.id)) {
+        if (entity != null && id != -1 && id.equals(this.id)) {
             return;
         } //Zaten bu conv için entitymiz var elimizde...
 
         LOG.debug("ID ile setleniyor. ID : {} ", id);
 
-        if (id == null || id == 0) {
+        if (id == null || id == 0 || id == -1) {
             createNew();
         } else {
             entity = getRepository().findBy(id);
@@ -346,7 +346,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
                 onAfterLoad();
             }
         }
-        this.id = id;
+        this.id = ( id == -1 ? (PK)new Long(0) : id );
     }
 
     /**
