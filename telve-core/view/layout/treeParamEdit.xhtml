@@ -44,25 +44,7 @@
             </script>
 
             <p:layout style="height:98%" >
-                <ui:remove>
-                    <f:facet name="header">
-                        <p:row>
-                            <p:column style="text-align: left">
-                                <p:outputPanel>
-                                    <span class="ui-icon tv-icon-filter" style="display: inline-block;vertical-align: middle"></span>
-                                    <p:inplace id="ajax" label="#{messages['general.label.Filter']} : #{homeBean.filter}" editor="true">
-                                        <p:ajax event="save" oncomplete="search();" />
-                                        <p:inputText value="#{homeBean.filter}" required="false" label="text" style="width:auto !important;"/>
-                                    </p:inplace>
-                                </p:outputPanel>
-                            </p:column>
-                            <p:column style="text-align: left">
-                                #{messages[ ''.concat( entityName ).concat('.caption.Form')]}
-                            </p:column>
-                            
-                        </p:row>
-                    </f:facet>
-                </ui:remove>
+                
                 <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="true" resizable="true">
                     <f:facet name="header">
                         <p:outputPanel style="width: 90%; display: inline-block;">
