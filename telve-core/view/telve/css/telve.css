@@ -232,6 +232,10 @@ td{
     width: 26px !important;
 }
 
+.ui-cell-editor-input .ui-datepicker-trigger{
+    right: -1px !important;
+}
+
 .ui-autocomplete-dropdown{
     right: -1px !important;
 }

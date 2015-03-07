@@ -14,6 +14,8 @@ import javax.inject.Inject;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.PartitionManager;
 import org.picketlink.idm.credential.Password;
+import org.picketlink.idm.model.basic.BasicModel;
+import org.picketlink.idm.model.basic.Role;
 import org.picketlink.idm.model.basic.User;
 
 /**
@@ -41,13 +43,17 @@ public class PicketLinkStartup {
 
             Password password = new Password("telve");
             identityManager.updateCredential(user, password);
+            
+            // Create some relationships
+            Role r = new Role("admin");
+            identityManager.add(r);
+            
+            BasicModel.grantRole( partitionManager.createRelationshipManager(), user, r);
         }
         // Create a RelationshipManager
         //RelationshipManager relationshipManager = partitionManager.createRelationshipManager();
 
-        // Create some relationships
-        //PermissionManager pm = partitionManager.createPermissionManager();
-        //pm.grantPermission(user, "BBB", "CREATE");
+        
 
     }
 }
