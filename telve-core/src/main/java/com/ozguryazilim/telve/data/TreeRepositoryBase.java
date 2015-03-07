@@ -30,7 +30,10 @@ public abstract class TreeRepositoryBase<E extends TreeNodeEntityBase> extends R
     @Override
     public List<E> lookupQuery(String searchText) {
         return criteria()
-                .like( TreeNodeEntityBase_.code, "%" + searchText + "%")
+                .or(
+                    criteria().like( TreeNodeEntityBase_.code, "%" + searchText + "%"),
+                    criteria().like( TreeNodeEntityBase_.name, "%" + searchText + "%")
+                 )
                 .eq(TreeNodeEntityBase_.active, true)
                 .getResultList();
     }
@@ -38,7 +41,10 @@ public abstract class TreeRepositoryBase<E extends TreeNodeEntityBase> extends R
     @Override
     public List<E> suggestion(String searchText) {
         return criteria()
-                .like(TreeNodeEntityBase_.code, "%" + searchText + "%")
+                .or(
+                    criteria().like( TreeNodeEntityBase_.code, "%" + searchText + "%"),
+                    criteria().like( TreeNodeEntityBase_.name, "%" + searchText + "%")
+                 )
                 .eq(TreeNodeEntityBase_.active, true)
                 .getResultList();
     }
@@ -50,6 +56,38 @@ public abstract class TreeRepositoryBase<E extends TreeNodeEntityBase> extends R
                 .getResultList();
     }
     
+    /**
+     * Geriye root node listesini döndürür.
+     * @return 
+     */
+    public List<E> findRootNodes() {
+        return criteria()
+                .isNull(TreeNodeEntityBase_.parent)
+                //.eq(TreeNodeEntityBase_.active, true)
+                .getResultList();
+    }
     
+    /**
+     * Ağac sırasına göre veri listesini döndürür.
+     * @return 
+     */
+    public List<E> findNodes() {
+        return criteria()
+                //.eq(TreeNodeEntityBase_.active, true)
+                .orderAsc(TreeNodeEntityBase_.path)
+                .getResultList();
+    }
+    
+    
+    /**
+     * Verilen parent altındaki node listesini döndürür.
+     * @return 
+     */
+    public List<E> findNodes( E parent ) {
+        return criteria()
+                .eq(TreeNodeEntityBase_.parent, parent)
+                .orderAsc(TreeNodeEntityBase_.path)
+                .getResultList();
+    }
     
 }

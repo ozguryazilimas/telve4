@@ -6,7 +6,7 @@
 package com.ozguryazilim.telve.forms;
 
 import com.google.common.base.Strings;
-import com.ozguryazilim.telve.data.RepositoryBase;
+import com.ozguryazilim.telve.data.TreeRepositoryBase;
 import com.ozguryazilim.telve.entities.TreeNodeEntityBase;
 import com.ozguryazilim.telve.lookup.LookupTreeModel;
 import com.ozguryazilim.telve.lookup.TreeNodeTypeSelector;
@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Ağaç tii parametre veri girişleri taban kontrol sınıfı
+ * Ağaç tipi parametre veri girişleri taban kontrol sınıfı
  *
  * @author Hakan Uygun
  * @param <E> TreeNodeEntityBase'den türemiş bir entity sınıfı
@@ -48,7 +48,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
      *
      * @return
      */
-    protected abstract RepositoryBase<E, E> getRepository();
+    protected abstract TreeRepositoryBase<E> getRepository();
 
     public List<E> getEntityList() {
         LOG.debug("super.getEntityList");
@@ -231,6 +231,15 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
     public void selectItem() {
         if (getTreeModel().getSelectedData() != null) {
             entity = (E) getTreeModel().getSelectedData().getData();
+            //Tüm veri gösterilmiyor dolayısı ile alt node kontrolü yapılmalı.
+            if( !isShowAllNodes() && Strings.isNullOrEmpty(filter) ){
+                //Zaten childları var tekrar kontrol etmiyoruz.
+                if( getTreeModel().getSelectedData().isLeaf() ){
+                    List<E> childNodes = getRepository().findNodes(entity);
+                    getTreeModel().addTreeNodes(getTreeModel().getSelectedData(), childNodes);
+                    getTreeModel().getSelectedData().setExpanded(true);
+                }
+            }
         }
     }
 
@@ -241,7 +250,11 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
 
     protected void populateData() {
         if (Strings.isNullOrEmpty(getTreeModel().getSearchText())) {
-            entityList = getRepository().findAll();
+            if( isShowAllNodes() ){
+                entityList = getRepository().findNodes();
+            } else {
+                entityList = getRepository().findRootNodes();
+            }
         } else {
             entityList = getRepository().lookupQuery(getTreeModel().getSearchText());
         }
@@ -250,6 +263,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
 
     public void search() {
         entityList = null;
+        getTreeModel().setSearchText(filter);
         populateData();
     }
 
@@ -273,5 +287,16 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
     protected boolean onAfterSave() {
         return true;
     }
+
+    /**
+     * Tüm nodeları mı göstersin yoksa partial mı?
+     * @return 
+     */
+    public Boolean isShowAllNodes() {
+        return Boolean.TRUE;
+    }
+
+    
+    
     
 }

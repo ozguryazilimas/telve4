@@ -8,6 +8,7 @@ package com.ozguryazilim.telve.lookup;
 import com.ozguryazilim.telve.entities.TreeNodeModel;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.primefaces.model.CheckboxTreeNode;
@@ -35,6 +36,8 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
     private TreeNodeTypeSelector typeSelector;
     private Map<String,String> profileProperties;
 
+    private Map<Long,TreeNode> nodeCache = new HashMap<>();
+    
     public TreeNode getRootNode() {
         return model;
     }
@@ -51,10 +54,13 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
      */
     public void buildTreeModel(List<T> data) {
         model = new CheckboxTreeNode("Root", null);
+        nodeCache = new HashMap<>();
         for (T n : data) {
             addTreeNode(n);
         }
         setSelectionStrategy( model );
+        //Cache temizlensin...
+        nodeCache = null;
     }
 
     /**
@@ -67,8 +73,25 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
             parent = model;
         }
         TreeNode node = new CheckboxTreeNode(getNodeType(data), data, parent);
+        nodeCache.put(data.getId(), node);
     }
 
+    /**
+     * Verilen veriyi UI modelinde ilgili yere ekler.
+     * @param parent
+     * @param data 
+     */
+    public void addTreeNodes(TreeNode parent, List<T> data) {
+        if (parent == null) {
+            parent = model;
+        }
+        //Verilen listeyi ekler
+        for (T n : data) {
+            TreeNode node = new CheckboxTreeNode(getNodeType(n), n, parent);
+        }
+    }
+    
+    //
 
     /**
      * Verilen veriyi UI modelinden çıkartır.
@@ -104,6 +127,8 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
      */
     protected TreeNode findParent(TreeNode parent, TreeNodeModel n) {
 
+        return nodeCache.get(n.getParentId());
+        /*
         for (TreeNode node : parent.getChildren()) {
 
             if (((TreeNodeModel) node.getData()).getId().equals(n.getParentId())) {
@@ -117,6 +142,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         }
 
         return null;
+        */
     }
     
     /**
@@ -133,7 +159,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
                 return node;
             }
 
-            TreeNode nn = findParent(node, n);
+            TreeNode nn = findNode(node, n);
             if (nn != null) {
                 return nn;
             }

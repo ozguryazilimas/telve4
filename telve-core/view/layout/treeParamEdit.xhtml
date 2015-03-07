@@ -33,7 +33,7 @@
 
         <h:form id="form">
 
-            <p:remoteCommand name="selectNode" update="nodeEditor,#{onSelectUpdate}" action="#{homeBean.selectItem()}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');#{onSelectEvent}" partialSubmit="true" process="@this" />
+            <p:remoteCommand name="selectNode" update="paramTree,nodeEditor,#{onSelectUpdate}" action="#{homeBean.selectItem()}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');#{onSelectEvent}" partialSubmit="true" process="@this" />
             <p:remoteCommand name="search" update="treePanel" action="#{homeBean.search()}" partialSubmit="true" process="@this" />
             <p:remoteCommand name="newParameter" update=":form:nodeEditor" action="#{homeBean.createNewChild()}"  partialSubmit="true" process="@this" />
 
