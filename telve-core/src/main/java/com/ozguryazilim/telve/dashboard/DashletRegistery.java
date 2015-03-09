@@ -34,7 +34,6 @@ public class DashletRegistery {
         dashlets.put( name, a);
         String s = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, name);
         capabilities.put(s, Arrays.asList( a.capability()));
-        System.out.println(capabilities);
     }
 
     /**

@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class TelveResourceBundle extends java.util.ResourceBundle {
 
-    private Map<String, Map<Locale, List<ResourceBundle>>> bundleCache = new ConcurrentHashMap<String, Map<Locale, List<ResourceBundle>>>();
+    private Map<String, Map<Locale, List<ResourceBundle>>> bundleCache = new ConcurrentHashMap<>();
 
     private Map<Locale, List<ResourceBundle>> getCachedBundle() {
         String init = "Telve";
@@ -77,9 +77,7 @@ public class TelveResourceBundle extends java.util.ResourceBundle {
      * @return 
      */
     private List<ResourceBundle> loadBundlesForCurrentLocale() {
-        List<ResourceBundle> bundles = new ArrayList<ResourceBundle>();
-
-        System.out.println("Bundle içinden " + TelveModuleRegistery.getModuleNames());
+        List<ResourceBundle> bundles = new ArrayList<>();
 
         for (String bundleName : TelveModuleRegistery.getMessageBundleNames()) {
             ResourceBundle bundle = loadBundle(bundleName);
@@ -107,7 +105,7 @@ public class TelveResourceBundle extends java.util.ResourceBundle {
             enumerations[i++] = bundle.getKeys();
         }
 
-        return new EnumerationEnumeration<String>(enumerations);
+        return new EnumerationEnumeration<>(enumerations);
     }
 
     @Override

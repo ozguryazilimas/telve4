@@ -23,7 +23,6 @@ public class TelveCoreModule {
     
     @PostConstruct
     public void init(){
-        System.out.println("TelveCore inited");
         testMessage = "Inited";
         SuggestionGroupRegistery.intance().addGroup("Genel", Boolean.FALSE);
         

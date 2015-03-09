@@ -53,8 +53,6 @@ public class Kahve implements Serializable {
     public KahveEntry get( KahveCriteria criteria ) {
         
         for( String key : criteria.getKeys(identity)){
-            System.out.println("Search Key : " + key);
-            System.out.println("Identity : " + identity);
             KahveEntry result = store.get(key);
             if( result != null ) return result;
         }
@@ -188,8 +186,6 @@ public class Kahve implements Serializable {
     }
 
     protected String getUserAwareKey(String key) {
-        System.out.println("Identity : " + identity);
-
         return userAware ? identity + "::" + key : key;
     }
 

@@ -29,7 +29,6 @@ public class DashletExtention implements Extension{
      * @param pat 
      */
     <T> void processAnnotatedType(@Observes @WithAnnotations(Dashlet.class) ProcessAnnotatedType<T> pat) {
-        LOG.info("Dashlet Registery Çalıştı");
 
         Dashlet a = pat.getAnnotatedType().getAnnotation(Dashlet.class);
         

@@ -22,7 +22,6 @@ public class ReportExtention implements Extension{
      * @param pat 
      */
     <T> void processAnnotatedType(@Observes @WithAnnotations(Report.class) ProcessAnnotatedType<T> pat) {
-        System.out.println("Report Registery Çalıştı");
 
         Report a = pat.getAnnotatedType().getAnnotation(Report.class);
         String name = pat.getAnnotatedType().getJavaClass().getSimpleName();

@@ -7,6 +7,8 @@ package com.ozguryazilim.telve.reports;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Sistemde tanımlı olan raporın bilgilerini tutar.
@@ -15,6 +17,8 @@ import java.util.Map;
  */
 public class ReportRegistery {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ReportRegistery.class);
+    
     private static final Map< String, Report> reports = new HashMap<>();
 
     /**
@@ -24,6 +28,7 @@ public class ReportRegistery {
      */
     public static void register( String name, Report a) {
         reports.put( name, a);
+        LOG.info("Report registered {}", name);
     }
 
     /**

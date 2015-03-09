@@ -42,7 +42,7 @@ public class SuggestionGroupRegistery implements Serializable{
      * @param needKey ek bilgi alanına ihtiyaç duyup duymadığı
      */
     public void addGroup(String group, Boolean needKey) {
-        LOG.info("Register Edilen GenerelCode grubu : #0, #1", group, needKey);
+        LOG.info("Registered SuggestionCode  : {}, {}", group, needKey);
         groupRegistery.put(group, needKey);
     }
 

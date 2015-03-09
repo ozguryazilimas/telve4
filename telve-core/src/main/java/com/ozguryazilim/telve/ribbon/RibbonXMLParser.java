@@ -67,7 +67,7 @@ public class RibbonXMLParser {
             doc = reader.read(in);
             Element root = doc.getRootElement();
 
-            LOG.info("parse file version {}", root.attributeValue(ATTR_VERSION));
+            LOG.debug("parse file version {}", root.attributeValue(ATTR_VERSION));
 
             String dependency = root.attributeValue(ATTR_DEPENDS);
             if (dependency != null) {
@@ -80,9 +80,9 @@ public class RibbonXMLParser {
 
             List<Element> elements = root.elements(TAG_ACTIONS);
             if (elements.isEmpty()) {
-                LOG.info("This file not contains actions");
+                LOG.debug("This file not contains actions");
             } else if (elements.size() > 1) {
-                LOG.error("This file not contains more than one actions");
+                LOG.error("This file contains more than one actions");
                 return;
             } else {
                 parseActions(elements.get(0));
@@ -90,7 +90,7 @@ public class RibbonXMLParser {
 
             elements = root.elements(TAG_RIBBON);
             if (elements.isEmpty()) {
-                LOG.info("This file not contains Ribbons");
+                LOG.debug("This file not contains Ribbons");
             }
 
             for (Element el : elements) {
@@ -99,7 +99,7 @@ public class RibbonXMLParser {
 
             elements = root.elements(TAG_RIBBON_CONTEXT);
             if (elements.isEmpty()) {
-                LOG.info("This file not contains Ribbon context definitions");
+                LOG.debug("This file not contains Ribbon context definitions");
             }
 
             for (Element el : elements) {

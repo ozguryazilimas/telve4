@@ -36,12 +36,12 @@ public class HelpResolver {
     	
     	topic = topic.replace("xhtml", "html");
         topic = topic.charAt(0) == '/' ? topic.substring(1) : topic;
-        LOG.info("Nereden Help istendi : {}", topic );
+        LOG.debug("Nereden Help istendi : {}", topic );
         
         //String topicPath = "/help/" + LocaleSelector.instance().getLocaleString() + topic;
         String topicPath = "/infocenter/docs?topic=" + topic;
         
-        LOG.info("Help yolu : {}", topicPath );
+        LOG.debug("Help yolu : {}", topicPath );
         
         return topicPath;
     }

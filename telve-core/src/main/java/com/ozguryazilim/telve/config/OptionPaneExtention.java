@@ -24,8 +24,6 @@ public class OptionPaneExtention implements Extension{
      * @param pat 
      */
     <T> void processAnnotatedType(@Observes @WithAnnotations(OptionPane.class) ProcessAnnotatedType<T> pat) {
-        System.out.println("OptionPane Registery Çalıştı");
-
         OptionPane a = pat.getAnnotatedType().getAnnotation(OptionPane.class);
         String name = pat.getAnnotatedType().getJavaClass().getSimpleName();
         

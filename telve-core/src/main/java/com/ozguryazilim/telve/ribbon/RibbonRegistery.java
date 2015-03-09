@@ -35,22 +35,22 @@ public class RibbonRegistery implements Serializable {
     /**
      * Sistemde kayıtlı RibbonActionları id'sine göre tutar
      */
-    private Map<String, RibbonAction> actionMap = new HashMap<String, RibbonAction>();
+    private Map<String, RibbonAction> actionMap = new HashMap<>();
 
     /**
      * Sistemde kayıtlı olan tabların listesini id'ye göre tutar
      */
-    private Map<String, RibbonTab> tabMap = new HashMap<String, RibbonTab>();
+    private Map<String, RibbonTab> tabMap = new HashMap<>();
 
     /**
      * Context menüler için olan tanımları tutar : anahtar viewId
      */
-    private Map<String, RibbonContext> contextMap = new HashMap<String, RibbonContext>();
+    private Map<String, RibbonContext> contextMap = new HashMap<>();
 
     /**
      * Reosurce listesini tutar
      */
-    private Map<String, RibbonResourceModel> resourceMap = new HashMap<String, RibbonResourceModel>();
+    private Map<String, RibbonResourceModel> resourceMap = new HashMap<>();
 
     private RibbonXMLParser parser = null;
 
@@ -61,7 +61,7 @@ public class RibbonRegistery implements Serializable {
         tabMap.clear();
         contextMap.clear();
 
-        LOG.info("DeploymentHandler Resources {}", TelveModuleRegistery.getRibbonFileNames());
+        LOG.info("Ribbon Resources {}", TelveModuleRegistery.getRibbonFileNames());
 
         //Sadece ilk açılışta dolu geliyor zati
         //resourceMap.clear();
@@ -69,7 +69,7 @@ public class RibbonRegistery implements Serializable {
             resourceMap.put(ribbonName(fd), new RibbonResourceModel(fd));
         }
 
-        LOG.info("resourceMap : {}", resourceMap);
+        LOG.debug("resourceMap : {}", resourceMap);
 
         parser = new RibbonXMLParser();
         parser.setRegistery(this);
@@ -98,7 +98,7 @@ public class RibbonRegistery implements Serializable {
         if (resourceMap.containsKey(ribbonName)) {
             RibbonResourceModel mr = resourceMap.get(ribbonName);
             if (mr.isHandled()) {
-                LOG.info("allready handled by dependency {}", ribbonName);
+                LOG.debug("allready handled by dependency {}", ribbonName);
                 return;
             }
         } else {
@@ -107,7 +107,7 @@ public class RibbonRegistery implements Serializable {
         }
 
         InputStream is = null;
-        LOG.info("Register file : {}", fd);
+        LOG.debug("Register file : {}", fd);
         is = this.getClass().getResourceAsStream("/"+fd);
         if (is != null) {
             //Eğer dosya yoksa bişi yapmıyoruz.

@@ -25,8 +25,6 @@ public class SubViewExtention implements Extension {
      * @param pat 
      */
     <T> void processAnnotatedType(@Observes @WithAnnotations(SubView.class) ProcessAnnotatedType<T> pat) {
-        System.out.println("SubView Registery Çalıştı");
-
         SubView a = pat.getAnnotatedType().getAnnotation(SubView.class);
         SubViewRegistery.register(a);
     }
