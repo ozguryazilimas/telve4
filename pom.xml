@@ -5,7 +5,7 @@
 	
     <groupId>com.ozguryazilim.mutfak</groupId>
     <artifactId>telve-parent</artifactId>
-    <version>4.0.0-SNAPSHOT</version> 
+    <version>4.0.0.A2</version> 
     <name>${project.groupId} : ${project.artifactId} : ${project.version}</name>
     <description>Telve Parent POM</description>
     <url>http://www.ozguryazilim.com.tr/</url>
@@ -23,7 +23,7 @@
             <dependency>
                 <groupId>com.ozguryazilim.mutfak</groupId>
                 <artifactId>telve-bom</artifactId>
-                <version>4.0.0-SNAPSHOT</version>
+                <version>4.0.0.A2</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
