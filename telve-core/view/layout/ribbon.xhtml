@@ -16,7 +16,7 @@
             <span class="ribbon-title">#{messages['menu.main.Context']}</span>
 
             <h:form>
-                
+
                 <div class="ribbon-section right">
                     <a href="#{helpResolver.helpPath}" target="HelpWinId" onclick="openHelp();" class="ribbon-button ribbon-button-small">
                         <span class="button-title">#{messages['module.caption.Help']}</span> 
@@ -47,22 +47,22 @@
                     </ui:remove>
 
                 </div>
-                
+
                 <div class="ribbon-section right">
-                    
+
                     <p:commandLink action="#{noteController.openNotesDialog(''.concat(request.getHeader('Referer')))}" styleClass="ribbon-button ribbon-button-large"
                                    ajax="true" partialSubmit="true" process="@this" includeViewParams="true" rendered="#{noteController.canAddNote()}">
                         <span class="button-title">#{messages['general.button.Notes']}</span> 
                         <h:graphicImage url="/img/ribbon/large/note.png" styleClass="ribbon-icon ribbon-normal" />
                         <h:graphicImage value="/img/ribbon/bullet_valid.png" styleClass="ribbon-icon ribbon-overlay" rendered="#{noteController.hasNotes('')}"/>
                     </p:commandLink>
-                    
+
                     <p:commandLink action="#{noteController.openNewNoteDialog(request.getHeader('Referer'))}" styleClass="ribbon-button ribbon-button-small"
                                    ajax="true" partialSubmit="true" process="@this" includeViewParams="true" rendered="#{noteController.canAddNote()}">
                         <span class="button-title">#{messages['general.button.AddNote']}</span> 
                         <h:graphicImage url="/img/ribbon/small/note_add.png" styleClass="ribbon-icon ribbon-normal"/>
                     </p:commandLink>
-                    
+
                     <ui:remove>
                         <!-- 
                         request.requestURI.concat( '?' ).concat(request.queryString) çalışması lazım ama ajax üzerinde redirect yaparken parametreleri kaybediyor
@@ -76,25 +76,25 @@
                     </p:commandLink>
 
 
-                    
 
-                    
+
+
                 </div>
-                
+
             </h:form>
 
-            
-            
+
+
             <ui:remove>
                 <div class="ribbon-section right">
                     <h:form id="quickLauncher">
                         <div class="ribbon-button-small">
                             <p:outputLabel value="#{messages['general.label.QuickSearch']}" styleClass="name" style="font-size: 8pt; font-weight: normal;"/>
                             <p:inputText id="launcherkey" value="#{quickLauncher.key}" onkeypress="if (event.keyCode == 13) {
-                                    jQuery('#quickLauncher\\:launcherbtn').click();
-                                    return false;
+                                        jQuery('#quickLauncher\\:launcherbtn').click();
+                                        return false;
 
-                                }" style="width: 120px !important; font-size: 8pt;" styleClass="value button-title"/>
+                                    }" style="width: 120px !important; font-size: 8pt;" styleClass="value button-title"/>
                             <p:commandButton id="launcherbtn" action="#{quickLauncher.redirect()}" style="display: none;"/>
                         </div>
                     </h:form>
@@ -132,9 +132,9 @@
         </div>
 
         <ui:remove>
-            TODO: Cache yapmalı
-        </ui:remove>
-        <p:cache key="ribbon" region="ribbon-#{identity.account.id}">
+        <!-- FIXME: #15465 p:cache key="ribbon" region="ribbon-#{identity.account.id}"  -->
+            </ui:remove>
+
             <c:forEach id="tabrepeater" items="#{ribbonController.getTabs()}"
                        var="tab" varStatus="tabCounter">
 
@@ -157,6 +157,9 @@
                     </c:forEach>
                 </div>
             </c:forEach>
-        </p:cache>
+            <ui:remove>
+        <!-- /p:cache -->
+</ui:remove>
+
     </div>
 </ui:composition>

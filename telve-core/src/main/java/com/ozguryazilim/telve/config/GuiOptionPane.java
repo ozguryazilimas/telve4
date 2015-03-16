@@ -113,5 +113,7 @@ public class GuiOptionPane extends AbstractOptionPane{
     public void saveLocale(){
         localeSelector.setLocaleString(locale);
         kahve.put("locale.name", new KahveEntry(locale));
+        //FIXME: #15465
+        //RequestContext.getCurrentInstance().getApplicationContext().getCacheProvider().clear();
     }
 }
