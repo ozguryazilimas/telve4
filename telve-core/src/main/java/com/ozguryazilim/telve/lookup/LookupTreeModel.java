@@ -16,9 +16,10 @@ import org.primefaces.model.TreeNode;
 
 /**
  * PrimeFaces TreeModel'i oluşturan taban sınıf.
- * 
- * com.ut.tekir.entities.TreeNode türündeki model sınıfları kullanarak UI için primeface TreeNode modeli üretir.
- * 
+ *
+ * com.ut.tekir.entities.TreeNode türündeki model sınıfları kullanarak UI için
+ * primeface TreeNode modeli üretir.
+ *
  *
  * @author Hakan Uygun
  * @param <T> TreeNodeModel'den türetilmiş bir sınıf olmalı
@@ -34,10 +35,10 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
     private String listener;
     private String searchText;
     private TreeNodeTypeSelector typeSelector;
-    private Map<String,String> profileProperties;
+    private Map<String, String> profileProperties;
 
-    private Map<Long,TreeNode> nodeCache = new HashMap<>();
-    
+    private Map<Long, TreeNode> nodeCache = new HashMap<>();
+
     public TreeNode getRootNode() {
         return model;
     }
@@ -58,14 +59,15 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         for (T n : data) {
             addTreeNode(n);
         }
-        setSelectionStrategy( model );
+        setSelectionStrategy(model);
         //Cache temizlensin...
         nodeCache = null;
     }
 
     /**
      * Verilen veriyi UI modelinde ilgili yere ekler.
-     * @param data 
+     *
+     * @param data
      */
     public void addTreeNode(T data) {
         TreeNode parent = findParent(model, data);
@@ -73,13 +75,16 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
             parent = model;
         }
         TreeNode node = new CheckboxTreeNode(getNodeType(data), data, parent);
-        nodeCache.put(data.getId(), node);
+        if( nodeCache != null ){
+            nodeCache.put(data.getId(), node);
+        }
     }
 
     /**
      * Verilen veriyi UI modelinde ilgili yere ekler.
+     *
      * @param parent
-     * @param data 
+     * @param data
      */
     public void addTreeNodes(TreeNode parent, List<T> data) {
         if (parent == null) {
@@ -90,30 +95,30 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
             TreeNode node = new CheckboxTreeNode(getNodeType(n), n, parent);
         }
     }
-    
-    //
 
+    //
     /**
      * Verilen veriyi UI modelinden çıkartır.
-     * @param data 
+     *
+     * @param data
      */
-    public void removeTreeNode( T data ){
+    public void removeTreeNode(T data) {
         TreeNode node = findNode(getRootNode(), data);
         if (node != null) {
             node.getParent().getChildren().remove(node);
         }
     }
-    
+
     /**
-     * Geriye Node türünü döndürür. 
-     * 
+     * Geriye Node türünü döndürür.
+     *
      * Bu method override edilerek farklı node türleri eklenebilir.
-     * 
+     *
      * @param node
-     * @return 
+     * @return
      */
     protected String getNodeType(T node) {
-        if( typeSelector != null ){
+        if (typeSelector != null) {
             return typeSelector.getNodeType(node);
         }
         return CheckboxTreeNode.DEFAULT_TYPE;
@@ -121,35 +126,39 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
 
     /**
      * Veri için GUI Modelinde parent node bulur.
+     *
      * @param parent
      * @param n
-     * @return 
+     * @return
      */
     protected TreeNode findParent(TreeNode parent, TreeNodeModel n) {
 
-        return nodeCache.get(n.getParentId());
-        /*
-        for (TreeNode node : parent.getChildren()) {
+        if (nodeCache != null) {
+            return nodeCache.get(n.getParentId());
+        } else {
 
-            if (((TreeNodeModel) node.getData()).getId().equals(n.getParentId())) {
-                return node;
+            for (TreeNode node : parent.getChildren()) {
+
+                if (((TreeNodeModel) node.getData()).getId().equals(n.getParentId())) {
+                    return node;
+                }
+
+                TreeNode nn = findParent(node, n);
+                if (nn != null) {
+                    return nn;
+                }
             }
 
-            TreeNode nn = findParent(node, n);
-            if (nn != null) {
-                return nn;
-            }
+            return null;
         }
-
-        return null;
-        */
     }
-    
+
     /**
      * Veri için ilgili GUI nodunu bulur.
+     *
      * @param parent
      * @param n
-     * @return 
+     * @return
      */
     protected TreeNode findNode(TreeNode parent, TreeNodeModel n) {
 
@@ -228,7 +237,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
 
     @Override
     public String getListener() {
-        return  listener;
+        return listener;
     }
 
     @Override
@@ -238,7 +247,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
 
     @Override
     public T getSelectedViewModel() {
-        return (T)getSelectedData().getData();
+        return (T) getSelectedData().getData();
     }
 
     @Override
@@ -249,11 +258,11 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
     @Override
     public List<T> getSelectedViewModels() {
         List<T> ls = new ArrayList<>();
-        
-        for( TreeNode node : getSelectedDatas()){
-            ls.add( (T)node.getData());
+
+        for (TreeNode node : getSelectedDatas()) {
+            ls.add((T) node.getData());
         }
-        
+
         return ls;
     }
 
@@ -297,21 +306,21 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
 
     /**
      * LeafSelect olup olmamasına göre seçim stratejisini belirler.
-     * 
-     * @param node 
+     *
+     * @param node
      */
-    private void setSelectionStrategy( TreeNode node ) {
-        
-        if( leafSelect ){
-            node.setSelectable( node.isLeaf() );
+    private void setSelectionStrategy(TreeNode node) {
+
+        if (leafSelect) {
+            node.setSelectable(node.isLeaf());
         } else {
             node.setSelectable(true);
         }
-        
-        for( TreeNode n : node.getChildren() ){
+
+        for (TreeNode n : node.getChildren()) {
             setSelectionStrategy(n);
         }
-        
+
     }
 
     @Override
@@ -324,6 +333,4 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         this.profileProperties = profileProperties;
     }
 
-    
-    
 }
