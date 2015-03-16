@@ -38,6 +38,7 @@ public class CookieUtils {
 
         if (cookie != null) {
             cookie.setValue(value);
+            cookie.setPath(request.getContextPath());
         } else {
             cookie = new Cookie(name, value);
             cookie.setPath(request.getContextPath());
