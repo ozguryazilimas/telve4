@@ -132,28 +132,29 @@
                 </ui:remove>
 
 
-                <div class="row">
-                    <div class="large-2 medium-2 small-2 columns" style="font-weight: bold">
-                        #{messages['general.label.Field']}
-                    </div>
-                    <div class="large-2 medium-2 small-2 columns" style="font-weight: bold">
-                        #{messages['general.label.Operator']}
-                    </div>
-                    <div class="large-8 medium-8 small-8 columns" style="font-weight: bold">
-                        #{messages['general.label.Value']}
-                    </div>
-                </div>
-                
-                <c:forEach id="filterRepeater2" items="#{bean.queryDefinition.filters}"
-                           var="filter" varStatus="rowCounter">
+                <h:panelGroup layout="block" rendered="#{not empty bean.queryDefinition.filters }">
                     <div class="row">
-                        <ui:include src="/filterTemplates/#{filter.template}.xhtml" >
-                            <ui:param name="filter" value="#{filter}" />
-                            <ui:param name="idprefix" value="#{rowCounter.index}" />
-                        </ui:include>
+                        <div class="large-2 medium-2 small-2 columns" style="font-weight: bold">
+                            #{messages['general.label.Field']}
+                        </div>
+                        <div class="large-2 medium-2 small-2 columns" style="font-weight: bold">
+                            #{messages['general.label.Operator']}
+                        </div>
+                        <div class="large-8 medium-8 small-8 columns" style="font-weight: bold">
+                            #{messages['general.label.Value']}
+                        </div>
                     </div>
-                </c:forEach>
 
+                    <c:forEach id="filterRepeater2" items="#{bean.queryDefinition.filters}"
+                               var="filter" varStatus="rowCounter">
+                        <div class="row">
+                            <ui:include src="/filterTemplates/#{filter.template}.xhtml" >
+                                <ui:param name="filter" value="#{filter}" />
+                                <ui:param name="idprefix" value="#{rowCounter.index}" />
+                            </ui:include>
+                        </div>
+                    </c:forEach>
+                </h:panelGroup>
 
             </p:outputPanel>
 

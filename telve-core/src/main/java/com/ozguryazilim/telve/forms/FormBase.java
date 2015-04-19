@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.forms;
 
+import com.google.common.base.Strings;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.messages.FacesMessages;
@@ -305,7 +306,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public String getSubViewId() {
-        if (selectedSubView != null) {
+        if ( !Strings.isNullOrEmpty(selectedSubView) ) {
             return selectedSubView;
         }
 

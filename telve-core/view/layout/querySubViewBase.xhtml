@@ -10,7 +10,9 @@
 
     <ui:insert name="content" />
 
-    <ui:include src="/layout/browseFilters.xhtml" />
+    <h:panelGroup layout="block" rendered="#{filterEnabled eq 'true'}">
+        <ui:include src="/layout/browseFilters.xhtml" />
+    </h:panelGroup>
 
     <h:form id="browseListForm">
         <p:dataTable id="results" var="item" 
@@ -24,12 +26,12 @@
                      emptyMessage="#{messages['general.message.browse.EmptyDesc']}">                      
 
             <ui:remove>
-            <p:ajax event="rowSelect"  update="#{onSelectUpdate}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');"/>
-            <p:ajax event="rowUnselect" update="#{onSelectUpdate}" oncomplete="disableRibbonBtn('#{onSelectEnabled}');" />
+                <p:ajax event="rowSelect"  update="#{onSelectUpdate}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');"/>
+                <p:ajax event="rowUnselect" update="#{onSelectUpdate}" oncomplete="disableRibbonBtn('#{onSelectEnabled}');" />
             </ui:remove>
 
             <f:facet name="header">
-                <h:outputText value="#{messages['general.label.Results']}" />
+                <h:outputText value="#{messages[moduleCaption]}" />
             </f:facet>
 
             <c:forEach items="#{bean.queryDefinition.columns}" var="col" varStatus="loop">
@@ -45,6 +47,24 @@
             </c:forEach>
             <p:column rendered="#{showActionColumn eq 'true' }">
                 <ui:insert name="actionColumn" />
+            </p:column>
+            <p:column rendered="#{canInsert eq 'true' }" styleClass="actionColumn">
+                <f:facet name="header">
+                    <p:commandLink action="#{bean.addItem()}" 
+                                   partialSubmit="true" process="@this" styleClass="ui-icon ui-icon-circle-plus"
+                                   style="display: inline-block" update="#{ItemPopupId}"
+                                   title="#{messages['general.label.Add']}" oncomplete="PF('#{ItemPopupId}').show();">
+                    </p:commandLink>
+                </f:facet>
+
+                <p:commandLink action="#{bean.editItem( item.id )}" 
+                               update="#{ItemPopupId}" styleClass="ui-icon ui-icon-pencil"
+                               title="#{messages['general.label.EditLine']}"
+                               partialSubmit="true" process="@this" oncomplete="PF('#{ItemPopupId}').show();"/>
+                <p:commandLink action="#{bean.removeItem( item.id )}" 
+                               update="results" styleClass="ui-icon ui-icon-trash"
+                               title="#{messages['general.label.DeleteLine']}"
+                               partialSubmit="true" process="@this"/>
             </p:column>
         </p:dataTable>  
     </h:form>
