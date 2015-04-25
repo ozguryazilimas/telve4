@@ -24,4 +24,7 @@ public interface AdminPages extends Pages.Admin{
     
     @SecuredPage @View @PageTitle("Role Definition")
     class Role implements Admin {};
+    
+    @SecuredPage @View @PageTitle("Change Passord")
+    class PasswordOptionPane implements Admin {};
 }

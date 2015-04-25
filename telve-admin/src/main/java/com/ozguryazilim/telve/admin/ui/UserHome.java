@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.admin.ui;
 
+import com.google.common.base.Strings;
 import com.ozguryazilim.telve.admin.AbstractIdentityHome;
 import com.ozguryazilim.telve.auth.AbstractIdentityHomeExtender;
 import com.ozguryazilim.telve.auth.UserModel;
@@ -15,7 +16,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.scope.GroupedConversationScoped;
+import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.RelationshipManager;
+import org.picketlink.idm.credential.Password;
 import org.picketlink.idm.model.Attribute;
 import org.picketlink.idm.model.basic.BasicModel;
 import org.picketlink.idm.model.basic.Grant;
@@ -51,8 +54,13 @@ public class UserHome extends AbstractIdentityHome<User> {
     //sistemde mevcut bulunan rollerin listesi
     private List<Role> availRoles;
 
+    private String password;
+    
     @Inject
     private RelationshipManager relationshipManager;
+    
+    @Inject
+    private IdentityManager identityManager;
 
     public String getUserType() {
         return userType;
@@ -168,6 +176,13 @@ public class UserHome extends AbstractIdentityHome<User> {
 
     @Override
     protected boolean doAfterSave() {
+        //Kullanıcı bilgisi kaydedildi şimdi parola değişmiş se onu kaydedeceğiz.
+        if( !Strings.isNullOrEmpty(password)){
+            Password pwd = new Password(password);
+            identityManager.updateCredential(getCurrent(), pwd);
+            password = null;
+        }
+        
         //Kullanıcı bilgisi kaydeldi. Şimdide rolleri kaydedeceğiz. 
 
         //Yeni gelenleri ekleyelim
@@ -218,6 +233,15 @@ public class UserHome extends AbstractIdentityHome<User> {
         initRoleList();
         return super.doAfterNew(); 
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 
     
 }

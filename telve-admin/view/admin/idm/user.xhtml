@@ -22,7 +22,9 @@
             });
         </script>
 
-        <ui:include src="/layout/messages.xhtml" />
+        
+            
+        
         <p:layout >
             <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="true" resizable="true">
                 <h:form id="listForm">
@@ -49,7 +51,7 @@
             </p:layoutUnit>
             <p:layoutUnit position="center"  >
 
-
+                <ui:include src="/layout/messages.xhtml" />
 
                 <p:panel header="#{messages['module.caption.User']}">
                     <h:form id="form" >
@@ -77,6 +79,22 @@
                         </div>
 
 
+                        <t:accordion id="pwdAcc" label="#{messages['user.caption.Password']}" hide="false">
+                            <p:messages id="messages" for=":form:pwdAcc:pwd1:pwd1" showDetail="true" autoUpdate="true" />
+                            <div class="row">
+                                <t:inputAny id="pwd1" label="user.label.Password">
+                                    <p:password id="pwd1" value="#{userHome.password}" feedback="true"
+                                                promptLabel="#{messages['password.prompt']}" weakLabel="#{messages['password.week']}"
+                                                goodLabel="#{messages['password.good']}" strongLabel="#{messages['password.strong']}" match=":form:pwdAcc:pwd2:pwd2" label="#{messages['user.label.Password']}"/>
+                                    <p:message for=":form:pwdAcc:pwd1:pwd1" display="text" showDetail="true" autoUpdate="true"/>
+                                </t:inputAny>
+
+                                <t:inputAny id="pwd2" label="user.label.PasswordRetype">
+                                    <p:password id="pwd2" value="#{userHome.password}" label="#{messages['user.label.PasswordRetype']}" />
+                                </t:inputAny>
+                            </div>
+                        </t:accordion>
+
                         <t:accordion label="#{messages['user.caption.Roles']}" hide="false">
                             <div class="row">
                                 <t:inputAny label="general.label.Roles" columnClass="large-6 middle-12 small-12">
@@ -90,8 +108,8 @@
                                                 showCheckbox="true"
                                                 filterMatchMode="contains"
                                                 converter="roleConverter">
-                                        <f:facet name="sourceCaption">Available</f:facet>
-                                        <f:facet name="targetCaption">Selected</f:facet>
+                                        <f:facet name="sourceCaption">#{messages['general.label.Available']}</f:facet>
+                                        <f:facet name="targetCaption">#{messages['general.label.Selected']}</f:facet>
                                     </p:pickList>
                                 </t:inputAny>
                             </div>
