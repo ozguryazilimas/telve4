@@ -10,7 +10,7 @@
 
     <div id="ribbon" class="wrap">
         <ui:remove>TODO: Bu satırı temizlemek lazım</ui:remove>
-        <span class="ribbon-window-title">#{telveConfigResolver.getProperty('app.title')} - #{ pageTitleResolver.pageTitle } [ #{ moduleCaption } ]</span>
+        <span class="ribbon-window-title">#{telveConfigResolver.getProperty('app.title')} - #{ messages[pageTitleResolver.pageTitle] }  #{ viewIdentifier ne null ? '[ '.concat( viewIdentifier ).concat(' ]') : '' } </span>
 
         <div class="ribbon-tab color-blue" id="currentView">
             <span class="ribbon-title">#{messages['menu.main.Context']}</span>
@@ -69,7 +69,7 @@
                         o yüzden referer'ı kullanıyoruz.
                         -->
                     </ui:remove>
-                    <p:commandLink action="#{bookmarkDashlet.addBookmark(pageTitleResolver.pageTitle, moduleCaption, request.getHeader('Referer'))}" styleClass="ribbon-button ribbon-button-small"
+                    <p:commandLink action="#{bookmarkDashlet.addBookmark( messages[pageTitleResolver.pageTitle], viewIdentifier, request.getHeader('Referer'))}" styleClass="ribbon-button ribbon-button-small"
                                    ajax="true" partialSubmit="true" process="@this" includeViewParams="true" >
                         <span class="button-title">#{messages['general.button.Bookmark']}</span> 
                         <h:graphicImage url="/img/ribbon/small/bookmark.png" styleClass="ribbon-icon ribbon-normal"/>
