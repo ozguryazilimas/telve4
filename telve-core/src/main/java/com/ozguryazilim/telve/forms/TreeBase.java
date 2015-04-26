@@ -129,7 +129,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         
         LOG.debug("Entity Saved : {} ", entity);
 
-        FacesMessages.info("#{messages['general.message.record.SaveSuccess']}");
+        FacesMessages.info("general.message.record.SaveSuccess");
 
         refreshEntityList();
 
@@ -150,8 +150,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
 
         } catch (Exception e) {
             LOG.error("Hata : {}", e);
-            FacesMessages.error("#{messages['general.message.record.DeleteFaild']}");
-            //facesMessages.add("#{messages['general.message.record.DeleteFaild']}");
+            FacesMessages.error("general.message.record.DeleteFaild");
             return null;
         }
 
@@ -160,7 +159,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         //Mevcut silindi dolayısı ile null verdik
         entity = null;
 
-        FacesMessages.info("#{messages['general.message.record.DeleteSuccess']}");
+        FacesMessages.info("general.message.record.DeleteSuccess");
 
         refreshEntityList();
 

@@ -76,7 +76,7 @@ public class StoredCommandBrowse extends BrowseBase<StoredCommand, StoredCommand
         CommandEditorBase ce = CommandEditorRegistery.getEditorByName(name);
         if( ce == null ){
             LOG.error("CommandEditor not found : {}", name);
-            FacesMessages.error("Şeçilen komut için editör bulunamadı!");
+            FacesMessages.error( "general.message.editor.NotFound");
             return;
         }
         ce.createNew();
@@ -108,7 +108,7 @@ public class StoredCommandBrowse extends BrowseBase<StoredCommand, StoredCommand
         CommandEditorBase ce = CommandEditorRegistery.getEditorByCommand(entity.getType());
         if( ce == null ){
             LOG.error("CommandEditor not found for : {}", entity.getType());
-            FacesMessages.error("Şeçilen komut için editör bulunamadı!");
+            FacesMessages.error("general.message.editor.NotFound");
             return;
         }
         currentEditor = ce;
@@ -117,7 +117,7 @@ public class StoredCommandBrowse extends BrowseBase<StoredCommand, StoredCommand
         } catch (ClassNotFoundException ex) {
             //FIXME: Burası için aslında generik hata sayfasına gidilebilir...
             LOG.error("Command Class not found: {}", entity.getType(), ex);
-            FacesMessages.error("Şeçilen komut için editör bulunamadı!");
+            FacesMessages.error("general.message.editor.NotFound");
         }
     }
     

@@ -126,7 +126,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         //}
 
         LOG.debug("Entity Saved : {0} ", entity);
-        FacesMessages.info("#{messages['general.message.record.SaveSuccess']}");
+        FacesMessages.info( "general.message.record.SaveSuccess");
 
         raiseRefreshBrowserEvent();
 
@@ -178,7 +178,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
 
         LOG.debug("Entity Removed : {0} ", entity);
         entity = null;
-        FacesMessages.info("#{messages['general.message.record.DeleteSuccess']}");
+        FacesMessages.info("general.message.record.DeleteSuccess");
 
         raiseRefreshBrowserEvent();
 
@@ -340,7 +340,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             entity = getRepository().findBy(id);
 
             if (entity == null) {
-                FacesMessages.error("İstenilen kayıt bulunamadı. Lütfen kontrol edip tekarar deneyiniz.");
+                FacesMessages.error("general.message.record.NotFound");
                 createNew();
             } else {
                 //Entity başarıyla yüklendi. Alt sınıflar bu aşamada birşey yapmak isterlerse postLoad() methodunu override edebilirler...

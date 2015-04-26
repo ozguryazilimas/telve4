@@ -12,8 +12,6 @@
 
     <ui:define name="body">
 
-        <ui:include src="/layout/messages.xhtml" />
-
         <p:layout id="options">
             <p:layoutUnit position="west" size="300" header="#{messages['general.caption.Options']}" collapsible="true" resizable="true">
                 <h:form id="menuForm">
@@ -23,6 +21,7 @@
                 </h:form>
             </p:layoutUnit>
             <p:layoutUnit id="paneBlock" position="center" header="#{messages[ 'optionPane.caption.'.concat( optionPaneController.selectedPane )]}" >
+                <ui:include src="/layout/messages.xhtml" />
                 <h:panelGroup id="pane" layout="block">
                     <ui:include src="#{optionPaneController.getSelectedPaneViewId()}">
                         <ui:param name="pane" value="#{optionPaneController.selectedPane}" />
