@@ -7,6 +7,7 @@
 package com.ozguryazilim.telve.admin;
 
 import com.ozguryazilim.telve.auth.AbstractIdentityHomeExtender;
+import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.view.Pages;
 import java.io.Serializable;
 import java.util.List;
@@ -81,6 +82,9 @@ public abstract class AbstractIdentityHome<E extends IdentityType> implements Se
         } else {
             identityManager.add(current);
         }
+        
+        FacesMessages.info( "general.message.record.SaveSuccess");
+        
         return doAfterSave();
     }
     
@@ -99,7 +103,9 @@ public abstract class AbstractIdentityHome<E extends IdentityType> implements Se
      */
     @org.apache.deltaspike.jpa.api.transaction.Transactional
     public void delete(){
+        //FIXME: Silme işlemi yapılmalı...
         //identityManager.
+        FacesMessages.info("general.message.record.DeleteSuccess");
     }
     
     /**
