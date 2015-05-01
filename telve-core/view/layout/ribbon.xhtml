@@ -13,7 +13,7 @@
         <span class="ribbon-window-title">#{ messages[pageTitleResolver.pageTitle] }  #{ viewIdentifier ne null ? '[ '.concat( viewIdentifier ).concat(' ]') : '' } 
             <span style="float: right">#{identity.account.firstName} #{identity.account.lastName}</span>
         </span>
-        
+
 
         <div class="ribbon-tab color-blue" id="currentView">
             <span class="ribbon-title">#{messages['menu.main.Context']}</span>
@@ -26,10 +26,18 @@
                         <h:graphicImage url="/img/ribbon/small/help.png" styleClass="ribbon-icon ribbon-normal"/>
                     </a>
 
-                    <h:link outcome="/branding/about.xhtml" styleClass="ribbon-button ribbon-button-small">
+                    <ui:remove>
+                        <h:link outcome="/branding/about.xhtml" styleClass="ribbon-button ribbon-button-small">
+                            <span class="button-title">#{messages['general.button.About']}</span> 
+                            <h:graphicImage url="/img/ribbon/small/help.png" styleClass="ribbon-icon ribbon-normal"/>
+                        </h:link>
+                    </ui:remove>
+
+                    <p:commandLink action="#{aboutController.openDialog()}" styleClass="ribbon-button ribbon-button-small"
+                                   ajax="true" partialSubmit="true" process="@this" includeViewParams="true" >
                         <span class="button-title">#{messages['general.button.About']}</span> 
                         <h:graphicImage url="/img/ribbon/small/help.png" styleClass="ribbon-icon ribbon-normal"/>
-                    </h:link>
+                    </p:commandLink>
 
 
                     <h:commandLink action="#{identity.logout()}" styleClass="ribbon-button ribbon-button-small">
@@ -136,33 +144,33 @@
 
         <ui:remove>
         <!-- FIXME: #15465 p:cache key="ribbon" region="ribbon-#{identity.account.id}"  -->
-            </ui:remove>
+        </ui:remove>
 
-            <c:forEach id="tabrepeater" items="#{ribbonController.getTabs()}"
-                       var="tab" varStatus="tabCounter">
+        <c:forEach id="tabrepeater" items="#{ribbonController.getTabs()}"
+                   var="tab" varStatus="tabCounter">
 
-                <div class="ribbon-tab #{tab.id eq 'workspace' ? 'color-orange' : '' }" id="#{tab.id}">
-                    <span class="ribbon-title">#{messages[tab.label]}</span>
-                    <c:forEach id="secrepeater" items="#{tab.sections}"
-                               var="section" varStatus="rowCounter1">
-                        <div class="ribbon-section">
-                            <span class="section-title">#{messages[section.label]}</span>
+            <div class="ribbon-tab #{tab.id eq 'workspace' ? 'color-orange' : '' }" id="#{tab.id}">
+                <span class="ribbon-title">#{messages[tab.label]}</span>
+                <c:forEach id="secrepeater" items="#{tab.sections}"
+                           var="section" varStatus="rowCounter1">
+                    <div class="ribbon-section">
+                        <span class="section-title">#{messages[section.label]}</span>
 
 
-                            <c:forEach id="actrepeater" items="#{section.actions}"
-                                       var="action" varStatus="rowCounter2">
+                        <c:forEach id="actrepeater" items="#{section.actions}"
+                                   var="action" varStatus="rowCounter2">
 
-                                <t:ribbonAction actionItem="#{action.action}" classifier="#{classifier}" buttonType="#{action.type}" counter="#{rowCounter2}" params="#{action.params}"/>
+                            <t:ribbonAction actionItem="#{action.action}" classifier="#{classifier}" buttonType="#{action.type}" counter="#{rowCounter2}" params="#{action.params}"/>
 
-                            </c:forEach>
+                        </c:forEach>
 
-                        </div>
-                    </c:forEach>
-                </div>
-            </c:forEach>
-            <ui:remove>
-        <!-- /p:cache -->
-</ui:remove>
+                    </div>
+                </c:forEach>
+            </div>
+        </c:forEach>
+        <ui:remove>
+            <!-- /p:cache -->
+        </ui:remove>
 
     </div>
 </ui:composition>
