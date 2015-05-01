@@ -8,7 +8,7 @@
 
     <h:form id="pfilterForm">
 
-        <p:panel id="pffilter" header="#{messages[moduleCaption]}" toggleable="true">
+        <p:panel id="pffilter" header="#{messages[moduleCaption]}" toggleable="true" styleClass="panel-primary">
 
             <f:facet name="actions">  
                 <p:commandLink id="filterBtn" type="button" 
@@ -16,14 +16,14 @@
                                title="#{messages['general.label.FilterItems']}"
                                partialSubmit="true"
                                process="@this">  
-                    <h:outputText styleClass="ui-icon tv-icon-filter" />  
+                    <i class="fa fa-filter" > </i>
                 </p:commandLink>  
                 <p:commandLink id="columnBtn" type="button" 
                                styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" 
                                title="#{messages['general.label.ResultColumns']}"
                                partialSubmit="true"
                                process="@this">  
-                    <h:outputText styleClass="ui-icon tv-icon-columns" />  
+                    <i class="fa fa-columns" > </i>
                 </p:commandLink>  
                 <ui:remove>
                     TODO: Sorgu Saklama menüsü daha sonra düzenlenecek
@@ -159,8 +159,9 @@
             </p:outputPanel>
 
             <h:panelGroup id="actionButtons" styleClass="actionButtons" layout="block">
-                <p:commandButton value="#{messages['general.button.Search']}" actionListener="#{bean.search()}" partialSubmit="false" process="@form" icon="ui-icon-search" update="@([id$=results]), actionButtons"/> 
-                <p:menuButton value="Export" rendered="#{not empty bean.entityList and identity.hasPermission( permission, 'export')}">
+                <p:commandButton value="#{messages['general.button.Search']}" actionListener="#{bean.search()}" partialSubmit="false" process="@form" icon="fa fa-search" update="@([id$=results]), actionButtons"
+                                 styleClass="btn-success"/> 
+                <p:menuButton value="Export" rendered="#{not empty bean.entityList and identity.hasPermission( permission, 'export')}" >
                     <p:menuitem value="PDF" ajax="false" icon="ui-icon-note">
                         <p:dataExporter type="pdf" target=":results" fileName="results" /> 
                     </p:menuitem>

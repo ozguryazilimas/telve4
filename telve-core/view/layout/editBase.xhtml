@@ -23,11 +23,11 @@
 
 
         <h:form id="form" >
-            <p:panel header="#{messages[formCaption]}">
+            
 
                 <ui:insert name="form" />
 
-                <div class="actionButtons">
+                <div class="actionButtons" style="padding-top: 8px; padding-right: 8px;">
 
                     <ui:insert name="extraButtons" />
 
@@ -38,14 +38,16 @@
                                          rendered="#{identity.hasPermission( entityName, 'insert')}"
                                          ajax="false"
                                          validateClient="true"
-                                         icon="ui-icon-disk" />  
+                                         styleClass="btn-success"
+                                         icon="fa fa-save" />  
 
                         <p:commandButton id="delete" 
                                          value="#{messages['general.button.Delete']}" 
                                          action="#{homeBean.delete()}"
                                          rendered="#{not empty entity.id and identity.hasPermission( entityName, 'delete') }"
                                          validateClient="true"
-                                         icon="ui-icon-trash">
+                                         styleClass="btn-danger"
+                                         icon="fa fa-trash">
                             <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
                         </p:commandButton>
 
@@ -59,7 +61,7 @@
                     </ui:fragment>
                 </div>
 
-            </p:panel>
+
         </h:form>
     </ui:define>
 </ui:composition>

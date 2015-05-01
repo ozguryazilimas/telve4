@@ -9,12 +9,12 @@ function initAcordionTabs(ccid) {
         var parent = jQuery(this).parent();
         parent.next(".accordioncontent").slideToggle(500);
         var icon = parent.children(".accordionIcon");
-        if (icon.hasClass("ui-icon-triangle-1-e")) {
-            icon.removeClass("ui-icon-triangle-1-e");
-            icon.addClass("ui-icon-triangle-1-s");
+        if (icon.hasClass("fa-caret-right")) {
+            icon.removeClass("fa-caret-right");
+            icon.addClass("fa-caret-down");
         } else {
-            icon.removeClass("ui-icon-triangle-1-s");
-            icon.addClass("ui-icon-triangle-1-e");
+            icon.removeClass("fa-caret-down");
+            icon.addClass("fa-caret-right");
         }
     });
 

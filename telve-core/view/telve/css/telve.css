@@ -62,14 +62,17 @@ td{
 }
 
 .actionColumn{
+    text-align: center;
     width:36px;
 }
 
 .actionColumnDouble{
-    width:32px;
+    text-align: center;
+    width:64px;
 }
 
 .actionColumnTriple{
+    text-align: center;
     width:48px;
 }
 
@@ -89,6 +92,7 @@ td{
     display: inline;
     vertical-align: top;
     font-weight: bold;
+    color: #444;
     width: 115px;
     float: none;
     padding: 3px 4px 2px 5px;
@@ -106,6 +110,7 @@ td{
     display: block;
     vertical-align: top;
     font-weight: bold;
+    color: #444;
     /*width: 115px;*/
     float: left;
     padding: 3px 4px 2px 0px;
@@ -297,8 +302,14 @@ td{
 .accordion{
     /*padding: 4px 4px 4px 16px;*/
     /*font-size: 14px;
-    color: #447799; 	*/
-    border-bottom:   1px solid #CCCCCC;
+    color: #447799; 	
+    color: #4582ec;*/
+    border-bottom:   1px solid #ccc;
+    padding-bottom: 4px;
+}
+
+.accordionIcon, .accordionIcon2{
+    color: #4582ec;
 }
 
 .accordion.hided{
@@ -311,6 +322,7 @@ td{
 
 .accordioncontent{
     padding: 4px 8px;
+    margin-bottom: 20px;
 }
 
 .warningIcon {
@@ -444,4 +456,125 @@ td{
     float: right; 
     clear: both;
     display: none;
+}
+
+.panel-primary {
+  border-color: #4582ec;
+}
+
+.panel-primary > .ui-panel-titlebar {
+  color: #ffffff;
+  background-color: #4582ec;
+  border-color: #4582ec;
+}
+
+.panel-primary > .ui-widget-header .ui-state-default {
+    color: #fff !important;
+    background-color: #4582ec !important;
+    border-color: #4582ec !important;
+    background-image: none;/*linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5) !important;*/
+    width: 16px;
+    height: 16px;
+}
+
+.panel-success {
+  border-color: #88c149;
+}
+.panel-success > .ui-panel-titlebar {
+  color: #ffffff;
+  background-color: #88c149;
+  border-color: #88c149;
+}
+
+.panel-info {
+  border-color: #5bc0de;
+}
+.panel-info > .ui-panel-titlebar {
+  color: #ffffff;
+  background-color: #5bc0de;
+  border-color: #5bc0de;
+}
+
+
+.panel-warning {
+  border-color: #f0ad4e;
+}
+.panel-warning > .ui-panel-titlebar {
+  color: #ffffff;
+  background-color: #f0ad4e;
+  border-color: #f0ad4e;
+}
+
+.panel-danger {
+  border-color: #d9534f;
+}
+.panel-danger > .ui-panel-titlebar {
+  color: #ffffff;
+  background-color: #d9534f;
+  border-color: #d9534f;
+}
+
+.btn-primary {
+    background-image: linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5) !important;
+    color: #fff !important;
+    text-shadow: none !important;
+    background-color: #1d9ce5 !important;
+}
+
+.btn-success {
+  background-image: linear-gradient(#88c149, #73a839 60%, #699934) !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  background-color: #699934 !important;
+}
+.btn-info {
+  background-image: linear-gradient(#04519b, #033c73 60%, #02325f) !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  background-color: #02325f !important;
+}
+
+.btn-warning {
+  background-image: linear-gradient(#ff6707, #dd5600 60%, #c94e00) !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  background-color: #c94e00 !important;
+}
+.btn-danger {
+  background-image: linear-gradient(#e12b31, #c71c22 60%, #b5191f) !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  background-color: #b5191f !important;
+}
+
+.panel-primary > .ui-layout-unit-header {
+    color: #ffffff;
+    background-color: #4582ec;
+    border-color: #4582ec;
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+
+.panel-primary > .ui-layout-unit-content {
+    border : 1px solid #4582ec !important;
+    
+}
+
+.panel-primary .ui-layout-pane-west {
+    border-color: #4582ec !important;
+}
+
+/*
+.ui-datatable-header{
+    background-color: #88c149;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    color: #fff;
+  
+    text-align: left !important;
+}
+*/
+.ui-panel-titlebar-icon{
+     width: 16px;
+    height: 16px;
 }

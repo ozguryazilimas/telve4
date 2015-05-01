@@ -38,19 +38,12 @@
             });
         </script>
         <p:layout >
+            <ui:remove>
             <p:layoutUnit position="north" styleClass="ui-panel-titlebar ui-widget-header ui-state-default" >
-
-                <h:panelGroup layout="block" rendered="#{showCaption eq 'true'}">
-                    <div style="background-color: #eaedf1; border-bottom: 1px solid #8b9097; box-shadow: 0 1px 3px #8b9097; padding: 4px;">
-                        <ui:insert name="caption" /> 
-                    </div>
-                </h:panelGroup>
-
-                <ui:include src="/layout/messages.xhtml" />
             </p:layoutUnit>
+            </ui:remove>
 
-
-            <p:layoutUnit position="west" header="#{messages['general.label.SubViews']}" size="300" collapsible="true"  rendered="#{not empty bean.subViewList}">
+            <p:layoutUnit position="west" header="#{messages['general.label.SubViews']}" size="300" collapsible="false"  rendered="#{not empty bean.subViewList}" styleClass="panel-primary">
 
                 <h:form id="subViewCommandForm" style="margin: 8px;">
 
@@ -68,6 +61,15 @@
             </p:layoutUnit>
 
             <p:layoutUnit position="center" style="padding-right: 20px;" >
+                
+                <h:panelGroup layout="block" rendered="#{showCaption eq 'true'}">
+                    <div class="ui-widget ui-widget-content ui-corner-top" style="padding: 4px; margin-bottom: 4px; background-color: #fdeeb3; border-color: #F1C43F;">
+                        <ui:insert name="caption" /> 
+                    </div>
+                </h:panelGroup>
+
+                <ui:include src="/layout/messages.xhtml" />
+                
                 <p:outputPanel id="viewarea">
                     <ui:include src="#{bean.getSubViewId()}" />
                 </p:outputPanel>

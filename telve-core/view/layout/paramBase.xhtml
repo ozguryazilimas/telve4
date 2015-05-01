@@ -26,7 +26,7 @@
         </script>
 
         <p:layout >
-            <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="true" resizable="true">
+            <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="false" resizable="true" styleClass="panel-primary">
                     <h:form id="listForm">
                         <p:remoteCommand name="newParameter" update=":form" action="#{homeBean.createNew()}"  partialSubmit="true" process="@this" />
                         <p:dataTable id="itemlist" 
@@ -67,7 +67,8 @@
                                                  process="@form"
                                                  update=":form,:listForm:itemlist"
                                                  validateClient="true"
-                                                 icon="ui-icon-disk"/>  
+                                                 styleClass="btn-primary"
+                                                 icon="fa fa-save"/>  
 
                                 <p:commandButton id="save" 
                                                  value="#{messages['general.button.Save']}" 
@@ -78,7 +79,8 @@
                                                  process="@form"
                                                  update=":form,:listForm:itemlist"
                                                  validateClient="true"
-                                                 icon="ui-icon-disk" />  
+                                                 styleClass="btn-success"
+                                                 icon="fa fa-save" />  
 
 
 
@@ -91,7 +93,8 @@
                                                  process="@form"
                                                  update=":form,:listForm:itemlist"
                                                  validateClient="true"
-                                                 icon="ui-icon-trash">
+                                                 styleClass="btn-danger"
+                                                 icon="fa fa-trash">
                                     <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
                                 </p:commandButton>
                                 <p:commandButton id="close" 

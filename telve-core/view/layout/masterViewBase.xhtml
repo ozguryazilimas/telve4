@@ -18,10 +18,11 @@
             <p:commandButton id="edit" 
                              value="#{messages['general.button.Edit']}"
                              action="#{bean.edit()}"
-                             icon="ui-icon-close" 
+                             icon="fa fa-edit" 
                              partialSubmit="true"
                              process="@this"
-                             ajax="true"/>
+                             ajax="true"
+                             styleClass="btn-warning"/>
             <p:commandButton id="done" 
                              value="#{messages['general.button.Close']}"
                              action="#{bean.close()}"

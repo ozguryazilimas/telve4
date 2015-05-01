@@ -19,11 +19,11 @@
 
         <div id="#{cc.clientId}" class="prop #{ cc.attrs.columnClass} columns">
             <h3 class="accordion #{cc.attrs.hide eq 'true' ? 'hided' : ''}">
-                <span class="accordionIcon ui-icon #{cc.attrs.hide eq 'true' ? 'ui-icon-triangle-1-e' : 'ui-icon-triangle-1-s'} "></span>
+                <span class="accordionIcon fa #{cc.attrs.hide eq 'true' ? 'fa-caret-right' : 'fa-caret-down'} "> </span>
                 <ui:fragment rendered="#{cc.attrs.icon ne ''}">
-                    <span class="accordionIcon2 ui-icon #{cc.attrs.icon}"></span>
+                    <span class="accordionIcon2 #{cc.attrs.icon}"></span>
                 </ui:fragment>
-                <h:outputText value="#{messages[cc.attrs.label]}" styleClass="accordionLabel"/>
+                <h:outputText value=" #{messages[cc.attrs.label]}" styleClass="accordionLabel"/>
                 <span style="float: right">
                     <composite:renderFacet name="toolbar" />
                 </span>

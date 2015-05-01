@@ -48,23 +48,34 @@
             <p:column rendered="#{showActionColumn eq 'true' }">
                 <ui:insert name="actionColumn" />
             </p:column>
-            <p:column rendered="#{canInsert eq 'true' }" styleClass="actionColumn">
+            <p:column rendered="#{canInsert eq 'true' }" styleClass="actionColumnDouble">
                 <f:facet name="header">
                     <p:commandLink action="#{bean.addItem()}" 
-                                   partialSubmit="true" process="@this" styleClass="ui-icon ui-icon-circle-plus"
-                                   style="display: inline-block" update="#{ItemPopupId}"
-                                   title="#{messages['general.label.Add']}" oncomplete="PF('#{ItemPopupId}').show();">
+                                   partialSubmit="true" process="@this" 
+                                   update="#{ItemPopupId}"
+                                   title="#{messages['general.button.Add']}" oncomplete="PF('#{ItemPopupId}').show();">
+                        <i class="fa fa-plus-circle" style="color: #699934;"></i>
+                    </p:commandLink>
+                    <p:commandLink action="#{bean.search()}" 
+                                   partialSubmit="true" process="@this" 
+                                   update="@([id$=results])"
+                                   title="#{messages['general.button.Search']}" >
+                        <i class="fa fa-refresh" style="color: #4582ec;"></i>
                     </p:commandLink>
                 </f:facet>
 
                 <p:commandLink action="#{bean.editItem( item.id )}" 
-                               update="#{ItemPopupId}" styleClass="ui-icon ui-icon-pencil"
+                               update="#{ItemPopupId}" 
                                title="#{messages['general.label.EditLine']}"
-                               partialSubmit="true" process="@this" oncomplete="PF('#{ItemPopupId}').show();"/>
+                               partialSubmit="true" process="@this" oncomplete="PF('#{ItemPopupId}').show();">
+                    <i class="fa fa-edit" style="color:#ff6707;"></i>
+                </p:commandLink>
                 <p:commandLink action="#{bean.removeItem( item.id )}" 
-                               update="results" styleClass="ui-icon ui-icon-trash"
+                               update="results" 
                                title="#{messages['general.label.DeleteLine']}"
-                               partialSubmit="true" process="@this"/>
+                               partialSubmit="true" process="@this">
+                    <i class="fa fa-trash-o" style="color:#b5191f;"></i>
+                </p:commandLink>
             </p:column>
         </p:dataTable>  
     </h:form>
