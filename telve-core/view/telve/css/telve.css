@@ -222,19 +222,23 @@ td{
 
 .ui-inputfield, .ui-autocomplete, .ui-spinner, .ui-selectonemenu{
     width: 100% !important;
-    height: 2em !important;
+    height: 28px !important;
 }
 
 
-.ui-input-group .ui-button, .ui-datepicker-trigger, .ui-autocomplete-dropdown{
+.ui-input-group .ui-button, .ui-datepicker-trigger, .ui-complete .ui-autocomplete-dropdown, .ui-autocomplete-dropdown{
     /*border-left: 0px !important;*/
     border-bottom-left-radius: 0px !important;
     border-top-left-radius: 0px !important;
     vertical-align: top;
-    height: 2em;
+    height: 28px !important;
     position: absolute !important;
     right: 10px !important;
     width: 26px !important;
+}
+
+.ui-dialog > .ui-selectonemenu {
+    height: 1.9em !important;
 }
 
 .ui-cell-editor-input .ui-datepicker-trigger{
@@ -265,11 +269,11 @@ td{
 }
 
 .ui-selectonemenu-label{
-    height: 23px !important;
+    height: 26px !important;
 }
 
 .ui-input-group .ui-selectonemenu-label{
-    height: 23px !important;
+    height: 26px !important;
     width: 100% !important;
 }
 

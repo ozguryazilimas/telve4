@@ -29,7 +29,7 @@
 
                     <c:if test="#{ bean.model.modelType eq 'Table' and bean.model.getMultiSelect()}" >
                         <p:dataTable id="multiSelectDialog" var="item" value="#{bean.model.dataModel()}" 
-                                     selection="#{bean.model.selectedDatas}" rows="10"  paginator="true"
+                                     selection="#{bean.model.selectedDatas}" rows="10"  paginator="true" rowKey="#{item.id}"
                                      paginatorPosition="bottom" 
                                      paginatorAlwaysVisible="false">
 
@@ -45,7 +45,7 @@
 
                     <c:if test="#{bean.model.modelType eq 'Table' and not bean.model.getMultiSelect()}" >
                         <p:dataTable id="singleSelectDialog" var="item" value="#{bean.model.dataModel()}" 
-                                     selection="#{bean.model.selectedData}" rows="10"  paginator="true"
+                                     selection="#{bean.model.selectedData}" rows="10"  paginator="true" rowKey="#{item.id}"
                                      paginatorPosition="bottom" 
                                      paginatorAlwaysVisible="false">
                             <p:column selectionMode="single" style="width:36px;" />  

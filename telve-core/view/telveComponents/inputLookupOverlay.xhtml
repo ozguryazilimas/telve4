@@ -51,9 +51,9 @@
                                 showEvent="none"
                                 hideEffect="fade" dynamic="true"  
                                 appendToBody="false" at="left bottom"
-                                showCloseIcon="false" widgetVar="#{cc.id}lookupOverlay">
+                                showCloseIcon="false" widgetVar="#{cc.id}lookupOverlay" >
                     <ui:include src="/layout/lookupBaseOverlay.xhtml" >
-                        <ui:param name="bean" value="#{cc.attrs.lookupBean}" />
+                        <ui:param name="lookupBean" value="#{cc.attrs.lookupBean}" />
                         <ui:param name="widgetVar" value="#{cc.id}lookupOverlay" />
                         <ui:param name="update" value="#{cc.id}_inp, #{cc.attrs.update}" />
                         <ui:param name="hideStandartFilter" value="false" />

@@ -8,14 +8,14 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <p:fragment id="frmovl">
-        <div class="row">
+        <div class="row" style="width: 450px;">
             <h:panelGroup layout="block" styleClass="large-12 small-12 medium-12 columns">
                 <ui:fragment rendered="#{not hideStandartFilter}">
                     <p:fragment>
                         <p:outputLabel for="search2key" value="#{messages['general.label.SearchKey']}" />
                         <h:panelGroup styleClass="ui-input-group" layout="block" >
-                            <p:inputText id="search2key" value="#{bean.model.searchText}" />
-                            <p:commandButton id="search2" icon="ui-icon-search" action="#{bean.search()}" update="resultLists" styleClass="ui-icon-only" 
+                            <p:inputText id="search2key" value="#{lookupBean.model.searchText}" />
+                            <p:commandButton id="search2" icon="ui-icon-search" action="#{lookupBean.search()}" update="resultLists" styleClass="ui-icon-only" 
                                              partialSubmit="true" process="search2key"/>
                         </h:panelGroup>
                     </p:fragment>
@@ -26,15 +26,15 @@
 
             <h:panelGroup id="resultLists" layout="block" styleClass="large-12 small-12 medium-12 columns">
 
-                <c:if test="#{ bean.model.modelType eq 'Table' and bean.model.getMultiSelect()}" >
-                    <p:dataTable id="multiSelectDialog" var="item" value="#{bean.model.dataModel()}" 
-                                 selection="#{bean.model.selectedDatas}" rows="5"  paginator="true"
+                <c:if test="#{ lookupBean.model.modelType eq 'Table' and lookupBean.model.getMultiSelect()}" >
+                    <p:dataTable id="multiSelectDialog" var="item" value="#{lookupBean.model.dataModel()}" 
+                                 selection="#{lookupBean.model.selectedDatas}" rows="5"  paginator="true" rowKey="#{item.id}"
                                  paginatorPosition="bottom" 
                                  paginatorAlwaysVisible="false">
 
                         <p:column selectionMode="multiple" style="width:36px;" />  
 
-                        <c:forEach items="#{bean.model.columns.entrySet()}" var="col" varStatus="loop">
+                        <c:forEach items="#{lookupBean.model.columns.entrySet()}" var="col" varStatus="loop">
                             <p:column headerText="#{messages[col.value]}">
                                 #{item[col.key]}
                             </p:column>
@@ -42,16 +42,16 @@
                     </p:dataTable>
                 </c:if>
 
-                <c:if test="#{ bean.model.modelType eq 'Table' and not bean.model.getMultiSelect()}" >
+                <c:if test="#{ lookupBean.model.modelType eq 'Table' and not lookupBean.model.getMultiSelect()}" >
 
-                    <p:dataTable id="singleSelectDialog" var="item" value="#{bean.model.dataModel()}" 
-                                 selection="#{bean.model.selectedData}" rows="5"  paginator="true"
+                    <p:dataTable id="singleSelectDialog" var="item" value="#{lookupBean.model.dataModel()}" 
+                                 selection="#{lookupBean.model.selectedData}" rows="5"  paginator="true" rowKey="#{item.id}"
                                  paginatorPosition="bottom" 
                                  paginatorAlwaysVisible="false">
 
                         <p:column selectionMode="single" style="width:36px;" />  
 
-                        <c:forEach items="#{bean.model.columns.entrySet()}" var="col" varStatus="loop">
+                        <c:forEach items="#{lookupBean.model.columns.entrySet()}" var="col" varStatus="loop">
                             <p:column headerText="#{messages[col.value]}">
                                 #{item[col.key]}
                             </p:column>
@@ -59,11 +59,11 @@
                     </p:dataTable>
                 </c:if>
 
-                <c:if test="#{bean.model.modelType eq 'Tree' and bean.model.getMultiSelect()}" >
+                <c:if test="#{lookupBean.model.modelType eq 'Tree' and lookupBean.model.getMultiSelect()}" >
 
-                    <p:tree id="multiSelectTreeDialog" value="#{bean.model.dataModel()}" var="node"  
+                    <p:tree id="multiSelectTreeDialog" value="#{lookupBean.model.dataModel()}" var="node"  
                             selectionMode="checkbox"  
-                            selection="#{bean.model.selectedDatas}"  styleClass="large-12 medium-12 small-12 columns" style="width: 100%; ; max-height: 250px;">  
+                            selection="#{lookupBean.model.selectedDatas}"  styleClass="large-12 medium-12 small-12 columns" style="width: 100%; ; max-height: 250px;">  
 
                         <p:treeNode>  
                             <h:outputText value="#{node.caption}" />  
@@ -71,11 +71,11 @@
                     </p:tree> 
                 </c:if>
 
-                <c:if test="#{bean.model.modelType eq 'Tree' and not bean.model.getMultiSelect()}" >
+                <c:if test="#{lookupBean.model.modelType eq 'Tree' and not lookupBean.model.getMultiSelect()}" >
 
-                    <p:tree id="singleSelectTreeDialog" value="#{bean.model.dataModel()}" var="node"  
+                    <p:tree id="singleSelectTreeDialog" value="#{lookupBean.model.dataModel()}" var="node"  
                             selectionMode="single"  
-                            selection="#{bean.model.selectedData}" styleClass="large-12 small-12 medium-12 columns" style="width: 100%; max-height: 250px;">  
+                            selection="#{lookupBean.model.selectedData}" styleClass="large-12 small-12 medium-12 columns" style="width: 100%; max-height: 250px;">  
 
                         <p:treeNode>  
                             <h:outputText value="#{node.caption}" />  
@@ -86,10 +86,10 @@
             <h:panelGroup layout="block" styleClass="large-12 small-12 medium-12 columns">
                 <div class="actionButtons">
                     <p:commandButton value="#{messages['general.button.Ok']}"  
-                                     action="#{bean.closeOverlay()}" ajax="true" 
+                                     action="#{lookupBean.closeOverlay()}" ajax="true" 
                                      onsuccess="PF('#{widgetVar}').hide();" update="#{update}"
-                                     partialSubmit="true" process="frmovl"
-                                     icon="ui-icon-check"/>
+                                     partialSubmit="true" process="frmovl" styleClass="btn-primary"
+                                     icon="fa fa-check"/>
                     <p:commandButton value="#{messages['general.button.Cancel']}" type="button" onclick="PF('#{widgetVar}').hide();" 
                                      icon="ui-icon-close"/>
                 </div>

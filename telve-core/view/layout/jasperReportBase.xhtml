@@ -13,7 +13,7 @@
             <ui:insert name="filter"/>
 
             <div class="actionButtons">
-                <p:commandButton id="execPDF" value="#{messages['general.button.ExecPDF']}" icon="ui-icon-check" action="#{bean.execPDF()}" ajax="false"/>
+                <p:commandButton id="execPDF" value="#{messages['general.button.PDF']}" icon="fa fa-check" action="#{bean.execPDF()}" ajax="false" styleClass="btn-primary"/>
                 <ui:remove>
                     TODO: Doğru düzgün bir PDF.js ile olur bu iş sanırım.
                     <p:commandButton id="runPDF" value="#{messages['general.button.ExecPDF']}" icon="ui-icon-check" action="#{bean.closeDialog()}" />

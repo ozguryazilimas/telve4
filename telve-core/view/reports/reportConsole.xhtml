@@ -22,7 +22,7 @@
         <ui:include src="/layout/messages.xhtml"/>
 
         <p:layout style="height:100%" >
-            <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="true" resizable="true">
+            <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="false" resizable="true" styleClass="panel-primary">
                 <h:panelGroup id="treePanel" layout="block">
                     <h:form id="rtform">
                         <p:tree id="reportTree" value="#{reportHome.getRootNode()}" var="node"
@@ -61,7 +61,7 @@
                                                 <div class="large-10 medium-10 small-10 columns">
                                                     <div class="row">
                                                         <div class="large-12 medium-12 small-12 columns">
-                                                            <p:commandLink value="#{messages['report.name.'.concat( item )]}" action="#{reportHome.execReport(item)}" ajax="true" partialSubmit="true" process="@this">
+                                                            <p:commandLink value="#{messages['report.name.'.concat( item )]}" action="#{reportHome.execReport(item)}" ajax="true" partialSubmit="true" process="@this" style="font-weight: bold;">
                                                                 <p:ajax event="dialogReturn"  listener="#{reportHome.onReportRun}" update=":rform" partialSubmit="true" process="@this"/>
                                                             </p:commandLink>
                                                         </div>
