@@ -66,7 +66,7 @@ public class KahveStore {
 
     public void delete(String s) throws SQLException {
         connection.createStatement().executeUpdate(
-                String.format("delete KAHVE where KV_KEY = '%s'", s));
+                String.format("delete from KAHVE where KV_KEY = '%s'", s));
     }
 
     public KahveEntry load(String s) {
