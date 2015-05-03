@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
         
     <groupId>com.ozguryazilim.mutfak</groupId>
-    <version>4.0.0.A5</version>
+    <version>4.0.0.A6</version>
     <artifactId>telve-bom</artifactId>
     <packaging>pom</packaging>
     
@@ -12,7 +12,7 @@
         <picketlink.version>2.7.0.Final</picketlink.version>
         <primeface.version>5.2-OYAS1</primeface.version>
         <primefaces-ext.version>3.0.0</primefaces-ext.version>
-        <liquibase.version>3.3.2</liquibase.version>
+        <liquibase.version>3.3.3</liquibase.version>
         
         <mysql.version>5.1.26</mysql.version>
         
