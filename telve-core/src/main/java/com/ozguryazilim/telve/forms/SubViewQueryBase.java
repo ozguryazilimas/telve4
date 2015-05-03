@@ -8,7 +8,11 @@ package com.ozguryazilim.telve.forms;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.entities.ViewModel;
 import com.ozguryazilim.telve.query.QueryControllerBase;
-import javax.annotation.PostConstruct;
+import javax.enterprise.event.Observes;
+import javax.inject.Inject;
+import org.apache.deltaspike.core.api.config.view.ViewConfig;
+import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
+import org.apache.deltaspike.core.util.ProxyUtils;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,13 +31,8 @@ public abstract class SubViewQueryBase<E extends EntityBase,R extends ViewModel>
     
     private E entity;
 
-    
-    @PostConstruct
-    @Override
-    public void init(){
-        super.init();
-        search();
-    }
+    @Inject
+    private ViewConfigResolver viewConfigResolver;
     
     /**
      * Geriye edit edilecek olan entity'i döndürür.
@@ -121,5 +120,23 @@ public abstract class SubViewQueryBase<E extends EntityBase,R extends ViewModel>
     public void onAfterDelete(){
         //Bu method override edilmek için var.
     }
-    
+
+    /**
+     * Eğer bu subview'ın seçildiğine dair FormBase'den event geldiyse tekrar sorgu çek.
+     * @param event 
+     */
+    public void selectionListener( @Observes SubViewSelectEvent event ){
+        String s = viewConfigResolver.getViewConfigDescriptor(getViewPage()).getViewId();
+        if( event.getSubViewId().equals(s)){
+            search();
+        }
+    }
+
+    /**
+     * Bu SubView için tanımlı viewPage'i döndürür.
+     * @return 
+     */
+    public Class<? extends ViewConfig> getViewPage(){
+        return ((SubView)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(SubView.class))).viewPage();
+    }
 }

@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.enterprise.event.Event;
 import javax.enterprise.inject.Any;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
@@ -54,6 +55,9 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     @Inject
     private PageTitleResolver pageTitleResolver;
 
+    @Inject
+    Event<SubViewSelectEvent> subViewEvent;
+    
     private List<String> subViewList = new ArrayList<String>();
     private String selectedSubView;
 
@@ -298,6 +302,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
 
     public void setSelectedSubView(String selectedSubView) {
         this.selectedSubView = selectedSubView;
+        subViewEvent.fire(new SubViewSelectEvent(selectedSubView));
     }
 
     /**
@@ -348,6 +353,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             }
         }
         this.id = ( id == -1 ? (PK)new Long(0) : id );
+        selectedSubView = "";
     }
 
     /**
