@@ -229,7 +229,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      * @param viewModel
      * @return
      */
-    private E getEntity(R viewModel) {
+    protected E getEntity(R viewModel) {
         E result;
 
         //Eğer üzerinde Entity işareti varsa view model olarak da entity kullanılmıştır. 
@@ -402,5 +402,9 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         Map<String,String> prop = Splitter.on(';').omitEmptyStrings().trimResults().withKeyValueSeparator(':').split(model.getProfile());
         model.setProfileProperties(prop);
     }
+
     
+    public E findBy( Long pk ){
+        return getRepository().findBy(pk);
+    }
 }

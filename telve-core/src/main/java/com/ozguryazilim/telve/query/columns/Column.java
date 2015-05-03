@@ -1,7 +1,7 @@
 package com.ozguryazilim.telve.query.columns;
 
 import java.io.Serializable;
-import javax.persistence.metamodel.SingularAttribute;
+import javax.persistence.metamodel.Attribute;
 
 /**
  *
@@ -18,22 +18,22 @@ public abstract class Column<E> implements Serializable {
     /**
      * Kolon adı : bean.name
      */
-    private SingularAttribute<? super E, ?> attribute;
+    private Attribute<? super E, ?> attribute;
     
     private String labelKey;
     private String permission;
     private String keyPrefix;
 
-    public Column(SingularAttribute<? super E, ?> attribute, String labelKey) {
+    public Column(Attribute<? super E, ?> attribute, String labelKey) {
         this.attribute = attribute;
         this.labelKey = labelKey;
     }
 
-    public SingularAttribute<? super E, ?> getAttribute() {
+    public Attribute<? super E, ?> getAttribute() {
         return attribute;
     }
 
-    public void setAttribute(SingularAttribute<? super E, ?> attribute) {
+    public void setAttribute(Attribute<? super E, ?> attribute) {
         this.attribute = attribute;
     }
     

@@ -551,6 +551,26 @@ td{
   background-color: #b5191f !important;
 }
 
+.btn-add{
+  color:  #699934 !important;
+}
+
+.btn-refresh{
+  color:  #04519b !important;
+}
+
+.btn-edit{
+  color:  #c94e00 !important;
+}
+
+.btn-delete{
+  color:  #b5191f !important;
+}
+
+.btn-link{
+  color:  #4582ec !important;
+}
+
 .panel-primary > .ui-layout-unit-header {
     color: #ffffff;
     background-color: #4582ec;
@@ -581,4 +601,8 @@ td{
 .ui-panel-titlebar-icon{
      width: 16px;
     height: 16px;
+}
+
+#pfilterForm\:pffilter_toggler{
+    display: none !important;
 }

@@ -6,7 +6,10 @@
 
 package com.ozguryazilim.telve.query.filters;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.ozguryazilim.telve.query.Operands;
+import java.util.List;
 import javax.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 
@@ -119,6 +122,18 @@ public class EnumFilter<E, T extends Enum<T> > extends Filter<E, T>{
      */
     public void setStringValue( String val ){
         setValue( T.valueOf( getValue().getDeclaringClass() , val));
+    }
+
+    @Override
+    public String serialize() {
+        return Joiner.on("::").join(getOperand(), getStringValue());
+    }
+
+    @Override
+    public void deserialize(String s) {
+        List<String> ls = Splitter.on("::").trimResults().splitToList(s);
+        setOperand(FilterOperand.valueOf(ls.get(0)));
+        setStringValue(ls.get(1));
     }
     
 }

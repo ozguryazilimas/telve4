@@ -6,7 +6,10 @@
 
 package com.ozguryazilim.telve.query.filters;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.ozguryazilim.telve.query.Operands;
+import java.util.List;
 import javax.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 
@@ -24,6 +27,7 @@ public class BooleanFilter<E> extends Filter<E, Boolean>{
         keyPrefix = itemLabel;
         setOperands(Operands.getEnumOperands());
         setOperand(FilterOperand.Equal);
+        setValue(Boolean.TRUE);
     }
 
     @Override
@@ -53,6 +57,19 @@ public class BooleanFilter<E> extends Filter<E, Boolean>{
 
     public void setKeyPrefix(String keyPrefix) {
         this.keyPrefix = keyPrefix;
+    }
+
+    @Override
+    public String serialize() {
+        return Joiner.on("::").join(getOperand(), getValue() ? "T" : "F");
+    }
+
+    @Override
+    public void deserialize(String s) {
+        List<String> ls = Splitter.on("::").trimResults().splitToList(s);
+        setOperand(FilterOperand.valueOf(ls.get(0)));
+        
+        setValue("T".equals( ls.get(1)));
     }
     
     

@@ -24,7 +24,7 @@
         <ui:include src="/layout/browseFilters.xhtml" />
 
         <h:form id="browseListForm">
-            <p:dataTable id="results" var="item" 
+            <p:dataTable id="results" var="item" widgetVar="results"
                          value="#{bean.entityList}" 
                          paginator="true" rows="#{bean.queryDefinition.rowLimit}" 
                          paginatorPosition="bottom" 
@@ -40,7 +40,9 @@
                 <f:facet name="header">
                     <h:outputText value="#{messages['general.label.Results']}" />
                 </f:facet>
-
+                
+                <ui:insert name="beforeColumns" />
+                
                 <c:forEach items="#{bean.queryDefinition.columns}" var="col" varStatus="loop">
                     <p:column>
                         <c:set var="ind" value="#{loop.index}" />
@@ -52,9 +54,7 @@
 
                     </p:column>
                 </c:forEach>
-                <p:column rendered="#{showActionColumn eq 'true' }">
-                    <ui:insert name="actionColumn" />
-                </p:column>
+                <ui:insert name="afterColumns" />
             </p:dataTable>  
         </h:form>
     </ui:define>

@@ -117,4 +117,9 @@ public abstract class Filter<E, X> {
     public abstract void decorateCriteria( Criteria<E, ?> criteria );
     
     public abstract String getTemplate();
+    
+    public abstract String serialize();
+    
+    public abstract void deserialize( String s );
+    
 }

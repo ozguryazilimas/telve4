@@ -2,5 +2,5 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui">
-    <p:commandLink value="#{item[col.name]}" action="#{bean.view(item.id)}" partialSubmit="true" process="@this" />
+    <p:commandLink value="#{item[col.name]}" action="#{bean.view(item.id)}" partialSubmit="true" process="@this" styleClass="fa fa-external-link"/>
 </ui:composition>

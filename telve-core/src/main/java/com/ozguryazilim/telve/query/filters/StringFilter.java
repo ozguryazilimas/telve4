@@ -5,7 +5,10 @@
  */
 package com.ozguryazilim.telve.query.filters;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.ozguryazilim.telve.query.Operands;
+import java.util.List;
 import javax.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 
@@ -56,6 +59,22 @@ public class StringFilter<E> extends Filter<E, String> {
     @Override
     public String getTemplate() {
         return "stringFilter";
+    }
+
+    @Override
+    public String serialize() {
+        return Joiner.on("::").join(getOperand(), getValue() == null ? "null" : getValue());
+    }
+
+    @Override
+    public void deserialize(String s) {
+        List<String> ls = Splitter.on("::").trimResults().splitToList(s);
+        setOperand(FilterOperand.valueOf(ls.get(0)));
+        if( !"null".equals(ls.get(1))){
+            setValue(ls.get(1));
+        } else {
+            setValue(null);
+        }
     }
 
 }

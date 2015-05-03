@@ -149,14 +149,12 @@ public class QueryDefinition<E, R> {
         return pickListColumns;
     }
 
-    public void setPickListColumns(DualListModel<Column> columns) {
-        /* FIXME: Burası ne olsa da olsa
-         this.pickListColumns = columns;
+    public void setPickListColumns(DualListModel<Column<? super E>> columns) {
          //Mutlaka 1 kolon seçilmeli yoksa önceki durumu hiç değiştirmeyelim
          if( !columns.getTarget().isEmpty() ){
-         this.columns = columns.getTarget();
+             this.columns.clear();
+             this.columns.addAll(columns.getTarget());
          }
-         */
     }
 
     public List<Column<? super E>> getAvailColumns() {
@@ -174,6 +172,28 @@ public class QueryDefinition<E, R> {
 
     public void setAvailColumns(List<Column<? super E>> allColumns) {
     }
-    
-    
+
+    /**
+     * Verilen isimli kolon tanımını arar bulamazsa null döner.
+     * @param name
+     * @return 
+     */
+    public Column<? super E> findColumnByName( String name ){
+        for( Column<? super E> c : allColumns ){
+            if( c.getName().equals(name) ) return c;
+        }
+        return null;
+    }
+
+    /**
+     * Verilen isimli filtre tanımını arar bulamazsa null döner.
+     * @param name
+     * @return 
+     */
+    public Filter<E, ?> findFilterByName( String name ){
+        for( Filter<E, ?> c : allFilters ){
+            if( c.getAttribute().getName().equals(name) ) return c;
+        }
+        return null;
+    }
 }

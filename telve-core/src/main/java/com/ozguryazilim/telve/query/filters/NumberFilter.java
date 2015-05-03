@@ -5,7 +5,10 @@
  */
 package com.ozguryazilim.telve.query.filters;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.ozguryazilim.telve.query.Operands;
+import java.util.List;
 import javax.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 
@@ -73,6 +76,23 @@ public class NumberFilter<E, P extends Number & Comparable> extends Filter<E, P>
         } else {
             return 2;
         }
+    }
+
+    @Override
+    public String serialize() {
+        return Joiner.on("::")
+                .join(getOperand(), 
+                        getValue() == null ? "null" : getValue().getClass().getCanonicalName(), 
+                        getValue() == null ? "null" : getValue());
+    }
+
+    @Override
+    public void deserialize(String s) {
+        List<String> ls = Splitter.on("::").trimResults().splitToList(s);
+        setOperand(FilterOperand.valueOf(ls.get(0)));
+        //FIXME: Number bir değeri nasıl deserialize edeceğiz?
+        //Sınıf ismini nasıl kullanırız? Tip kontrolünü nasıl geçeriz?
+        //setValue(((P)Long.parseLong(ls.get(2))));
     }
     
 }

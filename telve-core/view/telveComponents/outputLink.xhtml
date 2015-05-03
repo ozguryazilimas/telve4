@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:composite="http://java.sun.com/jsf/composite">
+
+
+    <composite:interface>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="label" required="true"/>
+        <composite:attribute name="view" required="true"/>
+        <composite:attribute name="columnClass" required="false" default="large-6 medium-6 small-6"/>
+        <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <div id="#{cc.clientId}" class="disprop #{cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
+            <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]} :" styleClass="name" />
+            <span class="value">
+                <h:link id="#{cc.id}_inp" value="#{cc.attrs.value}" outcome="#{cc.attrs.view}" >
+                    <composite:insertChildren />
+                    <i class="fa fa-external-link btn-link"></i>
+                </h:link>
+            </span>
+        </div>
+    </composite:implementation>
+
+</ui:composition>

@@ -5,7 +5,10 @@
  */
 package com.ozguryazilim.telve.query.filters;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.ozguryazilim.telve.query.Operands;
+import com.ozguryazilim.telve.utils.DateUtils;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -296,6 +299,38 @@ public class DateFilter<E> extends Filter<E, Date> {
                 } else {
                     return "large-12 medium-12 small-12";
                 }
+        }
+    }
+
+    @Override
+    public String serialize() {
+        
+        return Joiner.on("::").join(getOperand(), 
+                getValueType(), getValue() == null ? "null" : DateUtils.getDateTimeFormatter().print(new DateTime(getValue())), 
+                getValueType2(), 
+                getValue2() == null ? "null" : DateUtils.getDateTimeFormatter().print(new DateTime(getValue2())));
+    }
+
+    @Override
+    public void deserialize(String s) {
+        List<String> ls = Splitter.on("::").trimResults().splitToList(s);
+        setOperand(FilterOperand.valueOf(ls.get(0)));
+        
+        setValueType(DateValueType.valueOf(ls.get(1)));
+        
+        if( !"null".equals(ls.get(2))){
+            DateTime parseDateTime = DateUtils.getDateTimeFormatter().parseDateTime(ls.get(2));
+            setValue(parseDateTime.toDate());
+        } else {
+            setValue(null);
+        }
+        
+        setValueType2(DateValueType.valueOf(ls.get(3)));
+        if( !"null".equals(ls.get(4))){
+            DateTime parseDateTime = DateUtils.getDateTimeFormatter().parseDateTime(ls.get(4));
+            setValue2(parseDateTime.toDate());
+        } else {
+            setValue2(null);
         }
     }
     

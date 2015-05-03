@@ -1,0 +1,19 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html">
+    
+    <ul> 
+        <ui:repeat value="#{item[col.name]}" var="coli" varStatus="loop">
+            <li>
+                <h:outputText value="#{coli[col.itemName][col.subName]}" />
+            </li>
+        </ui:repeat>
+    </ul>
+        
+    <ui:remove>
+    <p:dataList value="#{item[col.name]}" var="coli" type="ordered">
+        #{coli[col.itemName][col.subName]}
+    </p:dataList>
+        </ui:remove>
+</ui:composition>
