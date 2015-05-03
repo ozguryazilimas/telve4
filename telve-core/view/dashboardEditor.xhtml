@@ -119,13 +119,13 @@
 
 
 
-        <p:dialog id="layoutEditor" header="Layout Editor" modal="true" widgetVar="layoutEditor" width="980">
+        <p:dialog id="layoutEditor" header="#{messages['general.caption.LayoutEditor']}" modal="true" widgetVar="layoutEditor" width="980">
 
             <h:form id="editForm">
 
                 <ui:fragment rendered="#{dashboardManager.selectedBoard ne null}" >
 
-                    <p:panel header="layouts" >
+                    <p:panel header="#{messages['general.label.Layouts']}" >
 
                         <div class="row">
                             <t:inputText label="general.label.Name" value="#{dashboardManager.selectedBoard.name}" required="true" />
@@ -165,7 +165,7 @@
 
                     <h:inputHidden id="layoutMap" value="#{dashboardManager.layoutMap}" />
                     <h:panelGrid id="layoutArea" columns="2">
-                        <p:panel id="palet" header="Palet" style="overflow: auto;">
+                        <p:panel id="palet" header="#{messages['general.label.Palet']}" style="overflow: auto;">
                             <div id="palet" class="db-palet ui-sortable">
                                 <c:forEach items="#{dashboardManager.paletDashlets}" var="dashlet" varStatus="loop">
                                     <p:panel id="#{dashlet}" >
@@ -175,7 +175,7 @@
                             </div>
                         </p:panel>
 
-                        <p:panel header="Layout" style="overflow: auto;">
+                        <p:panel header="#{messages['general.label.Dashboard']}" style="overflow: auto;">
 
                             <div id="column1" class="db-column #{dashboardManager.getEditorColumn1Style()} ui-sortable">
                                 <c:forEach items="#{dashboardManager.selectedBoard.column1}" var="dashlet" varStatus="loop">
@@ -235,7 +235,7 @@
 
             function getLayoutMap() {
                 var columns = [];
-                $('.db-column').each(function() {
+                $('.db-column').each(function () {
                     columns.push($(this).sortable('toArray').join(','));
                 });
 
@@ -246,7 +246,7 @@
                 $('.ui-sortable').sortable({
                     connectWith: '.ui-sortable',
                     placeholder: 'placeholder',
-                    update: function() {
+                    update: function () {
                         $("#editForm\\:layoutMap").val(getLayoutMap());
                     }
                 });
@@ -257,16 +257,34 @@
 
             <p:dataTable  id="dashboardList" value="#{dashboardManager.dashboards}" var="dashboard" >
                 <f:facet name="header">
-                    <h:outputText value="general.label.Dashboards" />
+                    <h:outputText value="#{messages['general.label.Dashboards']}" />
                 </f:facet>
-                <p:column headerText="general.label.Dashboard">
+                <p:column headerText="#{messages['general.label.Dashboard']}">
                     <h:outputText value="#{dashboard.name}" />
                 </p:column>
-                <p:column headerText="general.label.Layout" >
+                <p:column headerText="#{messages['general.label.Layout']}" >
                     <i class="ly-icon-layout#{dashboard.layout}" />
                 </p:column>
-                <p:column headerText="general.label.Dashlets" >
-                    <h:outputText value="#{dashboard.column1} #{dashboard.column2} #{dashboard.column3}" />
+                <p:column headerText="#{messages['general.label.Dashlets']}" >
+                    <ul>
+                        <ui:repeat value="#{dashboard.column1}" var="dash">
+                            <li>#{messages['dashlet.caption.'.concat(  dash )]}</li>
+                        </ui:repeat>
+                    </ul>
+                </p:column>
+                <p:column headerText="#{messages['general.label.Dashlets']}" >
+                    <ul>
+                        <ui:repeat value="#{dashboard.column2}" var="dash">
+                            <li>#{messages['dashlet.caption.'.concat(  dash )]}</li>
+                        </ui:repeat>
+                    </ul>
+                </p:column>
+                <p:column headerText="#{messages['general.label.Dashlets']}" >
+                    <ul>
+                        <ui:repeat value="#{dashboard.column3}" var="dash">
+                            <li>#{messages['dashlet.caption.'.concat(  dash )]}</li>
+                        </ui:repeat>
+                    </ul>
                 </p:column>
                 <p:column style="width: 36px;">
                     <f:facet name="header">

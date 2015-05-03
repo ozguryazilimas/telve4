@@ -6,6 +6,7 @@
 
 package com.ozguryazilim.telve.dashboard;
 
+import com.google.common.base.CaseFormat;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
 
@@ -29,7 +30,7 @@ public abstract class AbstractDashlet implements Serializable{
      * @return 
      */
     public String getCaption(){
-        return "dashlet.caption." + this.getClass().getSimpleName();
+        return "dashlet.caption." + CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, this.getClass().getSimpleName());
     }
     
     /**
