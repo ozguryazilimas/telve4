@@ -8,6 +8,7 @@ package com.ozguryazilim.telve.forms;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.entities.ViewModel;
 import com.ozguryazilim.telve.query.QueryControllerBase;
+import javax.annotation.PostConstruct;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,14 @@ public abstract class SubViewQueryBase<E extends EntityBase,R extends ViewModel>
     
     private E entity;
 
+    
+    @PostConstruct
+    @Override
+    public void init(){
+        super.init();
+        search();
+    }
+    
     /**
      * Geriye edit edilecek olan entity'i döndürür.
      * @return 
