@@ -40,6 +40,9 @@
                             </p:column>
                         </c:forEach>
                     </p:dataTable>
+                    <script type="text/javascript">
+                            function setSelections(){}
+                        </script>
                 </c:if>
 
                 <c:if test="#{ lookupBean.model.modelType eq 'Table' and not lookupBean.model.getMultiSelect()}" >
@@ -57,30 +60,56 @@
                             </p:column>
                         </c:forEach>
                     </p:dataTable>
+                    <script type="text/javascript">
+                            function setSelections(){}
+                        </script>
                 </c:if>
 
-                <c:if test="#{lookupBean.model.modelType eq 'Tree' and lookupBean.model.getMultiSelect()}" >
+                <c:if test="#{lookupBean.model.modelType eq 'Tree' }" >
 
-                    <p:tree id="multiSelectTreeDialog" value="#{lookupBean.model.dataModel()}" var="node"  
-                            selectionMode="checkbox"  
-                            selection="#{lookupBean.model.selectedDatas}"  styleClass="large-12 medium-12 small-12 columns" style="width: 100%; ; max-height: 250px;">  
+                        <h:inputHidden id="selectedNodes" value="#{lookupBean.model.selectedNodes}" />
+                        <div id="data" ></div>
+                        
+                        <script type="text/javascript">
+                            
+                            function buildTree(){
+                                    // inline data 
+                                    jQuery("#data")
+                                        .on("changed.jstree", function (e, data) {
+                                            //alert( data.instance.get_node(data.selected[0]).id );
+                                            //selectNode( [ { 'name': 'nodeId', 'value' : data.instance.get_node(data.selected[0]).id }]);
+                                        })    
+                                        .jstree({
+                                            "plugins" : [ "wholerow", "types", "#{ lookupBean.model.getMultiSelect() ? 'checkbox' : '' }" ],
+                                            "types" : {
+                                                "default" : {
+                                                    "icon" : "fa fa-folder"
+                                                },
+                                                #{nodeTypes}
+                                            },
+                                            'core' : {
+                                                'data' : [
+                                                    <ui:repeat value = "#{lookupBean.model.dataModel()}" var = "node" >
+                                                        { "id" : "#{node.id}", "parent" : "#{node.parentId eq 0 ? '#' : node.parentId}", "text" : "#{node.caption}", "type" : "#{lookupBean.model.getNodeType(node)}" },
+                                                    </ui:repeat>
 
-                        <p:treeNode>  
-                            <h:outputText value="#{node.caption}" />  
-                        </p:treeNode>  
-                    </p:tree> 
-                </c:if>
+                                                ]
+                                            }
+                                        });
+                                    }
+                                    buildTree();
+                                    
+                                    function setNodeSelections(){
+                                            $('#data').jstree().select_node(jQuery(PrimeFaces.escapeClientId("lookupForm:selectedNodes")).val().split(','));
+                                    }
 
-                <c:if test="#{lookupBean.model.modelType eq 'Tree' and not lookupBean.model.getMultiSelect()}" >
+                                    function setSelections(){
+                                            var s = jQuery('#data').jstree().get_selected();
+                                            jQuery(PrimeFaces.escapeClientId("lookupForm:selectedNodes")).val(s);
+                                    }
 
-                    <p:tree id="singleSelectTreeDialog" value="#{lookupBean.model.dataModel()}" var="node"  
-                            selectionMode="single"  
-                            selection="#{lookupBean.model.selectedData}" styleClass="large-12 small-12 medium-12 columns" style="width: 100%; max-height: 250px;">  
-
-                        <p:treeNode>  
-                            <h:outputText value="#{node.caption}" />  
-                        </p:treeNode>  
-                    </p:tree>  
+                                    //setNodeSelections();                                
+                                </script>
                 </c:if>
             </h:panelGroup>
             <h:panelGroup layout="block" styleClass="large-12 small-12 medium-12 columns">
@@ -88,7 +117,7 @@
                     <p:commandButton value="#{messages['general.button.Ok']}"  
                                      action="#{lookupBean.closeOverlay()}" ajax="true" 
                                      onsuccess="PF('#{widgetVar}').hide();" update="#{update}"
-                                     partialSubmit="true" process="frmovl" styleClass="btn-primary"
+                                     partialSubmit="true" process="frmovl" styleClass="btn-primary" onclick="setSelections()"
                                      icon="fa fa-check"/>
                     <p:commandButton value="#{messages['general.button.Cancel']}" type="button" onclick="PF('#{widgetVar}').hide();" 
                                      icon="ui-icon-close"/>

@@ -15,11 +15,12 @@ import com.ozguryazilim.telve.utils.TreeUtils;
 import com.ozguryazilim.telve.view.Pages;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
-import org.primefaces.model.CheckboxTreeNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +36,6 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
 
     private LookupTreeModel<E> treeModel;
     private E entity;
-    private List<E> filteredList;
     private List<E> entityList;
 
     private String filter;
@@ -110,8 +110,10 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
             return Pages.Home.class;
         }
 
-        if( !onBeforeSave() ) return null;
-        
+        if (!onBeforeSave()) {
+            return null;
+        }
+
         //boolean newRecord = !entity.isPersisted();
         //Path saklamak için ID'nin alınmaya ihtiyacı var o yüzden eğer persist değilse önce bir ID için kaydediyoruz.
         if (!entity.isPersisted()) {
@@ -122,11 +124,13 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
 
         if (!getEntityList().contains(entity)) {
             getEntityList().add(entity);
-            getTreeModel().addTreeNode(entity);
+            getTreeModel().addItem(entity);
         }
 
-        if( !onAfterSave() ) return null;
-        
+        if (!onAfterSave()) {
+            return null;
+        }
+
         LOG.debug("Entity Saved : {} ", entity);
 
         FacesMessages.info("general.message.record.SaveSuccess");
@@ -142,12 +146,14 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
             return Pages.Home.class;
         }
 
+        //FIXME: Eğer ağacın alt dalları varsa diye kontrol edilmesi lazım...
+        
         try {
             getRepository().remove(entity);
-            getTreeModel().removeTreeNode(entity);
+            getTreeModel().removeItem(entity);
             //Listeden de çıkaralım
             getEntityList().remove(entity);
-
+                    
         } catch (Exception e) {
             LOG.error("Hata : {}", e);
             FacesMessages.error("general.message.record.DeleteFaild");
@@ -200,7 +206,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
     public void initTreeModel() {
         treeModel = new LookupTreeModel<>();
         treeModel.setTypeSelector(this);
-        treeModel.buildTreeModel(getEntityList());
+        treeModel.setData(getEntityList());
 
     }
 
@@ -227,41 +233,42 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         this.filter = filter;
     }
 
-    public void selectItem() {
-        if (getTreeModel().getSelectedData() != null) {
-            entity = (E) getTreeModel().getSelectedData().getData();
-            //Tüm veri gösterilmiyor dolayısı ile alt node kontrolü yapılmalı.
-            if( !isShowAllNodes() && Strings.isNullOrEmpty(filter) ){
-                //Zaten childları var tekrar kontrol etmiyoruz.
-                if( getTreeModel().getSelectedData().isLeaf() ){
-                    List<E> childNodes = getRepository().findNodes(entity);
-                    getTreeModel().addTreeNodes(getTreeModel().getSelectedData(), childNodes);
-                    getTreeModel().getSelectedData().setExpanded(true);
-                }
-            }
-        }
+    public void selectNode() {
+        Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        Long pk = Long.valueOf(params.get("nodeId"));
+        entity = getRepository().findBy(pk);
+        treeModel.setSelectedNodes(params.get("nodeId"));
     }
 
     @Override
     public String getNodeType(E node) {
-        return CheckboxTreeNode.DEFAULT_TYPE;
+        return "default";
     }
 
     protected void populateData() {
-        if (Strings.isNullOrEmpty(getTreeModel().getSearchText())) {
-            if( isShowAllNodes() ){
-                entityList = getRepository().findNodes();
+        if (entityList == null) {
+            if (Strings.isNullOrEmpty(getTreeModel().getSearchText())) {
+                if (isShowAllNodes()) {
+                    entityList = getRepository().findNodes();
+                } else {
+                    entityList = getRepository().findRootNodes();
+                }
             } else {
-                entityList = getRepository().findRootNodes();
+                //entityList = getRepository().lookupQuery(getTreeModel().getSearchText());
+                entityList = getRepository().findNodes();
             }
-        } else {
-            entityList = getRepository().lookupQuery(getTreeModel().getSearchText());
+            getTreeModel().setData(entityList);
         }
-        getTreeModel().buildTreeModel(entityList);
+
+        getTreeModel().buildResultList();
+        
     }
+    
+    
 
     public void search() {
-        entityList = null;
+        //TODO: Veriyi nezaman boşaltalım?
+        //entityList = null;
         getTreeModel().setSearchText(filter);
         populateData();
     }
@@ -272,8 +279,8 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
 
     /**
      * Save işleminden hemen önce yapılacak olan işler için çağrılır.
-     * 
-     * @return 
+     *
+     * @return
      */
     protected boolean onBeforeSave() {
         return true;
@@ -281,7 +288,8 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
 
     /**
      * Save işleminden hemen sonra yapılacak işler için çağrılır.
-     * @return 
+     *
+     * @return
      */
     protected boolean onAfterSave() {
         return true;
@@ -289,13 +297,12 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
 
     /**
      * Tüm nodeları mı göstersin yoksa partial mı?
-     * @return 
+     *
+     * @return
      */
     public Boolean isShowAllNodes() {
         return Boolean.TRUE;
     }
 
-    
-    
-    
+
 }

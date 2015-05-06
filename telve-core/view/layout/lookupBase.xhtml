@@ -42,7 +42,11 @@
                                     #{item[col.key]}
                                 </p:column>
                             </c:forEach>
+                            
                         </p:dataTable>
+                        <script type="text/javascript">
+                            function setSelections(){}
+                        </script>
                     </c:if>
 
                     <c:if test="#{bean.model.modelType eq 'Table' and not bean.model.getMultiSelect()}" >
@@ -58,36 +62,68 @@
                                 </p:column>
                             </c:forEach>
                         </p:dataTable>
+                        
+                        <script type="text/javascript">
+                            function setSelections(){}
+                        </script>
                     </c:if>
 
-                    <c:if test="#{bean.model.modelType eq 'Tree' and bean.model.getMultiSelect()}" >
+                    <c:if test="#{bean.model.modelType eq 'Tree' }" >
 
-                        <p:tree id="multiSelectTreeDialog" value="#{bean.model.dataModel()}" var="node"  
-                                selectionMode="checkbox"  
-                                selection="#{bean.model.selectedDatas}"  style="width: 100%; height: 350px;">  
+                        <h:inputHidden id="selectedNodes" value="#{bean.model.selectedNodes}" />
+                        <div id="data" ></div>
+                        
+                        <script type="text/javascript">
+                            
+                            function buildTree(){
+                                    // inline data 
+                                    jQuery("#data")
+                                        .on("changed.jstree", function (e, data) {
+                                            //alert( data.instance.get_node(data.selected[0]).id );
+                                            //selectNode( [ { 'name': 'nodeId', 'value' : data.instance.get_node(data.selected[0]).id }]);
+                                        })    
+                                        .jstree({
+                                            "plugins" : [ "wholerow", "types", "conditionalselect", "sort", "#{ bean.model.getMultiSelect() ? 'checkbox' : '' }" ],
+                                            "conditionalselect" : function (node) {
+                                                return (node.children.length &amp;&amp; #{ bean.model.leafSelect} ) ? false : true;
+                                            },                                       
+                                            "types" : {
+                                                "default" : {
+                                                    "icon" : "fa fa-folder"
+                                                },
+                                                #{nodeTypes}
+                                            },
+                                            'core' : {
+                                                'data' : [
+                                                    <ui:repeat value = "#{bean.model.dataModel()}" var = "node" >
+                                                        { "id" : "#{node.id}", "parent" : "#{node.parentId eq 0 ? '#' : node.parentId}", "text" : "#{node.caption}", "type" : "#{bean.model.getNodeType(node)}" },
+                                                    </ui:repeat>
 
-                            <p:treeNode>  
-                                <h:outputText value="#{node.caption}" />  
-                            </p:treeNode>  
-                        </p:tree> 
+                                                ]
+                                            }
+                                        });
+                                    }
+                                    buildTree();
+                                    
+                                    function setNodeSelections(){
+                                            $('#data').jstree().select_node(jQuery(PrimeFaces.escapeClientId("lookupForm:selectedNodes")).val().split(','));
+                                    }
+
+                                    function setSelections(){
+                                            var s = jQuery('#data').jstree().get_selected();
+                                            jQuery(PrimeFaces.escapeClientId("lookupForm:selectedNodes")).val(s);
+                                    }
+
+                                    setNodeSelections();                                
+                                </script>
+                        
                     </c:if>
 
-                    <c:if test="#{bean.model.modelType eq 'Tree' and not bean.model.getMultiSelect()}" >
-
-                        <p:tree id="singleSelectTreeDialog" value="#{bean.model.dataModel()}" var="node"  
-                                selectionMode="single"  
-                                selection="#{bean.model.selectedData}" style="width: 100%; height: 350px;" >  
-
-                            <p:treeNode>  
-                                <h:outputText value="#{node.caption}" />  
-                            </p:treeNode>  
-                        </p:tree>  
-                    </c:if>
                 </div>
             </h:panelGroup>
             <h:panelGroup styleClass="actionButtons" style="position: fixed; bottom: 8px; padding-right: 18px;" layout="block">
                 <ui:insert name="actionButtons" />
-                <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="fa fa-check" action="#{bean.closeDialog()}" styleClass="btn-primary"/>
+                <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="fa fa-check" action="#{bean.closeDialog()}" onclick="setSelections()" styleClass="btn-primary"/>
                 <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{bean.cancelDialog()}" />
             </h:panelGroup>
         </h:form>

@@ -5,30 +5,29 @@
  */
 package com.ozguryazilim.telve.lookup;
 
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.ozguryazilim.telve.entities.TreeNodeModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.primefaces.model.CheckboxTreeNode;
+import java.util.Objects;
 import org.primefaces.model.TreeNode;
 
 /**
- * PrimeFaces TreeModel'i oluşturan taban sınıf.
+ * TreeModel'i oluşturan taban sınıf.
  *
- * com.ut.tekir.entities.TreeNode türündeki model sınıfları kullanarak UI için
- * primeface TreeNode modeli üretir.
+ * com.ut.tekir.entities.TreeNode türündeki model sınıfları kullanarak UI için gerekli listeyi üretir.
+ * 
  *
  *
  * @author Hakan Uygun
  * @param <T> TreeNodeModel'den türetilmiş bir sınıf olmalı
  */
-public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, TreeNode>, Serializable {
+public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, T>, Serializable {
 
-    private TreeNode model;
-    private TreeNode selectedData;
-    private TreeNode[] selectedDatas;
     private Boolean multiSelect = false;
     private Boolean leafSelect = false;
     private String profile;
@@ -37,76 +36,20 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
     private TreeNodeTypeSelector typeSelector;
     private Map<String, String> profileProperties;
 
-    private Map<Long, TreeNode> nodeCache = new HashMap<>();
-
-    public TreeNode getRootNode() {
-        return model;
-    }
+    //Seçilen nodeların id'leri virgüllerle ayrılmış olarak gelir.
+    private String selectedNodes;
+    
+    private List<T> allItems = new ArrayList<>();
+    private List<T> resultItems = new ArrayList<>();
+    private Map<Long, T> idMap = new HashMap<>();
+    private Map<String, Long> pathMap = new HashMap<>();
+    
 
     public void clearModel() {
-        model = null;
-        model = new CheckboxTreeNode("Root", null);
-    }
-
-    /**
-     * Model nesnesine yeni veri ekler.
-     *
-     * @param data
-     */
-    public void buildTreeModel(List<T> data) {
-        model = new CheckboxTreeNode("Root", null);
-        nodeCache = new HashMap<>();
-        for (T n : data) {
-            addTreeNode(n);
-        }
-        setSelectionStrategy(model);
-        //Cache temizlensin...
-        nodeCache = null;
-    }
-
-    /**
-     * Verilen veriyi UI modelinde ilgili yere ekler.
-     *
-     * @param data
-     */
-    public void addTreeNode(T data) {
-        TreeNode parent = findParent(model, data);
-        if (parent == null) {
-            parent = model;
-        }
-        TreeNode node = new CheckboxTreeNode(getNodeType(data), data, parent);
-        if( nodeCache != null ){
-            nodeCache.put(data.getId(), node);
-        }
-    }
-
-    /**
-     * Verilen veriyi UI modelinde ilgili yere ekler.
-     *
-     * @param parent
-     * @param data
-     */
-    public void addTreeNodes(TreeNode parent, List<T> data) {
-        if (parent == null) {
-            parent = model;
-        }
-        //Verilen listeyi ekler
-        for (T n : data) {
-            TreeNode node = new CheckboxTreeNode(getNodeType(n), n, parent);
-        }
-    }
-
-    //
-    /**
-     * Verilen veriyi UI modelinden çıkartır.
-     *
-     * @param data
-     */
-    public void removeTreeNode(T data) {
-        TreeNode node = findNode(getRootNode(), data);
-        if (node != null) {
-            node.getParent().getChildren().remove(node);
-        }
+        allItems.clear();
+        resultItems.clear();
+        idMap.clear();
+        pathMap.clear();
     }
 
     /**
@@ -117,86 +60,14 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
      * @param node
      * @return
      */
-    protected String getNodeType(T node) {
+    public String getNodeType(T node) {
         if (typeSelector != null) {
             return typeSelector.getNodeType(node);
         }
-        return CheckboxTreeNode.DEFAULT_TYPE;
+        return "default";
     }
 
-    /**
-     * Veri için GUI Modelinde parent node bulur.
-     *
-     * @param parent
-     * @param n
-     * @return
-     */
-    protected TreeNode findParent(TreeNode parent, TreeNodeModel n) {
-
-        if (nodeCache != null) {
-            return nodeCache.get(n.getParentId());
-        } else {
-
-            for (TreeNode node : parent.getChildren()) {
-
-                if (((TreeNodeModel) node.getData()).getId().equals(n.getParentId())) {
-                    return node;
-                }
-
-                TreeNode nn = findParent(node, n);
-                if (nn != null) {
-                    return nn;
-                }
-            }
-
-            return null;
-        }
-    }
-
-    /**
-     * Veri için ilgili GUI nodunu bulur.
-     *
-     * @param parent
-     * @param n
-     * @return
-     */
-    protected TreeNode findNode(TreeNode parent, TreeNodeModel n) {
-
-        for (TreeNode node : parent.getChildren()) {
-
-            if (((TreeNodeModel) node.getData()).getId().equals(n.getId())) {
-                return node;
-            }
-
-            TreeNode nn = findNode(node, n);
-            if (nn != null) {
-                return nn;
-            }
-        }
-
-        return null;
-    }
-
-    @Override
-    public TreeNode getSelectedData() {
-        return selectedData;
-    }
-
-    @Override
-    public void setSelectedData(TreeNode selectedData) {
-        this.selectedData = selectedData;
-    }
-
-    @Override
-    public TreeNode[] getSelectedDatas() {
-        return selectedDatas;
-    }
-
-    @Override
-    public void setSelectedDatas(TreeNode[] selectedDatas) {
-        this.selectedDatas = selectedDatas;
-    }
-
+    
     @Override
     public Boolean getMultiSelect() {
         return multiSelect;
@@ -207,10 +78,12 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         this.multiSelect = multiSelect;
     }
 
+    @Override
     public Boolean getLeafSelect() {
         return leafSelect;
     }
 
+    @Override
     public void setLeafSelect(Boolean leafSelect) {
         this.leafSelect = leafSelect;
     }
@@ -247,7 +120,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
 
     @Override
     public T getSelectedViewModel() {
-        return (T) getSelectedData().getData();
+        return getSelectedItems().isEmpty() ? null : getSelectedItems().get(0);
     }
 
     @Override
@@ -257,13 +130,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
 
     @Override
     public List<T> getSelectedViewModels() {
-        List<T> ls = new ArrayList<>();
-
-        for (TreeNode node : getSelectedDatas()) {
-            ls.add((T) node.getData());
-        }
-
-        return ls;
+        return getSelectedItems();
     }
 
     @Override
@@ -273,12 +140,18 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
 
     @Override
     public void setData(List<T> dataList) {
-        buildTreeModel(dataList);
+        allItems = dataList;
+        idMap.clear();
+        pathMap.clear();
+        for( T e : allItems ){
+            idMap.put(e.getId(), e);
+            pathMap.put(e.getPath(), e.getId());
+        }
     }
 
     @Override
     public boolean isDataEmpty() {
-        return model == null || model.getChildCount() == 0;
+        return allItems.isEmpty();
     }
 
     @Override
@@ -293,7 +166,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
 
     @Override
     public Object dataModel() {
-        return getRootNode();
+        return resultItems;
     }
 
     public TreeNodeTypeSelector getTypeSelector() {
@@ -333,4 +206,190 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         this.profileProperties = profileProperties;
     }
 
+    
+    protected List<T> getSelectedItems(){
+        List<T> ls = new ArrayList<>();
+        
+        if( !Strings.isNullOrEmpty(selectedNodes)){
+            List<String> ids = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(selectedNodes);
+            for( String s : ids ){
+                ls.add(idMap.get( Long.valueOf(s)));
+            }
+        }
+        
+        return ls;
+    }
+
+    @Override
+    public T getSelectedData() {
+        return getSelectedItems().isEmpty() ? null : getSelectedItems().get(0);
+    }
+
+    @Override
+    public void setSelectedData(T data) {
+        //
+    }
+
+    @Override
+    public T[] getSelectedDatas() {
+        return (T[]) getSelectedItems().toArray();
+    }
+
+    @Override
+    public void setSelectedDatas(T[] data) {
+        //
+    }
+
+    
+    public void addItem( T item ){
+        allItems.add(item);
+        idMap.put(item.getId(), item);
+        pathMap.put(item.getPath(), item.getId());
+        resultItems.add(item);
+    }
+    
+    public void removeItem( T item ){
+        allItems.remove(item);
+        idMap.remove(item.getId());
+        pathMap.remove(item.getPath());
+        resultItems.remove(item);
+    }
+    
+    public void buildResultList(){
+        resultItems.clear();
+        
+        if (Strings.isNullOrEmpty(getSearchText())) {
+            resultItems.addAll(allItems);
+        } else {
+            
+            for( T ent : allItems ){
+                if( ent.getCaption().contains(getSearchText()) ){
+                    addFilteredItem(ent);
+                    //Eger sadeye en son node seçilebiliyorsa bulunanların detaylarını da ekleyelim...
+                    if( getLeafSelect() ){
+                        //burda iki kez eklenme olabilir. contains ile konrol ederek ekleniyor
+                        for( T it : findChildNodes(ent) ){
+                            if( !resultItems.contains(it) ){
+                                resultItems.add( it );
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    protected void addFilteredItem( T item ){
+        //Hali hazırda eklenmemişse ekleyelim...
+        if( !resultItems.contains(item) ){
+            resultItems.add(item);
+            addFilteredItemPath(item.getParentId());
+        }
+    }
+    
+    protected void addFilteredItemPath( Long pk ){
+        if( pk == null || pk == 0 ) return;
+        
+        T ent = idMap.get(pk);
+        if( !resultItems.contains(ent) ){
+            resultItems.add( ent );
+        }
+        addFilteredItemPath(ent.getParentId());
+    }
+
+    public List<T> getResultItems() {
+        return resultItems;
+    }
+
+    public void setResultItems(List<T> resultItems) {
+        this.resultItems = resultItems;
+    }
+
+    public String getSelectedNodes() {
+        return selectedNodes;
+    }
+
+    public void setSelectedNodes(String selectedNodes) {
+        this.selectedNodes = selectedNodes;
+    }
+
+    /**
+     * Verilen node'un parent nodunu döndürür. Yoksa null döner.
+     * @param node
+     * @return 
+     */
+    public T findParent( T node ){
+        return idMap.get(node.getParentId());
+    }
+
+    /**
+     * Verilen node'un childlarını döndürür.
+     * @param node
+     * @return 
+     */
+    public List<T> findChildren( T node ){
+        //TODO: Aslında burayı eldeki listeden sağlasak süper olur.
+        return node.getChildren();
+    }
+    
+    /**
+     * Verilen node'un tüm parent node listesini döndürür.
+     * @param node
+     * @return 
+     */
+    public List<T> findParentNodes( T node ){
+        List<T> ls = new ArrayList<>();
+        
+        String path = node.getPath();
+        
+        for( Map.Entry<String,Long> ent : pathMap.entrySet() ){
+            //Eğer node'un path'i key ile başlıyorsa ve kendisi değilse
+            if( path.startsWith( ent.getKey() ) && !Objects.equals(ent.getValue(), node.getId()) ){
+                ls.add(idMap.get(ent.getValue()));
+            }
+        }
+        
+        return ls;
+    }
+    
+    /**
+     * Verilen node'un tüm child nodelarını döndürür.
+     * @param node
+     * @return 
+     */
+    public List<T> findChildNodes( T node ){
+        List<T> ls = new ArrayList<>();
+        
+        String path = node.getPath();
+        
+        for( Map.Entry<String,Long> ent : pathMap.entrySet() ){
+            //Eğer key'un path'i node ile başlıyorsa ve kendisi değilse
+            if( ent.getKey().startsWith( path ) && !Objects.equals(ent.getValue(), node.getId())){
+                ls.add(idMap.get(ent.getValue()));
+            }
+        }
+        
+        return ls;
+    }
+    
+    /**
+     * Verilen node'un dalında ki tüm node'ları döndürür.
+     * @param node
+     * @return 
+     */
+    public List<T> findBranchNodes( T node ){
+        
+        List<T> ls = new ArrayList<>();
+        
+        String path = node.getPath();
+        
+        for( Map.Entry<String,Long> ent : pathMap.entrySet() ){
+            //Eğer path ile key'i eşleşiyorsa aynı daldır.
+            if( ent.getKey().startsWith( path ) || path.startsWith( ent.getKey())){
+                ls.add(idMap.get(ent.getValue()));
+            }
+        }
+        
+        return ls;
+    }
 }

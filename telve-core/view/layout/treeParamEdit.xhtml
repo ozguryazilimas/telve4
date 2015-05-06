@@ -33,7 +33,7 @@
 
         <h:form id="form">
 
-            <p:remoteCommand name="selectNode" update="paramTree,nodeEditor,#{onSelectUpdate}" action="#{homeBean.selectItem()}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');#{onSelectEvent}" partialSubmit="true" process="@this" />
+            <p:remoteCommand name="selectNode" update="paramTree,nodeEditor,#{onSelectUpdate}" action="#{homeBean.selectNode}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');#{onSelectEvent}" partialSubmit="true" process="@this" />
             <p:remoteCommand name="search" update="treePanel" action="#{homeBean.search()}" partialSubmit="true" process="@this" />
             <p:remoteCommand name="newParameter" update=":form:nodeEditor" action="#{homeBean.createNewChild()}"  partialSubmit="true" process="@this" />
 
@@ -48,8 +48,8 @@
                 <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="false" resizable="true" styleClass="panel-primary">
                     <f:facet name="header">
                         <p:outputPanel style="width: 90%; display: inline-block;">
-                            <span class="ui-icon tv-icon-filter" style="display: inline-block;vertical-align: middle"></span>
-                            <p:inplace id="ajax" label="#{messages['general.label.Filter']} : #{homeBean.filter}" editor="true">
+                            <span class="fa fa-filter" style="display: inline-block;vertical-align: middle"></span>
+                            <p:inplace id="ajax" label=" #{messages['general.label.Filter']} : #{homeBean.filter}" editor="true">
                                 <p:ajax event="save" oncomplete="search();" />
                                 <p:inputText value="#{homeBean.filter}" required="false" label="text" style="width:auto !important;"/>
                             </p:inplace>
@@ -58,7 +58,53 @@
                     <h:panelGroup id="treePanel" layout="block">
 
                         <ui:insert name="customFilter" />
+                        
+                        <div id="data" ></div>
+                        
+                        <script type="text/javascript">
+                            
+                            function buildTree(){
+                                    // inline data 
+                                    jQuery("#data")
+                                        .on("changed.jstree", function (e, data) {
+                                            //alert( data.instance.get_node(data.selected[0]).id );
+                                            selectNode( [ { 'name': 'nodeId', 'value' : data.instance.get_node(data.selected[0]).id }]);
+                                        })    
+                                        .jstree({
+                                            "plugins" : [ "wholerow", "types" ],
+                                            "types" : {
+                                                "default" : {
+                                                    "icon" : "fa fa-folder"
+                                                },
+                                                #{nodeTypes}
+                                            },
+                                            'core' : {
+                                                'data' : [
+                                                    <ui:repeat value = "#{homeBean.treeModel.dataModel()}" var = "node" >
+                                                        { "id" : "#{node.id}", "parent" : "#{node.parentId eq 0 ? '#' : node.parentId}", "text" : "#{node.name}", "state": { "selected" : #{ node.id eq homeBean.entity.id ? 'true' : 'false' }}, "type" : "#{homeBean.treeModel.getNodeType(node)}"},
+                                                    </ui:repeat>
 
+                                                ]
+                                            }
+                                        });
+                                    }
+                                    buildTree();
+                                    
+                                    function setNodeSelections(){
+                                            $('#data').jstree().select_node(jQuery(PrimeFaces.escapeClientId("form:selectedNodes")).val().split(','));
+                                    }
+
+                                    function setSelections(){
+                                            var s = jQuery('#data').jstree().get_selected();
+                                            jQuery(PrimeFaces.escapeClientId("form:selectedNodes")).val(s);
+                                    }
+
+                                    //setNodeSelections();                                
+                                </script>
+                        
+                        <h:inputHidden id="paramTree" />
+                        
+                        <ui:remove>
                         <p:tree id="paramTree" value="#{homeBean.treeModel.getRootNode()}" var="node"
                                 selectionMode="single"
                                 selection="#{homeBean.treeModel.selectedData}" style="border: 0px; width: auto;" rendered="#{not customTree}">
@@ -70,6 +116,8 @@
                             </p:treeNode>
 
                         </p:tree>
+                            </ui:remove>
+                        
 
                         <ui:insert name="customTree"></ui:insert>
                     </h:panelGroup>

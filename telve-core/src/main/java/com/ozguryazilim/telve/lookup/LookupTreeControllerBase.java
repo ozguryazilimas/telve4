@@ -25,18 +25,28 @@ import java.util.List;
  * @param <E> Ağaç tipi entity sınıfı
  * @param <F> Sunum için kullanılacak olan model
  */
-public abstract class LookupTreeControllerBase<E extends TreeNodeEntityBase, F extends TreeNodeModel> extends LookupControllerBase<E, F>{
+public abstract class LookupTreeControllerBase<E extends TreeNodeEntityBase, F extends TreeNodeModel> extends LookupControllerBase<E, F> implements TreeNodeTypeSelector<E> {
     
         @Override
     protected void initModel() {
         LookupTreeModel<F> m = new LookupTreeModel<>();
+        m.setTypeSelector(this);
         setModel(m);
     }
 
     @Override
+    public void search() {
+        populateData();
+    }
+
+    
+    @Override
     public void populateData() {
-        List<F> data = getRepository().lookupQuery(getModel().getSearchText());
-        getModel().setData(populateParentData(data));
+        if( getModel().isDataEmpty() ){
+            List<F> data = getRepository().lookupQuery("");
+            getModel().setData(data);
+        }
+        ((LookupTreeModel)getModel()).buildResultList();
     }
     
     /**
@@ -63,5 +73,9 @@ public abstract class LookupTreeControllerBase<E extends TreeNodeEntityBase, F e
         
         return result;
     }
-    
+
+    @Override
+    public String getNodeType(E node) {
+        return "default";
+    }
 }
