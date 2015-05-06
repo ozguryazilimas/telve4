@@ -105,7 +105,7 @@
 
                                     function setSelections(){
                                             var s = jQuery('#data').jstree().get_selected();
-                                            jQuery(PrimeFaces.escapeClientId("lookupForm:selectedNodes")).val(s);
+                                            jQuery(PrimeFaces.escapeClientId("#{ccId}:selectedNodes")).val(s);
                                     }
 
                                     //setNodeSelections();                                
@@ -117,7 +117,7 @@
                     <p:commandButton value="#{messages['general.button.Ok']}"  
                                      action="#{lookupBean.closeOverlay()}" ajax="true" 
                                      onsuccess="PF('#{widgetVar}').hide();" update="#{update}"
-                                     partialSubmit="true" process="frmovl" styleClass="btn-primary" onclick="setSelections()"
+                                     partialSubmit="true" process="frmovl" styleClass="btn-primary" onclick="setSelections(this)"
                                      icon="fa fa-check"/>
                     <p:commandButton value="#{messages['general.button.Cancel']}" type="button" onclick="PF('#{widgetVar}').hide();" 
                                      icon="ui-icon-close"/>
