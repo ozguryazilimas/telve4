@@ -8,6 +8,8 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/layout/primeTemplate.xhtml">
 
+    <ui:param name="showListBar" value="true" />
+
     <ui:define name="outerspace">
         <ui:remove>
             <ui:include src="/layout/ajaxLoadingPopup.xhtml" />
@@ -21,7 +23,7 @@
         <ui:include src="/layout/messages.xhtml"/>
 
 
-        <ui:include src="/layout/browseFilters.xhtml" />
+
 
         <h:form id="browseListForm">
             <p:dataTable id="results" var="item" widgetVar="results"
@@ -34,15 +36,15 @@
                          rowKey="#{item.id}"
                          emptyMessage="#{messages['general.message.browse.EmptyDesc']}">                      
 
-                <p:ajax event="rowSelect"  update="#{onSelectUpdate}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');"/>
+                <p:ajax event="rowSelect"  update=":contextForm, #{onSelectUpdate}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');"/>
                 <p:ajax event="rowUnselect" update="#{onSelectUpdate}" oncomplete="disableRibbonBtn('#{onSelectEnabled}');" />
 
                 <f:facet name="header">
                     <h:outputText value="#{messages['general.label.Results']}" />
                 </f:facet>
-                
+
                 <ui:insert name="beforeColumns" />
-                
+
                 <c:forEach items="#{bean.queryDefinition.columns}" var="col" varStatus="loop">
                     <p:column>
                         <c:set var="ind" value="#{loop.index}" />
@@ -58,4 +60,17 @@
             </p:dataTable>  
         </h:form>
     </ui:define>
+
+    <ui:define name="content-list">
+        <ui:include src="/layout/browseFilters.xhtml" />
+    </ui:define>
+
+    <ui:define name="context-menu">
+        <h:link outcome="#{bean.getEditViewId()}" styleClass="context-command" >
+            <i class="fa fa-plus-circle"></i>
+            <h:outputText value=" #{messages['general.button.Add']}" />
+            <f:param name="eid" value="0"/>
+        </h:link>
+    </ui:define>
+
 </ui:composition>

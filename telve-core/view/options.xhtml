@@ -10,26 +10,29 @@
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 template="/layout/primeTemplate.xhtml">
 
+    <ui:param name="showListBar" value="true" />
+
     <ui:define name="body">
 
-        <p:layout id="options">
-            <p:layoutUnit position="west" size="300" header="#{messages['general.caption.Options']}" collapsible="true" resizable="true">
-                <h:form id="menuForm">
-                    <c:forEach items="#{optionPaneController.optionPanes}" var="pane">
-                        <p:commandLink value="#{messages[ 'optionPane.caption.'.concat( pane )]}" update=":pane" action="#{optionPaneController.setSelectedPane(pane)}" partialSubmit="true" process="@this" style="display:block;"/>
-                    </c:forEach>
-                </h:form>
-            </p:layoutUnit>
-            <p:layoutUnit id="paneBlock" position="center" header="#{messages[ 'optionPane.caption.'.concat( optionPaneController.selectedPane )]}" >
-                <ui:include src="/layout/messages.xhtml" />
-                <h:panelGroup id="pane" layout="block">
-                    <ui:include src="#{optionPaneController.getSelectedPaneViewId()}">
-                        <ui:param name="pane" value="#{optionPaneController.selectedPane}" />
-                    </ui:include>
-                </h:panelGroup>
-            </p:layoutUnit>
-        </p:layout>
-
+        <ui:include src="/layout/messages.xhtml" />
+        <h:panelGroup id="pane" layout="block">
+            #{messages[ 'optionPane.caption.'.concat( optionPaneController.selectedPane )]}
+            <ui:include src="#{optionPaneController.getSelectedPaneViewId()}">
+                <ui:param name="pane" value="#{optionPaneController.selectedPane}" />
+            </ui:include>
+        </h:panelGroup>
     </ui:define> 
 
+    <ui:define name="content-list">
+        #{messages['general.caption.Options']}
+        <h:form id="menuForm">
+            <c:forEach items="#{optionPaneController.optionPanes}" var="pane">
+                <p:commandLink value="#{messages[ 'optionPane.caption.'.concat( pane )]}" 
+                               update=":pane" 
+                               action="#{optionPaneController.setSelectedPane(pane)}" 
+                               partialSubmit="true" process="@this" 
+                               styleClass="ui-sidelink "/>
+            </c:forEach>
+        </h:form>
+    </ui:define>
 </ui:composition>

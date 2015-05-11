@@ -1,9 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
+      xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:ds="http://deltaspike.apache.org/jsf"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <f:view >
@@ -16,19 +17,20 @@
 
             <ui:include src="/layout/templateHeader.xhtml" />
 
-            <script type="text/javascript">
-                // initialise plugins
-                jQuery(document).ready(function () {
+            <ui:remove>
+                <script type="text/javascript">
+                    // initialise plugins
+                    jQuery(document).ready(function () {
 
-                    jQuery('#ribbon').ribbon({
-                        timeout: 500
+                        jQuery('#ribbon').ribbon({
+                            timeout: 500
+                        });
                     });
-                });
-            </script>
-
+                </script>
+            </ui:remove>
         </h:head>
 
-        <h:body>
+        <h:body >
 
             <ds:windowId />
 
@@ -46,53 +48,453 @@
             <p:socket onMessage="handleMessage" channel="/notify/#{identity.account.id}" />
 
             <script type="text/javascript">
-                
-                jQuery( "#notifyBar" ).bind( "click", function() {
+
+                jQuery("#notifyBar").bind("click", function () {
                     PF('notifyBar').hide();
                 });
-                
+
                 function handleMessage(facesmessage) {
                     //facesmessage.severity = 'info';
                     //alert(facesmessage.summary);
-                    
-                    jQuery("#notifySubject").html( facesmessage.summary );
-                    jQuery("#notifyDetail").html( facesmessage.detail );
-                    
+
+                    jQuery("#notifySubject").html(facesmessage.summary);
+                    jQuery("#notifyDetail").html(facesmessage.detail);
+
                     PF('notifyBar').show();
                 }
             </script>
 
             <ui:insert name="outerspace"></ui:insert>
 
-            <p:layout fullPage="true">
-                <ui:fragment rendered="#{param.forDialog ne 'true' }">
-                    <p:layoutUnit position="north"  size="164" style="padding: 0px; z-index: 1;" >
-                        <ui:include src="/layout/ribbon.xhtml" />
+            <ui:remove>
+                <p:layout fullPage="true">
+                    <ui:fragment rendered="#{param.forDialog ne 'true' }">
+                        <p:layoutUnit position="north"  size="164" style="padding: 0px; z-index: 1;" >
+                            <ui:include src="/layout/ribbon.xhtml" />
+                        </p:layoutUnit>
+                    </ui:fragment>
+
+                    <p:layoutUnit position="center"  style="padding: 0 0.4em !important;">
+                        <ui:insert name="body"/>
+                        <ui:remove>
+                            <div style="clear:both">
+                                <div class="wrap body">
+
+                                    <ui:insert name="body"/>
+
+                                </div>
+                            </div>
+                        </ui:remove>
                     </p:layoutUnit>
-                </ui:fragment>
+                    <ui:fragment rendered="#{param.forDialog ne 'true' }">
+                        <p:layoutUnit position="south" size="51" >
+                            <div class="footer">
+                                <ui:remove>
+                                    <ui:include src="/branding/footer.xhtml" />
+                                </ui:remove>
+                            </div>	
+                        </p:layoutUnit>
+                    </ui:fragment>
+                </p:layout>
+            </ui:remove>
 
-                <p:layoutUnit position="center"  style="padding: 0 0.4em !important;">
-                    <ui:insert name="body"/>
-                    <ui:remove>
-                        <div style="clear:both">
-                            <div class="wrap body">
+            <div class="wrapper">
 
-                                <ui:insert name="body"/>
+                <header class="fixed main-header">
+                    <a href="#" class="logo">#{telveConfigResolver.getProperty('app.title')}</a>
+                    <nav class="navbar navbar-static-top" role="navigation">
+                        <!-- Sidebar toggle button-->
 
+                        <ui:remove>
+                            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                                <span class="sr-only">Toggle navigation</span>
+                            </a>
+                        </ui:remove>
+
+                        <script type="text/javascript">
+                            jQuery(document).ready(function () {
+                                jQuery('#sideToggle').click(function (e) {
+                                    e.preventDefault();
+
+                                    //Enable sidebar push menu
+                                    if (jQuery(window).width() > (767 - 1)) {
+                                        jQuery("body").toggleClass('sidebar-collapse');
+                                    }
+                                    //Handle sidebar push menu for small screens
+                                    else {
+                                        if (jQuery("body").hasClass('sidebar-open')) {
+                                            jQuery("body").removeClass('sidebar-open');
+                                            jQuery("body").removeClass('sidebar-collapse')
+                                        } else {
+                                            jQuery("body").addClass('sidebar-open');
+                                        }
+                                    }
+                                });
+
+                                jQuery('#listToggle').click(function (e) {
+                                    e.preventDefault();
+
+                                    //Enable sidebar push menu
+                                    if (jQuery(window).width() > (767 - 1)) {
+                                        jQuery("body").toggleClass('listbar-collapse');
+                                    }
+                                    //Handle sidebar push menu for small screens
+                                    else {
+                                        if (jQuery("body").hasClass('sidebar-open')) {
+                                            jQuery("body").removeClass('sidebar-open');
+                                            jQuery("body").removeClass('sidebar-collapse')
+                                        } else {
+                                            jQuery("body").addClass('sidebar-open');
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
+
+                        <div class="navbar-menu">
+
+
+                            <ul class="nav navbar-nav">
+                                <li>
+                                    <a id="sideToggle" href="#" role="button" >
+                                        <i class="fa fa-bars"></i>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a id="listToggle" href="#" role="button" >
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                </li>
+                                <li >
+                                    <h:link  outcome="/home.xhtml" >
+                                        <i class="fa fa-dashboard"></i>
+                                    </h:link>
+                                </li>
+
+                                <li >
+                                    <h:link  outcome="/calendar/calendarConsole.xhtml" >
+                                        <i class="fa fa-calendar"></i>
+                                    </h:link>
+                                </li>
+
+                                <li >
+                                    <h:link  outcome="/reports/reportConsole.xhtml" >
+                                        <i class="fa fa-print"></i>
+                                    </h:link>
+                                </li>
+
+                            </ul>
+                            <ui:remove>
+                                <h:form styleClass="navbar-form navbar-right" role="search">
+                                    <div class="form-group">
+                                        <h:inputText styleClass="form-control" />
+                                    </div>
+                                </h:form>
+                            </ui:remove>
+                        </div>
+
+                        <div class="navbar-custom-menu">
+                            <ul class="nav navbar-nav">
+
+                                <li>
+                                    <p:commandLink action="#{noteController.openNotesDialog(''.concat(request.getHeader('Referer')))}" 
+                                                   ajax="true" partialSubmit="true" process="@this" includeViewParams="true" rendered="#{noteController.canAddNote()}">
+                                        <i class="fa fa-comments"/>
+                                        <ui:fragment rendered="#{noteController.hasNotes('')}">
+                                            <span class="label label-danger">!</span>
+                                        </ui:fragment>
+
+                                    </p:commandLink>
+                                </li>
+                                <li>
+                                    <p:commandLink action="#{noteController.openNewNoteDialog(request.getHeader('Referer'))}" 
+                                                   ajax="true" partialSubmit="true" process="@this" includeViewParams="true" rendered="#{noteController.canAddNote()}">
+                                        <i class="fa fa-comment"/>
+                                    </p:commandLink>
+                                </li>
+
+
+
+                                <li>
+                                    <ui:remove>
+                                        <!-- 
+                                        request.requestURI.concat( '?' ).concat(request.queryString) çalışması lazım ama ajax üzerinde redirect yaparken parametreleri kaybediyor
+                                        o yüzden referer'ı kullanıyoruz.
+                                        -->
+                                    </ui:remove>
+                                    <p:commandLink action="#{bookmarkDashlet.addBookmark( messages[pageTitleResolver.pageTitle], viewIdentifier, request.getHeader('Referer'))}" 
+                                                   ajax="true" partialSubmit="true" process="@this" includeViewParams="true" >
+                                        <i class="fa fa-bookmark" />
+
+                                    </p:commandLink>
+                                </li>
+
+                                <ui:remove>
+
+                                    <li class="dropdown messages-menu">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-envelope-o"></i>
+                                            <span class="label label-success">4</span>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown notifications-menu">
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            <i class="fa fa-bell-o"></i>
+                                            <span class="label label-warning">10</span>
+                                        </a>
+                                    </li>
+                                    <li class="dropdown tasks-menu">
+                                        <a id="hede2link" href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="PF('hede2').show('hede2link')">
+                                            <i class="fa fa-flag-o"></i>
+                                            <span class="label label-danger">9</span>
+                                        </a>
+                                        <p:overlayPanel id="hede2"  widgetVar="hede2" >
+                                            <!-- inner menu: contains the actual data -->
+                                            <ul class="dropdown-menu">
+                                                <ui:remove>
+                                                    <li class="header">Bişi</li>
+                                                    <li class="footer">Bişi</li>
+                                                </ui:remove>
+                                                <li><!-- Task item -->
+                                                    <a href="#">
+                                                        <h3>
+                                                            Design some buttons
+                                                            <small class="pull-right">20%</small>
+                                                        </h3>
+                                                        <div class="progress xs">
+                                                            <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                                <span class="sr-only">20% Complete</span>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li><!-- end task item -->
+                                                <li><!-- Task item -->
+                                                    <a href="#">
+                                                        <h3>
+                                                            Create a nice theme
+                                                            <small class="pull-right">40%</small>
+                                                        </h3>
+                                                        <div class="progress xs">
+                                                            <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                                <span class="sr-only">40% Complete</span>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li><!-- end task item -->
+                                                <li><!-- Task item -->
+                                                    <a href="#">
+                                                        <h3>
+                                                            Some task I need to do
+                                                            <small class="pull-right">60%</small>
+                                                        </h3>
+                                                        <div class="progress xs">
+                                                            <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                                <span class="sr-only">60% Complete</span>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li><!-- end task item -->
+                                                <li><!-- Task item -->
+                                                    <a href="#">
+                                                        <h3>
+                                                            Make beautiful transitions
+                                                            <small class="pull-right">80%</small>
+                                                        </h3>
+                                                        <div class="progress xs">
+                                                            <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                                <span class="sr-only">80% Complete</span>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li><!-- end task item -->
+                                            </ul>
+                                        </p:overlayPanel>
+                                    </li>
+
+                                </ui:remove>
+
+                                <li class="">
+                                    <a href="#{helpResolver.helpPath}" target="HelpWinId" onclick="openHelp();" >
+                                        <i class="fa fa-question-circle"></i>
+
+                                    </a>
+                                </li>
+
+                                <li class="dropdown user user-menu">
+                                    <a id="hedelink" href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="PF('hede').show('hedelink')">
+                                        <!-- img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image" -->
+                                        <span class="hidden-xs">#{identity.account.firstName} #{identity.account.lastName}</span>
+                                    </a>
+                                    <p:overlayPanel id="hede" widget="hede" widgetVar="hede" >
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <h:link outcome="/options.xhtml">
+                                                    <i class="fa fa-gears" /> #{messages['module.caption.Options']}
+                                                </h:link>
+                                            </li>
+                                            <li>
+                                                <p:commandLink action="#{aboutController.openDialog()}" 
+                                                    ajax="true" partialSubmit="true" process="@this" includeViewParams="true" >
+                                                    <i class="fa fa-question-circle" /> #{messages['general.button.About']}
+                                                </p:commandLink>
+                                                
+                                            </li>
+                                            <li class="seperator"></li>
+                                            <li>
+                                                <p:commandLink action="#{identity.logout()}" >
+                                                    <i class="fa fa-power-off" /> #{messages['general.button.Logout']}
+                                                </p:commandLink>
+                                            </li>
+                                        </ul>
+                                    </p:overlayPanel>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </nav>
+                </header>
+
+
+                <aside class="main-sidebar">
+
+                    <section class="sidebar" style="height: auto;">
+
+                        <ui:remove>
+                        <h:form id="globalSearch">
+                            <div class="ui-input-group" style="padding: 10px;">
+                                <p:inputText value="#{quickLauncher.key}" required="false"  placeholder="#{messages['general.label.SearchText']}"/>
+                                <p:commandButton action="#{quickLauncher.redirect()}" icon="fa fa-search" partialSubmit="false" />
+                            </div>
+                        </h:form>
+                            </ui:remove>
+                        
+
+                        <ul class="sidebar-menu">
+
+                            <ui:remove>
+                                <li class="header">#{messages["Main Menu"]}</li>
+                            </ui:remove>
+                            <li>
+                                <h:link  outcome="/person/personBrowse.xhtml" >
+                                    <c:forEach items="#{action.action.params}" var="entry">
+                                        <f:param name="#{entry.key}" value="#{entry.value}"/>
+                                    </c:forEach>
+
+                                    <h:graphicImage value="/img/ribbon/small/person.png"  style="margin-right: 4px;"/>
+                                    <span style="padding-right: 4px;">#{messages['Person']}</span> 
+
+                                </h:link>
+                            </li>
+                            <li>
+                                <h:link  outcome="/examination/medicalExaminationBrowse.xhtml" >
+                                    <c:forEach items="#{action.action.params}" var="entry">
+                                        <f:param name="#{entry.key}" value="#{entry.value}"/>
+                                    </c:forEach>
+
+                                    <i class="fa fa-stethoscope"></i>
+                                    <span style="padding-right: 4px;">#{messages['Medical Examination']}</span> 
+
+                                </h:link>
+                            </li>
+                            <li class="header">#{messages["Navigasyon"]}</li>
+                            <c:forEach id="tabrepeater" items="#{ribbonController.getTabs()}"
+                                       var="tab" varStatus="tabCounter">
+
+                                <li class="treeview">
+                                    <a href="#">
+                                        <i class="fa fa-caret-right"></i>
+                                        <span>#{messages[tab.label]}</span>
+
+                                        <ui:remove>
+                                            <span class="label label-primary pull-right">4</span>
+                                        </ui:remove>
+                                    </a>
+                                    <c:forEach id="secrepeater" items="#{tab.sections}" var="section" varStatus="rowCounter1">
+
+                                        <ul class="treeview-menu">
+                                            <c:forEach id="actrepeater" items="#{section.actions}" var="action" varStatus="rowCounter2">
+                                                <li>
+                                                    <h:link  outcome="#{ action.action.url }" >
+                                                        <c:forEach items="#{action.action.params}" var="entry">
+                                                            <f:param name="#{entry.key}" value="#{entry.value}"/>
+                                                        </c:forEach>
+
+                                                        <h:graphicImage value="/img/ribbon/small/#{action.action.img}"  style="margin-right: 4px;"/>
+                                                        <span style="padding-right: 4px;">#{messages[action.action.label]}</span> 
+
+                                                    </h:link>
+                                                </li>
+                                            </c:forEach>
+                                        </ul>
+
+                                    </c:forEach>
+                                </li>
+                            </c:forEach>
+                            
+                        </ul>
+                        <ui:remove>
+                            
+                        <div>
+                            <p>Günün İp Uçusu gibi bişiler buraya doğru gelebilir belki...</p>
+                        </div>
+                        </ui:remove>
+                    </section>
+                </aside>
+
+
+                <ui:fragment rendered="#{showListBar}">
+                    <div class="main-listbar" >
+                        <div class="content-list" >
+                            <ui:remove>
+                                <section class="main-header" >
+                                    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                                        <span class="sr-only">Toggle navigation</span>
+                                    </a>
+
+                                    <nav class="navbar navbar-static-top" role="navigation">
+
+                                    </nav>
+                                </section>
+                            </ui:remove>
+                            <div class="content">
+                                <ui:insert name="content-list" />
                             </div>
                         </div>
-                    </ui:remove>
-                </p:layoutUnit>
-                <ui:fragment rendered="#{param.forDialog ne 'true' }">
-                    <p:layoutUnit position="south" size="51" >
-                        <div class="footer">
-                            <ui:remove>
-                                <ui:include src="/branding/footer.xhtml" />
-                            </ui:remove>
-                        </div>	
-                    </p:layoutUnit>
+                    </div>
                 </ui:fragment>
-            </p:layout>
+
+                <div class="content-wrapper #{showListBar ? 'listbar' : ''} ">
+
+                    <section class="context-menu">
+                        <h:form id="contextForm">
+                            <ul >
+                                <ui:insert name="context-menu" />
+                            </ul>
+                        </h:form>
+                    </section>
+                    <ui:fragment rendered="#{dontShowContentHeader ne true}">
+                        <section class="content-header">
+                            <h1>#{ messages[pageTitleResolver.pageTitle] }  <small>#{ viewIdentifier }</small></h1> 
+                        </section>
+                    </ui:fragment>
+
+                    <div class="content">
+                        <ui:insert name="body"/>
+                    </div>
+                </div>
+
+
+                <footer class="main-footer">
+                    <div class="pull-right hidden-xs">
+                        <b>Version</b> #{telveConfigResolver.getProperty('app.version')}
+                    </div>
+                    <ui:remove>
+                        <strong>Bir <a href="http://ozguryazilim.com.tr">Özgür Yazılım A.Ş.</a> üründür.</strong> 
+                    </ui:remove>
+                </footer>
+            </div>
         </h:body>
+
     </f:view>
 </html>

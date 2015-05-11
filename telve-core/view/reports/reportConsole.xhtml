@@ -9,6 +9,8 @@
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 template="/layout/primeTemplate.xhtml">
 
+    <ui:param name="showListBar" value="true" />
+    
     <ui:define name="outerspace">
         <ui:remove>
             <ui:include src="/layout/ajaxLoadingPopup.xhtml" />
@@ -21,30 +23,6 @@
 
         <ui:include src="/layout/messages.xhtml"/>
 
-        <p:layout style="height:100%" >
-            <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="false" resizable="true" styleClass="panel-primary">
-                <h:panelGroup id="treePanel" layout="block">
-                    <h:form id="rtform">
-                        <p:tree id="reportTree" value="#{reportHome.getRootNode()}" var="node"
-                                selectionMode="single"
-                                selection="#{reportHome.selectedData}" style="border: 0px; width: auto;">
-
-                            <p:ajax event="select" listener="#{reportHome.onNodeSelect}" partialSubmit="true" process="@this" update=":rform"/>
-
-                            <p:treeNode type="folder" expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
-                                <h:outputText value="#{messages['report.folder.'.concat( node )]}"/>
-                            </p:treeNode>
-
-                            <p:treeNode type="JasperReport" expandedIcon="ui-icon-document" collapsedIcon="ui-icon-document">
-                                <p:commandLink value="#{messages['report.name.'.concat( node )]}" title="#{messages['report.desc.'.concat( node )]}" action="#{reportHome.execReport(node)}" ajax="true" partialSubmit="true" process="@this"/>
-                            </p:treeNode>
-
-                        </p:tree>
-                    </h:form>
-                </h:panelGroup>
-            </p:layoutUnit>
-
-            <p:layoutUnit position="center" header="Favoriler" >
                 <h:form id="rform">
                     <ui:fragment rendered="#{not reportHome.showReport}" >
                         <ui:repeat value="#{reportHome.getReportGroups().entrySet().toArray()}" var="group" varStatus="loop">
@@ -90,7 +68,29 @@
                         </p:media>
                     </ui:fragment>
                 </h:form>
-            </p:layoutUnit>
-        </p:layout>
+        
     </ui:define>
+    
+    <ui:define name="content-list">
+        <h:panelGroup id="treePanel" layout="block">
+                    <h:form id="rtform">
+                        <p:tree id="reportTree" value="#{reportHome.getRootNode()}" var="node"
+                                selectionMode="single"
+                                selection="#{reportHome.selectedData}" style="border: 0px; width: auto;">
+
+                            <p:ajax event="select" listener="#{reportHome.onNodeSelect}" partialSubmit="true" process="@this" update=":rform"/>
+
+                            <p:treeNode type="folder" expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+                                <h:outputText value="#{messages['report.folder.'.concat( node )]}"/>
+                            </p:treeNode>
+
+                            <p:treeNode type="JasperReport" expandedIcon="ui-icon-document" collapsedIcon="ui-icon-document">
+                                <p:commandLink value="#{messages['report.name.'.concat( node )]}" title="#{messages['report.desc.'.concat( node )]}" action="#{reportHome.execReport(node)}" ajax="true" partialSubmit="true" process="@this"/>
+                            </p:treeNode>
+
+                        </p:tree>
+                    </h:form>
+                </h:panelGroup>
+    </ui:define>
+    
 </ui:composition>

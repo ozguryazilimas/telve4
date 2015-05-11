@@ -9,6 +9,8 @@
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 template="/layout/primeTemplate.xhtml">
 
+    <ui:param name="showListBar" value="#{not empty bean.subViewList}" />
+
     <ui:define name="outerspace">
         <ui:remove>
             <ui:include src="/general/ajaxLoadingPopup.xhtml" />
@@ -37,43 +39,36 @@
 
             });
         </script>
-        <p:layout >
-            <ui:remove>
-            <p:layoutUnit position="north" styleClass="ui-panel-titlebar ui-widget-header ui-state-default" >
-            </p:layoutUnit>
-            </ui:remove>
 
-            <p:layoutUnit position="west" header="#{messages['general.label.SubViews']}" size="300" collapsible="false"  rendered="#{not empty bean.subViewList}" styleClass="panel-primary">
+        <h:panelGroup layout="block" rendered="#{showCaption eq 'true'}">
+            <div class="ui-widget ui-widget-content ui-corner-top" style="padding: 4px; margin-bottom: 4px; background-color: #fdeeb3; border-color: #F1C43F;">
+                <ui:insert name="caption" /> 
+            </div>
+        </h:panelGroup>
 
-                <h:form id="subViewCommandForm" style="margin: 8px;">
+        <ui:include src="/layout/messages.xhtml" />
 
-                    <p:commandLink  value="#{messages['general.caption.MasterView']}"
-                                    action="#{bean.setSelectedSubView(null)}" update=":viewarea" styleClass="ui-sidelink" />
+        <p:outputPanel id="viewarea">
+            <ui:include src="#{bean.getSubViewId()}" />
+        </p:outputPanel>
 
-                    <c:forEach id="subViewRepeater" items="#{bean.subViewList}"
-                               var="module" varStatus="rowCounter">
-                        <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
-                                       action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
-                                       styleClass="ui-sidelink "/>  
-                    </c:forEach>
+    </ui:define>
 
-                </h:form>
-            </p:layoutUnit>
+    <ui:define name="content-list">
+        #{messages['general.label.SubViews']}
+        <h:form id="subViewCommandForm" style="margin: 8px;">
 
-            <p:layoutUnit position="center" style="padding-right: 20px;" >
-                
-                <h:panelGroup layout="block" rendered="#{showCaption eq 'true'}">
-                    <div class="ui-widget ui-widget-content ui-corner-top" style="padding: 4px; margin-bottom: 4px; background-color: #fdeeb3; border-color: #F1C43F;">
-                        <ui:insert name="caption" /> 
-                    </div>
-                </h:panelGroup>
+            <p:commandLink  value="#{messages['general.caption.MasterView']}"
+                            action="#{bean.setSelectedSubView(null)}" update=":viewarea" styleClass="ui-sidelink" />
 
-                <ui:include src="/layout/messages.xhtml" />
-                
-                <p:outputPanel id="viewarea">
-                    <ui:include src="#{bean.getSubViewId()}" />
-                </p:outputPanel>
-            </p:layoutUnit>
-        </p:layout>        
+            <c:forEach id="subViewRepeater" items="#{bean.subViewList}"
+                       var="module" varStatus="rowCounter">
+                <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
+                               action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
+                               styleClass="ui-sidelink "/>  
+            </c:forEach>
+
+        </h:form>
+
     </ui:define>
 </ui:composition>

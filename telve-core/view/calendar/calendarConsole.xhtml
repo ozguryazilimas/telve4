@@ -147,4 +147,50 @@
         </h:form>
 
     </ui:define>
+    
+    <ui:define name="context-menu">
+        <li>
+            <p:commandLink name="newEvent"  action="#{calendarHome.newEvent}" >
+                <h:graphicImage value="/img/ribbon/small/calendar.png" />
+                <span>#{messages['calendar.button.SimpleEvent']}</span>
+            </p:commandLink>
+        </li>
+        <li>
+            <a href="#" onclick="PF('telveCalendar').jqc.fullCalendar('changeView', 'month');" >
+                <h:graphicImage value="/img/ribbon/small/calendar_month.png" />
+                <span >#{messages['calendar.button.Month']}</span> 
+            </a>
+        </li>
+        <li>
+            <a href="#" onclick="PF('telveCalendar').jqc.fullCalendar('changeView', 'agendaWeek');" >
+                <h:graphicImage value="/img/ribbon/small/calendar_week.png" />
+                <span >#{messages['calendar.button.Week']}</span> 
+            </a>
+        </li>
+        <li>
+            <a href="#" onclick="PF('telveCalendar').jqc.fullCalendar('changeView', 'agendaDay');" >
+                <h:graphicImage value="/img/ribbon/small/calendar_day.png" />
+                <span >#{messages['calendar.button.Day']}</span> 
+            </a>
+        </li>
+        
+        <li>
+            <a href="#" onclick="PF('calendarFilterPopup').show();" >
+                <h:graphicImage value="/img/ribbon/small/calendar_group.png" />
+                <span >#{messages['calendar.button.Filter']}</span> 
+            </a>
+        </li>
+        
+        <li>
+                    <p:selectBooleanCheckbox value="#{calendarFilterModel.showClosedEvents}" itemLabel="#{messages['calendar.button.ShowClosed']}">
+                        <p:ajax oncomplete="PF('telveCalendar').update();" />
+                    </p:selectBooleanCheckbox>
+                </li>
+                <li>
+                    <p:selectBooleanCheckbox value="#{calendarFilterModel.showPersonalEvents}" itemLabel="#{messages['calendar.button.ShowPOT']}">
+                        <p:ajax oncomplete="PF('telveCalendar').update();" />
+                    </p:selectBooleanCheckbox>
+                </li>
+    </ui:define>
+    
 </ui:composition>

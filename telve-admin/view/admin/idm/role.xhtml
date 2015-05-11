@@ -9,154 +9,143 @@
                 xmlns:p="http://primefaces.org/ui"                   
                 template="/layout/primeTemplate.xhtml">
 
+    <ui:param name="showListBar" value="true" />
 
     <ui:define name="body">
-        <ui:remove>
-            <h1><h:outputText value="#{messages[moduleCaption]}" /></h1>
-        </ui:remove>
-
-        <script>
-            jQuery(document).ready(function () {
-                jQuery('#paramNewButton').click(function () {
-                    if (this.isEnabled()) {
-                        newParameter();
-                    }
-                });
-            });
-        </script>
-
         <ui:include src="/layout/messages.xhtml" />
-        <p:layout >
-            <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="true" resizable="true">
-                <h:form id="listForm">
-                    <p:remoteCommand name="newParameter" update=":form" action="#{roleHome.createNew()}"  partialSubmit="true" process="@this" />
-                    <p:dataTable id="itemlist" 
-                                 var="item"
-                                 value="#{roleHome.entityList}" 
-                                 rowKey="rowKey"
-                                 emptyMessage="#{messages['general.hint.EmptyList']}"
-                                 rows="15"
-                                 filteredValue="#{roleHome.filteredList}"
-                                 paginatorAlwaysVisible="false"
-                                 paginator="true"
-                                 paginatorPosition="bottom"
-                                 paginatorTemplate="{PageLinks}">
-                        <p:column filterBy="#{item.name}" 
-                                  filterMatchMode="contains">
-                            <p:commandLink action="#{roleHome.edit(item)}" ajax="true" partialSubmit="true" process="@this" update=":form">
-                                <h:outputText value="#{item.name}" />
-                            </p:commandLink>
+
+        <h:form id="form" >
+            <div class="row">
+                <t:inputText label="global.label.Name" value="#{roleHome.current.name}" required="true" />
+            </div>  
+
+            <c:forEach id="groups" items="#{roleHome.permissions}"
+                       var="pg" varStatus="pgs">
+                <t:accordion label="#{messages[ 'permission.label.'.concat( pg.name )]}" >
+
+                    <p:dataTable value="#{pg.permissions}" var="pd" >
+                        <p:column headerText="#{messages['role.label.Domain']}">
+                            #{messages[ 'permission.label.'.concat( pd.definition.target)]}
+                        </p:column>
+                        <p:column style="width: 36px;">
+                            <f:facet name="header">
+                                <i class="fa fa-eye" title="#{messages['role.label.Select']}"></i>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{pd.select}" rendered="#{pd.definition.hasSelectAction()}"/>  
+                        </p:column>
+                        <p:column style="width: 36px;">
+                            <f:facet name="header">
+                                <i class="fa fa-plus" title="#{messages['role.label.Insert']}"></i>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{pd.insert}" rendered="#{pd.definition.hasInsertAction()}"/> 
+                        </p:column>
+                        <p:column  style="width: 36px;">
+                            <f:facet name="header">
+                                <i class="fa fa-edit" title="#{messages['role.label.Update']}"></i>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{pd.update}" rendered="#{pd.definition.hasUpdateAction()}"/> 
+                        </p:column>
+                        <p:column style="width: 36px;">
+                            <f:facet name="header">
+                                <i class="fa fa-trash" title="#{messages['role.label.Delete']}"></i>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{pd.delete}" rendered="#{pd.definition.hasDeleteAction()}"/> 
+                        </p:column>
+                        <p:column style="width: 36px;">
+                            <f:facet name="header">
+                                <i class="fa fa-share-square-o" title="#{messages['role.label.Export']}"></i>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{pd.export}" rendered="#{pd.definition.hasExportAction()}"/> 
+                        </p:column>
+                        <p:column style="width: 36px;">
+                            <f:facet name="header">
+                                <i class="fa fa-gear" title="#{messages['role.label.Exec']}"></i>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{pd.exec}" rendered="#{pd.definition.hasSelectAction()}"/> 
                         </p:column>
                     </p:dataTable>
-                </h:form>
-            </p:layoutUnit>
-            <p:layoutUnit position="center"  >
+                </t:accordion>
+            </c:forEach>
+
+            <div class="actionButtons">
+                <p:commandButton id="saveAndNew" 
+                                 value="#{messages['general.button.SaveAndNew']}" 
+                                 action="#{roleHome.saveAndNew()}"
+                                 rendered="#{identity.hasPermission( 'role', 'update') }"
+                                 ajax="true"
+                                 partialSubmit="false"
+                                 process="@form"
+                                 update=":form,:listForm:itemlist"
+                                 validateClient="true"
+                                 icon="ui-icon-disk"/>  
+
+                <p:commandButton id="save" 
+                                 value="#{messages['general.button.Save']}" 
+                                 action="#{roleHome.save()}"
+                                 rendered="#{identity.hasPermission( 'role', 'insert')}"
+                                 ajax="true"
+                                 partialSubmit="false"
+                                 process="@form"
+                                 update=":form,:listForm:itemlist"
+                                 validateClient="true"
+                                 icon="ui-icon-disk" />  
 
 
 
-                <p:panel header="#{messages['module.caption.Role']}">
-                    <h:form id="form" >
-                        <div class="row">
-                            <t:inputText label="global.label.Name" value="#{roleHome.current.name}" required="true" />
-                        </div>  
-
-                        <c:forEach id="groups" items="#{roleHome.permissions}"
-                                   var="pg" varStatus="pgs">
-                            <t:accordion label="#{messages[ 'permission.label.'.concat( pg.name )]}" >
-                                
-                                <p:dataTable value="#{pg.permissions}" var="pd" >
-                                    <p:column headerText="#{messages['role.label.Domain']}">
-                                        #{messages[ 'permission.label.'.concat( pd.definition.target)]}
-                                    </p:column>
-                                    <p:column style="width: 36px;">
-                                        <f:facet name="header">
-                                            <i class="fa fa-eye" title="#{messages['role.label.Select']}"></i>
-                                        </f:facet>
-                                        <p:selectBooleanCheckbox value="#{pd.select}" rendered="#{pd.definition.hasSelectAction()}"/>  
-                                    </p:column>
-                                    <p:column style="width: 36px;">
-                                        <f:facet name="header">
-                                            <i class="fa fa-plus" title="#{messages['role.label.Insert']}"></i>
-                                        </f:facet>
-                                        <p:selectBooleanCheckbox value="#{pd.insert}" rendered="#{pd.definition.hasInsertAction()}"/> 
-                                    </p:column>
-                                    <p:column  style="width: 36px;">
-                                        <f:facet name="header">
-                                            <i class="fa fa-edit" title="#{messages['role.label.Update']}"></i>
-                                        </f:facet>
-                                        <p:selectBooleanCheckbox value="#{pd.update}" rendered="#{pd.definition.hasUpdateAction()}"/> 
-                                    </p:column>
-                                    <p:column style="width: 36px;">
-                                        <f:facet name="header">
-                                            <i class="fa fa-trash" title="#{messages['role.label.Delete']}"></i>
-                                        </f:facet>
-                                        <p:selectBooleanCheckbox value="#{pd.delete}" rendered="#{pd.definition.hasDeleteAction()}"/> 
-                                    </p:column>
-                                    <p:column style="width: 36px;">
-                                        <f:facet name="header">
-                                            <i class="fa fa-share-square-o" title="#{messages['role.label.Export']}"></i>
-                                        </f:facet>
-                                        <p:selectBooleanCheckbox value="#{pd.export}" rendered="#{pd.definition.hasExportAction()}"/> 
-                                    </p:column>
-                                    <p:column style="width: 36px;">
-                                        <f:facet name="header">
-                                            <i class="fa fa-gear" title="#{messages['role.label.Exec']}"></i>
-                                        </f:facet>
-                                        <p:selectBooleanCheckbox value="#{pd.exec}" rendered="#{pd.definition.hasSelectAction()}"/> 
-                                    </p:column>
-                                </p:dataTable>
-                            </t:accordion>
-                        </c:forEach>
-
-                        <div class="actionButtons">
-                            <p:commandButton id="saveAndNew" 
-                                             value="#{messages['general.button.SaveAndNew']}" 
-                                             action="#{roleHome.saveAndNew()}"
-                                             rendered="#{identity.hasPermission( 'role', 'update') }"
-                                             ajax="true"
-                                             partialSubmit="false"
-                                             process="@form"
-                                             update=":form,:listForm:itemlist"
-                                             validateClient="true"
-                                             icon="ui-icon-disk"/>  
-
-                            <p:commandButton id="save" 
-                                             value="#{messages['general.button.Save']}" 
-                                             action="#{roleHome.save()}"
-                                             rendered="#{identity.hasPermission( 'role', 'insert')}"
-                                             ajax="true"
-                                             partialSubmit="false"
-                                             process="@form"
-                                             update=":form,:listForm:itemlist"
-                                             validateClient="true"
-                                             icon="ui-icon-disk" />  
+                <p:commandButton id="delete" 
+                                 value="#{messages['general.button.Delete']}" 
+                                 action="#{roleHome.delete()}"
+                                 rendered="#{identity.hasPermission( 'role', 'delete') }"
+                                 ajax="true"
+                                 partialSubmit="false"
+                                 process="@form"
+                                 update=":form,:listForm:itemlist"
+                                 validateClient="true"
+                                 icon="ui-icon-trash">
+                    <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:commandButton id="close" 
+                                 value="#{messages['general.button.Close']}" 
+                                 action="#{roleHome.close()}"
+                                 ajax="true"
+                                 partialSubmit="true"
+                                 process="@this"
+                                 icon="ui-icon-close"/>
+            </div>
+        </h:form>
 
 
+    </ui:define>
 
-                            <p:commandButton id="delete" 
-                                             value="#{messages['general.button.Delete']}" 
-                                             action="#{roleHome.delete()}"
-                                             rendered="#{identity.hasPermission( 'role', 'delete') }"
-                                             ajax="true"
-                                             partialSubmit="false"
-                                             process="@form"
-                                             update=":form,:listForm:itemlist"
-                                             validateClient="true"
-                                             icon="ui-icon-trash">
-                                <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
-                            </p:commandButton>
-                            <p:commandButton id="close" 
-                                             value="#{messages['general.button.Close']}" 
-                                             action="#{roleHome.close()}"
-                                             ajax="true"
-                                             partialSubmit="true"
-                                             process="@this"
-                                             icon="ui-icon-close"/>
-                        </div>
-                    </h:form>
-                </p:panel>
-            </p:layoutUnit>
-        </p:layout>
-
+    <ui:define name="content-list">
+        <h:form id="listForm">
+            <p:dataTable id="itemlist" 
+                         var="item"
+                         value="#{roleHome.entityList}" 
+                         rowKey="rowKey"
+                         emptyMessage="#{messages['general.hint.EmptyList']}"
+                         rows="15"
+                         filteredValue="#{roleHome.filteredList}"
+                         paginatorAlwaysVisible="false"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{PageLinks}">
+                <p:column filterBy="#{item.name}" 
+                          filterMatchMode="contains">
+                    <p:commandLink action="#{roleHome.edit(item)}" ajax="true" partialSubmit="true" process="@this" update=":form">
+                        <h:outputText value="#{item.name}" />
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+    
+    <ui:define name="context-menu">
+        <li>
+            <p:commandLink name="newParameter" update=":form" action="#{roleHome.createNew()}"  partialSubmit="true" process="@this">
+                <i class="fa fa-plus-circle"></i>
+                #{messages['general.button.New']}
+            </p:commandLink>
+        </li>
     </ui:define>
 </ui:composition>

@@ -9,24 +9,26 @@
                 template="/layout/primeTemplate.xhtml">
 
 
+    <ui:param name="showListBar" value="true" />
+
     <ui:define name="outerspace">
         <ui:insert name="includes" />
     </ui:define>
-    
+
     <ui:define name="body">
 
         <script>
-            jQuery(document).ready(function() {
-                jQuery('#paramNewButton').click(function() {
+            jQuery(document).ready(function () {
+                jQuery('#paramNewButton').click(function () {
                     if (this.isEnabled()) {
                         newParameter();
                     }
                 });
             });
         </script>
-
-        <p:layout >
-            <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="false" resizable="true" styleClass="panel-primary">
+        <ui:remove>
+            <p:layout >
+                <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="false" resizable="true" styleClass="panel-primary">
                     <h:form id="listForm">
                         <p:remoteCommand name="newParameter" update=":form" action="#{homeBean.createNew()}"  partialSubmit="true" process="@this" />
                         <p:dataTable id="itemlist" 
@@ -50,11 +52,11 @@
                         </p:dataTable>
                     </h:form>
                 </p:layoutUnit>
-            <p:layoutUnit position="center"  >
-                <ui:include src="/layout/messages.xhtml" />
-                <p:panel header="#{messages[formCaption]}">
-                    <h:form id="form" >
-                      
+                <p:layoutUnit position="center"  >
+                    <ui:include src="/layout/messages.xhtml" />
+                    <p:panel header="#{messages[formCaption]}">
+                        <h:form id="form" >
+
                             <ui:insert name="form" />
 
                             <div class="actionButtons">
@@ -105,12 +107,109 @@
                                                  process="@this"
                                                  icon="ui-icon-close"/>
                             </div>
-                    </h:form>
+                        </h:form>
                     </p:panel>
-            </p:layoutUnit>
-        </p:layout>
+                </p:layoutUnit>
+            </p:layout>
+
+        </ui:remove>
+
+        <ui:include src="/layout/messages.xhtml" />
+
+        <h:form id="form" >
+
+
+            <ui:insert name="form" />
+
+            <div class="row">
+            <div class="actionButtons large-12 medium-12 small-12 columns">
+                <p:commandButton id="saveAndNew" 
+                                 value="#{messages['general.button.SaveAndNew']}" 
+                                 action="#{homeBean.saveAndNew()}"
+                                 rendered="#{identity.hasPermission( entityName, 'update') }"
+                                 ajax="true"
+                                 partialSubmit="false"
+                                 process="@form"
+                                 update=":form,:listForm:itemlist"
+                                 validateClient="true"
+                                 styleClass="btn-primary"
+                                 icon="fa fa-save"/>  
+
+                <p:commandButton id="save" 
+                                 value="#{messages['general.button.Save']}" 
+                                 action="#{homeBean.save()}"
+                                 rendered="#{identity.hasPermission( entityName, 'insert')}"
+                                 ajax="true"
+                                 partialSubmit="false"
+                                 process="@form"
+                                 update=":form,:listForm:itemlist"
+                                 validateClient="true"
+                                 styleClass="btn-success"
+                                 icon="fa fa-save" />  
+
+
+
+                <p:commandButton id="delete" 
+                                 value="#{messages['general.button.Delete']}" 
+                                 action="#{homeBean.delete()}"
+                                 rendered="#{not empty homeBean.entity.id and identity.hasPermission( entityName, 'delete') }"
+                                 ajax="true"
+                                 partialSubmit="false"
+                                 process="@form"
+                                 update=":form,:listForm:itemlist"
+                                 validateClient="true"
+                                 styleClass="btn-danger"
+                                 icon="fa fa-trash">
+                    <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
+                </p:commandButton>
+                <p:commandButton id="close" 
+                                 value="#{messages['general.button.Close']}" 
+                                 action="#{homeBean.close()}"
+                                 ajax="true"
+                                 partialSubmit="true"
+                                 process="@this"
+                                 icon="ui-icon-close"/>
+            </div>
+                </div>
+        </h:form>
 
 
 
     </ui:define>
+
+    <ui:define name="content-list">
+        <h:form id="listForm" styleClass="min-height: 100%;">
+            <p:remoteCommand name="newParameter" update=":form" action="#{homeBean.createNew()}"  partialSubmit="true" process="@this" />
+            <p:dataTable id="itemlist" 
+                         var="item"
+                         value="#{itemList}" 
+                         rowKey="rowKey"
+                         emptyMessage="#{messages['general.hint.EmptyList']}"
+                         rows="25"
+                         filteredValue="#{homeBean.filteredList}"
+                         paginatorAlwaysVisible="false"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{PageLinks}">
+                <p:column filterBy="#{item[itemCaption]}" 
+                          filterMatchMode="contains">
+                    <p:commandLink action="#{homeBean.edit(item)}" ajax="true" partialSubmit="true" process="@this" update=":form">
+                        <h:outputText value="#{item[itemCaption]}" />
+                    </p:commandLink>
+
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="context-menu">
+        <p:commandLink action="#{homeBean.createNew()}" 
+                       styleClass="context-command" 
+                       update=":form"
+                       partialSubmit="true" process="@this">
+            <i class="fa fa-plus-circle"></i>
+            <h:outputText value=" #{messages['general.button.New']}" />
+        </p:commandLink>
+    </ui:define>
+
 </ui:composition>

@@ -8,26 +8,21 @@
 
     <h:form id="pfilterForm">
 
-        <p:panel id="pffilter" header="#{messages[moduleCaption]} :" toggleable="true" styleClass="panel-primary" widgetVar="pffpanel">
-
-            <f:facet name="actions">  
-                <p:commandLink id="toggleBtn" type="button" 
-                               styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" 
-                               title="#{messages['general.label.Toggle']}"
-                               partialSubmit="true"
-                               process="@this"
-                               onclick="PF('pffpanel').toggle()">  
-                    <i class="fa fa-list-alt" > </i>
-                </p:commandLink>  
-                <p:commandLink id="filterBtn" type="button" 
-                               styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" 
+        <ui:remove>
+        <!-- p:panel id="pffilter" header="#{messages[moduleCaption]} :" toggleable="true" styleClass="panel-primary" widgetVar="pffpanel" -->
+            <!-- f:facet name="actions" -->  
+            </ui:remove>
+            
+        <div class="pull-right" >
+        
+                
+                <p:commandLink id="filterBtn" 
                                title="#{messages['general.label.FilterItems']}"
                                partialSubmit="true"
                                process="@this">  
                     <i class="fa fa-filter" > </i>
                 </p:commandLink>  
-                <p:commandLink id="columnBtn" type="button" 
-                               styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default" 
+                <p:commandLink id="columnBtn" 
                                title="#{messages['general.label.ResultColumns']}"
                                partialSubmit="true"
                                process="@this">  
@@ -35,30 +30,19 @@
                 </p:commandLink>  
 
 
-                <p:commandLink id="queryBtn" type="button" 
-                               styleClass="" style="color:#fff"
+                
+
+        </div>
+        
+        <div class="context-menu">
+        <p:commandLink id="queryBtn" type="button" 
+                               
                                title="#{messages['general.label.FilterItems']}"
                                partialSubmit="true"
                                process="@this">  
                     #{bean.queryName} <i class="fa fa-caret-down" > </i> 
                 </p:commandLink>  
-
-                <ui:remove>
-                    <p:menuButton value="#{bean.queryName}">
-                        <ui:remove>
-                            <c:forEach items="#{bean.queryNames}" var="qry" varStatus="loop">
-                                <p:menuitem value="#{qry}" action="#{bean.loadQuery(qry)}" 
-                                            partialSubmit="true"
-                                            process="@this"
-                                            update="pfilterForm"
-                                            icon="ui-icon-gear"/>
-                            </c:forEach>
-                        </ui:remove>
-                        <p:menuitem id="querysaveMenu" value="Yeni Sorgu" onclick="PF('qrySave').show();" icon="ui-icon-wrench"/>
-                    </p:menuButton>
-                </ui:remove>
-            </f:facet>
-
+            </div>
 
             <p:dialog id="qrySave" widgetVar="qrySave" header="#{messages['general.caption.SaveQuery']}" width="350px">
                 <div class="row">
@@ -167,17 +151,19 @@
 
 
                 <h:panelGroup layout="block" rendered="#{not empty bean.queryDefinition.filters }">
+                    <ui:remove>
                     <div class="row">
-                        <div class="large-2 medium-2 small-2 columns" style="font-weight: bold">
+                        <div class="large-2 medium-2 small-12 columns" style="font-weight: bold">
                             #{messages['general.label.Field']}
                         </div>
-                        <div class="large-2 medium-2 small-2 columns" style="font-weight: bold">
+                        <div class="large-2 medium-2 small-6 columns" style="font-weight: bold">
                             #{messages['general.label.Operator']}
                         </div>
-                        <div class="large-8 medium-8 small-8 columns" style="font-weight: bold">
+                        <div class="large-8 medium-8 small-6 columns" style="font-weight: bold">
                             #{messages['general.label.Value']}
                         </div>
                     </div>
+                        </ui:remove>
 
                     <c:forEach id="filterRepeater2" items="#{bean.queryDefinition.filters}"
                                var="filter" varStatus="rowCounter">
@@ -211,7 +197,9 @@
                 </p:menuButton>
                 <ui:insert name="extraButtons" />
             </h:panelGroup>
-        </p:panel>
+        <ui:remove>
+        <!-- /p:panel -->
+        </ui:remove>
 
     </h:form>
 </ui:composition>

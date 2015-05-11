@@ -9,6 +9,7 @@
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 template="/layout/primeTemplate.xhtml">
 
+    <ui:param name="dontShowContentHeader" value="true" />
 
     <ui:define name="ribbon-actions">
         <div class="ribbon-section">
@@ -32,5 +33,26 @@
             </c:forEach>
         </p:dashboard>
     </ui:define> 
+
+    <ui:define name="context-menu">
+
+        <c:forEach items="#{dashboardManager.dashboards}" var="dashboard" varStatus="loop">
+            <li>
+                <h:link id="dashborad#{loop.index}" >
+                    <f:param name="board" value="#{loop.index}" />
+                    <h:graphicImage url="/img/ribbon/small/dashboard.png" />
+                    <span>#{dashboard.name}</span> 
+                </h:link>
+            </li>
+        </c:forEach>
+
+        
+        <li class="pull-right">
+                <h:link outcome="/dashboardEditor.xhtml" id="dashboradeditor" >
+                    <i class="fa fa-edit"/>
+                    <span>#{messages['module.caption.DashboardEditor']}</span> 
+                </h:link>
+            </li>
+    </ui:define>
 
 </ui:composition>

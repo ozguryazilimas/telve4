@@ -65,7 +65,7 @@
                         permission="options" 
                         type="browse" />
     </actions>
-	
+	<!-- 
     <ribbon id="workspace" label="menu.main.Workspace" permission="ribbon:workspace" order="0">
         <section label="menu.caption.UserManagement" order="0">
             <action id="dashboard" type="large" />
@@ -73,7 +73,7 @@
             <action id="reports" type="large" />
             <action id="options" type="large" />
         </section>
-            
+            -->
         <!--    
         <section label="menu.caption.Reports" order="0">
             <action id="reports" type="large" />

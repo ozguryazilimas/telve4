@@ -91,5 +91,33 @@
         </p:dialog>
 
     </ui:define>
+    
+    <ui:define name="context-menu">
+        <li>
+            <p:commandLink id="newSuggestion" update=":suggestionPopup" actionListener="#{suggestionBrowse.newSuggestion}" oncomplete="PF('suggestionPopup').show();" >
+                <i class="fa fa-plus-circle"/>
+                <span>#{messages['general.button.New']}</span>
+            </p:commandLink>
+        </li>
+        <li>
+            <p:commandLink id="editSuggestion" 
+                           update=":suggestionPopup" 
+                           actionListener="#{suggestionBrowse.editSuggestion}" 
+                           oncomplete="PF('suggestionPopup').show();"
+                           disabled="#{suggestionBrowse.selectedItem eq null }" styleClass="#{suggestionBrowse.selectedItem ne null ? '' : 'disabled'}">
+                <i class="fa fa-edit"/>
+                <span>#{messages['general.button.Edit']}</span>
+            </p:commandLink>
+        </li>
+        <li>
+            <p:commandLink id="deleteSuggestion" 
+                           update=":browseListForm:results" 
+                           actionListener="#{suggestionBrowse.deleteSuggestion}" 
+                           disabled="#{suggestionBrowse.selectedItem eq null }" styleClass="#{suggestionBrowse.selectedItem ne null ? '' : 'disabled'}">
+                <i class="fa fa-trash"/>
+                <span>#{messages['general.button.Delete']}</span>
+            </p:commandLink>
+        </li>
+    </ui:define>
 
 </ui:composition>
