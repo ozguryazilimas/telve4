@@ -27,7 +27,7 @@
             </ui:fragment>
 
             <h:form id="loginForm" rendered="#{not identity.loggedIn}" style="border-left: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC; box-shadow: 0 1px 3px #8B9097;">
-                <h:messages globalOnly="true"/>
+                <p:messages globalOnly="true"/>
 
 
                 <div class="row">
@@ -56,7 +56,7 @@
 
                             <div class="large-12 medium-12 small-12 columns">
                                 <p:commandButton id="login" value="#{messages['general.label.Login']}" action="#{loginController.login()}" 
-                                                 style="margin: 4px; width: 120px;"/>
+                                                 style="margin: 4px; width: 120px;" ajax="false"/>
                             </div>
                         </div>
                     </div>
