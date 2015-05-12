@@ -124,6 +124,8 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
     
     public void search(){
         entityList = executeCriteria();
+        selectedItem = null;
+        selectedItems = null;
     }
 
     public List<E> getEntityList() {

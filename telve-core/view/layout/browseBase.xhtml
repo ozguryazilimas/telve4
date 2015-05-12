@@ -26,6 +26,16 @@
 
 
         <h:form id="browseListForm">
+
+            <ui:fragment rendered="#{showDetailPanel eq 'true'}">
+                <div id="detailBar" class="detailBar">
+                    <p:panel id="detailPanel" header="#{messages['general.label.Details']}" class="panel-infoaa" style="height: 100%;">
+                        <ui:insert name="detailBar" />
+                    </p:panel>
+                </div>
+            </ui:fragment>
+
+
             <p:dataTable id="results" var="item" widgetVar="results"
                          value="#{bean.entityList}" 
                          paginator="true" rows="#{bean.queryDefinition.rowLimit}" 
@@ -34,13 +44,19 @@
                          selectionMode="single"
                          selection="#{bean.selectedItem}" 
                          rowKey="#{item.id}"
+                         
                          emptyMessage="#{messages['general.message.browse.EmptyDesc']}">                      
 
-                <p:ajax event="rowSelect"  update=":contextForm, #{onSelectUpdate}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');"/>
+                <p:ajax event="rowSelect"  update=":contextForm, :browseListForm:detailPanel, #{onSelectUpdate}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');"/>
                 <p:ajax event="rowUnselect" update="#{onSelectUpdate}" oncomplete="disableRibbonBtn('#{onSelectEnabled}');" />
 
                 <f:facet name="header">
-                    <h:outputText value="#{messages['general.label.Results']}" />
+                    <h:panelGroup layout="block">
+                        <h:outputText value="#{messages['general.label.Results']}" />
+                        <ui:fragment rendered="#{showDetailPanel eq 'true'}">
+                            <a href="#" onclick="jQuery('#detailBar').toggle()"><i class="fa fa-align-right pull-right"></i></a>
+                        </ui:fragment>
+                    </h:panelGroup>
                 </f:facet>
 
                 <ui:insert name="beforeColumns" />
@@ -58,6 +74,8 @@
                 </c:forEach>
                 <ui:insert name="afterColumns" />
             </p:dataTable>  
+
+
         </h:form>
     </ui:define>
 

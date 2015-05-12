@@ -335,16 +335,18 @@
                                             </li>
                                             <li>
                                                 <p:commandLink action="#{aboutController.openDialog()}" 
-                                                    ajax="true" partialSubmit="true" process="@this" includeViewParams="true" >
+                                                               ajax="true" partialSubmit="true" process="@this" includeViewParams="true" >
                                                     <i class="fa fa-question-circle" /> #{messages['general.button.About']}
                                                 </p:commandLink>
-                                                
+
                                             </li>
                                             <li class="seperator"></li>
                                             <li>
-                                                <p:commandLink action="#{identity.logout()}" >
+                                                <h:form>
+                                                <p:commandLink action="#{loginController.logout()}" ajax="false">
                                                     <i class="fa fa-power-off" /> #{messages['general.button.Logout']}
                                                 </p:commandLink>
+                                                    </h:form>
                                             </li>
                                         </ul>
                                     </p:overlayPanel>
@@ -361,14 +363,14 @@
                     <section class="sidebar" style="height: auto;">
 
                         <ui:remove>
-                        <h:form id="globalSearch">
-                            <div class="ui-input-group" style="padding: 10px;">
-                                <p:inputText value="#{quickLauncher.key}" required="false"  placeholder="#{messages['general.label.SearchText']}"/>
-                                <p:commandButton action="#{quickLauncher.redirect()}" icon="fa fa-search" partialSubmit="false" />
-                            </div>
-                        </h:form>
-                            </ui:remove>
-                        
+                            <h:form id="globalSearch">
+                                <div class="ui-input-group" style="padding: 10px;">
+                                    <p:inputText value="#{quickLauncher.key}" required="false"  placeholder="#{messages['general.label.SearchText']}"/>
+                                    <p:commandButton action="#{quickLauncher.redirect()}" icon="fa fa-search" partialSubmit="false" />
+                                </div>
+                            </h:form>
+                        </ui:remove>
+
 
                         <ul class="sidebar-menu">
 
@@ -410,9 +412,10 @@
                                             <span class="label label-primary pull-right">4</span>
                                         </ui:remove>
                                     </a>
-                                    <c:forEach id="secrepeater" items="#{tab.sections}" var="section" varStatus="rowCounter1">
+                                    <ul class="treeview-menu">
+                                        <c:forEach id="secrepeater" items="#{tab.sections}" var="section" varStatus="rowCounter1">
 
-                                        <ul class="treeview-menu">
+
                                             <c:forEach id="actrepeater" items="#{section.actions}" var="action" varStatus="rowCounter2">
                                                 <li>
                                                     <h:link  outcome="#{ action.action.url }" >
@@ -426,18 +429,19 @@
                                                     </h:link>
                                                 </li>
                                             </c:forEach>
-                                        </ul>
 
-                                    </c:forEach>
+
+                                        </c:forEach>
+                                    </ul>
                                 </li>
                             </c:forEach>
-                            
+
                         </ul>
                         <ui:remove>
-                            
-                        <div>
-                            <p>Günün İp Uçusu gibi bişiler buraya doğru gelebilir belki...</p>
-                        </div>
+
+                            <div>
+                                <p>Günün İp Uçusu gibi bişiler buraya doğru gelebilir belki...</p>
+                            </div>
                         </ui:remove>
                     </section>
                 </aside>

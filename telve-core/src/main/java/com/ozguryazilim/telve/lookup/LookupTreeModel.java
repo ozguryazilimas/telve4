@@ -140,7 +140,9 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
 
     @Override
     public void setData(List<T> dataList) {
-        allItems = dataList;
+        allItems.clear();
+        allItems.addAll(dataList);
+        
         idMap.clear();
         pathMap.clear();
         for( T e : allItems ){

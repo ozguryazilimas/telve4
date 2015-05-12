@@ -1550,3 +1550,15 @@ Renk Paleti
     padding: 2px;
     border: none;
 }
+
+.ui-datatable .ui-datatable-header, .ui-datatable .ui-datatable-footer{
+    overflow: auto;
+}
+
+.detailBar{
+    position: relative; 
+    float: right; 
+    width: 300px; 
+    height: 100%; 
+    padding-left: 4px;
+}
