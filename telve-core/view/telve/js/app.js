@@ -207,12 +207,13 @@ function _init() {
     activate: function () {
       
         var _this = this;
-      _this.fix();
-      _this.fixSidebar();
+        _this.fixSizes();
+      //_this.fix();
+      //_this.fixSidebar();
       /*_this.fixListbar();*/
       $(window, ".wrapper").resize(function () {
-        _this.fix();
-        _this.fixSidebar();
+       // _this.fix();
+       // _this.fixSidebar();
         /*_this.fixListbar();*/
       });
       
@@ -220,6 +221,7 @@ function _init() {
       
     },
     fix: function () {
+        /*
       //Get window height and the wrapper height
       var neg = $('.main-header').outerHeight() + $('.main-footer').outerHeight();
       var window_height = $(window).height();
@@ -249,14 +251,40 @@ function _init() {
           
           $(".content-wrapper, .right-side, .content-list, .sidebar").css('min-height', h);
           
-          /*
+          / *
         if (window_height >= sidebar_height) {
           $(".content-wrapper, .right-side").css('min-height', window_height - neg);
         } else {
           $(".content-wrapper, .right-side").css('min-height', sidebar_height);
         }
-            */
-      }
+            * /
+      }*/
+    },
+    fixSizes: function(){
+        if( $('.main-footer').length === 0 ) return;
+        var footerTop = $('.main-footer').offset().top;
+        $(".main-sidebar").height(footerTop - $(".main-header").height());
+        $(".main-listbar").height(footerTop -  $(".main-header").height());
+        $(".content-wrapper").height(footerTop - 50);
+        //Distroy if it exists
+          //$(".sidebar").slimScroll({destroy: true}).height("auto");
+          //Add slimscroll
+          $(".sidebar").slimscroll({
+            height: (footerTop - $(".main-header").height()) + "px",
+            color: "rgba(0,0,0,0.2)",
+            size: "3px"
+          });
+          $(".content-list").slimscroll({
+            height: footerTop + "px",
+            color: "rgba(0,0,0,0.2)",
+            size: "3px"
+          });
+          
+          $(".main-content").slimscroll({
+            height: (footerTop - 50 ) + "px",
+            color: "rgba(0,0,0,0.2)",
+            size: "3px"
+          });
     },
     fixSidebar: function () {
       //Make sure the body tag has the .fixed class

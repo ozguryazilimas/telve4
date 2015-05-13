@@ -461,7 +461,7 @@
                                     </nav>
                                 </section>
                             </ui:remove>
-                            <div class="content">
+                            <div class="list-content">
                                 <ui:insert name="content-list" />
                             </div>
                         </div>
@@ -470,6 +470,7 @@
 
                 <div class="content-wrapper #{showListBar ? 'listbar' : ''} ">
 
+                    <div class="main-content">
                     <section class="context-menu">
                         <h:form id="contextForm">
                             <ul >
@@ -486,6 +487,7 @@
                     <div class="content">
                         <ui:insert name="body"/>
                     </div>
+                        </div>
                 </div>
 
 
