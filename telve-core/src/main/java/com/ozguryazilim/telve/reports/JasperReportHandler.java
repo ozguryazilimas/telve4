@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.reports;
 
+import com.ozguryazilim.telve.config.LocaleSelector;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -12,13 +13,16 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -114,9 +118,34 @@ public class JasperReportHandler {
 
         return data;
     }
-    
+
+    /**
+     * Jasper report ile PDF üretir.
+     * @param name Jasper dosyasının adı
+     * @param fileName Üretilecek PDF adı
+     * @param params parametreler
+     * @throws JRException 
+     */
     public void reportToPDF(String name, String fileName, Map params) throws JRException {
 
+        byte[] data = reportToPDFBytes( name, fileName, params );
+        
+        //Üretilen rapor sonuç olarak gönderiliyor
+        sendResponse(fileName, PDF, data);
+    }
+    
+    /**
+     * JasperReport'u dil desteği ile çağırır.
+     * @param name Jasper dosyasının adı
+     * @param bundleName Dil dosyasının adı
+     * @param fileName Üretilecek PDF adı
+     * @param params Parametreler
+     * @throws JRException 
+     */
+    public void reportToPDF(String name, String bundleName, String fileName, Map params) throws JRException {
+
+        decorateI18NParams(bundleName, params);
+        
         byte[] data = reportToPDFBytes( name, fileName, params );
         
         //Üretilen rapor sonuç olarak gönderiliyor
@@ -259,6 +288,19 @@ public class JasperReportHandler {
     protected void decorateParams(Map params) {
         if (params != null) {
             params.put("SUBREPORT_DIR", "jasper/");
+        }
+    }
+    
+    protected void decorateI18NParams(String name, Map params) {
+        if( params == null ) return;
+        //Eğer resource tanımlanmamış ise template ismi ile rapor dil desteği ekleyelim..
+        if( params.get(JRParameter.REPORT_RESOURCE_BUNDLE) == null ){
+
+            Locale locale = LocaleSelector.instance().getLocale();
+            params.put(JRParameter.REPORT_RESOURCE_BUNDLE, ResourceBundle.getBundle(name, locale ));
+
+            //Şimdide Locele bilgisini bağlayaalım...
+            params.put(JRParameter.REPORT_LOCALE, locale );
         }
     }
 
