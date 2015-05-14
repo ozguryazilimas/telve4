@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.cache.Cache;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -38,6 +39,9 @@ public class NoteController implements Serializable{
  
     @Inject
     private FacesContext facesContext;
+    
+    @Inject
+    Cache<String, Object> cache;
     
     private Note note;
     
@@ -134,7 +138,13 @@ public class NoteController implements Serializable{
      */
     public Boolean hasNotes( String attachment ){
         System.out.println(attachment);
-        notes = repository.findNotes(identity.getAccount().getId(), calcAttachmentURI());
+        
+        String key = "note." + identity.getAccount().getId() + "." + calcAttachmentURI();
+        notes = (List)cache.get(key);
+        if( notes == null ){
+            notes = repository.findNotes(identity.getAccount().getId(), calcAttachmentURI());
+            cache.put(key, notes);
+        }
         return !notes.isEmpty();
     } 
     
@@ -160,6 +170,9 @@ public class NoteController implements Serializable{
     @Transactional
     public void save(){
         repository.save(note);
+        notes.add(note);
+        String key = "note." + identity.getAccount().getId() + "." + note.getAttachtment();
+        cache.put(key, notes);
     }
     
     
@@ -184,6 +197,8 @@ public class NoteController implements Serializable{
             uri = uri + "?eid=" + m.get("eid");
         }
         
+        System.out.println(uri);
+        
         return uri;
     }
     
@@ -199,6 +214,8 @@ public class NoteController implements Serializable{
         if( request.getParameter("eid") != null ){
             uri = uri + "?eid=" + request.getParameter("eid");
         }
+        
+        System.out.println(uri);
         
         return uri;
     }

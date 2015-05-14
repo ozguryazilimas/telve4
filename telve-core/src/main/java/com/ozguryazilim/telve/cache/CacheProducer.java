@@ -62,5 +62,26 @@ public class CacheProducer {
         return opcache;
     }
 
-    
+    @Produces
+    @Default
+    @ApplicationScoped
+    public Cache<String, Object> produceObjectCache() {
+        Cache<String, Object> cache= Caching.getCachingProvider().getCacheManager().createCache("ObCache",
+                new MutableConfiguration<String, Object>()
+                    .setStoreByValue(false)
+                    .setStatisticsEnabled(false)
+                    .setManagementEnabled(false)
+                    .setTypes(String.class, Object.class));
+                    //.setWriteThrough(true)
+                    //.setReadThrough(true)
+                    //.setCacheLoaderFactory(FactoryBuilder.factoryOf( new OptionCacheLoader(new OptionRepository2(emf))))
+                    //.setCacheWriterFactory(FactoryBuilder.factoryOf( new OptionCacheWriter(optionRepository))));
+            //.setExpiry(CacheConfiguration.ExpiryType.MODIFIED, new Duration(TimeUnit.MINUTES, 10))
+        //.setStoreByValue(false)
+        //.build();
+        //return procuceCacheManager().createCache("Option-Cache", null);
+        
+        
+        return cache;
+    }
 }
