@@ -7,6 +7,9 @@
 package com.ozguryazilim.telve.query.filters;
 
 import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 
@@ -115,6 +118,8 @@ public abstract class Filter<E, X> {
     }
     
     public abstract void decorateCriteria( Criteria<E, ?> criteria );
+    
+    public abstract void decorateCriteriaQuery( List<Predicate> predicates, CriteriaBuilder builder, Root<E> from );
     
     public abstract String getTemplate();
     

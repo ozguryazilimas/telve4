@@ -65,7 +65,7 @@
     <div class="large-12 medium-12 small-12 columns">
         <h:panelGroup id="strInput#{idprefix}" layout="block" styleClass="row">
 
-            <h:panelGroup styleClass="#{filter.styleClass} columns" layout="block" rendered="#{filter.operand ne 'All'}">
+            <h:panelGroup styleClass="large-12 medium-12 small-12 columns" layout="block" rendered="#{filter.operand ne 'All'}">
                 <p:selectOneMenu id="dateINP#{idprefix}" value="#{filter.valueType}" >
                     <f:selectItems value="#{filter.valueTypes}" var="item"
                                    itemLabel="#{messages['filter.dateValue.type.'.concat(item )]}"/>
@@ -73,14 +73,14 @@
                 </p:selectOneMenu>
             </h:panelGroup>
 
-            <h:panelGroup id="valueDate#{idprefix}" styleClass="#{filter.styleClass} columns" layout="block" rendered="#{filter.valueType eq 'Date' and filter.operand ne 'All'}">
+            <h:panelGroup id="valueDate#{idprefix}" styleClass="large-12 medium-12 small-12 columns" layout="block" rendered="#{filter.valueType eq 'Date' and filter.operand ne 'All'}">
                 <p:calendar id="valueDateINP#{idprefix}" value="#{filter.value}" 
                             pattern="#{messages['general.format.Date']}" required="false"
                             title="#{messages[filter.hintKey]}" 
                             showOn="button" navigator="true"/>
             </h:panelGroup>
 
-            <h:panelGroup styleClass="#{filter.styleClass} columns" layout="block" rendered="#{filter.operand eq 'Between'}">
+            <h:panelGroup styleClass="large-12 medium-12 small-12 columns" layout="block" rendered="#{filter.operand eq 'Between'}">
                 <p:selectOneMenu id="dateINP2#{idprefix}" value="#{filter.valueType2}" >
                     <f:selectItems value="#{filter.valueTypes}" var="item"
                                    itemLabel="#{messages['filter.dateValue.type.'.concat(item )]}"/>
@@ -88,7 +88,7 @@
                 </p:selectOneMenu>
             </h:panelGroup>
 
-            <h:panelGroup id="valueDate2#{idprefix}" styleClass="#{filter.styleClass} columns" layout="block" rendered="#{filter.valueType2 eq 'Date' and filter.operand eq 'Between'}">
+            <h:panelGroup id="valueDate2#{idprefix}" styleClass="large-12 medium-12 small-12 columns" layout="block" rendered="#{filter.valueType2 eq 'Date' and filter.operand eq 'Between'}">
                 <p:calendar id="valueDateINP2#{idprefix}" value="#{filter.value2}" 
                             pattern="#{messages['general.format.Date']}" required="false"
                             title="#{messages[filter.hintKey]}" 

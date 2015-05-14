@@ -5,17 +5,17 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:pe="http://primefaces.org/ui/extensions" >
 
-    <div class="large-2 medium-2 small-2 columns">
+    <div class="large-12 medium-12 small-12 columns">
         <h:outputText value="#{messages[filter.labelKey]}" />
     </div>
-    <div class="large-2 medium-2 small-2 columns">
+    <div class="large-12 medium-12 small-12 columns">
         <p:selectOneMenu id="strOp#{idprefix}" value="#{filter.operand}" styleClass="small" >
             <f:selectItems value="#{filter.operands}" var="operand"
                            itemLabel="#{messages['filter.operand.type.'.concat( operand )]}"/>
             <p:ajax update="strInput#{idprefix}" partialSubmit="true" process="@this" />
         </p:selectOneMenu>
     </div>
-    <div class="large-8 medium-8 small-8 columns">
+    <div class="large-12 medium-12 small-12 columns">
         <h:panelGroup id="strInput#{idprefix}" layout="block" styleClass="row">
             <h:panelGroup layout="block" styleClass="#{filter.operand eq 'Between' ? 'large-6 medium-6 small-12' : 'large-12 medium-12 small-12'}  columns" >
 

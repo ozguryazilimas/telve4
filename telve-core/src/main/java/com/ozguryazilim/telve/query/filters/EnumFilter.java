@@ -10,6 +10,9 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.ozguryazilim.telve.query.Operands;
 import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 
@@ -78,6 +81,22 @@ public class EnumFilter<E, T extends Enum<T> > extends Filter<E, T>{
                     break;
                 case NotEqual:
                     criteria.notEq(getAttribute(), getValue());
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    
+    @Override
+    public void decorateCriteriaQuery(List<Predicate> predicates, CriteriaBuilder builder, Root<E> from) {
+        if (getValue() != null) {
+            switch (getOperand()) {
+                case Equal:
+                    predicates.add(builder.equal(from.get(getAttribute()), getValue()));
+                    break;
+                case NotEqual:
+                    predicates.add(builder.notEqual(from.get(getAttribute()), getValue()));
                     break;
                 default:
                     break;

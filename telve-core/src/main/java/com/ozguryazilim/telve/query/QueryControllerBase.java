@@ -44,10 +44,10 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
     private QueryDefinition<E, R> queryDefinition = new QueryDefinition<>();
     
     //FIXME: Aslında R tipinde olmalı
-    private List<E> entityList = Collections.EMPTY_LIST;
+    private List<R> entityList = Collections.EMPTY_LIST;
     
-    protected E selectedItem;
-    protected E[] selectedItems;
+    protected R selectedItem;
+    protected R[] selectedItems;
     
     //Sorguyu saklamak için kullanılacak değerler.
     private String queryName;
@@ -76,7 +76,7 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
         return queryDefinition;
     }
 
-    protected void decorateFilters( Criteria<E,E> criteria ){
+    protected void decorateFilters( Criteria<E,R> criteria ){
         for( Filter<E, ?> f : queryDefinition.getFilters() ){
             f.decorateCriteria(criteria);
         }
@@ -86,7 +86,7 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
      * Sıralamaları ekler.
      * @param criteria 
      */
-    protected void decorateOrders( Criteria<E,E> criteria ){
+    protected void decorateOrders( Criteria<E,R> criteria ){
         //FIXME: İçeriği yazılacak
     }
     
@@ -94,32 +94,19 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
      * Alt sınıflar bu methodu override ederek sorguya yeni şeyler ekleyebilirler.
      * @param criteria 
      */
-    protected void decorateCriteria( Criteria<E,E> criteria ){
+    protected void decorateCriteria( Criteria<E,R> criteria ){
         
     }
     
     /**
      * Reporsitory üzerinden sorgu düzenler.
      * 
-     * repositoryden sorgu alır ve üzerinde GUI'den gelenleri ekler.
+     * repositorye UI'dan seçilen parametreleri gönderir.
      * 
      * @return 
      */
-    protected List<E> executeCriteria(){
-        Criteria<E,E> criteria = getRepository().browseCriteria();
-        
-        decorateFilters( criteria );
-        
-        decorateOrders( criteria );
-        
-        //Kullanıcının ekleyeceği şeyler varsa eklesin.
-        decorateCriteria(criteria);
-        
-        if( queryDefinition.getResultLimit() > 0 ){
-            return criteria.createQuery().setMaxResults(queryDefinition.getResultLimit()).getResultList();
-        }
-        
-        return criteria.getResultList();
+    protected List<R> executeCriteria(){
+        return getRepository().browseQuery(queryDefinition.getFilters());
     }
     
     public void search(){
@@ -128,23 +115,23 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
         selectedItems = null;
     }
 
-    public List<E> getEntityList() {
+    public List<R> getEntityList() {
         return entityList;
     }
 
-    public E getSelectedItem() {
+    public R getSelectedItem() {
         return selectedItem;
     }
 
-    public void setSelectedItem(E selectedItem) {
+    public void setSelectedItem(R selectedItem) {
         this.selectedItem = selectedItem;
     }
 
-    public E[] getSelectedItems() {
+    public R[] getSelectedItems() {
         return selectedItems;
     }
 
-    public void setSelectedItems(E[] selectedItems) {
+    public void setSelectedItems(R[] selectedItems) {
         this.selectedItems = selectedItems;
     }
     

@@ -24,24 +24,58 @@
         </p:column>
     </ui:remove>
 
+    
+        <div class="large-12 medium-12 small-12 columns">
+            <h:outputText value="#{messages[filter.labelKey]}" style="font-weight: bold;" />
+        </div>
+        <div class="large-12 medium-12 small-12 columns">
+            <p:selectOneMenu id="strOp#{idprefix}" value="#{filter.operand}" styleClass="small" >
+                <f:selectItems value="#{filter.operands}" var="operand"
+                               itemLabel="#{messages['filter.operand.type.'.concat( operand )]}"/>
+                <p:ajax update="strInput#{idprefix}" partialSubmit="true" process="@this" />
+            </p:selectOneMenu>
+        </div>
+        <div class="large-12 medium-12 small-12 columns">
+            <div class="row">
+                <h:panelGroup id="strInput#{idprefix}" layout="block" styleClass="large-12 medium-12 small-12 columns">
+                    <p:inputText id="strINP#{idprefix}" value="#{filter.value}"
+                                 title="#{messages[filter.hintKey]}"
+                                 rendered="#{filter.operand ne 'All'}" />
+                </h:panelGroup>
+            </div>
+        </div>
+    
+
+    <ui:remove>
     <div class="large-12 medium-12 small-12 columns">
         <h:outputText value="#{messages[filter.labelKey]}" style="font-weight: bold;" />
-    </div>
-    <div class="large-12 medium-12 small-12 columns">
-        <p:selectOneMenu id="strOp#{idprefix}" value="#{filter.operand}" styleClass="small" >
-            <f:selectItems value="#{filter.operands}" var="operand"
-                           itemLabel="#{messages['filter.operand.type.'.concat( operand )]}"/>
-            <p:ajax update="strInput#{idprefix}" partialSubmit="true" process="@this" />
-        </p:selectOneMenu>
-    </div>
-    <div class="large-12 medium-12 small-12 columns">
-        <div class="row">
-            <h:panelGroup id="strInput#{idprefix}" layout="block" styleClass="large-12 medium-12 small-12 columns">
+    
+        <a href="#" onclick="PF('#{idprefix}filterOverlay').show()">
+            <h:outputText value="#{messages['filter.operand.type.'.concat( filter.operand)]} : #{filter.value eq null ? 'ALL' : filter.value}"  />
+            <i class="fa fa-caret-down"/>
+        </a>
+        <p:overlayPanel id="ovl1" 
+                        showEvent="none"
+                        hideEffect="fade" 
+                        appendToBody="false" at="left bottom"
+                        showCloseIcon="false" widgetVar="#{idprefix}filterOverlay" >
+            <div class="row">
+                <div class="large-12 medium-12 small-12 columns" style="margin-top: 4px;">
+                <p:selectOneMenu id="strOp#{idprefix}" value="#{filter.operand}" styleClass="small" >
+                    <f:selectItems value="#{filter.operands}" var="operand"
+                                   itemLabel="#{messages['filter.operand.type.'.concat( operand )]}"/>
+
+                </p:selectOneMenu>
+                </div>
+            
+                <div class="large-12 medium-12 small-12 columns" style="margin-top: 4px;">
                 <p:inputText id="strINP#{idprefix}" value="#{filter.value}"
                              title="#{messages[filter.hintKey]}"
                              rendered="#{filter.operand ne 'All'}" />
-            </h:panelGroup>
-        </div>
+                </div>
+            </div>
+        </p:overlayPanel>
     </div>
+        </ui:remove>
 
 </ui:composition>

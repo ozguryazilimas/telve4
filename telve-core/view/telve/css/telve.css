@@ -1572,3 +1572,8 @@ Renk Paleti
     height: 100%; 
     padding-left: 4px;
 }
+
+.content-list .columns{
+    margin-top: 2px;
+    margin-bottom: 2px;
+}

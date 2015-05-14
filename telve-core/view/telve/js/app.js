@@ -265,7 +265,7 @@ function _init() {
         var footerTop = $('.main-footer').offset().top;
         $(".main-sidebar").height(footerTop - $(".main-header").height());
         $(".main-listbar").height(footerTop -  $(".main-header").height());
-        $(".content-wrapper").height(footerTop - 50);
+        $(".content-wrapper").height(footerTop - 100);
         //Distroy if it exists
           //$(".sidebar").slimScroll({destroy: true}).height("auto");
           //Add slimscroll

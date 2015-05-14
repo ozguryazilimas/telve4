@@ -7,11 +7,16 @@ package com.ozguryazilim.telve.data;
 
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.entities.ViewModel;
+import com.ozguryazilim.telve.query.filters.Filter;
 import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.apache.deltaspike.data.api.AbstractEntityRepository;
 import org.apache.deltaspike.data.api.criteria.Criteria;
+import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 import org.apache.deltaspike.data.impl.criteria.QueryCriteria;
 
 /**
@@ -21,7 +26,7 @@ import org.apache.deltaspike.data.impl.criteria.QueryCriteria;
  * @param <R> Lookup, Browse v.b.'de kullanılacak olan View Model
  */
 //@Dependent
-public abstract class RepositoryBase<E extends EntityBase, R extends ViewModel> extends AbstractEntityRepository<E, Long> {
+public abstract class RepositoryBase<E extends EntityBase, R extends ViewModel> extends AbstractEntityRepository<E, Long> implements CriteriaSupport<E>{
 
     /**
      * Yeni entity oluşturur.
@@ -75,11 +80,33 @@ public abstract class RepositoryBase<E extends EntityBase, R extends ViewModel> 
      *
      * @return
      */
-    public Criteria<E, E> browseCriteria() {
-        return new QueryCriteria<>(entityClass(), entityClass(), entityManager());
+    public Criteria<E, R> browseCriteria() {
+        return (Criteria<E, R>) new QueryCriteria<>(entityClass(), entityClass(), entityManager());
     }
 
 
+    protected abstract Class<R> getResultClass();
+    
+    
+    public List<R> browseQuery( List<Filter<E, ?>> filters ){
+        return Collections.EMPTY_LIST;
+    }
+    
+    /**
+     * Gelenfiltreler için Predicate'leri oluşturup verilen listeye ekler.
+     * @param filters
+     * @param predicates
+     * @param builder
+     * @param from 
+     */
+    protected void decorateFilters( List<Filter<E, ?>> filters, List<Predicate> predicates, CriteriaBuilder builder, Root<E> from ){
+        
+        for( Filter<E,?> f : filters ){
+            f.decorateCriteriaQuery(predicates, builder, from);
+        }
+        
+    }
+    
     /**
      * Entity siler.
      * Orjinal olan deattach hatası veriyordu.

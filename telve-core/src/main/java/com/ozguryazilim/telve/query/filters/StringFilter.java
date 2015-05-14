@@ -9,6 +9,9 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.ozguryazilim.telve.query.Operands;
 import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 
@@ -56,6 +59,36 @@ public class StringFilter<E> extends Filter<E, String> {
         }
     }
 
+    @Override
+    public void decorateCriteriaQuery( List<Predicate> predicates, CriteriaBuilder builder, Root<E> from ){
+        if (getValue() != null && !getValue().isEmpty() ) {
+
+            switch (getOperand()) {
+                case Equal:
+                    predicates.add(builder.equal(from.get(getAttribute()), getValue()));
+                    break;
+                case NotEqual:
+                    predicates.add(builder.notEqual(from.get(getAttribute()), getValue()));
+                    break;
+                case Contains:
+                    predicates.add(builder.like(from.get(getAttribute()), "%" + getValue() + "%"));
+                    break;
+                case BeginsWith:
+                    predicates.add(builder.like(from.get(getAttribute()), getValue() + "%"));
+                    break;
+                case EndsWith:
+                    predicates.add(builder.like(from.get(getAttribute()), "%" + getValue() ));
+                    break;
+                case NotContains:
+                    predicates.add(builder.notLike(from.get(getAttribute()), "%" + getValue() + "%"));
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+   
+    
     @Override
     public String getTemplate() {
         return "stringFilter";

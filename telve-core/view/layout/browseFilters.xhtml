@@ -86,7 +86,7 @@
             </p:overlayPanel>
 
 
-            <p:overlayPanel id="filtersPop" for="filterBtn" hideEffect="fade" dynamic="true">  
+            <p:overlayPanel id="filtersPop" for="filterBtn" hideEffect="fade" dynamic="true" appendToBody="true">  
                 <p>#{messages['general.label.FilterItems']}</p>
                 <h:panelGroup id="filterSelector" layout="block">
                     <ui:repeat value="#{bean.queryDefinition.allFilters}"
@@ -102,7 +102,7 @@
                 </h:panelGroup>
             </p:overlayPanel>
 
-            <p:overlayPanel id="columnsPop" for="columnBtn" hideEffect="fade" dynamic="true">  
+            <p:overlayPanel id="columnsPop" for="columnBtn" hideEffect="fade" dynamic="true" appendToBody="true">  
                 <div class="row">
                     <p>#{messages['general.label.ResultColumns']}</p>
                 </div>
@@ -126,51 +126,14 @@
             </p:overlayPanel>
 
             <p:outputPanel id="filterPanel">
-                <ui:remove>
-                    <p:panelGrid>
-                        <f:facet name="header">  
-                            <p:row>  
-                                <p:column>#{messages['general.label.Field']}</p:column>  
-                                <p:column>#{messages['general.label.Operator']}</p:column>  
-                                <p:column>#{messages['general.label.Value']}</p:column>  
-                            </p:row>  
-                        </f:facet>
-
-                        <c:forEach id="filterRepeater2" items="#{bean.queryDefinition.filters}"
-                                   var="filter" varStatus="rowCounter">
-                            <p:row>
-                                <ui:include src="/filterTemplates/#{filter.template}.xhtml" >
-                                    <ui:param name="filter" value="#{filter}" />
-                                    <ui:param name="idprefix" value="#{rowCounter.index}" />
-                                </ui:include>
-                            </p:row>
-                        </c:forEach>
-
-                    </p:panelGrid>
-                </ui:remove>
-
-
                 <h:panelGroup layout="block" rendered="#{not empty bean.queryDefinition.filters }">
-                    <ui:remove>
-                    <div class="row">
-                        <div class="large-2 medium-2 small-12 columns" style="font-weight: bold">
-                            #{messages['general.label.Field']}
-                        </div>
-                        <div class="large-2 medium-2 small-6 columns" style="font-weight: bold">
-                            #{messages['general.label.Operator']}
-                        </div>
-                        <div class="large-8 medium-8 small-6 columns" style="font-weight: bold">
-                            #{messages['general.label.Value']}
-                        </div>
-                    </div>
-                        </ui:remove>
 
                     <c:forEach id="filterRepeater2" items="#{bean.queryDefinition.filters}"
                                var="filter" varStatus="rowCounter">
                         <div class="row">
                             <ui:include src="/filterTemplates/#{filter.template}.xhtml" >
                                 <ui:param name="filter" value="#{filter}" />
-                                <ui:param name="idprefix" value="#{rowCounter.index}" />
+                                <ui:param name="idprefix" value="#{filter.attribute.name}" />
                             </ui:include>
                         </div>
                     </c:forEach>
@@ -182,9 +145,11 @@
                 <p:commandButton value="#{messages['general.button.Search']}" actionListener="#{bean.search()}" partialSubmit="false" process="@form" icon="fa fa-search" update="@([id$=results]), actionButtons"
                                  styleClass="btn-success"/> 
                 <p:menuButton value="Export" rendered="#{not empty bean.entityList and identity.hasPermission( permission, 'export')}" >
+                    <ui:remove>
                     <p:menuitem value="PDF" ajax="false" icon="fa fa-file-pdf-o">
                         <p:dataExporter type="pdf" target=":browseListForm:results" fileName="results" /> 
                     </p:menuitem>
+                        </ui:remove>
                     <p:menuitem value="CSV" ajax="false" icon="fa fa-file-text-o">
                         <p:dataExporter type="csv" target=":browseListForm:results" fileName="results" /> 
                     </p:menuitem>

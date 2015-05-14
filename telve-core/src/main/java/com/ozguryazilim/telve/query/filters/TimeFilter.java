@@ -11,6 +11,9 @@ import com.ozguryazilim.telve.query.Operands;
 import com.ozguryazilim.telve.utils.DateUtils;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 import org.joda.time.DateTime;
@@ -68,7 +71,43 @@ public class TimeFilter<E> extends Filter<E, Date> {
             }
         }
     }
+    
+    @Override
+    public void decorateCriteriaQuery( List<Predicate> predicates, CriteriaBuilder builder, Root<E> from ){
+        if (getValue() != null) {
+            
+            switch (getOperand()) {
+                case Equal:
+                    predicates.add(builder.equal(from.get(getAttribute()), getValue()));
+                    break;
+                case NotEqual:
+                    predicates.add(builder.notEqual(from.get(getAttribute()), getValue()));
+                    break;
+                case Greater:
+                    predicates.add(builder.greaterThan(from.get(getAttribute()), getValue()));
+                    break;
+                case GreaterOrEqual:
+                    predicates.add(builder.greaterThanOrEqualTo(from.get(getAttribute()), getValue()));
+                    break;
+                case Lesser:
+                    predicates.add(builder.lessThan(from.get(getAttribute()), getValue()));
+                    break;
+                case LesserOrEqual:
+                    predicates.add(builder.lessThanOrEqualTo(from.get(getAttribute()), getValue()));
+                    break;
+                case In:
+                    predicates.add(builder.between(from.get(getAttribute()), getValue(), getValue2()));
+                    break;
+                case Between:
+                    predicates.add(builder.between(from.get(getAttribute()), getValue(), getValue2()));
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
+    
     @Override
     public String getTemplate() {
         return "timeFilter";
