@@ -42,6 +42,8 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
 
     private PK id;
 
+    private Boolean needCreateNew = false;
+    
     @Inject
     private GroupedConversation conversation;
 
@@ -122,6 +124,9 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
 
         getRepository().saveAndFlush(entity);
 
+        //Save'den sonra elde sakladığımız id'yi değiştirelim ki bir sonraki request için ortalık karışmasın ( bakınız setId )
+        this.id = (PK) entity.getId();
+        
         onAfterSave();
         //} catch (EntityExistsException e) {
         //    log.debug("Hata : #0", e);
@@ -249,34 +254,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         return null;
     }
 
-    /* FIXME: eid=0 ile yeni entity?
-     public Long getId() {
-     return id;
-     }
-
-     public void setId(Long id) {
-
-     if (entity != null) {
-     return;
-     } //Zaten bu conv için entitymiz var elimizde...
-
-     this.id = id;
-     log.debug("ID ile setleniyor. ID : {0} ", id);
-
-     if (id == null || id == 0) {
-     createNew();
-     } else {
-     entity = getEntityManager().find(getEntityClass(), id);
-
-     if (entity == null) {
-     facesMessages.add("İstenilen kayıt bulunamadı. Lütfen kontrol edip tekarar deneyiniz.");
-     createNew();
-     } else {
-     //Entity başarıyla yüklendi. Alt sınıflar bu aşamada birşey yapmak isterlerse postLoad() methodunu override edebilirler...
-     postLoad();
-     }
-     }
-     }*/
+    
     /**
      * Verilen kaynak id'li olan veriden bir kopya çıkartır.
      *
@@ -333,13 +311,13 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     }
 
     public void setId(PK id) {
-        if (entity != null && id != -1 && id.equals(this.id)) {
+        if (entity != null && id != -1 && id.equals(this.id) && !getNeedCreateNew()) {
             return;
         } //Zaten bu conv için entitymiz var elimizde...
 
         LOG.debug("ID ile setleniyor. ID : {} ", id);
 
-        if (id == null || id == 0 || id == -1) {
+        if ( id == null || id == 0 || id == -1 || ( getNeedCreateNew() && id <= 0 )) {
             createNew();
         } else {
             entity = getRepository().findBy(id);
@@ -354,6 +332,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         }
         this.id = ( id == -1 ? (PK)new Long(0) : id );
         selectedSubView = "";
+        needCreateNew = false;
     }
 
     /**
@@ -403,4 +382,23 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     public String getPageTitle(String viewId) {
         return pageTitleResolver.getPageTitle(viewId);
     }
+
+    /**
+     * Bu method altsınıflar tarafından override edilerek kullanılır.
+     * Yeni bir entity oluşturma ihtiyacı olup olmadığını kontrol etmek için kullanılır.
+     * Eğer varsa setNeedCreateNew ile değişken setlenir.
+     */
+    protected void checkNeedCreateNew(){
+        
+    }
+    
+    protected Boolean getNeedCreateNew() {
+        return needCreateNew;
+    }
+
+    protected void setNeedCreateNew(Boolean needCreateNew) {
+        this.needCreateNew = needCreateNew;
+    }
+    
+    
 }
