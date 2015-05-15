@@ -73,4 +73,19 @@ public class UserLookup implements Serializable{
         return null;
     }
     
+    /**
+     * Verilen ID'e sahip kullanıcının gerçek adını döndürür.
+     * @param id ismi döndürülecek kullanıcı PL id'si
+     * @return bulamazsa geriye null döndürür.
+     */
+    public String getUserNameById( String id ){
+        User u = identityManager.lookupIdentityById(User.class, id);
+        
+        if( u != null ){
+            return u.getFirstName() + " " + u.getLastName();
+        }
+        
+        return null;
+    }
+    
 }

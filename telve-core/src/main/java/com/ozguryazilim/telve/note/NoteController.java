@@ -137,7 +137,6 @@ public class NoteController implements Serializable{
      * @return 
      */
     public Boolean hasNotes( String attachment ){
-        System.out.println(attachment);
         
         String key = "note." + identity.getAccount().getId() + "." + calcAttachmentURI();
         notes = (List)cache.get(key);
@@ -148,6 +147,16 @@ public class NoteController implements Serializable{
         return !notes.isEmpty();
     } 
     
+    public Integer noteCount( String attachment ){
+        
+        String key = "note." + identity.getAccount().getId() + "." + calcAttachmentURI();
+        notes = (List)cache.get(key);
+        if( notes == null ){
+            notes = repository.findNotes(identity.getAccount().getId(), calcAttachmentURI());
+            cache.put(key, notes);
+        }
+        return notes.size();
+    }
     
     public Boolean canAddNote(){
         
@@ -164,6 +173,11 @@ public class NoteController implements Serializable{
         return Boolean.TRUE;
     }
     
+    public void refresh(){
+        String key = "note." + identity.getAccount().getId() + "." + calcAttachmentURI();
+        cache.remove(key);
+    }
+    
     /**
      * Üzerinde çalışma yapılan notu saklar.
      */
@@ -175,6 +189,19 @@ public class NoteController implements Serializable{
         cache.put(key, notes);
     }
     
+    @Transactional
+    public void delete( Note note ){
+        //Sadece kendi eklediği notu silebilir.
+        if( canDelete(note)){
+            String key = "note." + identity.getAccount().getId() + "." + note.getAttachtment();
+            cache.remove(key);
+            repository.remove(note);
+        }
+    }
+    
+    public Boolean canDelete(Note note){
+        return note.getOwner().equals(identity.getAccount().getId());
+    }
     
     /**
      * Gelen string içinden eid alınıp requestURI ile birleştiriliyor.
@@ -197,8 +224,6 @@ public class NoteController implements Serializable{
             uri = uri + "?eid=" + m.get("eid");
         }
         
-        System.out.println(uri);
-        
         return uri;
     }
     
@@ -208,16 +233,24 @@ public class NoteController implements Serializable{
      */
     protected String calcAttachmentURI(){
         HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
-        
+
         String uri = request.getRequestURI();
-        
+
         if( request.getParameter("eid") != null ){
             uri = uri + "?eid=" + request.getParameter("eid");
+        } else {
+            //Eğer bu bir view ekranı ise eid olmadan olmaz. O zaman bir de referer'a bakalım.
+            //TODO: Aslında bir sorun da view ile edit ekranları arasında not paylaşılamayacak olması. Belki PageTitle ya da benzeri bir başka key bu işe yarayabilir.
+            if( uri.contains("View")){
+                String ref = request.getHeader("Referer");
+                if( !Strings.isNullOrEmpty(ref)){
+                    return calcAttachmentURI(ref);
+                }
+            }
         }
-        
-        System.out.println(uri);
-        
+
         return uri;
+        
     }
     
 }

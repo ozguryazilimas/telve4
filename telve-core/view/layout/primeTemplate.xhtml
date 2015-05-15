@@ -97,10 +97,15 @@
                     </ui:fragment>
                 </p:layout>
             </ui:remove>
+            
+            
+            
 
             <div class="wrapper">
 
                 <header class="fixed main-header">
+                    <p:ajaxStatus onstart="NProgress.start();" onsuccess="NProgress.done();" />
+                    
                     <a href="#" class="logo">#{telveConfigResolver.getProperty('app.title')}</a>
                     <nav class="navbar navbar-static-top" role="navigation">
                         <!-- Sidebar toggle button-->
@@ -198,23 +203,56 @@
                             <ul class="nav navbar-nav">
 
                                 <li>
-                                    <p:commandLink action="#{noteController.openNotesDialog(''.concat(request.getHeader('Referer')))}" 
-                                                   ajax="true" partialSubmit="true" process="@this" includeViewParams="true" rendered="#{noteController.canAddNote()}">
+
+                                    <p:commandLink id="notesLink"  ajax="true" partialSubmit="true" process="@this" update=":notesContent" rendered="#{noteController.canAddNote()}">
                                         <i class="fa fa-comments"/>
                                         <ui:fragment rendered="#{noteController.hasNotes('')}">
-                                            <span class="label label-danger">!</span>
+                                            <span class="label label-success">#{noteController.noteCount('')}</span>
                                         </ui:fragment>
-
                                     </p:commandLink>
+
                                 </li>
-                                <li>
+
+                                <p:overlayPanel id="notes"  widgetVar="notes" dynamic="true" style="min-width: 250px; min-height: 100px;" for="notesLink">
                                     <p:commandLink action="#{noteController.openNewNoteDialog(request.getHeader('Referer'))}" 
-                                                   ajax="true" partialSubmit="true" process="@this" includeViewParams="true" rendered="#{noteController.canAddNote()}">
+                                                   ajax="true" partialSubmit="true" process="@this" includeViewParams="true" 
+                                                   oncomplete="PF('notes').hide();">
                                         <i class="fa fa-comment"/>
+                                        #{messages['general.button.New']}
                                     </p:commandLink>
-                                </li>
 
 
+                                    <h:panelGroup id="notesContent">
+                                        <h:outputText value="Mevcut not bulunmuyor." rendered="#{not noteController.hasNotes('')}" style="display: block;"/>
+                                        <ui:repeat value="#{noteController.notes}" var="note" >
+                                            <div class="ui-messages-#{note.priority} ui-corner-all">
+
+                                                <p:commandLink action="#{noteController.delete(note)}" update=":notesContent" class="pull-right" rendered="#{noteController.canDelete(note)}">
+                                                    <i class="fa fa-close"/>
+                                                </p:commandLink>
+
+                                                <div class="row">
+                                                    <div class="large-12 medium-12 small-12 columns">
+                                                        <h:outputText value="#{note.subject}" styleClass="ui-messages-#{note.priority}-summary" style="margin-left: 0"/>
+                                                    </div>
+                                                    <div class="large-12 medium-12 small-12 columns">
+                                                        <h:outputText value="#{note.body}" styleClass="ui-messages-#{note.priority}-detail" style="margin-left: 0"/>
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="margin-top: 16px;">
+                                                    <i class="fa fa-clock-o"/> 
+                                                    <h:outputText value="#{note.createDate}" style="margin-left: 2px;">
+                                                        <f:convertDateTime pattern="#{messages['general.format.DateTime']}" />
+                                                    </h:outputText>
+                                                    <i class="fa fa-user"/> 
+                                                    <h:outputText value="#{userLookup.getUserNameById( note.owner)}" style="margin-left: 2px;" />
+
+                                                    <i class="fa #{note.permission eq 'OWNER' ? 'fa-lock' : 'fa-unlock-alt' } pull-right"/>
+                                                </div>
+                                            </div>
+                                        </ui:repeat>
+                                    </h:panelGroup>
+                                </p:overlayPanel>
 
                                 <li>
                                     <ui:remove>
@@ -226,7 +264,6 @@
                                     <p:commandLink action="#{bookmarkDashlet.addBookmark( messages[pageTitleResolver.pageTitle], viewIdentifier, request.getHeader('Referer'))}" 
                                                    ajax="true" partialSubmit="true" process="@this" includeViewParams="true" >
                                         <i class="fa fa-bookmark" />
-
                                     </p:commandLink>
                                 </li>
 
@@ -343,10 +380,10 @@
                                             <li class="seperator"></li>
                                             <li>
                                                 <h:form>
-                                                <p:commandLink action="#{loginController.logout()}" ajax="false">
-                                                    <i class="fa fa-power-off" /> #{messages['general.button.Logout']}
-                                                </p:commandLink>
-                                                    </h:form>
+                                                    <p:commandLink action="#{loginController.logout()}" ajax="false">
+                                                        <i class="fa fa-power-off" /> #{messages['general.button.Logout']}
+                                                    </p:commandLink>
+                                                </h:form>
                                             </li>
                                         </ul>
                                     </p:overlayPanel>
@@ -471,23 +508,23 @@
                 <div class="content-wrapper #{showListBar ? 'listbar' : ''} ">
 
                     <div class="main-content">
-                    <section class="context-menu">
-                        <h:form id="contextForm">
-                            <ul >
-                                <ui:insert name="context-menu" />
-                            </ul>
-                        </h:form>
-                    </section>
-                    <ui:fragment rendered="#{dontShowContentHeader ne true}">
-                        <section class="content-header">
-                            <h1>#{ messages[pageTitleResolver.pageTitle] }  <small>#{ viewIdentifier }</small></h1> 
+                        <section class="context-menu">
+                            <h:form id="contextForm">
+                                <ul >
+                                    <ui:insert name="context-menu" />
+                                </ul>
+                            </h:form>
                         </section>
-                    </ui:fragment>
+                        <ui:fragment rendered="#{dontShowContentHeader ne true}">
+                            <section class="content-header">
+                                <h1>#{ messages[pageTitleResolver.pageTitle] }  <small>#{ viewIdentifier }</small></h1> 
+                            </section>
+                        </ui:fragment>
 
-                    <div class="content">
-                        <ui:insert name="body"/>
-                    </div>
+                        <div class="content">
+                            <ui:insert name="body"/>
                         </div>
+                    </div>
                 </div>
 
 
