@@ -11,7 +11,6 @@ import javax.cache.Caching;
 import javax.cache.configuration.FactoryBuilder;
 import javax.cache.configuration.MutableConfiguration;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
 import javax.sql.DataSource;
@@ -20,7 +19,7 @@ import javax.sql.DataSource;
  *
  * @author haky
  */
-@RequestScoped
+@ApplicationScoped
 public class KahveProducer {
 
     @Produces
