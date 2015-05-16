@@ -28,6 +28,7 @@ public class EmailChannel implements Channel{
     @Uri("seda:emailChannel")
     private ProducerTemplate mailProducer; 
     
+    @Override
     public void sendMessage( String to, String subject, String message ){
         Map<String, Object> headers = new HashMap<>();
         

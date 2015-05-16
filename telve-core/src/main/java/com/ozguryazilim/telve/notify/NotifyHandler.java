@@ -6,9 +6,8 @@
 package com.ozguryazilim.telve.notify;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.faces.application.FacesMessage;
 import javax.inject.Named;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.primefaces.json.JSONObject;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 
@@ -63,7 +62,7 @@ public class NotifyHandler {
      */
     public void sendMessage(NotifyMessage message){
         EventBus eventBus = EventBusFactory.getDefault().eventBus();
-        eventBus.publish(CHANNEL + message.getTo(), new FacesMessage(StringEscapeUtils.escapeHtml4(message.getSubject()), StringEscapeUtils.escapeHtml4(message.getBody())));
+        eventBus.publish(CHANNEL + message.getTo(), new JSONObject(message).toString());
         //eventBus.publish(CHANNEL + "hakan", StringEscapeUtils.escapeHtml4(message));
     }
 }

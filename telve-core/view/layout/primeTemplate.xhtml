@@ -34,15 +34,20 @@
 
             <ds:windowId />
 
+            <h:form>
+                <p:remoteCommand name="updateNotifies" update="notifyCount"  />
+            </h:form>
+
             <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
                 <p:commandButton value="#{messages['general.button.Yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                 <p:commandButton value="#{messages['general.button.No']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
             </p:confirmDialog>
 
-            <p:notificationBar id="notifyBar" position="top" effect="slide" styleClass="top ui-message-info" style="z-index: 3000; margin: 0;" widgetVar="notifyBar" >
+            <p:notificationBar id="notifyBar" position="top" effect="slide" styleClass="top alert-info" style="z-index: 3000; margin: 0;" widgetVar="notifyBar" >
+                <i id="notifyIcon" class=""/>
                 <span id="notifySubject" style="font-size:36px;"></span>
                 <br/>
-                <span id="notifyDetail"></span>
+                <span id="notifyDetail" style="font-size:22px;"></span>
             </p:notificationBar>
 
             <p:socket onMessage="handleMessage" channel="/notify/#{identity.account.id}" />
@@ -53,14 +58,24 @@
                     PF('notifyBar').hide();
                 });
 
-                function handleMessage(facesmessage) {
+                function hideBar() {
+                    PF('notifyBar').hide();
+                }
+
+                function handleMessage(notify) {
                     //facesmessage.severity = 'info';
                     //alert(facesmessage.summary);
-
-                    jQuery("#notifySubject").html(facesmessage.summary);
-                    jQuery("#notifyDetail").html(facesmessage.detail);
+                    jQuery("#notifyBar").addClass("alert-" + notify.severity);
+                    jQuery("#notifyIcon").addClass("fa fa-3x " + notify.icon);
+                    jQuery("#notifySubject").html(notify.subject);
+                    jQuery("#notifyDetail").html(notify.body);
 
                     PF('notifyBar').show();
+                    setTimeout(function () {
+                        PF('notifyBar').hide();
+                    }, 2000);
+
+                    updateNotifies();
                 }
             </script>
 
@@ -97,15 +112,15 @@
                     </ui:fragment>
                 </p:layout>
             </ui:remove>
-            
-            
-            
+
+
+
 
             <div class="wrapper">
 
                 <header class="fixed main-header">
                     <p:ajaxStatus onstart="NProgress.start();" onsuccess="NProgress.done();" />
-                    
+
                     <a href="#" class="logo">#{telveConfigResolver.getProperty('app.title')}</a>
                     <nav class="navbar navbar-static-top" role="navigation">
                         <!-- Sidebar toggle button-->
@@ -267,89 +282,53 @@
                                     </p:commandLink>
                                 </li>
 
-                                <ui:remove>
+                                <li >
+                                    <p:commandLink id="notifies"  ajax="true" partialSubmit="true" process="@this" update=":notifyPanelContent">
+                                        <i class="fa fa-bell-o"></i>
+                                        <h:panelGroup id="notifyCount">
+                                        <h:outputText value="#{notifyStore.getNotifyCount(identity.account.id)}" styleClass="label label-warning" rendered="#{notifyStore.getNotifyCount(identity.account.id) gt 0}"/>
+                                        </h:panelGroup>
+                                    </p:commandLink>
+                                </li>
 
-                                    <li class="dropdown messages-menu">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fa fa-envelope-o"></i>
-                                            <span class="label label-success">4</span>
-                                        </a>
-                                    </li>
-                                    <li class="dropdown notifications-menu">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fa fa-bell-o"></i>
-                                            <span class="label label-warning">10</span>
-                                        </a>
-                                    </li>
-                                    <li class="dropdown tasks-menu">
-                                        <a id="hede2link" href="#" class="dropdown-toggle" data-toggle="dropdown" onclick="PF('hede2').show('hede2link')">
-                                            <i class="fa fa-flag-o"></i>
-                                            <span class="label label-danger">9</span>
-                                        </a>
-                                        <p:overlayPanel id="hede2"  widgetVar="hede2" >
-                                            <!-- inner menu: contains the actual data -->
-                                            <ul class="dropdown-menu">
-                                                <ui:remove>
-                                                    <li class="header">Bişi</li>
-                                                    <li class="footer">Bişi</li>
-                                                </ui:remove>
-                                                <li><!-- Task item -->
-                                                    <a href="#">
-                                                        <h3>
-                                                            Design some buttons
-                                                            <small class="pull-right">20%</small>
-                                                        </h3>
-                                                        <div class="progress xs">
-                                                            <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                                <span class="sr-only">20% Complete</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li><!-- end task item -->
-                                                <li><!-- Task item -->
-                                                    <a href="#">
-                                                        <h3>
-                                                            Create a nice theme
-                                                            <small class="pull-right">40%</small>
-                                                        </h3>
-                                                        <div class="progress xs">
-                                                            <div class="progress-bar progress-bar-green" style="width: 40%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                                <span class="sr-only">40% Complete</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li><!-- end task item -->
-                                                <li><!-- Task item -->
-                                                    <a href="#">
-                                                        <h3>
-                                                            Some task I need to do
-                                                            <small class="pull-right">60%</small>
-                                                        </h3>
-                                                        <div class="progress xs">
-                                                            <div class="progress-bar progress-bar-red" style="width: 60%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                                <span class="sr-only">60% Complete</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li><!-- end task item -->
-                                                <li><!-- Task item -->
-                                                    <a href="#">
-                                                        <h3>
-                                                            Make beautiful transitions
-                                                            <small class="pull-right">80%</small>
-                                                        </h3>
-                                                        <div class="progress xs">
-                                                            <div class="progress-bar progress-bar-yellow" style="width: 80%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                                <span class="sr-only">80% Complete</span>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                </li><!-- end task item -->
-                                            </ul>
-                                        </p:overlayPanel>
-                                    </li>
 
-                                </ui:remove>
+                                <p:overlayPanel id="notifyPanel" widgetVar="notifyPanel" dynamic="true" style="min-width: 250px; min-height: 100px;" for="notifies">
+                                    <h:panelGroup id="notifyPanelContent">
+                                        <div style="border-bottom: #bbb 1px solid; margin: 0;">
+                                            <p:commandLink action="#{notifyStore.clear(identity.account.id)}" ajax="true" 
+                                                           partialSubmit="true" process="@this" update=":notifyCount" 
+                                                           styleClass="pull-right"
+                                                           oncomplete="PF('notifyPanel').hide();">
+                                                <i class="fa fa-trash"></i>
+                                                #{messages['general.button.Delete']}
+                                            </p:commandLink>
+                                            <span style="font-size:1.2em; color:#004369">#{notifyStore.getNotifyCount(identity.account.id)} uyarınız var!</span>
+                                        </div>
+                                        <ul id="notifyList" class="menulist">
+                                            <ui:repeat value="#{notifyStore.getNotifies(identity.account.id)}" var="notify">
+                                                <li class="">
+                                                    <a href="#" >
+                                                        <div class="menuIcon label-#{notify.severity}">
+                                                        <i class="fa fa-2x #{notify.icon}" /> 
+                                                        </div>
+                                                        <div class="menuText">
+                                                            <div class="">#{notify.subject}</div>
+                                                            <span class="menuMuteText">#{notify.body}</span>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ui:repeat>
+                                        </ul>
+                                    </h:panelGroup>
+                                    
+                                    <script type="text/javascript">
+                                        jQuery("#notifyList").slimscroll({
+                                            height: "300px",
+                                            color: "rgba(0,0,0,0.2)",
+                                            size: "3px"
+                                          });
+                                    </script>
+                                </p:overlayPanel>
 
                                 <li class="">
                                     <a href="#{helpResolver.helpPath}" target="HelpWinId" onclick="openHelp();" >
