@@ -1581,34 +1581,54 @@ Renk Paleti
 .menulist{
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin-left: -15px;
+    margin-right: -15px;
+    border-top: #bbb 1px solid; 
 }
 
 .menuIcon{
     display: table-cell;
-    vertical-align: middle;
+    vertical-align: top;
     text-align: center;
     padding: 2px;
-    border-radius: 50%;
+    /*border-radius: 50%;*/
     width: 32px;
     height: 32px;
+    color: #444;
 }
 
 .menuText{
     display: table-cell;
     vertical-align: top;
-    font-weight: bold;
-    font-size: 1.1em;
-    padding: 2px;
+    padding: 0px;
+    color: #444;
+    background-color: transparent;
 }
 
-.menuMuteText{
+.menuText .mute{
     font-weight: normal;
     font-size: 0.9em;
+    color: #666;
+}
+
+.menuText .menuHeader{
+    /*font-weight: normal;*/
+    font-size: 1.1em;
+    background-color: transparent;
+    
+}
+
+.menuText .menuFooter{
+    /*font-weight: normal;*/
+    font-size: 0.9em;
+    background-color: transparent;
+    margin-top: 4px;
 }
 
 .menulist li{
-    padding: 4px;
+    padding: 8px;
+    border-bottom: #bbb 1px solid;
+    min-height: 80px;
 }
 
 .menulist li:hover{

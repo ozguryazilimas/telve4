@@ -1,0 +1,20 @@
+<process-application
+        xmlns="http://www.camunda.org/schema/1.0/ProcessApplication">
+
+    <process-engine name="default">
+        <configuration>com.ozguryazilim.telve.bpm.TelveProcessEngineConfiguration</configuration>
+        <datasource>java:jboss/datasources/OpenOHSDS</datasource>
+        <properties>
+            <property name="history">full</property>
+            <property name="transactionManagerJndiName">java:/TransactionManager</property>
+            <property name="databaseSchemaUpdate">true</property>
+            <property name="jobExecutorActivate">true</property>
+            <property name="transactionsExternallyManaged">true</property>
+            <property name="databaseSchemaUpdate">true</property>
+            <!--
+            <property name="postParseListeners">org.camunda.bpm.engine.cdi.impl.event.CdiEventSupportBpmnParseListener</property>
+            -->
+        </properties>
+    </process-engine>
+
+</process-application>

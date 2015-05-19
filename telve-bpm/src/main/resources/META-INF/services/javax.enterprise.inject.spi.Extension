@@ -1,0 +1,3 @@
+#org.kie.internal.runtime.cdi.BootOnLoadExtension
+com.ozguryazilim.telve.bpm.handlers.HumanTaskHandlerExtention
+com.ozguryazilim.telve.bpm.handlers.ProcessHandlerExtention

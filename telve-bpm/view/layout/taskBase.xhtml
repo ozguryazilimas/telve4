@@ -1,0 +1,70 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                >
+
+    <section class="content-header" style="margin-top: -25px; margin-bottom: 10px;">
+        <h1>#{bean.task.name} <small class="pull-right"> [#{messages['taskName.'.concat(bean.task.taskDefinitionKey)]}] <t:cellOutputDateTime value="#{bean.task.dueDate}"/></small></h1>
+        
+        #{bean.task.description} 
+    </section>
+
+
+    <h:form id="taskForm">
+
+
+
+        <ui:insert name="taskForm" />
+
+        <t:accordion label="Comments" icon="fa fa-comments-o">
+            <div class="row">
+                <ul >
+                    <ui:repeat value="#{bean.comments}" var="comment">
+                        <li style="padding: 4px;"> #{comment.fullMessage} 
+                            <div style="font-size: 0.8em;">
+                                <i class="fa fa-user"> </i> #{userLookup.getUserNameById(comment.userId)} <i class="fa fa-clock-o"> </i>  <t:cellOutputDateTime value="#{comment.time}" /> 
+                            </div>
+                        </li>
+                    </ui:repeat>
+                </ul>
+                <t:inputTextarea label="general.label.Comment" value="#{bean.comment}" columnClass="large-12 medium-12 small-12" />
+            </div>
+        </t:accordion>
+
+
+        <h:panelGroup styleClass="row actionButtons" layout="block">
+            <p:button value="#{messages['general.button.Delegate']}" styleClass="pull-left" onclick="PF('delegatePop').show();return false;"/>
+            <ui:insert name="actionButtons" />
+            <ui:repeat value="#{bean.resultCommands}" var="cmd">
+                <p:commandButton value="#{messages['general.button.'.concat( cmd.result )]}" icon="#{cmd.icon}" action="#{bean.closeTask(cmd.result)}" styleClass="#{cmd.style}" ajax="false"/>
+            </ui:repeat>
+
+            <p:commandButton id="save" value="#{messages['general.button.Save']}" icon="fa fa-save" action="#{bean.save()}" styleClass="btn-primary" update="taskView"/>
+
+        </h:panelGroup>
+    </h:form>
+
+    <p:dialog id="delegatePop" widgetVar="delegatePop" header="#{messages['delegatePopup.label.Title']}" width="350">
+        
+        <h:form id="delegateForm">
+            
+            <div class="row">
+                <t:inputUserId label="general.label.User" value="" columnClass="large-12 medium-12 small-12"/>
+            </div>
+            
+            <h:panelGroup styleClass="row actionButtons" layout="block">
+                <p:button value="#{messages['general.button.Ok']}" styleClass="btn-primary" icon="fa fa-save" onclick="PF('delegatePop').hide();return false;"/>
+                <p:button value="#{messages['general.button.Close']}"  icon="fa fa-close" onclick="PF('delegatePop').hide();return false;"/>
+            </h:panelGroup>
+            
+        </h:form>
+        
+    </p:dialog>
+    
+</ui:composition>

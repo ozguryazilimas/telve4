@@ -23,7 +23,7 @@
             <dependency>
                 <groupId>com.ozguryazilim.mutfak</groupId>
                 <artifactId>telve-bom</artifactId>
-                <version>4.0.0.A6</version>
+                <version>4.0.0.A7</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -235,6 +235,7 @@
         <module>telve-admin</module>
         <module>telve-idm-model</module>
         <module>kahve</module>
+        <module>telve-bpm</module>
     </modules>
     
     <distributionManagement>

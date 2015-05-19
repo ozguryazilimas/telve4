@@ -197,6 +197,12 @@
                                         <i class="fa fa-calendar"></i>
                                     </h:link>
                                 </li>
+                                
+                                <li >
+                                    <h:link  outcome="/bpm/taskConsole.xhtml" >
+                                        <i class="fa fa-tasks"></i>
+                                    </h:link>
+                                </li>
 
                                 <li >
                                     <h:link  outcome="/reports/reportConsole.xhtml" >
@@ -499,6 +505,7 @@
                                 <h1>#{ messages[pageTitleResolver.pageTitle] }  <small>#{ viewIdentifier }</small></h1> 
                             </section>
                         </ui:fragment>
+                        <ui:insert name="customHeader" />
 
                         <div class="content">
                             <ui:insert name="body"/>

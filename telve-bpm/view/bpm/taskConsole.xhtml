@@ -1,0 +1,125 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/primeTemplate.xhtml">
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="task" value="#{taskConsole.selectedTaskId}" />
+        </f:metadata>
+    </ui:define>
+    
+
+    <ui:param name="showListBar" value="true" />
+    <ui:param name="dontShowContentHeader" value="true" />
+
+    <ui:define name="body">
+
+        <ui:include src="/layout/messages.xhtml"/>
+
+        <h:panelGroup id="taskView">
+            <ui:include src="#{taskConsole.selectedTaskViewId}" />
+        </h:panelGroup>
+
+    </ui:define>
+
+    <ui:define name="content-list">
+        <h:form id="console">
+
+            <ui:remove>
+                <div class="ui-input-group" style="padding: 10px;">
+                    <p:inputText value="#{quickLauncher.key}" required="false"  placeholder="#{messages['general.label.SearchText']}"/>
+                    <p:commandButton action="#{quickLauncher.redirect()}" icon="fa fa-search" partialSubmit="false" />
+                </div>
+            </ui:remove>
+
+            <p:inputText value="#{taskConsole.searchText}" required="false"  placeholder="#{messages['general.label.SearchText']}">
+                <p:ajax event="blur" listener="#{taskConsole.refresh}" update="console" />
+            </p:inputText>
+
+            <p:selectOneMenu id="car" value="#{taskConsole.searchTaskType}">
+                <f:selectItem itemLabel="" itemValue="" />
+                <f:selectItems value="#{taskConsole.taskTypeNames}" var="item" itemLabel="#{messages['taskName.'.concat(item)]}" itemValue="#{item}"/>
+                <p:ajax event="change" listener="#{taskConsole.refresh}" update="console" />
+            </p:selectOneMenu>
+
+            <ui:remove>
+            <p:selectBooleanCheckbox value="" /> Olası görevlerim
+            <p:selectBooleanCheckbox value="" /> Benim görevlerim
+            </ui:remove>
+
+            <ul class="menulist">
+                <ui:repeat value="#{taskConsole.taskList}" var="item" varStatus="loop2">
+                    <li>
+                        <p:commandLink action="#{taskConsole.onSelectTask(item)}" ajax="true" process="@this" update=":taskView">
+                            <div class="menuIcon " >
+                                <i class="fa #{taskConsole.getTaskIcon(item.taskDefinitionKey)} label " /> 
+                            </div>
+                            <div class="menuText">
+                                <div class="menuHeader">#{item.name}  <span style="float: right;font-size:0.9em;"><t:cellOutputDateTime value="#{item.dueDate}" /></span></div>
+                                <div style="font-size:0.9em;">#{item.description}</div>
+                                <div class="menuFooter">#{messages['taskName.'.concat(item.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserNameById( item.assignee)} </div>
+                            </div>
+                        </p:commandLink>
+
+                        <ui:remove>
+                            <div class="large-2 medium-2 small-2 columns">
+                                <p:commandLink action="#{taskConsole.openTaskDialog(item)}" 
+                                               ajax="true" partialSubmit="true" process="@this" >
+                                    <i class="fa fa-2x #{taskConsole.getTaskIcon(item.taskDefinitionKey)}" style="color: gray"></i>
+                                </p:commandLink>
+
+                            </div>
+                            <div class="large-10 medium-10 small-10 columns">
+                                <div class="row">
+                                    <div class="large-12 medium-12 small-12 columns" style="font-weight: bold; font-size: large; padding: 4px;">
+                                        <p:commandLink action="#{taskConsole.openTaskDialog(item)}" 
+                                                       ajax="true" partialSubmit="true" process="@this" >
+                                            #{item.name}  <t:cellOutputDateTime value="#{item.dueDate}" style="float: right"/>
+                                        </p:commandLink>
+                                    </div>
+                                    <div class="large-12 medium-12 small-12 columns" style="margin: 4px;">
+                                        #{item.description}
+                                    </div>
+                                    <div class="large-12 medium-12 small-12 columns" style="font-size: small;margin: 4px;">
+                                        #{item.taskDefinitionKey} | <t:cellOutputDateTime value="#{item.createTime}"/> #{item.assignee} | Link 1 | Link 2
+                                    </div>
+                                </div>
+                            </div>
+                        </ui:remove>
+                    </li>
+                </ui:repeat>
+            </ul>
+
+        </h:form>
+    </ui:define>
+
+    <ui:define name="context-menu">
+        <li>
+            <a id="moreButton" href="#" onclick="PF('moreMenu').show('moreButton')" >
+                <i class="fa fa-plus-circle"/>
+                <span>#{messages['taskConsole.button.StartProcess']}</span>
+                <i class="fa fa-caret-down" />
+            </a>
+        </li>
+        <p:overlayPanel widgetVar="moreMenu">
+            <ul class="dropdown-menu">
+                <ui:repeat value="#{taskConsole.processLists}" var="item" varStatus="loop2">
+                    <li>
+                        <p:commandLink action="#{taskConsole.startProcess(item)}" 
+                                       ajax="true" partialSubmit="true" process="@this">
+                            <h:graphicImage value="#{taskConsole.getIconPath(item)}" />
+                            #{messages['processName.'.concat( item )]}
+                        </p:commandLink>
+                    </li>
+                </ui:repeat>
+            </ul>
+        </p:overlayPanel>
+    </ui:define>
+</ui:composition>

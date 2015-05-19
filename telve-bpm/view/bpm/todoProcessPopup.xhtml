@@ -1,0 +1,23 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/processBase.xhtml">
+
+    <ui:param name="title" value="todoTaskPopup.label.Title" />
+    <ui:param name="bean" value="#{todoProcess}" />
+
+    <ui:define name="taskForm">
+        <div class="row">
+            <t:inputText label="general.label.Subject" value="#{todoProcess.subject}" required="true" columnClass="large-12 medium-12 small-12"/>
+            <t:inputTextarea label="general.label.Info" value="#{todoProcess.info}" required="false" columnClass="large-12 medium-12 small-12"/>
+            <t:inputDateTime label="general.label.BeginDate" value="#{todoProcess.startDate}" />
+            <t:inputDateTime label="general.label.EndDate" value="#{todoProcess.endDate}" />
+        </div>
+    </ui:define>
+</ui:composition>

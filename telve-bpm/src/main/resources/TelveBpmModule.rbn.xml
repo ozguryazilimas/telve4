@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ribbon-def version="1.0" depends="telve">
+
+	<actions>
+            <action id="taskConsole" 
+                        label="module.caption.TaskConsole" 
+                        img="taskConsole.png" 
+                        url="/bpm/taskConsole.xhtml" 
+                        permission="taskConsole" 
+                        type="browse" />
+            <!--
+		<action id="user" 
+				label="module.caption.User" 
+				img="user.png" 
+				url="/admin/idm/user.xhtml" 
+				permission="user" 
+				type="param" />
+				
+		<action id="userAdd" 
+				label="user.action.Add" 
+				img="user_add.png" 
+				url="/admin/idm/user.xhtml" 
+				permission="user:insert" 
+				type="paramNew" />
+				
+		<action id="role" 
+				label="module.caption.Role" 
+				img="role.png" 
+				url="/admin/idm/role.xhtml" 
+				permission="role" 
+				type="param" />
+                <action id="group" 
+				label="module.caption.Group" 
+				img="role.png" 
+				url="/admin/idm/group.xhtml" 
+				permission="group" 
+				type="param" />
+                <action id="passwordEditor" 
+				label="module.caption.PasswordEditor" 
+				img="change_password.png" 
+				url="/admin/idm/passwordEditor.xhtml" 
+				permission="system" 
+				type="param" />
+				
+	   <action id="auditReport" 
+                    label="reports.report.auditLogReport" 
+                    img="report.png" 
+                    url="/reports/auditLogReport.xhtml" 
+                    permission="auditReport" 
+                   type="browse" >
+           </action>
+		-->		
+	</actions>
+	
+	<ribbon id="bpm" label="menu.main.BPM" permission="ribbon:bpm" order="1000">
+		<section label="menu.caption.BPM" >
+                    <!--
+			<action id="user" type="large" />
+			<action id="role" type="large" />
+                        
+                        <action id="group" type="large" />
+                        -->
+		</section>
+                <!--
+		<section label="menu.caption.ApplicationProperties" >
+			<action id="systemProperties" type="large" />
+			<action id="userProperties" type="large" />
+		</section>
+                -->
+	</ribbon>
+        
+        <ribbon id="workspace" label="menu.main.Workspace" permission="ribbon:workspace" order="0">
+            <section label="menu.caption.UserManagement" order="0">
+                <action id="taskConsole" type="large" />
+            </section>
+        </ribbon>
+        
+        <!--
+        <ribbon-context view="/admin/idm">
+            
+            <section label="module.caption.New" order="0">
+                <action id="user" type="large" />
+		<action id="role" type="large" />
+            </section>
+        </ribbon-context>
+        -->
+        
+</ribbon-def>
