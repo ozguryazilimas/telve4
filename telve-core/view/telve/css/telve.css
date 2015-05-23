@@ -1634,3 +1634,12 @@ Renk Paleti
 .menulist li:hover{
     background-color: #bbb;
 }
+
+.calc-result-panel{
+    background-color: #bee1f4;
+    border: #39a5dc 1px solid;
+    padding: 10px;
+    font-size: 1.2em;
+    display: block;
+    border-radius: 2px;
+}

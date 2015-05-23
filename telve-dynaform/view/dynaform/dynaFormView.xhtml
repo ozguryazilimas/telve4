@@ -1,0 +1,37 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
+
+    
+    <h:panelGroup layout="block" styleClass="row calc-result-panel" rendered="#{not empty dynaForm.form.calcFields}">
+        <c:forEach id="calcFields" items="#{dynaForm.form.calcFields}" var="calc" varStatus="rowCounter3">
+            <t:outputText label="#{calc.label}" value="#{dynaForm.getCalcBinder(calc.id).value} #{dynaForm.getCalcBinder(calc.id).result}" style="#{dynaForm.getCalcBinder(calc.id).style}"/>
+        </c:forEach>
+    </h:panelGroup>
+    
+    <div class="row">
+        <c:forEach id="containers" items="#{dynaForm.form.containers}" var="cont" varStatus="rowCounter">
+
+            <t:accordion label="#{cont.label}" columnClass="#{dynaForm.form.doubleColumn ? 'large-6 medium-6 small-12' : 'large-12 medium-12 small-12'}">
+
+                <c:forEach id="containers" items="#{cont.fields}" var="field" varStatus="rowCounter2">
+                    <ui:include src="/dynaform/templates/output#{field.getClass().getSimpleName()}.xhtml" />
+                </c:forEach>
+
+            </t:accordion>
+
+        </c:forEach>
+
+    </div>
+
+
+    
+
+
+</ui:composition>

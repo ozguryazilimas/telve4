@@ -236,6 +236,7 @@
         <module>telve-idm-model</module>
         <module>kahve</module>
         <module>telve-bpm</module>
+        <module>telve-dynaform</module>
     </modules>
     
     <distributionManagement>
