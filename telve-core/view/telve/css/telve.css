@@ -1643,3 +1643,12 @@ Renk Paleti
     display: block;
     border-radius: 2px;
 }
+
+#notifyList.menulist{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+#notifyList.menulist li{
+    min-height: 40px;
+}

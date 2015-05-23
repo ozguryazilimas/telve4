@@ -291,16 +291,16 @@
                                 <li >
                                     <p:commandLink id="notifies"  ajax="true" partialSubmit="true" process="@this" update=":notifyPanelContent">
                                         <i class="fa fa-bell-o"></i>
-                                        <h:panelGroup id="notifyCount">
-                                        <h:outputText value="#{notifyStore.getNotifyCount(identity.account.id)}" styleClass="label label-warning" rendered="#{notifyStore.getNotifyCount(identity.account.id) gt 0}"/>
+                                        <h:panelGroup id="notifyCount" styleClass="#{notifyStore.getNotifyCount(identity.account.id) gt 0 ? 'label label-warning' : ''}">
+                                            <h:outputText value="#{notifyStore.getNotifyCount(identity.account.id)}" styleClass="" rendered="#{notifyStore.getNotifyCount(identity.account.id) gt 0}"/>
                                         </h:panelGroup>
                                     </p:commandLink>
                                 </li>
 
 
-                                <p:overlayPanel id="notifyPanel" widgetVar="notifyPanel" dynamic="true" style="min-width: 250px; min-height: 100px;" for="notifies">
-                                    <h:panelGroup id="notifyPanelContent">
-                                        <div style="border-bottom: #bbb 1px solid; margin: 0;">
+                                <p:overlayPanel id="notifyPanel" widgetVar="notifyPanel" dynamic="true" style="width: 250px; height: 300px;" for="notifies">
+                                    <h:panelGroup id="notifyPanelContent" layout="block" style="margin-left: -15; margin-right: -15;">
+                                        <div style="margin-left: 15px; margin-right: 15px;">
                                             <p:commandLink action="#{notifyStore.clear(identity.account.id)}" ajax="true" 
                                                            partialSubmit="true" process="@this" update=":notifyCount" 
                                                            styleClass="pull-right"
@@ -310,12 +310,13 @@
                                             </p:commandLink>
                                             <span style="font-size:1.2em; color:#004369">#{notifyStore.getNotifyCount(identity.account.id)} uyarınız var!</span>
                                         </div>
+                                        
                                         <ul id="notifyList" class="menulist">
                                             <ui:repeat value="#{notifyStore.getNotifies(identity.account.id)}" var="notify">
                                                 <li class="">
                                                     <a href="#" >
-                                                        <div class="menuIcon label-#{notify.severity}">
-                                                        <i class="fa fa-2x #{notify.icon}" /> 
+                                                        <div class="menuIcon">
+                                                            <i class="fa fa-2x #{notify.icon}" /> 
                                                         </div>
                                                         <div class="menuText">
                                                             <div class="">#{notify.subject}</div>
@@ -325,15 +326,18 @@
                                                 </li>
                                             </ui:repeat>
                                         </ul>
+                                        
+                                        <script type="text/javascript">
+                                        jQuery("#notifyList").slimscroll({
+                                            height: "250px",
+                                            width: "250px",
+                                            color: "rgba(0,0,0,0.2)",
+                                            size: "1px"
+                                          });
+                                        </script>
                                     </h:panelGroup>
                                     
-                                    <script type="text/javascript">
-                                        jQuery("#notifyList").slimscroll({
-                                            height: "300px",
-                                            color: "rgba(0,0,0,0.2)",
-                                            size: "3px"
-                                          });
-                                    </script>
+                                    
                                 </p:overlayPanel>
 
                                 <li class="">

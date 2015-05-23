@@ -29,7 +29,7 @@
                             <t:accordion label="#{group.getKey()}" icon="ui-icon-home">
                                 <div class="row">
                                     <ui:repeat value="#{group.getValue()}" var="item" varStatus="loop2">
-                                        <div class="large-4 medium-6 small-12 columns end">
+                                        <div class="large-6 medium-12 small-12 columns end">
                                             <div class="row">
                                                 <div class="large-2 medium-2 small-2 columns">
                                                     <p:commandLink action="#{reportHome.execReport(item)}" ajax="true" partialSubmit="true" process="@this">
