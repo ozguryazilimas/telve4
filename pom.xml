@@ -237,6 +237,7 @@
         <module>kahve</module>
         <module>telve-bpm</module>
         <module>telve-dynaform</module>
+        <module>telve-jcr</module>
     </modules>
     
     <distributionManagement>

@@ -1652,3 +1652,12 @@ Renk Paleti
 #notifyList.menulist li{
     min-height: 40px;
 }
+
+.widget {
+    
+    padding: 8px; 
+    margin: 4px;
+    border-radius: 2px;
+    background-color: #EAEDF1;
+    border: #DDDDDD 1px solid;
+}
