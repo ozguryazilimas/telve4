@@ -1661,3 +1661,13 @@ Renk Paleti
     background-color: #EAEDF1;
     border: #DDDDDD 1px solid;
 }
+
+.ui-column-title a{
+    padding: 2px;
+}
+
+.ui-column-title a:hover{
+    background-color: #bee1f4;
+    padding: 1px;
+    border: #DDDDDD 1px solid;
+}
