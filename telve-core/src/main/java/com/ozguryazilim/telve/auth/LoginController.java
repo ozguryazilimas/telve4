@@ -40,6 +40,7 @@ public class LoginController {
     
     public String logout(){
         identity.logout();
+        facesContext.getExternalContext().invalidateSession();
         return "/login.xhtml";
     }
 }
