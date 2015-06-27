@@ -77,7 +77,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
 
     public void createNewChild() {
         E newE = getNewEntity();
-        newE.setParent(entity);
+        newE.setParent(entity != null && entity.isPersisted() ? entity : null);
         entity = newE;
     }
 
