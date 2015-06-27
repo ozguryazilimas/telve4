@@ -37,7 +37,8 @@
                                          value="#{messages['general.button.Save']}" 
                                          action="#{homeBean.save()}"
                                          rendered="#{identity.hasPermission( entityName, 'insert')}"
-                                         ajax="false"
+                                         ajax="true"
+                                         process="@form"
                                          validateClient="true"
                                          styleClass="btn-success"
                                          icon="fa fa-save" />  
