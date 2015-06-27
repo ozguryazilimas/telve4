@@ -149,7 +149,8 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         //FIXME: Eğer ağacın alt dalları varsa diye kontrol edilmesi lazım...
         
         try {
-            getRepository().remove(entity);
+            getRepository().deleteById(entity.getId());
+            //getRepository().remove(entity);
             getTreeModel().removeItem(entity);
             //Listeden de çıkaralım
             getEntityList().remove(entity);

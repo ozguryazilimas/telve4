@@ -120,4 +120,6 @@ public abstract class RepositoryBase<E extends EntityBase, R extends ViewModel> 
         em.remove(entity);
         em.flush();
     }
+    
+    public abstract void deleteById( Long id );
 }

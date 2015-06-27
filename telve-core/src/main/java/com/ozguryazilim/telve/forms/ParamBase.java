@@ -136,7 +136,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
         if( !onBeforeDelete() ) return null;
         
         try {
-            getRepository().remove(entity);
+            getRepository().deleteById(entity.getId());
             
         } catch (Exception e) {
             LOG.error("Hata : {}", e);

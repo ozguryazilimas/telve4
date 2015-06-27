@@ -178,7 +178,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         }
 
         //try {
-        getRepository().remove(entity);
+        getRepository().deleteById(entity.getId());
         //} catch (Exception e) {
         //    log.debug("Hata : #0", e);
         //    facesMessages.add("#{messages['general.message.record.DeleteFaild']}");
