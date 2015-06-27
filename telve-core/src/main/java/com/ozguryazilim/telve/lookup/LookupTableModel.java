@@ -8,7 +8,6 @@ package com.ozguryazilim.telve.lookup;
 
 import com.ozguryazilim.telve.entities.ViewModel;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +30,7 @@ public class LookupTableModel<T extends ViewModel> extends ListDataModel<T> impl
 
     private T selectedData;
     private T[] selectedDatas;
+    private List<T> selectedAllDatas = new ArrayList<>();
     private Boolean multiSelect = false;
     private String profile;
     private String searchText;
@@ -118,6 +118,20 @@ public class LookupTableModel<T extends ViewModel> extends ListDataModel<T> impl
     @Override
     public void setSelectedDatas(T[] selectedDatas) {
         this.selectedDatas = selectedDatas;
+        
+        for( T t : selectedDatas ){
+            if( !this.selectedAllDatas.contains(t)){
+                this.selectedAllDatas.add(t);
+            }
+        }
+    }
+
+    public List<T> getSelectedAllDatas() {
+        return selectedAllDatas;
+    }
+
+    public void setSelectedAllDatas(List<T> selectedAllDatas) {
+        this.selectedAllDatas = selectedAllDatas;
     }
 
     @Override
@@ -172,7 +186,7 @@ public class LookupTableModel<T extends ViewModel> extends ListDataModel<T> impl
 
     @Override
     public List<T> getSelectedViewModels() {
-        return  new ArrayList<>(Arrays.asList(getSelectedDatas()));
+        return  getSelectedAllDatas();
     }
 
     @Override
@@ -227,4 +241,10 @@ public class LookupTableModel<T extends ViewModel> extends ListDataModel<T> impl
         this.profileProperties = profileProperties;
     }
 
+    @Override
+    public void clearSelectedAllDatas() {
+        this.selectedAllDatas.clear();
+    }
+
+    
 }

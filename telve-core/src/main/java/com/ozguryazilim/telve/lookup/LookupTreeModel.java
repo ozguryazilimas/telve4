@@ -394,4 +394,9 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         
         return ls;
     }
+
+    @Override
+    public void clearSelectedAllDatas() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

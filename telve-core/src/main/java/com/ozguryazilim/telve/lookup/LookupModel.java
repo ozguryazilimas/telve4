@@ -79,4 +79,9 @@ public interface LookupModel<R extends ViewModel, S> {
      * @return 
      */
     Object dataModel();
+    
+    /**
+     * UI tarafından seçilmiş listeyi silmek için kullanılır.
+     */
+    void clearSelectedAllDatas();
 }

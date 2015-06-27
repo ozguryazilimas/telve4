@@ -407,4 +407,8 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
     public E findBy( Long pk ){
         return getRepository().findBy(pk);
     }
+    
+    public void onRowSelect(SelectEvent event) {
+        //Sadece UI tetiklesin diye var.
+    }
 }

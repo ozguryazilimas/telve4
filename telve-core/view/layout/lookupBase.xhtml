@@ -22,6 +22,13 @@
                 </ui:fragment>
                 <div class="large-12 medium-12 small-12 columns" style="padding-top: 4px;">
                     <ui:insert name="filters" />
+                    <h:panelGroup id="selectionResult" layout="block" styleClass="pull-right" rendered="#{ bean.model.modelType eq 'Table' and bean.model.getMultiSelect()}">
+                        #{messages['general.label.TotalSelection']} : #{bean.model.getSelectedViewModels().size()}
+                        
+                        <p:commandLink action="#{bean.model.clearSelectedAllDatas()}" ajax="true" partialSubmit="true" process="@this" update="selectionResult">
+                            <i class="fa fa-trash" />
+                        </p:commandLink>
+                        </h:panelGroup>
                 </div>
             </div>
 
@@ -35,6 +42,8 @@
                                      paginatorPosition="bottom" 
                                      paginatorAlwaysVisible="false">
 
+                            <p:ajax event="rowSelect" listener="#{bean.onRowSelect}" update=":lookupForm:selectionResult" process="@form"/>
+                            
                             <p:column selectionMode="multiple" style="width:36px;" />  
 
                             <c:forEach items="#{bean.model.columns.entrySet()}" var="col" varStatus="loop">
@@ -131,7 +140,7 @@
 
                 </div>
             </h:panelGroup>
-            <h:panelGroup styleClass="actionButtons" style="position: fixed; bottom: 8px; padding-right: 18px;" layout="block">
+            <h:panelGroup styleClass="row actionButtons" layout="block">
                 <ui:insert name="actionButtons" />
                 <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="fa fa-check" action="#{bean.closeDialog()}" onclick="setSelections()" styleClass="btn-primary"/>
                 <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{bean.cancelDialog()}" />
