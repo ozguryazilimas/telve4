@@ -128,6 +128,15 @@
 
                         <ui:insert name="customFilter" />
                         
+                        <div class="pull-right">
+                            <a href="#" onclick="jQuery('#data').jstree('close_all');">
+                                <i class="fa fa-minus-square" />
+                            </a>
+                            <a href="#" onclick="jQuery('#data').jstree('open_all');">
+                                <i class="fa fa-plus-square" />
+                            </a>
+                        </div>
+                        
                         <div id="data" style="overflow: hidden"></div>
                         
                         <script type="text/javascript">
