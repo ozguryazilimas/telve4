@@ -246,5 +246,13 @@ public class LookupTableModel<T extends ViewModel> extends ListDataModel<T> impl
         this.selectedAllDatas.clear();
     }
 
+    @Override
+    public void clearSelections() {
+        selectedData = null;
+        selectedDatas = null;
+        clearSelectedAllDatas();
+    }
+
+    
     
 }

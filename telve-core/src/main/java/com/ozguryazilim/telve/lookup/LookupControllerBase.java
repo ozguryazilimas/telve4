@@ -164,6 +164,9 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         model.setProfile(profile);
         model.setListener(listener);
 
+        model.clearSelections();
+        
+        
         parseProfile();
         initProfile();
         

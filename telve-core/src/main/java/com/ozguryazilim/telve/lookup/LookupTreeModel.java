@@ -399,4 +399,11 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
     public void clearSelectedAllDatas() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public void clearSelections() {
+        this.selectedNodes = "";
+    }
+    
+    
 }
