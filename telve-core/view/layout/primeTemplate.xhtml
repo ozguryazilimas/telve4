@@ -492,6 +492,17 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <script type="text/javascript">
+                        
+                        hideListBar = '${hideListBar}';
+                        if( hideListBar == 'true'){
+                            //jQuery('#listToggle').click();
+                            jQuery("body").toggleClass('listbar-collapse');
+                        }
+                        
+                    </script>
+                    
                 </ui:fragment>
 
                 <div class="content-wrapper #{showListBar ? 'listbar' : ''} ">
