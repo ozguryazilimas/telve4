@@ -47,11 +47,13 @@
             <scope>test</scope>
             <type>pom</type>
         </dependency>
+        <!--
         <dependency>
             <groupId>com.hazelcast</groupId>
             <artifactId>hazelcast</artifactId>
             <scope>test</scope>
         </dependency>
+        -->
 
     </dependencies>
 

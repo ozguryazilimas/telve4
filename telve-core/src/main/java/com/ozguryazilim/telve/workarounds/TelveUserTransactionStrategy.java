@@ -38,7 +38,7 @@ public class TelveUserTransactionStrategy extends BeanManagedUserTransactionStra
     @Override
     protected UserTransaction resolveUserTransaction() {
         
-        LOG.info(USER_TRANSACTION_JNDI_NAME);
+        //LOG.info(USER_TRANSACTION_JNDI_NAME);
         
         InitialContext context = null;
         try {

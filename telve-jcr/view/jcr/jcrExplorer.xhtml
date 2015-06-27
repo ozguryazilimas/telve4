@@ -11,7 +11,7 @@
         <p:panelGrid >
             <f:facet name="header">
                 <p:row>
-                    <p:column style="width: 20%;" rendered="#{false}">
+                    <p:column style="width: 20%;" rendered="#{true}">
                         <h:outputText value=" #{messages['jcr.label.Folders']}" />
                         <h:form style="display: inline">
                             <p:commandLink title="#{messages['jcr.hint.NewFolder']}" onclick="PF('dlg').show();" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
@@ -32,7 +32,7 @@
                 </p:row>
             </f:facet>
             <p:row>
-                <p:column style="width: 20%;" rendered="#{false}">
+                <p:column style="width: 20%;" rendered="#{true}">
                     <h:panelGroup layout="block" id="data" ></h:panelGroup>
 
                 </p:column>
