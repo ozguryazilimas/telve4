@@ -78,6 +78,7 @@ public class UserHome extends AbstractIdentityHome<User> {
     @Override
     public void createNew() {
         setCurrent(new User());
+        doAfterNew();
     }
 
     public DualListModel<Role> getRoleList() {

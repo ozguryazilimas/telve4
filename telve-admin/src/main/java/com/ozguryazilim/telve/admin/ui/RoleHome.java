@@ -64,6 +64,7 @@ public class RoleHome extends AbstractIdentityHome<Role> {
     @Override
     public void createNew() {
         setCurrent(new Role());
+        doAfterNew();
     }
 
     public List<PermissionGroupUIModel> getPermissions() {
