@@ -16,6 +16,8 @@ import org.apache.deltaspike.core.api.exception.control.ExceptionHandler;
 import org.apache.deltaspike.core.api.exception.control.Handles;
 import org.apache.deltaspike.core.api.exception.control.event.ExceptionEvent;
 import org.apache.deltaspike.security.api.authorization.ErrorViewAwareAccessDeniedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Merkezi Hata yakalama ve kullanıcıyı bilgilendirme sınıfı.
@@ -28,6 +30,8 @@ import org.apache.deltaspike.security.api.authorization.ErrorViewAwareAccessDeni
 @RequestScoped
 public class TelveExceptionHandler {
 
+    private static final Logger LOG = LoggerFactory.getLogger(TelveExceptionHandler.class);
+    
     @Inject
     private ViewNavigationHandler viewNavigationHandler;
     
@@ -38,7 +42,7 @@ public class TelveExceptionHandler {
     private FacesContext facesContext;
     
     void logExceptions(@BeforeHandles ExceptionEvent<Throwable> evt) {
-        //log.warning("Something bad happened: " + evt.getException().getMessage());
+        LOG.error("Something bad happened", evt.getException());
     }
 
     /**
