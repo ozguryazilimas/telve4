@@ -19,49 +19,62 @@
                 <t:inputText label="global.label.Name" value="#{roleHome.current.name}" required="true" />
             </div>  
 
+            <script type="text/javascript">
+                function toggleChkBoxes( group, act){
+                    jQuery('[id$="'+act+'"]').find('[id*="'+ group+ '"]').trigger('click');
+                }
+                
+                function toggleRowChkBoxes( group, elm ){
+                    row = jQuery(elm).parent().parent().attr('data-ri');
+                    jQuery('[id*="'+group+'\\:'+row+'\\:"]').trigger('click');
+                }
+            </script>
+            
             <c:forEach id="groups" items="#{roleHome.permissions}"
                        var="pg" varStatus="pgs">
-                <t:accordion label="#{messages[ 'permission.label.'.concat( pg.name )]}" >
+                <t:accordion id="#{pg.name}a" label="#{messages[ 'permission.label.'.concat( pg.name )]}" >
 
-                    <p:dataTable value="#{pg.permissions}" var="pd" >
+                    <p:dataTable id="#{pg.name}" value="#{pg.permissions}" var="pd" >
                         <p:column headerText="#{messages['role.label.Domain']}">
-                            #{messages[ 'permission.label.'.concat( pd.definition.target)]}
+                            <a href="#" onclick="toggleRowChkBoxes('#{pg.name}', this )" >
+                                #{messages[ 'permission.label.'.concat( pd.definition.target)]}
+                            </a>
                         </p:column>
                         <p:column style="width: 36px;">
                             <f:facet name="header">
-                                <i class="fa fa-eye" title="#{messages['role.label.Select']}"></i>
+                                <i class="fa fa-eye" title="#{messages['role.label.Select']}" onclick="toggleChkBoxes( '#{pg.name}', 'select')"></i>
                             </f:facet>
-                            <p:selectBooleanCheckbox value="#{pd.select}" rendered="#{pd.definition.hasSelectAction()}"/>  
+                            <p:selectBooleanCheckbox id="select" value="#{pd.select}" rendered="#{pd.definition.hasSelectAction()}"/>  
                         </p:column>
                         <p:column style="width: 36px;">
                             <f:facet name="header">
-                                <i class="fa fa-plus" title="#{messages['role.label.Insert']}"></i>
+                                <i class="fa fa-plus" title="#{messages['role.label.Insert']}" onclick="toggleChkBoxes( '#{pg.name}', 'insert')"></i>
                             </f:facet>
-                            <p:selectBooleanCheckbox value="#{pd.insert}" rendered="#{pd.definition.hasInsertAction()}"/> 
+                            <p:selectBooleanCheckbox id="insert" value="#{pd.insert}" rendered="#{pd.definition.hasInsertAction()}"/> 
                         </p:column>
                         <p:column  style="width: 36px;">
                             <f:facet name="header">
-                                <i class="fa fa-edit" title="#{messages['role.label.Update']}"></i>
+                                <i class="fa fa-edit" title="#{messages['role.label.Update']}" onclick="toggleChkBoxes( '#{pg.name}', 'update')"></i>
                             </f:facet>
-                            <p:selectBooleanCheckbox value="#{pd.update}" rendered="#{pd.definition.hasUpdateAction()}"/> 
+                            <p:selectBooleanCheckbox id="update" value="#{pd.update}" rendered="#{pd.definition.hasUpdateAction()}"/> 
                         </p:column>
                         <p:column style="width: 36px;">
                             <f:facet name="header">
-                                <i class="fa fa-trash" title="#{messages['role.label.Delete']}"></i>
+                                <i class="fa fa-trash" title="#{messages['role.label.Delete']}" onclick="toggleChkBoxes( '#{pg.name}', 'delete')"></i>
                             </f:facet>
-                            <p:selectBooleanCheckbox value="#{pd.delete}" rendered="#{pd.definition.hasDeleteAction()}"/> 
+                            <p:selectBooleanCheckbox id="delete" value="#{pd.delete}" rendered="#{pd.definition.hasDeleteAction()}"/> 
                         </p:column>
                         <p:column style="width: 36px;">
                             <f:facet name="header">
-                                <i class="fa fa-share-square-o" title="#{messages['role.label.Export']}"></i>
+                                <i class="fa fa-share-square-o" title="#{messages['role.label.Export']}" onclick="toggleChkBoxes( '#{pg.name}', 'export')"></i>
                             </f:facet>
-                            <p:selectBooleanCheckbox value="#{pd.export}" rendered="#{pd.definition.hasExportAction()}"/> 
+                            <p:selectBooleanCheckbox id="export" value="#{pd.export}" rendered="#{pd.definition.hasExportAction()}"/> 
                         </p:column>
                         <p:column style="width: 36px;">
                             <f:facet name="header">
-                                <i class="fa fa-gear" title="#{messages['role.label.Exec']}"></i>
+                                <i class="fa fa-gear" title="#{messages['role.label.Exec']}" onclick="toggleChkBoxes( '#{pg.name}', 'exec')"> </i>
                             </f:facet>
-                            <p:selectBooleanCheckbox value="#{pd.exec}" rendered="#{pd.definition.hasSelectAction()}"/> 
+                            <p:selectBooleanCheckbox id="exec" value="#{pd.exec}" rendered="#{pd.definition.hasSelectAction()}"/> 
                         </p:column>
                     </p:dataTable>
                 </t:accordion>
