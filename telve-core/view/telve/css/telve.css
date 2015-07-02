@@ -1113,6 +1113,11 @@ td{
   padding: 6px 5px 6px 15px;
   display: block;
 }
+
+.sidebar-menu > li:hover{
+    background-color: #7dc3e8;
+}
+
 .sidebar-menu > li > a > .fa,
 .sidebar-menu > li > a > .glyphicon,
 .sidebar-menu > li > a > .ion {
@@ -1156,10 +1161,15 @@ td{
 .sidebar-menu .treeview-menu > li {
   margin: 0;
 }
+
+.sidebar-menu .treeview-menu > li:hover {
+  background-color: #bee1f4;
+}
+
 .sidebar-menu .treeview-menu > li > a {
   padding: 5px 5px 5px 15px;
   display: block;
-  font-size: 14px;
+  font-size: 12px;
 }
 .sidebar-menu .treeview-menu > li > a > .fa,
 .sidebar-menu .treeview-menu > li > a > .glyphicon,
