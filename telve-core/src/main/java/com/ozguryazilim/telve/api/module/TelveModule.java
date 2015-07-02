@@ -31,14 +31,6 @@ public @interface TelveModule {
     String name() default "";
     
     /**
-     * rbn.xml dosyasının adı.
-     * 
-     * Eğer verilmezde moduladı.rbn.xml arayacaktır.
-     * @return 
-     */
-    String ribbon() default "";
-    
-    /**
      * perm.xml dosyasının adı.
      * 
      * Eğer verilmezde moduladı.perm.xml arayacaktır.

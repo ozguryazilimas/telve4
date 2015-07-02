@@ -34,6 +34,8 @@ public class PageTitleResolver {
      * 
      * Eğer birden fazla PageTitle ile işaretlenmişse işlkini döndürür.
      * 
+     * Eğer hiç işaretlenmemişse sınıf adını döndürür.
+     * 
      * @param viewId
      * @return 
      */
@@ -47,6 +49,8 @@ public class PageTitleResolver {
             if( !ls.isEmpty() ){
                 return ls.get(0).value();
             }
+            
+            return "page.title." + vcd.getConfigClass().getSimpleName();
         }
         
         return "";

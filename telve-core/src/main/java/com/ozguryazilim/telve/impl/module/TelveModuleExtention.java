@@ -40,11 +40,6 @@ public class TelveModuleExtention implements Extension {
             LOG.info("Found Module: " + moduleName);
             startupBeans.add(event.getBean());
             
-            String ribbonFile = a.ribbon();
-            if( ribbonFile.isEmpty() ){
-                ribbonFile = moduleName + ".rbn.xml";
-            }
-            
             String permFile = a.permissions();
             if( permFile.isEmpty() ){
                 permFile = moduleName + ".perm.xml";
@@ -55,7 +50,7 @@ public class TelveModuleExtention implements Extension {
                 messageFile = moduleName + "-messages";
             }
             
-            TelveModuleRegistery.register(moduleName, permFile, ribbonFile, messageFile);
+            TelveModuleRegistery.register(moduleName, permFile, messageFile);
         }
     }
 

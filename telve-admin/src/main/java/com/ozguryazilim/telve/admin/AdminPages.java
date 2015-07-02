@@ -6,7 +6,8 @@
 package com.ozguryazilim.telve.admin;
 
 import com.ozguryazilim.telve.auth.SecuredPage;
-import com.ozguryazilim.telve.view.PageTitle;
+import com.ozguryazilim.telve.nav.AdminNavigationSection;
+import com.ozguryazilim.telve.nav.Navigation;
 import com.ozguryazilim.telve.view.Pages;
 import javax.enterprise.context.ApplicationScoped;
 import org.apache.deltaspike.jsf.api.config.view.Folder;
@@ -19,12 +20,12 @@ import org.apache.deltaspike.jsf.api.config.view.View;
 @ApplicationScoped
 @Folder(name="/admin/idm")
 public interface AdminPages extends Pages.Admin{
-    @SecuredPage @View @PageTitle("User Definition")
+    @SecuredPage("user") @View @Navigation(icon = "fa fa-dashboard", section = AdminNavigationSection.class)
     class User implements Admin {};
     
-    @SecuredPage @View @PageTitle("Role Definition")
+    @SecuredPage("role") @View @Navigation(icon = "fa fa-dashboard", section = AdminNavigationSection.class)
     class Role implements Admin {};
     
-    @SecuredPage @View @PageTitle("Change Passord")
+    @SecuredPage @View 
     class PasswordOptionPane implements Admin {};
 }

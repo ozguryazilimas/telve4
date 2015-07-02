@@ -17,17 +17,6 @@
 
             <ui:include src="/layout/templateHeader.xhtml" />
 
-            <ui:remove>
-                <script type="text/javascript">
-                    // initialise plugins
-                    jQuery(document).ready(function () {
-
-                        jQuery('#ribbon').ribbon({
-                            timeout: 500
-                        });
-                    });
-                </script>
-            </ui:remove>
         </h:head>
 
         <h:body >
@@ -81,47 +70,12 @@
 
             <ui:insert name="outerspace"></ui:insert>
 
-            <ui:remove>
-                <p:layout fullPage="true">
-                    <ui:fragment rendered="#{param.forDialog ne 'true' }">
-                        <p:layoutUnit position="north"  size="164" style="padding: 0px; z-index: 1;" >
-                            <ui:include src="/layout/ribbon.xhtml" />
-                        </p:layoutUnit>
-                    </ui:fragment>
-
-                    <p:layoutUnit position="center"  style="padding: 0 0.4em !important;">
-                        <ui:insert name="body"/>
-                        <ui:remove>
-                            <div style="clear:both">
-                                <div class="wrap body">
-
-                                    <ui:insert name="body"/>
-
-                                </div>
-                            </div>
-                        </ui:remove>
-                    </p:layoutUnit>
-                    <ui:fragment rendered="#{param.forDialog ne 'true' }">
-                        <p:layoutUnit position="south" size="51" >
-                            <div class="footer">
-                                <ui:remove>
-                                    <ui:include src="/branding/footer.xhtml" />
-                                </ui:remove>
-                            </div>	
-                        </p:layoutUnit>
-                    </ui:fragment>
-                </p:layout>
-            </ui:remove>
-
-
-
-
             <div class="wrapper">
 
                 <header class="fixed main-header">
                     <p:ajaxStatus onstart="NProgress.start();" onsuccess="NProgress.done();" />
 
-                    <a href="#" class="logo">#{telveConfigResolver.getProperty('app.title')}</a>
+                    <h:link outcome="/home.xhtml" styleClass="logo">#{telveConfigResolver.getProperty('app.title')}</h:link>
                     <nav class="navbar navbar-static-top" role="navigation">
                         <!-- Sidebar toggle button-->
 
@@ -186,38 +140,16 @@
                                         <i class="fa fa-expand"></i>
                                     </a>
                                 </li>
-                                <li >
-                                    <h:link  outcome="/home.xhtml" >
-                                        <i class="fa fa-dashboard"></i>
-                                    </h:link>
-                                </li>
-
-                                <li >
-                                    <h:link  outcome="/calendar/calendarConsole.xhtml" >
-                                        <i class="fa fa-calendar"></i>
-                                    </h:link>
-                                </li>
+                                <!-- Main Navigations -->
+                                <ui:repeat value="#{nagivationController.mainNavigations}" var="nav" >
+                                    <li >
+                                        <h:link  outcome="#{nav.viewId}" >
+                                            <i class="#{nav.icon}"></i>
+                                        </h:link>
+                                    </li>
+                                </ui:repeat>
                                 
-                                <li >
-                                    <h:link  outcome="/bpm/taskConsole.xhtml" >
-                                        <i class="fa fa-tasks"></i>
-                                    </h:link>
-                                </li>
-
-                                <li >
-                                    <h:link  outcome="/reports/reportConsole.xhtml" >
-                                        <i class="fa fa-print"></i>
-                                    </h:link>
-                                </li>
-
                             </ul>
-                            <ui:remove>
-                                <h:form styleClass="navbar-form navbar-right" role="search">
-                                    <div class="form-group">
-                                        <h:inputText styleClass="form-control" />
-                                    </div>
-                                </h:form>
-                            </ui:remove>
                         </div>
 
                         <div class="navbar-custom-menu">
@@ -352,7 +284,7 @@
                                         <!-- img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image" -->
                                         <span class="hidden-xs">#{identity.account.firstName} #{identity.account.lastName}</span>
                                     </a>
-                                    <p:overlayPanel id="hede" widget="hede" widgetVar="hede" >
+                                    <p:overlayPanel id="hede" widgetVar="hede" >
                                         <ul class="dropdown-menu">
                                             <li>
                                                 <h:link outcome="/options.xhtml">
@@ -403,68 +335,62 @@
                             <ui:remove>
                                 <li class="header">#{messages["Main Menu"]}</li>
                             </ui:remove>
-                            <li>
-                                <h:link  outcome="/person/personBrowse.xhtml" >
-                                    <c:forEach items="#{action.action.params}" var="entry">
-                                        <f:param name="#{entry.key}" value="#{entry.value}"/>
-                                    </c:forEach>
+                            <!-- Side Main Navigations -->
+                            <ui:repeat value="#{nagivationController.sideNavigations}" var="nav" >
+                                
+                                <li>
+                                    <h:link  outcome="#{nav.viewId}" >
+                                        <ui:remove>
+                                        <c:forEach items="#{action.action.params}" var="entry">
+                                            <f:param name="#{entry.key}" value="#{entry.value}"/>
+                                        </c:forEach>
+                                        </ui:remove>
 
-                                    <h:graphicImage value="/img/ribbon/small/person.png"  style="margin-right: 4px;"/>
-                                    <span style="padding-right: 4px;">#{messages['Person']}</span> 
+                                        <h:graphicImage value="/img/ribbon/small#{nav.icon}"  style="margin-right: 4px;" rendered="#{nav.fontIcon}"/>
+                                        <ui:fragment rendered="#{not nav.fontIcon}">
+                                            <i class="#{nav.icon}"></i>
+                                        </ui:fragment>
+                                        <span style="padding-right: 4px;">#{messages[nav.label]}</span> 
 
-                                </h:link>
-                            </li>
-                            <li>
-                                <h:link  outcome="/examination/medicalExaminationBrowse.xhtml" >
-                                    <c:forEach items="#{action.action.params}" var="entry">
-                                        <f:param name="#{entry.key}" value="#{entry.value}"/>
-                                    </c:forEach>
-
-                                    <i class="fa fa-stethoscope"></i>
-                                    <span style="padding-right: 4px;">#{messages['Medical Examination']}</span> 
-
-                                </h:link>
-                            </li>
-                            <li class="header">#{messages["Navigasyon"]}</li>
-                            <c:forEach id="tabrepeater" items="#{ribbonController.getTabs()}"
-                                       var="tab" varStatus="tabCounter">
-
+                                    </h:link>
+                                </li>
+                                
+                            </ui:repeat>
+                            
+                            <li class="header">#{messages["Navigasyon I18N"]}</li>
+                            <ui:repeat value="#{nagivationController.navigationSections}" var="section" >
                                 <li class="treeview">
                                     <a href="#">
                                         <i class="fa fa-caret-right"></i>
-                                        <span>#{messages[tab.label]}</span>
+                                        <span>#{messages[section.label]}</span>
 
                                         <ui:remove>
                                             <span class="label label-primary pull-right">4</span>
                                         </ui:remove>
                                     </a>
                                     <ul class="treeview-menu">
-                                        <c:forEach id="secrepeater" items="#{tab.sections}" var="section" varStatus="rowCounter1">
-
-
-                                            <c:forEach id="actrepeater" items="#{section.actions}" var="action" varStatus="rowCounter2">
-                                                <li>
-                                                    <h:link  outcome="#{ action.action.url }" >
+                                        <ui:repeat value="#{nagivationController.getSectionLinks(section.label)}" var="nav" >
+                                            <li>
+                                                <h:link  outcome="#{ nav.viewId }" >
+                                                    <ui:remove>
                                                         <c:forEach items="#{action.action.params}" var="entry">
                                                             <f:param name="#{entry.key}" value="#{entry.value}"/>
                                                         </c:forEach>
-
-                                                        <h:graphicImage value="/img/ribbon/small/#{action.action.img}"  style="margin-right: 4px;"/>
-                                                        <span style="padding-right: 4px;">#{messages[action.action.label]}</span> 
-
+                                                    </ui:remove>
+                                                    
+                                                    <h:graphicImage value="/img/ribbon/small#{nav.icon}"  style="margin-right: 4px;" rendered="#{nav.fontIcon}"/>
+                                                    <ui:fragment rendered="#{not nav.fontIcon}">
+                                                        <i class="#{nav.icon}"></i>
+                                                    </ui:fragment>
+                                                    <span style="padding-right: 4px;">#{messages[nav.label]}</span> 
                                                     </h:link>
                                                 </li>
-                                            </c:forEach>
-
-
-                                        </c:forEach>
+                                        </ui:repeat>
                                     </ul>
                                 </li>
-                            </c:forEach>
-
+                            </ui:repeat>
                         </ul>
                         <ui:remove>
-
                             <div>
                                 <p>Günün İp Uçusu gibi bişiler buraya doğru gelebilir belki...</p>
                             </div>
