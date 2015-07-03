@@ -39,21 +39,21 @@ public interface Pages extends ViewConfig {
     interface Admin extends Pages{
         
         @SecuredPage("storedCommand")
-        @Navigation( icon = "fa fa-dashboard", section = AdminNavigationSection.class)
+        @Navigation( icon = "/storedCommand.png", section = AdminNavigationSection.class)
         class StoredCommandBrowse implements Admin {};
         
         @SecuredPage("scheduledCommand")
-        @Navigation( icon = "fa fa-dashboard", section = AdminNavigationSection.class)
+        @Navigation( icon = "/scheduledCommand.png", section = AdminNavigationSection.class)
         class ScheduledCommandBrowse implements Admin {};
         
         @SecuredPage("executionLog")
-        @Navigation( icon = "fa fa-dashboard", section = AdminNavigationSection.class)
+        @Navigation( icon = "/executionLog.png", section = AdminNavigationSection.class)
         class ExecutionLogBrowse implements Admin {};
         
         @SecuredPage("executionLogClearCommand")
         class ExecutionLogClearCommand implements Admin {};
         
-        @Navigation(icon = "fa fa-dashboard", section = AdminNavigationSection.class)
+        @Navigation(icon = "/suggestion.png", section = AdminNavigationSection.class)
         class SuggestionBrowse implements Admin {};
         
         class AllOptionsPane implements Admin {};
