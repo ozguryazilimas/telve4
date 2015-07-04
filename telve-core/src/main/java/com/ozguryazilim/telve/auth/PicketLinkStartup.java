@@ -45,7 +45,7 @@ public class PicketLinkStartup {
             identityManager.updateCredential(user, password);
             
             // Create some relationships
-            Role r = new Role("admin");
+            Role r = new Role("superuser");
             identityManager.add(r);
             
             BasicModel.grantRole( partitionManager.createRelationshipManager(), user, r);
