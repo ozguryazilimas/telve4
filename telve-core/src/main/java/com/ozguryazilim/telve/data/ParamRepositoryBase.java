@@ -85,6 +85,7 @@ public abstract class ParamRepositoryBase<E extends ParamEntityBase, R extends V
                 .eq(ParamEntityBase_.active, true)
                 .getResultList();
     }
-    
+
+    public abstract List<E> findByCode( String code );
     
 }

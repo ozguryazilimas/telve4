@@ -5,8 +5,10 @@
  */
 package com.ozguryazilim.telve.forms;
 
+import com.ozguryazilim.telve.data.ParamRepositoryBase;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
+import com.ozguryazilim.telve.entities.ParamEntityBase;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.view.Pages;
 import java.io.Serializable;
@@ -35,15 +37,15 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
 
     @Inject
     private GroupedConversation conversation;
-    
+
     public List<E> getEntityList() {
         LOG.debug("super.getEntityList");
-        if( entityList == null ){
+        if (entityList == null) {
             entityList = getRepository().findAll();
         }
         return entityList;
     }
-    
+
     /**
      * Geriye kullanılacak olan repository'i döndürür.
      *
@@ -56,7 +58,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
      *
      * @return
      */
-    protected E getNewEntity(){
+    protected E getNewEntity() {
         try {
             return getRepository().createNew();
         } catch (InstantiationException | IllegalAccessException ex) {
@@ -77,11 +79,11 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
     }
 
     public void edit(E e) {
-        
+
         LOG.debug("Edit edicedik : {}", e);
-        
+
         onBeforeLoad();
-        
+
         entity = e;
         onAfterLoad();
     }
@@ -98,30 +100,45 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
             return Pages.Home.class;
         }
 
-        if( !onBeforeSave() ) return null;
-        
-        //try {
-            getRepository().saveAndFlush(entity);
-            if( !getEntityList().contains(entity) ){
-                getEntityList().add(entity);
+        if (!onBeforeSave()) {
+            return null;
+        }
+
+        if (!entity.isPersisted()) {
+            //Eğer ParamEntityBase'den gelen bir entity ise Unique Code olup olmadığını bir kontrol edelim...
+            if (getRepository() instanceof ParamRepositoryBase
+                    && entity instanceof ParamEntityBase) {
+                ParamEntityBase pe = (ParamEntityBase) entity;
+                List<E> ls = ((ParamRepositoryBase) getRepository()).findByCode(pe.getCode());
+                if (!ls.isEmpty()) {
+                    FacesMessages.error("general.message.record.CodeNotUnique");
+                    return null;
+                }
             }
-            /*
-        } catch (ConstraintViolationException e) {
-            log.error("Hata : #0", e);
-            facesMessages.add("#{messages['general.message.record.NotUnique']}");
-            return BaseConsts.FAIL;
-        } catch (Exception e) {
-            log.error("Hata : #0", e);
-            facesMessages.add("#{messages['general.message.record.SaveFail']}");
-            return BaseConsts.FAIL;
-        }*/
-            
+        }
+
+        //try {
+        getRepository().saveAndFlush(entity);
+        if (!getEntityList().contains(entity)) {
+            getEntityList().add(entity);
+        }
+        /*
+         } catch (ConstraintViolationException e) {
+         log.error("Hata : #0", e);
+         facesMessages.add("#{messages['general.message.record.NotUnique']}");
+         return BaseConsts.FAIL;
+         } catch (Exception e) {
+         log.error("Hata : #0", e);
+         facesMessages.add("#{messages['general.message.record.SaveFail']}");
+         return BaseConsts.FAIL;
+         }*/
+
         onAfterSave();
-        
+
         LOG.debug("Entity Saved : {} ", entity);
-        
+
         FacesMessages.info("general.message.record.SaveSuccess");
-        
+
         refreshEntityList();
 
         return null;
@@ -133,11 +150,13 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
             return Pages.Home.class;
         }
 
-        if( !onBeforeDelete() ) return null;
-        
+        if (!onBeforeDelete()) {
+            return null;
+        }
+
         try {
             getRepository().deleteById(entity.getId());
-            
+
         } catch (Exception e) {
             LOG.error("Hata : {}", e);
             FacesMessages.error("general.message.record.DeleteFaild");
@@ -146,16 +165,16 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
 
         //Listeden de çıkaralım
         getEntityList().remove(entity);
-        
+
         onAfterDelete();
-        
+
         LOG.debug("Entity Removed : {} ", entity);
-        
+
         //Mevcut silindi dolayısı ile null verdik
         entity = null;
-        
+
         FacesMessages.info("general.message.record.DeleteSuccess");
-        
+
         refreshEntityList();
 
         return null;
@@ -163,25 +182,26 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
 
     /**
      * TODO: Burada GroupConversationScope kapatılacak
-     * @return 
+     *
+     * @return
      */
-    public Class<? extends ViewConfig> close(){
+    public Class<? extends ViewConfig> close() {
         conversation.close();
         return Pages.Home.class;
     }
-    
+
     /**
-     * Kayıt işlemlerinden sonra çağırılır. 
-     * 
+     * Kayıt işlemlerinden sonra çağırılır.
+     *
      * Eğer isteniyor ise listenin tekrardan çelkilmesi içindir.
-     * 
+     *
      */
     public void refreshEntityList() {
 
     }
 
     public E getEntity() {
-        if( entity == null){
+        if (entity == null) {
             createNew();
         }
         return entity;
@@ -199,28 +219,27 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
         this.filteredList = filteredList;
     }
 
-    
-    public boolean onBeforeSave(){
+    public boolean onBeforeSave() {
         return true;
     }
-    
-    public boolean onAfterSave(){
+
+    public boolean onAfterSave() {
         return true;
     }
-    
-    public boolean onBeforeLoad(){
+
+    public boolean onBeforeLoad() {
         return true;
     }
-    
-    public boolean onAfterLoad(){
+
+    public boolean onAfterLoad() {
         return true;
     }
-    
-    public boolean onBeforeDelete(){
+
+    public boolean onBeforeDelete() {
         return true;
     }
-    
-    public boolean onAfterDelete(){
+
+    public boolean onAfterDelete() {
         return true;
     }
 }

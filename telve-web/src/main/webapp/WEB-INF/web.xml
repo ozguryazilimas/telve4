@@ -17,10 +17,12 @@
         <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
         <param-value>true</param-value>
     </context-param>
+    <!-- JCache Provider ve ya Infinispan Provider lazım
     <context-param>
         <param-name>primefaces.CACHE_PROVIDER</param-name>
         <param-value>org.primefaces.cache.HazelcastCacheProvider</param-value>
     </context-param>
+    -->
     <servlet>
         <servlet-name>Push Servlet</servlet-name>
         <servlet-class>org.primefaces.push.PushServlet</servlet-class>

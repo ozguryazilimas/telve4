@@ -180,7 +180,7 @@ public class NagivationController implements Serializable {
      * @return
      */
     public List<NavigationLinkModel> getSectionLinks(String section) {
-        LOG.info("Nav request for {}", section);
+        LOG.debug("Nav request for {}", section);
         return navigations.get(section);
     }
 

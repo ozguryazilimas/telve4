@@ -90,4 +90,6 @@ public abstract class TreeRepositoryBase<E extends TreeNodeEntityBase> extends R
                 .getResultList();
     }
     
+    
+    public abstract List<E> findByCode( String code );
 }

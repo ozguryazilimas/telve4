@@ -114,6 +114,16 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
             return null;
         }
 
+        if( !entity.isPersisted() ){
+            //Unique Code olup olmadığını bir kontrol edelim...
+            List<E> ls = getRepository().findByCode(entity.getCode());
+            if( !ls.isEmpty() ){
+                FacesMessages.error("general.message.record.CodeNotUnique");
+                return null;
+            }
+        }
+        
+        
         //boolean newRecord = !entity.isPersisted();
         //Path saklamak için ID'nin alınmaya ihtiyacı var o yüzden eğer persist değilse önce bir ID için kaydediyoruz.
         if (!entity.isPersisted()) {
