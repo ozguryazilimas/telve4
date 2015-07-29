@@ -30,7 +30,7 @@ public abstract class ParamEntityBase extends EntityBase{
     @Column(name="ISACTIVE")
     private Boolean active = Boolean.TRUE;
 
-    @Column(name = "INFO", length= 100)
+    @Column(name = "INFO", length= 255)
     private String info; 
 
     public String getCode() {

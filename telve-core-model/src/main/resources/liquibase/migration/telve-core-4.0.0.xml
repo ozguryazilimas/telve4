@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
     <changeSet author="haky" id="BASE-1">
         <createTable tableName="GENERIC_SEQ">
             <column autoIncrement="true" name="next_val" type="BIGINT">
@@ -20,10 +20,10 @@
             <column name="next_val" value="1" />
         </insert>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466158025-1">
+    <changeSet author="haky (generated)" id="1438162495087-1">
         <createTable tableName="TLV_CALENDAR">
-            <column autoIncrement="true" name="ID" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="TLV_CALENDARPK"/>
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
             <column name="ACTOR" type="VARCHAR(255)"/>
             <column name="ALLDAY" type="BOOLEAN"/>
@@ -40,10 +40,10 @@
             <column name="TITLE" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466158025-2">
+    <changeSet author="haky (generated)" id="1438162495087-2">
         <createTable tableName="TLV_COMMANDS">
-            <column autoIncrement="true" name="ID" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="TLV_COMMANDSPK"/>
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
             <column name="COMMAND" type="CLOB"/>
             <column name="CREATE_BY" type="VARCHAR(255)"/>
@@ -54,10 +54,10 @@
             <column name="TYPE" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466158025-3">
+    <changeSet author="haky (generated)" id="1438162495087-3">
         <createTable tableName="TLV_EXEC_LOG">
-            <column autoIncrement="true" name="ID" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="TLV_EXEC_LOGPK"/>
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
             <column name="LOG_DATE" type="datetime"/>
             <column name="EXEC_BY" type="VARCHAR(255)"/>
@@ -66,13 +66,13 @@
             <column name="SEVERITY" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466158025-4">
+    <changeSet author="haky (generated)" id="1438162495087-4">
         <createTable tableName="TLV_NOTE">
-            <column autoIncrement="true" name="ID" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="TLV_NOTEPK"/>
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
             <column name="ATTACHMENT" type="VARCHAR(255)"/>
-            <column name="BODY" type="VARCHAR(255)"/>
+            <column name="BODY" type="VARCHAR(2000)"/>
             <column name="CREATE_DATE" type="datetime"/>
             <column name="OWNER" type="VARCHAR(255)"/>
             <column name="PERMISSION" type="VARCHAR(255)"/>
@@ -80,34 +80,49 @@
             <column name="SUBJECT" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466158025-5">
-        <createTable tableName="TLV_OPTIONS">
-            <column name="OP_KEY" type="VARCHAR(255)">
-                <constraints primaryKey="true" primaryKeyName="TLV_OPTIONSPK"/>
-            </column>
-            <column name="OP_OWNER" type="VARCHAR(20)"/>
-            <column name="OP_VALUE" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="haky (generated)" id="1425466158025-6">
+    <changeSet author="haky (generated)" id="1438162495087-5">
         <createTable tableName="TLV_SEQUENCE">
-            <column autoIncrement="true" name="ID" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="TLV_SEQUENCEPK"/>
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
             <column name="SQ_KEY" type="VARCHAR(255)"/>
             <column name="SQ_VALUE" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466158025-7">
+    <changeSet author="haky (generated)" id="1438162495087-6">
         <createTable tableName="TLV_SUGGESTION_ITEM">
-            <column autoIncrement="true" name="ID" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="TLV_SUGGESTIOPK"/>
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
             </column>
             <column name="ISACTIVE" type="BOOLEAN"/>
-            <column name="DATA" type="VARCHAR(255)"/>
+            <column name="DATA" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="CODE_GROUP" type="VARCHAR(255)"/>
             <column name="INFO" type="VARCHAR(255)"/>
             <column name="CODE_KEY" type="VARCHAR(255)"/>
         </createTable>
+    </changeSet>
+    
+    <changeSet author="haky (generated)" id="1438162495087-8">
+        <addPrimaryKey columnNames="ID" constraintName="TLV_CALENDARPK" tableName="TLV_CALENDAR"/>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1438162495087-9">
+        <addPrimaryKey columnNames="ID" constraintName="TLV_COMMANDSPK" tableName="TLV_COMMANDS"/>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1438162495087-10">
+        <addPrimaryKey columnNames="ID" constraintName="TLV_EXEC_LOGPK" tableName="TLV_EXEC_LOG"/>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1438162495087-11">
+        <addPrimaryKey columnNames="ID" constraintName="TLV_NOTEPK" tableName="TLV_NOTE"/>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1438162495087-12">
+        <addPrimaryKey columnNames="ID" constraintName="TLV_SEQUENCEPK" tableName="TLV_SEQUENCE"/>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1438162495087-13">
+        <addPrimaryKey columnNames="ID" constraintName="TLV_SUGGESTION_ITEMPK" tableName="TLV_SUGGESTION_ITEM"/>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1438162495087-14">
+        <addUniqueConstraint columnNames="DATA" constraintName="UC_TLV_SUGGESTION_ITEMDATA_COL" tableName="TLV_SUGGESTION_ITEM"/>
     </changeSet>
 </databaseChangeLog>

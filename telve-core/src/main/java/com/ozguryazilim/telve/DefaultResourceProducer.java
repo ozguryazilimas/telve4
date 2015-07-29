@@ -5,6 +5,10 @@
  */
 package com.ozguryazilim.telve;
 
+import javax.cache.Cache;
+import javax.cache.Caching;
+import javax.cache.configuration.MutableConfiguration;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Default;
@@ -34,6 +38,29 @@ public class DefaultResourceProducer {
     @Produces @CurrentUser
     public String currentUser() {
         return identity.getAccount().getId();
+    }
+ 
+    @Produces
+    @Default
+    @ApplicationScoped
+    public Cache<String, Object> produceObjectCache() {
+        Cache<String, Object> cache= Caching.getCachingProvider().getCacheManager().createCache("TelveCache",
+                new MutableConfiguration<String, Object>()
+                    .setStoreByValue(false)
+                    .setStatisticsEnabled(false)
+                    .setManagementEnabled(false)
+                    .setTypes(String.class, Object.class));
+                    //.setWriteThrough(true)
+                    //.setReadThrough(true)
+                    //.setCacheLoaderFactory(FactoryBuilder.factoryOf( new OptionCacheLoader(new OptionRepository2(emf))))
+                    //.setCacheWriterFactory(FactoryBuilder.factoryOf( new OptionCacheWriter(optionRepository))));
+            //.setExpiry(CacheConfiguration.ExpiryType.MODIFIED, new Duration(TimeUnit.MINUTES, 10))
+        //.setStoreByValue(false)
+        //.build();
+        //return procuceCacheManager().createCache("Option-Cache", null);
+        
+        
+        return cache;
     }
     
 }

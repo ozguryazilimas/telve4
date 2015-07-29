@@ -21,21 +21,21 @@ import javax.validation.constraints.Size;
  */
 @MappedSuperclass
 public abstract class DocumentBase extends AuditBase{
-    @Column(name="SERIAL", length=10, nullable=false, unique=true)
+    @Column(name="SERIAL", length=30, nullable=false, unique=true)
     @NotNull
-    @Size(max=10, min=1)
+    @Size(max=30, min=1)
     private String serial;
     
-    @Column(name="CODE", length=15)
-    @Size(max=15)
+    @Column(name="CODE", length=30)
+    @Size(max=30)
     private String code;
     
     @Column(name="INFO")
     private String info;
     
     
-    @Column(name="REFERENCE", length=10)
-    @Size(max=10)
+    @Column(name="REFERENCE", length=30)
+    @Size(max=30)
     private String reference;
     
     @Column(name="ISACTIVE")

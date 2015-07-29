@@ -35,7 +35,7 @@ public class Note extends EntityBase{
     /**
      * Asıl mesaj
      */
-    @Column( name ="BODY")
+    @Column( name ="BODY", length = 2000)
     private String body;
     
     /**

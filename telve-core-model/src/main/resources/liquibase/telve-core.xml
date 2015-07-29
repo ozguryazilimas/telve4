@@ -5,7 +5,6 @@
     
     <include file="liquibase/migration/telve-core-4.0.0.xml" />
     <include file="liquibase/migration/kahve-4.0.0.xml" />
-    <include file="liquibase/migration/kahve-4.0.0.A7.xml" />
     
         
 </databaseChangeLog>
