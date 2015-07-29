@@ -19,6 +19,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.servlet.http.Cookie;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 
 /**
@@ -26,6 +27,8 @@ import org.apache.deltaspike.core.api.provider.BeanProvider;
  *
  * Seam 2.3'den esinlenildi.
  *
+ * Default locale'i jsf-config yerine "application.locale" property değerinden okuyor. eğer bulamazsa varsayılan olarak tr döndürüyor.
+ * 
  * @author Hakan Uygun
  */
 @Named
@@ -41,9 +44,13 @@ public class LocaleSelector implements Serializable {
 
     @PostConstruct
     public void init() {
+        //Önce Cookie'ye bir bakalım 
         Cookie c = CookieUtils.getCookie(LOCALE_COOKIE);
         if (c != null) {
             setLocaleString(c.getValue());
+        } else {
+            //Yoksa config değerini alalım.
+            setLocaleString(ConfigResolver.getPropertyValue("application.locale", "tr"));
         }
     }
 
@@ -73,7 +80,7 @@ public class LocaleSelector implements Serializable {
     }
 
     public Locale getLocale() {
-        return locale != null ? locale : Locale.getDefault();
+        return locale != null ? locale : FacesContext.getCurrentInstance().getViewRoot().getLocale();
     }
 
     public void setLocale(Locale locale) {
