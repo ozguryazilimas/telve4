@@ -71,4 +71,12 @@
         </h:form>
 
     </ui:define>
+    
+    <ui:define name="context-menu">
+        <h:link outcome="#{bean.getEditPage()}" styleClass="context-command" >
+            <i class="fa fa-plus-circle"></i>
+            <h:outputText value=" #{messages['general.button.Add']}" />
+            <f:param name="eid" value="0"/>
+        </h:link>
+    </ui:define>
 </ui:composition>
