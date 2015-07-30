@@ -14,6 +14,7 @@
         <composite:attribute name="readonly" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="columnClass" required="false" default="large-6 medium-6 small-6"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:attribute name="yearRange" required="false"  default="c-10:c+10"/>
         <composite:clientBehavior name="dateSelect" event="dateSelect" targets="#{cc.id}_inp" />
     </composite:interface>
 
@@ -24,7 +25,7 @@
                 <span class="value">
                     <p:calendar id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}"
                                 placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.Date']}" showOn="button"
-                                navigator="true">
+                                navigator="true" yearRange="#{cc.attrs.yearRange}">
                         <p:clientValidator />
                     </p:calendar>
                 </span>
