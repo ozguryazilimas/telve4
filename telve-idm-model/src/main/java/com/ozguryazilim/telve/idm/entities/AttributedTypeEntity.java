@@ -18,6 +18,7 @@
 package com.ozguryazilim.telve.idm.entities;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -37,6 +38,7 @@ public abstract class AttributedTypeEntity implements Serializable {
 
     @Id
     @Identifier
+    @Column(name = "ID")
     private String id;
 
     public String getId() {

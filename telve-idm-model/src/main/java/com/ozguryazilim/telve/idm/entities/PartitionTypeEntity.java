@@ -17,6 +17,7 @@
  */
 package com.ozguryazilim.telve.idm.entities;
 
+import javax.persistence.Column;
 import org.picketlink.idm.jpa.annotations.AttributeValue;
 import org.picketlink.idm.jpa.annotations.PartitionClass;
 import org.picketlink.idm.jpa.annotations.entity.ConfigurationName;
@@ -37,12 +38,15 @@ public class PartitionTypeEntity extends AttributedTypeEntity {
     private static final long serialVersionUID = -3619372498444894118L;
 
     @AttributeValue
+    @Column(name = "NAME")
     private String name;
 
     @PartitionClass
+    @Column(name = "TYPE_NAME")
     private String typeName;
 
     @ConfigurationName
+    @Column(name = "CONFIG_NAME")
     private String configurationName;
 
     public String getName() {

@@ -31,6 +31,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 /**
@@ -45,21 +47,26 @@ public class IdentityTypeEntity extends AttributedTypeEntity {
     private static final long serialVersionUID = -6533395974259723600L;
 
     @IdentityClass
+    @Column(name = "TYPE_NAME")
     private String typeName;
 
     @Temporal(TemporalType.TIMESTAMP)
     @AttributeValue
+    @Column(name = "CREATE_DATE")
     private Date createdDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @AttributeValue
+    @Column(name = "EXPIRE_DATE")
     private Date expirationDate;
 
     @AttributeValue
+    @Column(name = "ENABLED")
     private boolean enabled;
 
     @OwnerReference
     @ManyToOne
+    @JoinColumn(name = "PARTITION_ID")
     private PartitionTypeEntity partition;
 
     public String getTypeName() {

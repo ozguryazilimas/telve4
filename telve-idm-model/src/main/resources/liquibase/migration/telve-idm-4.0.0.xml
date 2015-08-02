@@ -1,215 +1,213 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
-    <changeSet author="haky (generated)" id="1425466073797-1">
+    <changeSet author="haky (generated)" id="1438458876035-1">
         <createTable tableName="PL_ACCOUNT">
-            <column name="email" type="VARCHAR(255)"/>
-            <column name="firstName" type="VARCHAR(255)"/>
-            <column name="lastName" type="VARCHAR(255)"/>
-            <column name="loginName" type="VARCHAR(255)"/>
-            <column name="id" type="VARCHAR(255)">
+            <column name="EMAIL" type="VARCHAR(255)"/>
+            <column name="FIRST_NAME" type="VARCHAR(255)"/>
+            <column name="LAST_NAME" type="VARCHAR(255)"/>
+            <column name="LOGIN_NAME" type="VARCHAR(255)"/>
+            <column name="ID" type="VARCHAR(255)">
                 <constraints primaryKey="true" primaryKeyName="PL_ACCOUNTPK"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-2">
+    <changeSet author="haky (generated)" id="1438458876035-2">
         <createTable tableName="PL_ATTRIBUTE">
-            <column autoIncrement="true" name="id" type="BIGINT">
+            <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="PL_ATTRIBUTEPK"/>
             </column>
-            <column name="name" type="VARCHAR(255)"/>
-            <column name="typeName" type="VARCHAR(255)"/>
-            <column name="value" type="VARCHAR(1024)"/>
-            <column name="owner_id" type="VARCHAR(255)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="TYPE_NAME" type="VARCHAR(255)"/>
+            <column name="VALUE" type="VARCHAR(1024)"/>
+            <column name="OWNER_ID" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-3">
+    <changeSet author="haky (generated)" id="1438458876035-3">
         <createTable tableName="PL_ATTRIBUTED">
-            <column name="id" type="VARCHAR(255)">
+            <column name="ID" type="VARCHAR(255)">
                 <constraints primaryKey="true" primaryKeyName="PL_ATTRIBUTEDPK"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-4">
+    <changeSet author="haky (generated)" id="1438458876035-4">
         <createTable tableName="PL_DIGEST_CREDENTIAL">
-            <column autoIncrement="true" name="id" type="BIGINT">
+            <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="PL_DIGEST_CREPK"/>
             </column>
-            <column name="effectiveDate" type="datetime"/>
-            <column name="expiryDate" type="datetime"/>
-            <column name="typeName" type="VARCHAR(255)"/>
-            <column name="digestHa1" type="TINYBLOB"/>
-            <column name="digestRealm" type="VARCHAR(255)"/>
-            <column name="owner_id" type="VARCHAR(255)"/>
+            <column name="EFFECTIVE_DATE" type="datetime"/>
+            <column name="EXPIRE_DATE" type="datetime"/>
+            <column name="TYPE_NAME" type="VARCHAR(255)"/>
+            <column name="DIGEST_HA1" type="TINYBLOB"/>
+            <column name="DIGEST_REALM" type="VARCHAR(255)"/>
+            <column name="OWNER_ID" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-5">
+    <changeSet author="haky (generated)" id="1438458876035-5">
         <createTable tableName="PL_GROUP">
-            <column name="name" type="VARCHAR(255)"/>
-            <column name="path" type="VARCHAR(255)"/>
-            <column name="id" type="VARCHAR(255)">
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="PATH" type="VARCHAR(255)"/>
+            <column name="ID" type="VARCHAR(255)">
                 <constraints primaryKey="true" primaryKeyName="PL_GROUPPK"/>
             </column>
-            <column name="parent_id" type="VARCHAR(255)"/>
+            <column name="PARENT_ID" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-6">
+    <changeSet author="haky (generated)" id="1438458876035-6">
         <createTable tableName="PL_IDENTITY">
-            <column name="createdDate" type="datetime"/>
-            <column name="enabled" type="BOOLEAN">
-                <constraints nullable="false"/>
-            </column>
-            <column name="expirationDate" type="datetime"/>
-            <column name="typeName" type="VARCHAR(255)"/>
-            <column name="id" type="VARCHAR(255)">
+            <column name="CREATE_DATE" type="datetime"/>
+            <column name="ENABLED" type="BOOLEAN"/>
+            <column name="EXPIRE_DATE" type="datetime"/>
+            <column name="TYPE_NAME" type="VARCHAR(255)"/>
+            <column name="ID" type="VARCHAR(255)">
                 <constraints primaryKey="true" primaryKeyName="PL_IDENTITYPK"/>
             </column>
-            <column name="partition_id" type="VARCHAR(255)"/>
+            <column name="PARTITION_ID" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-7">
+    <changeSet author="haky (generated)" id="1438458876035-7">
         <createTable tableName="PL_OTP_CREDENTIAL">
-            <column autoIncrement="true" name="id" type="BIGINT">
+            <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="PL_OTP_CREDENPK"/>
             </column>
-            <column name="effectiveDate" type="datetime"/>
-            <column name="expiryDate" type="datetime"/>
-            <column name="typeName" type="VARCHAR(255)"/>
-            <column name="totpDevice" type="VARCHAR(255)"/>
-            <column name="totpSecretKey" type="VARCHAR(255)"/>
-            <column name="owner_id" type="VARCHAR(255)"/>
+            <column name="EFFECTIVE_DATE" type="datetime"/>
+            <column name="EXPIRE_DATE" type="datetime"/>
+            <column name="TYPE_NAME" type="VARCHAR(255)"/>
+            <column name="TOTP_DEVICE" type="VARCHAR(255)"/>
+            <column name="TOTP_SECRET_KEY" type="VARCHAR(255)"/>
+            <column name="OWNER_ID" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-8">
+    <changeSet author="haky (generated)" id="1438458876035-8">
         <createTable tableName="PL_PARTITION">
-            <column name="configurationName" type="VARCHAR(255)"/>
-            <column name="name" type="VARCHAR(255)"/>
-            <column name="typeName" type="VARCHAR(255)"/>
-            <column name="id" type="VARCHAR(255)">
+            <column name="CONFIG_NAME" type="VARCHAR(255)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="TYPE_NAME" type="VARCHAR(255)"/>
+            <column name="ID" type="VARCHAR(255)">
                 <constraints primaryKey="true" primaryKeyName="PL_PARTITIONPK"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-9">
+    <changeSet author="haky (generated)" id="1438458876035-9">
         <createTable tableName="PL_PASSWORD_CREDENTIAL">
-            <column autoIncrement="true" name="id" type="BIGINT">
+            <column autoIncrement="true" name="ID" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="PL_PASSWORD_CPK"/>
             </column>
-            <column name="effectiveDate" type="datetime"/>
-            <column name="expiryDate" type="datetime"/>
-            <column name="typeName" type="VARCHAR(255)"/>
-            <column name="passwordEncodedHash" type="VARCHAR(255)"/>
-            <column name="passwordSalt" type="VARCHAR(255)"/>
-            <column name="owner_id" type="VARCHAR(255)"/>
+            <column name="EFFECTIVE_DATE" type="datetime"/>
+            <column name="EXPIRE_DATE" type="datetime"/>
+            <column name="TYPE_NAME" type="VARCHAR(255)"/>
+            <column name="PWD_ENCODED_HASH" type="VARCHAR(255)"/>
+            <column name="PWD_SALT" type="VARCHAR(255)"/>
+            <column name="OWNER_ID" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-10">
+    <changeSet author="haky (generated)" id="1438458876035-10">
         <createTable tableName="PL_RELATIONSHIP">
-            <column name="typeName" type="VARCHAR(255)"/>
-            <column name="id" type="VARCHAR(255)">
+            <column name="TYPE_NAME" type="VARCHAR(255)"/>
+            <column name="ID" type="VARCHAR(255)">
                 <constraints primaryKey="true" primaryKeyName="PL_RELATIONSHPK"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-11">
+    <changeSet author="haky (generated)" id="1438458876035-11">
         <createTable tableName="PL_RELATIONSHIP_IDENTITY">
-            <column autoIncrement="true" name="identifier" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="PL_RELATIONSHPK"/>
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="PL_RELSIDENHPK"/>
             </column>
-            <column name="descriptor" type="VARCHAR(255)"/>
-            <column name="identityType_id" type="VARCHAR(255)"/>
-            <column name="owner_id" type="VARCHAR(255)"/>
+            <column name="DESCRIPTOR" type="VARCHAR(255)"/>
+            <column name="IDENTITY_TYPE_ID" type="VARCHAR(255)"/>
+            <column name="OWNER_ID" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-12">
+    <changeSet author="haky (generated)" id="1438458876035-12">
         <createTable tableName="PL_RESOURCE_PERMISSION">
-            <column autoIncrement="true" name="id" type="BIGINT">
+            <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="PL_RESOURCE_PPK"/>
             </column>
-            <column name="assignee" type="VARCHAR(255)"/>
-            <column name="operation" type="VARCHAR(255)"/>
-            <column name="resourceClass" type="VARCHAR(255)"/>
-            <column name="resourceIdentifier" type="VARCHAR(255)"/>
+            <column name="ASSIGNEE" type="VARCHAR(255)"/>
+            <column name="OPERATION" type="VARCHAR(255)"/>
+            <column name="RESOURCE_CLASS" type="VARCHAR(255)"/>
+            <column name="RESOURCE_IDENTIFIER" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-13">
+    <changeSet author="haky (generated)" id="1438458876035-13">
         <createTable tableName="PL_ROLE">
-            <column name="name" type="VARCHAR(255)"/>
-            <column name="id" type="VARCHAR(255)">
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="ID" type="VARCHAR(255)">
                 <constraints primaryKey="true" primaryKeyName="PL_ROLEPK"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-14">
+    <changeSet author="haky (generated)" id="1438458876035-14">
         <createTable tableName="PL_TOKEN_CREDENTIAL">
-            <column autoIncrement="true" name="id" type="BIGINT">
+            <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="PL_TOKEN_CREDPK"/>
             </column>
-            <column name="effectiveDate" type="datetime"/>
-            <column name="expiryDate" type="datetime"/>
-            <column name="typeName" type="VARCHAR(255)"/>
-            <column name="token" type="CLOB"/>
-            <column name="type" type="VARCHAR(255)"/>
-            <column name="owner_id" type="VARCHAR(255)"/>
+            <column name="EFFECTIVE_DATE" type="datetime"/>
+            <column name="EXPIRE_DATE" type="datetime"/>
+            <column name="TYPE_NAME" type="VARCHAR(255)"/>
+            <column name="TOKEN" type="CLOB"/>
+            <column name="TYPE" type="VARCHAR(255)"/>
+            <column name="OWNER_ID" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-15">
+    <changeSet author="haky (generated)" id="1438458876035-15">
         <createTable tableName="PL_X509_CREDENTIAL">
-            <column autoIncrement="true" name="id" type="BIGINT">
+            <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="PL_X509_CREDEPK"/>
             </column>
-            <column name="effectiveDate" type="datetime"/>
-            <column name="expiryDate" type="datetime"/>
-            <column name="typeName" type="VARCHAR(255)"/>
-            <column name="base64Cert" type="VARCHAR(1024)"/>
-            <column name="owner_id" type="VARCHAR(255)"/>
+            <column name="EFFECTIVE_DATE" type="datetime"/>
+            <column name="EXPIRE_DATE" type="datetime"/>
+            <column name="TYPE_NAME" type="VARCHAR(255)"/>
+            <column name="BASE64CERT" type="VARCHAR(1024)"/>
+            <column name="OWNER_ID" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-16">
-        <addForeignKeyConstraint baseColumnNames="id" baseTableName="PL_PARTITION" constraintName="FK_4u9jn58ajjje70j9g2kyadihw" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_ATTRIBUTED"/>
+    <changeSet author="haky (generated)" id="1438458876035-16">
+        <addForeignKeyConstraint baseColumnNames="OWNER_ID" baseTableName="PL_PASSWORD_CREDENTIAL" constraintName="FK_20cvhdhby47alxqiexr7eyr1e" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_ATTRIBUTED"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-17">
-        <addForeignKeyConstraint baseColumnNames="id" baseTableName="PL_ROLE" constraintName="FK_5ahwpp9odjx9rmg8smqwep7x0" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_IDENTITY"/>
+    <changeSet author="haky (generated)" id="1438458876035-17">
+        <addForeignKeyConstraint baseColumnNames="OWNER_ID" baseTableName="PL_DIGEST_CREDENTIAL" constraintName="FK_20pyf6y0ay4obb3ibcx9qm6fb" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_ATTRIBUTED"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-18">
-        <addForeignKeyConstraint baseColumnNames="id" baseTableName="PL_GROUP" constraintName="FK_5t7fnipb752ytpp3bccyss7gx" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_IDENTITY"/>
+    <changeSet author="haky (generated)" id="1438458876035-18">
+        <addForeignKeyConstraint baseColumnNames="OWNER_ID" baseTableName="PL_X509_CREDENTIAL" constraintName="FK_45k5vg7ymr0cpwu6onxme04ax" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_ATTRIBUTED"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-19">
-        <addForeignKeyConstraint baseColumnNames="id" baseTableName="PL_ACCOUNT" constraintName="FK_72neulbvo1agpsnesussj2tsy" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_IDENTITY"/>
+    <changeSet author="haky (generated)" id="1438458876035-19">
+        <addForeignKeyConstraint baseColumnNames="PARTITION_ID" baseTableName="PL_IDENTITY" constraintName="FK_49jcch0j65sv7vbd9wqiawo9p" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_PARTITION"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-20">
-        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="PL_ATTRIBUTE" constraintName="FK_bftlcvgivi376hchjmxxdw7rw" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_ATTRIBUTED"/>
+    <changeSet author="haky (generated)" id="1438458876035-20">
+        <addForeignKeyConstraint baseColumnNames="IDENTITY_TYPE_ID" baseTableName="PL_RELATIONSHIP_IDENTITY" constraintName="FK_a2ik72gj1oyix6d8ajy781lmh" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_IDENTITY"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-21">
-        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="PL_TOKEN_CREDENTIAL" constraintName="FK_g2ts1h12ta51itmjjbb92yv70" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_ATTRIBUTED"/>
+    <changeSet author="haky (generated)" id="1438458876035-21">
+        <addForeignKeyConstraint baseColumnNames="OWNER_ID" baseTableName="PL_OTP_CREDENTIAL" constraintName="FK_a5wljhyfc4bx24vyy821da3eo" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_ATTRIBUTED"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-22">
-        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="PL_PASSWORD_CREDENTIAL" constraintName="FK_i7w7bay5474bglod6nri1rypd" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_ATTRIBUTED"/>
+    <changeSet author="haky (generated)" id="1438458876035-22">
+        <addForeignKeyConstraint baseColumnNames="OWNER_ID" baseTableName="PL_TOKEN_CREDENTIAL" constraintName="FK_car7fo4tuoxyxsits41yedydl" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_ATTRIBUTED"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-23">
-        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="PL_DIGEST_CREDENTIAL" constraintName="FK_icsbhsg4sxmi0flts1gscu14a" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_ATTRIBUTED"/>
+    <changeSet author="haky (generated)" id="1438458876035-23">
+        <addForeignKeyConstraint baseColumnNames="ID" baseTableName="PL_PARTITION" constraintName="FK_dcobsm0kfl4y61m8tcb7uspf2" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_ATTRIBUTED"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-24">
-        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="PL_OTP_CREDENTIAL" constraintName="FK_jlvql04m8y7frfp3gw4qfuwkv" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_ATTRIBUTED"/>
+    <changeSet author="haky (generated)" id="1438458876035-24">
+        <addForeignKeyConstraint baseColumnNames="ID" baseTableName="PL_GROUP" constraintName="FK_el0rowaexuegei3i9u1c6ckjx" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_IDENTITY"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-25">
-        <addForeignKeyConstraint baseColumnNames="partition_id" baseTableName="PL_IDENTITY" constraintName="FK_k44ruucpjxsx3k0s4w47x6gaw" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_PARTITION"/>
+    <changeSet author="haky (generated)" id="1438458876035-25">
+        <addForeignKeyConstraint baseColumnNames="OWNER_ID" baseTableName="PL_ATTRIBUTE" constraintName="FK_frls7hlmko0gnohqk82f6qxmg" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_ATTRIBUTED"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-26">
-        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="PL_X509_CREDENTIAL" constraintName="FK_mbiegevhttfs3ysll70c97tp1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_ATTRIBUTED"/>
+    <changeSet author="haky (generated)" id="1438458876035-26">
+        <addForeignKeyConstraint baseColumnNames="ID" baseTableName="PL_ROLE" constraintName="FK_il2w0s7y1rtq5nagxcbh8dioc" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_IDENTITY"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-27">
-        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="PL_GROUP" constraintName="FK_msmnuf2csntxubq9vuoyo39kx" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_GROUP"/>
+    <changeSet author="haky (generated)" id="1438458876035-27">
+        <addForeignKeyConstraint baseColumnNames="ID" baseTableName="PL_RELATIONSHIP" constraintName="FK_iy8ojba5nvy1ugjyy3nvlnjhe" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_ATTRIBUTED"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-28">
-        <addForeignKeyConstraint baseColumnNames="owner_id" baseTableName="PL_RELATIONSHIP_IDENTITY" constraintName="FK_n1hucuvm30ku8ektdwnicxak3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_RELATIONSHIP"/>
+    <changeSet author="haky (generated)" id="1438458876035-28">
+        <addForeignKeyConstraint baseColumnNames="ID" baseTableName="PL_IDENTITY" constraintName="FK_r7ei6s9jda8ar3d3k5h6s9qsq" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_ATTRIBUTED"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-29">
-        <addForeignKeyConstraint baseColumnNames="id" baseTableName="PL_IDENTITY" constraintName="FK_onieh8a8hk1yma1vswk82qu9n" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_ATTRIBUTED"/>
+    <changeSet author="haky (generated)" id="1438458876035-29">
+        <addForeignKeyConstraint baseColumnNames="OWNER_ID" baseTableName="PL_RELATIONSHIP_IDENTITY" constraintName="FK_rm1k1yo5dtxuce423l9v25ekc" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_RELATIONSHIP"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-30">
-        <addForeignKeyConstraint baseColumnNames="identityType_id" baseTableName="PL_RELATIONSHIP_IDENTITY" constraintName="FK_pcywmy1yuix4yqc00ewvd3ysv" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_IDENTITY"/>
+    <changeSet author="haky (generated)" id="1438458876035-30">
+        <addForeignKeyConstraint baseColumnNames="ID" baseTableName="PL_ACCOUNT" constraintName="FK_s1krl1ttym40kgmcnu3igp73b" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_IDENTITY"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1425466073797-31">
-        <addForeignKeyConstraint baseColumnNames="id" baseTableName="PL_RELATIONSHIP" constraintName="FK_t004w9cw0cksw1c950gkick56" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="PL_ATTRIBUTED"/>
+    <changeSet author="haky (generated)" id="1438458876035-31">
+        <addForeignKeyConstraint baseColumnNames="PARENT_ID" baseTableName="PL_GROUP" constraintName="FK_sfe603qpg3qo6kllayhsb6wn9" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PL_GROUP"/>
     </changeSet>
 </databaseChangeLog>

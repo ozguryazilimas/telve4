@@ -6,7 +6,7 @@
             <column name="KV_KEY" type="VARCHAR(255)">
                 <constraints primaryKey="true" primaryKeyName="KAHVEPK"/>
             </column>
-            <column name="KV_VAL" type="VARCHAR(20000)"/>
+            <column name="KV_VAL" type="VARCHAR(4000)"/>
         </createTable>
     </changeSet>
     

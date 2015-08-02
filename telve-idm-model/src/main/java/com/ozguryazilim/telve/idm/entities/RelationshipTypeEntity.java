@@ -17,6 +17,7 @@
  */
 package com.ozguryazilim.telve.idm.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import org.picketlink.idm.jpa.annotations.RelationshipClass;
@@ -34,6 +35,7 @@ public class RelationshipTypeEntity extends AttributedTypeEntity {
     private static final long serialVersionUID = -3619372498444894118L;
 
     @RelationshipClass
+    @Column(name="TYPE_NAME")
     private String typeName;
 
     public String getTypeName() {

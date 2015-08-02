@@ -17,6 +17,7 @@
  */
 package com.ozguryazilim.telve.idm.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import org.picketlink.idm.credential.storage.OTPCredentialStorage;
@@ -36,9 +37,11 @@ public class OTPCredentialTypeEntity extends AbstractCredentialTypeEntity {
     private static final long serialVersionUID = 2178549213245407363L;
 
     @CredentialProperty (name = "secretKey")
+    @Column(name = "TOTP_SECRET_KEY")
     private String totpSecretKey;
 
     @CredentialProperty (name = "device")
+    @Column(name = "TOTP_DEVICE")
     private String totpDevice;
 
     public String getTotpSecretKey() {

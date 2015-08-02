@@ -26,6 +26,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.GenerationType;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 /**
@@ -38,18 +41,22 @@ public class RelationshipIdentityTypeEntity implements Serializable {
     private static final long serialVersionUID = -3619372498444894118L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "genericSeq")
+    @Column(name="ID")
     private Long identifier;
 
     @RelationshipDescriptor
+    @Column(name="DESCRIPTOR")
     private String descriptor;
 
     @RelationshipMember
     @ManyToOne
+    @JoinColumn(name="IDENTITY_TYPE_ID")
     private IdentityTypeEntity identityType;
 
     @OwnerReference
     @ManyToOne
+    @JoinColumn(name="OWNER_ID")
     private RelationshipTypeEntity owner;
 
     public Long getIdentifier() {

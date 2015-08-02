@@ -37,7 +37,7 @@ public class X509CredentialTypeEntity extends AbstractCredentialTypeEntity {
     private static final long serialVersionUID = -8313462190592256324L;
 
     @CredentialProperty
-    @Column(length = 1024)
+    @Column(name="BASE64CERT", length = 1024)
     private String base64Cert;
 
     public String getBase64Cert() {

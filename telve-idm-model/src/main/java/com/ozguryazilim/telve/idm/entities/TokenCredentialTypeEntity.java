@@ -40,11 +40,11 @@ import javax.persistence.Table;
 public class TokenCredentialTypeEntity extends AbstractCredentialTypeEntity {
 
     @CredentialProperty
-    @Column
+    @Column(name="TYPE")
     private String type;
 
     @CredentialProperty
-    @Column(columnDefinition = "TEXT")
+    @Column(name="TOKEN", columnDefinition = "TEXT")
     private String token;
 
     public String getType() {

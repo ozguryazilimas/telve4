@@ -17,6 +17,7 @@
  */
 package com.ozguryazilim.telve.idm.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import org.picketlink.idm.credential.storage.EncodedPasswordStorage;
@@ -36,9 +37,11 @@ public class PasswordCredentialTypeEntity extends AbstractCredentialTypeEntity {
     private static final long serialVersionUID = -1073369096518010570L;
 
     @CredentialProperty (name = "encodedHash")
+    @Column(name = "PWD_ENCODED_HASH")
     private String passwordEncodedHash;
 
     @CredentialProperty (name = "salt")
+    @Column(name = "PWD_SALT")
     private String passwordSalt;
 
     public String getPasswordEncodedHash() {

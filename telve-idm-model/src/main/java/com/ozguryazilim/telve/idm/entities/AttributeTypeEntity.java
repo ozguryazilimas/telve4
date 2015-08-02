@@ -21,7 +21,9 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.picketlink.idm.jpa.annotations.AttributeClass;
@@ -39,21 +41,25 @@ public class AttributeTypeEntity implements Serializable {
     private static final long serialVersionUID = 5255050503622214581L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "genericSeq")
+    @Column(name = "ID")
     private Long id;
 
     @OwnerReference
-    @ManyToOne
+    @ManyToOne 
+    @JoinColumn(name = "OWNER_ID")
     private AttributedTypeEntity owner;
 
     @AttributeClass
+    @Column(name = "TYPE_NAME")
     private String typeName;
 
     @AttributeName
+    @Column(name = "NAME")
     private String name;
 
     @AttributeValue
-    @Column(length = 1024) private String value;
+    @Column( name="VALUE", length = 1024) private String value;
 
     public Long getId() {
         return id;

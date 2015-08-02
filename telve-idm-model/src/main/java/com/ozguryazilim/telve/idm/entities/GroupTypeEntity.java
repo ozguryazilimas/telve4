@@ -17,7 +17,9 @@
  */
 package com.ozguryazilim.telve.idm.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.picketlink.idm.jpa.annotations.AttributeValue;
@@ -35,13 +37,16 @@ public class GroupTypeEntity extends IdentityTypeEntity {
     private static final long serialVersionUID = 158403858486164771L;
 
     @AttributeValue
+    @Column(name = "NAME")
     private String name;
 
     @AttributeValue
+    @Column(name = "PATH")
     private String path;
 
     @ManyToOne
     @AttributeValue (name = "parentGroup")
+    @JoinColumn(name = "PARENT_ID")
     private GroupTypeEntity parent;
 
     public String getName() {

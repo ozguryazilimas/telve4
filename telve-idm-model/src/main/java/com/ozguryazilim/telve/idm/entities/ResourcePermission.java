@@ -6,8 +6,10 @@
 package com.ozguryazilim.telve.idm.entities;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.picketlink.idm.jpa.annotations.OwnerReference;
@@ -27,15 +29,20 @@ public class ResourcePermission implements Serializable{
 
     private static final long serialVersionUID = -7409821749592191950L;
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "genericSeq")
+    @Column(name="ID")
     private Long id;
     @OwnerReference
+    @Column(name="ASSIGNEE")
     private String assignee;
     @PermissionResourceClass
+    @Column(name="RESOURCE_CLASS")
     private String resourceClass;
     @PermissionResourceIdentifier
+    @Column(name="RESOURCE_IDENTIFIER")
     private String resourceIdentifier;
     @PermissionOperation
+    @Column(name="OPERATION")
     private String operation;
 
     public Long getId() {

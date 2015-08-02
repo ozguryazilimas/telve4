@@ -17,6 +17,7 @@
  */
 package com.ozguryazilim.telve.idm.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import org.picketlink.idm.jpa.annotations.AttributeValue;
@@ -34,6 +35,7 @@ public class RoleTypeEntity extends IdentityTypeEntity {
     private static final long serialVersionUID = -1111674876657091722L;
 
     @AttributeValue
+    @Column(name="NAME")
     private String name;
 
     public String getName() {

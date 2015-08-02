@@ -19,9 +19,11 @@ package com.ozguryazilim.telve.idm.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
@@ -43,21 +45,26 @@ public abstract class AbstractCredentialTypeEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "genericSeq")
+    @Column(name="ID")
     private Long id;
 
     @OwnerReference
     @ManyToOne
+    @JoinColumn(name="OWNER_ID")
     private AttributedTypeEntity owner;
 
     @CredentialClass
+    @Column(name="TYPE_NAME")
     private String typeName;
 
     @Temporal(TemporalType.TIMESTAMP)
     @EffectiveDate
+    @Column(name="EFFECTIVE_DATE")
     private Date effectiveDate;
 
     @Temporal(TemporalType.TIMESTAMP)
     @ExpiryDate
+    @Column(name="EXPIRE_DATE")
     private Date expiryDate;
 
     public Long getId() {
