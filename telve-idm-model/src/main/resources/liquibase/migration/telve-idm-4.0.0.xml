@@ -89,7 +89,7 @@
     </changeSet>
     <changeSet author="haky (generated)" id="1438458876035-9">
         <createTable tableName="PL_PASSWORD_CREDENTIAL">
-            <column autoIncrement="true" name="ID" type="BIGINT">
+            <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="PL_PASSWORD_CPK"/>
             </column>
             <column name="EFFECTIVE_DATE" type="datetime"/>

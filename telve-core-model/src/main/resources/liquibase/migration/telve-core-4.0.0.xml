@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-    <changeSet author="haky" id="BASE-1" dbms="mysql">
+    <changeSet author="haky" id="BASE-1" dbms="mysql,mssql">
         <createTable tableName="GENERIC_SEQ">
             <column name="next_val" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="GENERICSEQPK"/>
@@ -10,7 +10,7 @@
             <column name="next_val" value="1" />
         </insert>
     </changeSet>
-    <changeSet author="haky" id="BASE-2" dbms="mysql">
+    <changeSet author="haky" id="BASE-2" dbms="mysql,mssql">
         <createTable tableName="hibernate_sequence">
             <column name="next_val" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="HIBSEQPK"/>
@@ -21,29 +21,7 @@
         </insert>
     </changeSet>
     
-    <changeSet author="haky" id="BASE-3" dbms="mssql">
-        <createTable tableName="GENERIC_SEQ">
-            <column name="next_val" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="GENERICSEQPK"/>
-            </column>
-        </createTable>
-        <insert tableName="GENERIC_SEQ">
-            <column name="next_val" value="1" />
-        </insert>
-    </changeSet>
-    <changeSet author="haky" id="BASE-4" dbms="mssql">
-        <createTable tableName="hibernate_sequence">
-            <column name="next_val" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="HIBSEQPK"/>
-            </column>
-        </createTable>
-        <insert tableName="hibernate_sequence">
-            <column name="next_val" value="1" />
-        </insert>
-    </changeSet>
-    
-
-    <changeSet author="haky" id="BASE-5" dbms="postgresql">
+   <changeSet author="haky" id="BASE-5" dbms="postgresql,oracle">
         <createSequence 
                 incrementBy="1"
                 schemaName="public"
@@ -51,15 +29,6 @@
                 startValue="1"/>
     </changeSet>
     
-    <changeSet author="haky" id="BASE-6" dbms="oracle">
-        <createSequence 
-                incrementBy="1"
-                schemaName="public"
-                sequenceName="generic_seq"
-                startValue="1"/>
-    </changeSet>
-
-
     <changeSet author="haky (generated)" id="1438162495087-1">
         <createTable tableName="TLV_CALENDAR">
             <column name="ID" type="BIGINT">
