@@ -71,7 +71,7 @@ public class NagivationController implements Serializable {
             if (!sec.isEmpty()) {
                 SecuredPage sc = sec.get(0);
                 if (!Strings.isNullOrEmpty(sc.value())) {
-                    if (!identity.hasPermission(sc.value(), "SELECT")) {
+                    if (!identity.hasPermission(sc.value(), "select")) {
                         continue;
                     }
                 }
@@ -115,7 +115,12 @@ public class NagivationController implements Serializable {
         Collections.sort(mainNavigations);
         Collections.sort(sideNavigations);
         Collections.sort(navigationSections);
-        //Collections.sort(navigations);
+        
+        //Map içindeki listeleri sıralıyoruz.
+        for( Map.Entry<String, List<NavigationLinkModel>> e : navigations.entrySet()){
+            Collections.sort(e.getValue());
+        }
+        
 
         LOG.info("Main Nav : {}", mainNavigations);
         LOG.info("Side Nav : {}", sideNavigations);

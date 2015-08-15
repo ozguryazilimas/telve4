@@ -51,7 +51,7 @@ public class PicketLinkAccessDecisionVoter extends AbstractAccessDecisionVoter {
 
         SecuredPage sc = advc.getMetaDataFor(SecuredPage.class.getName(), SecuredPage.class);
         if (!Strings.isNullOrEmpty(sc.value())) {
-            if (!identity.hasPermission(sc.value(), "SELECT")) {
+            if (!identity.hasPermission(sc.value(), "select")) {
                 set.add(new SecurityViolation() {
                     @Override
                     public String getReason() {
