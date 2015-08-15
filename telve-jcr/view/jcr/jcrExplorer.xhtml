@@ -5,6 +5,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
 
 
@@ -118,7 +119,7 @@
                                         'core' : {
                                             'data' : [
                                                 <ui:repeat value = "#{jcrController.folders}" var = "node" >
-                                                    { "id" : "#{node.identifier}", "parent" : "#{node.path eq jcrController.contextRoot ? '#' : node.parent.identifier}", "text" : "#{node.name}" },
+                                                    { "id" : "#{node.identifier}", "parent" : "#{node.path eq jcrController.contextRoot ? '#' : node.parent.identifier}", "text" : "#{fn:escapeXml(node.name)}" },
                                                 </ui:repeat>
 
                                             ]
