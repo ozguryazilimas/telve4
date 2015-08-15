@@ -7,6 +7,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
                 template="/layout/dialogBase.xhtml">
     <ui:define name="form" >
         <h:form id="lookupForm">
@@ -115,7 +116,7 @@
                                             'core' : {
                                                 'data' : [
                                                     <ui:repeat value = "#{bean.model.dataModel()}" var = "node" >
-                                                        { "id" : "#{node.id}", "parent" : "#{bean.model.findParent( node ) eq null ? '#' : node.parentId}", "text" : "#{node.caption}", "type" : "#{bean.model.getNodeType(node)}" },
+                                                        { "id" : "#{node.id}", "parent" : "#{bean.model.findParent( node ) eq null ? '#' : node.parentId}", "text" : "#{fn:escapeXml(node.caption)}", "type" : "#{bean.model.getNodeType(node)}" },
                                                     </ui:repeat>
 
                                                 ]

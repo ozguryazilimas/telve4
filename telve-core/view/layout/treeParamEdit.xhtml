@@ -6,6 +6,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
                 xmlns:ut="http://utech.com/jsf/comps" template="/layout/primeTemplate.xhtml">
 
     <ui:param name="showListBar" value="true" />
@@ -165,7 +166,7 @@
                                             'core' : {
                                                 'data' : [
                                                     <ui:repeat value = "#{homeBean.treeModel.dataModel()}" var = "node" >
-                                                        { "id" : "#{node.id}", "parent" : "#{node.parentId eq 0 ? '#' : node.parentId}", "text" : "#{node.name}", "state": { "selected" : #{ node.id eq homeBean.entity.id ? 'true' : 'false' }}, "type" : "#{homeBean.treeModel.getNodeType(node)}"},
+                                                        { "id" : "#{node.id}", "parent" : "#{homeBean.treeModel.findParent( node ) eq null ? '#' : node.parentId}", "text" : "#{fn:escapeXml(node.name)}", "state": { "selected" : #{ node.id eq homeBean.entity.id ? 'true' : 'false' }}, "type" : "#{homeBean.treeModel.getNodeType(node)}"},
                                                     </ui:repeat>
 
                                                 ]

@@ -5,6 +5,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <p:fragment id="frmovl">
@@ -114,7 +115,7 @@
                                             'core' : {
                                                 'data' : [
                                                     <ui:repeat value = "#{lookupBean.model.dataModel()}" var = "node" >
-                                                        { "id" : "#{node.id}", "parent" : "#{node.parentId eq 0 ? '#' : node.parentId}", "text" : "#{node.caption}", "type" : "#{lookupBean.model.getNodeType(node)}" },
+                                                        { "id" : "#{node.id}", "parent" : "#{lookupBean.model.findParent( node ) eq null ? '#' : node.parentId}", "text" : "#{fn:escapeXml(node.caption)}", "type" : "#{lookupBean.model.getNodeType(node)}" },
                                                     </ui:repeat>
 
                                                 ]
