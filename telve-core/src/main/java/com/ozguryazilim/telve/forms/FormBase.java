@@ -17,6 +17,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Any;
 import javax.inject.Inject;
+import javax.persistence.EntityExistsException;
 import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
@@ -119,20 +120,25 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             return DefaultErrorView.class;
         }
 
-        //try {
-        if( !onBeforeSave() ) return null;
+        try {
+            if( !onBeforeSave() ) return null;
 
-        entity = getRepository().saveAndFlush(entity);
+            entity = getRepository().saveAndFlush(entity);
 
-        //Save'den sonra elde sakladığımız id'yi değiştirelim ki bir sonraki request için ortalık karışmasın ( bakınız setId )
-        this.id = (PK) entity.getId();
+            //Save'den sonra elde sakladığımız id'yi değiştirelim ki bir sonraki request için ortalık karışmasın ( bakınız setId )
+            this.id = (PK) entity.getId();
         
-        onAfterSave();
-        //} catch (EntityExistsException e) {
-        //    log.debug("Hata : #0", e);
-        //    facesMessages.add("#{messages['general.message.record.NotUnique']}");
-        //    return BaseConsts.FAIL;
-        //}
+            onAfterSave();
+        } catch (EntityExistsException e) {
+            LOG.debug("Hata : Not Unique", e);
+            FacesMessages.warn("#{messages['general.message.record.NotUnique']}");
+            return null;
+        } catch ( Exception e ){
+            //FIXME: Asıl detay hatanın bulunması lazım.
+            LOG.debug("Hata : Constraint Violation", e);
+            FacesMessages.warn("#{messages['general.message.record.ConstraintViolation']}");
+            return null;
+        }
 
         LOG.debug("Entity Saved : {0} ", entity);
         FacesMessages.info( "general.message.record.SaveSuccess");
@@ -177,14 +183,14 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             return DefaultErrorView.class;
         }
 
-        //try {
-        //getRepository().deleteById(entity.getId());
-        getRepository().remove(entity);
-        //} catch (Exception e) {
-        //    log.debug("Hata : #0", e);
-        //    facesMessages.add("#{messages['general.message.record.DeleteFaild']}");
-        //    return BaseConsts.FAIL;
-        //}
+        try {
+            //getRepository().deleteById(entity.getId());
+            getRepository().remove(entity);
+        } catch (Exception e) {
+            LOG.debug("Hata : {}", e);
+            FacesMessages.error("#{messages['general.message.record.DeleteFaild']}");
+            return null;
+        }
 
         LOG.debug("Entity Removed : {0} ", entity);
         entity = null;
