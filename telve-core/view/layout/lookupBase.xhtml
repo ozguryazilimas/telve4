@@ -115,7 +115,7 @@
                                             'core' : {
                                                 'data' : [
                                                     <ui:repeat value = "#{bean.model.dataModel()}" var = "node" >
-                                                        { "id" : "#{node.id}", "parent" : "#{node.parentId eq 0 ? '#' : node.parentId}", "text" : "#{node.caption}", "type" : "#{bean.model.getNodeType(node)}" },
+                                                        { "id" : "#{node.id}", "parent" : "#{bean.model.findParent( node ) eq null ? '#' : node.parentId}", "text" : "#{node.caption}", "type" : "#{bean.model.getNodeType(node)}" },
                                                     </ui:repeat>
 
                                                 ]
