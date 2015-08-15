@@ -178,11 +178,21 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         options.put("resizable", false);
         options.put("contentHeight", 450);
 
-        search();
+        if( autoSearch() ){
+            search();
+        }
         
         RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
     }
 
+    /**
+     * Popup açıldığında otomatik arama yapmaması için override edilmeli.
+     * @return 
+     */
+    protected boolean autoSearch(){
+        return true;
+    }
+    
     /**
      * Ağaç için leafSelect modlu openDialog sürümü.
      *

@@ -26,7 +26,7 @@
                     <h:panelGroup id="selectionResult" layout="block" styleClass="pull-right" rendered="#{ bean.model.modelType eq 'Table' and bean.model.getMultiSelect()}">
                         #{messages['general.label.TotalSelection']} : #{bean.model.getSelectedViewModels().size()}
                         
-                        <p:commandLink action="#{bean.model.clearSelectedAllDatas()}" ajax="true" partialSubmit="true" process="@this" update="selectionResult">
+                        <p:commandLink action="#{bean.model.clearSelectedAllDatas()}" ajax="true" partialSubmit="true" process="@this" update="selectionResult,:lookupForm:selectedResuls">
                             <i class="fa fa-trash" />
                         </p:commandLink>
                         </h:panelGroup>
@@ -38,14 +38,20 @@
                 <div class="large-12 medium-12 small-12 columns">
 
                     <c:if test="#{ bean.model.modelType eq 'Table' and bean.model.getMultiSelect()}" >
-                        <p:dataTable id="multiSelectDialog" var="item" value="#{bean.model.dataModel()}" 
-                                     selection="#{bean.model.selectedDatas}" rows="10"  paginator="true" rowKey="#{item.id}"
+                        <div class="row">
+                        <div class="large-6 medium-6 small-6 columns">
+                        <p:dataTable id="multiSelectDialog" var="item" value="#{bean.model.dataModel()}"  selectionMode="multiple" 
+                                     selection="#{bean.model.selectedDatas}" rows="8"  paginator="true" rowKey="#{item.id}"
                                      paginatorPosition="bottom" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}"
                                      paginatorAlwaysVisible="false">
 
-                            <p:ajax event="rowSelect" listener="#{bean.onRowSelect}" update=":lookupForm:selectionResult" process="@form"/>
+                            <p:ajax event="rowSelect" listener="#{bean.onRowSelect}" update=":lookupForm:selectionResult,:lookupForm:selectedResuls" process="@form"/>
                             
+                            <ui:remove>
                             <p:column selectionMode="multiple" style="width:36px;" />  
+                            </ui:remove>
+                            
 
                             <c:forEach items="#{bean.model.columns.entrySet()}" var="col" varStatus="loop">
                                 <p:column headerText="#{messages[col.value]}">
@@ -57,11 +63,21 @@
                         <script type="text/javascript">
                             function setSelections(){}
                         </script>
+                        </div>
+                            <h:panelGroup id="selectedResuls" layout="block" styleClass="large-6 medium-6 small-6 columns">
+                                <p:dataTable value="#{bean.model.getSelectedViewModels()}" var="item">
+                                    <p:column headerText="#{messages['general.label.SearchSelections']}">
+                                    #{item.name}
+                                    </p:column>
+                                </p:dataTable>
+                            </h:panelGroup>
+                            
+                        </div>
                     </c:if>
 
                     <c:if test="#{bean.model.modelType eq 'Table' and not bean.model.getMultiSelect()}" >
                         <p:dataTable id="singleSelectDialog" var="item" value="#{bean.model.dataModel()}" 
-                                     selection="#{bean.model.selectedData}" rows="10"  paginator="true" rowKey="#{item.id}"
+                                     selection="#{bean.model.selectedData}" rows="8"  paginator="true" rowKey="#{item.id}"
                                      paginatorPosition="bottom" 
                                      paginatorAlwaysVisible="false">
                             <p:column selectionMode="single" style="width:36px;" />  
