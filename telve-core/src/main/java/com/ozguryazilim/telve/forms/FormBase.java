@@ -122,7 +122,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         //try {
         if( !onBeforeSave() ) return null;
 
-        getRepository().saveAndFlush(entity);
+        entity = getRepository().saveAndFlush(entity);
 
         //Save'den sonra elde sakladığımız id'yi değiştirelim ki bir sonraki request için ortalık karışmasın ( bakınız setId )
         this.id = (PK) entity.getId();
