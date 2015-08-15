@@ -165,7 +165,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         model.setListener(listener);
 
         model.clearSelections();
-        
+        model.setSearchText("");
         
         parseProfile();
         initProfile();
@@ -176,6 +176,8 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         options.put("resizable", false);
         options.put("contentHeight", 450);
 
+        search();
+        
         RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
     }
 
