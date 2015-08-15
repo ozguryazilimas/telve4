@@ -64,6 +64,19 @@ public abstract class RepositoryBase<E extends EntityBase, R extends ViewModel> 
     public List<E> suggestion(String searchText) {
         return Collections.EMPTY_LIST;
     }
+    
+    
+    /**
+     * Suggestbox'larda kullanılır.
+     *
+     * Varsayılan olarak boş liste döndürür. Override edilmesi gerekir.
+     *
+     * @param searchText
+     * @return
+     */
+    public List<E> suggestionLeaf(String searchText) {
+        return Collections.EMPTY_LIST;
+    }
 
     /**
      * Geriye aktif kayıtları döndürür.

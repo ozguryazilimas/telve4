@@ -2,7 +2,8 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:composite="http://java.sun.com/jsf/composite">
+                xmlns:composite="http://java.sun.com/jsf/composite"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 
     <composite:interface>
@@ -42,6 +43,9 @@
                                     placeholder="#{cc.attrs.placeholder}">
                         <p:clientValidator />
                         <p:ajax event="itemSelect" update="#{cc.attrs.update}" />
+                        <f:attribute name="leafSelect" value="#{cc.attrs.leafSelect}" />
+                        <f:attribute name="multiSelect" value="#{cc.attrs.multiSelect}" />
+                        <f:attribute name="lookupProfile" value="#{cc.attrs.lookupProfile}" />
                     </p:autoComplete>
 
                     <p:commandButton action="#{cc.attrs.lookupBean.openDialog( cc.attrs.multiSelect, cc.attrs.leafSelect, cc.attrs.lookupProfile, cc.attrs.lookupListener )}" partialSubmit="true" process="@this" icon="ui-icon-search" styleClass="ui-icon-only">

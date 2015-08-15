@@ -10,8 +10,10 @@ import com.google.common.base.Strings;
 import com.ozguryazilim.telve.entities.TreeNodeModel;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import org.primefaces.model.TreeNode;
@@ -265,7 +267,8 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         } else {
             
             for( T ent : allItems ){
-                if( ent.getCaption().contains(getSearchText()) ){
+                //Case Insensitive arama TODO: Locale kısmını config'e almak lazım... ( Türkçe Locale ile )
+                if( ent.getCaption().toLowerCase(new Locale("tr")).contains(getSearchText().toLowerCase(new Locale("tr"))) ){
                     addFilteredItem(ent);
                     //Eger sadeye en son node seçilebiliyorsa bulunanların detaylarını da ekleyelim...
                     if( getLeafSelect() ){
@@ -293,10 +296,12 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         if( pk == null || pk == 0 ) return;
         
         T ent = idMap.get(pk);
-        if( !resultItems.contains(ent) ){
-            resultItems.add( ent );
+        if( ent != null ){
+            if( !resultItems.contains(ent) ){
+                resultItems.add( ent );
+            }
+            addFilteredItemPath(ent.getParentId());
         }
-        addFilteredItemPath(ent.getParentId());
     }
 
     public List<T> getResultItems() {
@@ -321,7 +326,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
      * @return 
      */
     public T findParent( T node ){
-        return idMap.get(node.getParentId());
+        return node == null ? null : idMap.get(node.getParentId());
     }
 
     /**
@@ -331,6 +336,9 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
      */
     public List<T> findChildren( T node ){
         //TODO: Aslında burayı eldeki listeden sağlasak süper olur.
+        if( node == null ){
+            return Collections.EMPTY_LIST;
+        }
         return node.getChildren();
     }
     

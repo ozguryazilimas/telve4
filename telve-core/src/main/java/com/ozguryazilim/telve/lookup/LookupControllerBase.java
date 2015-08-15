@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.Entity;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
@@ -282,11 +284,33 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      * @return
      */
     public List<E> suggest(String text) {
-        List<E> ls = getRepository().suggestion(text);
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        String leafSelect = (String) UIComponent.getCurrentComponent(context).getAttributes().get("leafSelect");
+        String multiSelect = (String) UIComponent.getCurrentComponent(context).getAttributes().get("multiSelect");
+        String lookupProfile = (String) UIComponent.getCurrentComponent(context).getAttributes().get("lookupProfile");
+        
+        model.setLeafSelect("true".equals(leafSelect));
+        model.setMultiSelect("true".equals(multiSelect));
+        
+        model.setProfile(lookupProfile);
+        parseProfile();
+        initProfile();
+        
+        List<E> ls = populateSuggestData(text);
         LOG.info("Suggest List : {}", ls);
         return ls;
     }
 
+    /**
+     * Alt sınıflardan override edilip sorgu mantığı değiştirilebilmesi için 
+     * @param text
+     * @return 
+     */
+    protected List<E> populateSuggestData(String text){
+        return model.getLeafSelect() ? getRepository().suggestionLeaf(text) : getRepository().suggestion(text);
+    }
+    
     /**
      * Dialoglarda kullanılacak model sınıfı dondürür.
      *
@@ -404,8 +428,12 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      * 
      */
     protected void parseProfile(){
-        Map<String,String> prop = Splitter.on(';').omitEmptyStrings().trimResults().withKeyValueSeparator(':').split(model.getProfile());
-        model.setProfileProperties(prop);
+        if( model.getProfile() != null ){
+            Map<String,String> prop = Splitter.on(';').omitEmptyStrings().trimResults().withKeyValueSeparator(':').split(model.getProfile());
+            model.setProfileProperties(prop);
+        } else {
+            model.setProfileProperties(new HashMap<String, String>());
+        }
     }
 
     
