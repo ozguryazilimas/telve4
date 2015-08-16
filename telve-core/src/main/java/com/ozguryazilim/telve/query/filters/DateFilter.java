@@ -18,6 +18,7 @@ import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 
 /**
  * Tarih Filtresi
@@ -42,38 +43,32 @@ public class DateFilter<E> extends Filter<E, Date> {
 
     @Override
     public void decorateCriteria(Criteria<E, ?> criteria) {
+        calcDates();
         if (getValue() != null) {
 
             switch (getOperand()) {
                 case Equal:
-                    calcDates();
                     criteria.eq(getAttribute(), getValue());
                     break;
                 case NotEqual:
-                    calcDates();
                     criteria.notEq(getAttribute(), getValue());
                     break;
                 case Greater:
-                    calcDates();
                     criteria.gt(getAttribute(), getValue());
                     break;
                 case GreaterOrEqual:
                     criteria.gtOrEq(getAttribute(), getValue());
                     break;
                 case Lesser:
-                    calcDates();
                     criteria.lt(getAttribute(), getValue());
                     break;
                 case LesserOrEqual:
-                    calcDates();
                     criteria.ltOrEq(getAttribute(), getValue());
                     break;
                 case In:
-                    calcDates();
                     criteria.between(getAttribute(), getValue(), getValue2());
                     break;
                 case Between:
-                    calcDates();
                     criteria.between(getAttribute(), getValue(), getValue2());
                     break;
                 default:
@@ -84,9 +79,8 @@ public class DateFilter<E> extends Filter<E, Date> {
 
     @Override
     public void decorateCriteriaQuery( List<Predicate> predicates, CriteriaBuilder builder, Root<E> from ){
+        calcDates();
         if (getValue() != null) {
-            
-            calcDates();
             switch (getOperand()) {
                 case Equal:
                     predicates.add(builder.equal(from.get(getAttribute()), getValue()));
@@ -128,7 +122,7 @@ public class DateFilter<E> extends Filter<E, Date> {
      */
     public void calcDates() {
 
-        DateTime dt = new DateTime();
+        LocalDate dt = new LocalDate();
 
         switch (getValueType()) {
             case Today:
