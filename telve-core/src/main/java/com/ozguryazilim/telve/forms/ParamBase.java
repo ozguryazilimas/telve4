@@ -41,7 +41,11 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
     public List<E> getEntityList() {
         LOG.debug("super.getEntityList");
         if (entityList == null) {
-            entityList = getRepository().findAll();
+            if( getRepository() instanceof ParamRepositoryBase  ){
+                entityList = ((ParamRepositoryBase)getRepository()).findAllSorted();
+            } else {
+                entityList = getRepository().findAll();
+            }
         }
         return entityList;
     }

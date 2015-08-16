@@ -87,5 +87,11 @@ public abstract class ParamRepositoryBase<E extends ParamEntityBase, R extends V
     }
 
     public abstract List<E> findByCode( String code );
+
+    public List<E> findAllSorted() {
+        return criteria()
+                .orderAsc(ParamEntityBase_.name)
+                .getResultList();
+    }
     
 }
