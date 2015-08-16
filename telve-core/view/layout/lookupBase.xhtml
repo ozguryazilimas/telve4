@@ -120,6 +120,7 @@
                                         })    
                                         .jstree({
                                             "plugins" : [ "wholerow", "types", "conditionalselect", "sort", "#{ bean.model.getMultiSelect() ? 'checkbox' : '' }" ],
+                                            "checkbox": { "three_state" : false },
                                             "conditionalselect" : function (node) {
                                                 return (node.children.length &amp;&amp; #{ bean.model.leafSelect} ) ? false : true;
                                             },                                       
