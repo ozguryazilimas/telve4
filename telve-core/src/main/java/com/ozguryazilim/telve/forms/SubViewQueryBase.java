@@ -76,8 +76,10 @@ public abstract class SubViewQueryBase<E extends EntityBase,R extends ViewModel>
     @Transactional
     public void removeItem( Long id ){
         onBeforeDelete();
-        editItem(id);
-        getRepository().remove(entity);
+        //FIXME: Normal remove bir şekilde silmedi
+        //editItem(id);
+        //getRepository().remove(entity);
+        getRepository().deleteById(id);
         search();
         onAfterDelete();
     }
