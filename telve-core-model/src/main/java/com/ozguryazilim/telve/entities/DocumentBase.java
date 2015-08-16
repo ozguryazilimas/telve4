@@ -41,15 +41,10 @@ public abstract class DocumentBase extends AuditBase{
     @Column(name="ISACTIVE")
     private Boolean active = Boolean.TRUE;
     
-    //Belgenin Düzenlenme Tarihi
+    //Belgenin Düzenlenme Tarih Saati
     @Column(name="TXNDATE")
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(value = TemporalType.TIMESTAMP)
     private Date date;
-    
-    //Belgenin Düzenlenme Saati
-    @Column(name="TXNTIME")
-    @Temporal(value = TemporalType.TIME)
-    private Date time;
     
     /**
      * Geriye txn'lerde ayrıştırmaya yarayacak docType anahtar stringgi döndür. 
@@ -140,18 +135,4 @@ public abstract class DocumentBase extends AuditBase{
         this.date = date;
     }
 
-    /**
-     * Belge saatini döndürür.
-     * @return 
-     */
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-    
-    
-    
 }
