@@ -6,13 +6,17 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core">
 
+    
     <h:form id="pfilterForm">
 
         <ui:remove>
         <!-- p:panel id="pffilter" header="#{messages[moduleCaption]} :" toggleable="true" styleClass="panel-primary" widgetVar="pffpanel" -->
             <!-- f:facet name="actions" -->  
             </ui:remove>
-            
+
+        
+        <ui:remove>
+            <!-- FIXME: Filtre silmede hata yapıyor o yüzden kapandı -->
         <div class="pull-right" >
         
                 
@@ -33,6 +37,7 @@
                 
 
         </div>
+            
         
         <div class="context-menu">
         <p:commandLink id="queryBtn" type="button" 
@@ -125,6 +130,8 @@
                 </h:panelGrid>
             </p:overlayPanel>
 
+        </ui:remove>
+    
             <p:outputPanel id="filterPanel">
                 <h:panelGroup layout="block" rendered="#{not empty bean.queryDefinition.filters }">
 
@@ -140,7 +147,7 @@
                 </h:panelGroup>
 
             </p:outputPanel>
-
+            
             <h:panelGroup id="actionButtons" styleClass="actionButtons" layout="block">
                 <p:commandButton value="#{messages['general.button.Search']}" actionListener="#{bean.search()}" partialSubmit="false" process="@form" icon="fa fa-search" update="@([id$=results]), actionButtons"
                                  styleClass="btn-success"/> 
@@ -167,4 +174,5 @@
         </ui:remove>
 
     </h:form>
+    
 </ui:composition>
