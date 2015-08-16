@@ -61,7 +61,7 @@ public class SubViewRegistery implements Serializable {
             public int compare(SubView o1, SubView o2) {
                 int result = o1.order() - o2.order() ;
                 if( result == 0 ){
-                    result = o1.viewPage().getName().compareTo(o1.viewPage().getName());
+                    result = o1.viewPage().getName().compareTo(o2.viewPage().getName());
                 }
                 return result;
             }
