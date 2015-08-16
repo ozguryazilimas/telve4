@@ -9,6 +9,7 @@ package com.ozguryazilim.telve.forms;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.query.QueryControllerBase;
 import com.ozguryazilim.telve.entities.ViewModel;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
@@ -75,5 +76,14 @@ public abstract class BrowseBase<E extends EntityBase,R extends ViewModel> exten
     public Class<? extends ViewConfig> getContainerViewPage() {
         return this.getClass().getAnnotation(Browse.class).viewContainerPage();
     }
-    
+
+    /**
+     * RefreshBrowseEvent'i dinlenir ve ilgili domain ise search komutu çalıştırılır.
+     * @param event 
+     */
+    public void refreshListener( @Observes RefreshBrowserEvent event ){
+        if( event.getDomain().equals( getRepository().getEntityClass().getName()) ){
+            search();
+        }
+    }
 }

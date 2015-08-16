@@ -135,4 +135,8 @@ public abstract class RepositoryBase<E extends EntityBase, R extends ViewModel> 
     }
     
     public abstract void deleteById( Long id );
+    
+    public Class<E> getEntityClass(){
+        return entityClass();
+    }
 }

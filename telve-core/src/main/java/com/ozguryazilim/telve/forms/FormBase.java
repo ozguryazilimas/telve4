@@ -61,6 +61,9 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     @Inject
     Event<SubViewSelectEvent> subViewEvent;
     
+    @Inject
+    Event<RefreshBrowserEvent> refreshBrowserEvent;
+    
     private List<String> subViewList = new ArrayList<String>();
     private String selectedSubView;
 
@@ -171,9 +174,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     }
 
     protected void raiseRefreshBrowserEvent() {
-        //FIXME: Yeni nesil event işlerine bakılacak
-        //events.raiseTransactionSuccessEvent("refreshBrowser:" + getEntityClass().getName());
-        //log.debug("mesaj : refreshBrowser:" + getEntityClass().getName());
+        refreshBrowserEvent.fire(new RefreshBrowserEvent(getEntity().getClass().getName()));
     }
 
     @Transactional
