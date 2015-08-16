@@ -7,11 +7,13 @@ package com.ozguryazilim.telve.admin.ui;
 
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.admin.AbstractIdentityHome;
+import com.ozguryazilim.telve.admin.IdentityEvent;
 import com.ozguryazilim.telve.auth.AbstractIdentityHomeExtender;
 import com.ozguryazilim.telve.auth.UserModel;
 import com.ozguryazilim.telve.auth.UserModelRegistery;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
@@ -244,5 +246,14 @@ public class UserHome extends AbstractIdentityHome<User> {
     }
 
 
+    public void roleDeleteListener(@Observes IdentityEvent event){
+        if( !IdentityEvent.FROM_ROLE.equals(event.getFrom())) return;
+        
+        LOG.debug("Role Event Catch for : {}", event.getIdentity());
+        
+        //Action'nın ne olduğu ile ilgilenmiyoruz ama rollerimizi init etmemiz gerek
+        availRoles = null;
+        doCreateNew();
+    }
     
 }

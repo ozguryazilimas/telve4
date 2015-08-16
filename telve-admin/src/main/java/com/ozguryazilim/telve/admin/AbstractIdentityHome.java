@@ -11,6 +11,7 @@ import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.view.Pages;
 import java.io.Serializable;
 import java.util.List;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
@@ -32,6 +33,9 @@ public abstract class AbstractIdentityHome<E extends IdentityType> implements Se
     
     @Inject
     private IdentityManager identityManager;
+    
+    @Inject
+    private Event<IdentityEvent> event;
     
     public abstract List<E> getEntityList();
     
@@ -79,8 +83,11 @@ public abstract class AbstractIdentityHome<E extends IdentityType> implements Se
         }
         if( current.getId() != null ){
             identityManager.update(current);
+            
+            event.fire(new IdentityEvent(current, current.getClass().getSimpleName(), IdentityEvent.UPDATE));
         } else {
             identityManager.add(current);
+            event.fire(new IdentityEvent(current, current.getClass().getSimpleName(), IdentityEvent.CREATE));
         }
         
         FacesMessages.info( "general.message.record.SaveSuccess");
@@ -103,9 +110,20 @@ public abstract class AbstractIdentityHome<E extends IdentityType> implements Se
      */
     @org.apache.deltaspike.jpa.api.transaction.Transactional
     public void delete(){
-        //FIXME: Silme işlemi yapılmalı...
-        //identityManager.
+        if( !doBeforeDelete()){
+            return;
+        }
+        identityManager.remove(current);
+        
+        //İlgili başka yerleri haberdar edelim...
+        event.fire(new IdentityEvent(current, current.getClass().getSimpleName(), IdentityEvent.DELETE));
+        
         FacesMessages.info("general.message.record.DeleteSuccess");
+        
+        doAfterDelete();
+        
+        //Sildikten sonra yeni açalım...
+        doCreateNew();
     }
     
     /**
