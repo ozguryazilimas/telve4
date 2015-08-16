@@ -114,9 +114,19 @@ td{
     color: #444;
     /*width: 115px;*/
     float: left;
-    padding: 3px 4px 2px 0px;
-    margin-top: 3px;
+    /*padding: 3px 4px 2px 0px; */
+    margin-top: 2px;
+    margin-bottom:  0;
     clear: left;
+}
+
+.ui-state-error{
+    color: red;
+    background-color: inherit;
+}
+
+.ui-inputfield.ui-state-error, .ui-widget-header .ui-inputfield.ui-state-error, .ui-widget-content .ui-inputfield.ui-state-error{
+    border-color: red;
 }
 
 .value {

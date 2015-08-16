@@ -2,7 +2,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:s="http://jboss.org/schema/seam/taglib"
+                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:composite="http://java.sun.com/jsf/composite">
 
 
@@ -14,6 +14,8 @@
         <composite:attribute name="readonly" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="columnClass" required="false" default="large-6 medium-6 small-6"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:attribute name="readonlyInput" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:clientBehavior name="dateSelect" event="dateSelect" targets="#{cc.id}_inp" />
     </composite:interface>
 
     <composite:implementation>
@@ -23,7 +25,8 @@
             <span class="value">
                 <p:calendar id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}"
                             placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.Time']}" showOn="button"
-                            navigator="true" timeOnly="true">
+                            navigator="true" timeOnly="true" mask="true" readonlyInput="#{cc.attrs.readonlyInput}">
+                    <f:convertDateTime pattern="#{messages['general.format.Time']}" />
                     <p:clientValidator />
                 </p:calendar>
             </span>

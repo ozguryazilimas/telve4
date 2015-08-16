@@ -23,7 +23,7 @@
                     <f:selectItems value="#{userLookup.users}" var="item" itemLabel="#{ item.firstName } #{ item.lastName }" itemValue="#{item.loginName}" />
                 </p:selectOneMenu>
             </span>
-            <p:message for="#{cc.id}_inp" display="icon" />
+            <p:message for="#{cc.id}_inp" display="tooltip" />
         </div>
     </composite:implementation>
 

@@ -13,17 +13,14 @@
         <composite:attribute name="lookupProfile" required="false" default=""/>
         <composite:attribute name="placeholder" required="false"/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
-        <composite:attribute name="columnClass" required="false" default="large-6 medium-6 small-6"/>
-        <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
         <composite:clientBehavior name="change" event="itemSelect" targets="#{cc.id}_inp" />
     </composite:interface>
 
     <composite:implementation>
-        <div id="#{cc.clientId}" class="prop #{cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
+        <div id="#{cc.clientId}" style="position: relative" >
 
-            <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
-            <span class="value">
-                <p:autoComplete id="#{cc.id}_inp" value="#{cc.attrs.value}" 
+            <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" style="display: none" />
+            <p:autoComplete id="#{cc.id}_inp" value="#{cc.attrs.value}" 
                                 forceSelection="true" 
                                 completeMethod="#{cc.attrs.lookupBean.suggest}"
                                 var="item"
@@ -36,8 +33,7 @@
                                 placeholder="#{cc.attrs.placeholder}"
                                 dropdown="true">
                     <p:clientValidator />
-                </p:autoComplete>
-            </span>
+            </p:autoComplete>
             <p:message for="#{cc.id}_inp" display="tooltip"/>
         </div>
     </composite:implementation>

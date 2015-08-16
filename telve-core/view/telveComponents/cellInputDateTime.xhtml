@@ -11,7 +11,6 @@
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="readonly" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="readonlyInput" required="false" type="java.lang.Boolean" default="false"/>
-        <composite:attribute name="yearRange" required="false"  default="c-10:c+10"/>
         <composite:clientBehavior name="dateSelect" event="dateSelect" targets="#{cc.id}_inp" />
     </composite:interface>
 
@@ -20,11 +19,11 @@
         <div style="position: relative">
             <p:outputLabel for="#{cc.id}_inp" value="#{messages['medicalExamination.label.RestDurationMinute']}" style="display: none"/>
             <p:calendar id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}"
-                        placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.Date']}" showOn="button"
-                        navigator="true" mask="true" readonlyInput="#{cc.attrs.readonlyInput}" yearRange="#{cc.attrs.yearRange}">
-                <f:convertDateTime pattern="#{messages['general.format.Date']}" />
+                        placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.DateTime']}" showOn="button"
+                        navigator="true" mask="true" readonlyInput="#{cc.attrs.readonlyInput}">
+                <f:convertDateTime pattern="#{messages['general.format.DateTime']}" />
+                <p:message for="#{cc.id}_inp" display="tooltip" />
             </p:calendar>
-            <p:message for="#{cc.id}_inp" display="tooltip" />
         </div>
 
     </composite:implementation>
