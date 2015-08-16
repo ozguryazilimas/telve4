@@ -53,6 +53,7 @@ public interface Pages extends ViewConfig {
         @SecuredPage("executionLogClearCommand")
         class ExecutionLogClearCommand implements Admin {};
         
+        @SecuredPage("suggestion")
         @Navigation(icon = "/suggestion.png", section = AdminNavigationSection.class)
         class SuggestionBrowse implements Admin {};
         

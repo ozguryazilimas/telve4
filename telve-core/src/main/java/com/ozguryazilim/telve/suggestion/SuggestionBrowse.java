@@ -12,6 +12,8 @@ import com.ozguryazilim.telve.entities.SuggestionItem_;
 import com.ozguryazilim.telve.forms.Browse;
 import com.ozguryazilim.telve.forms.BrowseBase;
 import com.ozguryazilim.telve.query.QueryDefinition;
+import com.ozguryazilim.telve.query.columns.BooleanColumn;
+import com.ozguryazilim.telve.query.columns.MessageColumn;
 import com.ozguryazilim.telve.query.filters.StringFilter;
 import com.ozguryazilim.telve.query.filters.StringListFilter;
 import com.ozguryazilim.telve.query.columns.TextColumn;
@@ -42,11 +44,11 @@ public class SuggestionBrowse extends BrowseBase<SuggestionItem, SuggestionItem>
                 .addFilter(new StringListFilter<>(SuggestionItem_.group, SuggestionGroupRegistery.intance().getGroupNames(), "general.label.Group", "suggestionGroup.label."), true, true)
                 .addFilter(new StringFilter<>(SuggestionItem_.key, "general.label.Key"), true );
         
-        queryDefinition.addColumn(new TextColumn<>(SuggestionItem_.group, "general.label.Group"),true);
+        queryDefinition.addColumn(new MessageColumn<>(SuggestionItem_.group, "general.label.Group", "suggestionGroup.label." ),true);
         queryDefinition.addColumn(new TextColumn<>(SuggestionItem_.data, "general.label.Data"),true);
         queryDefinition.addColumn(new TextColumn<>(SuggestionItem_.info, "general.label.Info"),true);
         queryDefinition.addColumn(new TextColumn<>(SuggestionItem_.key, "general.label.Key"),true);
-        queryDefinition.addColumn(new TextColumn<>(SuggestionItem_.active, "general.label.Active"),true);
+        queryDefinition.addColumn(new BooleanColumn<>(SuggestionItem_.active, "general.label.Active", "general.boolean.yesno."),true);
         
     }   
 
