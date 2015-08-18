@@ -26,7 +26,7 @@ import javax.validation.constraints.Size;
 public abstract class TreeNodeEntityBase<E extends TreeNodeModel> extends EntityBase implements TreeNodeModel<E>{
 
     @Column(name = "CODE", length = 255, nullable = false, unique = true )
-    @NotNull
+    @NotNull @Size(max = 255)
     private String code;
 
     @Column(name = "NAME", length = 255, nullable = false)

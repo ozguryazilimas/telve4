@@ -174,7 +174,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     }
 
     protected void raiseRefreshBrowserEvent() {
-        refreshBrowserEvent.fire(new RefreshBrowserEvent(getEntity().getClass().getName()));
+        refreshBrowserEvent.fire(new RefreshBrowserEvent(getRepository().getEntityClass().getName()));
     }
 
     @Transactional

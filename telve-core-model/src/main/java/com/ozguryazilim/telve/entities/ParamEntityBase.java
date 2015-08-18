@@ -20,7 +20,7 @@ import javax.validation.constraints.Size;
 public abstract class ParamEntityBase extends EntityBase{
 
     @Column(name = "CODE", length = 30, nullable = false, unique = true )
-    @NotNull @Size( min = 1, max = 30) 
+    @NotNull @Size( min = 0, max = 30) 
     private String code;
     
     @Column(name = "NAME", length= 100, nullable = false )

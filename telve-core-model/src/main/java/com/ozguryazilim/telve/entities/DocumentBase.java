@@ -21,9 +21,8 @@ import javax.validation.constraints.Size;
  */
 @MappedSuperclass
 public abstract class DocumentBase extends AuditBase{
-    @Column(name="SERIAL", length=30, nullable=false, unique=true)
-    @NotNull
-    @Size(max=30, min=1)
+    @Column(name="SERIAL_NO", length=30, nullable=false, unique=true)
+    @NotNull @Size(max = 30)
     private String serial;
     
     @Column(name="CODE", length=30)

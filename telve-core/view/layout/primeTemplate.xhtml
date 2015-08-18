@@ -457,14 +457,12 @@
 
                 <footer class="main-footer">
                     
-                    <p:messages  autoUpdate="true" closable="true" globalOnly="true" showDetail="true" />
-                    
                     <div class="pull-right hidden-xs">
                         <b>Version</b> #{telveConfigResolver.getProperty('app.version')}
                     </div>
-                    <ui:remove>
-                        <strong>Bir <a href="http://ozguryazilim.com.tr">Özgür Yazılım A.Ş.</a> üründür.</strong> 
-                    </ui:remove>
+                    
+                    <strong>#{telveConfigResolver.getProperty('app.footer')}</strong> 
+                    
                 </footer>
             </div>
         </h:body>

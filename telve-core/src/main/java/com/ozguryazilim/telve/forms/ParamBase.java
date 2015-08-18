@@ -160,7 +160,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
 
         try {
             //getRepository().deleteById(entity.getId());
-            getRepository().removeAndFlush(entity);
+            getRepository().remove(entity);
         } catch (Exception e) {
             LOG.error("Hata : {}", e);
             FacesMessages.error("general.message.record.DeleteFaild");
