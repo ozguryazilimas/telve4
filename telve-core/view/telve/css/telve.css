@@ -1691,3 +1691,21 @@ Renk Paleti
     padding: 1px;
     border: #DDDDDD 1px solid;
 }
+
+
+@media print{
+    .main-sidebar, .main-header, .main-footer, .main-listbar, .context-menu{
+        display: none;
+    }
+    
+    
+    
+    table, form, .main-content, .content, .content-wrapper, .content-wrapper.listbar{
+        margin: 0px;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+        left: 0px;
+        position: fixed;
+    }
+}

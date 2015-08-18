@@ -34,3 +34,22 @@ function disableRibbonBtn(ids) {
         jQuery(this).disable();
     });
 }
+
+
+function bindEnters(){
+    jQuery(window).bind('keydown', function (e) {
+        if ( !e.ctrlKey && e.keyCode == 13 ) {
+            return false;
+        }
+    });
+    jQuery(window).bind('keypress', function (e) {
+        if ( e.keyCode == 13 ) {
+            return false;
+        } else if( e.ctrlKey && e.keyCode == 10 ){
+            
+            if( jQuery(e.target).parent().hasClass('ui-input-group') || jQuery(e.target).parent().parent().hasClass('ui-input-group') ){
+                jQuery(e.target).parent().parent().find('button:first').click();
+            }
+        }
+    });
+}
