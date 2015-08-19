@@ -122,7 +122,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
         }
 
         //try {
-        getRepository().saveAndFlush(entity);
+        entity = getRepository().saveAndFlush(entity);
         if (!getEntityList().contains(entity)) {
             getEntityList().add(entity);
         }
