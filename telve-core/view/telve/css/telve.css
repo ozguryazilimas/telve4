@@ -1709,3 +1709,7 @@ Renk Paleti
         position: fixed;
     }
 }
+
+.ui-confirm-dialog-severity.fa-2x{
+    margin-right: 16px;
+}

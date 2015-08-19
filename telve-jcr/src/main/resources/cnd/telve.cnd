@@ -1,0 +1,11 @@
+<tlv='http://www.ozguryazilim.com.tr/jcr/mix/1.0'>
+
+[tlv:ref] mixin
+    - tlv:sourceCaption (STRING)
+    - tlv:sourceDomain (STRING)
+    - tlv:sourceId (STRING)
+
+[tlv:tag] mixin
+    - tlv:category (STRING)
+    - tlv:tags (STRING) multiple
+    - tlv:info (STRING)

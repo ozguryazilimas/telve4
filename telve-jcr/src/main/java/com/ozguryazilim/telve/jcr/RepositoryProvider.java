@@ -45,6 +45,7 @@ public class RepositoryProvider {
 
             // We could change the name of the repository programmatically ...
             // config = config.withName("Some Other Repository");
+            LOGGER.debug("Node Types : {}", config.getNodeTypes());
             // Verify the configuration for the repository ...
             Problems problems = config.validate();
             if (problems.hasErrors()) {
@@ -53,6 +54,8 @@ public class RepositoryProvider {
                 return null;
             }
 
+            
+            
             // Deploy the repository ...
             repository = engine.deploy(config);
             repositoryName = config.getName();

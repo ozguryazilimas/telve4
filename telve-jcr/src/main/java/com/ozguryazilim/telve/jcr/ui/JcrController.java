@@ -5,11 +5,13 @@
  */
 package com.ozguryazilim.telve.jcr.ui;
 
+import com.google.common.base.Strings;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.faces.context.FacesContext;
@@ -43,10 +45,13 @@ public class JcrController {
 
     
     private String selectedPath;
+    private String selectedId;
     private String newFolderName;
+    private String viewMode = "widget";
     
     private List<Node> folders;
     private List<FileInfo> files;
+    private Map<String,String> parentMap = new HashMap<>();
     
     public JcrController(String contextRoot, String sourceDomain, String sourceCaption, Long sourceId) {
         this.contextRoot = contextRoot;
@@ -108,6 +113,7 @@ public class JcrController {
     
     private void popuplateFolderNodes(Node node) throws RepositoryException {
         folders.add(node);
+        parentMap.put(node.getIdentifier(), node.getParent().getIdentifier());
         NodeIterator it = node.getNodes();
         while (it.hasNext()) {
             Node n = it.nextNode();
@@ -125,6 +131,10 @@ public class JcrController {
         return BeanProvider.getContextualReference(Session.class);
     }
 
+    public String getParentIdentifier( String id ){
+        return parentMap.get(id);
+    }
+    
     
     public List<FileInfo> getFiles() throws RepositoryException{
         if( files == null ){
@@ -149,7 +159,7 @@ public class JcrController {
         fm.setCreateBy(node.getProperty("jcr:createdBy").getString());
         fm.setCreateDate(node.getProperty("jcr:created").getDate().getTime());
 
-        /*
+        
         if (node.isNodeType("tlv:ref")) {
             fm.setSourceDomain(node.getProperty("tlv:sourceDomain").getString());
             fm.setSourceCaption(node.getProperty("tlv:sourceCaption").getString());
@@ -169,7 +179,7 @@ public class JcrController {
             //TODO: Taglar için sanırım array almak lazım
             //fm.setTags(node.getProperty("tlv:tags").getString());
         }
-        */
+        
         Node cn = node.getNode("jcr:content");
 
         fm.setMimeType(cn.getProperty("jcr:mimeType").getString());
@@ -204,6 +214,7 @@ public class JcrController {
     
     public void newFolder() throws RepositoryException {
         newFolder(newFolderName);
+        newFolderName = "";
     }
     
     public void newFolder( String folderName ) throws RepositoryException {
@@ -215,6 +226,12 @@ public class JcrController {
         JcrTools jcrTools = new JcrTools();
         Node folder = jcrTools.findOrCreateNode(session, getSelectedPath() + "/" + folderName, "nt:folder");
 
+        folders.add(folder);
+        parentMap.put(folder.getIdentifier(), folder.getParent().getIdentifier());
+        
+        setSelectedPath(folder.getPath());
+        setSelectedId(folder.getIdentifier());
+        
         LOG.info("Folder Node: {}", folder);
 
         session.save();
@@ -252,14 +269,21 @@ public class JcrController {
         try {
             JcrTools jcrTools = new JcrTools();
             Node n = jcrTools.uploadFile(session, fileName, in);
-
-            //n.addMixin("tlv:ref");
-            //n.addMixin("tlv:tag");
-            //n.setProperty("tlv:refName", getContext().getReferanceName());
-            //n.setProperty("tlv:refView", getContext().getReferanceView());
-            //n.setProperty("tlv:refID", getContext().getReferanceId());
+            
+            
+            
+            n.addMixin("tlv:ref");
+            n.addMixin("tlv:tag");
+            n.setProperty("tlv:sourceCaption", getSourceCaption());
+            n.setProperty("tlv:sourceDomain", getSourceDomain());
+            n.setProperty("tlv:sourceId", getSourceId());
 
             session.save();
+            
+            
+            //FIXME: Burada aktif kullanıcı adı UserLookup'dan alınacak. Eğer yoksa ( session yoksa yoktur ) anonim bırkılacak.
+            //n.getProperty("jcr:createdBy").setValue("Hakan");
+            //session.save();
 
             //View Modele de ekleyelim.
             files.add(buildFileInfo(n));
@@ -282,8 +306,20 @@ public class JcrController {
     public void setSelectedPath(String selectedPath) {
         this.selectedPath = selectedPath;
     }
-    
 
+    public String getSelectedId() throws RepositoryException {
+        if( Strings.isNullOrEmpty(selectedId)){
+            Session session = getSession();
+            Node node = session.getNode(getSelectedPath());
+            selectedId = node.getIdentifier();
+        }
+        return selectedId;
+    }
+
+    public void setSelectedId(String selectedId) {
+        this.selectedId = selectedId;
+    }
+    
     public void downloadFile(String id) throws RepositoryException {
         Session session = getSession();
 
@@ -347,7 +383,7 @@ public class JcrController {
         Node node = session.getNodeByIdentifier(id);
         
         setSelectedPath(node.getPath());
-        
+        selectedId = id;
         populateFiles();
     }
 
@@ -376,4 +412,44 @@ public class JcrController {
             }
         }
     }
+    
+    public void deleteFolder() throws RepositoryException {
+        deleteFolder(getSelectedPath());
+    }
+    
+    public void deleteFolder(String path) throws RepositoryException {
+        Session session = getSession();
+
+        Node node = session.getNode(path);
+        node.remove();
+
+        session.save();
+
+        //View Modelden de silelim
+        folders = null;
+        parentMap.clear();
+        setSelectedPath(getContextRoot());
+        setSelectedId("");
+        /*
+        for (Node m : folders) {
+            if (id.equals(m.getIdentifier())) {
+                folders.remove(m);
+                break;
+            }
+        }*/
+    }
+
+    public String getViewMode() {
+        return viewMode;
+    }
+
+    public void setViewMode(String viewMode) {
+        this.viewMode = viewMode;
+    }
+    
+    
+    public Boolean getIsViewModeWidget(){
+        return "widget".equals(viewMode);
+    }
+    
 }

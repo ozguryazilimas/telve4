@@ -9,13 +9,22 @@
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
 
 
-        <p:panelGrid >
+       <p:panelGrid id="jcr">
             <f:facet name="header">
                 <p:row>
-                    <p:column style="width: 20%;" rendered="#{true}">
+                    <p:column style="width: 20%;" rendered="#{showFolder}">
                         <h:outputText value=" #{messages['jcr.label.Folders']}" />
                         <h:form style="display: inline">
-                            <p:commandLink title="#{messages['jcr.hint.NewFolder']}" onclick="PF('dlg').show();" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
+                            
+                            <p:commandLink title="#{messages['jcr.hint.DeleteFolder']}" action="#{jcrController.deleteFolder()}" 
+                                           update="folderTree,jcr" 
+                                           oncomplete="buildTree();"
+                                           styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
+                                <i class="fa fa-minus-circle" />
+                                <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocumentFolder']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
+                            </p:commandLink>
+                            
+                            <p:commandLink title="#{messages['jcr.hint.NewFolder']}" update="dialog" oncomplete="PF('dlg').show();" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
                                 <i class="fa fa-plus-circle" />
                             </p:commandLink>
                         </h:form>
@@ -28,18 +37,64 @@
                             <p:commandLink title="#{messages['jcr.hint.UploadFile']}" onclick="PF('fdlg').show();" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
                                 <i class="fa fa-upload" />
                             </p:commandLink>
+                            
+                            <p:commandLink title="#{messages['jcr.hint.WidgetMode']}" action="#{jcrController.setViewMode('widget')}" update="filesPanel" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
+                                <i class="fa fa-th" />
+                            </p:commandLink>
+                            
+                            <p:commandLink title="#{messages['jcr.hint.TableMode']}" action="#{jcrController.setViewMode('table')}" update="filesPanel" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
+                                <i class="fa fa-table" />
+                            </p:commandLink>
                         </h:form>
                     </p:column>
                 </p:row>
             </f:facet>
             <p:row>
-                <p:column style="width: 20%;" rendered="#{true}">
+                <p:column style="width: 20%;" rendered="#{showFolder}">
                     <h:panelGroup layout="block" id="data" ></h:panelGroup>
 
                 </p:column>
                 <p:column >
                     <h:panelGroup id="filesPanel" layout="block" styleClass="row" style="padding: 4px;">
 
+                        <ui:fragment rendered="#{not jcrController.isViewModeWidget}">
+                            <p:dataTable value="#{jcrController.files}" var="file" >
+                                <p:column headerText="#{messages['jcr.label.FileName']}" >
+                                    <i class="fa #{jcrController.getIcon(file.mimeType)}"/>
+                                    <h:outputText value=" #{file.name}" />
+                                </p:column>
+                                <p:column headerText="#{messages['jcr.label.CreatedBy']}" >
+                                    <h:outputText value=" #{file.createBy} " /> 
+                                </p:column>
+                                <p:column headerText="#{messages['jcr.label.CreatedDate']}" >
+                                    <t:cellOutputDate value="#{file.createDate}" />
+                                </p:column>
+                                <p:column headerText="#{messages['jcr.label.Actions']}" >
+                                    <h:form>
+                                                    <p:commandLink title="#{messages['jcr.hint.Download']}" action="#{jcrController.downloadFile(file.id)}" ajax="false"  style="width: auto;">
+                                                        <i class="fa fa-download" />
+                                                        <h:outputText value=" #{messages['jcr.label.Download']}" />
+                                                    </p:commandLink>
+
+
+                                                    <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update=":filesPanel"  style="width: auto;">
+                                                        <i class="fa fa-trash" />
+                                                        <h:outputText value=" #{messages['jcr.label.Delete']}" />
+                                                        <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocument']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
+                                                    </p:commandLink>
+
+                                                </h:form>
+                                                <ui:remove>
+                                                    <p:commandLink title="#{messages['jcr.hint.Edit']}" action="#{JcrDocumentControl.downloadFile(file.id)}" ajax="false" styleClass="ui-menuitem-link" style="width: auto;">
+                                                        <h:outputText styleClass="ui-menuitem-icon ui-icon ui-icon-pencil" />
+                                                        <h:outputText value="#{messages['jcr.label.Edit']}" styleClass="ui-menuitem-text"/>
+                                                    </p:commandLink>
+                                                </ui:remove>
+                                </p:column>
+                            </p:dataTable>
+                        </ui:fragment>
+                        
+                        <ui:fragment rendered="#{jcrController.isViewModeWidget}">
                         <ui:repeat value="#{jcrController.files}" var="file">
 
                             <div class="large-6 medium-6 small-12 columns">
@@ -77,6 +132,7 @@
                                                     <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update=":filesPanel"  style="width: auto;">
                                                         <i class="fa fa-trash" />
                                                         <h:outputText value=" #{messages['jcr.label.Delete']}" />
+                                                        <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocument']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
                                                     </p:commandLink>
 
                                                 </h:form>
@@ -94,12 +150,27 @@
                                 </div>
                             </div>
                         </ui:repeat>
-
+                            </ui:fragment>
                     </h:panelGroup>
                 </p:column>
             </p:row>
         </p:panelGrid>
 
+    
+        <p:outputPanel id="folderTree" >
+        
+        <script>
+            data = [ 
+                        <ui:repeat value = "#{jcrController.folders}" var = "node" >
+                        { "id" : "#{node.identifier}", "parent" : "#{node.path eq jcrController.contextRoot ? '#' : jcrController.getParentIdentifier( node.identifier )}", "text" : "#{fn:escapeXml(node.name)}" },
+                        </ui:repeat>
+
+                    ];
+            selectedNode = '#{jcrController.selectedId}';
+        </script>
+            
+            </p:outputPanel>
+        
         <script type="text/javascript">
                             
                         function buildTree(){
@@ -109,6 +180,10 @@
                                         //alert( data.instance.get_node(data.selected[0]).id );
                                         selectNode( [ { 'name': 'nodeId', 'value' : data.instance.get_node(data.selected[0]).id }]);
                                     })  
+                                    .on('loaded.jstree', function() {
+                                        jQuery('#data').jstree('open_all');
+                                        setNodeSelections();
+                                     })
                                     .jstree({
                                         "plugins" : [ "wholerow", "types", "sort"],
                                         "types" : {
@@ -117,28 +192,27 @@
                                             }
                                         },
                                         'core' : {
-                                            'data' : [
-                                                <ui:repeat value = "#{jcrController.folders}" var = "node" >
-                                                    { "id" : "#{node.identifier}", "parent" : "#{node.path eq jcrController.contextRoot ? '#' : node.parent.identifier}", "text" : "#{fn:escapeXml(node.name)}" },
-                                                </ui:repeat>
-
-                                            ]
-                                        }
+                                            'data' : data                                        }
                                     });
+                                    
                                 }
                                 buildTree();
-                                    
+                                
+                                   
                                 function setNodeSelections(){
-                                        $('#data').jstree().select_node(jQuery(PrimeFaces.escapeClientId("lookupForm:selectedNodes")).val().split(','));
+                                        jQuery('#data').jstree().select_node(selectedNode);
                                 }
 
                                 function setSelections(){
                                         var s = jQuery('#data').jstree().get_selected();
                                         jQuery(PrimeFaces.escapeClientId("lookupForm:selectedNodes")).val(s);
                                 }
-
+                                
+                                setNodeSelections();
+              
         </script>
-
+        
+        
     <h:form id="uploaddialog" enctype="multipart/form-data">
         <p:dialog header="#{messages['jcr.caption.UploadFileDialog']}" widgetVar="fdlg" showEffect="clip" hideEffect="clip">
             <p:fileUpload fileUploadListener="#{jcrController.handleFileUpload}" mode="advanced" dragDropSupport="true"
@@ -148,14 +222,15 @@
 
     <h:form id="dialog">
         <p:dialog header="#{messages['jcr.caption.NewFolderDialog']}" widgetVar="dlg" >
-            #{jcrController.selectedPath}
+            
             <h:panelGrid columns="2" cellpadding="5">
                 <h:outputLabel for="name" value="#{messages['jcr.label.FolderName']}:" />
                 <p:inputText id="name" label="name" value="#{jcrController.newFolderName}"/>
             </h:panelGrid>
             <f:facet name="footer">
                 <p:commandButton value="#{messages['general.button.Ok']}" action="#{jcrController.newFolder()}"
-                                 oncomplete="PF('dlg').hide();" />
+                                 update=":folderTree,:data"
+                                 oncomplete="buildTree();setNodeSelections();PF('dlg').hide();" />
             </f:facet>
         </p:dialog>
     </h:form>
