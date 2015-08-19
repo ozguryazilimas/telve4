@@ -16,6 +16,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
@@ -102,7 +103,11 @@ public class PermissionRegistery implements Serializable{
      */
     private void registerPermission(Element e, String gn) {
         Attribute target = e.attribute("target");
+        
         String t = target.getText();
+        if( "true".equals(ConfigResolver.getPropertyValue("permission.exclude." + t, "false"))){
+            return;
+        }
         List<String> al = new ArrayList<>();
 
         populateEntityActions(e, al);

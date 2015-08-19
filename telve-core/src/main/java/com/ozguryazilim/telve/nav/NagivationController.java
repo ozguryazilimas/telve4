@@ -18,6 +18,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigDescriptor;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.picketlink.Identity;
@@ -72,6 +73,10 @@ public class NagivationController implements Serializable {
                 SecuredPage sc = sec.get(0);
                 if (!Strings.isNullOrEmpty(sc.value())) {
                     if (!identity.hasPermission(sc.value(), "select")) {
+                        continue;
+                    }
+                    //Yetki çıkarma kontrolü
+                    if( "true".equals(ConfigResolver.getPropertyValue("permission.exclude." + sc.value(), "false"))){
                         continue;
                     }
                 }

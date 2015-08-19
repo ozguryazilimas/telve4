@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.enterprise.inject.Any;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
@@ -59,6 +60,17 @@ public class PicketLinkAccessDecisionVoter extends AbstractAccessDecisionVoter {
                     }
                 });
 
+                deniedPage = viewConfigResolver.getViewConfigDescriptor(FacesContext.getCurrentInstance().getViewRoot().getViewId()).getConfigClass();
+            }
+            
+            //Uygulama için ayarlardan yetki çıkarma kontrolü
+            if( "true".equals(ConfigResolver.getPropertyValue("permission.exclude." + sc.value(), "false"))){
+                set.add(new SecurityViolation() {
+                    @Override
+                    public String getReason() {
+                        return "Not have permission;";
+                    }
+                });
                 deniedPage = viewConfigResolver.getViewConfigDescriptor(FacesContext.getCurrentInstance().getViewRoot().getViewId()).getConfigClass();
             }
         }
