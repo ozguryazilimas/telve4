@@ -5,7 +5,7 @@
 	
     <groupId>com.ozguryazilim.mutfak</groupId>
     <artifactId>telve-parent</artifactId>
-    <version>4.0.0.A13</version> 
+    <version>4.0.0.A14</version> 
     <name>${project.groupId} : ${project.artifactId} : ${project.version}</name>
     <description>Telve Parent POM</description>
     <url>http://www.ozguryazilim.com.tr/</url>
