@@ -23,7 +23,7 @@
             <dependency>
                 <groupId>com.ozguryazilim.mutfak</groupId>
                 <artifactId>telve-bom</artifactId>
-                <version>4.0.0.A10</version>
+                <version>4.0.0.A11</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

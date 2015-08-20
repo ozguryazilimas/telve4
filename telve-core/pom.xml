@@ -123,6 +123,11 @@
         </dependency>
         
         <dependency>
+            <groupId>org.omnifaces</groupId>
+            <artifactId>omnifaces</artifactId>
+        </dependency>
+        
+        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>telve-core-model</artifactId>
             <version>${project.version}</version>

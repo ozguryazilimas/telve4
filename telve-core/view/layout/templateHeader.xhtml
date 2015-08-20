@@ -1,7 +1,9 @@
 <ui:composition  xmlns="http://www.w3.org/1999/xhtml"
                  xmlns:ui="http://java.sun.com/jsf/facelets"
                  xmlns:h="http://java.sun.com/jsf/html"
-                 xmlns:f="http://java.sun.com/jsf/core">
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:o="http://omnifaces.org/ui"
+                 xmlns:of="http://omnifaces.org/functions">
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
@@ -22,13 +24,13 @@
     <h:outputStylesheet library="telve" name="css/telve.css" />
     <h:outputStylesheet library="telve" name="css/jstree.css" />
     <h:outputScript library="ribbon" name="js/ribbon.js" />
-    <h:outputScript library="telve" name="js/tekir.js" />
+    <h:outputScript library="telve" name="js/telve.js" />
     <h:outputScript library="telve" name="js/jstree.js" />
     <h:outputScript library="telve" name="js/jquery.slimscroll.js" />
     <h:outputScript library="telve" name="js/app.js" />
     <h:outputStylesheet library="telve" name="css/nprogress.css" />
     <h:outputScript library="telve" name="js/nprogress.js" />
     <h:outputScript library="telve" name="js/locale_tr.js" />
-    
+    <o:onloadScript>bindEnters();</o:onloadScript>
     
 </ui:composition>
