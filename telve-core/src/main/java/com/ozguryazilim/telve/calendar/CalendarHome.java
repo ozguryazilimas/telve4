@@ -77,6 +77,10 @@ public class CalendarHome implements Serializable{
     
     public void onEventSelect(SelectEvent selectEvent) {
         selectedEvent = (ScheduleEvent) selectEvent.getObject();
+        CalendarEvent ce = (CalendarEvent)selectedEvent.getData();
+        
+        CalendarEventController cec = (CalendarEventController) BeanProvider.getContextualReference(ce.getSourceName());
+        cec.process( ce );
     }
     
     public void onViewChange(SelectEvent selectEvent) {

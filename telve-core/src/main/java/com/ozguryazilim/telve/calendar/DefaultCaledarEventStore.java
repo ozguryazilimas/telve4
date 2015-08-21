@@ -7,6 +7,7 @@ package com.ozguryazilim.telve.calendar;
 
 import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
 import com.ozguryazilim.telve.auth.ActiveUserRoles;
+import com.ozguryazilim.telve.auth.UserLookup;
 import com.ozguryazilim.telve.entities.CalendarEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,6 +44,9 @@ public class DefaultCaledarEventStore implements CalendarEventStore, Serializabl
     @Inject
     private CalendarEventRepository repository;
     
+    @Inject
+    private UserLookup userLookup;
+    
     @Override
     public String getStoreName() {
         return "DefaultCaledarEventStore";
@@ -51,7 +55,7 @@ public class DefaultCaledarEventStore implements CalendarEventStore, Serializabl
     @Override
     public void loadEvents(LazyScheduleModel model, Date start, Date end) {
         
-        List<CalendarEvent> events = repository.findFilteredEvents(start, end, filterModel.getCalendarSources(), userId, userRoles, filterModel.getShowPersonalEvents(), filterModel.getShowClosedEvents());
+        List<CalendarEvent> events = repository.findFilteredEvents(start, end, filterModel.getCalendarSources(), userId, userLookup.getUnifiedRoles(), filterModel.getShowPersonalEvents(), filterModel.getShowClosedEvents());
         for( CalendarEvent e : events ){
             model.addEvent(getScheduleEvent(e));
         }

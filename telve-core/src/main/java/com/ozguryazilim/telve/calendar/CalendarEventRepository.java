@@ -50,13 +50,14 @@ public abstract class CalendarEventRepository extends RepositoryBase<CalendarEve
             sources.add("NONE");
         }
         
-        //Actör filtresi hazırlanıyor
-        List<String> actors = new ArrayList<>();
-        
-        actors.add(userId);
-        
-        if( !onlyPersonalEvents ){
-            actors.addAll(userRoles);
+        //Actor Filtresi hazırlıyoruz.
+        List<Criteria<CalendarEvent,CalendarEvent>> actorFilter = new ArrayList<>();
+        for( String r : userRoles ){
+            if( r.startsWith("P")){
+                actorFilter.add(criteria().like(CalendarEvent_.actor, r + "%"));
+            } else {
+                actorFilter.add(criteria().eq(CalendarEvent_.actor, r));
+            }
         }
         
         
@@ -64,7 +65,8 @@ public abstract class CalendarEventRepository extends RepositoryBase<CalendarEve
                 .gtOrEq(CalendarEvent_.startDate, startDate)
                 .ltOrEq(CalendarEvent_.endDate, endDate)
                 .in(CalendarEvent_.sourceName, sources.toArray(new String[]{}) )
-                .in(CalendarEvent_.actor, actors.toArray(new String[]{}) );
+                .or(actorFilter);
+                //.in(CalendarEvent_.actor, actors.toArray(new String[]{}) );
             
         //Kapıları gösterecek miyiz?
         if( !closedEvents ){
@@ -126,4 +128,15 @@ public abstract class CalendarEventRepository extends RepositoryBase<CalendarEve
     @Modifying
     @Query("update CalendarEvent as p set p.done = true where p.sourceName = ?1 and p.sourceKey like ?2")
     public abstract int doneEvents(String sourceName, String sourceKey );
+    
+    /**
+     * Eventleri toplu olarak tamalanmadı işaretlemek için kullanılır.
+     * 
+     * @param sourceName
+     * @param sourceKey like ile kullanılır.
+     * @return 
+     */
+    @Modifying
+    @Query("update CalendarEvent as p set p.done = false where p.sourceName = ?1 and p.sourceKey like ?2")
+    public abstract int undoneEvents(String sourceName, String sourceKey );
 }

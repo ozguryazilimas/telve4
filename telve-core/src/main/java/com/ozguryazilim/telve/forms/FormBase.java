@@ -154,6 +154,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     /**
      * Entity kaydedilmeden hemen önce atl sınıflar birşey yapmak isterlerse bu
      * methodu override edebilirler...
+     * @return 
      */
     public boolean onBeforeSave() {
         //Alt sınıflar için 
@@ -163,8 +164,29 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     /**
      * Entity kaydedildikten hemen sonra atl sınıflar birşey yapmak isterlerse
      * bu methodu override edebilirler...
+     * @return 
      */
     public boolean onAfterSave() {
+        //Alt sınıflar için 
+        return true;
+    }
+    
+    /**
+     * Entity silinmeden hemen önce atl sınıflar birşey yapmak isterlerse bu
+     * methodu override edebilirler...
+     * @return 
+     */
+    protected boolean onBeforeDelete() {
+        //Alt sınıflar için 
+        return true;
+    }
+
+    /**
+     * Entity silindikten hemen sonra atl sınıflar birşey yapmak isterlerse
+     * bu methodu override edebilirler...
+     * @return 
+     */
+    protected boolean onAfterDelete() {
         //Alt sınıflar için 
         return true;
     }
@@ -185,8 +207,13 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         }
 
         try {
+            
+            if( !onBeforeDelete() ) return null;
+            
             //getRepository().deleteById(entity.getId());
             getRepository().remove(entity);
+            
+            onAfterDelete();
         } catch (Exception e) {
             LOG.debug("Hata : {}", e);
             FacesMessages.error("#{messages['general.message.record.DeleteFaild']}");

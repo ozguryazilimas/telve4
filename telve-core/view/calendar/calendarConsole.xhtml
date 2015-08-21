@@ -140,7 +140,7 @@
         <ui:include src="/layout/messages.xhtml"/>
 
         <h:form>
-            <p:schedule id="schedule" value="#{calendarHome.model}" widgetVar="telveCalendar" timeZone="GMT+2" rightHeaderTemplate="" tooltip="true" acpectRatio="0.5" >
+            <p:schedule id="schedule" value="#{calendarHome.model}" widgetVar="telveCalendar" timeZone="GMT+2" rightHeaderTemplate="" tooltip="true" aspectRatio="1.5" >
                 <p:ajax event="eventSelect" listener="#{calendarHome.onEventSelect}" oncomplete="editEvent();"/>
                 <p:ajax event="viewChange" listener="#{calendarHome.onViewChange}" />
             </p:schedule>
@@ -150,7 +150,8 @@
     
     <ui:define name="context-menu">
         <li>
-            <p:commandLink name="newEvent"  action="#{calendarHome.newEvent}" >
+            <p:commandLink id="newEvent"  action="#{calendarHome.newEvent}" >
+                <f:param name="eventSource" value="simpleEventSource" />
                 <h:graphicImage value="/img/ribbon/small/calendar.png" />
                 <span>#{messages['calendar.button.SimpleEvent']}</span>
             </p:commandLink>
