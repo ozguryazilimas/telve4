@@ -6,6 +6,7 @@
 package com.ozguryazilim.telve.channel.notify;
 
 import com.ozguryazilim.telve.channel.Channel;
+import com.ozguryazilim.telve.contact.Contact;
 import java.util.HashMap;
 import java.util.Map;
 import javax.enterprise.context.Dependent;
@@ -50,6 +51,37 @@ public class NotifyChannel implements Channel{
         for( Map.Entry<String,Object> e : params.entrySet()){
             headers.put(e.getKey(), e.getValue());
         }
+        
+        notifyProducer.sendBodyAndHeaders(message, headers);
+    }
+
+    /**
+     * Contact'ın tipinin kullanıcı olup olmadığına bakar.
+     * 
+     * TODO: UserType ile isim uzayı oluşturulur ise bu kontrolün düzenlenmesi gerek.
+     * 
+     * @param contact
+     * @return 
+     */
+    @Override
+    public boolean isValidContact(Contact contact) {
+        return "User".equals(contact.getType());
+    }
+
+    @Override
+    public void sendMessage(Contact contact, String subject, String message, Map<String, Object> params) {
+        Map<String, Object> headers = new HashMap<>();
+        
+        
+        headers.put("subject", subject);
+        headers.put("messageClass", "GENERIC");
+        
+        for( Map.Entry<String,Object> e : params.entrySet()){
+            headers.put(e.getKey(), e.getValue());
+        }
+        
+        //Kullanıcı user id'sine gidecek
+        headers.put("target", contact.getId());
         
         notifyProducer.sendBodyAndHeaders(message, headers);
     }

@@ -8,8 +8,17 @@ package com.ozguryazilim.telve.messagebus.command.ui;
 import com.google.gson.Gson;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.StoredCommand;
+import com.ozguryazilim.telve.entities.StoredCommand_;
 import com.ozguryazilim.telve.messagebus.command.StorableCommand;
+import com.ozguryazilim.telve.query.filters.Filter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 
@@ -67,4 +76,30 @@ public abstract class StoredCommandRepository extends RepositoryBase<StoredComma
         return sc;
     }
     
+    @Override
+    public List<StoredCommand> browseQuery(List<Filter<StoredCommand, ?>> filters) {
+        CriteriaBuilder criteriaBuilder = entityManager().getCriteriaBuilder();
+        //Geriye PersonViewModel dönecek cq'yu ona göre oluşturuyoruz.
+        CriteriaQuery<StoredCommand> criteriaQuery = criteriaBuilder.createQuery(StoredCommand.class);
+
+        //From Tabii ki         
+        Root<StoredCommand> from = criteriaQuery.from(StoredCommand.class);
+        
+        //Filtreleri ekleyelim.
+        List<Predicate> predicates = new ArrayList<>();
+        
+        decorateFilters(filters, predicates, criteriaBuilder, from);
+        
+        //Person filtremize ekledik.
+        criteriaQuery.where(predicates.toArray(new Predicate[]{}));
+        
+        //İsme göre sıralayalım
+        criteriaQuery.orderBy(criteriaBuilder.asc(from.get(StoredCommand_.name)));
+        
+        //Haydi bakalım sonuçları alalım
+        TypedQuery<StoredCommand> typedQuery = entityManager().createQuery(criteriaQuery);
+        List<StoredCommand> resultList = typedQuery.getResultList();
+
+        return resultList;
+    }
 }

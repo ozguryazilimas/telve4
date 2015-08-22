@@ -54,15 +54,15 @@
                 function handleMessage(notify) {
                     //facesmessage.severity = 'info';
                     //alert(facesmessage.summary);
-                    jQuery("#notifyBar").addClass("alert-" + notify.severity);
-                    jQuery("#notifyIcon").addClass("fa fa-3x " + notify.icon);
+                    jQuery("#notifyBar").removeClass().addClass("ui-notificationbar ui-widget ui-widget-content top alert-" + notify.severity);
+                    jQuery("#notifyIcon").removeClass().addClass("fa fa-3x " + notify.icon);
                     jQuery("#notifySubject").html(notify.subject);
                     jQuery("#notifyDetail").html(notify.body);
 
                     PF('notifyBar').show();
                     setTimeout(function () {
                         PF('notifyBar').hide();
-                    }, 2000);
+                    }, 3000);
 
                     updateNotifies();
                 }

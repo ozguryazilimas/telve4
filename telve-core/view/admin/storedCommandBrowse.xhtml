@@ -132,12 +132,54 @@
 
     </ui:define>
 
-    <ui:define name="actionColumn">
+    <ui:define name="afterColumns">
         <p:commandButton icon="ui-icon-clock" action="#{storedCommandBrowse.schedule()}" oncomplete="PF('schedulePopup').show();" ajax="true" partialSubmit="true" process="@this"/>
         <p:commandButton icon="ui-icon-play" action="#{storedCommandBrowse.run()}" ajax="true" partialSubmit="true" process="@this"/>
     </ui:define>
     
+    
     <ui:define name="context-menu">
+        <li>
+            <p:commandLink id="newSuggestion" onclick="PF('commandSelectorPopup').show();" >
+                <i class="fa fa-plus-circle"/>
+                <span>#{messages['general.button.New']}</span>
+            </p:commandLink>
+        </li>
+
+        <li>
+            <p:commandLink  action="#{storedCommandBrowse.schedule()}" oncomplete="PF('schedulePopup').show();" ajax="true" partialSubmit="true" process="@this" >
+                <i class="fa fa-plus-circle"/>
+                <span>#{messages['general.button.Shedule']}</span>
+            </p:commandLink>
+        </li>
         
+        <li>
+            <p:commandLink  action="#{storedCommandBrowse.run()}" ajax="true" partialSubmit="true" process="@this" >
+                <i class="fa fa-plus-circle"/>
+                <span>#{messages['general.button.Run']}</span>
+            </p:commandLink>
+        </li>
+
+        <ui:remove>
+        <li>
+            <p:commandLink id="editSuggestion" 
+                           update=":suggestionPopup" 
+                           actionListener="#{suggestionBrowse.editSuggestion}" 
+                           oncomplete="PF('suggestionPopup').show();"
+                           disabled="#{suggestionBrowse.selectedItem eq null }" styleClass="#{suggestionBrowse.selectedItem ne null ? '' : 'disabled'}">
+                <i class="fa fa-edit"/>
+                <span>#{messages['general.button.Edit']}</span>
+            </p:commandLink>
+        </li>
+        <li>
+            <p:commandLink id="deleteSuggestion" 
+                           update=":browseListForm:results" 
+                           actionListener="#{suggestionBrowse.deleteSuggestion}" 
+                           disabled="#{suggestionBrowse.selectedItem eq null }" styleClass="#{suggestionBrowse.selectedItem ne null ? '' : 'disabled'}">
+                <i class="fa fa-trash"/>
+                <span>#{messages['general.button.Delete']}</span>
+            </p:commandLink>
+        </li>
+            </ui:remove>
     </ui:define>
 </ui:composition>

@@ -6,7 +6,6 @@
 package com.ozguryazilim.telve.calendar;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.ozguryazilim.telve.entities.CalendarEvent;
 import com.ozguryazilim.telve.reminder.ReminderService;
 import com.ozguryazilim.telve.utils.DateUtils;
@@ -43,15 +42,26 @@ public abstract class AbtsractCalendarEventSource<E> implements CalendarEventCon
     private CalendarEvent calendarEvent;
     private E data;
     
+    
+    /**
+     * Json'u geri parse etmek için sınıf lazım.
+     * 
+     * Daha iyi bir yol bulana kadar şimdilik böyle.
+     * 
+     * UI kısmı olmasa Map kullanmak lazım diye düşündüm? Belki de StoredCommand yapısını kullanırız.
+     * 
+     */
+    public abstract Class<E> getPayloadClass();
+    
     /**
      * CalendarEvent içerisinde json olarak bulunan veriyi sınıfa tanırılmış modele çevirir.
      * 
      * @param event
      * @return 
      */
-    public E getContentData( CalendarEvent event){
+    public E getContentData( CalendarEvent event ){
         Gson gson = new Gson();
-        return gson.fromJson(event.getSourceData(), new TypeToken<E>(){}.getType());
+        return gson.fromJson(event.getSourceData(), getPayloadClass() );
     }
     
     /**

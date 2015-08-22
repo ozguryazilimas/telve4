@@ -25,7 +25,8 @@ public class EmailChannelProcessor implements Processor{
         LOG.debug("Exchange Header : {}", exchange.getIn().getHeader("messageClass") );
         
         String messageClass = exchange.getIn().getHeader("messageClass").toString();
-        String templateName = ConfigResolver.getProjectStageAwarePropertyValue("channelTemplate.email." + messageClass);
+        String template = exchange.getIn().getHeader("template") == null ? "GENERIC" : exchange.getIn().getHeader("template").toString();
+        String templateName = ConfigResolver.getPropertyAwarePropertyValue("channelTemplate.email." + messageClass, template);
         
         LOG.debug("Email Template Name : {}", templateName );
         

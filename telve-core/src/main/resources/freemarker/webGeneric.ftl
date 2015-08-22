@@ -1,4 +1,4 @@
 ${request.setHeader("icon", "fa fa-bell-o")}
-${request.setHeader("severity", "success")}
+${request.setHeader("severity", "info")}
 ${request.setHeader("link", "")}
-${body} 
+${body}

@@ -94,6 +94,8 @@ public class ContactResolver {
     public Contact createContact( Map<String,String> params ){
         Contact c = new Contact();
         
+        c.setSource(getClass().getSimpleName());
+        c.setType("Contact");
         c.setId(params.get("id"));
         c.setFirstname(params.get("firstname"));
         c.setLastname(params.get("lastname"));

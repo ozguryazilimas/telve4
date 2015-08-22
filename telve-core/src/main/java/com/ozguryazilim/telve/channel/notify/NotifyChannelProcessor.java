@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.channel.notify;
 
+import com.google.common.base.Strings;
 import javax.enterprise.context.Dependent;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -25,7 +26,26 @@ public class NotifyChannelProcessor implements Processor{
         LOG.debug("Exchange Header : {}", exchange.getIn().getHeader("messageClass") );
         
         String messageClass = exchange.getIn().getHeader("messageClass").toString();
-        String templateName = ConfigResolver.getProjectStageAwarePropertyValue("channelTemplate.notify." + messageClass);
+        String template = exchange.getIn().getHeader("template") == null ? "" : exchange.getIn().getHeader("template").toString();
+        
+        String contactType = exchange.getIn().getHeader("contactType") == null ? "" : exchange.getIn().getHeader("contactType").toString();
+
+        //Önce channel + messageClass + template + ContactType için bakıyoruz.
+        String templateName = ConfigResolver.getProjectStageAwarePropertyValue("channelTemplate.web." + messageClass + "." + template + "." + contactType );
+        if( Strings.isNullOrEmpty(templateName) ){
+            //Bulamadık key azaltıyoruz.
+            templateName = ConfigResolver.getProjectStageAwarePropertyValue("channelTemplate.web." + messageClass + "." + template );
+        }
+        
+        if( Strings.isNullOrEmpty(templateName) ){
+            //Bulamadık key azaltıyoruz.
+            templateName = ConfigResolver.getProjectStageAwarePropertyValue("channelTemplate.web." + messageClass );
+        }
+        
+        if( Strings.isNullOrEmpty(templateName) ){
+            //Bulamadık default alıyoruz
+            templateName = ConfigResolver.getProjectStageAwarePropertyValue("channelTemplate.web.GENERIC" );
+        }
         
         LOG.debug("Notify Template Name : {}", templateName );
         

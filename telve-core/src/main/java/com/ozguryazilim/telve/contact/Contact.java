@@ -24,6 +24,8 @@ public class Contact implements Serializable{
     private String fax;
     private String address;
     private String jabber;
+    private String type;
+    private String source;
 
     public String getId() {
         return id;
@@ -97,12 +99,29 @@ public class Contact implements Serializable{
         this.jabber = jabber;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
     @Override
     public String toString() {
-        return "cs=contact;" + "id=" + id + "; firstname=" + firstname + "; lastname=" + lastname + "; email=" + email + "; phone=" + phone + "; mobile=" + mobile + "; fax=" + fax + "; address=" + address + "; jabber=" + jabber;
+        return "cs=contact;type=" + type + "; id=" + id + "; firstname=" + firstname + "; lastname=" + lastname + "; email=" + email + "; phone=" + phone + "; mobile=" + mobile + "; fax=" + fax + "; address=" + address + "; jabber=" + jabber;
     }
 
     public void pushToMap( Map<String,Object> params ){
+        params.put("contactType", type);
         params.put("id", id);
         params.put("firstname", firstname);
         params.put("lastname", lastname);

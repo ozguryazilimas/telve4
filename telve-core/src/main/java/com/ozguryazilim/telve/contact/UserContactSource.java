@@ -74,6 +74,9 @@ public class UserContactSource extends AbstractContactSource{
         //Kullanıcı bilgisinden contact oluşturulup result'a ekleniyor.
         for( User u : users ){
             Contact c = new Contact();
+            //TODO: UserType ( doktor, nurse v.s. ) gelse peşine iyi olur
+            c.setSource(getClass().getSimpleName());
+            c.setType("User");
             c.setId(u.getId());
             c.setFirstname(u.getFirstName());
             c.setLastname(u.getLastName());

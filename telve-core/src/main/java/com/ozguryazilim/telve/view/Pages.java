@@ -71,6 +71,8 @@ public interface Pages extends ViewConfig {
     interface Calendar extends Pages{
         @Navigation( icon = "fa fa-calendar", section = MainNavigationSection.class)
         class CalendarConsole implements Calendar {};
+
+        class CalendarReminderCommand implements Calendar {};
         
         class SimpleEventDialog implements Calendar {};
     }

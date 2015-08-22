@@ -26,8 +26,8 @@ public class TelveCoreModule {
         testMessage = "Inited";
         SuggestionGroupRegistery.intance().addGroup("Genel", Boolean.FALSE);
         
-        ChannelRegistery.register("notifyChannel");
-        ChannelRegistery.register("emailChannel");
+        ChannelRegistery.register("notifyChannel", "web");
+        ChannelRegistery.register("emailChannel", "email");
         
     }
     

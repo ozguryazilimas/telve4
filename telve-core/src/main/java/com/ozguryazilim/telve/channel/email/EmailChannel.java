@@ -5,7 +5,9 @@
  */
 package com.ozguryazilim.telve.channel.email;
 
+import com.google.common.base.Strings;
 import com.ozguryazilim.telve.channel.Channel;
+import com.ozguryazilim.telve.contact.Contact;
 import java.util.HashMap;
 import java.util.Map;
 import javax.enterprise.context.Dependent;
@@ -53,4 +55,40 @@ public class EmailChannel implements Channel{
         
         mailProducer.sendBodyAndHeaders(message, headers);
     }
+    
+    @Override
+    public void sendMessage( Contact contact, String subject, String message, Map<String, Object> params) {
+        Map<String, Object> headers = new HashMap<>();
+        
+        
+        headers.put("subject", subject);
+        headers.put("messageClass", "GENERIC");
+        
+        for( Map.Entry<String,Object> e : params.entrySet()){
+            headers.put(e.getKey(), e.getValue());
+        }
+        
+        //Gelen parametrelerde e-posta adresi olmaya biliyor.
+        headers.put("target", contact.getEmail());
+        
+        mailProducer.sendBodyAndHeaders(message, headers);
+        
+    }
+
+    /**
+     * Contact'ın e-posta adresi olup olmadığına bakar. 
+     * 
+     * TODO: E-posta adres doğrulaması yapmak lazım. Logları burada mı basalım.
+     * 
+     * 
+     * 
+     * @param contact
+     * @return 
+     */
+    @Override
+    public boolean isValidContact(Contact contact) {
+        return !Strings.isNullOrEmpty( contact.getEmail());
+    }
+
+    
 }
