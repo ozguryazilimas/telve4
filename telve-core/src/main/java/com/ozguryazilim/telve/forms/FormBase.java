@@ -133,12 +133,12 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         
             onAfterSave();
         } catch (EntityExistsException e) {
-            LOG.debug("Hata : Not Unique", e);
+            LOG.error("Hata : Not Unique", e);
             FacesMessages.warn("#{messages['general.message.record.NotUnique']}");
             return null;
         } catch ( Exception e ){
             //FIXME: Asıl detay hatanın bulunması lazım.
-            LOG.debug("Hata : Constraint Violation", e);
+            LOG.error("Hata : Constraint Violation", e);
             FacesMessages.warn("#{messages['general.message.record.ConstraintViolation']}");
             return null;
         }
@@ -146,7 +146,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         LOG.debug("Entity Saved : {0} ", entity);
         FacesMessages.info( "general.message.record.SaveSuccess");
 
-        raiseRefreshBrowserEvent();
+        raiseRefreshBrowserEvent( getEntity().getId());
 
         return getContainerViewPage();
     }
@@ -195,8 +195,8 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         //TODO: Bu ne işe yarıyordu. Belgelemek lazım.
     }
 
-    protected void raiseRefreshBrowserEvent() {
-        refreshBrowserEvent.fire(new RefreshBrowserEvent(getRepository().getEntityClass().getName()));
+    protected void raiseRefreshBrowserEvent( Long id ) {
+        refreshBrowserEvent.fire(new RefreshBrowserEvent(getRepository().getEntityClass().getName(), id ));
     }
 
     @Transactional
@@ -206,6 +206,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             return DefaultErrorView.class;
         }
 
+        Long oldid = entity.getId();
         try {
             
             if( !onBeforeDelete() ) return null;
@@ -224,7 +225,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         entity = null;
         FacesMessages.info("general.message.record.DeleteSuccess");
 
-        raiseRefreshBrowserEvent();
+        raiseRefreshBrowserEvent( oldid );
 
         conversation.close();
 

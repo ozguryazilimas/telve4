@@ -6,10 +6,17 @@
                  xmlns:h="http://xmlns.jcp.org/jsf/html"
                  xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
-    <p:panel id="#{dashlet}" header="#{messages[ bean.caption ]}" 
+    <p:panel id="#{dashlet}"  
              toggleable="#{dashletRegistery.hasCapability( dashlet, 'canMinimize' )}" 
              closable="#{dashletRegistery.hasCapability( dashlet, 'canHide' )}" widgetVar="#{dashlet}">
 
+        <f:facet name="header">
+            <h:panelGroup>
+                <h:outputText value="#{messages[ bean.caption ]} " />
+                <ui:insert name="caption" />
+            </h:panelGroup>
+        </f:facet>
+        
         <p:ajax event="close" listener="#{dashboardManager.handleClose}"  />  
 
         <f:facet name="actions">
