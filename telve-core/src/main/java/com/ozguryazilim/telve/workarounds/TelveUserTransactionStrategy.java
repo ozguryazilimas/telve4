@@ -55,9 +55,12 @@ public class TelveUserTransactionStrategy extends BeanManagedUserTransactionStra
                 return ut;
             } catch (NamingException ne2) {
                 LOG.info(ne2.getExplanation());
-				// // Try the other JBoss location
-                // return (UserTransaction) context
-                // .lookup("java:jboss/UserTransaction");
+                try {
+                    // // Try the other JBoss location
+                    return (UserTransaction) context.lookup("java:jboss/UserTransaction");
+                } catch (NamingException ex) {
+                    LOG.error("JBoss da olmadı", ex);
+                }
             } catch (Exception e) {
                 LOG.info(e.getLocalizedMessage());
                 // throw ne;
@@ -67,4 +70,12 @@ public class TelveUserTransactionStrategy extends BeanManagedUserTransactionStra
         UserTransaction returnUserTransaction = super.resolveUserTransaction();
         return returnUserTransaction;
     }
+    
+    /*
+    Alternatif bir yöntem olarak burada bulunsun. Camel thread'i içindeyken asıl registeryi bulamazsa jboss'a geri düşmek için
+    @Override
+    protected TransactionSynchronizationRegistry resolveTransactionRegistry(){
+        return JndiUtils.lookup("java:jboss/TransactionSynchronizationRegistry", TransactionSynchronizationRegistry.class);
+        //return super.resolveTransactionRegistry();
+    }*/
 }
