@@ -2,19 +2,35 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                template="/layout/browseBase.xhtml">
-
-    <ui:param name="moduleCaption" value="module.caption.ExecutionLog" />
-    <ui:param name="bean" value="#{executionLogBrowse}" />
-    <ui:param name="advanceEnabled" value="true" />
-    <ui:param name="saveEnabled" value="true" />
-    <ui:param name="filterEnabled" value="true" />
-    <ui:param name="permission" value="executionLogBrowse" />
-    <ui:param name="onSelectUpdate" value="" />
-    <ui:param name="onSelectEnabled" value="" />
+                template="/layout/primeTemplate.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
 
     
-    <ui:define name="context-menu">
+    <ui:define name="body">
+        
+        <h:form>
+        
+            <div class="row">
+                <div class="large-9 medium-9 small-9 columns">
+                    <p:inputText value="#{logViewer.filter}" placeholder="Aramak istediğiniz kelimeyi giriniz. Düzenli İfaedeler (regex) kullanabilirsiniz."/>
+                </div>
+                <div class="large-3 medium-3 small-3 columns">
+                    <span>
+                    <p:commandButton value="Refresh" action="#{logViewer.refresh()}" />
+                    <p:commandButton value="Close" action="#{logViewer.close()}" />
+                    </span>
+                </div>
+            </div>
+        </h:form>
+        
+        <p:outputPanel autoUpdate="true">
+            <ui:repeat value="#{logViewer.logLines}" var="line">
+                #{line}<br/>
+            </ui:repeat>
+        </p:outputPanel>
+        
         
     </ui:define>
+    
 </ui:composition>
