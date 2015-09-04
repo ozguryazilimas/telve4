@@ -15,7 +15,7 @@
     <description>Telve JCR Package</description>
 
     <properties>
-        <modeshape.version>4.3.0.Final</modeshape.version>
+        <modeshape.version>4.4.0.Final</modeshape.version>
     </properties>
 
     
@@ -50,10 +50,25 @@
             <artifactId>telve-core</artifactId>
             <version>${project.version}</version>
         </dependency>
-        
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-cachestore-leveldb</artifactId>
+            <version>7.2.4.Final</version>
+        </dependency>
+
         <dependency>
             <groupId>org.modeshape</groupId>
             <artifactId>modeshape-jcr</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.infinispan</groupId>
+                    <artifactId>infinispan-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.infinispan</groupId>
+                    <artifactId>infinispan-commons</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
