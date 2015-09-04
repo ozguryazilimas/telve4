@@ -139,6 +139,91 @@ public class DateUtils {
         return result;
     }
     
+    /**
+     * Verilen tarih/saatin dakika kısmını kullanarak her saat aynı dakikada çalışacak expression döndüdür.
+     * @param date
+     * @return 
+     */
+    public static ScheduleExpression getHourlyScheduleExpression( Date date ){
+        
+        DateTime dt = new DateTime( date );
+        
+        ScheduleExpression result = new ScheduleExpression();
+        result.second(0);
+        result.minute(dt.getMinuteOfHour());
+        result.hour("*");
+        result.dayOfMonth("*");
+        result.dayOfWeek("*");
+        result.month("*");
+        result.year("*");
+        
+        return result;
+    }
+    
+    /**
+     * Verilen tarih/saatin saat dakika kısmını kullanarak her gün aynı saat aynı dakikada çalışacak expression döndüdür.
+     * @param date
+     * @return 
+     */
+    public static ScheduleExpression getDailyScheduleExpression( Date date ){
+        
+        DateTime dt = new DateTime( date );
+        
+        ScheduleExpression result = new ScheduleExpression();
+        result.second(0);
+        result.minute(dt.getMinuteOfHour());
+        result.hour(dt.getHourOfDay());
+        result.dayOfMonth("*");
+        result.dayOfWeek("*");
+        result.month("*");
+        result.year("*");
+        
+        return result;
+    }
+    
+    /**
+     * Verilen tarih/saatin gün saat dakika kısmını kullanarak her hafta aynı gün aynı saat aynı dakikada çalışacak expression döndüdür.
+     * @param date
+     * @return 
+     */
+    public static ScheduleExpression getWeeklyScheduleExpression( Date date ){
+        
+        DateTime dt = new DateTime( date );
+        
+        ScheduleExpression result = new ScheduleExpression();
+        result.second(0);
+        result.minute(dt.getMinuteOfHour());
+        result.hour(dt.getHourOfDay());
+        result.dayOfMonth("*");
+        result.dayOfWeek(dt.getDayOfWeek());
+        result.month("*");
+        result.year("*");
+        
+        return result;
+    }
+    
+    
+    /**
+     * Verilen tarih/saatin gün saat dakika kısmını kullanarak her ay aynı gün aynı saat aynı dakikada çalışacak expression döndüdür.
+     * @param date
+     * @return 
+     */
+    public static ScheduleExpression getMonthlyScheduleExpression( Date date ){
+        
+        DateTime dt = new DateTime( date );
+        
+        ScheduleExpression result = new ScheduleExpression();
+        result.second(0);
+        result.minute(dt.getMinuteOfHour());
+        result.hour(dt.getHourOfDay());
+        result.dayOfMonth(dt.getDayOfMonth());
+        result.dayOfWeek("*");
+        result.month("*");
+        result.year("*");
+        
+        return result;
+    }
+    
     public static DateTimeFormatter getDateTimeFormatter(){
         return formatter;
     }

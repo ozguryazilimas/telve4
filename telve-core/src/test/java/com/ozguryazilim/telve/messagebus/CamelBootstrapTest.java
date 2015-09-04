@@ -7,7 +7,6 @@ package com.ozguryazilim.telve.messagebus;
 
 import com.ozguryazilim.telve.messagebus.command.Command;
 import com.ozguryazilim.telve.messagebus.command.CommandSender;
-import com.ozguryazilim.telve.messagebus.command.LogCommand;
 import com.ozguryazilim.telve.messagebus.command.ScheduledCommand;
 import javax.inject.Inject;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -68,20 +67,6 @@ public class CamelBootstrapTest {
         System.out.println("testCamelBootstrap");
     }
 
-    @Test
-    public void testLogCommand() {
-        System.out.println("CMD1");
-        
-        commandSender.sendCommand(new LogCommand("--- Test 1 ------"));
-        System.out.println("CMD2");
-        commandSender.sendCommand(new LogCommand("--- Test 2 ------"));
-        System.out.println("CMD3");
-        commandSender.sendCommand(new LogCommand("--- Test 3 ------"));
-        System.out.println("CMD4");
-        commandSender.sendCommand(new LogCommand("--- Test 4 ------"));
-        System.out.println("CMD-END");
-    }
-    
     
     @Test
     public void testDefaultCommand() {
@@ -113,7 +98,7 @@ public class CamelBootstrapTest {
     public void testScheduledCommand() throws InterruptedException {
         System.out.println("testScheduledCommand");
         
-        commandSender.sendCommand(new ScheduledCommand( "NA", "TestSuit", new LogCommand("Scheduled Log :)") ));
+        commandSender.sendCommand(new ScheduledCommand( "123456", "NA", "TestSuit", new TestCommand() ));
         
         System.out.println("testScheduledCommand end");
         Thread.sleep(1000l);

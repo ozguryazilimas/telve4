@@ -133,35 +133,29 @@ public class ScheduleModel {
                 break;
             case ShortSchedule : 
                 switch ( d ){
+                    case "Hourly" :
+                        ScheduleExpression se1 = DateUtils.getHourlyScheduleExpression(sm.getStartDate()); 
+                        se1.start(sm.getStartDate());
+                        se1.end(sm.getEndDate());
+                        sm.setExpression(se1);
+                        break;
                     case "Daily" : 
-                        //ScheduleExpression se1 = 
-                        //se.start(sm.getStartDate());
-                        //se.end(sm.getEndDate());
-                        //sm.setExpression(se);
+                        ScheduleExpression se2 = DateUtils.getDailyScheduleExpression(sm.getStartDate()); 
+                        se2.start(sm.getStartDate());
+                        se2.end(sm.getEndDate());
+                        sm.setExpression(se2);
                         break;
                     case "Weekly" : 
-                        //ScheduleExpression se1 = 
-                        //se.start(sm.getStartDate());
-                        //se.end(sm.getEndDate());
-                        //sm.setExpression(se);
-                        break;
-                    case "Weekday" : 
-                        //ScheduleExpression se1 = 
-                        //se.start(sm.getStartDate());
-                        //se.end(sm.getEndDate());
-                        //sm.setExpression(se);
+                        ScheduleExpression se3 = DateUtils.getWeeklyScheduleExpression(sm.getStartDate()); 
+                        se3.start(sm.getStartDate());
+                        se3.end(sm.getEndDate());
+                        sm.setExpression(se3);
                         break;
                     case "Monthly" : 
-                        //ScheduleExpression se1 = 
-                        //se.start(sm.getStartDate());
-                        //se.end(sm.getEndDate());
-                        //sm.setExpression(se);
-                        break;
-                    case "Yearly" : 
-                        //ScheduleExpression se1 = 
-                        //se.start(sm.getStartDate());
-                        //se.end(sm.getEndDate());
-                        //sm.setExpression(se);
+                        ScheduleExpression se4 = DateUtils.getMonthlyScheduleExpression(sm.getStartDate()); 
+                        se4.start(sm.getStartDate());
+                        se4.end(sm.getEndDate());
+                        sm.setExpression(se4);
                         break;
                 }
                 break;
@@ -176,7 +170,71 @@ public class ScheduleModel {
        return sm;
     }
     
+    
+    
+    
     public static String getOnceExpression( Date date ){
         return "T=O,SDT="+ DateUtils.getDateTimeFormatter().print(new DateTime(date));
+    }
+    
+    public static String getPeriodExpression( String period, Date startDate ){
+        StringBuilder sb = new StringBuilder();
+        sb.append("T=P,D=").append(period);
+        if( startDate != null ){
+            sb.append(",SDT=").append(DateUtils.getDateTimeFormatter().print(new DateTime(startDate)));
+        }
+        return sb.toString();
+    }
+    
+    public static String getScheduledExpression( String schedule, Date startDate, Date endDate ){
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("T=SE,");
+        sb.append("D=").append(schedule);
+        if( startDate != null ){
+            sb.append(",SDT=").append(DateUtils.getDateTimeFormatter().print(new DateTime(startDate)));
+        }
+        if( endDate != null ){
+            sb.append(",EDT=").append(DateUtils.getDateTimeFormatter().print(new DateTime(endDate)));
+        }
+        
+        return sb.toString();
+    }
+    
+    public static String getShortScheduleExpression( String schedule, Date startDate, Date endDate ){
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("T=S,");
+        sb.append("D=").append(schedule);
+        if( startDate != null ){
+            sb.append(",SDT=").append(DateUtils.getDateTimeFormatter().print(new DateTime(startDate)));
+        }
+        if( endDate != null ){
+            sb.append(",EDT=").append(DateUtils.getDateTimeFormatter().print(new DateTime(endDate)));
+        }
+        
+        return sb.toString();
+    }
+    
+    /**
+     * İnsan için schedule çevrimi
+     * @param exp
+     * @return 
+     */
+    public static String convertForHuman( String exp ){
+        StringBuilder sb = new StringBuilder();
+        
+        Map<String,String> map = Splitter.on(',').omitEmptyStrings().trimResults().withKeyValueSeparator("=").split(exp);
+        
+        //Önce tip kontrolü
+        String t = map.get("T");
+        switch ( t ){
+            case "SE" : sb.append(map.get("D")); break;
+            case "S" : sb.append(map.get("D")); break;
+            case "P" : sb.append(map.get("D")); break;
+            case "O" : sb.append("Bir Kez"); break;
+        }
+        
+        return sb.toString();
     }
 }

@@ -4,27 +4,37 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 template="/layout/primeTemplate.xhtml"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:h="http://xmlns.jcp.org/jsf/html">
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
 
     
     <ui:define name="body">
         
+        <ui:include src="/layout/messages.xhtml" />
+
         <h:form>
         
             <div class="row">
-                <div class="large-9 medium-9 small-9 columns">
-                    <p:inputText value="#{logViewer.filter}" placeholder="Aramak istediğiniz kelimeyi giriniz. Düzenli İfaedeler (regex) kullanabilirsiniz."/>
-                </div>
-                <div class="large-3 medium-3 small-3 columns">
+                <t:inputCombobox label="logViewer.label.LogName" value="#{logViewer.logName}" required="false" >
+                    <f:selectItems value="#{logViewer.logNames}" var="log" itemLabel="#{logViewer.getLogCaption(log)}" itemValue="#{log}" />
+                </t:inputCombobox>
+                
+                <t:inputText label="general.label.Filter" value="#{logViewer.filter}" placeholder="Aramak istediğiniz kelimeyi giriniz. Düzenli İfaedeler (regex) kullanabilirsiniz."/>
+                
+                <div class="actionButtons large-12 medium-12 small-12 columns">
                     <span>
-                    <p:commandButton value="Refresh" action="#{logViewer.refresh()}" />
-                    <p:commandButton value="Close" action="#{logViewer.close()}" />
+                    <p:commandButton value="#{messages['general.button.Refresh']}" icon="fa fa-refresh" action="#{logViewer.refresh()}" update=":logPanel"/>
+                    <p:commandButton value="#{messages['general.button.Download']}" ajax="false" icon="fa fa-download" >
+                        <p:fileDownload value="#{logViewer.logFile}" />
+                    </p:commandButton>
+                    <p:commandButton value="#{messages['general.button.Close']}" icon="fa fa-close" action="#{logViewer.close()}" />
                     </span>
                 </div>
             </div>
         </h:form>
         
-        <p:outputPanel autoUpdate="true">
+        <p:outputPanel id="logPanel" autoUpdate="false">
             <ui:repeat value="#{logViewer.logLines}" var="line">
                 #{line}<br/>
             </ui:repeat>

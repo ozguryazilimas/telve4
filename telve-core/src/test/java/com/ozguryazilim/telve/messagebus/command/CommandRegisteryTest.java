@@ -5,7 +5,6 @@
  */
 package com.ozguryazilim.telve.messagebus.command;
 
-import com.ozguryazilim.telve.commands.ExecutionLogClearCommand;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
@@ -105,25 +104,5 @@ public class CommandRegisteryTest {
     }
     
     
-    /**
-     * Test of getEndpoint method, of class CommandRegistery.
-     */
-    @Test
-    public void testAbstractCommand() {
-        System.out.println("testAbstractCommand");
-        System.out.println(CommandRegistery.getCommands());
-        
-        String name = ExecutionLogClearCommand.class.getName();
-
-        boolean result = CommandRegistery.isRegistered(name);
-        
-        System.out.println(CommandRegistery.getCommands());
-        Assert.assertTrue(result);
-        
-        result = CommandRegistery.isRegistered(LogCommand.class.getName());
-        Assert.assertFalse(result);
-        
-        
-    }
     
 }

@@ -6,6 +6,7 @@
 package com.ozguryazilim.telve.messagebus.command;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Zamanlanmış komut komutu.
@@ -16,6 +17,7 @@ import java.util.Date;
  */
 public class ScheduledCommand extends AbstractCommand{
     
+    private String id;
     private String schedule;
     private Date createDate;
     private String createBy;
@@ -27,11 +29,30 @@ public class ScheduledCommand extends AbstractCommand{
      * @param createBy
      * @param command 
      */
+    /*
     public ScheduledCommand(String schedule, String createBy, Command command) {
+        //FIXME: Burada UUID oluşturmalı.
+        this.id = "1234";
         this.schedule = schedule;
         this.createBy = createBy;
         this.command = command;
         this.createDate = new Date();
+    }*/
+    
+    public ScheduledCommand(String id, String schedule, String createBy, Command command) {
+        this.id = id;
+        this.schedule = schedule;
+        this.createBy = createBy;
+        this.command = command;
+        this.createDate = new Date();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSchedule() {
@@ -64,6 +85,28 @@ public class ScheduledCommand extends AbstractCommand{
 
     public void setCommand(Command command) {
         this.command = command;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ScheduledCommand other = (ScheduledCommand) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
     
     
