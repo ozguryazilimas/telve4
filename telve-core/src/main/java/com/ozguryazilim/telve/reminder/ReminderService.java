@@ -11,6 +11,7 @@ import com.ozguryazilim.mutfak.kahve.KahveEntry;
 import com.ozguryazilim.telve.channel.ChannelRegistery;
 import com.ozguryazilim.telve.messagebus.command.CommandSender;
 import com.ozguryazilim.telve.messagebus.command.ScheduledCommand;
+import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -35,7 +36,8 @@ public class ReminderService {
     
     public void createReminder( ReminderCommand reminderCommand ){
 
-        ScheduledCommand sc = new ScheduledCommand(reminderCommand.getSchedule(), "SYSTEM", reminderCommand);
+        //FIXME: Bu servis çalışıyor mu ki hala?
+        ScheduledCommand sc = new ScheduledCommand( new Date().toString(), reminderCommand.getSchedule(), "SYSTEM", reminderCommand);
         
         commandSender.sendCommand(sc);
     }

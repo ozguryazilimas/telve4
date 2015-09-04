@@ -95,6 +95,20 @@ public class CommandScheduler {
             }
         }
     }
+    
+    /**
+     * Verilen ID'ye sahip ScheduledCommand'ı timer'dan kaldırır.
+     * @param id 
+     */
+    public void removeFromScedularBuID(String id) {
+        if (timerService.getTimers() != null) {
+            for (Timer timer : timerService.getTimers()) {
+                if (((ScheduledCommand)timer.getInfo()).getId().equals(id)) {
+                    timer.cancel();
+                }
+            }
+        }
+    }
 
     @Timeout
     public void timeout(Timer timer) {

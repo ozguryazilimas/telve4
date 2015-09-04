@@ -5,10 +5,8 @@
  */
 package com.ozguryazilim.telve.messagebus.command;
 
-import com.ozguryazilim.telve.commands.ExecutionLogger;
 import javax.batch.runtime.BatchRuntime;
 import javax.ejb.Stateful;
-import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,8 +23,7 @@ public class JavaBatchCommandExecutor extends AbstractCommandExecuter<AbstractJB
 
     private static final Logger LOG = LoggerFactory.getLogger(JavaBatchCommandExecutor.class);
     
-    @Inject
-    private ExecutionLogger logger;
+    
     
     @Override
     public void execute(AbstractJBatchCommand command) {
@@ -34,7 +31,6 @@ public class JavaBatchCommandExecutor extends AbstractCommandExecuter<AbstractJB
             BatchRuntime.getJobOperator().start(command.getJobName(), command.getProperties());
         } catch (Exception e){
             LOG.error("Java Batch execution error", e);
-            logger.error(command, e.getLocalizedMessage());
         }
     }
     

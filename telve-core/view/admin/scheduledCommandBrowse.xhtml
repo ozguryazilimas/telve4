@@ -12,22 +12,243 @@
 
     <ui:define name="body">
         <ui:include src="/layout/messages.xhtml" />
-        <p:dataTable value="#{scheduledCommandBrowse.timers}" var="timer">
-            <p:column headerText="#{messages['general.label.timeRemaining']}">
-                #{timer.timeRemaining}
-            </p:column>
-            <p:column headerText="#{messages['general.label.NextTimeout']}">
-                #{timer.nextTimeout}
-            </p:column>
-            <p:column headerText="#{messages['general.label.Name']}">
-                #{timer.scheduledCommand.command.name} 
-            </p:column>
-            <p:column headerText="#{messages['general.label.Schedule']}">
-                #{timer.schedule}
-            </p:column>
-            <p:column headerText="#{messages['general.label.Actions']}">
-                
-            </p:column>
-        </p:dataTable>
+
+        <h:form id="filterSearch">
+            <div class="row">
+                <div class="large-8 medium-8 small-12 columns"></div>
+                <div class="prop large-4 medium-4 small-12 columns">
+                    <span class="value">
+                        <div class="ui-input-group">
+                            <p:inputText id="filter" value="#{scheduledCommandBrowse.filter}" 
+                                         placeholder="#{messages['general.info.ScheduledCommandBrowseFilter']}" />
+                            <p:commandButton action="#{scheduledCommandBrowse.search()}" partialSubmit="true" process="@form" icon="ui-icon-search" styleClass="ui-icon-only" update=":commands" />
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </h:form>
+
+
+        <h:form id="commands">
+            <p:dataTable value="#{scheduledCommandBrowse.filteredItems}" var="item"
+                         selectionMode="single"
+                         selection="#{scheduledCommandBrowse.selectedItem}" 
+                         rowKey="#{item.id}" >
+
+
+                <p:ajax event="rowSelect" listener="#{scheduledCommandBrowse.onRowSelect}" />
+
+
+                <p:column headerText="#{messages['general.label.Type']}">
+                    #{messages['command.name.'.concat( item.command.class.simpleName) ]}
+                </p:column>
+                <p:column headerText="#{messages['general.label.Name']}">
+                    #{item.name}
+                </p:column>
+                <p:column headerText="#{messages['general.label.Info']}">
+                    #{item.info}
+                </p:column>
+                <ui:remove>
+                    <p:column headerText="#{messages['general.label.Params']}">
+                        #{item.params}
+                    </p:column>
+                </ui:remove>
+                <p:column headerText="#{messages['general.label.NextTimeout']}">
+                    <t:cellOutputDateTime value="#{item.nextTimeout}" /> - #{item.timeRemainingStr}
+                </p:column>
+                <p:column headerText="#{messages['general.label.Schedule']}">
+                    #{item.scheduleStr}
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+
+
+        <p:dialog id="commandSelectorPopup"  header="#{messages['module.caption.CommandSelectorPopup']}" widgetVar="commandSelectorPopup" modal="true" width="420">
+            <div class="row">
+                <ui:repeat value="#{scheduledCommandBrowse.editorNames}" var="item" varStatus="loop2">
+                    <div class="large-2 medium-2 small-2 columns">
+                        <p:commandLink action="#{scheduledCommandBrowse.createNew(item)}" 
+                                       ajax="true" partialSubmit="true" process="@this"
+                                       update=":editorPopup"
+                                       oncomplete="PF('commandSelectorPopup').hide();PF('editorPopup').show();">
+                            <h:graphicImage value="#{scheduledCommandBrowse.getIconPath(item)}" />
+                        </p:commandLink>
+                    </div>
+                    <div class="large-10 medium-10 small-10 columns">
+                        <div class="row">
+                            <div class="large-12 medium-12 small-12 columns">
+                                <p:commandLink value="#{messages['command.name.'.concat( item )]}" 
+                                               action="#{scheduledCommandBrowse.createNew(item)}" 
+                                               ajax="true" partialSubmit="true" process="@this" 
+                                               update=":editorPopup"
+                                               oncomplete="PF('commandSelectorPopup').hide();PF('editorPopup').show();">
+                                </p:commandLink>
+                            </div>
+                            <div class="large-12 medium-12 small-12 columns">
+                                #{messages['command.desc.'.concat( item )]} 
+                            </div>
+                        </div>
+                    </div>
+                </ui:repeat>
+            </div>
+
+            <div class="actionButtons">
+                <p:button id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" onclick="PF('commandSelectorPopup').hide();"/>
+            </div>
+
+        </p:dialog>
+
+
+        <p:dialog id="editorPopup"  header="#{messages['module.caption.CommandEditor']}" widgetVar="editorPopup" modal="true" width="500">
+            <ui:fragment rendered="#{scheduledCommandBrowse.currentEditor ne null}">
+                <h:form id="ceForm">
+
+                    <div class="row">
+                        <div class="large-12 medium-12 small-12 columns" >
+                            <strong>#{messages['command.name.'.concat( scheduledCommandBrowse.currentEditor.command.class.simpleName )]}</strong>
+                        </div> 
+                        <div class="large-12 medium-12 small-12 columns" >
+                            #{messages['command.desc.'.concat( scheduledCommandBrowse.currentEditor.command.class.simpleName )]} 
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <t:inputText label="general.label.Name" value="#{scheduledCommandBrowse.currentEditor.entity.name}"  required="true" columnClass="large-12 medium-12 small-12" />
+                        <t:inputTextarea label="general.label.Info" value="#{scheduledCommandBrowse.currentEditor.entity.info}"  columnClass="large-12 medium-12 small-12" />
+                    </div>
+
+                    <ui:include src="#{scheduledCommandBrowse.currentEditor.dialogPageViewId}" />
+
+                    <div class="actionButtons">
+                        <p:commandButton id="save" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{scheduledCommandBrowse.currentEditor.save()}" update=":commands" oncomplete="PF('editorPopup').hide();"/>
+                        <p:button id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" onclick="PF('editorPopup').hide();"/>
+                    </div>
+                </h:form>
+            </ui:fragment>
+        </p:dialog>
+
+        <p:dialog id="schedulePopup"  header="#{messages['module.caption.Sheduler']}" widgetVar="schedulePopup" modal="true" width="500">
+            <h:form id="schedulrForm">
+
+                <div class="row">
+                    <div class="large-12 medium-12 small-12 columns" >
+                        <strong>#{messages['command.name.'.concat( scheduledCommandBrowse.selectedItem.command.class.simpleName )]}</strong>
+                    </div> 
+                    <div class="large-12 medium-12 small-12 columns" >
+                        <strong>#{scheduledCommandBrowse.selectedItem.name}</strong>
+                    </div> 
+                    <div class="large-12 medium-12 small-12 columns" >
+                        #{scheduledCommandBrowse.selectedItem.info} 
+                    </div>
+                </div>
+
+                <div class="row">
+                    <t:inputCombobox label="Tip" value="#{scheduledCommandBrowse.scheduleType}">
+                        <f:selectItem itemLabel="Bir Kere" itemValue="O" />
+                        <f:selectItem itemLabel="Period" itemValue="P" />
+                        <f:selectItem itemLabel="Düzenli" itemValue="S" />
+                        <f:selectItem itemLabel="Gelişmiş" itemValue="SE" />
+                        <p:ajax event="change" />
+                    </t:inputCombobox>
+                </div>
+                <div class="row">
+                    <p:outputPanel autoUpdate="true">
+                        <t:inputDateTime label="general.label.BeginDate" value="#{scheduledCommandBrowse.startDate}" />
+                        <t:inputDateTime label="general.label.EndDate" value="#{scheduledCommandBrowse.endDate}" rendered="#{scheduledCommandBrowse.scheduleType ne 'O'}"/>
+                        <t:inputCombobox label="Period" value="#{scheduledCommandBrowse.schedule}" rendered="#{scheduledCommandBrowse.scheduleType eq 'S'}" columnClass="large-12 medium-12 small-12">
+                            <f:selectItem itemLabel="Saatlik" itemValue="Hourly" />
+                            <f:selectItem itemLabel="Günlük" itemValue="Daily" />
+                            <f:selectItem itemLabel="Haftalık" itemValue="Weekly" />
+                            <f:selectItem itemLabel="Aylık" itemValue="Monthly" />
+                        </t:inputCombobox>
+                        <t:inputText label="genaral.label.Schedule" value="#{scheduledCommandBrowse.schedule}" rendered="#{scheduledCommandBrowse.scheduleType eq 'SE' or scheduledCommandBrowse.scheduleType eq 'P'}" columnClass="large-12 medium-12 small-12"/>
+                    </p:outputPanel>
+                </div>
+
+                <ui:remove>
+                    <t:inputSheduleExpression label="Schedule" value="" />
+                </ui:remove>
+
+                <div class="actionButtons row">
+                    <p:commandButton id="save" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{scheduledCommandBrowse.schedule()}" update=":commands" oncomplete="PF('schedulePopup').hide();"/>
+                    <p:button id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" onclick="PF('schedulePopup').hide();"/>
+                </div>
+
+            </h:form>
+        </p:dialog>
+
+
     </ui:define>
+
+    <ui:define name="context-menu">
+        <li>
+            <p:commandLink id="newSuggestion" onclick="PF('commandSelectorPopup').show();" >
+                <i class="fa fa-plus-circle"/>
+                <span>#{messages['general.button.New']}</span>
+            </p:commandLink>
+        </li>
+
+        
+        <li>
+            <a id="moreButton" href="#" onclick="PF('moreMenu').show('moreButton')" >
+                <i class="fa fa-plus-circle"/>
+                <span>#{messages['general.button.New']}</span>
+                <i class="fa fa-caret-down" />
+            </a>
+        </li>
+        
+        <p:overlayPanel widgetVar="moreMenu">
+            <ul class="dropdown-menu">
+                <ui:repeat value="#{scheduledCommandBrowse.editorNames}" var="item" varStatus="loop2">
+                    <li>
+                        <p:commandLink value="#{messages['command.editor.'.concat( item )]}" 
+                                               action="#{scheduledCommandBrowse.createNew(item)}" 
+                                               ajax="true" partialSubmit="true" process="@this" 
+                                               update=":editorPopup"
+                                               oncomplete="PF('editorPopup').show();">
+                        </p:commandLink>
+                    </li>
+                </ui:repeat>
+            </ul>
+        </p:overlayPanel>
+        
+        <li>
+            <p:commandLink  action="#{scheduledCommandBrowse.edit()}" update=":editorPopup"
+                                               oncomplete="PF('editorPopup').show();" ajax="true" partialSubmit="true" process="@this" >
+                <i class="fa fa-pencil"/>
+                <span>#{messages['general.button.Edit']}</span>
+            </p:commandLink>
+        </li>
+
+        <li>
+            <p:commandLink  action="#{scheduledCommandBrowse.delete()}" update=":commands" ajax="true" partialSubmit="true" process="@this" >
+                <i class="fa fa-trash"/>
+                <span>#{messages['general.button.Delete']}</span>
+            </p:commandLink>
+        </li>
+
+        <li>
+            <p:commandLink  action="#{scheduledCommandBrowse.startSchedule()}" update=":schedulePopup" oncomplete="PF('schedulePopup').show();" ajax="true" partialSubmit="true" process="@this" >
+                <i class="fa fa-calendar"/>
+                <span>#{messages['general.button.StartShedule']}</span>
+            </p:commandLink>
+        </li>
+
+        <li>
+            <p:commandLink  action="#{scheduledCommandBrowse.stopSchedule()}" update=":commands" ajax="true" partialSubmit="true" process="@this" >
+                <i class="fa fa-calendar-o"/>
+                <span>#{messages['general.button.StopShedule']}</span>
+            </p:commandLink>
+        </li>
+
+        <li>
+            <p:commandLink  action="#{scheduledCommandBrowse.run()}" ajax="true" partialSubmit="true" process="@this" >
+                <i class="fa fa-cogs"/>
+                <span>#{messages['general.button.Run']}</span>
+            </p:commandLink>
+        </li>
+
+    </ui:define>
+
 </ui:composition>
