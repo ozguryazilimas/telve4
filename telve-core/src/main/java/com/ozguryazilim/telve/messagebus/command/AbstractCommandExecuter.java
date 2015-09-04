@@ -8,6 +8,7 @@ package com.ozguryazilim.telve.messagebus.command;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import org.apache.deltaspike.cdise.api.ContextControl;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 
@@ -23,6 +24,7 @@ public abstract class AbstractCommandExecuter<C extends Command>{
     public void initRequestScope(){
         ContextControl ctxCtrl = BeanProvider.getContextualReference(ContextControl.class);
         // this will implicitly bind a new RequestContext to your current thread
+        ctxCtrl.startContext(SessionScoped.class);
         ctxCtrl.startContext(RequestScoped.class);
     }
     
@@ -31,6 +33,7 @@ public abstract class AbstractCommandExecuter<C extends Command>{
         ContextControl ctxCtrl = BeanProvider.getContextualReference(ContextControl.class);
         // this will implicitly bind a new RequestContext to your current thread
         ctxCtrl.stopContext(RequestScoped.class);
+        ctxCtrl.stopContext(SessionScoped.class);
     }
     
     /**
