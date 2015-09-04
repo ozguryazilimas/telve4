@@ -15,7 +15,9 @@
 
     <composite:implementation>
 
+        <ui:remove>
         <h:outputScript library="telveComponents" name="accordion.js" target="head"/>
+        </ui:remove>
 
         <div id="#{cc.clientId}" class="prop #{ cc.attrs.columnClass} columns">
             <h3 class="accordion #{cc.attrs.hide eq 'true' ? 'hided' : ''}">
