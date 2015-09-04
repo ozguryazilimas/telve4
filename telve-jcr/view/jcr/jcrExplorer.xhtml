@@ -17,7 +17,7 @@
                         <h:form style="display: inline">
                             
                             <p:commandLink title="#{messages['jcr.hint.DeleteFolder']}" action="#{jcrController.deleteFolder()}" 
-                                           update="folderTree,jcr" 
+                                           update="@([id$=folderTree]),jcr" 
                                            oncomplete="buildTree();"
                                            styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
                                 <i class="fa fa-minus-circle" />
@@ -32,17 +32,17 @@
                     <p:column styleClass="actionColumn">
                         <h:outputText value=" #{messages['jcr.label.Files']}" />
                         <h:form style="display: inline">
-                            <p:remoteCommand name="selectNode" action="#{jcrController.selectNode}" update=":filesPanel" partialSubmit="true" process="@this" />
+                            <p:remoteCommand name="selectNode" action="#{jcrController.selectNode}" update="@([id$=filesPanel])" partialSubmit="true" process="@this" />
 
                             <p:commandLink title="#{messages['jcr.hint.UploadFile']}" onclick="PF('fdlg').show();" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
                                 <i class="fa fa-upload" />
                             </p:commandLink>
                             
-                            <p:commandLink title="#{messages['jcr.hint.WidgetMode']}" action="#{jcrController.setViewMode('widget')}" update="filesPanel" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
+                            <p:commandLink title="#{messages['jcr.hint.WidgetMode']}" action="#{jcrController.setViewMode('widget')}" update="@([id$=filesPanel])" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
                                 <i class="fa fa-th" />
                             </p:commandLink>
                             
-                            <p:commandLink title="#{messages['jcr.hint.TableMode']}" action="#{jcrController.setViewMode('table')}" update="filesPanel" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
+                            <p:commandLink title="#{messages['jcr.hint.TableMode']}" action="#{jcrController.setViewMode('table')}" update="@([id$=filesPanel])" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
                                 <i class="fa fa-table" />
                             </p:commandLink>
                         </h:form>
@@ -77,7 +77,7 @@
                                                     </p:commandLink>
 
 
-                                                    <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update=":filesPanel"  style="width: auto;">
+                                                    <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update="@([id$=filesPanel])"  style="width: auto;">
                                                         <i class="fa fa-trash" />
                                                         <h:outputText value=" #{messages['jcr.label.Delete']}" />
                                                         <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocument']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
@@ -129,7 +129,7 @@
                                                     </p:commandLink>
 
 
-                                                    <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update=":filesPanel"  style="width: auto;">
+                                                    <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update="@([id$=filesPanel])"  style="width: auto;">
                                                         <i class="fa fa-trash" />
                                                         <h:outputText value=" #{messages['jcr.label.Delete']}" />
                                                         <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocument']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
@@ -216,7 +216,7 @@
     <h:form id="uploaddialog" enctype="multipart/form-data">
         <p:dialog header="#{messages['jcr.caption.UploadFileDialog']}" widgetVar="fdlg" showEffect="clip" hideEffect="clip">
             <p:fileUpload fileUploadListener="#{jcrController.handleFileUpload}" mode="advanced" dragDropSupport="true"
-                          update=":filesPanel" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|.*)$/" />
+                          update="@([id$=filesPanel])" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|.*)$/" />
         </p:dialog>
     </h:form>
 
@@ -229,7 +229,7 @@
             </h:panelGrid>
             <f:facet name="footer">
                 <p:commandButton value="#{messages['general.button.Ok']}" action="#{jcrController.newFolder()}"
-                                 update=":folderTree,:data"
+                                 update="@([id$=folderTree]),@([id$=data])"
                                  oncomplete="buildTree();setNodeSelections();PF('dlg').hide();" />
             </f:facet>
         </p:dialog>
