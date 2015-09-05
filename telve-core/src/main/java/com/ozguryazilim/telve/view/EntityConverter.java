@@ -10,9 +10,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Id;
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,14 +28,12 @@ public class EntityConverter implements Converter {
 
     private static final Logger LOG = LoggerFactory.getLogger(EntityConverter.class);
 
-    @Inject
-    private EntityManager em;
-
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         try {
             String[] split = value.split(":");
-            return em.find(Class.forName(split[0]), Long.valueOf(split[1]));
+            EntityManager em = BeanProvider.getContextualReference(EntityManager.class, true);
+            return em.find( Class.forName(split[0]), Long.valueOf(split[1]));
         } catch (NumberFormatException | ClassNotFoundException e) {
             LOG.warn("Convert error : {} {} ", value, e.getMessage());
             return null;
