@@ -131,7 +131,7 @@ public class UserLookup implements Serializable{
      * @return 
      */
     public String getLoginName( String id ){
-        User u = identityManager.lookupById(User.class, id);
+        User u = identityManager.lookupIdentityById(User.class, id);
         return u.getLoginName();
     }
     
@@ -141,7 +141,7 @@ public class UserLookup implements Serializable{
      * @return bulamazsa geriye null döndürür.
      */
     public String getUserNameById( String id ){
-        User u = identityManager.lookupById(User.class, id);
+        User u = identityManager.lookupIdentityById(User.class, id);
         
         if( u != null ){
             return u.getFirstName() + " " + u.getLastName();
