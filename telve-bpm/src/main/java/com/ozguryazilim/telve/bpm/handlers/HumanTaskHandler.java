@@ -28,6 +28,9 @@ public @interface HumanTaskHandler {
     
     /**
      * İlişkilendirildiği Human Task'ın ismi
+     * 
+     * camunda için bu değer formkey'e denk gelir.
+     * 
      * @return 
      */
     String taskName();

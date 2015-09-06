@@ -8,12 +8,13 @@
     <bpmn2:endEvent id="EndEvent_1">
       <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
     </bpmn2:endEvent>
-    <bpmn2:userTask id="todoTask" camunda:assignee="${ASSIGNEE}" camunda:dueDate="${END_DATE}" camunda:followUpDate="${START_DATE}" name="${SUBJECT}">
-      <bpmn2:documentation>${INFO}</bpmn2:documentation>
+    <bpmn2:userTask id="todoTask" camunda:assignee="${ASSIGNEE}" camunda:dueDate="${END_DATE}" camunda:followUpDate="${START_DATE}" camunda:formKey="todoTask" name="Tanımlanan iş yapılmalı">
+      <bpmn2:documentation>${messages['todoTask.Info']}</bpmn2:documentation>
       <bpmn2:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="SUBJECT">${SUBJECT}</camunda:inputParameter>
           <camunda:inputParameter name="INFO">${INFO}</camunda:inputParameter>
+          <camunda:inputParameter name="AcceptableResults">COMPLETE</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>

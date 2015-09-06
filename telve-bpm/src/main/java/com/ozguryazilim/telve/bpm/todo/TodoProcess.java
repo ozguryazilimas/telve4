@@ -18,7 +18,7 @@ import org.picketlink.Identity;
  * 
  * @author Hakan Uygun 
  */
-@ProcessHandler(processId = "todo", bpmn = "todo.bpmn", hasStartDialog = true)
+@ProcessHandler(processId = "todo", hasStartDialog = true)
 public class TodoProcess extends AbstractDialogProcessHandler{
 
     private String subject;

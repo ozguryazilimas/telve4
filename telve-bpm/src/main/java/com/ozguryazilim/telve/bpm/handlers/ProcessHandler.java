@@ -33,12 +33,6 @@ public @interface ProcessHandler {
     String processId();
     
     /**
-     * Kullanılacak olan BPMN kaynak dosya ismi
-     * @return 
-     */
-    String bpmn();
-    
-    /**
      * UI için süreç ikonu
      * @return 
      */

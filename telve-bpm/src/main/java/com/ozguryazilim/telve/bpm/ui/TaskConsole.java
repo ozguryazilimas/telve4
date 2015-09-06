@@ -6,10 +6,13 @@
 package com.ozguryazilim.telve.bpm.ui;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.bpm.TaskInfo;
+import com.ozguryazilim.telve.bpm.TaskRepository;
 import com.ozguryazilim.telve.bpm.handlers.AbstractDialogProcessHandler;
 import com.ozguryazilim.telve.bpm.handlers.AbstractHumanTaskHandler;
 import com.ozguryazilim.telve.bpm.handlers.HumanTaskHandlerRegistery;
 import com.ozguryazilim.telve.bpm.handlers.ProcessHandlerRegistery;
+import com.ozguryazilim.telve.messages.FacesMessages;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -19,8 +22,6 @@ import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.TaskService;
-import org.camunda.bpm.engine.task.Task;
-import org.camunda.bpm.engine.task.TaskQuery;
 import org.picketlink.Identity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,9 +45,13 @@ public class TaskConsole implements Serializable {
 
     @Inject
     private TaskService taskService;
+    
+    @Inject 
+    private TaskRepository taskRepository;
+            
 
-    private List<Task> taskList;
-    private Task selectedTask;
+    private List<TaskInfo> taskList;
+    private TaskInfo selectedTask;
     private String selectedTaskViewId = "/bpm/emptyTask.xhtml";
 
     private String searchText = "";
@@ -98,8 +103,8 @@ public class TaskConsole implements Serializable {
      *
      * @param task
      */
-    public void openTaskDialog(Task task) {
-        String hn = HumanTaskHandlerRegistery.getHandlerName(task.getTaskDefinitionKey());
+    public void openTaskDialog(TaskInfo task) {
+        String hn = HumanTaskHandlerRegistery.getHandlerName(task.getFormKey());
         AbstractHumanTaskHandler aph = (AbstractHumanTaskHandler) BeanProvider.getContextualReference(hn, true);
         aph.openDialog(task);
     }
@@ -115,23 +120,9 @@ public class TaskConsole implements Serializable {
         aph.openDialog();
     }
 
-    public List<Task> getTaskList() {
+    public List<TaskInfo> getTaskList() {
         if (taskList == null) {
-            TaskQuery qry = taskService.createTaskQuery()
-                    .active()
-                    .taskAssignee(identity.getAccount().getId())
-                    .orderByDueDate().asc()
-                    .orderByTaskName().asc();
-
-            if (!Strings.isNullOrEmpty(searchText)) {
-                qry.taskNameLike("%" + searchText + "%");
-            }
-
-            if (!Strings.isNullOrEmpty(searchTaskType)) {
-                qry.taskDefinitionKey(searchTaskType);
-            }
-
-            taskList = qry.list();
+            taskList = taskRepository.getTaskList(identity.getAccount().getId(), Boolean.TRUE, Boolean.FALSE, null, searchTaskType, searchText);
         }
 
         return taskList;
@@ -146,11 +137,11 @@ public class TaskConsole implements Serializable {
         selectedTaskViewId = "/bpm/emptyTask.xhtml";
     }
 
-    public Task getSelectedTask() {
+    public TaskInfo getSelectedTask() {
         return selectedTask;
     }
 
-    public void setSelectedTask(Task selectedTask) {
+    public void setSelectedTask(TaskInfo selectedTask) {
         this.selectedTask = selectedTask;
     }
 
@@ -162,9 +153,19 @@ public class TaskConsole implements Serializable {
         this.selectedTaskViewId = selectedTaskViewId;
     }
 
-    public void onSelectTask(Task selectedTask) {
+    /**
+     * UI tarafından seçilen task'ın handlerı bulunup hazırlanıyor.
+     * @param selectedTask 
+     */
+    public void onSelectTask(TaskInfo selectedTask) {
         setSelectedTask(selectedTask);
-        String hn = HumanTaskHandlerRegistery.getHandlerName(getSelectedTask().getTaskDefinitionKey());
+        String hn = HumanTaskHandlerRegistery.getHandlerName(getSelectedTask().getFormKey());
+        if( Strings.isNullOrEmpty(hn)){
+            //TODO: i18n
+            FacesMessages.error("Task Form Bulunamadı", "Task " + getSelectedTask().getTask().getTaskDefinitionKey() + " için tanımlı bir form bulunamadı. Lütfen sistem yöenticiniz ile görüşünüz.");
+            LOG.error("Task {} için tanımlı handler bulunamadı", getSelectedTask().getTask().getTaskDefinitionKey());
+            return;
+        }
         AbstractHumanTaskHandler aph = (AbstractHumanTaskHandler) BeanProvider.getContextualReference(hn, true);
         aph.setTask(selectedTask);
         setSelectedTaskViewId(aph.getViewId());
@@ -197,14 +198,10 @@ public class TaskConsole implements Serializable {
      */
     public void setSelectedTaskId(String taskId) {
         if (!Strings.isNullOrEmpty(taskId)) {
-            List<Task> ls = taskService.createTaskQuery()
-                    .active()
-                    .taskAssignee(identity.getAccount().getId())
-                    .taskId(taskId)
-                    .list();
-
-            if (!ls.isEmpty()) {
-                onSelectTask(ls.get(0));
+            TaskInfo ti = taskRepository.getTaskById(taskId);
+            
+            if ( ti != null ) {
+                onSelectTask(ti);
             }
         }
     }

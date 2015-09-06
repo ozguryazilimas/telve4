@@ -10,9 +10,9 @@
                 >
 
     <section class="content-header" style="margin-top: -25px; margin-bottom: 10px;">
-        <h1>#{bean.task.name} <small class="pull-right"> [#{messages['taskName.'.concat(bean.task.taskDefinitionKey)]}] <t:cellOutputDateTime value="#{bean.task.dueDate}"/></small></h1>
+        <h1>#{bean.task.subject} <small class="pull-right"> [#{messages['taskName.'.concat(bean.task.task.taskDefinitionKey)]}] <t:cellOutputDateTime value="#{bean.task.endDate}"/></small></h1>
         
-        #{bean.task.description} 
+        #{bean.task.info} 
     </section>
 
 

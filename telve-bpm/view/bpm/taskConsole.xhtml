@@ -59,40 +59,14 @@
                     <li>
                         <p:commandLink action="#{taskConsole.onSelectTask(item)}" ajax="true" process="@this" update=":taskView">
                             <div class="menuIcon " >
-                                <i class="fa #{taskConsole.getTaskIcon(item.taskDefinitionKey)} label " /> 
+                                <i class="fa #{taskConsole.getTaskIcon(item.formKey)} label " /> 
                             </div>
                             <div class="menuText">
-                                <div class="menuHeader">#{item.name}  <span style="float: right;font-size:0.9em;"><t:cellOutputDateTime value="#{item.dueDate}" /></span></div>
-                                <div style="font-size:0.9em;">#{item.description}</div>
-                                <div class="menuFooter">#{messages['taskName.'.concat(item.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserNameById( item.assignee)} </div>
+                                <div class="menuHeader">#{item.subject}  <span style="float: right;font-size:0.9em;"><t:cellOutputDateTime value="#{item.endDate}" /></span></div>
+                                <div style="font-size:0.9em;">#{item.info}</div>
+                                <div class="menuFooter">#{messages['taskName.'.concat(item.task.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.task.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserNameById( item.task.assignee)} </div>
                             </div>
                         </p:commandLink>
-
-                        <ui:remove>
-                            <div class="large-2 medium-2 small-2 columns">
-                                <p:commandLink action="#{taskConsole.openTaskDialog(item)}" 
-                                               ajax="true" partialSubmit="true" process="@this" >
-                                    <i class="fa fa-2x #{taskConsole.getTaskIcon(item.taskDefinitionKey)}" style="color: gray"></i>
-                                </p:commandLink>
-
-                            </div>
-                            <div class="large-10 medium-10 small-10 columns">
-                                <div class="row">
-                                    <div class="large-12 medium-12 small-12 columns" style="font-weight: bold; font-size: large; padding: 4px;">
-                                        <p:commandLink action="#{taskConsole.openTaskDialog(item)}" 
-                                                       ajax="true" partialSubmit="true" process="@this" >
-                                            #{item.name}  <t:cellOutputDateTime value="#{item.dueDate}" style="float: right"/>
-                                        </p:commandLink>
-                                    </div>
-                                    <div class="large-12 medium-12 small-12 columns" style="margin: 4px;">
-                                        #{item.description}
-                                    </div>
-                                    <div class="large-12 medium-12 small-12 columns" style="font-size: small;margin: 4px;">
-                                        #{item.taskDefinitionKey} | <t:cellOutputDateTime value="#{item.createTime}"/> #{item.assignee} | Link 1 | Link 2
-                                    </div>
-                                </div>
-                            </div>
-                        </ui:remove>
                     </li>
                 </ui:repeat>
             </ul>

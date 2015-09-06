@@ -5,7 +5,9 @@
  */
 package com.ozguryazilim.telve.bpm.handlers;
 
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.bpm.TaskInfo;
 import com.ozguryazilim.telve.bpm.ui.TaskConsole;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,7 +18,6 @@ import javax.inject.Inject;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Comment;
-import org.camunda.bpm.engine.task.Task;
 import org.picketlink.Identity;
 import org.primefaces.context.RequestContext;
 
@@ -43,12 +44,12 @@ public abstract class AbstractHumanTaskHandler implements Serializable{
     @Inject 
     private IdentityService identityService;
     
-    private Task task;
+    private TaskInfo task;
     private List<TaskResultCommand> resultCommands = new ArrayList<>();
     private List<Comment> comments;
     private String comment;
     
-    public void openDialog( Task task ) {
+    public void openDialog( TaskInfo task ) {
         
         this.task = task;
         this.comment = "";
@@ -59,7 +60,7 @@ public abstract class AbstractHumanTaskHandler implements Serializable{
         options.put("resizable", false);
         options.put("contentHeight", 450);
 
-        popVariables(taskService.getVariables(task.getId()));
+        popVariables();
         
         resultCommands.clear();
         initResultButtons();
@@ -75,22 +76,35 @@ public abstract class AbstractHumanTaskHandler implements Serializable{
      * @param result 
      */
     public void closeTask( String result) {
+        
+        onBeforeClose( result );
+        
         saveComment();
         
-        Map<String, Object> values = new HashMap<>();
-        pushVariables(values);
-        values.put("RESULT", result);
-        taskService.complete(task.getId(), values);
+        pushVariables();
+        
+        task.getVariables().put("RESULT", result);
+        taskService.complete(task.getId(), task.getVariables());
         taskConsole.refresh();
-        onAfterClose();
+        onAfterClose( result );
         //RequestContext.getCurrentInstance().closeDialog(null);
     }
     
     /**
      * Task kapatıldıktan sonra çağrılır. 
      * Task handlerlar bu noktada orjinal kaydı düzenleyebilir.
+     * @param result kapanış değerinin ne olduğu
      */
-    protected void onAfterClose(){
+    protected void onAfterClose( String result ){
+        //Alt sınıflar override etsin diye var.
+    }
+    
+    /**
+     * Task kapanmadan önce çağrılır. 
+     * Task handlerlar bu noktada orjinal kaydı düzenleyebilir.
+     * @param result kapanış değerinin ne olduğu
+     */
+    protected void onBeforeClose( String result ){
         //Alt sınıflar override etsin diye var.
     }
     
@@ -98,13 +112,31 @@ public abstract class AbstractHumanTaskHandler implements Serializable{
      * UI üzerinden toplanan verileri saklar.
      */
     public void save() {
+        onBeforeSave();
+        
         saveComment();
         
-        Map<String, Object> values = new HashMap<>();
-        pushVariables(values);
-        taskService.setVariables(task.getId(), values);
+        pushVariables();
         
-        comments = taskService.getProcessInstanceComments(task.getProcessInstanceId());
+        taskService.setVariables(task.getId(), task.getVariables());
+        
+        comments = taskService.getProcessInstanceComments(task.getTask().getProcessInstanceId());
+        
+        onAfterSave();
+    }
+    
+    /**
+     * Task değerleri save edilmeden hemen önce çağrılır.
+     */
+    protected void onBeforeSave(){
+        
+    }
+    
+    /**
+     * Task değerleri save edildikten hemen sonra çağrılır.
+     */
+    protected void onAfterSave(){
+        
     }
     
     public void cancelDialog() {
@@ -136,20 +168,20 @@ public abstract class AbstractHumanTaskHandler implements Serializable{
     }
 
     
-    public Task getTask() {
+    public TaskInfo getTask() {
         return task;
     }
 
-    public void setTask(Task task) {
+    public void setTask(TaskInfo task) {
         if( !task.equals(this.task)){
             this.task = task;
             
             this.comment = "";
-            popVariables(taskService.getVariables(task.getId()));
+            popVariables();
             resultCommands.clear();
             initResultButtons();
         
-            comments = taskService.getProcessInstanceComments(task.getProcessInstanceId());
+            comments = taskService.getProcessInstanceComments(task.getTask().getProcessInstanceId());
         }
     }
     
@@ -158,8 +190,9 @@ public abstract class AbstractHumanTaskHandler implements Serializable{
      */
     protected void saveComment(){
         if( !Strings.isNullOrEmpty(comment) ){
+            //FIXME: userID işini ne yapacağız?
             identityService.setAuthenticatedUserId(identity.getAccount().getId());
-            Comment c = taskService.createComment(task.getId(), task.getProcessInstanceId(), comment);
+            Comment c = taskService.createComment(task.getId(), task.getTask().getProcessInstanceId(), comment);
         }
         comment = "";
     }
@@ -167,16 +200,23 @@ public abstract class AbstractHumanTaskHandler implements Serializable{
     public abstract String getDialogName();
     
     /**
-     * Task yükleme sonrası task variablelarınıokumak için
-     * @param variables 
+     * Task yükleme sonrası task variablelarını okumak için.
+     * 
+     * Tüm degerler task.getVariables() ile alınabilir ama bu esnada bir değerin alınıp işlenmesi için kulanılır.
+     * 
      */
-    protected abstract void popVariables( Map<String, Object> variables );
+    protected void popVariables(){
+        
+    }
     
     /**
-     * Task bitiminde task sonuç variablelarını geri basmak için
-     * @param variables 
+     * Task bitiminde task sonuç variablelarını geri basmak için.
+     * 
+     * save'den hemen önce process engine bir değer basmak isteniyor ise kullanılır.
      */
-    protected abstract void pushVariables( Map<String, Object> variables );
+    protected void pushVariables(){
+        
+    }
 
     /**
      * Dailog üzerinde çıkacak olan kapatma düğmelerini ayarlar.
@@ -184,7 +224,22 @@ public abstract class AbstractHumanTaskHandler implements Serializable{
      * Farklı türden sonuçlar dönecekse bu method override edilmeli.
      */
     protected void initResultButtons() {
-        resultCommands.add(TaskResultCommand.COMPLETE);
+        
+        String s = task.getAcceptableResults();
+        
+        //Değer yoksa varsayılan COMPLETE
+        if( Strings.isNullOrEmpty(s)){
+            resultCommands.add(TaskResultCommand.COMPLETE);
+            return;
+        }
+
+        List<String> ls = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(s);
+        
+        //Şimdi her komut karşılığı bulunup düğme oluşturulacak
+        for( String cmd : ls ){
+            resultCommands.add(TaskResultCommand.getCommand(cmd));
+        }
+        
     }
     
     /**
