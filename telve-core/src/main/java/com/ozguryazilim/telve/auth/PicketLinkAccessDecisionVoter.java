@@ -7,6 +7,8 @@ package com.ozguryazilim.telve.auth;
 
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.view.Pages;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import javax.enterprise.inject.Any;
 import javax.faces.context.FacesContext;
@@ -29,6 +31,7 @@ import org.picketlink.Identity;
 public class PicketLinkAccessDecisionVoter extends AbstractAccessDecisionVoter {
 
     private Class<? extends ViewConfig> deniedPage = Pages.Home.class;
+    private Map<String,String> requestParams = new HashMap<>();
 
     @Inject
     private ViewConfigResolver viewConfigResolver;
@@ -47,6 +50,8 @@ public class PicketLinkAccessDecisionVoter extends AbstractAccessDecisionVoter {
                     return "Not Logged In;";
                 }
             });
+            //Hatayı ürettiğimiz yeri hatırlayalım. Ki login sonrası geri dönebilelim.
+            requestParams = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
             deniedPage = viewConfigResolver.getViewConfigDescriptor(FacesContext.getCurrentInstance().getViewRoot().getViewId()).getConfigClass();
         }
 
@@ -59,7 +64,8 @@ public class PicketLinkAccessDecisionVoter extends AbstractAccessDecisionVoter {
                         return "Not have permission;";
                     }
                 });
-
+                //Hatayı ürettiğimiz yeri hatırlayalım. Belki farklı yetkili biri olarak geri gelir :)
+                requestParams = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
                 deniedPage = viewConfigResolver.getViewConfigDescriptor(FacesContext.getCurrentInstance().getViewRoot().getViewId()).getConfigClass();
             }
             
@@ -71,18 +77,31 @@ public class PicketLinkAccessDecisionVoter extends AbstractAccessDecisionVoter {
                         return "Not have permission;";
                     }
                 });
-                deniedPage = viewConfigResolver.getViewConfigDescriptor(FacesContext.getCurrentInstance().getViewRoot().getViewId()).getConfigClass();
+                //Buraya bir daha hiç gelemeyecekler
+                //deniedPage = viewConfigResolver.getViewConfigDescriptor(FacesContext.getCurrentInstance().getViewRoot().getViewId()).getConfigClass();
             }
         }
 
     }
 
+    /**
+     * Security exception verildiğinde bulunulan sayfa
+     * @return 
+     */
     public Class<? extends ViewConfig> getDeniedPage() {
         try {
             return deniedPage;
         } finally {
             deniedPage = Pages.Home.class;
         }
+    }
+
+    /**
+     * Security exception verildiğinde sahip olunan request parametreleri
+     * @return 
+     */
+    public Map<String, String> getRequestParams() {
+        return requestParams;
     }
 
 }
