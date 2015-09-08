@@ -42,7 +42,10 @@ public class TelveExceptionHandler {
     private FacesContext facesContext;
     
     void logExceptions(@BeforeHandles ExceptionEvent<Throwable> evt) {
-        LOG.error("Something bad happened", evt.getException());
+        //ErrorViewAwareAccessDeniedException türünde olanları loglamak anlamsız. Onları login sayfasına gönderiyoruz.
+        if( !( evt.getException() instanceof ErrorViewAwareAccessDeniedException )){
+            LOG.error("Something bad happened", evt.getException());
+        }
     }
 
     /**
