@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.bpm.dashlets;
 
+import com.ozguryazilim.telve.auth.UserInfo;
 import com.ozguryazilim.telve.dashboard.AbstractDashlet;
 import com.ozguryazilim.telve.dashboard.Dashlet;
 import com.ozguryazilim.telve.dashboard.DashletCapability;
@@ -13,7 +14,6 @@ import java.util.List;
 import javax.inject.Inject;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Task;
-import org.picketlink.Identity;
 
 /**
  * Kişinin aktif görevlerini listeleyen dashlet
@@ -24,7 +24,7 @@ import org.picketlink.Identity;
 public class TaskDashlet extends AbstractDashlet{
 
     @Inject
-    private Identity identity;
+    private UserInfo userInfo;
     
     @Inject
     private TaskService taskService;
@@ -38,7 +38,7 @@ public class TaskDashlet extends AbstractDashlet{
         if( tasks == null ){
             tasks = taskService.createTaskQuery()
                     .active()
-                    .taskAssignee(identity.getAccount().getId())
+                    .taskAssignee(userInfo.getLoginName())
                     .orderByTaskPriority().asc()
                     .orderByFollowUpDate().asc()
                     .orderByDueDate().asc()
@@ -52,7 +52,7 @@ public class TaskDashlet extends AbstractDashlet{
         if( dueTasks == null ){
             dueTasks = taskService.createTaskQuery()
                     .active()
-                    .taskAssignee(identity.getAccount().getId())
+                    .taskAssignee(userInfo.getLoginName())
                     .dueBefore(new Date())
                     .orderByTaskPriority().asc()
                     .orderByDueDate().asc()
@@ -65,7 +65,7 @@ public class TaskDashlet extends AbstractDashlet{
         if( followupTasks == null ){
             followupTasks = taskService.createTaskQuery()
                     .active()
-                    .taskAssignee(identity.getAccount().getId())
+                    .taskAssignee(userInfo.getLoginName())
                     .followUpBefore(new Date())
                     .orderByTaskPriority().asc()
                     .orderByFollowUpDate().asc()

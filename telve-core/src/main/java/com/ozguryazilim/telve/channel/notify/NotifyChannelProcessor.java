@@ -31,19 +31,23 @@ public class NotifyChannelProcessor implements Processor{
         String contactType = exchange.getIn().getHeader("contactType") == null ? "" : exchange.getIn().getHeader("contactType").toString();
 
         //Önce channel + messageClass + template + ContactType için bakıyoruz.
+        LOG.debug("Looking templete for : {}", "channelTemplate.web." + messageClass + "." + template + "." + contactType);
         String templateName = ConfigResolver.getProjectStageAwarePropertyValue("channelTemplate.web." + messageClass + "." + template + "." + contactType );
         if( Strings.isNullOrEmpty(templateName) ){
             //Bulamadık key azaltıyoruz.
+            LOG.debug("Looking templete for : {}", "channelTemplate.web." + messageClass + "." + template);
             templateName = ConfigResolver.getProjectStageAwarePropertyValue("channelTemplate.web." + messageClass + "." + template );
         }
         
         if( Strings.isNullOrEmpty(templateName) ){
             //Bulamadık key azaltıyoruz.
+            LOG.debug("Looking templete for : {}", "channelTemplate.web." + messageClass);
             templateName = ConfigResolver.getProjectStageAwarePropertyValue("channelTemplate.web." + messageClass );
         }
         
         if( Strings.isNullOrEmpty(templateName) ){
             //Bulamadık default alıyoruz
+            LOG.debug("Looking templete for : channelTemplate.web.GENERIC");
             templateName = ConfigResolver.getProjectStageAwarePropertyValue("channelTemplate.web.GENERIC" );
         }
         

@@ -6,6 +6,7 @@
 package com.ozguryazilim.telve.bpm.ui;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.auth.UserInfo;
 import com.ozguryazilim.telve.bpm.TaskInfo;
 import com.ozguryazilim.telve.bpm.TaskRepository;
 import com.ozguryazilim.telve.bpm.handlers.AbstractDialogProcessHandler;
@@ -22,7 +23,6 @@ import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.TaskService;
-import org.picketlink.Identity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,9 +37,10 @@ public class TaskConsole implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(TaskConsole.class);
 
+    
     @Inject
-    private Identity identity;
-
+    private UserInfo userInfo;
+    
     @Inject
     private IdentityService identityService;
 
@@ -56,14 +57,17 @@ public class TaskConsole implements Serializable {
 
     private String searchText = "";
     private String searchTaskType = "";
-
+    private Boolean myTasks = Boolean.TRUE;
+    private Boolean potTasks = Boolean.TRUE;
+    private String taskOwnerType = "myTasks";
+    
     private List<String> taskTypeNames;
 
     @PostConstruct
     public void init() {
         taskTypeNames = HumanTaskHandlerRegistery.getTaskNames();
         //TODO: camnuda için hangi kullanıcı çalışıyor setliyoruz. Aslında bunu login tarafına felan almak lazım sanırım.
-        identityService.setAuthenticatedUserId(identity.getAccount().getId());
+        identityService.setAuthenticatedUserId(userInfo.getLoginName());
     }
 
     /**
@@ -122,7 +126,7 @@ public class TaskConsole implements Serializable {
 
     public List<TaskInfo> getTaskList() {
         if (taskList == null) {
-            taskList = taskRepository.getTaskList(identity.getAccount().getId(), Boolean.TRUE, Boolean.FALSE, null, searchTaskType, searchText);
+            taskList = taskRepository.getTaskList(userInfo.getLoginName(), "myTasks".equals(getTaskOwnerType()), "potTasks".equals(getTaskOwnerType()), null, searchTaskType, searchText);
         }
 
         return taskList;
@@ -135,6 +139,12 @@ public class TaskConsole implements Serializable {
         taskList = null;
         selectedTask = null;
         selectedTaskViewId = "/bpm/emptyTask.xhtml";
+        
+        //TaskList'e bulunan ilk item'ı seçer.
+        List<TaskInfo> ls = getTaskList();
+        if( !ls.isEmpty()){
+            onSelectTask( ls.get(0));
+        }
     }
 
     public TaskInfo getSelectedTask() {
@@ -210,4 +220,30 @@ public class TaskConsole implements Serializable {
         return "";
     }
 
+    public Boolean getMyTasks() {
+        return myTasks;
+    }
+
+    public void setMyTasks(Boolean myTasks) {
+        this.myTasks = myTasks;
+    }
+
+    public Boolean getPotTasks() {
+        return potTasks;
+    }
+
+    public void setPotTasks(Boolean potTasks) {
+        this.potTasks = potTasks;
+    }
+
+    public String getTaskOwnerType() {
+        return taskOwnerType;
+    }
+
+    public void setTaskOwnerType(String taskOwnerType) {
+        this.taskOwnerType = taskOwnerType;
+    }
+
+    
+    
 }

@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.channel.email;
 
+import com.google.common.base.Strings;
 import javax.enterprise.context.Dependent;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -25,8 +26,31 @@ public class EmailChannelProcessor implements Processor{
         LOG.debug("Exchange Header : {}", exchange.getIn().getHeader("messageClass") );
         
         String messageClass = exchange.getIn().getHeader("messageClass").toString();
-        String template = exchange.getIn().getHeader("template") == null ? "GENERIC" : exchange.getIn().getHeader("template").toString();
-        String templateName = ConfigResolver.getPropertyAwarePropertyValue("channelTemplate.email." + messageClass, template);
+        String template = exchange.getIn().getHeader("template") == null ? "" : exchange.getIn().getHeader("template").toString();
+        
+        String contactType = exchange.getIn().getHeader("contactType") == null ? "" : exchange.getIn().getHeader("contactType").toString();
+        
+        
+        //Önce channel + messageClass + template + ContactType için bakıyoruz.
+        LOG.debug("Looking Template for : {}", "channelTemplate.email." + messageClass + "." + template + "." + contactType);
+        String templateName = ConfigResolver.getProjectStageAwarePropertyValue("channelTemplate.email." + messageClass + "." + template + "." + contactType );
+        if( Strings.isNullOrEmpty(templateName) ){
+            //Bulamadık key azaltıyoruz.
+            LOG.debug("Looking Template for : {}", "channelTemplate.email." + messageClass + "." + template);
+            templateName = ConfigResolver.getProjectStageAwarePropertyValue("channelTemplate.email." + messageClass + "." + template );
+        }
+        
+        if( Strings.isNullOrEmpty(templateName) ){
+            //Bulamadık key azaltıyoruz.
+            LOG.debug("Looking Template for : {}", "channelTemplate.email." + messageClass);
+            templateName = ConfigResolver.getProjectStageAwarePropertyValue("channelTemplate.email." + messageClass );
+        }
+        
+        if( Strings.isNullOrEmpty(templateName) ){
+            //Bulamadık default alıyoruz
+            LOG.debug("Looking Template for : channelTemplate.email.GENERIC");
+            templateName = ConfigResolver.getProjectStageAwarePropertyValue("channelTemplate.email.GENERIC" );
+        }
         
         LOG.debug("Email Template Name : {}", templateName );
         

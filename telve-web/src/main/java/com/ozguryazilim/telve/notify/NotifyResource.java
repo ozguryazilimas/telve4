@@ -25,10 +25,10 @@ import org.primefaces.push.impl.JSONEncoder;
  * 
  * @author Hakan Uygun
  */
-@PushEndpoint("/notify/{user}")
+@PushEndpoint("/notify/{username}")
 public class NotifyResource {
     
-    @PathParam("user")
+    @PathParam("username")
     private String username;
     
     

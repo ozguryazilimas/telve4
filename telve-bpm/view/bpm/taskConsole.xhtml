@@ -49,10 +49,11 @@
                 <p:ajax event="change" listener="#{taskConsole.refresh}" update="console" />
             </p:selectOneMenu>
 
-            <ui:remove>
-            <p:selectBooleanCheckbox value="" /> Olası görevlerim
-            <p:selectBooleanCheckbox value="" /> Benim görevlerim
-            </ui:remove>
+            <p:selectOneButton value="#{taskConsole.taskOwnerType}">
+                <f:selectItem itemLabel="#{messages['taskConsole.label.MyTasks']}" itemValue="myTasks" />
+                <f:selectItem itemLabel="#{messages['taskConsole.label.CandidateTasks']}" itemValue="potTasks" />
+                <p:ajax event="change" listener="#{taskConsole.refresh}" update="console" />
+            </p:selectOneButton>
 
             <ul class="menulist">
                 <ui:repeat value="#{taskConsole.taskList}" var="item" varStatus="loop2">
@@ -64,7 +65,7 @@
                             <div class="menuText">
                                 <div class="menuHeader">#{item.subject}  <span style="float: right;font-size:0.9em;"><t:cellOutputDateTime value="#{item.endDate}" /></span></div>
                                 <div style="font-size:0.9em;">#{item.info}</div>
-                                <div class="menuFooter">#{messages['taskName.'.concat(item.task.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.task.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserNameById( item.task.assignee)} </div>
+                                <div class="menuFooter">#{messages['taskName.'.concat(item.task.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.task.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.task.assignee)} </div>
                             </div>
                         </p:commandLink>
                     </li>

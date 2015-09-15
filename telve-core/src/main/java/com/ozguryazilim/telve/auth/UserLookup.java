@@ -6,12 +6,11 @@
 
 package com.ozguryazilim.telve.auth;
 
+import com.google.common.base.Strings;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.enterprise.context.SessionScoped;
-import javax.enterprise.inject.Any;
-import javax.enterprise.inject.Instance;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.picketlink.Identity;
@@ -20,7 +19,6 @@ import org.picketlink.idm.RelationshipManager;
 import org.picketlink.idm.model.Attribute;
 import org.picketlink.idm.model.IdentityType;
 import org.picketlink.idm.model.basic.Grant;
-import org.picketlink.idm.model.basic.Role;
 import org.picketlink.idm.model.basic.User;
 import org.picketlink.idm.query.Condition;
 import org.picketlink.idm.query.IdentityQueryBuilder;
@@ -33,10 +31,12 @@ import org.slf4j.LoggerFactory;
  * 
  * PicketLink IdentityManager'ı üzerinden kullanıcı bilgileri döndürür.
  * 
+ * Aktif kullanıcı ile bilgileri almak için UserInfo modelini kullanınız. UserInfoProducer üzerinden SessionScoped üretilir.
+ * 
  * @author Hakan Uygun
  */
 @Named
-@SessionScoped
+@Dependent
 public class UserLookup implements Serializable{
     
     
@@ -52,15 +52,6 @@ public class UserLookup implements Serializable{
     
     @Inject
     private Identity identity;
-    
-    
-    @Inject @Any
-    private Instance<UserRoleResolver> userRoleResolvers;
-    
-    private User activeUser;
-    private List<Role> roles;
-    private List<String> roleNames;
-    private List<String> unifiedRoles;
     
     /**
      * Geriye sistemde tanımlı kullanıcı login isimlerini döndürür.
@@ -108,6 +99,19 @@ public class UserLookup implements Serializable{
     }
     
     /**
+     * Verilen tip boş ise tüm kullanıcıları değil ise verilen tipteki kullanıcıları döndürür.
+     * @param type
+     * @return 
+     */
+    public List<User> getUsers( String type ){
+        if( Strings.isNullOrEmpty(type)){
+            return getUsers();
+        } else {
+            return getUsersByType(type);
+        }
+    }
+    
+    /**
      * Verilen Login Name'e sahip kullanıcının gerçek adını döndürür.
      * @param loginName ismi döndürülecek loginName
      * @return bulamazsa geriye null döndürür.
@@ -119,6 +123,45 @@ public class UserLookup implements Serializable{
         
         if( !ls.isEmpty() ){
             return ls.get(0).getFirstName() + " " + ls.get(0).getLastName();
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Loginname'e göre UserInfo modelini döner.
+     * @param loginName
+     * @return 
+     */
+    public UserInfo getUserInfo( String loginName ){
+        List<User> ls = identityManager.createIdentityQuery(User.class)
+                .setParameter(User.LOGIN_NAME, loginName)
+                .getResultList();
+        
+        if( !ls.isEmpty() ){
+            UserInfo ui = new UserInfo();
+            ui.setId(ls.get(0).getId());
+            ui.setFirstName(ls.get(0).getFirstName());
+            ui.setLastName(ls.get(0).getLastName());
+            ui.setLoginName(ls.get(0).getLoginName());
+            return ui;
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Loginname'e göre User modelini döner.
+     * @param loginName
+     * @return 
+     */
+    public User getUser( String loginName ){
+        List<User> ls = identityManager.createIdentityQuery(User.class)
+                .setParameter(User.LOGIN_NAME, loginName)
+                .getResultList();
+        
+        if( !ls.isEmpty() ){
+            return ls.get(0);
         }
         
         return null;
@@ -149,128 +192,63 @@ public class UserLookup implements Serializable{
         
         return null;
     }
-
-    public List<String> getUnifiedRoles() {
-        if( unifiedRoles == null ){
-            populateUnifiedRoles();
-        }
-        return unifiedRoles;
-    }
-
-    public void setUnifiedRoles(List<String> unifiedRoles) {
-        this.unifiedRoles = unifiedRoles;
-    }
-
-    public List<Role> getRoles() {
-        if( roles == null ){
-            populateRoles();
-        }
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
-
-    public List<String> getRoleNames() {
-        if( roleNames == null ){
-            populateRoles();
-        }
-        return roleNames;
-    }
-
-    public void setRoleNames(List<String> roleNames) {
-        this.roleNames = roleNames;
-    }
     
-    
+    public UserInfo getUserInfoById( String id ){
+        User u = identityManager.lookupIdentityById(User.class, id);
+        
+        if( u != null ){
+            UserInfo ui = new UserInfo();
+            ui.setId(u.getId());
+            ui.setFirstName(u.getFirstName());
+            ui.setLastName(u.getLastName());
+            ui.setLoginName(u.getLoginName());
+            return ui;
+        }
+        
+        return null;
+    }
     
     /**
-     * Kullanıcıya ait role, user id, group id, ve uygulamalardan gelebilecek örneğin organizasyon bilgilerini bir araya toparlar.
+     * Verilen Kullanıcı için role isim listesini döndürür.
      * 
-     * Farklı türler için birer harf kullanır : 
+     * addNone true ise liste boş ise içine 'NONE' değerini ekler.
      * 
-     * Reservd olanlar : 
-     * U: User id
-     * L: Login name
-     * T: User Type
-     * R: Role
-     * G: Group
-     * 
-     * Örnek : 
-     * U:telve 
-     * R:superuser
-     * G:Admins
-     * 
+     * @param user
+     * @param addNone
+     * @return 
      */
-    public void populateUnifiedRoles(){
-        unifiedRoles = new ArrayList<>();
-        
-        User u = getActiveUser();
-        
-        //Kullanıcının ID'si
-        unifiedRoles.add("U:" + identity.getAccount().getId());
-        unifiedRoles.add("L:" + u.getLoginName());
-        unifiedRoles.add("T:" + getActiveUserType());
-        
-        //Kullanıcı rolleri
-        for( String r : getRoleNames() ){
-            unifiedRoles.add("R:" + r );
-        }
-        
-        //TODO: Group'larda roller gibi toplanacak
-        
-        
-        //Şimdide uygulamalardan gelenler toparlanıyor. Bir den fazla resolver olabilir.
-        for ( UserRoleResolver urr : userRoleResolvers ){
-            unifiedRoles.addAll( urr.getUnifiedRoles());
-        }
-        
-        LOG.debug("UnifiedRoles : {}", unifiedRoles);
-    }
-    
-
-    /**
-     * Kullanıcıya ait roller toparlanıyor.
-     */
-    protected void populateRoles(){
-        roles = new ArrayList<>();
-        roleNames = new ArrayList<>();
+    public List<String> getUserRoleNames( User user, boolean addNone ){
+        List<String> roleNames = new ArrayList<>();
         
         RelationshipQuery<Grant> query = relationshipManager.createRelationshipQuery(Grant.class);
-        query.setParameter(Grant.ASSIGNEE, identity.getAccount());
+        query.setParameter(Grant.ASSIGNEE, user);
         List<Grant> result = query.getResultList();
         for (Grant grant : result) {
-            roles.add(grant.getRole());
             roleNames.add(grant.getRole().getName());
         }
         
         //Eğer boşsa içine none ekliyoruz. Böylece IN içine konan sorgular hata vermeyecek.
-        if( roleNames.isEmpty() ){
+        if( roleNames.isEmpty() && addNone ){
             roleNames.add("NONE");
         }
-    }
-    
-    
-    /**
-     * Geriye login olan aktif kullanıcının userType bilgisini döndürür.
-     * @return 
-     */
-    public String getActiveUserType(){
-        Attribute<String> ut = getActiveUser().getAttribute(USER_TYPE);
-        return ut == null ? "STANDART" : ut.getValue();
+        
+        return roleNames;
     }
     
     /**
-     * Geriye Login olan kullanıcının User bilgisini döndürür.
+     * İsmi verilen kullanıcı için istenilen attribute değerini döner.
+     * @param userName
+     * @param attribute
      * @return 
      */
-    public User getActiveUser(){
-        
-        if( activeUser == null ){
-            activeUser = identityManager.lookupIdentityById(User.class, identity.getAccount().getId());
-        }
-        
-        return activeUser;
-    } 
+    public String getUserAttibute( String userName, String attribute ){
+        User u = getUser(userName);
+        Attribute<String> a = u.getAttribute(attribute);
+        return a == null ? null : a.getValue();
+    }
+    
+
+
+    
+   
 }

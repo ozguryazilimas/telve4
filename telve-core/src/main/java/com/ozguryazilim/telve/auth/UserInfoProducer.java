@@ -14,18 +14,26 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.picketlink.Identity;
+import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.RelationshipManager;
+import org.picketlink.idm.model.Attribute;
 import org.picketlink.idm.model.basic.Grant;
 import org.picketlink.idm.model.basic.Role;
+import org.picketlink.idm.model.basic.User;
 import org.picketlink.idm.query.RelationshipQuery;
 
 /**
  * Aktif kullanıcı ve ona ait bilgileri üretir.
+ * 
+ * Lazım olan Sorgular 
+ * 
  * @author Hakan Uygun
  */
 @Named
 @SessionScoped
 public class UserInfoProducer implements Serializable{
+    
+    private static final String USER_TYPE = "UserType"; 
     
     private List<Role> roles;
     private List<String> roleNames;
@@ -34,15 +42,13 @@ public class UserInfoProducer implements Serializable{
     private Identity identity;
     
     @Inject
-    private RelationshipManager relationshipManager;
+    private UserInfo userInfo;
     
-    @Produces @SessionScoped @ActiveUserRoles
-    public List<Role> getActiveUserRoles(){
-        if( roles == null ){
-            populateRoles();
-        }
-        return roles;
-    }
+    @Inject
+    private RelationshipManager relationshipManager;
+
+    @Inject
+    private IdentityManager identityManager;
     
     @Produces @SessionScoped @ActiveUserRoles
     public List<String> getActiveUserRoleNames(){
@@ -77,7 +83,29 @@ public class UserInfoProducer implements Serializable{
      */
     @Produces @UserAware
     public String produceUserName(){
-        return identity.getAccount().getId();
+        return userInfo.getLoginName();
+    }
+    
+    /**
+     * PicketLink Identity üzerinden loginolan kullanıcının bilgileri session scope'a yerleştirir.
+     * @return 
+     */
+    @Produces @SessionScoped @Named
+    public UserInfo produceUserInfo(){
+            UserInfo ui = new UserInfo();
+            
+            User user = identityManager.lookupIdentityById(User.class, identity.getAccount().getId());
+            
+            ui.setId( user.getId());
+            ui.setLoginName(user.getLoginName());
+            ui.setFirstName(user.getFirstName());
+            ui.setLastName(user.getLastName());
+            ui.setEmail(user.getEmail());
+            
+            Attribute<String> ut = user.getAttribute(USER_TYPE);
+            ui.setUserType( ut == null ? "STANDART" : ut.getValue());
+            
+            return ui;
     }
     
 }

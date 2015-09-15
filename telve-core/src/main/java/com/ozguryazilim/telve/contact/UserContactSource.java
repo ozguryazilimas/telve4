@@ -77,7 +77,7 @@ public class UserContactSource extends AbstractContactSource{
             //TODO: UserType ( doktor, nurse v.s. ) gelse peşine iyi olur
             c.setSource(getClass().getSimpleName());
             c.setType("User");
-            c.setId(u.getId());
+            c.setId(u.getLoginName());
             c.setFirstname(u.getFirstName());
             c.setLastname(u.getLastName());
             c.setEmail(u.getEmail());

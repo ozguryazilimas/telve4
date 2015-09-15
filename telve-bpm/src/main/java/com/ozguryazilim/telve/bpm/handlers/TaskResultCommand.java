@@ -5,9 +5,9 @@
  */
 package com.ozguryazilim.telve.bpm.handlers;
 
+import com.google.common.base.Strings;
+import com.ozguryazilim.telve.bpm.TaskInfo;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Task UI'da task ile ilgili alınabilecek aksionlar için Model sınıf
@@ -20,16 +20,40 @@ public class TaskResultCommand implements Serializable{
     public static final TaskResultCommand REJECT = new TaskResultCommand("REJECT", "fa fa-close", "btn-danger");
     public static final TaskResultCommand COMPLETE = new TaskResultCommand("COMPLETE", "fa fa-check", "btn-success");
     
-    private static final Map<String,TaskResultCommand> TASK_RESULT_COMMANDS = new HashMap<>();
-    
     private String result;
     private String icon;
     private String style;
+    private String widgetId;
+    
 
+    /**
+     * UI tarafında normal bir command oluşturur. 
+     * 
+     * AbstractHumanHandler#close methodunu result değeri ile çağırır.
+     * 
+     * @param result
+     * @param icon
+     * @param style 
+     */
     public TaskResultCommand(String result, String icon, String style) {
         this.result = result;
         this.icon = icon;
         this.style = style;
+        this.widgetId = null;
+    }
+    
+    /**
+     * UI tarafında verilen widgetID'li popup'ı çağıran bir düğme oluşturur..
+     * @param result
+     * @param icon
+     * @param style
+     * @param widgetId 
+     */
+    public TaskResultCommand(String result, String icon, String style, String widgetId) {
+        this.result = result;
+        this.icon = icon;
+        this.style = style;
+        this.widgetId = widgetId;
     }
 
     public String getResult() {
@@ -57,27 +81,27 @@ public class TaskResultCommand implements Serializable{
     }
     
     /**
-     * Yeni bir task command register eder.
-     * @param result
-     * @param icon
-     * @param style 
+     * Varsayılan davranış task değişkenlerinden RESULT'a result değerini koymak.
+     * 
+     * Farklı işlemler yapılacak ise bu method override edilmeli.
+     * 
+     * @param task 
      */
-    public static void registerCommand( String result, String icon, String style ){
-        TASK_RESULT_COMMANDS.put( result, new TaskResultCommand(result, icon, style));
+    public void execute( TaskInfo task ){
+        task.getVariables().put("RESULT", result);
     }
     
-    /**
-     * Verilen result için command döndürür.
-     * @param result
-     * @return 
-     */
-    public static TaskResultCommand getCommand( String result ){
-        return TASK_RESULT_COMMANDS.get(result);
+    public Boolean getIsPopup(){
+        return !Strings.isNullOrEmpty(widgetId);
+    }
+
+    public String getWidgetId() {
+        return widgetId;
+    }
+
+    public void setWidgetId(String widgetId) {
+        this.widgetId = widgetId;
     }
     
-    static {
-        TASK_RESULT_COMMANDS.put( COMPLETE.getResult(), COMPLETE );
-        TASK_RESULT_COMMANDS.put( ACCEPT.getResult(), ACCEPT );
-        TASK_RESULT_COMMANDS.put( REJECT.getResult(), REJECT );
-    }
+    
 }

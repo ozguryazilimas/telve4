@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve;
 
+import com.ozguryazilim.telve.auth.UserInfo;
 import javax.cache.Cache;
 import javax.cache.Caching;
 import javax.cache.configuration.MutableConfiguration;
@@ -16,7 +17,6 @@ import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.apache.deltaspike.data.api.audit.CurrentUser;
-import org.picketlink.Identity;
 
 /**
  * Telve uygulamaları içerisinde kullanılacak temel kaynakları üretir.
@@ -27,7 +27,7 @@ import org.picketlink.Identity;
 public class DefaultResourceProducer {
 
     @Inject @Any
-    private Identity identity;
+    private UserInfo userInfo;
     
     @Produces @Default
     @RequestScoped
@@ -37,7 +37,7 @@ public class DefaultResourceProducer {
     
     @Produces @CurrentUser
     public String currentUser() {
-        return identity.getAccount().getId();
+        return userInfo.getLoginName();
     }
  
     @Produces

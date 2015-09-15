@@ -15,10 +15,9 @@
         #{bean.task.info} 
     </section>
 
+    <ui:insert name="dialogs" />
 
     <h:form id="taskForm">
-
-
 
         <ui:insert name="taskForm" />
 
@@ -28,7 +27,7 @@
                     <ui:repeat value="#{bean.comments}" var="comment">
                         <li style="padding: 4px;"> #{comment.fullMessage} 
                             <div style="font-size: 0.8em;">
-                                <i class="fa fa-user"> </i> #{userLookup.getUserNameById(comment.userId)} <i class="fa fa-clock-o"> </i>  <t:cellOutputDateTime value="#{comment.time}" /> 
+                                <i class="fa fa-user"> </i> #{userLookup.getUserName(comment.userId)} <i class="fa fa-clock-o"> </i>  <t:cellOutputDateTime value="#{comment.time}" /> 
                             </div>
                         </li>
                     </ui:repeat>
@@ -39,10 +38,14 @@
 
 
         <h:panelGroup styleClass="row actionButtons" layout="block">
-            <p:button value="#{messages['general.button.Delegate']}" styleClass="pull-left" onclick="PF('delegatePop').show();return false;"/>
+            <p:button value="#{messages['general.button.Delegate']}" styleClass="pull-left" onclick="PF('delegatePop').show();return false;" rendered="#{bean.showDelegateButton()}"/>
+            <p:commandButton value="#{messages['general.button.Claim']}" styleClass="pull-left" action="#{bean.claimTask()}" rendered="#{bean.showClaimButton()}" update="taskView"/>
+            
             <ui:insert name="actionButtons" />
+            
             <ui:repeat value="#{bean.resultCommands}" var="cmd">
-                <p:commandButton value="#{messages['general.button.'.concat( cmd.result )]}" icon="#{cmd.icon}" action="#{bean.closeTask(cmd.result)}" styleClass="#{cmd.style}" ajax="false"/>
+                <p:button value="#{messages['general.button.'.concat( cmd.result )]}" onclick="PF('#{cmd.widgetId}').show();return false;" icon="#{cmd.icon}" styleClass="#{cmd.style}" rendered="#{cmd.isPopup}"/>
+                <p:commandButton value="#{messages['general.button.'.concat( cmd.result )]}" icon="#{cmd.icon}" action="#{bean.closeTask(cmd.result)}" styleClass="#{cmd.style}" rendered="#{not cmd.isPopup}" update="console,taskView"/>
             </ui:repeat>
 
             <p:commandButton id="save" value="#{messages['general.button.Save']}" icon="fa fa-save" action="#{bean.save()}" styleClass="btn-primary" update="taskView"/>
@@ -55,11 +58,12 @@
         <h:form id="delegateForm">
             
             <div class="row">
-                <t:inputUserId label="general.label.User" value="" columnClass="large-12 medium-12 small-12"/>
+                <t:inputUser label="general.label.User" value="#{bean.delegatedUser}" columnClass="large-12 medium-12 small-12"/>
+                <t:inputTextarea label="general.label.Comment" value="#{bean.comment}" columnClass="large-12 medium-12 small-12" />
             </div>
             
             <h:panelGroup styleClass="row actionButtons" layout="block">
-                <p:button value="#{messages['general.button.Ok']}" styleClass="btn-primary" icon="fa fa-save" onclick="PF('delegatePop').hide();return false;"/>
+                <p:commandButton value="#{messages['general.button.Ok']}" styleClass="btn-primary" icon="fa fa-save" action="#{bean.delegateTask()}" oncomplete="PF('delegatePop').hide();" update="console,taskView"/>
                 <p:button value="#{messages['general.button.Close']}"  icon="fa fa-close" onclick="PF('delegatePop').hide();return false;"/>
             </h:panelGroup>
             

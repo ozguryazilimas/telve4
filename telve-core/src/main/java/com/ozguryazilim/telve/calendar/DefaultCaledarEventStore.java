@@ -6,8 +6,8 @@
 package com.ozguryazilim.telve.calendar;
 
 import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
+import com.ozguryazilim.telve.auth.ActiveUserLookup;
 import com.ozguryazilim.telve.auth.ActiveUserRoles;
-import com.ozguryazilim.telve.auth.UserLookup;
 import com.ozguryazilim.telve.entities.CalendarEvent;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class DefaultCaledarEventStore implements CalendarEventStore, Serializabl
     private CalendarEventRepository repository;
     
     @Inject
-    private UserLookup userLookup;
+    private ActiveUserLookup userLookup;
     
     @Override
     public String getStoreName() {

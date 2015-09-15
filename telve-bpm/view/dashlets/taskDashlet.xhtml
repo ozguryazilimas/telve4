@@ -42,7 +42,7 @@
                                 <div class="menuText">
                                     <div class="menuHeader">#{item.name}  <span style="float: right;font-size:0.9em;"><t:cellOutputDateTime value="#{item.dueDate}" /></span></div>
                                     <div style="font-size:0.9em;">#{item.description}</div>
-                                    <div class="menuFooter">#{messages['taskName.'.concat(item.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserNameById( item.assignee)} </div>
+                                    <div class="menuFooter">#{messages['taskName.'.concat(item.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.assignee)} </div>
                                 </div>
                             </h:link>
                         </li>
@@ -64,7 +64,7 @@
                                 <div class="menuText">
                                     <div class="menuHeader">#{item.name}  <span style="float: right;font-size:0.9em;"><t:cellOutputDateTime value="#{item.dueDate}" /></span></div>
                                     <div style="font-size:0.9em;">#{item.description}</div>
-                                    <div class="menuFooter">#{messages['taskName.'.concat(item.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserNameById( item.assignee)} </div>
+                                    <div class="menuFooter">#{messages['taskName.'.concat(item.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.assignee)} </div>
                                 </div>
                             </h:link>
                         </li>

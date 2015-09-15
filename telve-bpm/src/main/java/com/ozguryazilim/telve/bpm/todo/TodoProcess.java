@@ -5,13 +5,13 @@
  */
 package com.ozguryazilim.telve.bpm.todo;
 
+import com.ozguryazilim.telve.auth.UserInfo;
 import com.ozguryazilim.telve.bpm.handlers.AbstractDialogProcessHandler;
 import com.ozguryazilim.telve.bpm.handlers.ProcessHandler;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
-import org.picketlink.Identity;
 
 /**
  * Bir kişinin kendi kendine atadığı tek kişilik HumanTask süreci.
@@ -28,7 +28,7 @@ public class TodoProcess extends AbstractDialogProcessHandler{
     
     
     @Inject
-    private Identity identity;
+    private UserInfo userInfo;
     
     @Override
     public String getDialogName() {
@@ -47,7 +47,7 @@ public class TodoProcess extends AbstractDialogProcessHandler{
         values.put("INFO", info);
         values.put("START_DATE", startDate);
         values.put("END_DATE", endDate);
-        values.put("ASSIGNEE", identity.getAccount().getId());
+        values.put("ASSIGNEE", userInfo.getLoginName());
         
         startProcess("todo", values);
         

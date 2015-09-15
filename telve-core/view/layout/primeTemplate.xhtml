@@ -39,7 +39,7 @@
                 <span id="notifyDetail" style="font-size:22px;"></span>
             </p:notificationBar>
 
-            <p:socket onMessage="handleMessage" channel="/notify/#{identity.account.id}" />
+            <p:socket onMessage="handleMessage" channel="/notify/#{identity.account.loginName}" />
 
             <script type="text/javascript">
 
@@ -200,7 +200,7 @@
                                                         <f:convertDateTime pattern="#{messages['general.format.DateTime']}" />
                                                     </h:outputText>
                                                     <i class="fa fa-user"/> 
-                                                    <h:outputText value="#{userLookup.getUserNameById( note.owner)}" style="margin-left: 2px;" />
+                                                    <h:outputText value="#{userLookup.getUserName( note.owner)}" style="margin-left: 2px;" />
 
                                                     <i class="fa #{note.permission eq 'OWNER' ? 'fa-lock' : 'fa-unlock-alt' } pull-right"/>
                                                 </div>
@@ -225,8 +225,8 @@
                                 <li >
                                     <p:commandLink id="notifies"  ajax="true" partialSubmit="true" process="@this" update=":notifyPanelContent">
                                         <i class="fa fa-bell-o"></i>
-                                        <h:panelGroup id="notifyCount" styleClass="#{notifyStore.getNotifyCount(identity.account.id) gt 0 ? 'label label-warning' : ''}">
-                                            <h:outputText value="#{notifyStore.getNotifyCount(identity.account.id)}" styleClass="" rendered="#{notifyStore.getNotifyCount(identity.account.id) gt 0}"/>
+                                        <h:panelGroup id="notifyCount" styleClass="#{notifyStore.getNotifyCount(identity.account.loginName) gt 0 ? 'label label-warning' : ''}">
+                                            <h:outputText value="#{notifyStore.getNotifyCount(identity.account.loginName)}" styleClass="" rendered="#{notifyStore.getNotifyCount(identity.account.loginName) gt 0}"/>
                                         </h:panelGroup>
                                     </p:commandLink>
                                 </li>
@@ -242,11 +242,11 @@
                                                 <i class="fa fa-trash"></i>
                                                 #{messages['general.button.Delete']}
                                             </p:commandLink>
-                                            <span style="font-size:1.2em; color:#004369">#{notifyStore.getNotifyCount(identity.account.id)} uyarınız var!</span>
+                                            <span style="font-size:1.2em; color:#004369">#{notifyStore.getNotifyCount(identity.account.loginName)} uyarınız var!</span>
                                         </div>
                                         
                                         <ul id="notifyList" class="menulist">
-                                            <ui:repeat value="#{notifyStore.getNotifies(identity.account.id)}" var="notify">
+                                            <ui:repeat value="#{notifyStore.getNotifies(identity.account.loginName)}" var="notify">
                                                 <li class="">
                                                     <a href="#" >
                                                         <div class="menuIcon">

@@ -7,8 +7,11 @@ package com.ozguryazilim.telve.bpm.handlers;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.auth.UserInfo;
 import com.ozguryazilim.telve.bpm.TaskInfo;
+import com.ozguryazilim.telve.bpm.TaskRepository;
 import com.ozguryazilim.telve.bpm.ui.TaskConsole;
+import com.ozguryazilim.telve.messages.FacesMessages;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,44 +19,51 @@ import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import org.camunda.bpm.engine.IdentityService;
+import org.camunda.bpm.engine.TaskAlreadyClaimedException;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Comment;
-import org.picketlink.Identity;
+import org.camunda.bpm.engine.task.IdentityLink;
 import org.primefaces.context.RequestContext;
 
 /**
  * Sistemde tanımlı Human Task handlerlar için taban sınıf.
- * 
+ *
  * BPM üzerinde tanımlı her HumanTask için bir handler'a ihtiyaç bulunuyor.
- * 
- * Bu handlerlar, kullanıcı etkileşimi için gerekli UI kurallarını işletmekten sorumlular.
- * 
+ *
+ * Bu handlerlar, kullanıcı etkileşimi için gerekli UI kurallarını işletmekten
+ * sorumlular.
+ *
  * @author Hakan Uygun
  */
-public abstract class AbstractHumanTaskHandler implements Serializable{
- 
+public abstract class AbstractHumanTaskHandler implements Serializable {
+
     @Inject
     private TaskService taskService;
+
+    @Inject
+    private TaskRepository taskRepository;
     
     @Inject
     private TaskConsole taskConsole;
-    
-    @Inject 
-    private Identity identity;
-    
-    @Inject 
+
+    @Inject
+    private UserInfo userInfo;
+
+    @Inject
     private IdentityService identityService;
-    
+
     private TaskInfo task;
     private List<TaskResultCommand> resultCommands = new ArrayList<>();
     private List<Comment> comments;
     private String comment;
-    
-    public void openDialog( TaskInfo task ) {
-        
+
+    private String delegatedUser;
+
+    public void openDialog(TaskInfo task) {
+        //FIXME: Bu method her hangi bir yerde kullanılıyor mu?
         this.task = task;
         this.comment = "";
-        
+
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         //options.put("draggable", false);  
@@ -61,84 +71,145 @@ public abstract class AbstractHumanTaskHandler implements Serializable{
         options.put("contentHeight", 450);
 
         popVariables();
-        
+
         resultCommands.clear();
         initResultButtons();
-        
+
         comments = taskService.getTaskComments(task.getId());
-        
-        RequestContext.getCurrentInstance().openDialog( getDialogName(), options, null);
+
+        RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
     }
-    
+
     /**
      * Task'ı verilen sonucu ekleyerek kapatır.
-     * 
-     * @param result 
+     *
+     * @param result
      */
-    public void closeTask( String result) {
-        
-        onBeforeClose( result );
-        
+    public void closeTask(String result) {
+
+        onBeforeClose(result);
+
         saveComment();
-        
+
         pushVariables();
-        
-        task.getVariables().put("RESULT", result);
+
+        //task.getVariables().put("RESULT", result);
+        executeResultCommand(result);
+
+        //Eğer task kimse tarafından sahiplenilmemiş ise önce claim edelim...
+        if (Strings.isNullOrEmpty(task.getTask().getAssignee())) {
+            claimTask();
+        }
         taskService.complete(task.getId(), task.getVariables());
+        onAfterClose(result);
         taskConsole.refresh();
-        onAfterClose( result );
+        
         //RequestContext.getCurrentInstance().closeDialog(null);
     }
-    
+
     /**
-     * Task kapatıldıktan sonra çağrılır. 
-     * Task handlerlar bu noktada orjinal kaydı düzenleyebilir.
+     * ismi verilen result için register edilmiş komutu çalıştırır.
+     *
+     * Farklı bir davranış için override edilebilir.
+     *
+     * @param result
+     */
+    protected void executeResultCommand(String result) {
+        for (TaskResultCommand trc : resultCommands) {
+            if (trc.getResult().equals(result)) {
+                trc.execute(task);
+            }
+        }
+    }
+
+    /**
+     * Sahibi olmayan taskı sahiplenelim.
+     */
+    public void claimTask() {
+        try {
+            saveComment();
+            taskService.claim(task.getId(), userInfo.getLoginName());
+
+            //Candidate userlerı da çıkaralım ( aslında claim'in yapması gereken bişi bu )... FIXME: Eğer grup kullanılır ise burasının düzeltilmesi lazım...
+            for (IdentityLink il : taskService.getIdentityLinksForTask(task.getId())) {
+                taskService.deleteCandidateUser(task.getId(), il.getUserId());
+            }
+
+            //Veri tabanından tekrar alıp setleyelim. Değişiklikler yansısın.
+            setTask(taskRepository.getTaskById(task.getId()));
+            
+        } catch (TaskAlreadyClaimedException e) {
+            FacesMessages.warn("TaskAlreadyClaimedException", "TaskAlreadyClaimedException");
+        }
+    }
+
+    /**
+     * İşi başka bir kullanıcının üzerinde atıyalım.
+     *
+     * Aslında deletegateTask methodu daha doğru olabilir ama bu noktada
+     * delegate edilen kullanıcının o iş ikabul etmesi v.b. gibi bir durum da
+     * söz konusu...
+     *
+     */
+    public void delegateTask() {
+        if (!Strings.isNullOrEmpty(getDelegatedUser())) {
+            saveComment();
+            taskService.setAssignee(task.getId(), getDelegatedUser());
+            taskConsole.refresh();
+        }
+    }
+
+    /**
+     * Task kapatıldıktan sonra çağrılır. Task handlerlar bu noktada orjinal
+     * kaydı düzenleyebilir.
+     *
      * @param result kapanış değerinin ne olduğu
      */
-    protected void onAfterClose( String result ){
+    protected void onAfterClose(String result) {
         //Alt sınıflar override etsin diye var.
     }
-    
+
     /**
-     * Task kapanmadan önce çağrılır. 
-     * Task handlerlar bu noktada orjinal kaydı düzenleyebilir.
+     * Task kapanmadan önce çağrılır. Task handlerlar bu noktada orjinal kaydı
+     * düzenleyebilir.
+     *
      * @param result kapanış değerinin ne olduğu
      */
-    protected void onBeforeClose( String result ){
+    protected void onBeforeClose(String result) {
         //Alt sınıflar override etsin diye var.
     }
-    
+
     /**
      * UI üzerinden toplanan verileri saklar.
      */
     public void save() {
         onBeforeSave();
-        
+
         saveComment();
-        
+
         pushVariables();
-        
+
         taskService.setVariables(task.getId(), task.getVariables());
-        
+
         comments = taskService.getProcessInstanceComments(task.getTask().getProcessInstanceId());
-        
+
         onAfterSave();
     }
-    
+
     /**
      * Task değerleri save edilmeden hemen önce çağrılır.
      */
-    protected void onBeforeSave(){
-        
+    protected void onBeforeSave() {
+
     }
-    
+
     /**
      * Task değerleri save edildikten hemen sonra çağrılır.
      */
-    protected void onAfterSave(){
-        
+    protected void onAfterSave() {
+
     }
-    
+
     public void cancelDialog() {
         RequestContext.getCurrentInstance().closeDialog(null);
     }
@@ -167,93 +238,130 @@ public abstract class AbstractHumanTaskHandler implements Serializable{
         this.comment = comment;
     }
 
-    
     public TaskInfo getTask() {
         return task;
     }
 
     public void setTask(TaskInfo task) {
-        if( !task.equals(this.task)){
-            this.task = task;
-            
-            this.comment = "";
-            popVariables();
-            resultCommands.clear();
-            initResultButtons();
-        
-            comments = taskService.getProcessInstanceComments(task.getTask().getProcessInstanceId());
-        }
+        this.task = task;
+
+        this.comment = "";
+        popVariables();
+        resultCommands.clear();
+        initResultButtons();
+
+        comments = taskService.getProcessInstanceComments(task.getTask().getProcessInstanceId());
     }
-    
+
     /**
      * UI'dan alınan comment'i task'a ekler.
      */
-    protected void saveComment(){
-        if( !Strings.isNullOrEmpty(comment) ){
+    protected void saveComment() {
+        if (!Strings.isNullOrEmpty(comment)) {
             //FIXME: userID işini ne yapacağız?
-            identityService.setAuthenticatedUserId(identity.getAccount().getId());
+            identityService.setAuthenticatedUserId(userInfo.getLoginName());
             Comment c = taskService.createComment(task.getId(), task.getTask().getProcessInstanceId(), comment);
         }
         comment = "";
     }
-    
+
     public abstract String getDialogName();
-    
+
     /**
      * Task yükleme sonrası task variablelarını okumak için.
-     * 
-     * Tüm degerler task.getVariables() ile alınabilir ama bu esnada bir değerin alınıp işlenmesi için kulanılır.
-     * 
+     *
+     * Tüm degerler task.getVariables() ile alınabilir ama bu esnada bir değerin
+     * alınıp işlenmesi için kulanılır.
+     *
      */
-    protected void popVariables(){
-        
-    }
-    
-    /**
-     * Task bitiminde task sonuç variablelarını geri basmak için.
-     * 
-     * save'den hemen önce process engine bir değer basmak isteniyor ise kullanılır.
-     */
-    protected void pushVariables(){
-        
+    protected void popVariables() {
+
     }
 
     /**
-     * Dailog üzerinde çıkacak olan kapatma düğmelerini ayarlar.
-     * 
+     * Task bitiminde task sonuç variablelarını geri basmak için.
+     *
+     * save'den hemen önce process engine bir değer basmak isteniyor ise
+     * kullanılır.
+     */
+    protected void pushVariables() {
+
+    }
+
+    /**
+     * UI üzerinde çıkacak olan kapatma düğmelerini ayarlar.
+     *
      * Farklı türden sonuçlar dönecekse bu method override edilmeli.
      */
     protected void initResultButtons() {
-        
+
         String s = task.getAcceptableResults();
-        
+
         //Değer yoksa varsayılan COMPLETE
-        if( Strings.isNullOrEmpty(s)){
+        if (Strings.isNullOrEmpty(s)) {
             resultCommands.add(TaskResultCommand.COMPLETE);
             return;
         }
 
         List<String> ls = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(s);
-        
+
         //Şimdi her komut karşılığı bulunup düğme oluşturulacak
-        for( String cmd : ls ){
-            resultCommands.add(TaskResultCommand.getCommand(cmd));
+        for (String cmd : ls) {
+            TaskResultCommand c = TaskResultCommandRegistery.getCommand(cmd);
+            //Eğer gelen komut tanımlı ise ekleyelim. Yoksa NPE!
+            if (c != null) {
+                resultCommands.add(c);
+            }
         }
-        
+
     }
-    
+
     /**
      * Geriye TaskConsole üzerinde gösterilecek olan view'ın ID'sini döndürür.
      * Bu view /layout/taskBase.xhtml üretilmiş olmalıdır.
-     * 
+     *
      * FIXME: Bu bilgiyi aslında annotation'dan almak daha iyi olacak.
-     * 
-     * @return 
+     *
+     * @return
      */
     public abstract String getViewId();
-    
-    protected TaskService getTaskService(){
+
+    protected TaskService getTaskService() {
         return taskService;
+    }
+
+    /**
+     * Claim Buttonunun görünüp görünmeyeceği...
+     *
+     * Eğer üzerinde Assignee yoksa sahiplenelim...
+     *
+     * @return
+     */
+    public Boolean showClaimButton() {
+        return Strings.isNullOrEmpty(getTask().getTask().getAssignee());
+    }
+
+    /**
+     * Delegate Buttonunun görünüp görünmeyeceği.
+     *
+     * Eğer task kendine ait değil ise başka birine delegate edemez.
+     *
+     * TODO: Yetki konusu burada nasıl işleyecek? TODO: BA kavramı burada nasıl
+     * işleyecek?
+     *
+     * @return
+     */
+    public Boolean showDelegateButton() {
+        //Eğer taskın sahibi kendisi ise
+        return userInfo.getLoginName().equals(getTask().getTask().getAssignee());
+    }
+
+    public String getDelegatedUser() {
+        return delegatedUser;
+    }
+
+    public void setDelegatedUser(String delegatedUser) {
+        this.delegatedUser = delegatedUser;
     }
 
 }

@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:composite="http://java.sun.com/jsf/composite">
+
+
+    <composite:interface>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="itemLabel" required="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+
+        <h:outputText id="#{cc.id}_inp" value="#{messages[ cc.attrs.value ? ''.concat( cc.attrs.itemLabel ).concat( 'True' ) : ''.concat( cc.attrs.itemLabel ).concat( 'False' ) ]}" />
+        
+    </composite:implementation>
+
+</ui:composition>
