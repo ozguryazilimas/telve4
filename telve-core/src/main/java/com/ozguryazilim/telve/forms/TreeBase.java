@@ -114,16 +114,15 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
             return null;
         }
 
-        if( !entity.isPersisted() ){
+        if (!entity.isPersisted()) {
             //Unique Code olup olmadığını bir kontrol edelim...
             List<E> ls = getRepository().findByCode(entity.getCode());
-            if( !ls.isEmpty() ){
+            if (!ls.isEmpty()) {
                 FacesMessages.error("general.message.record.CodeNotUnique");
                 return null;
             }
         }
-        
-        
+
         //boolean newRecord = !entity.isPersisted();
         //Path saklamak için ID'nin alınmaya ihtiyacı var o yüzden eğer persist değilse önce bir ID için kaydediyoruz.
         if (!entity.isPersisted()) {
@@ -156,15 +155,16 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
             return Pages.Home.class;
         }
 
+        onBeforeDelete();
+
         //FIXME: Eğer ağacın alt dalları varsa diye kontrol edilmesi lazım...
-        
         try {
             getRepository().deleteById(entity.getId());
             //getRepository().remove(entity);
             getTreeModel().removeItem(entity);
             //Listeden de çıkaralım
             getEntityList().remove(entity);
-                    
+
         } catch (Exception e) {
             LOG.error("Hata : {}", e);
             FacesMessages.error("general.message.record.DeleteFaild");
@@ -172,6 +172,8 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         }
 
         LOG.debug("Entity Removed : {} ", entity);
+
+        onAfterDelete();
 
         //Mevcut silindi dolayısı ile null verdik
         entity = null;
@@ -272,10 +274,8 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         }
 
         getTreeModel().buildResultList();
-        
+
     }
-    
-    
 
     public void search() {
         //TODO: Veriyi nezaman boşaltalım?
@@ -315,5 +315,18 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         return Boolean.TRUE;
     }
 
+    /**
+     * Alt sınıfların override etmesi için
+     */
+    protected void onBeforeDelete() {
+
+    }
+
+    /**
+     * Alt sınıfların override etmesi için
+     */
+    protected void onAfterDelete() {
+
+    }
 
 }
