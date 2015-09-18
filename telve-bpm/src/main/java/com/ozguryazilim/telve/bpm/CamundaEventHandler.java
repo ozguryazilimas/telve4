@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import org.camunda.bpm.engine.cdi.BusinessProcessEvent;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.TaskListener;
+import org.camunda.bpm.engine.repository.ProcessDefinition;
 import org.camunda.bpm.engine.task.IdentityLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,18 +41,18 @@ public class CamundaEventHandler implements Serializable {
         if (businessProcessEvent.getType().getTypeName().equals(TaskListener.EVENTNAME_ASSIGNMENT)) {
 
             if (!Strings.isNullOrEmpty(businessProcessEvent.getTask().getAssignee())) {
-                sendNotification( businessProcessEvent.getTask().getAssignee(), businessProcessEvent.getTask(), "Assignment" );
+                sendNotification( businessProcessEvent.getTask().getAssignee(), businessProcessEvent.getTask(), businessProcessEvent.getProcessDefinition(), "Assignment" );
             }
 
         } else if (businessProcessEvent.getType().getTypeName().equals(TaskListener.EVENTNAME_CREATE)) {
             for (IdentityLink il : businessProcessEvent.getTask().getCandidates()) {
                 //TODO: Grup atamalarında buranın düzenlenmesi lazım.
-                sendNotification( il.getUserId(), businessProcessEvent.getTask(), "CandidateAssignment" );
+                sendNotification( il.getUserId(), businessProcessEvent.getTask(), businessProcessEvent.getProcessDefinition(), "CandidateAssignment" );
             }
         }
     }
 
-    protected void sendNotification(String userId, DelegateTask task, String template ) {
+    protected void sendNotification(String userId, DelegateTask task, ProcessDefinition processDefinition, String template ) {
         NotificationCommand nc = new NotificationCommand();
 
         nc.setNotificationClass("BPMTaskAssignment");
@@ -61,11 +62,24 @@ public class CamundaEventHandler implements Serializable {
         nc.setTemplate(template);
         Map<String, Object> params = new HashMap<>();
 
+        //Öncelikle süreçten gelen herşeyi bir koyalım
+        params.putAll( task.getVariables());
+        
         params.put("TaskName", task.getName());
         params.put("TaskId", task.getId());
 
+        params.put("TaskKey", task.getTaskDefinitionKey());
+        params.put("TaskPriority", task.getPriority());
+        params.put("TaskAssignee", task.getAssignee());
+        params.put("TaskDueDate", task.getDueDate());
+        params.put("TaskInfo", task.getDescription());
+        params.put("TaskProcess", processDefinition.getKey());
+        params.put("TaskSubject", task.getVariable("SUBJECT"));
+        
         nc.setParams(params);
 
+        
+        
         commandSender.sendCommand(nc);
     }
 

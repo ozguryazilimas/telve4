@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.enterprise.context.ContextNotActiveException;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 
 /**
  * Seam 2 SeamResourceBundle'dan alındı.
@@ -152,7 +154,14 @@ public class TelveResourceBundle extends java.util.ResourceBundle {
 
     @Override
     public Locale getLocale() {
-        Locale l = LocaleSelector.instance().getLocale();
+        Locale l = null;
+        try{
+            l = LocaleSelector.instance().getLocale();
+        } catch ( ContextNotActiveException e ){
+            //Session'a sahip olmayan bir yerden çağrılırsa eğer uygulama'nın değerini al.
+            //Mesela camel şeysilerinden.
+            l = new Locale(ConfigResolver.getPropertyValue("application.locale", "tr"));
+        }
         return l != null ? l : Locale.getDefault();
     }
 }

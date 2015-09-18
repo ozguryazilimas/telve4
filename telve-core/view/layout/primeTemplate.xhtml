@@ -235,7 +235,7 @@
                                 <p:overlayPanel id="notifyPanel" widgetVar="notifyPanel" dynamic="true" style="width: 250px; height: 300px;" for="notifies">
                                     <h:panelGroup id="notifyPanelContent" layout="block" style="margin-left: -15; margin-right: -15;">
                                         <div style="margin-left: 15px; margin-right: 15px;">
-                                            <p:commandLink action="#{notifyStore.clear(identity.account.id)}" ajax="true" 
+                                            <p:commandLink action="#{notifyStore.clear(identity.account.loginName)}" ajax="true" 
                                                            partialSubmit="true" process="@this" update=":notifyCount" 
                                                            styleClass="pull-right"
                                                            oncomplete="PF('notifyPanel').hide();">
@@ -248,7 +248,7 @@
                                         <ul id="notifyList" class="menulist">
                                             <ui:repeat value="#{notifyStore.getNotifies(identity.account.loginName)}" var="notify">
                                                 <li class="">
-                                                    <a href="#" >
+                                                    <a href="#{request.contextPath}#{notify.link}" >
                                                         <div class="menuIcon">
                                                             <i class="fa fa-2x #{notify.icon}" /> 
                                                         </div>

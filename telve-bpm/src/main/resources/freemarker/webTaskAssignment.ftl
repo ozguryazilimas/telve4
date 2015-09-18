@@ -1,5 +1,5 @@
 ${request.setHeader("icon", "fa fa-tasks")}
 ${request.setHeader("severity", "info")}
-${request.setHeader("link", "")}
+${request.setHeader("link", "/bpm/taskConsole.jsf?task="+ headers.TaskId)}
 ${request.setHeader("subject", "Yeni bir görev atandı")}
-Atanan görev....
+${headers.messages["processName." + headers.TaskProcess]} : ${headers.TaskSubject}

@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.inject.Named;
 
@@ -22,7 +22,7 @@ import javax.inject.Named;
  * 
  * @author Hakan Uygun
  */
-@RequestScoped
+@Dependent
 public class Messages {
 
     protected Map<String, String> createMap() {

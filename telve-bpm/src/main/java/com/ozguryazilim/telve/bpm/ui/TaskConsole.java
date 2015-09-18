@@ -57,15 +57,18 @@ public class TaskConsole implements Serializable {
 
     private String searchText = "";
     private String searchTaskType = "";
+    private String searchProcessType = "";
     private Boolean myTasks = Boolean.TRUE;
     private Boolean potTasks = Boolean.TRUE;
     private String taskOwnerType = "myTasks";
     
     private List<String> taskTypeNames;
+    private List<String> processTypeNames;
 
     @PostConstruct
     public void init() {
         taskTypeNames = HumanTaskHandlerRegistery.getTaskNames();
+        processTypeNames = ProcessHandlerRegistery.getProcessNames();
         //TODO: camnuda için hangi kullanıcı çalışıyor setliyoruz. Aslında bunu login tarafına felan almak lazım sanırım.
         identityService.setAuthenticatedUserId(userInfo.getLoginName());
     }
@@ -126,7 +129,7 @@ public class TaskConsole implements Serializable {
 
     public List<TaskInfo> getTaskList() {
         if (taskList == null) {
-            taskList = taskRepository.getTaskList(userInfo.getLoginName(), "myTasks".equals(getTaskOwnerType()), "potTasks".equals(getTaskOwnerType()), null, searchTaskType, searchText);
+            taskList = taskRepository.getTaskList(userInfo.getLoginName(), "myTasks".equals(getTaskOwnerType()), "potTasks".equals(getTaskOwnerType()), searchProcessType, searchTaskType, searchText);
         }
 
         return taskList;
@@ -244,6 +247,16 @@ public class TaskConsole implements Serializable {
         this.taskOwnerType = taskOwnerType;
     }
 
-    
-    
+    public String getSearchProcessType() {
+        return searchProcessType;
+    }
+
+    public void setSearchProcessType(String searchProcessType) {
+        this.searchProcessType = searchProcessType;
+    }
+
+    public List<String> getProcessTypeNames() {
+        return processTypeNames;
+    }
+
 }

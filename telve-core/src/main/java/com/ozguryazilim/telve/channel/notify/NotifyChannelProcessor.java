@@ -6,10 +6,18 @@
 package com.ozguryazilim.telve.channel.notify;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.messages.Messages;
+import java.util.Map;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.Dependent;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.apache.deltaspike.cdise.api.ContextControl;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +62,14 @@ public class NotifyChannelProcessor implements Processor{
         LOG.debug("Notify Template Name : {}", templateName );
         
         exchange.getIn().setHeader("templateName", templateName);
+        exchange.getIn().setHeader("messages", getMessages());
     }
     
-    
+    /**
+     * Returns i18n message bundles
+     * @return 
+     */
+    private Map<String,String> getMessages(){
+        return (new Messages()).getMessages();
+    }
 }

@@ -14,7 +14,7 @@
             <f:viewParam name="task" value="#{taskConsole.selectedTaskId}" />
         </f:metadata>
     </ui:define>
-    
+
 
     <ui:param name="showListBar" value="true" />
     <ui:param name="dontShowContentHeader" value="true" />
@@ -43,11 +43,20 @@
                 <p:ajax event="blur" listener="#{taskConsole.refresh}" update="console" />
             </p:inputText>
 
-            <p:selectOneMenu id="car" value="#{taskConsole.searchTaskType}">
+
+            <p:selectOneMenu id="processType" value="#{taskConsole.searchProcessType}">
                 <f:selectItem itemLabel="" itemValue="" />
-                <f:selectItems value="#{taskConsole.taskTypeNames}" var="item" itemLabel="#{messages['taskName.'.concat(item)]}" itemValue="#{item}"/>
+                <f:selectItems value="#{taskConsole.processTypeNames}" var="item" itemLabel="#{messages['processName.'.concat(item)]}" itemValue="#{item}"/>
                 <p:ajax event="change" listener="#{taskConsole.refresh}" update="console" />
             </p:selectOneMenu>
+
+            <ui:remove>
+                <p:selectOneMenu id="taskType" value="#{taskConsole.searchTaskType}">
+                    <f:selectItem itemLabel="" itemValue="" />
+                    <f:selectItems value="#{taskConsole.taskTypeNames}" var="item" itemLabel="#{messages['taskName.'.concat(item)]}" itemValue="#{item}"/>
+                    <p:ajax event="change" listener="#{taskConsole.refresh}" update="console" />
+                </p:selectOneMenu>
+            </ui:remove>
 
             <p:selectOneButton value="#{taskConsole.taskOwnerType}">
                 <f:selectItem itemLabel="#{messages['taskConsole.label.MyTasks']}" itemValue="myTasks" />

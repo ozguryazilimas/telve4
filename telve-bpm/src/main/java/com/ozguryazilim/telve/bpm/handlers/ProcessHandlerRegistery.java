@@ -68,6 +68,22 @@ public class ProcessHandlerRegistery {
     }
     
     /**
+     * Geriye sistemde tanımlı process isimlerini döndürür.
+     * 
+     * Burada temel alınan BPM'e yüklenmiş olanlar değil uygulama tanımlı handler'lar olacak.
+     * 
+     * @return 
+     */
+    public static List<String> getProcessNames(){
+        List<String> ls = new ArrayList();
+        for( Map.Entry<String,ProcessHandler> e : processes.entrySet()){
+            //TODO: Burada aslında bir yetki kontrolü lazım sanırım.
+            ls.add(e.getValue().processId());
+        }
+        return ls;
+    }
+    
+    /**
      * Verilen processHandler ismi için tanımlı ikon pathi döndürür.
      * 
      * Eğer özel olarak tanımlı yoksa varsayılan ikon ismi döndürülür.

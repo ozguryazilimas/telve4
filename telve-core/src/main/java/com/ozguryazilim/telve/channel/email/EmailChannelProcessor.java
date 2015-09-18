@@ -6,6 +6,8 @@
 package com.ozguryazilim.telve.channel.email;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.messages.Messages;
+import java.util.Map;
 import javax.enterprise.context.Dependent;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -55,5 +57,14 @@ public class EmailChannelProcessor implements Processor{
         LOG.debug("Email Template Name : {}", templateName );
         
         exchange.getIn().setHeader("templateName", templateName);
+        exchange.getIn().setHeader("messages", getMessages());
+    }
+    
+    /**
+     * Returns i18n message bundles
+     * @return 
+     */
+    private Map<String,String> getMessages(){
+        return (new Messages()).getMessages();
     }
 }

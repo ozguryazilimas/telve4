@@ -130,11 +130,6 @@ public abstract class AbstractHumanTaskHandler implements Serializable {
             saveComment();
             taskService.claim(task.getId(), userInfo.getLoginName());
 
-            //Candidate userlerı da çıkaralım ( aslında claim'in yapması gereken bişi bu )... FIXME: Eğer grup kullanılır ise burasının düzeltilmesi lazım...
-            for (IdentityLink il : taskService.getIdentityLinksForTask(task.getId())) {
-                taskService.deleteCandidateUser(task.getId(), il.getUserId());
-            }
-
             //Veri tabanından tekrar alıp setleyelim. Değişiklikler yansısın.
             setTask(taskRepository.getTaskById(task.getId()));
             
