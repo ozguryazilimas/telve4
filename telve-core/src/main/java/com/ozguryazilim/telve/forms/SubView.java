@@ -48,6 +48,14 @@ public @interface SubView {
     String permission();
     
     /**
+     * Subview'ın içinde yer alacağı grup.
+     * 
+     * Default boş olup ana grup ( main ) içerisinde yer alır.
+     * @return 
+     */
+    String group() default "main";
+    
+    /**
      * Sıra numarası. Ardından isim sırasına dizilirler.
      * @return 
      */

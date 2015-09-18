@@ -61,12 +61,29 @@
             <p:commandLink  value="#{messages['general.caption.MasterView']}"
                             action="#{bean.setSelectedSubView(null)}" update=":viewarea" styleClass="ui-sidelink" />
 
+            <ui:repeat value="#{bean.getSubViews('main')}" var="module" >
+                    <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
+                               action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
+                               styleClass="ui-sidelink "/>  
+            </ui:repeat>
+            
+            <ui:repeat value="#{bean.subViewGroups}" var="grp" >
+                <span style="display: block;">#{messages[ 'subview.group.'.concat( grp )]}</span>
+                <ui:repeat value="#{bean.getSubViews(grp)}" var="module" >
+                    <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
+                               action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
+                               styleClass="ui-sidelink "/>  
+                </ui:repeat>
+            </ui:repeat>
+            
+            <ui:remove>
             <c:forEach id="subViewRepeater" items="#{bean.subViewList}"
                        var="module" varStatus="rowCounter">
                 <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
                                action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
                                styleClass="ui-sidelink "/>  
             </c:forEach>
+                </ui:remove>
 
         </h:form>
 

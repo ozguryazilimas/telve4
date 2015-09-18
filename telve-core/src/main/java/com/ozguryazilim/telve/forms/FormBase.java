@@ -12,7 +12,10 @@ import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.view.PageTitleResolver;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Any;
@@ -65,6 +68,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     Event<RefreshBrowserEvent> refreshBrowserEvent;
     
     private List<String> subViewList = new ArrayList<String>();
+    private Map<String,List<String>> subViews = new HashMap<>();
     private String selectedSubView;
 
     @PostConstruct
@@ -83,6 +87,15 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
                 //Eğer kullanıcının yetkisi varsa listeye ekleniyor.
                 if (identity.hasPermission(sv.permission(), "select")) {
                     subViewList.add(viewConfigResolver.getViewConfigDescriptor(sv.viewPage()).getViewId());
+                    
+                    //Grup tanımına göre subviewları dolduruyoruz.
+                    List<String> vs = subViews.get(sv.group());
+                    if( vs == null ){
+                        vs = new ArrayList<>();
+                        subViews.put(sv.group(), vs);
+                    }
+                    
+                    vs.add(viewConfigResolver.getViewConfigDescriptor(sv.viewPage()).getViewId());
                 }
             }
         } 
@@ -342,6 +355,27 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         return viewConfigResolver.getViewConfigDescriptor(getMasterViewPage()).getViewId();
     }
 
+    /**
+     * Geriye SubView grup listesini döndürür.
+     * @return 
+     */
+    public List<String> getSubViewGroups(){
+        List<String> grps = new ArrayList( subViews.keySet());
+        //Main dışındakileri veriyoruz.
+        grps.remove("main");
+        return grps;
+    }
+    
+    /**
+     * İsmi verilen gruptaki subview listesini döndürür.
+     * 
+     * @param grp
+     * @return 
+     */
+    public List<String> getSubViews( String grp ){
+        return subViews.get(grp);
+    }
+    
     public PK getId() {
         return id;
     }
