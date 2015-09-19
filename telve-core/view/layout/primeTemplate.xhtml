@@ -437,11 +437,26 @@
 
                     <div class="main-content">
                         <section class="context-menu">
+                            
+                            <nav class="navbar navbar-default">
+                                <div class="container-fluid">
+                                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                        <h:form id="contextForm">
+                                      <ul class="nav navbar-nav">
+                                          <ui:insert name="context-menu" />
+                                      </ul>
+                                            </h:form>
+                                    </div>
+                                </div>
+                          </nav>
+                            
+                            <ui:remove>
                             <h:form id="contextForm">
                                 <ul >
                                     <ui:insert name="context-menu" />
                                 </ul>
                             </h:form>
+                            </ui:remove>
                         </section>
                         <ui:fragment rendered="#{dontShowContentHeader ne true}">
                             <section class="content-header">

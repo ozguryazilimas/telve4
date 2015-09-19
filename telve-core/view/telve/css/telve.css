@@ -1492,7 +1492,7 @@ Renk Paleti
   filter: alpha(opacity=65);
 }
 
-
+/*
 .context-menu ul{
     padding: 0;
 }
@@ -1538,7 +1538,7 @@ Renk Paleti
 .context-menu .disabled img{
     opacity: .35;
 }
-
+*/
 .navbar-nav > li > a{
     padding-top: 18px;
     color: #fff;

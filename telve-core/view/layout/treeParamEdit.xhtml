@@ -194,6 +194,7 @@
     </ui:define>
     
     <ui:define name="context-menu">
+        <li>
         <p:commandLink action="#{homeBean.createNewChild()}" 
                        styleClass="context-command" 
                        update=":form:nodeEditor"
@@ -201,6 +202,6 @@
             <i class="fa fa-plus-circle"></i>
             <h:outputText value=" #{messages['general.button.New']}" />
         </p:commandLink>
-        
+        </li>
     </ui:define>
 </ui:composition>
