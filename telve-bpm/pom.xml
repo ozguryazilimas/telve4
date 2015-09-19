@@ -53,6 +53,12 @@
             <groupId>org.camunda.bpm</groupId>
             <artifactId>camunda-engine-cdi</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bpmn-js</artifactId>
+            <version>0.11.0</version>
+        </dependency>
             
         <!-- Test -->
         <dependency>

@@ -1,0 +1,58 @@
+<!DOCTYPE html >
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <h:head>    
+            <title>BPMN Diagram : #{diagramPopup.task.subject}</title>
+            
+            <!-- load diagram-js styles and bpmn styles including the cool bpmn font -->
+            <h:outputStylesheet library="webjars" name="bpmn-js/0.11.0/assets/diagram-js.css" />
+            <h:outputStylesheet library="webjars" name="bpmn-js/0.11.0/assets/bpmn-font/css/bpmn-embedded.css" />
+            
+            <h:outputScript library="primefaces" name="jquery/jquery.js" />
+            
+            <!-- bpmn-js viewer -->
+            <h:outputScript library="webjars" name="bpmn-js/0.11.0/bpmn-navigated-viewer.min.js" />
+            
+            <style>
+                .bjs-powered-by{
+                    display: none;
+                }
+                .highlight:not(.djs-connection) .djs-visual > :nth-child(1) {
+                     fill: #f39c12 !important; /* color elements as green */
+                }
+            </style>
+    </h:head>
+    <h:body>
+        
+        <div id="canvas"></div>
+        
+        
+        <div id="diagramXML" style="display: none;">
+            #{diagramPopup.diagramXML}
+        </div>
+        
+        <script type="text/javascript">
+            var BpmnViewer = window.BpmnJS;
+
+            var viewer = new BpmnViewer({ container: '#canvas', width: '780px', height: '450px' });
+
+            var diagramXML = jQuery("#diagramXML").text();
+
+            viewer.importXML(diagramXML, function(err) {
+                  if (!err) {
+                    console.log('success!');
+                    var canvas = viewer.get('canvas');
+                    //canvas.viewbox({ x: 1, y: 1, width: 500, height: 500 })
+                    //canvas.zoom('fit-viewport');
+                    canvas.addMarker('#{diagramPopup.task.task.taskDefinitionKey}', 'highlight');
+                    //viewer.get('canvas').zoom(1.0);
+                  } else {
+                    console.log('something went wrong:', err);
+                  }
+            });
+        </script>
+        
+    </h:body>
+    
+</html>

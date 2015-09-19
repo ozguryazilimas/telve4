@@ -51,6 +51,9 @@ public class TaskConsole implements Serializable {
     private TaskRepository taskRepository;
             
 
+    @Inject
+    private DiagramPopup diagramPopup;
+    
     private List<TaskInfo> taskList;
     private TaskInfo selectedTask;
     private String selectedTaskViewId = "/bpm/emptyTask.xhtml";
@@ -259,4 +262,10 @@ public class TaskConsole implements Serializable {
         return processTypeNames;
     }
 
+    /**
+     * Seçili olan taskın süreç diagamını gösterecek popup'ı açar.
+     */
+    public void showDiagram(){
+        diagramPopup.openPopup(selectedTask);
+    }
 }

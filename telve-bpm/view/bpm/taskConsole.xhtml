@@ -105,5 +105,12 @@
                 </ui:repeat>
             </ul>
         </p:overlayPanel>
+        
+        <li>
+            <p:commandLink action="#{taskConsole.showDiagram()}" ajax="true" partialSubmit="true" process="@this">
+                <i class="fa fa-bullseye"/>
+                <span>#{messages['taskConsole.button.Diagram']}</span>
+            </p:commandLink> 
+        </li>
     </ui:define>
 </ui:composition>

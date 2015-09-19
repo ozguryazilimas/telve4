@@ -37,7 +37,7 @@ public class StartProcessPopup implements Serializable{
     
     public void closeDialog() {
         //RequestContext.getCurrentInstance().closeDialog(null);
-        openDialog();
+        //openDialog();
     }
 
     /**
