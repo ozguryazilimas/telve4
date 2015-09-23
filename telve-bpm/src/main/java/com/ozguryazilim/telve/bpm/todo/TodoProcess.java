@@ -8,6 +8,7 @@ package com.ozguryazilim.telve.bpm.todo;
 import com.ozguryazilim.telve.auth.UserInfo;
 import com.ozguryazilim.telve.bpm.handlers.AbstractDialogProcessHandler;
 import com.ozguryazilim.telve.bpm.handlers.ProcessHandler;
+import com.ozguryazilim.telve.sequence.SequenceManager;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +27,8 @@ public class TodoProcess extends AbstractDialogProcessHandler{
     private Date startDate;
     private Date endDate;
     
+    @Inject
+    private SequenceManager sequenceManager;
     
     @Inject
     private UserInfo userInfo;
@@ -49,8 +52,7 @@ public class TodoProcess extends AbstractDialogProcessHandler{
         values.put("END_DATE", endDate);
         values.put("ASSIGNEE", userInfo.getLoginName());
         
-        //FIXME: Burada Serial üretici kullanalım, çünkü Unique olmalı
-        String bizKey = userInfo.getLoginName() + ":" + 1;
+        String bizKey = userInfo.getLoginName() + "-" + sequenceManager.getNewNumber("todo"+ userInfo.getLoginName(), 5);
         
         startProcess("todo", bizKey, values);
         

@@ -29,7 +29,8 @@ public class TelveCamelContext extends CdiCamelContext{
     @PostConstruct
     public void init(){
         setTracing(Boolean.TRUE);
-        setDelayer(1000l);
+        //TODO: Belki buraya project stage eklenebilir. Debug amaçlı camel yavaşlatıcı
+        //setDelayer(1000l);
         ShutdownStrategy ss = new DefaultShutdownStrategy(); 
         //ss.setShutdownNowOnTimeout(true);
         ss.setTimeout(15l);
