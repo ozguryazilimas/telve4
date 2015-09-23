@@ -49,7 +49,10 @@ public class TodoProcess extends AbstractDialogProcessHandler{
         values.put("END_DATE", endDate);
         values.put("ASSIGNEE", userInfo.getLoginName());
         
-        startProcess("todo", values);
+        //FIXME: Burada Serial üretici kullanalım, çünkü Unique olmalı
+        String bizKey = userInfo.getLoginName() + ":" + 1;
+        
+        startProcess("todo", bizKey, values);
         
     }
  

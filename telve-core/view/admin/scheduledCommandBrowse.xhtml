@@ -182,12 +182,14 @@
     </ui:define>
 
     <ui:define name="context-menu">
+        <ui:remove>
         <li>
             <p:commandLink id="newSuggestion" onclick="PF('commandSelectorPopup').show();" >
                 <i class="fa fa-plus-circle"/>
                 <span>#{messages['general.button.New']}</span>
             </p:commandLink>
         </li>
+            </ui:remove>
 
         
         <li>

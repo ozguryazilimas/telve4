@@ -6,6 +6,7 @@
 package com.ozguryazilim.telve.bpm;
 
 import com.ozguryazilim.telve.auth.SecuredPage;
+import com.ozguryazilim.telve.nav.AdminNavigationSection;
 import com.ozguryazilim.telve.nav.MainNavigationSection;
 import com.ozguryazilim.telve.nav.Navigation;
 import com.ozguryazilim.telve.view.Pages;
@@ -23,4 +24,7 @@ public interface TaskPages extends Pages{
     
     @SecuredPage() @View @Navigation( icon = "fa fa-tasks", section = MainNavigationSection.class)
     class TaskConsole implements TaskPages {};
+    
+    @SecuredPage("processBrowse") @View @Navigation( icon = "fa fa-tasks", section = AdminNavigationSection.class)
+    class ProcessBrowse implements TaskPages {};
 }

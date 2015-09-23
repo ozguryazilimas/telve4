@@ -3,7 +3,7 @@
       xmlns:h="http://java.sun.com/jsf/html">
 
     <h:head>    
-            <title>BPMN Diagram : #{diagramPopup.task.subject}</title>
+            <title>BPMN Diagram : #{diagramPopup.subject}</title>
             
             <!-- load diagram-js styles and bpmn styles including the cool bpmn font -->
             <h:outputStylesheet library="webjars" name="bpmn-js/0.11.0/assets/diagram-js.css" />
@@ -45,7 +45,7 @@
                     var canvas = viewer.get('canvas');
                     //canvas.viewbox({ x: 1, y: 1, width: 500, height: 500 })
                     //canvas.zoom('fit-viewport');
-                    canvas.addMarker('#{diagramPopup.task.task.taskDefinitionKey}', 'highlight');
+                    canvas.addMarker('#{diagramPopup.taskDefinitionKey}', 'highlight');
                     //viewer.get('canvas').zoom(1.0);
                   } else {
                     console.log('something went wrong:', err);

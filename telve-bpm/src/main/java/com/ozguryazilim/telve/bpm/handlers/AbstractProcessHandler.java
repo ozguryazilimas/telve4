@@ -31,7 +31,7 @@ public abstract class AbstractProcessHandler implements Serializable{
      * @param id
      * @param values 
      */
-    public void startProcess( String id, Map<String, Object> values ){
-        ProcessInstance startProcessInstanceById = runtimeService.startProcessInstanceByKey( id, values );
+    public void startProcess( String id, String bizKey, Map<String, Object> values ){
+        ProcessInstance startProcessInstanceById = runtimeService.startProcessInstanceByKey( id, bizKey, values );
     }
 }

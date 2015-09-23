@@ -1,0 +1,159 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"                   
+                template="/layout/primeTemplate.xhtml">
+
+
+    <ui:define name="body">
+        <ui:include src="/layout/messages.xhtml" />
+
+        <ui:remove>
+            <h:form id="filterSearch">
+                <div class="row">
+                    <div class="large-8 medium-8 small-12 columns"></div>
+                    <div class="prop large-4 medium-4 small-12 columns">
+                        <span class="value">
+                            <div class="ui-input-group">
+                                <p:inputText id="filter" value="#{scheduledCommandBrowse.filter}" 
+                                             placeholder="#{messages['general.info.ScheduledCommandBrowseFilter']}" />
+                                <p:commandButton action="#{scheduledCommandBrowse.search()}" partialSubmit="true" process="@form" icon="ui-icon-search" styleClass="ui-icon-only" update=":commands" />
+                            </div>
+                        </span>
+                    </div>
+                </div>
+            </h:form>
+        </ui:remove>
+
+        <div class="row">
+
+            <div class="prop large-4 medium-4 small-12 columns">
+                <h:form id="filterSearch">
+
+                    <p:selectOneMenu id="processType" value="#{processBrowse.searchProcessType}">
+                        <f:selectItem itemLabel="" itemValue="" />
+                        <f:selectItems value="#{processBrowse.processTypeNames}" var="item" itemLabel="#{messages['processName.'.concat(item)]}" itemValue="#{item}"/>
+                        <p:ajax event="change" listener="#{processBrowse.search()}" update=":processes,:tasks,:contextForm:delegate" />
+                    </p:selectOneMenu>
+
+                    <span class="value">
+                            <div class="ui-input-group">
+                                <p:inputText id="filter" value="#{processBrowse.searchText}" 
+                                             placeholder="#{messages['general.info.SearchText']}" />
+                                    <p:commandButton action="#{processBrowse.search()}" partialSubmit="true" process="@form" icon="ui-icon-search" styleClass="ui-icon-only" update=":processes,:tasks,:contextForm:delegate" />
+                            </div>
+                    </span>
+
+                </h:form>
+            </div>
+            <div class="large-8 medium-8 small-12 columns"></div>
+        </div>
+
+
+        <div class="row">
+            <div class="large-4 medium-4 small-12 columns">
+                <h:form id="processes" >
+                    
+                    <p:dataTable value="#{processBrowse.processes}" var="item"
+                                 selectionMode="single"
+                                 selection="#{processBrowse.selectedProcess}" 
+                                 rowKey="#{item.id}" >
+
+
+                        <p:ajax event="rowSelect" listener="#{processBrowse.onProcessSelect}" update=":tasks, :contextForm:delegate"/>
+
+
+                        <p:column headerText="#{messages['general.label.Type']}">
+                            #{messages['processName.'.concat( item.processDefinitionKey) ]}
+                        </p:column>
+                        <p:column headerText="#{messages['general.label.Name']}">
+                            #{item.businessKey}
+                        </p:column>
+                        <ui:remove>
+                            <p:column headerText="#{messages['general.label.Info']}">
+                                #{item.startUserId}
+                            </p:column>
+                        </ui:remove>
+                        <p:column headerText="#{messages['general.label.BeginDate']}">
+                            <t:cellOutputDateTime value="#{item.startTime}" />
+                        </p:column>
+                        <p:column headerText="#{messages['general.label.EndDate']}">
+                            <t:cellOutputDateTime value="#{item.endTime}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </div>
+            <div class="large-8 medium-8 small-12 columns">
+                <h:form id="tasks">
+                    
+                    <p:dataTable value="#{processBrowse.tasks}" var="item"
+                                 selectionMode="single"
+                                 selection="#{processBrowse.selectedTask}" 
+                                 rowKey="#{item.id}" >
+
+                        <p:ajax event="rowSelect" listener="#{processBrowse.onTaskSelect}" update=":contextForm:delegate"/>
+
+                        <p:column headerText="#{messages['general.label.Type']}">
+                            #{messages['taskName.'.concat( item.taskDefinitionKey) ]}
+                        </p:column>
+                        <p:column headerText="#{messages['general.label.Assignee']}">
+                            #{item.assignee}
+                        </p:column>
+                        <p:column headerText="#{messages['general.label.DueDate']}">
+                            <t:cellOutputDateTime value="#{item.dueDate}" />
+                        </p:column>
+                        <p:column headerText="#{messages['general.label.StartDate']}">
+                            <t:cellOutputDateTime value="#{item.startTime}" />
+                        </p:column>
+                        <p:column headerText="#{messages['general.label.EndDate']}">
+                            <t:cellOutputDateTime value="#{item.endTime}" />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </div>
+        </div>
+
+
+        <p:dialog id="delegatePop" widgetVar="delegatePop" header="#{messages['delegatePopup.label.Title']}" width="350">
+
+            <h:form id="delegateForm">
+
+                <div class="row">
+                    <t:inputUser label="general.label.User" value="#{processBrowse.delegatedUser}" columnClass="large-12 medium-12 small-12"/>
+                    <t:inputTextarea label="general.label.Comment" value="#{processBrowse.comment}" columnClass="large-12 medium-12 small-12" />
+                </div>
+
+                <h:panelGroup styleClass="row actionButtons" layout="block">
+                    <p:commandButton value="#{messages['general.button.Ok']}" styleClass="btn-primary" icon="fa fa-save" action="#{processBrowse.delegateTask()}" oncomplete="PF('delegatePop').hide();" update=":tasks"/>
+                    <p:button value="#{messages['general.button.Close']}"  icon="fa fa-close" onclick="PF('delegatePop').hide();return false;"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+    </ui:define>
+
+    <ui:define name="context-menu">
+
+        <li>
+            <p:commandLink id="delegate" onclick="PF('delegatePop').show();return false;" ajax="true" partialSubmit="true" process="@this" style="display: #{processBrowse.disabledDeltegate() ? 'none' : 'block'}">
+                <i class="fa fa-users"/>
+                <span>#{messages['general.button.Delegate']}</span>
+            </p:commandLink> 
+        </li>
+        
+        <li>
+            <p:commandLink action="#{processBrowse.showDiagram()}" ajax="true" partialSubmit="true" process="@this">
+                <i class="fa fa-bullseye"/>
+                <span>#{messages['taskConsole.button.Diagram']}</span>
+            </p:commandLink> 
+        </li>
+
+    </ui:define>
+
+</ui:composition>
