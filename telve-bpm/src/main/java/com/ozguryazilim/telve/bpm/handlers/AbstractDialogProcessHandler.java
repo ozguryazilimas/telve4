@@ -35,4 +35,6 @@ public abstract class AbstractDialogProcessHandler extends AbstractProcessHandle
     }
         
     public abstract String getDialogName();
+
+    protected abstract void startProcess();
 }

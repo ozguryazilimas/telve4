@@ -23,9 +23,6 @@ public abstract class AbstractProcessHandler implements Serializable{
     @Inject
     private RuntimeService runtimeService;
     
-    
-    public abstract void startProcess();
-    
     /**
      * Verilen ID'li process'i verilen değerlerle başlatır.
      * @param id
