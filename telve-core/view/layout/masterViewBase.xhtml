@@ -8,31 +8,35 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
 
-    <ui:insert name="content" />
+    <div class="box-body">
+        <ui:insert name="content" />
+    </div>
 
-    <h:form>
-        <div class="row actionButtons">
-            
-            <ui:insert name="extraButtons" />
-            
-            <p:commandButton id="edit" 
-                             value="#{messages['general.button.Edit']}"
-                             action="#{bean.edit()}"
-                             icon="fa fa-edit" 
-                             partialSubmit="true"
-                             process="@this"
-                             ajax="true"
-                             styleClass="btn-warning"
-                             rendered="#{hideEditBtn ne 'true'}"/>
-            <p:commandButton id="done" 
-                             value="#{messages['general.button.Close']}"
-                             action="#{bean.close()}"
-                             icon="ui-icon-close" 
-                             partialSubmit="true"
-                             process="@this"
-                             ajax="true"/>
-        </div>
-    </h:form>
+    <div class="box-footer">
+        <h:form>
+            <div class="pull-right">
+
+                <ui:insert name="extraButtons" />
+
+                <p:commandButton id="edit" 
+                                 value="#{messages['general.button.Edit']}"
+                                 action="#{bean.edit()}"
+                                 icon="fa fa-edit" 
+                                 partialSubmit="true"
+                                 process="@this"
+                                 ajax="true"
+                                 styleClass="btn-warning"
+                                 rendered="#{hideEditBtn ne 'true'}"/>
+                <p:commandButton id="done" 
+                                 value="#{messages['general.button.Close']}"
+                                 action="#{bean.close()}"
+                                 icon="ui-icon-close" 
+                                 partialSubmit="true"
+                                 process="@this"
+                                 ajax="true"/>
+            </div>
+        </h:form>
+    </div>
 
 
 </ui:composition>

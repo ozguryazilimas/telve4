@@ -20,82 +20,107 @@
 
     <ui:define name="body">
 
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
-                /*
-                 jQuery(".ui-panelmenu-content").css("display", "block"); //shows the menuitems
-                 jQuery(".ui-panelmenu-header").addClass("ui-state-active"); //sets the submenu header to active state
-                 jQuery(".ui-icon-triangle-1-e").removeClass("ui-icon-triangle-1-e").addClass("ui-icon-triangle-1-s"); //sets the triangle icon to "expaned" version
-                 */
-                jQuery(".ui-sidelink").each(function () {
-                    jQuery(this).hover(
-                            function () {
-                                jQuery(this).addClass("ui-state-hover");
-                            }, function () {
-                        jQuery(this).removeClass("ui-state-hover");
-                    }
-                    );
-                });
-
-            });
-        </script>
-
         <h:panelGroup layout="block" rendered="#{showCaption eq 'true'}">
-            <div class="ui-widget ui-widget-content ui-corner-top" style="padding: 4px; margin-bottom: 4px; background-color: #fdeeb3; border-color: #F1C43F;">
-                <ui:insert name="caption" /> 
+            <ui:remove>
+                <div class="ui-widget ui-widget-content ui-corner-top" style="padding: 4px; margin-bottom: 4px; background-color: #fdeeb3; border-color: #F1C43F;">
+                    <ui:insert name="caption" /> 
+                </div>
+            </ui:remove>
+            <div class="box box-warning">
+                <div class="box-body">
+                    <ui:insert name="caption" /> 
+                </div>
             </div>
         </h:panelGroup>
 
         <ui:include src="/layout/messages.xhtml" />
 
-        <p:outputPanel id="viewarea">
-            <ui:include src="#{bean.getSubViewId()}" />
-        </p:outputPanel>
+        <div class="box box-primary">
+            <p:outputPanel id="viewarea">
+                    <ui:include src="#{bean.getSubViewId()}" />
+            </p:outputPanel>
+        </div>
 
     </ui:define>
 
     <ui:define name="content-list">
-        #{messages['general.label.SubViews']}
-        <h:form id="subViewCommandForm" style="margin: 8px;">
 
-            <p:commandLink  value="#{messages['general.caption.MasterView']}"
-                            action="#{bean.setSelectedSubView(null)}" update=":viewarea" styleClass="ui-sidelink" />
+        <h:form id="subViewCommandForm" >
+            <div class="box box-solid">
+                <div class="box-header">
+                    #{messages['general.label.SubViews']}
+                </div>
+                <div class="box-body no-padding">
+                    <ul class="nav nav-pills nav-stacked">
+                        <li>
+                            <p:commandLink  value="#{messages['general.caption.MasterView']}"
+                                            action="#{bean.setSelectedSubView(null)}" update=":viewarea" styleClass="ui-sidelink" />
+                        </li>
+                        <ui:repeat value="#{bean.getSubViews('main')}" var="module" >
+                            <li>
+                                <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
+                                               action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
+                                               styleClass="ui-sidelink "/>  
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </div>
 
-            <ui:repeat value="#{bean.getSubViews('main')}" var="module" >
-                    <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
-                               action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
-                               styleClass="ui-sidelink "/>  
-            </ui:repeat>
-            
-            <ui:repeat value="#{bean.subViewGroups}" var="grp" >
-                <span style="display: block;">#{messages[ 'subview.group.'.concat( grp )]}</span>
-                <ui:repeat value="#{bean.getSubViews(grp)}" var="module" >
-                    <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
-                               action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
-                               styleClass="ui-sidelink "/>  
+                <ui:repeat value="#{bean.subViewGroups}" var="grp" >
+
+                    <div class="box-header">
+                        #{messages[ 'subview.group.'.concat( grp )]}
+                    </div>
+                    <div class="box-body no-padding">
+                        <ul class="nav nav-pills nav-stacked">
+                            <ui:repeat value="#{bean.getSubViews(grp)}" var="module" >
+                                <li>
+                                    <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
+                                                   action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
+                                                   styleClass="ui-sidelink "/>  
+                                </li>
+                            </ui:repeat>
+                        </ul>
+                    </div>
+
                 </ui:repeat>
-            </ui:repeat>
-            
+            </div>
+
             <ui:remove>
-            <c:forEach id="subViewRepeater" items="#{bean.subViewList}"
-                       var="module" varStatus="rowCounter">
-                <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
-                               action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
-                               styleClass="ui-sidelink "/>  
-            </c:forEach>
-                </ui:remove>
+                <c:forEach id="subViewRepeater" items="#{bean.subViewList}"
+                           var="module" varStatus="rowCounter">
+                    <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
+                                   action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
+                                   styleClass="ui-sidelink "/>  
+                </c:forEach>
+            </ui:remove>
 
         </h:form>
 
     </ui:define>
-    
+
     <ui:define name="context-menu">
         <li>
-        <h:link outcome="#{bean.getEditPage()}" styleClass="context-command" >
-            <i class="fa fa-plus-circle"></i>
-            <h:outputText value=" #{messages['general.button.Add']}" />
-            <f:param name="eid" value="0"/>
-        </h:link>
+            <h:link outcome="#{bean.getEditPage()}" >
+                <i class="fa fa-plus-circle"></i>
+                <h:outputText value=" #{messages['general.button.Add']}" />
+                <f:param name="eid" value="0"/>
+            </h:link>
+        </li>
+    </ui:define>
+    
+    <ui:define name="context-menu-right">
+        <li>
+            <p:commandLink action="#{bean.refresh()}" title="#{messages['general.button.Refresh']}" update=":viewarea">
+                <i class="fa fa-refresh"></i>
+                <h:outputText value=" #{messages['general.button.Refresh']}" styleClass="visible-xs"/>
+            </p:commandLink>
+        </li>
+        <li>
+            <p:commandLink action="#{bean.close()}" title="#{messages['general.button.Close']}" >
+                <i class="fa fa-close"></i>
+                <h:outputText value=" #{messages['general.button.Close']}" styleClass="visible-xs"/>
+            </p:commandLink>
         </li>
     </ui:define>
 </ui:composition>

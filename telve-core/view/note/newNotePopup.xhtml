@@ -14,8 +14,8 @@
     <ui:define name="form">
         <h:form id="note">
             <div class="row">
-                <t:inputText label="general.label.Subject" value="#{noteController.note.subject}" columnClass="large-12 medium-12 small-12"/>
-                <t:inputTextarea label="general.label.Message" value="#{noteController.note.body}" style="height: 100px;" columnClass="large-12 medium-12 small-12" />
+                <t:inputText label="general.label.Subject" value="#{noteController.note.subject}" columnClass="col-xs-12"/>
+                <t:inputTextarea label="general.label.Message" value="#{noteController.note.body}" style="height: 100px;" columnClass="col-xs-12" />
                 <t:inputCombobox label="general.label.Permission" value="#{noteController.note.permission}" >
                     <f:selectItem itemLabel="BEN" itemValue="OWNER" />
                     <f:selectItem itemLabel="HERKES" itemValue="EVERYBODY" />

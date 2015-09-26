@@ -14,14 +14,14 @@
 
             <div class="row">
                 <ui:fragment rendered="#{not hideStandartFilter}">
-                    <t:inputAny label="general.label.SearchKey" columnClass="large-12 medium-12 small-12">
+                    <t:inputAny label="general.label.SearchKey" columnClass="col-xs-12">
                         <h:panelGroup styleClass="ui-input-group" layout="block">
                             <p:inputText value="#{bean.model.searchText}" />
                             <p:commandButton id="search2" icon="ui-icon-search" action="#{bean.search()}" update=":lookupForm:resultLists" styleClass="ui-icon-only" />
                         </h:panelGroup>
                     </t:inputAny>
                 </ui:fragment>
-                <div class="large-12 medium-12 small-12 columns" style="padding-top: 4px;">
+                <div class="col-xs-12" style="padding-top: 4px;">
                     <ui:insert name="filters" />
                     <h:panelGroup id="selectionResult" layout="block" styleClass="pull-right" rendered="#{ bean.model.modelType eq 'Table' and bean.model.getMultiSelect()}">
                         #{messages['general.label.TotalSelection']} : #{bean.model.getSelectedViewModels().size()}
@@ -35,11 +35,11 @@
 
 
             <h:panelGroup id="resultLists" layout="block" styleClass="row">
-                <div class="large-12 medium-12 small-12 columns">
+                <div class="col-xs-12">
 
                     <c:if test="#{ bean.model.modelType eq 'Table' and bean.model.getMultiSelect()}" >
                         <div class="row">
-                        <div class="large-6 medium-6 small-6 columns">
+                        <div class="col-xs-6">
                         <p:dataTable id="multiSelectDialog" var="item" value="#{bean.model.dataModel()}"  selectionMode="multiple" 
                                      selection="#{bean.model.selectedDatas}" rows="8"  paginator="true" rowKey="#{item.id}"
                                      paginatorPosition="bottom" 
@@ -64,7 +64,7 @@
                             function setSelections(){}
                         </script>
                         </div>
-                            <h:panelGroup id="selectedResuls" layout="block" styleClass="large-6 medium-6 small-6 columns">
+                            <h:panelGroup id="selectedResuls" layout="block" styleClass="col-xs-6">
                                 <p:dataTable value="#{bean.model.getSelectedViewModels()}" var="item">
                                     <p:column headerText="#{messages['general.label.SearchSelections']}">
                                     #{item.name}

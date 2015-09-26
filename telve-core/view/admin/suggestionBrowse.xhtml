@@ -48,15 +48,6 @@
             <p:remoteCommand name="deleteSuggestion" update=":browseListForm:results" actionListener="#{suggestionBrowse.deleteSuggestion}" />
         </h:form>
 
-
-        <div  class="ribbon-section left">
-            <span class="section-title" unselectable="on">#{messages['general.label.Actions']}</span>
-
-            <t:ribbonButton buttonId="newSuggestion" image="suggestion.png" classifier="add" label="general.button.New" />
-            <t:ribbonButton buttonId="editSuggestion" image="suggestion.png" classifier="edit" label="general.button.Edit" />
-            <t:ribbonButton buttonId="deleteSuggestion" image="suggestion.png" classifier="delete" label="general.button.Delete" />
-
-        </div>
     </ui:define>
 
 

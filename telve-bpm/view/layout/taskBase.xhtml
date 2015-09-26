@@ -9,66 +9,82 @@
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 >
 
-    <section class="content-header" style="margin-top: -25px; margin-bottom: 10px;">
-        <h1>#{bean.task.subject} <small class="pull-right"> [#{messages['taskName.'.concat(bean.task.task.taskDefinitionKey)]}] <t:cellOutputDateTime value="#{bean.task.endDate}"/></small></h1>
-        
-        #{bean.task.info} 
-    </section>
+    <div class="box box-primary">
 
-    <ui:insert name="dialogs" />
+        <div class="box-header with-border">
+            <div class="tools pull-right">
+                [#{messages['taskName.'.concat(bean.task.task.taskDefinitionKey)]}] <t:cellOutputDateTime value="#{bean.task.endDate}"/>
+            </div>
+            <h1 class="box-title">#{bean.task.subject}</h1>
+            <p class="box-comment">#{bean.task.info}</p>
+        </div>
 
-    <h:form id="taskForm">
+        <ui:insert name="dialogs" />
 
-        <ui:insert name="taskForm" />
 
-        <t:accordion label="Comments" icon="fa fa-comments-o">
-            <div class="row">
-                <ul >
-                    <ui:repeat value="#{bean.comments}" var="comment">
-                        <li style="padding: 4px;"> #{comment.fullMessage} 
-                            <div style="font-size: 0.8em;">
-                                <i class="fa fa-user"> </i> #{userLookup.getUserName(comment.userId)} <i class="fa fa-clock-o"> </i>  <t:cellOutputDateTime value="#{comment.time}" /> 
-                            </div>
-                        </li>
+        <h:form id="taskForm">
+            <div class="box-body">
+                <ui:insert name="taskForm" />
+
+                <div class="row">
+                    <t:accordion label="general.label.Comments" icon="fa fa-comments-o">
+                        <div class="col-xs-12">
+                            <ul class="timeline timeline-inverse">
+                                <ui:repeat value="#{bean.comments}" var="comment">
+                                    <li> 
+                                        <i class="fa fa-comment bg-yellow"/>
+                                        <div class="timeline-item">
+                                            <span class="time"><i class="fa fa-clock-o margin-r-5"> </i>  <t:cellOutputDateTime value="#{comment.time}" /></span>
+                                            <h3 class="timeline-header no-border">
+                                                <span class="label label-primary"><i class="fa fa-user margin-r-5" />#{userLookup.getUserName(comment.userId)}</span>
+                                                #{comment.fullMessage} 
+                                            </h3>
+                                        </div>
+                                    </li>
+                                </ui:repeat>
+                            </ul>
+                        </div>
+                        <t:inputTextarea label="general.label.Comment" value="#{bean.comment}" columnClass="col-xs-12" />
+                    </t:accordion>
+                </div>
+
+            </div>
+            <h:panelGroup styleClass="box-footer" layout="block">
+
+                <p:button value="#{messages['general.button.Delegate']}" onclick="PF('delegatePop').show();return false;" rendered="#{bean.showDelegateButton()}"/>
+                <p:commandButton value="#{messages['general.button.Claim']}" action="#{bean.claimTask()}" rendered="#{bean.showClaimButton()}" update="taskView"/>
+
+                <div class="pull-right">
+                    <ui:insert name="actionButtons" />
+
+                    <ui:repeat value="#{bean.resultCommands}" var="cmd">
+                        <p:button value="#{messages['general.button.'.concat( cmd.result )]}" onclick="PF('#{cmd.widgetId}').show();return false;" icon="#{cmd.icon}" styleClass="#{cmd.style}" rendered="#{cmd.isPopup}"/>
+                        <p:commandButton value="#{messages['general.button.'.concat( cmd.result )]}" icon="#{cmd.icon}" action="#{bean.closeTask(cmd.result)}" styleClass="#{cmd.style}" rendered="#{not cmd.isPopup}" update="console,taskView"/>
                     </ui:repeat>
-                </ul>
-                <t:inputTextarea label="general.label.Comment" value="#{bean.comment}" columnClass="large-12 medium-12 small-12" />
-            </div>
-        </t:accordion>
+
+                    <p:commandButton id="save" value="#{messages['general.button.Save']}" icon="fa fa-save" action="#{bean.save()}" styleClass="btn-primary" update="taskView"/>
+                </div>
+            </h:panelGroup>
+        </h:form>
 
 
-        <h:panelGroup styleClass="row actionButtons" layout="block">
-            <p:button value="#{messages['general.button.Delegate']}" styleClass="pull-left" onclick="PF('delegatePop').show();return false;" rendered="#{bean.showDelegateButton()}"/>
-            <p:commandButton value="#{messages['general.button.Claim']}" styleClass="pull-left" action="#{bean.claimTask()}" rendered="#{bean.showClaimButton()}" update="taskView"/>
-            
-            <ui:insert name="actionButtons" />
-            
-            <ui:repeat value="#{bean.resultCommands}" var="cmd">
-                <p:button value="#{messages['general.button.'.concat( cmd.result )]}" onclick="PF('#{cmd.widgetId}').show();return false;" icon="#{cmd.icon}" styleClass="#{cmd.style}" rendered="#{cmd.isPopup}"/>
-                <p:commandButton value="#{messages['general.button.'.concat( cmd.result )]}" icon="#{cmd.icon}" action="#{bean.closeTask(cmd.result)}" styleClass="#{cmd.style}" rendered="#{not cmd.isPopup}" update="console,taskView"/>
-            </ui:repeat>
-
-            <p:commandButton id="save" value="#{messages['general.button.Save']}" icon="fa fa-save" action="#{bean.save()}" styleClass="btn-primary" update="taskView"/>
-
-        </h:panelGroup>
-    </h:form>
-
+    </div>
     <p:dialog id="delegatePop" widgetVar="delegatePop" header="#{messages['delegatePopup.label.Title']}" width="350">
-        
+
         <h:form id="delegateForm">
-            
+
             <div class="row">
-                <t:inputUser label="general.label.User" value="#{bean.delegatedUser}" columnClass="large-12 medium-12 small-12"/>
-                <t:inputTextarea label="general.label.Comment" value="#{bean.comment}" columnClass="large-12 medium-12 small-12" />
+                <t:inputUser label="general.label.User" value="#{bean.delegatedUser}" columnClass="col-xs-12"/>
+                <t:inputTextarea label="general.label.Comment" value="#{bean.comment}" columnClass="col-xs-12" />
             </div>
-            
+
             <h:panelGroup styleClass="row actionButtons" layout="block">
                 <p:commandButton value="#{messages['general.button.Ok']}" styleClass="btn-primary" icon="fa fa-save" action="#{bean.delegateTask()}" oncomplete="PF('delegatePop').hide();" update="console,taskView"/>
                 <p:button value="#{messages['general.button.Close']}"  icon="fa fa-close" onclick="PF('delegatePop').hide();return false;"/>
             </h:panelGroup>
-            
+
         </h:form>
-        
+
     </p:dialog>
-    
+
 </ui:composition>

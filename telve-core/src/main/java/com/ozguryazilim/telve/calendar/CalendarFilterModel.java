@@ -88,6 +88,14 @@ public class CalendarFilterModel implements Serializable {
         kahve.put("calendar.filter.ShowClosed", showClosedEvents);
     }
 
+    public void toggleShowClosedEvent(){
+        setShowClosedEvents(!showClosedEvents);
+    }
+    
+    public void toggleShowPersonalEvents(){
+        setShowPersonalEvents(!showPersonalEvents);
+    }
+    
     /**
      * Geriye tanımlı event source listesini döndürür.
      *

@@ -35,6 +35,9 @@ public class GuiOptionPane extends AbstractOptionPane{
     @Inject
     private LocaleSelector localeSelector;
     
+    @Inject
+    private SkinSelector skinSelector;
+    
     @Inject @UserAware
     private Kahve kahve;
     
@@ -93,11 +96,25 @@ public class GuiOptionPane extends AbstractOptionPane{
     
     public void saveTheme() {  
         themeSelector.setTheme(theme);
-        
         kahve.put("theme.name", new KahveEntry(theme));
-        
     }
 
+    public String getSkin(){
+        return skinSelector.getSkin();
+    }
+    
+    public void setSkin( String skin ){
+        skinSelector.setSkin(skin);
+    }
+    
+    public void setSidebar( Boolean sidebarMini  ){
+        skinSelector.setSidebarMini(sidebarMini);
+    }
+    
+    public Boolean getSidebar(){
+        return skinSelector.getSidebarMini();
+    }
+    
     public String getLocale() {
         return locale;
     }
@@ -116,4 +133,6 @@ public class GuiOptionPane extends AbstractOptionPane{
         //FIXME: #15465
         //RequestContext.getCurrentInstance().getApplicationContext().getCacheProvider().clear();
     }
+    
+    
 }

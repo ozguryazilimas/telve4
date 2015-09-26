@@ -10,7 +10,7 @@
 
     <p:fragment id="frmovl">
         <div class="row" style="width: 450px;">
-            <h:panelGroup layout="block" styleClass="large-12 small-12 medium-12 columns">
+            <h:panelGroup layout="block" styleClass="col-xs-12">
                 <ui:fragment rendered="#{not hideStandartFilter}">
                     <p:fragment>
                         <p:outputLabel for="search2key" value="#{messages['general.label.SearchKey']}" />
@@ -25,7 +25,7 @@
 
 
 
-            <h:panelGroup id="resultLists" layout="block" styleClass="large-12 small-12 medium-12 columns" style="max-height: 250px; overflow: auto;">
+            <h:panelGroup id="resultLists" layout="block" styleClass="col-xs-12" style="max-height: 250px; overflow: auto;">
 
                 <c:if test="#{ lookupBean.model.modelType eq 'Table' and lookupBean.model.getMultiSelect()}" >
                     <p:dataTable id="multiSelectDialog" var="item" value="#{lookupBean.model.dataModel()}" 
@@ -146,7 +146,7 @@
             
             
             
-            <h:panelGroup layout="block" styleClass="large-12 small-12 medium-12 columns">
+            <h:panelGroup layout="block" styleClass="col-xs-12">
                 <div class="actionButtons">
                     <p:commandButton value="#{messages['general.button.Ok']}"  
                                      action="#{lookupBean.closeOverlay()}" ajax="true" 

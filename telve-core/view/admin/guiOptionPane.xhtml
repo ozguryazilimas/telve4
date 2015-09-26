@@ -13,7 +13,8 @@
     <ui:define name="content">
 
         <div class="row">
-            <div class="prop large-6 medium-6 small-12 columns ">
+            <ui:remove>
+            <div class="prop col-md-6 col-xs-12">
                 <p:outputLabel  value="#{messages['general.label.Theme']}" styleClass="name" />
                 <span class="value">
                     <p:themeSwitcher  value="#{guiOptionPane.theme}" effect="fade" id="statefulSwitcher">
@@ -22,8 +23,9 @@
                     </p:themeSwitcher>
                 </span>
             </div>
+                </ui:remove>
 
-            <div class="prop large-6 medium-6 small-12 columns ">
+            <div class="prop col-md-6 col-xs-12">
                 <p:outputLabel  value="#{messages['general.label.Locale']}" styleClass="name" />
                 <span class="value">
                     <p:selectOneMenu  value="#{guiOptionPane.locale}" >
@@ -32,7 +34,80 @@
                     </p:selectOneMenu>
                 </span>
             </div>
+            <t:inputCheckbox label="Sidebar" value="#{guiOptionPane.sidebar}" itemLabel="Mini Sidebar" />
+            <ui:remove>
+            <div class="col-md-6 col-xs-12">
+                <div style="width: 200px;">
+                    <ul class="list-unstyled clearfix">
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a class="clearfix full-opacity-hover" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" data-skin="skin-blue" href="javascript:void(0);"><div><span style="display:block; width: 20%; float: left; height: 7px; background: #367fa9;"></span><span style="display:block; width: 80%; float: left; height: 7px;" class="bg-light-blue"></span></div><div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32;"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div></a><p class="text-center no-margin">Blue</p></li>
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a class="clearfix full-opacity-hover" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" data-skin="skin-black" href="javascript:void(0);"><div class="clearfix" style="box-shadow: 0 0 2px rgba(0,0,0,0.1)"><span style="display:block; width: 20%; float: left; height: 7px; background: #fefefe;"></span><span style="display:block; width: 80%; float: left; height: 7px; background: #fefefe;"></span></div><div><span style="display:block; width: 20%; float: left; height: 20px; background: #222;"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div></a><p class="text-center no-margin">Black</p></li>
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a class="clearfix full-opacity-hover" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" data-skin="skin-purple" href="javascript:void(0);"><div><span class="bg-purple-active" style="display:block; width: 20%; float: left; height: 7px;"></span><span style="display:block; width: 80%; float: left; height: 7px;" class="bg-purple"></span></div><div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32;"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div></a><p class="text-center no-margin">Purple</p></li>
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a class="clearfix full-opacity-hover" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" data-skin="skin-green" href="javascript:void(0);"><div><span class="bg-green-active" style="display:block; width: 20%; float: left; height: 7px;"></span><span style="display:block; width: 80%; float: left; height: 7px;" class="bg-green"></span></div><div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32;"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div></a><p class="text-center no-margin">Green</p></li>
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a class="clearfix full-opacity-hover" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" data-skin="skin-red" href="javascript:void(0);"><div><span class="bg-red-active" style="display:block; width: 20%; float: left; height: 7px;"></span><span style="display:block; width: 80%; float: left; height: 7px;" class="bg-red"></span></div><div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32;"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div></a><p class="text-center no-margin">Red</p></li>
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a class="clearfix full-opacity-hover" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" data-skin="skin-yellow" href="javascript:void(0);"><div><span class="bg-yellow-active" style="display:block; width: 20%; float: left; height: 7px;"></span><span style="display:block; width: 80%; float: left; height: 7px;" class="bg-yellow"></span></div><div><span style="display:block; width: 20%; float: left; height: 20px; background: #222d32;"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div></a><p class="text-center no-margin">Yellow</p></li>
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a class="clearfix full-opacity-hover" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" data-skin="skin-blue-light" href="javascript:void(0);"><div><span style="display:block; width: 20%; float: left; height: 7px; background: #367fa9;"></span><span style="display:block; width: 80%; float: left; height: 7px;" class="bg-light-blue"></span></div><div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div></a><p style="font-size: 12px" class="text-center no-margin">Blue Light</p></li>
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a class="clearfix full-opacity-hover" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" data-skin="skin-black-light" href="javascript:void(0);"><div class="clearfix" style="box-shadow: 0 0 2px rgba(0,0,0,0.1)"><span style="display:block; width: 20%; float: left; height: 7px; background: #fefefe;"></span><span style="display:block; width: 80%; float: left; height: 7px; background: #fefefe;"></span></div><div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div></a><p style="font-size: 12px" class="text-center no-margin">Black Light</p></li>
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a class="clearfix full-opacity-hover" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" data-skin="skin-purple-light" href="javascript:void(0);"><div><span class="bg-purple-active" style="display:block; width: 20%; float: left; height: 7px;"></span><span style="display:block; width: 80%; float: left; height: 7px;" class="bg-purple"></span></div><div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div></a><p style="font-size: 12px" class="text-center no-margin">Purple Light</p></li>
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a class="clearfix full-opacity-hover" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" data-skin="skin-green-light" href="javascript:void(0);"><div><span class="bg-green-active" style="display:block; width: 20%; float: left; height: 7px;"></span><span style="display:block; width: 80%; float: left; height: 7px;" class="bg-green"></span></div><div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div></a><p style="font-size: 12px" class="text-center no-margin">Green Light</p></li>
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a class="clearfix full-opacity-hover" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" data-skin="skin-red-light" href="javascript:void(0);"><div><span class="bg-red-active" style="display:block; width: 20%; float: left; height: 7px;"></span><span style="display:block; width: 80%; float: left; height: 7px;" class="bg-red"></span></div><div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div></a><p style="font-size: 12px" class="text-center no-margin">Red Light</p></li>
+                        <li style="float:left; width: 33.33333%; padding: 5px;">
+                            <a class="clearfix full-opacity-hover" style="display: block; box-shadow: 0 0 3px rgba(0,0,0,0.4)" data-skin="skin-yellow-light" href="javascript:void(0);"><div><span class="bg-yellow-active" style="display:block; width: 20%; float: left; height: 7px;"></span><span style="display:block; width: 80%; float: left; height: 7px;" class="bg-yellow"></span></div><div><span style="display:block; width: 20%; float: left; height: 20px; background: #f9fafc;"></span><span style="display:block; width: 80%; float: left; height: 20px; background: #f4f5f7;"></span></div></a><p style="font-size: 12px;" class="text-center no-margin">Yellow Light</p></li>
+                    </ul>
+                </div>
+            </div>
+                </ui:remove>
+            <t:inputAny label="general.label.Theme">
+                <p:selectOneMenu value="#{guiOptionPane.skin}" >
+                    <f:selectItem itemLabel="Blue" itemValue="skin-blue" />
+                    <f:selectItem itemLabel="Green" itemValue="skin-green" />
+                    <f:selectItem itemLabel="Red" itemValue="skin-red" />
+                    <f:selectItem itemLabel="Yellow" itemValue="skin-yellow" />
+                    <f:selectItem itemLabel="Black" itemValue="skin-black" />
+                    <f:selectItem itemLabel="Purple" itemValue="skin-purple" />
+                    
+                    <f:selectItem itemLabel="Blue Light" itemValue="skin-blue-light" />
+                    <f:selectItem itemLabel="Green Light" itemValue="skin-green-light" />
+                    <f:selectItem itemLabel="Red Light" itemValue="skin-red-light" />
+                    <f:selectItem itemLabel="Yellow Light" itemValue="skin-yellow-light" />
+                    <f:selectItem itemLabel="Black Light" itemValue="skin-black-light" />
+                    <f:selectItem itemLabel="Puple Light" itemValue="skin-purple-light" />
+                </p:selectOneMenu>
+            </t:inputAny>
         </div>
+        
+        <script type="text/javascript">
+             /**
+            * Replaces the old skin with the new skin
+            * @param String cls the new skin class
+            * @returns Boolean false to prevent link's default action
+            */
+           function change_skin(cls) {
+             jQuery.each(my_skins, function (i) {
+               jQuery("body").removeClass(my_skins[i]);
+             });
+
+             jQuery("body").addClass(cls);
+             //store('skin', cls);
+             return false;
+           }
+            
+            //Add the change skin listener
+            jQuery("[data-skin]").on('click', function (e) {
+              e.preventDefault();
+              change_skin(jQuery(this).data('skin'));
+            });
+        </script>
     </ui:define>
 
 

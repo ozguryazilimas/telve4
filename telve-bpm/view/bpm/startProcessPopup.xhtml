@@ -19,16 +19,16 @@
 
             <div class="row">
                 <ui:repeat value="#{startProcessPopup.processLists}" var="item" varStatus="loop2">
-                    <div class="large-2 medium-2 small-2 columns">
+                    <div class="col-xs-2">
 
                         <p:commandLink action="#{startProcessPopup.closeDialog()}" 
                                        ajax="false" partialSubmit="true" process="@this">
                             <h:graphicImage value="#{startProcessPopup.getIconPath(item)}" />
                         </p:commandLink>
                     </div>
-                    <div class="large-10 medium-10 small-10 columns">
+                    <div class="col-xs-10">
                         <div class="row">
-                            <div class="large-12 medium-12 small-12 columns">
+                            <div class="col-xs-12">
                                 <ui:remove>
                                     <p:commandLink value="#{messages['command.name.'.concat( item )]}" 
                                                    action="#{storedCommandBrowse.createNew(item)}" 
@@ -39,7 +39,7 @@
                                 </ui:remove>
                                 #{messages['process.name.'.concat( item )]}
                             </div>
-                            <div class="large-12 medium-12 small-12 columns">
+                            <div class="col-xs-12">
                                 #{messages['process.desc.'.concat( item )]}
                             </div>
                         </div>

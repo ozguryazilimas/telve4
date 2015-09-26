@@ -21,7 +21,7 @@
 
                 <div class="row">
 
-                    <t:inputAny label="calendar.label.EventSources" columnClass="large-12 medium-12 small-12">
+                    <t:inputAny label="calendar.label.EventSources" columnClass="col-xs-12">
 
                         <p:selectManyMenu id="advanced" value="#{calendarFilterModel.calendarSources}" 
                                           var="t" filter="true" filterMatchMode="contains" showCheckbox="true">
@@ -41,98 +41,18 @@
 
                 </div>
                 <div class="actionButtons" style="position: absolute;  width: 95%; bottom: 18px; padding-right: 18px;" >
-                    <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" ajax="true" process="@form" patialSubmit="false" oncomplete="PF('telveCalendar').update();PF('calendarFilterPopup').hide();"/>
+                    <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" ajax="true" process="@form" partialSubmit="false" oncomplete="PF('telveCalendar').update();PF('calendarFilterPopup').hide();"/>
                     <p:button id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" onclick="PF('calendarFilterPopup').hide();"/>
                 </div>
             </h:form>
         </p:dialog>
     </ui:define>
 
+    <h:form id="actionForm">
+        <p:remoteCommand name="newEvent"  actionListener="#{calendarHome.newEvent}" />
+        <p:remoteCommand name="editEvent" actionListener="#{calendarHome.editEvent}" />
+    </h:form>
 
-    <ui:define name="ribbon-actions">
-
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
-
-                jQuery('#newSimpleEvent').click(function () {
-                    if (this.isEnabled()) {
-                        newEvent([{name: 'eventSource', value: 'simpleEventSource'}]);
-                    }
-                });
-
-                jQuery('#monthView').click(function () {
-                    if (this.isEnabled()) {
-                        PF('telveCalendar').jqc.fullCalendar('changeView', 'month');
-                    }
-                });
-                jQuery('#agendaDayView').click(function () {
-                    if (this.isEnabled()) {
-                        PF('telveCalendar').jqc.fullCalendar('changeView', 'agendaDay');
-                    }
-                });
-                jQuery('#agendaWeekView').click(function () {
-                    if (this.isEnabled()) {
-                        PF('telveCalendar').jqc.fullCalendar('changeView', 'agendaWeek');
-                    }
-                });
-
-                jQuery('#calendarFilter').click(function () {
-                    if (this.isEnabled()) {
-                        PF('calendarFilterPopup').show();
-                    }
-                });
-            });
-        </script> 
-
-
-        <h:form id="actionForm">
-            <p:remoteCommand name="newEvent"  actionListener="#{calendarHome.newEvent}" />
-            <p:remoteCommand name="editEvent" actionListener="#{calendarHome.editEvent}" />
-
-            <ui:remove>
-                <p:remoteCommand name="editCommand" update=":editorPopup" actionListener="#{storedCommandBrowse.edit}" oncomplete="PF('editorPopup').show();"/>
-                <p:remoteCommand name="deleteCommand" update=":browseListForm:results" actionListener="#{storedCommandBrowse.delete}" />
-            </ui:remove>
-        </h:form>
-
-
-        <div  class="ribbon-section left">
-            <span class="section-title" unselectable="on">#{messages['general.label.Actions']}</span>
-
-            <t:ribbonButton buttonId="newSimpleEvent" image="calendar.png" classifier="add" label="calendar.button.SimpleEvent" />
-        </div>
-
-        <div  class="ribbon-section left">
-            <span class="section-title" unselectable="on">#{messages['general.label.View']}</span>
-
-            <t:ribbonButton buttonId="monthView" image="calendar_month.png" classifier="none" label="calendar.button.Month" />
-            <t:ribbonButton buttonId="agendaWeekView" image="calendar_week.png" classifier="none" label="calendar.button.Week" />
-            <t:ribbonButton buttonId="agendaDayView" image="calendar_day.png" classifier="none" label="calendar.button.Day" />
-
-
-        </div>
-
-        <div  class="ribbon-section left">
-            <span class="section-title" unselectable="on">#{messages['general.label.View']}</span>
-            <t:ribbonButton buttonId="calendarFilter" image="calendar_group.png" classifier="none" label="calendar.button.Filter" />
-
-        </div>
-
-        <div  class="ribbon-section left">
-            <h:form>
-                <div class="ribbon-button ribbon-button-small">
-                    <p:selectBooleanCheckbox value="#{calendarFilterModel.showClosedEvents}" itemLabel="#{messages['calendar.button.ShowClosed']}">
-                        <p:ajax oncomplete="PF('telveCalendar').update();" />
-                    </p:selectBooleanCheckbox>
-                </div>
-                <div class="ribbon-button ribbon-button-small">
-                    <p:selectBooleanCheckbox value="#{calendarFilterModel.showPersonalEvents}" itemLabel="#{messages['calendar.button.ShowPOT']}">
-                        <p:ajax oncomplete="PF('telveCalendar').update();" />
-                    </p:selectBooleanCheckbox>
-                </div>
-            </h:form>
-        </div>
-    </ui:define>
 
     <ui:define name="body">
 
@@ -147,7 +67,7 @@
         </h:form>
 
     </ui:define>
-    
+
     <ui:define name="context-menu">
         <li>
             <p:commandLink id="newEvent"  action="#{calendarHome.newEvent}" >
@@ -174,24 +94,27 @@
                 <span >#{messages['calendar.button.Day']}</span> 
             </a>
         </li>
-        
+
         <li>
             <a href="#" onclick="PF('calendarFilterPopup').show();" >
                 <h:graphicImage value="/img/ribbon/small/calendar_group.png" />
                 <span >#{messages['calendar.button.Filter']}</span> 
             </a>
         </li>
+
+        <li>
+            <p:commandLink id="calb1" action="#{calendarFilterModel.toggleShowClosedEvent()}" update="calb1" process="@this" oncomplete="PF('telveCalendar').update();">
+                <i class="fa #{calendarFilterModel.showClosedEvents ? 'fa-check-square' : 'fa-square' } " />
+                #{messages['calendar.button.ShowClosed']}
+            </p:commandLink>
+        </li>
         
         <li>
-                    <p:selectBooleanCheckbox value="#{calendarFilterModel.showClosedEvents}" itemLabel="#{messages['calendar.button.ShowClosed']}">
-                        <p:ajax oncomplete="PF('telveCalendar').update();" />
-                    </p:selectBooleanCheckbox>
-                </li>
-                <li>
-                    <p:selectBooleanCheckbox value="#{calendarFilterModel.showPersonalEvents}" itemLabel="#{messages['calendar.button.ShowPOT']}">
-                        <p:ajax oncomplete="PF('telveCalendar').update();" />
-                    </p:selectBooleanCheckbox>
-                </li>
+            <p:commandLink id="calb2" action="#{calendarFilterModel.toggleShowPersonalEvents()}" update="calb2" process="@this" oncomplete="PF('telveCalendar').update();">
+                <i class="fa #{calendarFilterModel.showPersonalEvents ? 'fa-check-square' : 'fa-square' } " />
+                #{messages['calendar.button.ShowPOT']}
+            </p:commandLink>
+        </li>
     </ui:define>
-    
+
 </ui:composition>

@@ -18,7 +18,7 @@
     <div class="row">
         <c:forEach id="containers" items="#{dynaForm.form.containers}" var="cont" varStatus="rowCounter">
 
-            <t:accordion label="#{cont.label}" columnClass="#{dynaForm.form.doubleColumn ? 'large-6 medium-6 small-12' : 'large-12 medium-12 small-12'}">
+            <t:accordion label="#{cont.label}" columnClass="#{dynaForm.form.doubleColumn ? 'col-md-6 col-xs-12' : 'col-xs-12'}">
 
                 <c:forEach id="containers" items="#{cont.fields}" var="field" varStatus="rowCounter2">
                     <ui:include src="/dynaform/templates/output#{field.getClass().getSimpleName()}.xhtml" />

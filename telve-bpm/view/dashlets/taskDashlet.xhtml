@@ -10,20 +10,9 @@
     <ui:param name="bean" value="#{taskDashlet}" />
 
     <ui:define name="extraButtons">
-        <ui:remove>
-            <p:commandLink action="#{bookmarkDashlet.newBookmark()}" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
-                           ajax="true" partialSubmit="true" process="@this" includeViewParams="true"
-                           update=":bookmarkDashlet" oncomplete="jQuery('#bookmarkDashleteditPane').show(500);">
-                <h:outputText styleClass="ui-icon ui-icon-pencil" />
-            </p:commandLink>
-        </ui:remove>
     </ui:define>
 
     <ui:define name="edit">
-        <ui:remove>
-            <t:inputText id="btitle" label="general.label.Title" value="#{bookmarkDashlet.bookmark.title}" columnClass="large-12 medium-12 small-12"/>
-            <t:inputText id="blink" label="general.label.Link" value="#{bookmarkDashlet.bookmark.link}" columnClass="large-12 medium-12 small-12"/>
-        </ui:remove>
     </ui:define>
 
     <ui:define name="view">
@@ -31,20 +20,24 @@
         <p:tabView style="margin-left: -15px; margin-right: -15px;">
             <p:tab title="#{messages['task.label.DueDateTasks']}">
 
-                <ul class="menulist">
+                <ul class="products-list product-list-in-box">
                     <ui:repeat value="#{taskDashlet.dueTasks}" var="item" varStatus="loop2">
-                        <li>
-                            <h:link outcome="/bpm/taskConsole.xhtml" >
-                                <f:param name="task" value="#{item.id}" />
-                                <div class="menuIcon " >
-                                    <i class="fa #{taskConsole.getTaskIcon(item.taskDefinitionKey)} label " /> 
-                                </div>
-                                <div class="menuText">
-                                    <div class="menuHeader">#{item.name}  <span style="float: right;font-size:0.9em;"><t:cellOutputDateTime value="#{item.dueDate}" /></span></div>
-                                    <div style="font-size:0.9em;">#{item.description}</div>
-                                    <div class="menuFooter">#{messages['taskName.'.concat(item.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.assignee)} </div>
-                                </div>
-                            </h:link>
+                        <li class="item">
+                            <div class="product-img">
+                                <i class="fa fa-2x #{taskConsole.getTaskIcon(item.taskDefinitionKey)}" />  
+                            </div>
+                            <div class="product-info">
+                                <h:link outcome="/bpm/taskConsole.xhtml" styleClass="product-title">
+                                    <f:param name="task" value="#{item.id}" />
+                                    #{item.name}  <span class="label label-primary pull-right"><t:cellOutputDateTime value="#{item.dueDate}" /></span>
+                                </h:link>
+                                <span class="product-description">
+                                    #{item.description}
+                                </span>
+                                <span class="product-description text-sm">
+                                    #{messages['taskName.'.concat(item.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.assignee)} 
+                                </span>
+                            </div>
                         </li>
                     </ui:repeat>
                 </ul>
@@ -53,20 +46,20 @@
 
             <p:tab title="#{messages['task.label.Tasks']}">
 
-                <ul class="menulist">
+                <ul class="products-list product-list-in-box">
                     <ui:repeat value="#{taskDashlet.tasks}" var="item" varStatus="loop2">
-                        <li>
-                            <h:link outcome="/bpm/taskConsole.xhtml" >
-                                <f:param name="task" value="#{item.id}" />
-                                <div class="menuIcon " >
-                                    <i class="fa #{taskConsole.getTaskIcon(item.taskDefinitionKey)} label " /> 
-                                </div>
-                                <div class="menuText">
-                                    <div class="menuHeader">#{item.name}  <span style="float: right;font-size:0.9em;"><t:cellOutputDateTime value="#{item.dueDate}" /></span></div>
-                                    <div style="font-size:0.9em;">#{item.description}</div>
-                                    <div class="menuFooter">#{messages['taskName.'.concat(item.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.assignee)} </div>
-                                </div>
-                            </h:link>
+                        <li class="item">
+                            <div class="product-img">
+                                <i class="fa fa-2x #{taskConsole.getTaskIcon(item.taskDefinitionKey)}" /> 
+                            </div>
+                            <div class="product-info">
+                                <h:link outcome="/bpm/taskConsole.xhtml" styleClass="product-title">
+                                    <f:param name="task" value="#{item.id}" />
+                                    #{item.name}  <span class="label label-primary pull-right"><t:cellOutputDateTime value="#{item.dueDate}" /></span>
+                                </h:link>
+                                <span class="product-description">#{item.description}</span>
+                                <span class="product-description text-sm">#{messages['taskName.'.concat(item.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.assignee)} </span>
+                            </div>
                         </li>
                     </ui:repeat>
                 </ul>
@@ -74,43 +67,10 @@
             </p:tab> 
 
         </p:tabView>
+
         <h:link outcome="/bpm/taskConsole.xhtml" style="margin-left: auto; margin-right: auto;">
             #{messages['task.label.SeeAllTasks']}
         </h:link>
 
-
-        <ui:remove>
-            <ul>
-                <ui:repeat value="#{taskDashlet.tasks}" var="b" varStatus="vs">
-                    <li>#{b.name}</li>
-                </ui:repeat>
-            </ul>
-        </ui:remove>
-
-        <ui:remove>
-            <h:form>
-                <ul class="bookmark">
-                    <ui:repeat value="#{bookmarkDashlet.bookmarks}" var="b" varStatus="vs">
-                        <li class="bookmark-item ui-corner-all" onmouseover="jQuery('.bookmark-control', this).show();" onmouseout="jQuery('.bookmark-control', this).hide();">
-
-                            <span class="bookmark-control">
-                                <p:commandLink action="#{bookmarkDashlet.edit( vs.index )}" styleClass="ribbon-button ribbon-button-small"
-                                               ajax="true" partialSubmit="true" process="@this" includeViewParams="true"
-                                               update=":bookmarkDashlet" oncomplete="jQuery('#bookmarkDashleteditPane').show(500);">
-                                    <span class="fa fa-2x fa-pencil" style="color: silver"/>
-                                </p:commandLink>
-                                <p:commandLink action="#{bookmarkDashlet.delete( vs.index )}" styleClass="ribbon-button ribbon-button-small"
-                                               ajax="true" partialSubmit="true" process="@this" includeViewParams="true"
-                                               update=":bookmarkDashlet">
-                                    <span class="fa fa-2x fa-trash" style="color: #d9534f"/>
-                                </p:commandLink>
-                            </span>
-                            <a href="#{b.link}"><span class="fa fa-bookmark-o"></span> #{b.title}</a>
-                        </li>
-                    </ui:repeat>
-                </ul>
-
-            </h:form>
-        </ui:remove>
     </ui:define>
 </ui:composition>

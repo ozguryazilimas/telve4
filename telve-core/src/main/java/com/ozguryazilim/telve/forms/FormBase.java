@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Any;
@@ -127,6 +126,12 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
 
         //FIXME: Eger edit formunda ise view'a mı dönse ama o zaman da conversation kapatılmamalı.
         return result;
+    }
+    
+    public void refresh(){
+        PK eid = this.id;
+        entity = null;
+        setId(eid);
     }
 
     @Transactional

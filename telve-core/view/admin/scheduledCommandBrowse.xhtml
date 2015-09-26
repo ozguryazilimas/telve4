@@ -15,8 +15,8 @@
 
         <h:form id="filterSearch">
             <div class="row">
-                <div class="large-8 medium-8 small-12 columns"></div>
-                <div class="prop large-4 medium-4 small-12 columns">
+                <div class="col-md-8 col-xs-12"></div>
+                <div class="prop col-md-4 col-xs-12">
                     <span class="value">
                         <div class="ui-input-group">
                             <p:inputText id="filter" value="#{scheduledCommandBrowse.filter}" 
@@ -67,7 +67,7 @@
         <p:dialog id="commandSelectorPopup"  header="#{messages['module.caption.CommandSelectorPopup']}" widgetVar="commandSelectorPopup" modal="true" width="420">
             <div class="row">
                 <ui:repeat value="#{scheduledCommandBrowse.editorNames}" var="item" varStatus="loop2">
-                    <div class="large-2 medium-2 small-2 columns">
+                    <div class="col-xs-2">
                         <p:commandLink action="#{scheduledCommandBrowse.createNew(item)}" 
                                        ajax="true" partialSubmit="true" process="@this"
                                        update=":editorPopup"
@@ -75,9 +75,9 @@
                             <h:graphicImage value="#{scheduledCommandBrowse.getIconPath(item)}" />
                         </p:commandLink>
                     </div>
-                    <div class="large-10 medium-10 small-10 columns">
+                    <div class="col-xs-10">
                         <div class="row">
-                            <div class="large-12 medium-12 small-12 columns">
+                            <div class="col-xs-12">
                                 <p:commandLink value="#{messages['command.name.'.concat( item )]}" 
                                                action="#{scheduledCommandBrowse.createNew(item)}" 
                                                ajax="true" partialSubmit="true" process="@this" 
@@ -85,7 +85,7 @@
                                                oncomplete="PF('commandSelectorPopup').hide();PF('editorPopup').show();">
                                 </p:commandLink>
                             </div>
-                            <div class="large-12 medium-12 small-12 columns">
+                            <div class="col-xs-12">
                                 #{messages['command.desc.'.concat( item )]} 
                             </div>
                         </div>
@@ -105,17 +105,17 @@
                 <h:form id="ceForm">
 
                     <div class="row">
-                        <div class="large-12 medium-12 small-12 columns" >
+                        <div class="col-xs-12" >
                             <strong>#{messages['command.name.'.concat( scheduledCommandBrowse.currentEditor.command.class.simpleName )]}</strong>
                         </div> 
-                        <div class="large-12 medium-12 small-12 columns" >
+                        <div class="col-xs-12" >
                             #{messages['command.desc.'.concat( scheduledCommandBrowse.currentEditor.command.class.simpleName )]} 
                         </div>
                     </div>
 
                     <div class="row">
-                        <t:inputText label="general.label.Name" value="#{scheduledCommandBrowse.currentEditor.entity.name}"  required="true" columnClass="large-12 medium-12 small-12" />
-                        <t:inputTextarea label="general.label.Info" value="#{scheduledCommandBrowse.currentEditor.entity.info}"  columnClass="large-12 medium-12 small-12" />
+                        <t:inputText label="general.label.Name" value="#{scheduledCommandBrowse.currentEditor.entity.name}"  required="true" columnClass="col-xs-12" />
+                        <t:inputTextarea label="general.label.Info" value="#{scheduledCommandBrowse.currentEditor.entity.info}"  columnClass="col-xs-12" />
                     </div>
 
                     <ui:include src="#{scheduledCommandBrowse.currentEditor.dialogPageViewId}" />
@@ -132,13 +132,13 @@
             <h:form id="schedulrForm">
 
                 <div class="row">
-                    <div class="large-12 medium-12 small-12 columns" >
+                    <div class="col-xs-12" >
                         <strong>#{messages['command.name.'.concat( scheduledCommandBrowse.selectedItem.command.class.simpleName )]}</strong>
                     </div> 
-                    <div class="large-12 medium-12 small-12 columns" >
+                    <div class="col-xs-12" >
                         <strong>#{scheduledCommandBrowse.selectedItem.name}</strong>
                     </div> 
-                    <div class="large-12 medium-12 small-12 columns" >
+                    <div class="col-xs-12" >
                         #{scheduledCommandBrowse.selectedItem.info} 
                     </div>
                 </div>
@@ -156,13 +156,13 @@
                     <p:outputPanel autoUpdate="true">
                         <t:inputDateTime label="general.label.BeginDate" value="#{scheduledCommandBrowse.startDate}" />
                         <t:inputDateTime label="general.label.EndDate" value="#{scheduledCommandBrowse.endDate}" rendered="#{scheduledCommandBrowse.scheduleType ne 'O'}"/>
-                        <t:inputCombobox label="Period" value="#{scheduledCommandBrowse.schedule}" rendered="#{scheduledCommandBrowse.scheduleType eq 'S'}" columnClass="large-12 medium-12 small-12">
+                        <t:inputCombobox label="Period" value="#{scheduledCommandBrowse.schedule}" rendered="#{scheduledCommandBrowse.scheduleType eq 'S'}" columnClass="col-xs-12">
                             <f:selectItem itemLabel="Saatlik" itemValue="Hourly" />
                             <f:selectItem itemLabel="Günlük" itemValue="Daily" />
                             <f:selectItem itemLabel="Haftalık" itemValue="Weekly" />
                             <f:selectItem itemLabel="Aylık" itemValue="Monthly" />
                         </t:inputCombobox>
-                        <t:inputText label="genaral.label.Schedule" value="#{scheduledCommandBrowse.schedule}" rendered="#{scheduledCommandBrowse.scheduleType eq 'SE' or scheduledCommandBrowse.scheduleType eq 'P'}" columnClass="large-12 medium-12 small-12"/>
+                        <t:inputText label="genaral.label.Schedule" value="#{scheduledCommandBrowse.schedule}" rendered="#{scheduledCommandBrowse.scheduleType eq 'SE' or scheduledCommandBrowse.scheduleType eq 'P'}" columnClass="col-xs-12"/>
                     </p:outputPanel>
                 </div>
 
@@ -192,15 +192,12 @@
             </ui:remove>
 
         
-        <li>
-            <a id="moreButton" href="#" onclick="PF('moreMenu').show('moreButton')" >
+        <li class="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-plus-circle"/>
                 <span>#{messages['general.button.New']}</span>
                 <i class="fa fa-caret-down" />
             </a>
-        </li>
-        
-        <p:overlayPanel widgetVar="moreMenu">
             <ul class="dropdown-menu">
                 <ui:repeat value="#{scheduledCommandBrowse.editorNames}" var="item" varStatus="loop2">
                     <li>
@@ -213,7 +210,7 @@
                     </li>
                 </ui:repeat>
             </ul>
-        </p:overlayPanel>
+        </li>
         
         <li>
             <p:commandLink  action="#{scheduledCommandBrowse.edit()}" update=":editorPopup"

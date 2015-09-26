@@ -22,7 +22,7 @@
                 
                 <t:inputText label="general.label.Filter" value="#{logViewer.filter}" placeholder="Aramak istediğiniz kelimeyi giriniz. Düzenli İfaedeler (regex) kullanabilirsiniz."/>
                 
-                <div class="actionButtons large-12 medium-12 small-12 columns">
+                <div class="actionButtons col-xs-12">
                     <span>
                     <p:commandButton value="#{messages['general.button.Refresh']}" icon="fa fa-refresh" action="#{logViewer.refresh()}" update=":logPanel"/>
                     <p:commandButton value="#{messages['general.button.Download']}" ajax="false" icon="fa fa-download" >

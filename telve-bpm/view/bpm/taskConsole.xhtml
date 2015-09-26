@@ -64,19 +64,19 @@
                 <p:ajax event="change" listener="#{taskConsole.refresh}" update="console" />
             </p:selectOneButton>
 
-            <ul class="menulist">
+            <ul class="products-list product-list-in-box">
                 <ui:repeat value="#{taskConsole.taskList}" var="item" varStatus="loop2">
-                    <li>
-                        <p:commandLink action="#{taskConsole.onSelectTask(item)}" ajax="true" process="@this" update=":taskView">
-                            <div class="menuIcon " >
-                                <i class="fa #{taskConsole.getTaskIcon(item.formKey)} label " /> 
-                            </div>
-                            <div class="menuText">
-                                <div class="menuHeader">#{item.subject}  <span style="float: right;font-size:0.9em;"><t:cellOutputDateTime value="#{item.endDate}" /></span></div>
-                                <div style="font-size:0.9em;">#{item.info}</div>
-                                <div class="menuFooter">#{messages['taskName.'.concat(item.task.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.task.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.task.assignee)} </div>
-                            </div>
-                        </p:commandLink>
+                    <li class="item">
+                        <div class="product-img">
+                            <i class="fa fa-2x #{taskConsole.getTaskIcon(item.formKey)}" />  
+                        </div>
+                        <div class="product-info">
+                            <p:commandLink action="#{taskConsole.onSelectTask(item)}" ajax="true" process="@this" update=":taskView" styleClass="product-title">
+                                #{item.subject}  <span class="label label-primary pull-right"><t:cellOutputDateTime value="#{item.endDate}" /></span>
+                            </p:commandLink>
+                            <span class="product-description">#{item.info}</span>
+                            <span class="product-description text-sm">#{messages['taskName.'.concat(item.task.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.task.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.task.assignee)} </span>
+                        </div>
                     </li>
                 </ui:repeat>
             </ul>
@@ -85,14 +85,12 @@
     </ui:define>
 
     <ui:define name="context-menu">
-        <li>
-            <a id="moreButton" href="#" onclick="PF('moreMenu').show('moreButton')" >
+        <li class="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <i class="fa fa-plus-circle"/>
                 <span>#{messages['taskConsole.button.StartProcess']}</span>
                 <i class="fa fa-caret-down" />
             </a>
-        </li>
-        <p:overlayPanel widgetVar="moreMenu">
             <ul class="dropdown-menu">
                 <ui:repeat value="#{taskConsole.processLists}" var="item" varStatus="loop2">
                     <li>
@@ -104,8 +102,8 @@
                     </li>
                 </ui:repeat>
             </ul>
-        </p:overlayPanel>
-        
+        </li>
+
         <li>
             <p:commandLink action="#{taskConsole.showDiagram()}" ajax="true" partialSubmit="true" process="@this">
                 <i class="fa fa-bullseye"/>

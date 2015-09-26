@@ -10,7 +10,7 @@
                 template="/layout/primeTemplate.xhtml">
 
     <ui:param name="showListBar" value="true" />
-    
+
     <ui:define name="outerspace">
         <ui:remove>
             <ui:include src="/layout/ajaxLoadingPopup.xhtml" />
@@ -23,74 +23,79 @@
 
         <ui:include src="/layout/messages.xhtml"/>
 
-                <h:form id="rform">
-                    <ui:fragment rendered="#{not reportHome.showReport}" >
-                        <ui:repeat value="#{reportHome.getReportGroups().entrySet().toArray()}" var="group" varStatus="loop">
+        <h:form id="rform">
+            <ui:fragment rendered="#{not reportHome.showReport}" >
+                <div class="row">
+                    <ui:repeat value="#{reportHome.getReportGroups().entrySet().toArray()}" var="group" varStatus="loop">
+                        <div class="col-xs-12">
                             <t:accordion label="#{group.getKey()}" icon="ui-icon-home">
                                 <div class="row">
                                     <ui:repeat value="#{group.getValue()}" var="item" varStatus="loop2">
-                                        <div class="large-6 medium-12 small-12 columns end">
-                                            <div class="row">
-                                                <div class="large-2 medium-2 small-2 columns">
-                                                    <p:commandLink action="#{reportHome.execReport(item)}" ajax="true" partialSubmit="true" process="@this">
-                                                        <h:graphicImage value="#{reportHome.getIconPath(item)}" />
+                                        <div class="col-md-6 col-xs-12">
+                                            <div class="box box-warning">
+                                                <ui:remove>
+                                                    <span class="info-box-icon bg-yellow">
+                                                        <i class="fa fa-file-pdf-o" />
+                                                    </span>
+                                                </ui:remove>
+                                                <div class="box-header">
+                                                    <p:commandLink value="#{messages['report.name.'.concat( item )]}" action="#{reportHome.execReport(item)}" ajax="true" partialSubmit="true" process="@this" style="font-weight: bold;">
+                                                        <p:ajax event="dialogReturn"  listener="#{reportHome.onReportRun}" update=":rform" partialSubmit="true" process="@this"/>
                                                     </p:commandLink>
                                                 </div>
-                                                <div class="large-10 medium-10 small-10 columns">
-                                                    <div class="row">
-                                                        <div class="large-12 medium-12 small-12 columns">
-                                                            <p:commandLink value="#{messages['report.name.'.concat( item )]}" action="#{reportHome.execReport(item)}" ajax="true" partialSubmit="true" process="@this" style="font-weight: bold;">
-                                                                <p:ajax event="dialogReturn"  listener="#{reportHome.onReportRun}" update=":rform" partialSubmit="true" process="@this"/>
-                                                            </p:commandLink>
-                                                        </div>
-                                                        <div class="large-12 medium-12 small-12 columns">
-                                                            #{messages['report.desc.'.concat( item )]} 
-                                                        </div>
-                                                        <div class="large-12 medium-12 small-12 columns">
+                                                <div class="box-body">
+
+                                                    <p>
+                                                        #{messages['report.desc.'.concat( item )]} 
+                                                    </p>
+                                                    
+                                                        <div class="box-footer">
                                                             <p:rating value="#{reportHome.reportRatings[ item ]}" converter="javax.faces.Integer">
                                                                 <p:ajax event="rate" listener="#{reportHome.onrate}"  update=":rtform,:rform"/>
                                                                 <p:ajax event="cancel" listener="#{reportHome.oncancel}" update=":rtform,:rform"/>
                                                             </p:rating>
                                                         </div>
-                                                    </div>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
                                     </ui:repeat>
                                 </div>
                             </t:accordion>
-                        </ui:repeat>
-                    </ui:fragment>
-                    
-                    <ui:fragment rendered="#{reportHome.showReport}" >
-                        <p:media player="pdf" value="#{reportHome.stream}" width="100%" height="100%">
-                            Your browser can't display pdf, <a href="/resources/demo/media/guide.pdf">click</a> to download pdf instead.
-                        </p:media>
-                    </ui:fragment>
-                </h:form>
-        
+                        </div>
+                    </ui:repeat>
+                </div>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{reportHome.showReport}" >
+                <p:media player="pdf" value="#{reportHome.stream}" width="100%" height="100%">
+                    Your browser can't display pdf, <a href="/resources/demo/media/guide.pdf">click</a> to download pdf instead.
+                </p:media>
+            </ui:fragment>
+        </h:form>
+
     </ui:define>
-    
+
     <ui:define name="content-list">
         <h:panelGroup id="treePanel" layout="block">
-                    <h:form id="rtform">
-                        <p:tree id="reportTree" value="#{reportHome.getRootNode()}" var="node"
-                                selectionMode="single"
-                                selection="#{reportHome.selectedData}" style="border: 0px; width: auto;">
+            <h:form id="rtform">
+                <p:tree id="reportTree" value="#{reportHome.getRootNode()}" var="node"
+                        selectionMode="single"
+                        selection="#{reportHome.selectedData}" style="border: 0px; width: auto;">
 
-                            <p:ajax event="select" listener="#{reportHome.onNodeSelect}" partialSubmit="true" process="@this" update=":rform"/>
+                    <p:ajax event="select" listener="#{reportHome.onNodeSelect}" partialSubmit="true" process="@this" update=":rform"/>
 
-                            <p:treeNode type="folder" expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
-                                <h:outputText value="#{messages['report.folder.'.concat( node )]}"/>
-                            </p:treeNode>
+                    <p:treeNode type="folder" expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+                        <h:outputText value="#{messages['report.folder.'.concat( node )]}"/>
+                    </p:treeNode>
 
-                            <p:treeNode type="JasperReport" expandedIcon="ui-icon-document" collapsedIcon="ui-icon-document">
-                                <p:commandLink value="#{messages['report.name.'.concat( node )]}" title="#{messages['report.desc.'.concat( node )]}" action="#{reportHome.execReport(node)}" ajax="true" partialSubmit="true" process="@this"/>
-                            </p:treeNode>
+                    <p:treeNode type="JasperReport" expandedIcon="ui-icon-document" collapsedIcon="ui-icon-document">
+                        <p:commandLink value="#{messages['report.name.'.concat( node )]}" title="#{messages['report.desc.'.concat( node )]}" action="#{reportHome.execReport(node)}" ajax="true" partialSubmit="true" process="@this"/>
+                    </p:treeNode>
 
-                        </p:tree>
-                    </h:form>
-                </h:panelGroup>
+                </p:tree>
+            </h:form>
+        </h:panelGroup>
     </ui:define>
-    
+
 </ui:composition>

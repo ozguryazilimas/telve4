@@ -26,56 +26,78 @@
 
 
         <h:form id="browseListForm">
+            <div class="row">
 
-            <ui:fragment rendered="#{showDetailPanel eq 'true'}">
-                <div id="detailBar" class="detailBar">
-                    <p:panel id="detailPanel" header="#{messages['general.label.Details']}" class="panel-infoaa" style="height: 100%;">
-                        <ui:insert name="detailBar" />
-                    </p:panel>
+                <div id="main-col" class="#{showDetailPanel ? 'col-md-9 col-xs-12' : 'col-xs-12' }">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <ui:fragment rendered="#{showDetailPanel eq 'true'}">
+                                <div class="tools">
+                                    <a href="#" onclick="jQuery('#detail-col').toggle();jQuery('#main-col').toggleClass('col-md-9');"><i class="fa fa-align-right pull-right"></i></a>
+                                </div>
+                            </ui:fragment>
+                            <h:outputText value="#{messages['general.label.Results']}" />
+                        </div>
+                        <div class="box-body">
+                            <p:dataTable id="results" var="item" widgetVar="results"
+                                         value="#{bean.entityList}" 
+                                         paginator="true" rows="#{bean.queryDefinition.rowLimit}" 
+                                         paginatorPosition="bottom" 
+                                         paginatorAlwaysVisible="false"
+                                         selectionMode="single"
+                                         selection="#{bean.selectedItem}" 
+                                         rowKey="#{item.id}"
+
+                                         emptyMessage="#{messages['general.message.browse.EmptyDesc']}">                      
+
+                                <p:ajax event="rowSelect"  update=":contextForm, :browseListForm:detailPanel, #{onSelectUpdate}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');"/>
+                                <p:ajax event="rowUnselect" update="#{onSelectUpdate}" oncomplete="disableRibbonBtn('#{onSelectEnabled}');" />
+
+                                <ui:remove>
+                                    <f:facet name="header">
+                                        <h:panelGroup layout="block">
+                                            <h:outputText value="#{messages['general.label.Results']}" />
+                                            <ui:fragment rendered="#{showDetailPanel eq 'true'}">
+                                                <a href="#" onclick="jQuery('#detail-col').toggle();jQuery('#main-col').toggleClass('col-md-9');"><i class="fa fa-align-right pull-right"></i></a>
+                                            </ui:fragment>
+                                        </h:panelGroup>
+                                    </f:facet>
+                                </ui:remove>
+
+                                <ui:insert name="beforeColumns" />
+
+                                <c:forEach items="#{bean.queryDefinition.columns}" var="col" varStatus="loop">
+                                    <p:column>
+                                        <c:set var="ind" value="#{loop.index}" />
+                                        <f:facet name="header">
+                                            <h:outputText value="#{messages[col.labelKey]}" />
+                                        </f:facet>
+
+                                        <ui:include src="/columns/#{col.template}.xhtml" />
+
+                                    </p:column>
+                                </c:forEach>
+                                <ui:insert name="afterColumns" />
+                            </p:dataTable>  
+                        </div>
+                    </div>
                 </div>
-            </ui:fragment>
 
 
-            <p:dataTable id="results" var="item" widgetVar="results"
-                         value="#{bean.entityList}" 
-                         paginator="true" rows="#{bean.queryDefinition.rowLimit}" 
-                         paginatorPosition="bottom" 
-                         paginatorAlwaysVisible="false"
-                         selectionMode="single"
-                         selection="#{bean.selectedItem}" 
-                         rowKey="#{item.id}"
-                         
-                         emptyMessage="#{messages['general.message.browse.EmptyDesc']}">                      
+                <ui:fragment rendered="#{showDetailPanel eq 'true'}">
+                    <div id="detail-col" class="col-md-3 col-xs-12">
+                        <div class="box box-info">
+                            <div class="box-header with-border">
+                                #{messages['general.label.Details']}
+                            </div>
+                            <p:outputPanel id="detailPanel" layout="block" styleClass="box-body">
+                                <ui:insert name="detailBar" />
+                            </p:outputPanel>
+                        </div>
+                    </div>
+                </ui:fragment>
 
-                <p:ajax event="rowSelect"  update=":contextForm, :browseListForm:detailPanel, #{onSelectUpdate}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');"/>
-                <p:ajax event="rowUnselect" update="#{onSelectUpdate}" oncomplete="disableRibbonBtn('#{onSelectEnabled}');" />
-
-                <f:facet name="header">
-                    <h:panelGroup layout="block">
-                        <h:outputText value="#{messages['general.label.Results']}" />
-                        <ui:fragment rendered="#{showDetailPanel eq 'true'}">
-                            <a href="#" onclick="jQuery('#detailBar').toggle()"><i class="fa fa-align-right pull-right"></i></a>
-                        </ui:fragment>
-                    </h:panelGroup>
-                </f:facet>
-
-                <ui:insert name="beforeColumns" />
-
-                <c:forEach items="#{bean.queryDefinition.columns}" var="col" varStatus="loop">
-                    <p:column>
-                        <c:set var="ind" value="#{loop.index}" />
-                        <f:facet name="header">
-                            <h:outputText value="#{messages[col.labelKey]}" />
-                        </f:facet>
-
-                        <ui:include src="/columns/#{col.template}.xhtml" />
-
-                    </p:column>
-                </c:forEach>
-                <ui:insert name="afterColumns" />
-            </p:dataTable>  
-
-
+            </div>
         </h:form>
     </ui:define>
 

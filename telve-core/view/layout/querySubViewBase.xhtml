@@ -8,77 +8,78 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
 
-    <ui:insert name="content" />
+    <div class="box-body">
+        <ui:insert name="content" />
 
-    <h:panelGroup layout="block" rendered="#{filterEnabled eq 'true'}">
-        <ui:include src="/layout/browseFilters.xhtml" />
-    </h:panelGroup>
+        <h:panelGroup layout="block" rendered="#{filterEnabled eq 'true'}">
+            <ui:include src="/layout/browseFilters.xhtml" />
+        </h:panelGroup>
 
-    <h:form id="browseListForm">
-        <p:dataTable id="results" var="item" 
-                     value="#{bean.entityList}" 
-                     paginator="true" rows="#{bean.queryDefinition.rowLimit}" 
-                     paginatorPosition="bottom" 
-                     paginatorAlwaysVisible="false"
-                     selectionMode="single"
-                     selection="#{bean.selectedItem}" 
-                     rowKey="#{item.id}"
-                     emptyMessage="#{messages['general.message.browse.EmptyDesc']}">                      
-
-            <ui:remove>
-                <p:ajax event="rowSelect"  update="#{onSelectUpdate}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');"/>
-                <p:ajax event="rowUnselect" update="#{onSelectUpdate}" oncomplete="disableRibbonBtn('#{onSelectEnabled}');" />
-            </ui:remove>
-
-            <f:facet name="header">
+        <h:form id="browseListForm">
+            <div class="box-header with-border">
                 <h:outputText value="#{messages[moduleCaption]}" />
-            </f:facet>
+            </div>
+            <p:dataTable id="results" var="item" 
+                         value="#{bean.entityList}" 
+                         paginator="true" rows="#{bean.queryDefinition.rowLimit}" 
+                         paginatorPosition="bottom" 
+                         paginatorAlwaysVisible="false"
+                         selectionMode="single"
+                         selection="#{bean.selectedItem}" 
+                         rowKey="#{item.id}"
+                         emptyMessage="#{messages['general.message.browse.EmptyDesc']}">                      
 
-            <c:forEach items="#{bean.queryDefinition.columns}" var="col" varStatus="loop">
-                <p:column>
-                    <c:set var="ind" value="#{loop.index}" />
+                <ui:remove>
+                    <p:ajax event="rowSelect"  update="#{onSelectUpdate}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');"/>
+                    <p:ajax event="rowUnselect" update="#{onSelectUpdate}" oncomplete="disableRibbonBtn('#{onSelectEnabled}');" />
+                </ui:remove>
+
+                <c:forEach items="#{bean.queryDefinition.columns}" var="col" varStatus="loop">
+                    <p:column>
+                        <c:set var="ind" value="#{loop.index}" />
+                        <f:facet name="header">
+                            <h:outputText value="#{messages[col.labelKey]}" />
+                        </f:facet>
+
+                        <ui:include src="/columns/#{col.template}.xhtml" />
+
+                    </p:column>
+                </c:forEach>
+                <p:column rendered="#{showActionColumn eq 'true' }">
+                    <ui:insert name="actionColumn" />
+                </p:column>
+                <p:column rendered="#{canInsert eq 'true' }" styleClass="actionColumnDouble">
                     <f:facet name="header">
-                        <h:outputText value="#{messages[col.labelKey]}" />
+                        <p:commandLink action="#{bean.addItem()}" 
+                                       partialSubmit="true" process="@this" 
+                                       update="#{ItemPopupId}"
+                                       title="#{messages['general.button.Add']}" oncomplete="PF('#{ItemPopupId}').show();">
+                            <i class="fa fa-plus-circle btn-add" ></i>
+                        </p:commandLink>
+                        <p:commandLink action="#{bean.search()}" 
+                                       partialSubmit="true" process="@this" 
+                                       update="@([id$=results])"
+                                       title="#{messages['general.button.Search']}" >
+                            <i class="fa fa-refresh btn-refresh" ></i>
+                        </p:commandLink>
                     </f:facet>
 
-                    <ui:include src="/columns/#{col.template}.xhtml" />
-
+                    <p:commandLink action="#{bean.editItem( item.id )}" 
+                                   update="#{ItemPopupId}" 
+                                   title="#{messages['general.label.EditLine']}"
+                                   partialSubmit="true" process="@this" oncomplete="PF('#{ItemPopupId}').show();">
+                        <i class="fa fa-edit btn-edit" ></i>
+                    </p:commandLink>
+                    <p:commandLink action="#{bean.removeItem( item.id )}" 
+                                   update="results" 
+                                   title="#{messages['general.label.DeleteLine']}"
+                                   partialSubmit="true" process="@this">
+                        <i class="fa fa-trash-o btn-delete" ></i>
+                    </p:commandLink>
                 </p:column>
-            </c:forEach>
-            <p:column rendered="#{showActionColumn eq 'true' }">
-                <ui:insert name="actionColumn" />
-            </p:column>
-            <p:column rendered="#{canInsert eq 'true' }" styleClass="actionColumnDouble">
-                <f:facet name="header">
-                    <p:commandLink action="#{bean.addItem()}" 
-                                   partialSubmit="true" process="@this" 
-                                   update="#{ItemPopupId}"
-                                   title="#{messages['general.button.Add']}" oncomplete="PF('#{ItemPopupId}').show();">
-                        <i class="fa fa-plus-circle btn-add" ></i>
-                    </p:commandLink>
-                    <p:commandLink action="#{bean.search()}" 
-                                   partialSubmit="true" process="@this" 
-                                   update="@([id$=results])"
-                                   title="#{messages['general.button.Search']}" >
-                        <i class="fa fa-refresh btn-refresh" ></i>
-                    </p:commandLink>
-                </f:facet>
-
-                <p:commandLink action="#{bean.editItem( item.id )}" 
-                               update="#{ItemPopupId}" 
-                               title="#{messages['general.label.EditLine']}"
-                               partialSubmit="true" process="@this" oncomplete="PF('#{ItemPopupId}').show();">
-                    <i class="fa fa-edit btn-edit" ></i>
-                </p:commandLink>
-                <p:commandLink action="#{bean.removeItem( item.id )}" 
-                               update="results" 
-                               title="#{messages['general.label.DeleteLine']}"
-                               partialSubmit="true" process="@this">
-                    <i class="fa fa-trash-o btn-delete" ></i>
-                </p:commandLink>
-            </p:column>
-        </p:dataTable>  
-    </h:form>
+            </p:dataTable>  
+        </h:form>
+    </div>
 
 
 </ui:composition>

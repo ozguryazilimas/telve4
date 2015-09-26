@@ -11,7 +11,7 @@
     <f:metadata>
         <f:viewParam name="eid" value="#{homeBean.id}" />
     </f:metadata>
-    
+
     <ui:define name="outerspace" >
         <ui:insert name="includes" />
     </ui:define>
@@ -22,48 +22,66 @@
         <ui:include src="/layout/messages.xhtml"/>
 
 
-        <h:form id="form" >
-            
+        <div class="box box-primary">
 
-                <ui:insert name="form" />
+            <h:form id="form" >
 
-                <div class="row">
-                <div class="actionButtons large-12 medium-12 small-12 columns" >
-
-                    <ui:insert name="extraButtons" />
-
-                    <ui:fragment rendered="#{not hideStdButtons}">
-                        <p:commandButton id="save" 
-                                         value="#{messages['general.button.Save']}" 
-                                         action="#{homeBean.save()}"
-                                         rendered="#{identity.hasPermission( entityName, 'insert')}"
-                                         ajax="true"
-                                         process="@form"
-                                         validateClient="true"
-                                         styleClass="btn-success"
-                                         icon="fa fa-save" />  
-
-                        <p:commandButton id="delete" 
-                                         value="#{messages['general.button.Delete']}" 
-                                         action="#{homeBean.delete()}"
-                                         rendered="#{not empty entity.id and identity.hasPermission( entityName, 'delete') }"
-                                         validateClient="true"
-                                         styleClass="btn-danger"
-                                         icon="fa fa-trash">
-                            <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
-                        </p:commandButton>
-
-                        <p:commandButton id="done" 
-                                         value="#{messages['general.button.Close']}"
-                                         action="#{homeBean.close()}"
-                                         icon="ui-icon-close" 
-                                         partialSubmit="true"
-                                         process="@this"
-                                         ajax="true"/>
-                    </ui:fragment>
+                <div class="box-body">
+                    <ui:insert name="form" />
                 </div>
-                    </div>
 
-        </h:form>
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-xs-12" >
+
+                            <ui:insert name="extraButtons" />
+
+
+                            <ui:fragment rendered="#{not hideStdButtons}">
+                                <div class="pull-right">
+                                    <p:commandButton id="save" 
+                                                     value="#{messages['general.button.Save']}" 
+                                                     action="#{homeBean.save()}"
+                                                     rendered="#{identity.hasPermission( entityName, 'insert')}"
+                                                     ajax="true"
+                                                     process="@form"
+                                                     validateClient="true"
+                                                     styleClass="btn-success"
+                                                     icon="fa fa-save" />  
+
+                                    <p:commandButton id="delete" 
+                                                     value="#{messages['general.button.Delete']}" 
+                                                     action="#{homeBean.delete()}"
+                                                     rendered="#{not empty entity.id and identity.hasPermission( entityName, 'delete') }"
+                                                     validateClient="true"
+                                                     styleClass="btn-danger"
+                                                     icon="fa fa-trash">
+                                        <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
+                                    </p:commandButton>
+
+                                    <p:commandButton id="done" 
+                                                     value="#{messages['general.button.Close']}"
+                                                     action="#{homeBean.close()}"
+                                                     icon="ui-icon-close" 
+                                                     partialSubmit="true"
+                                                     process="@this"
+                                                     ajax="true"/>
+                                </div>
+                            </ui:fragment>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </div>
+
+    </ui:define>
+    
+    <ui:define name="context-menu-right">
+        <li>
+            <p:commandLink action="#{homeBean.close()}" title="#{messages['general.button.Close']}" >
+                <i class="fa fa-close"></i>
+                <h:outputText value=" #{messages['general.button.Close']}" styleClass="visible-xs"/>
+            </p:commandLink>
+        </li>
     </ui:define>
 </ui:composition>

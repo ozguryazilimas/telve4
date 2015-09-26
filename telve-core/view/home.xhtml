@@ -11,18 +11,6 @@
 
     <ui:param name="dontShowContentHeader" value="true" />
 
-    <ui:define name="ribbon-actions">
-        <div class="ribbon-section">
-            <c:forEach items="#{dashboardManager.dashboards}" var="dashboard" varStatus="loop">
-                <h:link id="dashborad#{loop.index}" styleClass="ribbon-button ribbon-button-large">
-                    <f:param name="board" value="#{loop.index}" />
-                    <span class="button-title">#{dashboard.name}</span> 
-                    <h:graphicImage url="/img/ribbon/large/dashboard.png" styleClass="ribbon-icon ribbon-normal"/>
-                </h:link>
-            </c:forEach>
-        </div>
-    </ui:define>
-
     <ui:define name="body">
         <ui:include src="/layout/messages.xhtml" />
         <p:dashboard model="#{dashboardManager.getDashboardModel()}">

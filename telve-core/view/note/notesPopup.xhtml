@@ -17,10 +17,10 @@
             <ui:repeat value="#{noteController.notes}" var="note" >
                 <div class="ui-messages-#{note.priority} ui-corner-all">
                     <div class="row">
-                        <div class="large-12 medium-12 small-12 columns">
+                        <div class="col-xs-12">
                             <h:outputText value="#{note.subject}" styleClass="ui-messages-#{note.priority}-summary"/>
                         </div>
-                        <div class="large-12 medium-12 small-12 columns">
+                        <div class="col-xs-12">
                             <h:outputText value="#{note.body}" styleClass="ui-messages-#{note.priority}-detail"/>
                         </div>
                     </div>

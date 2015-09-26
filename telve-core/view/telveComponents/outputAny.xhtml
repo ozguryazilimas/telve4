@@ -7,12 +7,12 @@
 
     <composite:interface>
         <composite:attribute name="label" required="true"/>
-        <composite:attribute name="columnClass" required="false" default="large-6 medium-6 small-6"/>
+        <composite:attribute name="columnClass" required="false" default="col-xs-6"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
     </composite:interface>
 
     <composite:implementation>
-        <div id="#{cc.clientId}" class="disprop #{cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
+        <div id="#{cc.clientId}" class="disprop #{cc.attrs.columnClass} #{cc.attrs.last ? 'end' : '' }">
             <p:outputLabel value="#{messages[cc.attrs.label]} :" styleClass="name" />
             <span class="value">
                 <composite:insertChildren />

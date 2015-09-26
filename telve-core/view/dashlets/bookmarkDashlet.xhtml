@@ -11,15 +11,15 @@
 
     <ui:define name="extraButtons">
         <p:commandLink action="#{bookmarkDashlet.newBookmark()}" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
-                       ajax="true" partialSubmit="true" process="@this" includeViewParams="true"
+                       ajax="true" partialSubmit="true" process="@this" 
                        update=":bookmarkDashlet" oncomplete="jQuery('#bookmarkDashleteditPane').show(500);">
             <h:outputText styleClass="ui-icon ui-icon-pencil" />
         </p:commandLink>
     </ui:define>
 
     <ui:define name="edit">
-        <t:inputText id="btitle" label="general.label.Title" value="#{bookmarkDashlet.bookmark.title}" columnClass="large-12 medium-12 small-12"/>
-        <t:inputText id="blink" label="general.label.Link" value="#{bookmarkDashlet.bookmark.link}" columnClass="large-12 medium-12 small-12"/>
+        <t:inputText id="btitle" label="general.label.Title" value="#{bookmarkDashlet.bookmark.title}" columnClass="col-xs-12"/>
+        <t:inputText id="blink" label="general.label.Link" value="#{bookmarkDashlet.bookmark.link}" columnClass="col-xs-12"/>
     </ui:define>
 
     <ui:define name="view">
@@ -29,22 +29,22 @@
             </p:dataList>
         </ui:remove>
         <h:form>
-            <ul class="bookmark">
+            <ul class="todo-list">
                 <ui:repeat value="#{bookmarkDashlet.bookmarks}" var="b" varStatus="vs">
                     <li class="bookmark-item ui-corner-all" onmouseover="jQuery('.bookmark-control', this).show();" onmouseout="jQuery('.bookmark-control', this).hide();">
 
-                        <span class="bookmark-control">
+                        <div class="tools">
                             <p:commandLink action="#{bookmarkDashlet.edit( vs.index )}" styleClass="ribbon-button ribbon-button-small"
-                                           ajax="true" partialSubmit="true" process="@this" includeViewParams="true"
+                                           ajax="true" partialSubmit="true" process="@this" 
                                            update=":bookmarkDashlet" oncomplete="jQuery('#bookmarkDashleteditPane').show(500);">
-                                <span class="fa fa-2x fa-pencil" style="color: silver"/>
+                                <span class="fa fa-pencil" style="color: silver"/>
                             </p:commandLink>
                             <p:commandLink action="#{bookmarkDashlet.delete( vs.index )}" styleClass="ribbon-button ribbon-button-small"
-                                           ajax="true" partialSubmit="true" process="@this" includeViewParams="true"
+                                           ajax="true" partialSubmit="true" process="@this" 
                                            update=":bookmarkDashlet">
-                                <span class="fa fa-2x fa-trash" style="color: #d9534f"/>
+                                <span class="fa fa-trash" style="color: #d9534f"/>
                             </p:commandLink>
-                        </span>
+                        </div>
                         <a href="#{b.link}"><span class="fa fa-bookmark-o"></span> #{b.title}</a>
                     </li>
                 </ui:repeat>

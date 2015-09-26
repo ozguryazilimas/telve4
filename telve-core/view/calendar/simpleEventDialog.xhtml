@@ -95,8 +95,8 @@
 
         <h:form id="eventForm">
             <div class="row">
-                <t:inputText value="#{simpleEventSource.calendarEvent.title}" label="general.label.Title" required="true" columnClass="large-12 medium-12 small-12"/>
-                <t:inputText value="#{simpleEventSource.data.location}" label="general.label.Location" columnClass="large-12 medium-12 small-12"/>
+                <t:inputText value="#{simpleEventSource.calendarEvent.title}" label="general.label.Title" required="true" columnClass="col-xs-12"/>
+                <t:inputText value="#{simpleEventSource.data.location}" label="general.label.Location" columnClass="col-xs-12"/>
                 <t:inputDateTime value="#{simpleEventSource.calendarEvent.startDate}" label="general.label.StartDate" />
 
                 <ui:remove>
@@ -126,7 +126,7 @@
                     <f:selectItem itemLabel="2 Day Before" itemValue="2d" />
                 </t:inputCombobox>
                 
-                <t:inputTextarea value="#{simpleEventSource.calendarEvent.info}" label="general.label.Info" columnClass="large-12 medium-12 small-12" />
+                <t:inputTextarea value="#{simpleEventSource.calendarEvent.info}" label="general.label.Info" columnClass="col-xs-12" />
             </div>
             <h:panelGroup styleClass="actionButtons" layout="block">
                 <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{simpleEventSource.closeDialog()}" />

@@ -15,24 +15,51 @@
 
     <ui:define name="view">
         <h:form id="eventsDashletForm">
-            <div class="row">
-                <div class="large-2 medium-2 small-2 columns">
-                    <span style="font-weight: bolder;font-size: 4em;">#{eventsDashlet.dateTime.dayOfMonth}</span>
-                </div>
-                <div class="large-10 medium-10 small-10 columns">
-                    <div class="row">
-                        <div class="large-6 medium-6 small-6 columns">
-                            <span style="font-weight: bold;font-size: 2em;">#{eventsDashlet.dateTime.dayOfWeek().getAsText(locale)}</span>
-                        </div>
-                        <div class="large-6 medium-6 small-6 columns">
-                            <div style="float: right">
-                                <p:commandButton id="prev" action="#{eventsDashlet.prevDay()}" icon="ui-icon-carat-1-w" ajax="true" process="@this" patialSubmit="true" update=":eventsDashletForm"/>
-                                <p:commandButton id="today" action="#{eventsDashlet.toDay()}" icon="ui-icon-radio-off" ajax="true" process="@this" patialSubmit="true" update=":eventsDashletForm"/>
-                                <p:commandButton id="next" action="#{eventsDashlet.nextDay()}" icon="ui-icon-carat-1-e" ajax="true" process="@this" patialSubmit="true" update=":eventsDashletForm"/>
+            <ui:remove>
+                <div class="row">
+                    <div class="col-xs-2">
+                        <span style="font-weight: bolder;font-size: 4em;">#{eventsDashlet.dateTime.dayOfMonth}</span>
+                    </div>
+                    <div class="col-xs-10">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <span style="font-weight: bold;font-size: 2em;">#{eventsDashlet.dateTime.dayOfWeek().getAsText(locale)}</span>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="pull-right">
+                                    <p:commandButton id="prev" action="#{eventsDashlet.prevDay()}" icon="ui-icon-carat-1-w" ajax="true" process="@this" patialSubmit="true" update=":eventsDashletForm"/>
+                                    <p:commandButton id="today" action="#{eventsDashlet.toDay()}" icon="ui-icon-radio-off" ajax="true" process="@this" patialSubmit="true" update=":eventsDashletForm"/>
+                                    <p:commandButton id="next" action="#{eventsDashlet.nextDay()}" icon="ui-icon-carat-1-e" ajax="true" process="@this" patialSubmit="true" update=":eventsDashletForm"/>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                #{eventsDashlet.dateTime.monthOfYear().getAsText(locale)} #{eventsDashlet.dateTime.year}
                             </div>
                         </div>
-                        <div class="large-12 medium-12 small-12 columns">
-                            #{eventsDashlet.dateTime.monthOfYear().getAsText(locale)} #{eventsDashlet.dateTime.year}
+                    </div>
+                </div>
+            </ui:remove>
+            <div class="row">
+
+                <div class="col-xs-12">
+                    <div class="info-box bg-aqua-gradient">
+                        <div class="info-box-icon">
+                            #{eventsDashlet.dateTime.dayOfMonth}
+                        </div>
+                        <div class="info-box-content">
+                            <div class="tools pull-right">
+                                <p:commandLink id="prev1" action="#{eventsDashlet.prevDay()}" ajax="true" process="@this" partialSubmit="true" update=":eventsDashletForm">
+                                    <i class="fa fa-chevron-circle-left" /> 
+                                </p:commandLink>
+                                <p:commandLink id="today1" action="#{eventsDashlet.toDay()}" ajax="true" process="@this" partialSubmit="true" update=":eventsDashletForm">
+                                    <i class="fa fa-dot-circle-o" /> 
+                                </p:commandLink>
+                                <p:commandLink id="next1" action="#{eventsDashlet.nextDay()}" ajax="true" process="@this" partialSubmit="true" update=":eventsDashletForm">
+                                    <i class="fa fa-chevron-circle-right" /> 
+                                </p:commandLink>
+                            </div>
+                            <span class="info-box-number">#{eventsDashlet.dateTime.dayOfWeek().getAsText(locale)}</span>
+                            <span class="info-box-more">#{eventsDashlet.dateTime.monthOfYear().getAsText(locale)} #{eventsDashlet.dateTime.year}</span>
                         </div>
                     </div>
                 </div>

@@ -16,8 +16,8 @@
         <ui:remove>
             <h:form id="filterSearch">
                 <div class="row">
-                    <div class="large-8 medium-8 small-12 columns"></div>
-                    <div class="prop large-4 medium-4 small-12 columns">
+                    <div class="col-md-8 col-xs-12"></div>
+                    <div class="prop col-md-4 col-xs-12">
                         <span class="value">
                             <div class="ui-input-group">
                                 <p:inputText id="filter" value="#{scheduledCommandBrowse.filter}" 
@@ -32,7 +32,7 @@
 
         <div class="row">
 
-            <div class="prop large-4 medium-4 small-12 columns">
+            <div class="prop col-md-4 col-xs-12">
                 <h:form id="filterSearch">
 
                     <p:selectOneMenu id="processType" value="#{processBrowse.searchProcessType}">
@@ -51,12 +51,12 @@
 
                 </h:form>
             </div>
-            <div class="large-8 medium-8 small-12 columns"></div>
+            <div class="col-md-8 col-xs-12"></div>
         </div>
 
 
         <div class="row">
-            <div class="large-4 medium-4 small-12 columns">
+            <div class="col-md-4 col-xs-12">
                 <h:form id="processes" >
                     
                     <p:dataTable value="#{processBrowse.processes}" var="item"
@@ -88,7 +88,7 @@
                     </p:dataTable>
                 </h:form>
             </div>
-            <div class="large-8 medium-8 small-12 columns">
+            <div class="col-md-8 col-xs-12">
                 <h:form id="tasks">
                     
                     <p:dataTable value="#{processBrowse.tasks}" var="item"
@@ -124,8 +124,8 @@
             <h:form id="delegateForm">
 
                 <div class="row">
-                    <t:inputUser label="general.label.User" value="#{processBrowse.delegatedUser}" columnClass="large-12 medium-12 small-12"/>
-                    <t:inputTextarea label="general.label.Comment" value="#{processBrowse.comment}" columnClass="large-12 medium-12 small-12" />
+                    <t:inputUser label="general.label.User" value="#{processBrowse.delegatedUser}" columnClass="col-xs-12"/>
+                    <t:inputTextarea label="general.label.Comment" value="#{processBrowse.comment}" columnClass="col-xs-12" />
                 </div>
 
                 <h:panelGroup styleClass="row actionButtons" layout="block">
