@@ -418,3 +418,29 @@ textarea.ui-inputfield, .ui-selectonemenu {
     background-color:  #f9fafc;
     border-color: #d2d6de;
 }
+
+/*controlsidebar içinde note'lar için kullanılıyor.'*/
+.alert-footer{
+    background: rgba(0, 0, 0, 0.1) none repeat scroll 0% 0%;
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-bottom: -15px;
+    padding: 4px;
+    margin-top: 4px;
+    font-size: 0.8em;
+}
+
+.control-sidebar .tools{
+    background: #1C2529 none repeat scroll 0% 0%;
+    display: block;
+    height: 24px;
+    padding: 4px;
+}
+
+.control-sidebar .tools > a{
+    color: #B8C7CE;
+}
+
+.control-sidebar .tools > a:hover{
+    color: #FFF;
+}

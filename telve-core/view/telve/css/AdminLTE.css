@@ -104,6 +104,9 @@ body {
   padding: 15px;
   color: #444;
   border-top: 1px solid #d2d6de;
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
   /*Hakan
   position: fixed;
   z-index: 900;
