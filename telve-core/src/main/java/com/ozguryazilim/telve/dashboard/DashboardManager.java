@@ -213,46 +213,46 @@ public class DashboardManager implements Serializable {
         //Stil atamaları
         switch (data.getLayout()) {
             case DashboardDataModel.LAYOUT_ONE:
-                column1.setStyleClass("one");
+                column1.setStyleClass("col-xs-12");
                 break;
 
             case DashboardDataModel.LAYOUT_ONE_TWO:
-                column1.setStyleClass("treeOne");
-                column2.setStyleClass("treeTwo");
+                column1.setStyleClass("col-md-5 col-xs-12");
+                column2.setStyleClass("col-md-7 col-xs-12");
                 break;
 
             case DashboardDataModel.LAYOUT_TWO_ONE:
-                column1.setStyleClass("treeTwo");
-                column2.setStyleClass("treeOne");
+                column1.setStyleClass("col-md-7 col-xs-12");
+                column2.setStyleClass("col-md-5 col-xs-12");
                 break;
 
             case DashboardDataModel.LAYOUT_TWO:
-                column1.setStyleClass("half");
-                column2.setStyleClass("half");
+                column1.setStyleClass("col-md-6 col-xs-12");
+                column2.setStyleClass("col-md-6 col-xs-12");
                 break;
 
             case DashboardDataModel.LAYOUT_TREE:
-                column1.setStyleClass("treeOne");
-                column2.setStyleClass("treeOne");
-                column3.setStyleClass("treeOne");
+                column1.setStyleClass("col-md-4 col-xs-12");
+                column2.setStyleClass("col-md-4 col-xs-12");
+                column3.setStyleClass("col-md-4 col-xs-12");
                 break;
 
             case DashboardDataModel.LAYOUT_TOP_ONETWO:
-                column1.setStyleClass("one");
-                column2.setStyleClass("treeOne");
-                column3.setStyleClass("treeTwo");
+                column1.setStyleClass("col-xs-12");
+                column2.setStyleClass("col-md-5 col-xs-12");
+                column3.setStyleClass("col-md-7 col-xs-12");
                 break;
 
             case DashboardDataModel.LAYOUT_TOP_TWO_ONE:
-                column1.setStyleClass("one");
-                column2.setStyleClass("treeTwo");
-                column3.setStyleClass("treeOne");
+                column1.setStyleClass("col-xs-12");
+                column2.setStyleClass("col-md-7 col-xs-12");
+                column3.setStyleClass("col-md-5 col-xs-12");
                 break;
 
             case DashboardDataModel.LAYOUT_TOP_TWO:
-                column1.setStyleClass("one");
-                column2.setStyleClass("half");
-                column3.setStyleClass("half");
+                column1.setStyleClass("col-xs-12");
+                column2.setStyleClass("col-md-5 col-xs-12");
+                column3.setStyleClass("col-md-5 col-xs-12");
                 break;
         }
     }

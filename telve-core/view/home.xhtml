@@ -13,6 +13,7 @@
 
     <ui:define name="body">
         <ui:include src="/layout/messages.xhtml" />
+        <div class="row">
         <p:dashboard model="#{dashboardManager.getDashboardModel()}">
             <p:ajax event="reorder" listener="#{dashboardManager.handleReorder}" /> 
 
@@ -20,6 +21,7 @@
                 <ui:include src="/dashlets/#{dashlet}.xhtml" />
             </c:forEach>
         </p:dashboard>
+            </div>
     </ui:define> 
 
     <ui:define name="context-menu">
