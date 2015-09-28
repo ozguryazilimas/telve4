@@ -22,10 +22,13 @@ import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.RelationshipManager;
 import org.picketlink.idm.credential.Password;
 import org.picketlink.idm.model.Attribute;
+import org.picketlink.idm.model.IdentityType;
 import org.picketlink.idm.model.basic.BasicModel;
 import org.picketlink.idm.model.basic.Grant;
 import org.picketlink.idm.model.basic.Role;
 import org.picketlink.idm.model.basic.User;
+import org.picketlink.idm.query.Condition;
+import org.picketlink.idm.query.IdentityQueryBuilder;
 import org.picketlink.idm.query.RelationshipQuery;
 import org.primefaces.model.DualListModel;
 import org.slf4j.Logger;
@@ -51,6 +54,8 @@ public class UserHome extends AbstractIdentityHome<User> {
     private List<AbstractIdentityHomeExtender> extenders;
 
     private String userType = UserModelRegistery.getDefaultUserType();
+    private String userGroup;
+    private String filterGroup = "";
 
     private List<Role> oldRoles = new ArrayList<>();
     //sistemde mevcut bulunan rollerin listesi
@@ -72,9 +77,37 @@ public class UserHome extends AbstractIdentityHome<User> {
         this.userType = userType;
     }
 
+    public String getUserGroup() {
+        return userGroup;
+    }
+
+    public void setUserGroup(String userGroup) {
+        this.userGroup = userGroup;
+    }
+
+    public String getFilterGroup() {
+        return filterGroup;
+    }
+
+    public void setFilterGroup(String filterGroup) {
+        this.filterGroup = filterGroup;
+    }
+
+    
     @Override
     public List<User> getEntityList() {
-        return getIdentityManager().createIdentityQuery(User.class).getResultList();
+        IdentityQueryBuilder builder = identityManager.getQueryBuilder();
+        if( Strings.isNullOrEmpty(filterGroup)){
+            return builder.createIdentityQuery(User.class)
+                    .getResultList();
+        } else {
+            Condition c = builder.equal(IdentityType.QUERY_ATTRIBUTE.byName("UserGroup"), filterGroup);
+
+            return builder.createIdentityQuery(User.class)
+                    .where(c)
+                    .getResultList();
+        }
+        
     }
 
     @Override
@@ -174,6 +207,7 @@ public class UserHome extends AbstractIdentityHome<User> {
     protected boolean doBeforeSave() {
         //Önce kullanıcı tipini yerleştiriyoruz. Sonra da extenderlara işi bırakıyoruz.
         getCurrent().setAttribute(new Attribute<>("UserType", userType));
+        getCurrent().setAttribute(new Attribute<>("UserGroup", userGroup));
         return super.doBeforeSave();
     }
 
@@ -214,6 +248,8 @@ public class UserHome extends AbstractIdentityHome<User> {
         //Kullanıcı tipini bir okuyalım
         Attribute<String> at = getCurrent().getAttribute("UserType");
         userType = at != null ? at.getValue() : UserModelRegistery.getDefaultUserType();
+        at = getCurrent().getAttribute("UserGroup");
+        userGroup = at != null ? at.getValue() : null;
 
         //mevcut rolleri toplayalım
         oldRoles.clear();
@@ -254,6 +290,10 @@ public class UserHome extends AbstractIdentityHome<User> {
         //Action'nın ne olduğu ile ilgilenmiyoruz ama rollerimizi init etmemiz gerek
         availRoles = null;
         doCreateNew();
+    }
+    
+    public void search(){
+        //
     }
     
 }

@@ -15,6 +15,12 @@
 
         <ui:include src="/layout/messages.xhtml" />
 
+        <style>
+            .ui-picklist .ui-picklist-list{
+                width: 100% !important;
+                height: 300px !important;
+            }
+        </style>
 
         <h:form id="form" >
             <ui:fragment rendered="#{userHome.getUserTypes().size() gt 1}">
@@ -25,6 +31,7 @@
                             <p:ajax event="onchange" update=":form:extentions" />
                         </ui:remove>
                     </t:inputCombobox>
+                    <t:inputSuggestion value="#{userHome.userGroup}" label="general.label.Group" group="userGroup" listener="userHome.userGroup" />        
                 </div>
             </ui:fragment>
             <div class="row">
@@ -34,48 +41,52 @@
                 <t:inputText label="user.label.LastName" value="#{userHome.current.lastName}" required="true" />
             </div>  
 
-            <div id="extentions">
+            <div id="extentions" class="row">
                 <c:forEach items="#{userHome.UIFragments}" var="fragment" varStatus="loop">
                     <ui:include src="#{fragment}" />
                 </c:forEach>
             </div>
 
+            <div class="row">
+                <t:accordion id="pwdAcc" label="#{messages['user.caption.Password']}" hide="false">
+                    <p:messages id="messages" for=":form:pwdAcc:pwd1:pwd1" showDetail="true" autoUpdate="true" />
+                    <div class="row">
+                        <t:inputAny id="pwd1" label="user.label.Password">
+                            <p:password id="pwd1" value="#{userHome.password}" feedback="true"
+                                        promptLabel="#{messages['password.prompt']}" weakLabel="#{messages['password.week']}"
+                                        goodLabel="#{messages['password.good']}" strongLabel="#{messages['password.strong']}" match=":form:pwdAcc:pwd2:pwd2" label="#{messages['user.label.Password']}"/>
+                            <p:message for=":form:pwdAcc:pwd1:pwd1" display="text" showDetail="true" autoUpdate="true"/>
+                        </t:inputAny>
 
-            <t:accordion id="pwdAcc" label="#{messages['user.caption.Password']}" hide="false">
-                <p:messages id="messages" for=":form:pwdAcc:pwd1:pwd1" showDetail="true" autoUpdate="true" />
-                <div class="row">
-                    <t:inputAny id="pwd1" label="user.label.Password">
-                        <p:password id="pwd1" value="#{userHome.password}" feedback="true"
-                                    promptLabel="#{messages['password.prompt']}" weakLabel="#{messages['password.week']}"
-                                    goodLabel="#{messages['password.good']}" strongLabel="#{messages['password.strong']}" match=":form:pwdAcc:pwd2:pwd2" label="#{messages['user.label.Password']}"/>
-                        <p:message for=":form:pwdAcc:pwd1:pwd1" display="text" showDetail="true" autoUpdate="true"/>
-                    </t:inputAny>
+                        <t:inputAny id="pwd2" label="user.label.PasswordRetype">
+                            <p:password id="pwd2" value="#{userHome.password}" label="#{messages['user.label.PasswordRetype']}" />
+                        </t:inputAny>
+                    </div>
+                </t:accordion>
+            </div>
 
-                    <t:inputAny id="pwd2" label="user.label.PasswordRetype">
-                        <p:password id="pwd2" value="#{userHome.password}" label="#{messages['user.label.PasswordRetype']}" />
-                    </t:inputAny>
-                </div>
-            </t:accordion>
-
-            <t:accordion label="#{messages['user.caption.Roles']}" hide="false">
-                <div class="row">
-                    <t:inputAny label="general.label.Roles" columnClass="col-lg-6 col-md-12 col-xs-12">
-                        <p:pickList id="rolepicker" 
-                                    value="#{userHome.roleList}" 
-                                    var="role" 
-                                    itemLabel="#{role.name}" 
-                                    itemValue="#{role}"
-                                    showSourceFilter="true" 
-                                    showTargetFilter="true" 
-                                    showCheckbox="true"
-                                    filterMatchMode="contains"
-                                    converter="roleConverter">
-                            <f:facet name="sourceCaption">#{messages['general.label.Available']}</f:facet>
-                            <f:facet name="targetCaption">#{messages['general.label.Selected']}</f:facet>
-                        </p:pickList>
-                    </t:inputAny>
-                </div>
-            </t:accordion>
+            <div class="row">
+                <t:accordion id="roleacc" label="#{messages['user.caption.Roles']}" hide="false">
+                    <div class="row">
+                        <t:inputAny id="roleacca" label="general.label.Roles" columnClass="col-xs-12">
+                            <p:pickList id="rolepicker" 
+                                        value="#{userHome.roleList}" 
+                                        var="role" 
+                                        itemLabel="#{role.name}" 
+                                        itemValue="#{role}"
+                                        showSourceFilter="true" 
+                                        showTargetFilter="true" 
+                                        showCheckbox="true"
+                                        filterMatchMode="contains"
+                                        converter="roleConverter"
+                                        style="width: 100%;">
+                                <f:facet name="sourceCaption">#{messages['general.label.Available']}</f:facet>
+                                <f:facet name="targetCaption">#{messages['general.label.Selected']}</f:facet>
+                            </p:pickList>
+                        </t:inputAny>
+                    </div>
+                </t:accordion>
+            </div>
 
             <div class="actionButtons">
                 <p:commandButton id="saveAndNew" 
@@ -128,6 +139,14 @@
 
     <ui:define name="content-list">
         <h:form id="listForm">
+            <p:selectOneMenu value="#{userHome.filterGroup}" >
+                <f:selectItem itemLabel="" itemValue="ALL" />
+                <f:selectItems value="#{suggestionControl.suggestions( 'userGroup', '')}" 
+                               var="item" 
+                               itemLabel="#{item.data}" 
+                               itemValue="#{item.data}" />
+                <p:ajax event="change" update="itemlist" />
+            </p:selectOneMenu>
             <p:dataTable id="itemlist" 
                          var="item"
                          value="#{userHome.entityList}" 
@@ -139,16 +158,20 @@
                          paginator="true"
                          paginatorPosition="bottom"
                          paginatorTemplate="{PageLinks}">
+                <p:column headerText="#{messages['general.label.Group']}">
+                    <h:outputText value="#{item.attributesMap['UserGroup'].value}" />
+                </p:column>
                 <p:column filterBy="#{item.loginName}" 
                           filterMatchMode="contains">
                     <p:commandLink action="#{userHome.edit(item)}" ajax="true" partialSubmit="true" process="@this" update=":form">
                         <h:outputText value="#{item.loginName}" />
                     </p:commandLink>
                 </p:column>
+
             </p:dataTable>
         </h:form>
     </ui:define>
-    
+
     <ui:define name="context-menu">
         <li>
             <p:commandLink name="newParameter" update=":form" action="#{userHome.createNew()}"  partialSubmit="true" process="@this" >

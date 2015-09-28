@@ -7,6 +7,8 @@
 package com.ozguryazilim.telve.admin;
 
 import com.ozguryazilim.telve.api.module.TelveModule;
+import com.ozguryazilim.telve.suggestion.SuggestionGroupRegistery;
+import javax.annotation.PostConstruct;
 
 /**
  * Telve Admin Module Tanım Sınıfı.
@@ -14,5 +16,9 @@ import com.ozguryazilim.telve.api.module.TelveModule;
  */
 @TelveModule
 public class TelveAdminModule {
-    
+
+    @PostConstruct
+    public void init(){
+        SuggestionGroupRegistery.intance().addGroup("userGroup", Boolean.FALSE);
+    }
 }
