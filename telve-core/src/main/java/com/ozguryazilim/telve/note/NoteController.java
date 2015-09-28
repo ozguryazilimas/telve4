@@ -43,6 +43,8 @@ public class NoteController implements Serializable{
     @Inject
     Cache<String, Object> cache;
     
+    
+    private Boolean newNote = Boolean.FALSE;
     private Note note;
     
     private List<Note> notes;
@@ -52,6 +54,13 @@ public class NoteController implements Serializable{
         note.setCreateDate(new Date());
         note.setOwner(userInfo.getLoginName());
         note.setPermission("OWNER");
+        note.setPriority("info");
+    }
+    
+    public void createNewNote(String attachment){
+        createNewNote();
+        note.setAttachtment( calcAttachmentURI(attachment) );
+        newNote = Boolean.TRUE;
     }
 
     public Note getNote() {
@@ -187,6 +196,7 @@ public class NoteController implements Serializable{
         notes.add(note);
         String key = "note." + userInfo.getLoginName() + "." + note.getAttachtment();
         cache.put(key, notes);
+        newNote = Boolean.FALSE;
     }
     
     @Transactional
@@ -197,6 +207,10 @@ public class NoteController implements Serializable{
             cache.remove(key);
             repository.remove(note);
         }
+    }
+    
+    public void cancel(){
+        newNote = Boolean.FALSE;
     }
     
     public Boolean canDelete(Note note){
@@ -252,5 +266,14 @@ public class NoteController implements Serializable{
         return uri;
         
     }
+
+    public Boolean getNewNote() {
+        return newNote;
+    }
+
+    public void setNewNote(Boolean newNote) {
+        this.newNote = newNote;
+    }
+    
     
 }

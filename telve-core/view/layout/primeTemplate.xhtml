@@ -285,35 +285,35 @@
                                         </ui:remove>
 
                                         <ui:remove>
-                                        <!-- Messages: style can be found in dropdown.less-->
-                                        <li class="dropdown messages-menu">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-envelope-o"></i>
-                                                <span class="label label-success">4</span>
-                                            </a>
-                                            <ul class="dropdown-menu">
-                                                <li class="header">You have 4 messages</li>
-                                                <li>
-                                                    <!-- inner menu: contains the actual data -->
-                                                    <ul class="menu">
-                                                        <li><!-- start message -->
-                                                            <a href="#">
-                                                                <div class="pull-left">
-                                                                    <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
-                                                                </div>
-                                                                <h4>
-                                                                    Sender Name
-                                                                    <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                                                </h4>
-                                                                <p>Message Excerpt</p>
-                                                            </a>
-                                                        </li><!-- end message -->
-                                                        ...
-                                                    </ul>
-                                                </li>
-                                                <li class="footer"><a href="#">See All Messages</a></li>
-                                            </ul>
-                                        </li>
+                                            <!-- Messages: style can be found in dropdown.less-->
+                                            <li class="dropdown messages-menu">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="fa fa-envelope-o"></i>
+                                                    <span class="label label-success">4</span>
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    <li class="header">You have 4 messages</li>
+                                                    <li>
+                                                        <!-- inner menu: contains the actual data -->
+                                                        <ul class="menu">
+                                                            <li><!-- start message -->
+                                                                <a href="#">
+                                                                    <div class="pull-left">
+                                                                        <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
+                                                                    </div>
+                                                                    <h4>
+                                                                        Sender Name
+                                                                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                                                    </h4>
+                                                                    <p>Message Excerpt</p>
+                                                                </a>
+                                                            </li><!-- end message -->
+                                                            ...
+                                                        </ul>
+                                                    </li>
+                                                    <li class="footer"><a href="#">See All Messages</a></li>
+                                                </ul>
+                                            </li>
                                         </ui:remove>
 
                                         <!-- Notifications: style can be found in dropdown.less -->
@@ -358,38 +358,38 @@
 
                                         </li>
                                         <ui:remove>
-                                        <!-- Tasks: style can be found in dropdown.less -->
-                                        <li class="dropdown tasks-menu">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fa fa-flag-o"></i>
-                                                <span class="label label-danger">9</span>
-                                            </a>
-                                            <ul class="dropdown-menu">
-                                                <li class="header">You have 9 tasks</li>
-                                                <li>
-                                                    <!-- inner menu: contains the actual data -->
-                                                    <ul class="menu">
-                                                        <li><!-- Task item -->
-                                                            <a href="#">
-                                                                <h3>
-                                                                    Design some buttons
-                                                                    <small class="pull-right">20%</small>
-                                                                </h3>
-                                                                <div class="progress xs">
-                                                                    <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                                        <span class="sr-only">20% Complete</span>
+                                            <!-- Tasks: style can be found in dropdown.less -->
+                                            <li class="dropdown tasks-menu">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="fa fa-flag-o"></i>
+                                                    <span class="label label-danger">9</span>
+                                                </a>
+                                                <ul class="dropdown-menu">
+                                                    <li class="header">You have 9 tasks</li>
+                                                    <li>
+                                                        <!-- inner menu: contains the actual data -->
+                                                        <ul class="menu">
+                                                            <li><!-- Task item -->
+                                                                <a href="#">
+                                                                    <h3>
+                                                                        Design some buttons
+                                                                        <small class="pull-right">20%</small>
+                                                                    </h3>
+                                                                    <div class="progress xs">
+                                                                        <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                                            <span class="sr-only">20% Complete</span>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </a>
-                                                        </li><!-- end task item -->
-                                                        ...
-                                                    </ul>
-                                                </li>
-                                                <li class="footer">
-                                                    <a href="#">View all tasks</a>
-                                                </li>
-                                            </ul>
-                                        </li>
+                                                                </a>
+                                                            </li><!-- end task item -->
+                                                            ...
+                                                        </ul>
+                                                    </li>
+                                                    <li class="footer">
+                                                        <a href="#">View all tasks</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
                                         </ui:remove>
                                     </ul>
                                 </p:outputPanel>
@@ -638,16 +638,16 @@
 
                 <div id="bottom-pos" style="position: fixed; bottom: 0; right: 0;"></div>
                 <ui:remove>
-                <footer class="main-footer">
+                    <footer class="main-footer">
 
-                    <div class="pull-right hidden-xs">
-                        <b>Version</b> #{telveConfigResolver.getProperty('app.version')}
-                    </div>
+                        <div class="pull-right hidden-xs">
+                            <b>Version</b> #{telveConfigResolver.getProperty('app.version')}
+                        </div>
 
-                    <strong>#{telveConfigResolver.getProperty('app.footer')}</strong> 
+                        <strong>#{telveConfigResolver.getProperty('app.footer')}</strong> 
 
-                </footer>
-                    </ui:remove>
+                    </footer>
+                </ui:remove>
 
 
                 <aside class="control-sidebar control-sidebar-dark" style="overflow: hidden;">
@@ -663,18 +663,18 @@
                     <!-- Create the tabs -->
                     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
                         <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-                        <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
                         <ui:fragment rendered="#{noteController.canAddNote()}">
                             <li><a href="#control-sidebar-notes-tab" data-toggle="tab"><i class="fa fa-comments"></i></a></li>
                         </ui:fragment>
+                        <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
 
                     </ul>
                     <div class="tab-content">
                         <!-- Home tab content -->
-                        <div class="tab-pane" id="control-sidebar-home-tab">
+                        <div class="tab-pane active" id="control-sidebar-home-tab">
                             <b>Version</b> #{telveConfigResolver.getProperty('app.version')}
                             #{telveConfigResolver.getProperty('app.footer')}
-                            
+
                             <ui:remove>
 
 
@@ -880,14 +880,49 @@
 
                         <ui:fragment rendered="#{noteController.canAddNote()}">
                             <div class="tab-pane" id="control-sidebar-notes-tab">
-                                <div class="tools pull-right">
-                                    <p:commandLink action="#{noteController.openNewNoteDialog(request.getHeader('Referer'))}" 
-                                                   ajax="true" partialSubmit="true" process="@this" >
+                                <h3 class="control-sidebar-heading">Notes <small>
+                                        <p:commandLink action="#{noteController.createNewNote(request.getHeader('Referer'))}" 
+                                                   ajax="true" partialSubmit="true" process="@this" update="noteFormPanel" styleClass="pull-right">
                                         <i class="fa fa-comment"/>
                                         #{messages['general.button.New']}
-                                    </p:commandLink>
-                                </div>
-                                <h3 class="control-sidebar-heading">Notes</h3>
+                                    </p:commandLink></small></h3>
+
+                                <h:panelGroup id="noteFormPanel">
+                                    <h:form id="notesForm" rendered="#{noteController.newNote}">
+                                    <div class="box box-warning text-sm">
+                                        <div class="box-body">
+                                            <div class="row">
+                                                <t:inputText label="general.label.Subject" value="#{noteController.note.subject}" columnClass="col-xs-12"/>
+                                                <t:inputTextarea label="general.label.Message" value="#{noteController.note.body}" style="height: 100px;" columnClass="col-xs-12" />
+
+                                                <t:inputAny label="general.label.Permission" columnClass="col-xs-12">
+                                                    <span class="text-sm">
+                                                        <p:selectOneButton value="#{noteController.note.permission}" styleClass="btn-xs">
+                                                            <f:selectItem itemLabel="#{messages['notes.permission.OWNER']}" itemValue="OWNER" />
+                                                            <f:selectItem itemLabel="#{messages['notes.permission.EVERYBODY']}" itemValue="EVERYBODY" />
+                                                        </p:selectOneButton>
+                                                    </span>
+                                                </t:inputAny>
+
+                                                <t:inputAny label="general.label.Priority" columnClass="col-xs-12" styleClass="btn-xs">
+                                                    <span class="text-sm">
+                                                        <p:selectOneButton value="#{noteController.note.priority}" >
+                                                            <f:selectItem itemLabel="#{messages['notes.priority.Info']}" itemValue="info" />
+                                                            <f:selectItem itemLabel="#{messages['notes.priority.Warning']}" itemValue="warn" />
+                                                            <f:selectItem itemLabel="#{messages['notes.priority.Danger']}" itemValue="error" />
+                                                        </p:selectOneButton>
+                                                    </span>
+                                                </t:inputAny>
+                                            </div>
+                                        </div>
+                                        <div class="box-footer text-sm text-center">
+                                            <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="fa fa-check" action="#{noteController.save()}" styleClass="btn-primary" update="noteFormPanel,notesBar"/>
+                                            <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="fa fa-close" action="#{noteController.cancel()}" update="noteFormPanel"/>
+                                        </div>
+                                    </div>
+                                </h:form>
+                                </h:panelGroup>
+
                                 <p:outputPanel id="notesBar">
                                     <ui:remove>
                                         <ui:repeat value="#{noteController.notes}" var="note" >
