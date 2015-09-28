@@ -35,6 +35,18 @@ function disableRibbonBtn(ids) {
     });
 }
 
+function adminLTEActivate(){
+    if (typeof $.AdminLTE.controlSidebar !== "undefined") {
+        $.AdminLTE.controlSidebar.activate();
+        var o = $.AdminLTE.options;
+
+        $(".navbar .menu").slimscroll({
+          height: o.navbarMenuHeight,
+          alwaysVisible: false,
+          size: o.navbarMenuSlimscrollWidth
+        }).css("width", "100%");
+    }
+}
 
 function bindEnters(){
     jQuery(window).off('.telve').on('keydown.telve', function (e) {

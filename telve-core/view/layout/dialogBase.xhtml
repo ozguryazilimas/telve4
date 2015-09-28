@@ -5,7 +5,10 @@
     <h:head>    
 
         <title>#{messages[title]}</title>
+        <ui:remove>
+            //FIXME: dailoglar için daha sade bir header lazım
         <ui:include src="/layout/templateHeader.xhtml" />
+        </ui:remove>
         
         <style>
             html {
@@ -16,11 +19,13 @@
     </h:head>
 
     <h:body>
+        <ui:remove>
         <script type="text/javascript">
             jQuery(document).ready(function () {
                bindEnters(); 
             });
         </script>
+            </ui:remove>
         <div class="container">
             <ui:insert name="form" />
         </div>
