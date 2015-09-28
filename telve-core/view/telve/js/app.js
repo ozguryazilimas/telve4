@@ -250,6 +250,10 @@ function _init() {
     },
     fix: function () {
       //DOCTYPE hatası yüzünden window.height çalışmıyor. Onun yerine sağ alta bir div koyduk
+      
+      if( $('#bottom-pos').size() == 0 ) return;
+      
+      
       var wh = $('#bottom-pos').offset().top;
       var ww = $('#bottom-pos').offset().left;
       var hh = $(".main-header").height();
@@ -362,6 +366,8 @@ function _init() {
         $(".wrapper").height( h );
     },
     fixSidebar: function () {
+        if( $('#bottom-pos').size() == 0 ) return;
+        
         var wh = $('#bottom-pos').offset().top;
         var hh = $(".main-header").height();
       
