@@ -24,7 +24,6 @@
    <changeSet author="haky" id="BASE-5" dbms="postgresql,oracle">
         <createSequence 
                 incrementBy="1"
-                schemaName="public"
                 sequenceName="generic_seq"
                 startValue="1"/>
     </changeSet>
