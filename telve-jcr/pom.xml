@@ -55,6 +55,11 @@
             <artifactId>infinispan-cachestore-leveldb</artifactId>
             <version>7.2.4.Final</version>
         </dependency>
+        <dependency>
+            <groupId>org.infinispan</groupId>
+            <artifactId>infinispan-cachestore-jdbc</artifactId>
+            <version>7.2.4.Final</version>
+        </dependency>
 
         <dependency>
             <groupId>org.modeshape</groupId>
