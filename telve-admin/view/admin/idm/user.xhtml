@@ -22,119 +22,126 @@
             }
         </style>
 
-        <h:form id="form" >
-            <ui:fragment rendered="#{userHome.getUserTypes().size() gt 1}">
-                <div class="row">
-                    <t:inputCombobox label="user.label.UserType" value="#{userHome.userType}" required="true" last="true">
-                        <f:selectItems value="#{userHome.getUserTypes()}" var="ut" itemLabel="#{messages[ 'userType.label.'.concat(ut) ]}" itemValue="#{ut}" />
-                        <ui:remove>
-                            <p:ajax event="onchange" update=":form:extentions" />
-                        </ui:remove>
-                    </t:inputCombobox>
-                    <t:inputSuggestion value="#{userHome.userGroup}" label="general.label.Group" group="userGroup" listener="userHome.userGroup" />        
+        <div class="box box-primary">
+
+            <h:form id="form" >
+                <div class="box-body">
+                    <ui:fragment rendered="#{userHome.getUserTypes().size() gt 1}">
+                        <div class="row">
+                            <t:inputCombobox label="user.label.UserType" value="#{userHome.userType}" required="true" last="true">
+                                <f:selectItems value="#{userHome.getUserTypes()}" var="ut" itemLabel="#{messages[ 'userType.label.'.concat(ut) ]}" itemValue="#{ut}" />
+                                <ui:remove>
+                                    <p:ajax event="onchange" update=":form:extentions" />
+                                </ui:remove>
+                            </t:inputCombobox>
+                            <t:inputSuggestion value="#{userHome.userGroup}" label="general.label.Group" group="userGroup" listener="userHome.userGroup" />        
+                        </div>
+                    </ui:fragment>
+                    <div class="row">
+                        <t:inputText label="user.label.UserName" value="#{userHome.current.loginName}" required="true" />
+                        <t:inputText label="user.label.FirstName" value="#{userHome.current.firstName}" required="true" />
+                        <t:inputText label="user.label.Email" value="#{userHome.current.email}" required="true" />
+                        <t:inputText label="user.label.LastName" value="#{userHome.current.lastName}" required="true" />
+                    </div>  
+
+                    <div id="extentions" class="row">
+                        <c:forEach items="#{userHome.UIFragments}" var="fragment" varStatus="loop">
+                            <ui:include src="#{fragment}" />
+                        </c:forEach>
+                    </div>
+
+                    <div class="row">
+                        <t:accordion id="pwdAcc" label="#{messages['user.caption.Password']}" hide="false">
+                            <p:messages id="messages" for=":form:pwdAcc:pwd1:pwd1" showDetail="true" autoUpdate="true" />
+                            <div class="row">
+                                <t:inputAny id="pwd1" label="user.label.Password">
+                                    <p:password id="pwd1" value="#{userHome.password}" feedback="true"
+                                                promptLabel="#{messages['password.prompt']}" weakLabel="#{messages['password.week']}"
+                                                goodLabel="#{messages['password.good']}" strongLabel="#{messages['password.strong']}" match=":form:pwdAcc:pwd2:pwd2" label="#{messages['user.label.Password']}"/>
+                                    <p:message for=":form:pwdAcc:pwd1:pwd1" display="text" showDetail="true" autoUpdate="true"/>
+                                </t:inputAny>
+
+                                <t:inputAny id="pwd2" label="user.label.PasswordRetype">
+                                    <p:password id="pwd2" value="#{userHome.password}" label="#{messages['user.label.PasswordRetype']}" />
+                                </t:inputAny>
+                            </div>
+                        </t:accordion>
+                    </div>
+
+                    <div class="row">
+                        <t:accordion id="roleacc" label="#{messages['user.caption.Roles']}" hide="false">
+                            <div class="row">
+                                <t:inputAny id="roleacca" label="general.label.Roles" columnClass="col-xs-12">
+                                    <p:pickList id="rolepicker" 
+                                                value="#{userHome.roleList}" 
+                                                var="role" 
+                                                itemLabel="#{role.name}" 
+                                                itemValue="#{role}"
+                                                showSourceFilter="true" 
+                                                showTargetFilter="true" 
+                                                showCheckbox="true"
+                                                filterMatchMode="contains"
+                                                converter="roleConverter"
+                                                style="width: 100%;">
+                                        <f:facet name="sourceCaption">#{messages['general.label.Available']}</f:facet>
+                                        <f:facet name="targetCaption">#{messages['general.label.Selected']}</f:facet>
+                                    </p:pickList>
+                                </t:inputAny>
+                            </div>
+                        </t:accordion>
+                    </div>
                 </div>
-            </ui:fragment>
-            <div class="row">
-                <t:inputText label="user.label.UserName" value="#{userHome.current.loginName}" required="true" />
-                <t:inputText label="user.label.FirstName" value="#{userHome.current.firstName}" required="true" />
-                <t:inputText label="user.label.Email" value="#{userHome.current.email}" required="true" />
-                <t:inputText label="user.label.LastName" value="#{userHome.current.lastName}" required="true" />
-            </div>  
+                <div class="box-footer">
+                    <div class="actionButtons">
+                        <p:commandButton id="saveAndNew" 
+                                         value="#{messages['general.button.SaveAndNew']}" 
+                                         action="#{userHome.saveAndNew()}"
+                                         rendered="#{identity.hasPermission( 'user', 'update') }"
+                                         ajax="true"
+                                         partialSubmit="false"
+                                         process="@form"
+                                         update=":form,:listForm:itemlist"
+                                         validateClient="true"
+                                         icon="fa fa-save"
+                                         styleClass="btn-success"/>  
 
-            <div id="extentions" class="row">
-                <c:forEach items="#{userHome.UIFragments}" var="fragment" varStatus="loop">
-                    <ui:include src="#{fragment}" />
-                </c:forEach>
-            </div>
+                        <p:commandButton id="save" 
+                                         value="#{messages['general.button.Save']}" 
+                                         action="#{userHome.save()}"
+                                         rendered="#{identity.hasPermission( 'user', 'insert')}"
+                                         ajax="true"
+                                         partialSubmit="false"
+                                         process="@form"
+                                         update=":form,:listForm:itemlist"
+                                         validateClient="true"
+                                         icon="fa fa-save"
+                                         styleClass="btn-success"/>  
 
-            <div class="row">
-                <t:accordion id="pwdAcc" label="#{messages['user.caption.Password']}" hide="false">
-                    <p:messages id="messages" for=":form:pwdAcc:pwd1:pwd1" showDetail="true" autoUpdate="true" />
-                    <div class="row">
-                        <t:inputAny id="pwd1" label="user.label.Password">
-                            <p:password id="pwd1" value="#{userHome.password}" feedback="true"
-                                        promptLabel="#{messages['password.prompt']}" weakLabel="#{messages['password.week']}"
-                                        goodLabel="#{messages['password.good']}" strongLabel="#{messages['password.strong']}" match=":form:pwdAcc:pwd2:pwd2" label="#{messages['user.label.Password']}"/>
-                            <p:message for=":form:pwdAcc:pwd1:pwd1" display="text" showDetail="true" autoUpdate="true"/>
-                        </t:inputAny>
-
-                        <t:inputAny id="pwd2" label="user.label.PasswordRetype">
-                            <p:password id="pwd2" value="#{userHome.password}" label="#{messages['user.label.PasswordRetype']}" />
-                        </t:inputAny>
+                        <p:commandButton id="delete" 
+                                         value="#{messages['general.button.Delete']}" 
+                                         action="#{userHome.delete()}"
+                                         rendered="#{identity.hasPermission( 'user', 'delete') }"
+                                         ajax="true"
+                                         partialSubmit="false"
+                                         process="@form"
+                                         update=":form,:listForm:itemlist"
+                                         validateClient="true"
+                                         icon="fa fa-trash"
+                                         styleClass="btn-danger">
+                            <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
+                        </p:commandButton>
+                        <p:commandButton id="close" 
+                                         value="#{messages['general.button.Close']}" 
+                                         action="#{userHome.close()}"
+                                         ajax="true"
+                                         partialSubmit="true"
+                                         process="@this"
+                                         icon="fa fa-close"/>
                     </div>
-                </t:accordion>
-            </div>
+                </div>
 
-            <div class="row">
-                <t:accordion id="roleacc" label="#{messages['user.caption.Roles']}" hide="false">
-                    <div class="row">
-                        <t:inputAny id="roleacca" label="general.label.Roles" columnClass="col-xs-12">
-                            <p:pickList id="rolepicker" 
-                                        value="#{userHome.roleList}" 
-                                        var="role" 
-                                        itemLabel="#{role.name}" 
-                                        itemValue="#{role}"
-                                        showSourceFilter="true" 
-                                        showTargetFilter="true" 
-                                        showCheckbox="true"
-                                        filterMatchMode="contains"
-                                        converter="roleConverter"
-                                        style="width: 100%;">
-                                <f:facet name="sourceCaption">#{messages['general.label.Available']}</f:facet>
-                                <f:facet name="targetCaption">#{messages['general.label.Selected']}</f:facet>
-                            </p:pickList>
-                        </t:inputAny>
-                    </div>
-                </t:accordion>
-            </div>
-
-            <div class="actionButtons">
-                <p:commandButton id="saveAndNew" 
-                                 value="#{messages['general.button.SaveAndNew']}" 
-                                 action="#{userHome.saveAndNew()}"
-                                 rendered="#{identity.hasPermission( 'user', 'update') }"
-                                 ajax="true"
-                                 partialSubmit="false"
-                                 process="@form"
-                                 update=":form,:listForm:itemlist"
-                                 validateClient="true"
-                                 icon="ui-icon-disk"/>  
-
-                <p:commandButton id="save" 
-                                 value="#{messages['general.button.Save']}" 
-                                 action="#{userHome.save()}"
-                                 rendered="#{identity.hasPermission( 'user', 'insert')}"
-                                 ajax="true"
-                                 partialSubmit="false"
-                                 process="@form"
-                                 update=":form,:listForm:itemlist"
-                                 validateClient="true"
-                                 icon="ui-icon-disk" />  
-
-
-
-                <p:commandButton id="delete" 
-                                 value="#{messages['general.button.Delete']}" 
-                                 action="#{userHome.delete()}"
-                                 rendered="#{identity.hasPermission( 'user', 'delete') }"
-                                 ajax="true"
-                                 partialSubmit="false"
-                                 process="@form"
-                                 update=":form,:listForm:itemlist"
-                                 validateClient="true"
-                                 icon="ui-icon-trash">
-                    <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
-                </p:commandButton>
-                <p:commandButton id="close" 
-                                 value="#{messages['general.button.Close']}" 
-                                 action="#{userHome.close()}"
-                                 ajax="true"
-                                 partialSubmit="true"
-                                 process="@this"
-                                 icon="ui-icon-close"/>
-            </div>
-        </h:form>
-
+            </h:form>
+        </div>
     </ui:define>
 
     <ui:define name="content-list">

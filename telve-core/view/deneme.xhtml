@@ -3,19 +3,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ds="http://deltaspike.apache.org/jsf">
+    <f:view>
+        <ui:insert name="metadata" />
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>#{telveConfigResolver.getProperty('app.title')} - #{ pageTitleResolver.pageTitle }</title>
+
+            <ui:include src="/layout/templateHeader.xhtml" />
 
     </h:head>
 
-    <h:body>
-        <h1>Deneme!</h1>
-        #{messages['anahtar']} : #{ribbonController.tabs}  #{ribbonController.hitCounter}
-        Hit Count : #{deneme.hitCounter} #{deneme.tabs}
-        <h:messages globalOnly="true"/>
-        
-        Hot Deploy mu desin?
+    <h:body styleClass="#{skinSelector.skin} #{skinSelector.sidebarCSS} fixed">
+        <ds:windowId />
+        <ui:insert name="body"/>
         
     </h:body>
+        </f:view>
 </html>

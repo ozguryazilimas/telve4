@@ -18,17 +18,20 @@
                 <div class="col-md-8 col-xs-12"></div>
                 <div class="prop col-md-4 col-xs-12">
                     <span class="value">
-                        <div class="ui-input-group">
+                        <div class="input-group">
                             <p:inputText id="filter" value="#{scheduledCommandBrowse.filter}" 
                                          placeholder="#{messages['general.info.ScheduledCommandBrowseFilter']}" />
-                            <p:commandButton action="#{scheduledCommandBrowse.search()}" partialSubmit="true" process="@form" icon="ui-icon-search" styleClass="ui-icon-only" update=":commands" />
+                            <div class="input-group-btn">
+                            <p:commandButton action="#{scheduledCommandBrowse.search()}" partialSubmit="true" process="@form" icon="fa fa-search" styleClass="ui-icon-only btn btn-default" update=":commands" />
+                            </div>
                         </div>
                     </span>
                 </div>
             </div>
         </h:form>
 
-
+        <div class="box box-primary">
+            <div class="box-body">
         <h:form id="commands">
             <p:dataTable value="#{scheduledCommandBrowse.filteredItems}" var="item"
                          selectionMode="single"
@@ -61,6 +64,8 @@
                 </p:column>
             </p:dataTable>
         </h:form>
+            </div>
+        </div>
 
 
 

@@ -14,7 +14,9 @@
     <ui:define name="body">
         <ui:include src="/layout/messages.xhtml" />
 
+        <div class="box box-primary">
         <h:form id="form" >
+            <div class="box-body">
             <div class="row">
                 <t:inputText label="global.label.Name" value="#{roleHome.current.name}" required="true" />
             </div>  
@@ -79,7 +81,8 @@
                     </p:dataTable>
                 </t:accordion>
             </c:forEach>
-
+            </div>
+            <div class="box-footer">
             <div class="actionButtons">
                 <p:commandButton id="saveAndNew" 
                                  value="#{messages['general.button.SaveAndNew']}" 
@@ -90,7 +93,8 @@
                                  process="@form"
                                  update=":form,:listForm:itemlist"
                                  validateClient="true"
-                                 icon="ui-icon-disk"/>  
+                                 icon="fa fa-save"
+                                 styleClass="btn-success"/>  
 
                 <p:commandButton id="save" 
                                  value="#{messages['general.button.Save']}" 
@@ -101,7 +105,8 @@
                                  process="@form"
                                  update=":form,:listForm:itemlist"
                                  validateClient="true"
-                                 icon="ui-icon-disk" />  
+                                 icon="fa fa-save"
+                                 styleClass="btn-success"/>  
 
 
 
@@ -114,7 +119,8 @@
                                  process="@form"
                                  update=":form,:listForm:itemlist"
                                  validateClient="true"
-                                 icon="ui-icon-trash">
+                                 icon="fa fa-trash"
+                                 styleClass="btn-danger">
                     <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
                 </p:commandButton>
                 <p:commandButton id="close" 
@@ -123,9 +129,11 @@
                                  ajax="true"
                                  partialSubmit="true"
                                  process="@this"
-                                 icon="ui-icon-close"/>
+                                 icon="fa fa-close"/>
             </div>
+                </div>
         </h:form>
+        </div>
 
 
     </ui:define>

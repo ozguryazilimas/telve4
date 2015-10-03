@@ -59,12 +59,17 @@
 
         <ui:include src="/layout/messages.xhtml"/>
 
-        <h:form>
-            <p:schedule id="schedule" value="#{calendarHome.model}" widgetVar="telveCalendar" timeZone="GMT+2" rightHeaderTemplate="" tooltip="true" aspectRatio="1.5" >
-                <p:ajax event="eventSelect" listener="#{calendarHome.onEventSelect}" oncomplete="editEvent();"/>
-                <p:ajax event="viewChange" listener="#{calendarHome.onViewChange}" />
-            </p:schedule>
-        </h:form>
+        <div class="box">
+            <div class="box-body no-padding">
+                <h:form>
+                    <p:schedule id="schedule" value="#{calendarHome.model}" widgetVar="telveCalendar" timeZone="GMT+2" rightHeaderTemplate="" tooltip="true" aspectRatio="1.5" >
+                        <p:ajax event="eventSelect" listener="#{calendarHome.onEventSelect}" oncomplete="editEvent();"/>
+                        <p:ajax event="viewChange" listener="#{calendarHome.onViewChange}" />
+                    </p:schedule>
+                </h:form>
+
+            </div>
+        </div>
 
     </ui:define>
 
@@ -108,7 +113,7 @@
                 #{messages['calendar.button.ShowClosed']}
             </p:commandLink>
         </li>
-        
+
         <li>
             <p:commandLink id="calb2" action="#{calendarFilterModel.toggleShowPersonalEvents()}" update="calb2" process="@this" oncomplete="PF('telveCalendar').update();">
                 <i class="fa #{calendarFilterModel.showPersonalEvents ? 'fa-check-square' : 'fa-square' } " />
