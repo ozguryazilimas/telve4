@@ -1,5 +1,3 @@
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
@@ -19,6 +17,8 @@
 
             <c:forEach items="#{dashboardManager.getDashlets()}" var="dashlet" varStatus="loop" >
                 <ui:include src="/dashlets/#{dashlet}.xhtml" />
+                
+                <ui:include src="/dashlets/empty.xhtml" />
             </c:forEach>
         </p:dashboard>
             </div>
@@ -26,6 +26,7 @@
 
     <ui:define name="context-menu">
 
+        <ui:remove>
         <c:forEach items="#{dashboardManager.dashboards}" var="dashboard" varStatus="loop">
             <li>
                 <h:link id="dashborad#{loop.index}" >
@@ -35,6 +36,7 @@
                 </h:link>
             </li>
         </c:forEach>
+            </ui:remove>
 
         
         <li class="pull-right">

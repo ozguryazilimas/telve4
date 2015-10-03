@@ -142,12 +142,17 @@
                         <c:forEach id="filterRepeater2" items="#{bean.queryDefinition.filters}"
                                    var="filter" varStatus="rowCounter">
                             <div class="row">
+                                
                                 <ui:include src="/filterTemplates/#{filter.template}.xhtml" >
                                     <ui:param name="filter" value="#{filter}" />
                                     <ui:param name="idprefix" value="#{filter.attribute.name}" />
                                 </ui:include>
+                                
+                                <ui:include src="/filterTemplates/empty.xhtml" />
+                                
                             </div>
                         </c:forEach>
+                        
                     </h:panelGroup>
 
                 </p:outputPanel>

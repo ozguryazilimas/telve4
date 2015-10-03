@@ -1,5 +1,3 @@
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core"
@@ -26,6 +24,7 @@
 
 
         <h:form id="browseListForm">
+            
             <div class="row">
 
                 <div id="main-col" class="#{showDetailPanel ? 'col-md-9 col-xs-12' : 'col-xs-12' }">
@@ -67,16 +66,18 @@
                                 </ui:remove>
 
                                 <ui:insert name="beforeColumns" />
-
+                                
                                 <c:forEach items="#{bean.queryDefinition.columns}" var="col" varStatus="loop">
                                     <p:column>
                                         <c:set var="ind" value="#{loop.index}" />
                                         <f:facet name="header">
                                             <h:outputText value="#{messages[col.labelKey]}" />
                                         </f:facet>
-
                                         <ui:include src="/columns/#{col.template}.xhtml" />
 
+                                        <ui:remove>Burada bir bug var eğer aşağıdaki gib boş bir include almazsak DOCTYPE yanlış üretiliyor.</ui:remove>
+                                        <ui:include src="/columns/empty.xhtml" />
+                                        
                                     </p:column>
                                 </c:forEach>
                                 <ui:insert name="afterColumns" />
@@ -100,11 +101,15 @@
                 </ui:fragment>
 
             </div>
+                
         </h:form>
+        
     </ui:define>
 
     <ui:define name="content-list">
+        
         <ui:include src="/layout/browseFilters.xhtml" />
+        
     </ui:define>
 
     <ui:define name="context-menu">
