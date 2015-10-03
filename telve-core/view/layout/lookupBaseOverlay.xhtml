@@ -14,10 +14,12 @@
                 <ui:fragment rendered="#{not hideStandartFilter}">
                     <p:fragment>
                         <p:outputLabel for="search2key" value="#{messages['general.label.SearchKey']}" />
-                        <h:panelGroup styleClass="ui-input-group" layout="block" >
+                        <h:panelGroup styleClass="input-group" layout="block" >
                             <p:inputText id="search2key" value="#{lookupBean.model.searchText}" />
-                            <p:commandButton id="search2" icon="ui-icon-search" action="#{lookupBean.search()}" update="resultLists" styleClass="ui-icon-only" 
+                            <div class="input-group-btn">
+                            <p:commandButton id="search2" icon="fa fa-search" action="#{lookupBean.search()}" update="resultLists" styleClass="ui-icon-only btn btn-default" 
                                              partialSubmit="true" process="search2key"/>
+                            </div>
                         </h:panelGroup>
                     </p:fragment>
                 </ui:fragment>

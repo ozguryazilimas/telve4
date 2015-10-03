@@ -1,7 +1,7 @@
 PrimeFaces.locales['en'] = {
-    closeText: 'kapat',
-    prevText: 'geri',
-    nextText: 'ileri',
+    closeText: '',
+    prevText: '',
+    nextText: '',
     currentText: 'bugün',
     monthNames: ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'],
     monthNamesShort: ['Oca','Şub','Mar','Nis','May','Haz', 'Tem','Ağu','Eyl','Eki','Kas','Ara'],

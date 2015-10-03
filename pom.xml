@@ -238,6 +238,7 @@
         <module>telve-bpm</module>
         <module>telve-dynaform</module>
         <module>telve-jcr</module>
+        <module>telve-theme</module>
     </modules>
     
     <distributionManagement>

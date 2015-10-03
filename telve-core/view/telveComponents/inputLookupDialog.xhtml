@@ -29,7 +29,7 @@
 
             <span class="value">
 
-                <div class="ui-input-group">
+                <div class="input-group">
                     <p:autoComplete id="#{cc.id}_inp" value="#{cc.attrs.value}" 
                                     forceSelection="true" 
                                     completeMethod="#{cc.attrs.lookupBean.suggest}"
@@ -47,10 +47,11 @@
                         <f:attribute name="multiSelect" value="#{cc.attrs.multiSelect}" />
                         <f:attribute name="lookupProfile" value="#{cc.attrs.lookupProfile}" />
                     </p:autoComplete>
-
-                    <p:commandButton action="#{cc.attrs.lookupBean.openDialog( cc.attrs.multiSelect, cc.attrs.leafSelect, cc.attrs.lookupProfile, cc.attrs.lookupListener )}" partialSubmit="true" process="@this" icon="ui-icon-search" styleClass="ui-icon-only">
+                    <div class="input-group-btn">
+                    <p:commandButton action="#{cc.attrs.lookupBean.openDialog( cc.attrs.multiSelect, cc.attrs.leafSelect, cc.attrs.lookupProfile, cc.attrs.lookupListener )}" partialSubmit="true" process="@this" icon="fa fa-search" styleClass="btn btn-default">
                         <p:ajax event="dialogReturn"  listener="#{cc.attrs.lookupBean.onSelect}" update="#{cc.id}_inp,#{cc.attrs.update}" partialSubmit="true" process="@this" />   
                     </p:commandButton>
+                        </div>
                 </div>
             </span>
             <p:message for="#{cc.id}_inp" display="tooltip"/>

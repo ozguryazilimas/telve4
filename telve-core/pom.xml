@@ -123,10 +123,12 @@
             <artifactId>primefaces</artifactId>
         </dependency>
             
+        <!--
         <dependency>  
             <groupId>org.primefaces.themes</groupId>  
             <artifactId>all-themes</artifactId>  
         </dependency>
+        -->
                 
         <dependency>
             <groupId>org.primefaces.extensions</groupId>
@@ -136,6 +138,12 @@
         <dependency>
             <groupId>org.omnifaces</groupId>
             <artifactId>omnifaces</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>telve-theme</artifactId>
+            <version>${project.version}</version>
         </dependency>
         
         <dependency>

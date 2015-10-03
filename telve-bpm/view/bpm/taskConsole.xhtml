@@ -64,6 +64,21 @@
                 <p:ajax event="change" listener="#{taskConsole.refresh}" update="console" />
             </p:selectOneButton>
 
+            <div class="list-group">
+                <ui:repeat value="#{taskConsole.taskList}" var="item" varStatus="loop2">
+                    <p:commandLink action="#{taskConsole.onSelectTask(item)}" ajax="true" process="@this" update=":taskView" styleClass="list-group-item">
+                        <span class="label label-primary pull-right"><t:cellOutputDateTime value="#{item.endDate}" /></span>
+                        <h4 class="list-group-item-heading">#{item.subject}</h4>
+                        <p class="list-group-item-text">#{item.info}</p>
+                        <span class="text-sm text-muted">#{messages['taskName.'.concat(item.task.taskDefinitionKey)]} | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.task.assignee)} </span>
+                        <ui:remove>
+                            | <t:cellOutputDateTime value="#{item.task.createTime}"/> 
+                        </ui:remove>
+                    </p:commandLink>
+                </ui:repeat>
+            </div>
+            
+            <ui:remove>
             <ul class="products-list product-list-in-box">
                 <ui:repeat value="#{taskConsole.taskList}" var="item" varStatus="loop2">
                     <li class="item">
@@ -80,6 +95,7 @@
                     </li>
                 </ui:repeat>
             </ul>
+             </ui:remove>
 
         </h:form>
     </ui:define>

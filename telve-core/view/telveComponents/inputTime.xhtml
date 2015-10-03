@@ -2,6 +2,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:composite="http://java.sun.com/jsf/composite">
 
@@ -23,12 +24,18 @@
 
             <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
             <span class="value">
+                <ui:remove>
                 <p:calendar id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}"
                             placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.Time']}" showOn="button"
                             navigator="true" timeOnly="true" mask="true" readonlyInput="#{cc.attrs.readonlyInput}">
                     <f:convertDateTime pattern="#{messages['general.format.Time']}" />
                     <p:clientValidator />
                 </p:calendar>
+                    </ui:remove>
+                <pe:timePicker id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" >
+                    <f:convertDateTime pattern="#{messages['general.format.Time']}" />
+                    <p:clientValidator />
+                </pe:timePicker>
             </span>
             <p:message for="#{cc.id}_inp" display="text"/>
         </div>

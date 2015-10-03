@@ -113,9 +113,11 @@
         
         <div>
             <h:form id="search">
-                            <div class="ui-input-group">
+                            <div class="input-group">
                                 <p:inputText value="#{homeBean.filter}" required="false"  placeholder="#{messages['general.label.SearchText']}"/>
-                                <p:commandButton icon="fa fa-search" update="treePanel" action="#{homeBean.search()}" partialSubmit="false" />
+                                <div class="input-group-btn">
+                                <p:commandButton icon="fa fa-search" update="treePanel" action="#{homeBean.search()}" partialSubmit="false" styleClass="btn btn-default"/>
+                                </div>
                             </div>
                 </h:form>
         </div>            

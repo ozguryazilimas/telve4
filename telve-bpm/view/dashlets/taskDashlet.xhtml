@@ -17,60 +17,96 @@
 
     <ui:define name="view">
 
-        <p:tabView style="margin-left: -15px; margin-right: -15px;">
+        <style>
+            #taskDashlet .ui-tabs, #taskDashlet .ui-panel-content{
+                padding: 0px !important;
+            }
+        </style>
+
+        <p:tabView activeIndex="1">
             <p:tab title="#{messages['task.label.DueDateTasks']}">
 
-                <ul class="products-list product-list-in-box">
+                <div class="list-group">
                     <ui:repeat value="#{taskDashlet.dueTasks}" var="item" varStatus="loop2">
-                        <li class="item">
-                            <div class="product-img">
-                                <i class="fa fa-2x #{taskConsole.getTaskIcon(item.taskDefinitionKey)}" />  
-                            </div>
-                            <div class="product-info">
-                                <h:link outcome="/bpm/taskConsole.xhtml" styleClass="product-title">
-                                    <f:param name="task" value="#{item.id}" />
-                                    #{item.name}  <span class="label label-primary pull-right"><t:cellOutputDateTime value="#{item.dueDate}" /></span>
-                                </h:link>
-                                <span class="product-description">
-                                    #{item.description}
-                                </span>
-                                <span class="product-description text-sm">
-                                    #{messages['taskName.'.concat(item.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.assignee)} 
-                                </span>
-                            </div>
-                        </li>
+                        <h:link outcome="/bpm/taskConsole.xhtml" styleClass="list-group-item">
+                            <f:param name="task" value="#{item.id}" />
+                            <span class="label label-primary pull-right"><t:cellOutputDateTime value="#{item.dueDate}" /></span>
+                            <h4 class="list-group-item-heading">#{item.name}</h4>
+                            <p class="list-group-item-text">#{item.description}</p>
+                            <span class="text-sm text-muted">#{messages['taskName.'.concat(item.taskDefinitionKey)]} | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.assignee)} </span>
+                        </h:link>
                     </ui:repeat>
-                </ul>
+                </div>
+
+                <ui:remove>
+                    <ul class="products-list product-list-in-box">
+                        <ui:repeat value="#{taskDashlet.dueTasks}" var="item" varStatus="loop2">
+                            <li class="item">
+                                <div class="product-img">
+                                    <i class="fa fa-2x #{taskConsole.getTaskIcon(item.taskDefinitionKey)}" />  
+                                </div>
+                                <div class="product-info">
+                                    <h:link outcome="/bpm/taskConsole.xhtml" styleClass="product-title">
+                                        <f:param name="task" value="#{item.id}" />
+                                        #{item.name}  <span class="label label-primary pull-right"><t:cellOutputDateTime value="#{item.dueDate}" /></span>
+                                    </h:link>
+                                    <span class="product-description">
+                                        #{item.description}
+                                    </span>
+                                    <span class="product-description text-sm">
+                                        #{messages['taskName.'.concat(item.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.assignee)} 
+                                    </span>
+                                </div>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </ui:remove>
 
             </p:tab> 
 
             <p:tab title="#{messages['task.label.Tasks']}">
 
-                <ul class="products-list product-list-in-box">
+                <div class="list-group">
                     <ui:repeat value="#{taskDashlet.tasks}" var="item" varStatus="loop2">
-                        <li class="item">
-                            <div class="product-img">
-                                <i class="fa fa-2x #{taskConsole.getTaskIcon(item.taskDefinitionKey)}" /> 
-                            </div>
-                            <div class="product-info">
-                                <h:link outcome="/bpm/taskConsole.xhtml" styleClass="product-title">
-                                    <f:param name="task" value="#{item.id}" />
-                                    #{item.name}  <span class="label label-primary pull-right"><t:cellOutputDateTime value="#{item.dueDate}" /></span>
-                                </h:link>
-                                <span class="product-description">#{item.description}</span>
-                                <span class="product-description text-sm">#{messages['taskName.'.concat(item.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.assignee)} </span>
-                            </div>
-                        </li>
+                        <h:link outcome="/bpm/taskConsole.xhtml" styleClass="list-group-item">
+                            <f:param name="task" value="#{item.id}" />
+                            <span class="label label-primary pull-right"><t:cellOutputDateTime value="#{item.dueDate}" /></span>
+                            <h4 class="list-group-item-heading">#{item.name}</h4>
+                            <p class="list-group-item-text">#{item.description}</p>
+                            <span class="text-sm text-muted">#{messages['taskName.'.concat(item.taskDefinitionKey)]} | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.assignee)} </span>
+                        </h:link>
                     </ui:repeat>
-                </ul>
+                </div>
+
+                <ui:remove>
+                    <ul class="products-list product-list-in-box">
+                        <ui:repeat value="#{taskDashlet.tasks}" var="item" varStatus="loop2">
+                            <li class="item">
+                                <div class="product-img">
+                                    <i class="fa fa-2x #{taskConsole.getTaskIcon(item.taskDefinitionKey)}" /> 
+                                </div>
+                                <div class="product-info">
+                                    <h:link outcome="/bpm/taskConsole.xhtml" styleClass="product-title">
+                                        <f:param name="task" value="#{item.id}" />
+                                        #{item.name}  <span class="label label-primary pull-right"><t:cellOutputDateTime value="#{item.dueDate}" /></span>
+                                    </h:link>
+                                    <span class="product-description">#{item.description}</span>
+                                    <span class="product-description text-sm">#{messages['taskName.'.concat(item.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.assignee)} </span>
+                                </div>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+                </ui:remove>
 
             </p:tab> 
 
         </p:tabView>
 
-        <h:link outcome="/bpm/taskConsole.xhtml" style="margin-left: auto; margin-right: auto;">
-            #{messages['task.label.SeeAllTasks']}
-        </h:link>
+        <div class="box-footer with-border">
+            <h:link outcome="/bpm/taskConsole.xhtml" style="margin-left: auto; margin-right: auto;">
+                #{messages['task.label.SeeAllTasks']}
+            </h:link>
+        </div>
 
     </ui:define>
 </ui:composition>

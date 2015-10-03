@@ -15,9 +15,11 @@
             <div class="row">
                 <ui:fragment rendered="#{not hideStandartFilter}">
                     <t:inputAny label="general.label.SearchKey" columnClass="col-xs-12">
-                        <h:panelGroup styleClass="ui-input-group" layout="block">
+                        <h:panelGroup styleClass="input-group" layout="block">
                             <p:inputText value="#{bean.model.searchText}" />
-                            <p:commandButton id="search2" icon="ui-icon-search" action="#{bean.search()}" update=":lookupForm:resultLists" styleClass="ui-icon-only" />
+                            <div class="input-group-btn">
+                            <p:commandButton id="search2" icon="fa fa-search" action="#{bean.search()}" update=":lookupForm:resultLists" styleClass="ui-icon-only btn btn-default" />
+                            </div>
                         </h:panelGroup>
                     </t:inputAny>
                 </ui:fragment>

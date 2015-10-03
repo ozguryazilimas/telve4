@@ -26,7 +26,7 @@
 
             <span class="value">
 
-                <div class="ui-input-group">
+                <div class="input-group">
                     <p:autoComplete id="#{cc.id}_inp" value="#{cc.attrs.value}" 
                                     forceSelection="true" 
                                     completeMethod="#{cc.attrs.lookupBean.suggest}"
@@ -42,10 +42,12 @@
                         <p:clientValidator />
                     </p:autoComplete>
 
+                    <div class="input-group-btn">
                     <p:commandButton id="popdown" action="#{cc.attrs.lookupBean.initOverlay(cc.attrs.lookupProfile, cc.attrs.lookupListener)}" ajax="true" 
                                      partialSubmit="true" process="@this"
                                      update="ovl1" onsuccess="PF('#{cc.id}lookupOverlay').loadContents();PF('#{cc.id}lookupOverlay').show()"
-                                     icon="ui-icon-search" styleClass="ui-icon-only"/>
+                                     icon="fa fa-search" styleClass="ui-icon-only btn btn-default"/>
+                    </div>
                 </div>
 
                 <p:overlayPanel id="ovl1" for="#{cc.id}_inp" 

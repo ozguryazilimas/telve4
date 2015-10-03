@@ -42,7 +42,7 @@ public class ThemeSelector implements Serializable {
 
                 String t = configResolver.getProperty("theme.name");
                 //Config'de bir değer yoksa default bootstrap yapalım...
-                setTheme( t == null ? "bootstrap" : t );
+                setTheme( t == null ? "telve" : t );
             }
         }
         return theme;

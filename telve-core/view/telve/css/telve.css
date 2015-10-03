@@ -6,7 +6,7 @@ Telve  CSS
     display: block;
     vertical-align: top;
     font-weight: bold;
-    color: #444;
+    color: #555;
     /*width: 115px;*/
     float: left;
     /*padding: 3px 4px 2px 0px; */
@@ -21,13 +21,14 @@ Telve  CSS
     clear: left;
     width: 100%;
     /*width:210px;*/
+    position: relative;
 }
 
 .disprop .name{
     display: inline;
     vertical-align: top;
     font-weight: bold;
-    color: #444;
+    color: #555;
     width: 115px;
     float: none;
     padding: 3px 4px 2px 5px;
@@ -37,6 +38,7 @@ Telve  CSS
 
 .disprop .value {
     float: none;
+    color: #555;
     padding: 0px 5px 2px 5px;
     clear: left;
 }
@@ -76,6 +78,7 @@ h3.accordion{
 
 
 /*Primefaces css düzeltmeleri*/
+/*
 .ui-widget {
     font-size: inherit !important;
 }
@@ -105,16 +108,17 @@ h3.accordion{
 textarea.ui-inputfield, .ui-selectonemenu {
     width: 100% !important;
 }
-
+*/
+/*
 .ui-input-group .ui-button, .ui-datepicker-trigger, .ui-complete .ui-autocomplete-dropdown, .ui-autocomplete-dropdown{
-    /*border-left: 0px !important;*/
+    /border-left: 0px !important;/
     border-bottom-left-radius: 0px !important;
     border-top-left-radius: 0px !important;
     vertical-align: top;
     height: 28px !important;
     position: absolute !important;
     right: 10px !important;
-    width: 26px !important;
+    width: 28px !important;
 }
 
 .ui-dialog > .ui-selectonemenu {
@@ -126,7 +130,7 @@ textarea.ui-inputfield, .ui-selectonemenu {
 }
 
 .ui-autocomplete-dropdown{
-    right: -1px !important;
+    right: -2px !important;
 }
 
 .ui-selectonemenu-trigger{
@@ -144,8 +148,12 @@ textarea.ui-inputfield, .ui-selectonemenu {
 }
 
 
+.ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
+    margin-top: 5px !important;
+}
+
 .ui-selectonemenu-trigger{
-    width: 24px !important;
+    width: 28px !important;
 }
 
 .ui-selectonemenu-label{
@@ -184,10 +192,10 @@ textarea.ui-inputfield, .ui-selectonemenu {
 .ui-datalist-content.ui-widget-content {
     border: none !important;
 }
-
+*/
 
 /*Bootstrap PrimeFaces uyumu için override*/
-.btn-primary {
+/*.btn-primary {
     background-image: linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5) !important;
     color: #fff !important;
     text-shadow: none !important;
@@ -227,7 +235,7 @@ textarea.ui-inputfield, .ui-selectonemenu {
 .ui-button .fa{
     line-height: 1 !important;
 }
-
+*/
 
 /*content-list ve content body ilişkileri*/
 
@@ -443,4 +451,68 @@ textarea.ui-inputfield, .ui-selectonemenu {
 
 .control-sidebar .tools > a:hover{
     color: #FFF;
+}
+
+
+.panel-primary {
+  border-color: #4582ec;
+}
+
+.panel-primary > .ui-panel-titlebar {
+  color: #ffffff;
+  background-color: #4582ec;
+  border-color: #4582ec;
+}
+
+.panel-primary > .ui-panel-content {
+  border: 1px solid #4582ec !important;
+}
+
+.panel-primary > .ui-widget-header .ui-state-default {
+    color: #fff !important;
+    background-color: #4582ec !important;
+    border-color: #4582ec !important;
+    background-image: none;/*linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5) !important;*/
+    width: 16px;
+    height: 16px;
+}
+
+.panel-success {
+  border-color: #88c149;
+}
+.panel-success > .ui-panel-titlebar {
+  color: #ffffff;
+  background-color: #88c149;
+  border-color: #88c149;
+}
+
+.panel-info {
+  border-color: #5bc0de;
+}
+.panel-info > .ui-panel-titlebar {
+  color: #ffffff;
+  background-color: #5bc0de;
+  border-color: #5bc0de;
+}
+
+.panel-info > .ui-panel-content {
+  border: 1px solid #5bc0de !important;
+}
+
+.panel-warning {
+  border-color: #f0ad4e;
+}
+.panel-warning > .ui-panel-titlebar {
+  color: #ffffff;
+  background-color: #f0ad4e;
+  border-color: #f0ad4e;
+}
+
+.panel-danger {
+  border-color: #d9534f;
+}
+.panel-danger > .ui-panel-titlebar {
+  color: #ffffff;
+  background-color: #d9534f;
+  border-color: #d9534f;
 }

@@ -46,20 +46,20 @@
     <ui:define name="content-list">
 
         <h:form id="subViewCommandForm" >
-            <div class="box box-solid">
+            <div class="box box-solid box-default">
                 <div class="box-header">
                     #{messages['general.label.SubViews']}
                 </div>
                 <div class="box-body no-padding">
                     <ul class="nav nav-pills nav-stacked">
-                        <li>
+                        <li class="#{'' == bean.getSelectedSubView()  ? 'active': '' }">
                             <p:commandLink  value="#{messages['general.caption.MasterView']}"
-                                            action="#{bean.setSelectedSubView(null)}" update=":viewarea" styleClass="ui-sidelink" />
+                                            action="#{bean.setSelectedSubView(null)}" update=":viewarea, subViewCommandForm" styleClass="ui-sidelink" />
                         </li>
                         <ui:repeat value="#{bean.getSubViews('main')}" var="module" >
-                            <li>
+                            <li class="#{module eq bean.getSelectedSubView() ? 'active' : ''}">
                                 <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
-                                               action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
+                                               action="#{bean.setSelectedSubView(module)}" update=":viewarea, subViewCommandForm" 
                                                styleClass="ui-sidelink "/>  
                             </li>
                         </ui:repeat>
@@ -74,9 +74,9 @@
                     <div class="box-body no-padding">
                         <ul class="nav nav-pills nav-stacked">
                             <ui:repeat value="#{bean.getSubViews(grp)}" var="module" >
-                                <li>
+                                <li class="#{module eq bean.getSelectedSubView() ? 'active' : ''}">
                                     <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
-                                                   action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
+                                                   action="#{bean.setSelectedSubView(module)}" update=":viewarea, subViewCommandForm" 
                                                    styleClass="ui-sidelink "/>  
                                 </li>
                             </ui:repeat>

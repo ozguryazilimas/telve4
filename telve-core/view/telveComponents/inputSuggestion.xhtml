@@ -24,7 +24,7 @@
 
             <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
             <span class="value">
-                <div class="ui-input-group">
+                <div class="input-group">
                     <p:selectOneMenu id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" 
                                      filter="true" 
                                      filterMatchMode="startsWith" >
@@ -34,9 +34,11 @@
                                        itemValue="#{item.data}" />
                     </p:selectOneMenu>
 
-                    <p:commandButton action="#{suggestionControl.openDialog( cc.attrs.group, cc.attrs.key, cc.attrs.listener )}" partialSubmit="true" process="@this" icon="ui-icon-plus" styleClass="ui-icon-only">
-                        <p:ajax event="dialogReturn"  listener="#{suggestionControl.onSelect}" update="#{cc.id}_inp,#{cc.attrs.update}" partialSubmit="true" process="@this" />   
-                    </p:commandButton>
+                    <div class="input-group-btn">
+                        <p:commandButton action="#{suggestionControl.openDialog( cc.attrs.group, cc.attrs.key, cc.attrs.listener )}" partialSubmit="true" process="@this" icon="fa fa-plus" styleClass="ui-icon-only btn btn-default">
+                            <p:ajax event="dialogReturn"  listener="#{suggestionControl.onSelect}" update="#{cc.id}_inp,#{cc.attrs.update}" partialSubmit="true" process="@this" />   
+                        </p:commandButton>
+                    </div>
                 </div>
             </span>
 

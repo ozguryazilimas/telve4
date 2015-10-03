@@ -878,7 +878,10 @@
                             </ui:remove>
                         </div>
 
-                        <ui:fragment rendered="#{noteController.canAddNote()}">
+                        <ui:remove>
+                        <!-- ui:fragment rendered="#{noteController.canAddNote()}" rendered="#{noteController.newNote}"-->
+                            </ui:remove>
+                        
                             <div class="tab-pane" id="control-sidebar-notes-tab">
                                 <h3 class="control-sidebar-heading">Notes <small>
                                         <p:commandLink action="#{noteController.createNewNote(request.getHeader('Referer'))}" 
@@ -888,12 +891,13 @@
                                     </p:commandLink></small></h3>
 
                                 <h:panelGroup id="noteFormPanel">
-                                    <h:form id="notesForm" rendered="#{noteController.newNote}">
+                                    <ui:remove>
+                                    <h:form id="notesForm" >
                                     <div class="box box-warning text-sm">
                                         <div class="box-body">
                                             <div class="row">
-                                                <t:inputText label="general.label.Subject" value="#{noteController.note.subject}" columnClass="col-xs-12"/>
-                                                <t:inputTextarea label="general.label.Message" value="#{noteController.note.body}" style="height: 100px;" columnClass="col-xs-12" />
+                                                <t:inputText id="sub" label="general.label.Subject" value="#{noteController.note.subject}" columnClass="col-xs-12"/>
+                                                <t:inputTextarea id="bod" label="general.label.Message" value="#{noteController.note.body}" style="height: 100px;" columnClass="col-xs-12" />
 
                                                 <t:inputAny label="general.label.Permission" columnClass="col-xs-12">
                                                     <span class="text-sm">
@@ -921,35 +925,10 @@
                                         </div>
                                     </div>
                                 </h:form>
+                                    </ui:remove>
                                 </h:panelGroup>
 
                                 <p:outputPanel id="notesBar">
-                                    <ui:remove>
-                                        <ui:repeat value="#{noteController.notes}" var="note" >
-                                            <div class="small-box #{note.priority eq 'info' ? 'bg-primary' : note.priority eq 'error' ? 'bg-red' : 'bg-yellow'}">
-                                                <div class="inner">
-                                                    <div class="tools">
-                                                        <span class="label label-primary pull-right">
-                                                            <i class="fa fa-clock-o margin-r-5"/> 
-                                                            <h:outputText value="#{note.createDate}">
-                                                                <f:convertDateTime pattern="#{messages['general.format.DateTime']}" />
-                                                            </h:outputText>
-                                                        </span>
-                                                    </div>
-                                                    <div class="text-bold">#{note.subject}</div>
-                                                    <p>#{note.body}</p>
-                                                </div>
-                                                <div class="icon">
-                                                    <i class="fa #{note.permission eq 'OWNER' ? 'fa-lock' : 'fa-unlock-alt' }"/>
-                                                </div>
-                                                <div class="small-box-footer">
-                                                    <i class="fa fa-user margin-r-4"/> 
-                                                    <h:outputText value="#{userLookup.getUserName( note.owner)}"/>
-                                                </div>
-                                            </div>
-                                        </ui:repeat>
-                                    </ui:remove>
-
                                     <ui:repeat value="#{noteController.notes}" var="note" >
                                         <div class="alert #{note.priority eq 'info' ? 'alert-info' : note.priority eq 'error' ? 'alert-danger' : 'alert-warning'}">
                                             <p:commandLink styleClass="close" action="#{noteController.delete(note)}" update=":notesBar" class="pull-right" rendered="#{noteController.canDelete(note)}">
@@ -985,7 +964,9 @@
                                     </ui:repeat>
                                 </p:outputPanel>
                             </div>
-                        </ui:fragment>
+                        <ui:remove>
+                        <!-- /ui:fragment -->
+                        </ui:remove>
                     </div>
                 </aside>
                 <div class="control-sidebar-bg"></div>

@@ -133,8 +133,8 @@
         </ui:remove>
 
 
-        <div class="box box-solid">
-            
+        
+
             <div class="box-body">
                 <p:outputPanel id="filterPanel">
                     <h:panelGroup layout="block" rendered="#{not empty bean.queryDefinition.filters }">
@@ -156,25 +156,62 @@
                 <h:panelGroup id="actionButtons" styleClass="pull-right" layout="block">
                     <p:commandButton value="#{messages['general.button.Search']}" actionListener="#{bean.search()}" partialSubmit="false" process="@form" icon="fa fa-search" update="@([id$=results]), actionButtons"
                                      styleClass="btn-success"/> 
-                    <p:menuButton value="Export" rendered="#{not empty bean.entityList and identity.hasPermission( permission, 'export')}" >
-                        <ui:remove>
-                            <p:menuitem value="PDF" ajax="false" icon="fa fa-file-pdf-o">
-                                <p:dataExporter type="pdf" target=":browseListForm:results" fileName="results" /> 
+                    <ui:fragment rendered="#{not empty bean.entityList and identity.hasPermission( permission, 'export')}">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Export <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <ui:remove>
+                                    <li>
+                                        <p:commandLink ajax="false">
+                                            <i class="fa fa-file-pdf-o" /> PDF
+                                            <p:dataExporter type="pdf" target=":browseListForm:results" fileName="results" /> 
+                                        </p:commandLink>
+                                    </li>
+                                </ui:remove>
+                                <li>
+                                    <p:commandLink ajax="false">
+                                        <i class="fa fa-file-text-o" /> CSV
+                                        <p:dataExporter type="csv" target=":browseListForm:results" fileName="results" /> 
+                                    </p:commandLink>
+                                </li>
+                                <li>
+                                    <p:commandLink ajax="false">
+                                        <i class="fa fa-file-excel-o" /> XLS
+                                        <p:dataExporter type="xls" target=":browseListForm:results" fileName="results" /> 
+                                    </p:commandLink>
+                                </li>
+                                <li>
+                                    <p:commandLink ajax="false">
+                                        <i class="fa fa-file-code-o" /> XML
+                                        <p:dataExporter type="xml" target=":browseListForm:results" fileName="results" /> 
+                                    </p:commandLink>
+                                </li>
+                            </ul>
+                        </div>
+                    </ui:fragment>
+                    <ui:remove>
+                        <p:menuButton value="Export" rendered="#{not empty bean.entityList and identity.hasPermission( permission, 'export')}" >
+                            <ui:remove>
+                                <p:menuitem value="PDF" ajax="false" icon="fa fa-file-pdf-o">
+                                    <p:dataExporter type="pdf" target=":browseListForm:results" fileName="results" /> 
+                                </p:menuitem>
+                            </ui:remove>
+                            <p:menuitem value="CSV" ajax="false" icon="fa fa-file-text-o">
+                                <p:dataExporter type="csv" target=":browseListForm:results" fileName="results" /> 
                             </p:menuitem>
-                        </ui:remove>
-                        <p:menuitem value="CSV" ajax="false" icon="fa fa-file-text-o">
-                            <p:dataExporter type="csv" target=":browseListForm:results" fileName="results" /> 
-                        </p:menuitem>
-                        <p:menuitem value="XLS" ajax="false" icon="fa fa-file-excel-o">
-                            <p:dataExporter type="xls" target=":browseListForm:results" fileName="results" /> 
-                        </p:menuitem>
-                        <p:menuitem value="XML" ajax="false" icon="fa fa-file-code-o">
-                            <p:dataExporter type="xml" target=":browseListForm:results" fileName="results" /> 
-                        </p:menuitem>
-                    </p:menuButton>
+                            <p:menuitem value="XLS" ajax="false" icon="fa fa-file-excel-o">
+                                <p:dataExporter type="xls" target=":browseListForm:results" fileName="results" /> 
+                            </p:menuitem>
+                            <p:menuitem value="XML" ajax="false" icon="fa fa-file-code-o">
+                                <p:dataExporter type="xml" target=":browseListForm:results" fileName="results" /> 
+                            </p:menuitem>
+                        </p:menuButton>
+                    </ui:remove>
                     <ui:insert name="extraButtons" />
                 </h:panelGroup>
-            </div>
+            
         </div>    
         <ui:remove>
             <!-- /p:panel -->
