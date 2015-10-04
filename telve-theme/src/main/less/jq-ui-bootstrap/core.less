@@ -22,6 +22,16 @@
 		font-family: @font-family-sans-serif; 
 		font-size: inherit;
 	}
+        a{
+            color: @link-color;
+        }
+}
+
+.text-sm .ui-widget{
+    font-size: @font-size-small;
+    .ui-widget {
+	font-size: @font-size-small;
+    }
 }
 
 .ui-widget-content {
@@ -122,7 +132,7 @@
 .ui-state-highlight a,
 .ui-widget-content .ui-state-highlight a,
 .ui-widget-header .ui-state-highlight a {
-    //color: #2d6987;
+    color: @ui-white;
 }
 
 .ui-state-error,

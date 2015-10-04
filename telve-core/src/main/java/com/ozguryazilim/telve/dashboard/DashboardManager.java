@@ -251,8 +251,8 @@ public class DashboardManager implements Serializable {
 
             case DashboardDataModel.LAYOUT_TOP_TWO:
                 column1.setStyleClass("col-xs-12");
-                column2.setStyleClass("col-md-5 col-xs-12");
-                column3.setStyleClass("col-md-5 col-xs-12");
+                column2.setStyleClass("col-md-6 col-xs-12");
+                column3.setStyleClass("col-md-6 col-xs-12");
                 break;
         }
     }
@@ -502,26 +502,26 @@ public class DashboardManager implements Serializable {
     public String getEditorColumn1Style() {
 
         if (selectedBoard == null) {
-            return "db-hide";
+            return "hidden";
         }
 
         switch (selectedBoard.getLayout()) {
             case DashboardDataModel.LAYOUT_ONE:
-                return "db-one";
+                return "col-xs-12";
             case DashboardDataModel.LAYOUT_ONE_TWO:
-                return "db-oneTwo";
+                return "col-xs-4";
             case DashboardDataModel.LAYOUT_TWO_ONE:
-                return "db-twoOne";
+                return "col-xs-8";
             case DashboardDataModel.LAYOUT_TWO:
-                return "db-half";
+                return "col-xs-6";
             case DashboardDataModel.LAYOUT_TREE:
-                return "db-oneTwo";
+                return "col-xs-4";
             case DashboardDataModel.LAYOUT_TOP_ONETWO:  ;
             case DashboardDataModel.LAYOUT_TOP_TWO_ONE:  ;
             case DashboardDataModel.LAYOUT_TOP_TWO:
-                return "db-one";
+                return "col-xs-12";
         }
-        return "db-hide";
+        return "hidden";
     }
 
     /**
@@ -531,28 +531,28 @@ public class DashboardManager implements Serializable {
      */
     public String getEditorColumn2Style() {
         if (selectedBoard == null) {
-            return "db-hide";
+            return "hidden";
         }
 
         switch (selectedBoard.getLayout()) {
             case DashboardDataModel.LAYOUT_ONE:
-                return "db-hide";
+                return "hidden";
             case DashboardDataModel.LAYOUT_ONE_TWO:
-                return "db-twoOne";
+                return "col-xs-8";
             case DashboardDataModel.LAYOUT_TWO_ONE:
-                return "db-oneTwo";
+                return "col-xs-4";
             case DashboardDataModel.LAYOUT_TWO:
-                return "db-half";
+                return "col-xs-6";
             case DashboardDataModel.LAYOUT_TREE:
-                return "db-oneTwo";
+                return "col-xs-4";
             case DashboardDataModel.LAYOUT_TOP_ONETWO:
-                return "db-oneTwo";
+                return "col-xs-4";
             case DashboardDataModel.LAYOUT_TOP_TWO_ONE:
-                return "db-twoOne";
+                return "col-xs-8";
             case DashboardDataModel.LAYOUT_TOP_TWO:
-                return "db-half";
+                return "col-xs-6";
         }
-        return "db-hide";
+        return "hidden";
     }
 
     /**
@@ -562,28 +562,28 @@ public class DashboardManager implements Serializable {
      */
     public String getEditorColumn3Style() {
         if (selectedBoard == null) {
-            return "db-hide";
+            return "hidden";
         }
 
         switch (selectedBoard.getLayout()) {
             case DashboardDataModel.LAYOUT_ONE:
-                return "db-hide";
+                return "hidden";
             case DashboardDataModel.LAYOUT_ONE_TWO:
-                return "db-hide";
+                return "hidden";
             case DashboardDataModel.LAYOUT_TWO_ONE:
-                return "db-hide";
+                return "hidden";
             case DashboardDataModel.LAYOUT_TWO:
-                return "db-hide";
+                return "hidden";
             case DashboardDataModel.LAYOUT_TREE:
-                return "db-oneTwo";
+                return "col-xs-4";
             case DashboardDataModel.LAYOUT_TOP_ONETWO:
-                return "db-twoOne";
+                return "col-xs-8";
             case DashboardDataModel.LAYOUT_TOP_TWO_ONE:
-                return "db-oneTwo";
+                return "col-xs-4";
             case DashboardDataModel.LAYOUT_TOP_TWO:
-                return "db-half";
+                return "col-xs-6";
         }
-        return "db-hide";
+        return "hidden";
     }
 
     /**
@@ -622,7 +622,7 @@ public class DashboardManager implements Serializable {
 
         List<String> dl = getAvailDashlets();
 
-        LOG.info("Avail Dashlets : {}", dl);
+        LOG.debug("Avail Dashlets : {}", dl);
         //LOG.info("Current Layout #0, col1 : #1, col2 : #2, col3: #3", selectedBoard.getName(), selectedBoard.getColumn1(), selectedBoard.getColumn2(), selectedBoard.getColumn3());
         checkColumns();
 
@@ -635,7 +635,7 @@ public class DashboardManager implements Serializable {
                 ls.add(d);
             }
         }
-        LOG.info("Palet Dashlets : {}", ls);
+        LOG.debug("Palet Dashlets : {}", ls);
         return ls;
     }
 

@@ -65,7 +65,15 @@
             <div class="list-group">
                 <ui:repeat value="#{taskConsole.taskList}" var="item" varStatus="loop2">
                     <p:commandLink action="#{taskConsole.onSelectTask(item)}" ajax="true" process="@this" update=":taskView" styleClass="list-group-item">
-                        <span class="label label-primary pull-right"><t:cellOutputDateTime value="#{item.endDate}" /></span>
+                        <span class="label label-primary pull-right">
+                            <h:outputText value="#{item.endDate}" >
+                                <f:convertDateTime pattern="#{messages['general.format.DateTime']}" />
+                            </h:outputText> 
+                            <ui:remove>
+                                //Faces bugı var sanırım ajax ile render edildiğinde iki composit bileşeni iki kere çalıştırıyor.
+                                <t:cellOutputDateTime value="#{item.endDate}" />
+                            </ui:remove>
+                        </span>
                         <h4 class="list-group-item-heading">#{item.subject}</h4>
                         <p class="list-group-item-text">#{item.info}</p>
                         <span class="text-sm text-muted">#{messages['taskName.'.concat(item.task.taskDefinitionKey)]} | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.task.assignee)} </span>

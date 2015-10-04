@@ -3,8 +3,9 @@
   pointer-events: none;
 }
 
-#nprogress .bar {
+.npbar {
   background: #29d;
+  /*background: #fff;*/
 
   position: fixed;
   z-index: 1031;
@@ -16,7 +17,7 @@
 }
 
 /* Fancy blur effect */
-#nprogress .peg {
+.nppeg {
   display: block;
   position: absolute;
   right: 0px;
@@ -31,7 +32,7 @@
 }
 
 /* Remove these to get rid of the spinner */
-#nprogress .spinner {
+.npspinner {
   display: block;
   position: fixed;
   z-index: 1031;
@@ -39,7 +40,7 @@
   right: 15px;
 }
 
-#nprogress .spinner-icon {
+.npspinner-icon {
   width: 18px;
   height: 18px;
   box-sizing: border-box;
@@ -72,3 +73,30 @@
   100% { transform: rotate(360deg); }
 }
 
+.skin-blue .npbar,
+.skin-blue-light .npbar,
+.skin-green .npbar,
+.skin-green-light .npbar,
+.skin-purple .npbar,
+.skin-purple-light .npbar{
+    background: #F39C12;
+}
+
+.skin-blue .nppeg,
+.skin-blue-light .nppeg,
+.skin-green .nppeg,
+.skin-green-light .nppeg,
+.skin-purple .nppeg,
+.skin-purple-light .nppeg{
+    box-shadow: 0 0 10px #F39C12, 0 0 5px #F39C12;
+}
+
+.skin-blue .npspinner-icon,
+.skin-blue-light .npspinner-icon,
+.skin-green .npspinner-icon,
+.skin-green-light .npspinner-icon,
+.skin-purple .npspinner-icon,
+.skin-purple-light .npspinner-icon{
+  border-top-color: #F39C12;
+  border-left-color: #F39C12;  
+}

@@ -31,12 +31,12 @@
 
         <div id="#{dashlet}editPane" class="dashlet-edit">
             <h:form>
-                <div class="row">
+                <div class="row text-sm">
                     <ui:insert name="edit" />
                 </div>
-                <div class="actionButtons">
-                    <p:commandButton action="#{bean.save()}" icon="ui-icon-check" ajax="true" partialSubmit="false" process="@form" update=":#{dashlet}"/>
-                    <p:commandButton onclick="jQuery('##{dashlet}editPane').slideToggle(500);" icon="ui-icon-close" type="button" />
+                <div class="actionButtons text-sm">
+                    <p:commandButton value="#{messages['general.button.Ok']}" action="#{bean.save()}" icon="fa fa-check" ajax="true" partialSubmit="false" process="@form" update=":#{dashlet}" styleClass="btn-primary"/>
+                    <p:commandButton value="#{messages['general.button.Cancel']}" onclick="jQuery('##{dashlet}editPane').slideToggle(500);" icon="fa fa-close" type="button" styleClass="btn btn-default"/>
                 </div>
             </h:form>
         </div>

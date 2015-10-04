@@ -244,11 +244,13 @@ textarea.ui-inputfield, .ui-selectonemenu {
     border: 0;
 }
 
+/* Sadece firefox'da bişiler çalıştırmak için
 @-moz-document url-prefix() { 
   .context-menu{
      margin-top: -15px;
   }
 }
+*/
 
 /*
 .context-menu{
@@ -290,13 +292,15 @@ textarea.ui-inputfield, .ui-selectonemenu {
 .one{ width: 100%; }
 
 .dashlet-edit{
-    background-color: #BBBBBB; 
+    background-color: #F4F4F4; 
     margin-top: -0.5em; 
     margin-bottom: 0.5em; 
     margin-left: -1em; 
     margin-right: -1em; 
     padding: 0.2em;
     display: none;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 }
 
 /*Table ActionColumns*/

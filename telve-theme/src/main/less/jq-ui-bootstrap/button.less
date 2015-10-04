@@ -152,7 +152,7 @@ button.ui-button-icons-only {
 .ui-button-icons-only .ui-button-text {
 	padding: .4em;
 	text-indent: -9999px;
-	display:none; /*tempfix*/
+	display:none !important; /*tempfix*/
 }
 
 .ui-button-text-icon-primary .ui-button-text,
@@ -238,3 +238,6 @@ button.ui-button::-moz-focus-inner {
 	padding: 0;
 } 
 
+.text-sm .ui-button{
+    padding: 0px !important;
+}

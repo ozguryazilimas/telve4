@@ -20,6 +20,8 @@
 		width: 1.2em; 
 		height: 1.2em; 
 		cursor: default; 
+                border: 1px solid #4A89DC !important;
+                background-color: #fff;
 	}
 	.ui-slider-range { 
 		position: absolute; 
@@ -67,4 +69,17 @@
 	}
 	.ui-slider-range-min { bottom: 0; }
 	.ui-slider-range-max { top: 0; }
+}
+
+.ui-slider-handle:before{
+    content: "";
+    width: 7px;
+    height: 7px;
+    position: absolute;
+    background-color: #CCC;
+    border-radius: 10px;
+    z-index: 2;
+    left: 4px;
+    top: 4px;
+    background-color: #4A89DC;
 }

@@ -881,92 +881,85 @@
 
                         <ui:remove>
                         <!-- ui:fragment rendered="#{noteController.canAddNote()}" rendered="#{noteController.newNote}"-->
-                            </ui:remove>
-                        
-                            <div class="tab-pane" id="control-sidebar-notes-tab">
-                                <h3 class="control-sidebar-heading">Notes <small>
-                                        <p:commandLink action="#{noteController.createNewNote(request.getHeader('Referer'))}" 
+                        </ui:remove>
+
+                        <div class="tab-pane" id="control-sidebar-notes-tab">
+                            <h3 class="control-sidebar-heading">Notes <small class="tools text-sm" style="background-color: transparent;">
+                                    <p:commandLink action="#{noteController.createNewNote(request.getHeader('Referer'))}" 
                                                    ajax="true" partialSubmit="true" process="@this" update="noteFormPanel" styleClass="pull-right">
                                         <i class="fa fa-comment"/>
                                         #{messages['general.button.New']}
                                     </p:commandLink></small></h3>
 
-                                <h:panelGroup id="noteFormPanel">
-                                    <ui:remove>
-                                    <h:form id="notesForm" >
+                            <h:panelGroup id="noteFormPanel">
+
+                                <h:form id="notesForm" rendered="#{noteController.newNote}">
                                     <div class="box box-warning text-sm">
                                         <div class="box-body">
-                                            <div class="row">
-                                                <t:inputText id="sub" label="general.label.Subject" value="#{noteController.note.subject}" columnClass="col-xs-12"/>
-                                                <t:inputTextarea id="bod" label="general.label.Message" value="#{noteController.note.body}" style="height: 100px;" columnClass="col-xs-12" />
-
-                                                <t:inputAny label="general.label.Permission" columnClass="col-xs-12">
-                                                    <span class="text-sm">
-                                                        <p:selectOneButton value="#{noteController.note.permission}" styleClass="btn-xs">
-                                                            <f:selectItem itemLabel="#{messages['notes.permission.OWNER']}" itemValue="OWNER" />
-                                                            <f:selectItem itemLabel="#{messages['notes.permission.EVERYBODY']}" itemValue="EVERYBODY" />
-                                                        </p:selectOneButton>
-                                                    </span>
-                                                </t:inputAny>
-
-                                                <t:inputAny label="general.label.Priority" columnClass="col-xs-12" styleClass="btn-xs">
-                                                    <span class="text-sm">
-                                                        <p:selectOneButton value="#{noteController.note.priority}" >
-                                                            <f:selectItem itemLabel="#{messages['notes.priority.Info']}" itemValue="info" />
-                                                            <f:selectItem itemLabel="#{messages['notes.priority.Warning']}" itemValue="warn" />
-                                                            <f:selectItem itemLabel="#{messages['notes.priority.Danger']}" itemValue="error" />
-                                                        </p:selectOneButton>
-                                                    </span>
-                                                </t:inputAny>
-                                            </div>
+                                            <p:inputText value="#{noteController.note.subject}" placeholder="#{messages['general.label.Subject']}" />
+                                            <p:inputTextarea value="#{noteController.note.body}" placeholder="#{messages['general.label.Message']}" style="margin-top: 4px;"/>
+                                            <span class="text-sm">
+                                                <p:selectOneButton value="#{noteController.note.permission}" styleClass="btn-xs">
+                                                    <f:selectItem itemLabel="#{messages['notes.permission.OWNER']}" itemValue="OWNER" />
+                                                    <f:selectItem itemLabel="#{messages['notes.permission.EVERYBODY']}" itemValue="EVERYBODY" />
+                                                </p:selectOneButton>
+                                            </span>
+                                            <span class="text-sm">
+                                                <p:selectOneButton value="#{noteController.note.priority}" >
+                                                    <f:selectItem itemLabel="#{messages['notes.priority.Info']}" itemValue="info" />
+                                                    <f:selectItem itemLabel="#{messages['notes.priority.Warning']}" itemValue="warn" />
+                                                    <f:selectItem itemLabel="#{messages['notes.priority.Danger']}" itemValue="error" />
+                                                </p:selectOneButton>
+                                            </span>
                                         </div>
+
                                         <div class="box-footer text-sm text-center">
                                             <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="fa fa-check" action="#{noteController.save()}" styleClass="btn-primary" update="noteFormPanel,notesBar"/>
                                             <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="fa fa-close" action="#{noteController.cancel()}" update="noteFormPanel"/>
                                         </div>
                                     </div>
                                 </h:form>
-                                    </ui:remove>
-                                </h:panelGroup>
 
-                                <p:outputPanel id="notesBar">
-                                    <ui:repeat value="#{noteController.notes}" var="note" >
-                                        <div class="alert #{note.priority eq 'info' ? 'alert-info' : note.priority eq 'error' ? 'alert-danger' : 'alert-warning'}">
-                                            <p:commandLink styleClass="close" action="#{noteController.delete(note)}" update=":notesBar" class="pull-right" rendered="#{noteController.canDelete(note)}">
-                                                <i class="fa fa-close"/>
-                                            </p:commandLink>
+                            </h:panelGroup>
 
-                                            <div class="icon">
-                                                <i class="fa #{note.permission eq 'OWNER' ? 'fa-lock' : 'fa-unlock-alt' }"/>
-                                            </div>
+                            <p:outputPanel id="notesBar">
+                                <ui:repeat value="#{noteController.notes}" var="note" >
+                                    <div class="alert #{note.priority eq 'info' ? 'alert-info' : note.priority eq 'error' ? 'alert-danger' : 'alert-warning'}">
+                                        <p:commandLink styleClass="close" action="#{noteController.delete(note)}" update=":notesBar" class="pull-right" rendered="#{noteController.canDelete(note)}">
+                                            <i class="fa fa-close"/>
+                                        </p:commandLink>
 
-                                            <h4>#{note.subject}</h4>
-                                            <p>#{note.body}</p>
-                                            <div class="alert-footer">
-                                                <ul class="list-inline ">
-                                                    <li>
-                                                        <i class="fa fa-clock-o margin-r-5"/> 
-                                                        <h:outputText value="#{note.createDate}">
-                                                            <f:convertDateTime pattern="#{messages['general.format.DateTime']}" />
-                                                        </h:outputText>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa fa-user margin-r-4"/> 
-                                                        <h:outputText value="#{userLookup.getUserName( note.owner)}"/>
-                                                    </li>
-                                                    <ui:remove>
-                                                        <li class="pull-right">
-                                                            <i class="fa #{note.permission eq 'OWNER' ? 'fa-lock' : 'fa-unlock-alt' }"/>
-                                                        </li>
-                                                    </ui:remove>
-                                                </ul>
-                                            </div>
+                                        <div class="icon">
+                                            <i class="fa #{note.permission eq 'OWNER' ? 'fa-lock' : 'fa-unlock-alt' }"/>
                                         </div>
-                                    </ui:repeat>
-                                </p:outputPanel>
-                            </div>
+
+                                        <h4>#{note.subject}</h4>
+                                        <p>#{note.body}</p>
+                                        <div class="alert-footer">
+                                            <ul class="list-inline ">
+                                                <li>
+                                                    <i class="fa fa-clock-o margin-r-5"/> 
+                                                    <h:outputText value="#{note.createDate}">
+                                                        <f:convertDateTime pattern="#{messages['general.format.DateTime']}" />
+                                                    </h:outputText>
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-user margin-r-4"/> 
+                                                    <h:outputText value="#{userLookup.getUserName( note.owner)}"/>
+                                                </li>
+                                                <ui:remove>
+                                                    <li class="pull-right">
+                                                        <i class="fa #{note.permission eq 'OWNER' ? 'fa-lock' : 'fa-unlock-alt' }"/>
+                                                    </li>
+                                                </ui:remove>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </ui:repeat>
+                            </p:outputPanel>
+                        </div>
                         <ui:remove>
-                        <!-- /ui:fragment -->
+                            <!-- /ui:fragment -->
                         </ui:remove>
                     </div>
                 </aside>

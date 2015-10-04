@@ -26,7 +26,6 @@
 
     <ui:define name="context-menu">
 
-        <ui:remove>
         <c:forEach items="#{dashboardManager.dashboards}" var="dashboard" varStatus="loop">
             <li>
                 <h:link id="dashborad#{loop.index}" >
@@ -36,7 +35,6 @@
                 </h:link>
             </li>
         </c:forEach>
-            </ui:remove>
 
         
         <li class="pull-right">

@@ -122,10 +122,11 @@ textarea.ui-inputfield{
     margin-right: 0px;
     span {
         position: relative;
+        margin-top: 0px !important;
         margin-left: auto !important; 
         margin-right: auto !important;
         left: 0px;
-        top: 10px !important;
+        top: 0px !important;
     }
 }
 
@@ -134,7 +135,7 @@ textarea.ui-inputfield{
     border-top-right-radius: 0px !important;
 }
 
-
+.input-group .ui-selectonemenu,
 .input-group .ui-autocomplete{
     display: table-cell;
 }
@@ -198,6 +199,10 @@ textarea.ui-inputfield{
 .ui-autocomplete-items .ui-state-hover, .ui-selectonemenu-items .ui-state-hover{
     background-color: @gray;
     
+}
+
+.ui-autocomplete-itemtip{
+    background-color: @box-border-color;
 }
 
 .ui-autocomplete-items  .ui-state-highlight, .ui-selectonemenu-items .ui-state-highlight{
@@ -366,6 +371,12 @@ ui-picklist-list-wrapper{
 .ui-picklist-buttons-cell button{
     margin-left: auto;
     margin-right: auto;
+    width: 32px;
+    height: 32px;
+    
+    span {
+        margin-left: 0px !important;
+    }
 }
 
 .ui-overlaypanel{
@@ -405,3 +416,6 @@ ui-picklist-list-wrapper{
     
 }
 
+.ui-dashboard-column{
+    padding-bottom: 0px !important;
+}
