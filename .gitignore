@@ -3,3 +3,4 @@ target
 faces-config.NavData
 *~
 *.versionsBackup
+/telve-core/nbproject/
