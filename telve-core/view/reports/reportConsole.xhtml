@@ -74,7 +74,7 @@
 
                 </div>
                 <div class="col-xs-12">
-                    <t:accordion label="Alt Klasörler ( i18n )" icon="fa fa-folder">
+                    <t:accordion label="report.label.Subfolders" icon="fa fa-folder">
                         <ul class="nav nav-pills">
                             <ui:repeat value="#{reportHome.selectedFolder.subfolders}" var="folder">
                                 <li class="">
@@ -232,10 +232,10 @@
 
     <ui:define name="context-menu">
         <li>
-            <a href="#">Arşiv Raporlar</a>
-        </li>
-        <li>
-            <a href="#">Zamanlanmış Raporlar</a>
+            <h:link outcome="/reports/reportConsole.xhtml" >
+                <i class="fa fa-print"></i>
+                #{messages['page.title.ReportConsole']}
+            </h:link>
         </li>
     </ui:define>
 </ui:composition>

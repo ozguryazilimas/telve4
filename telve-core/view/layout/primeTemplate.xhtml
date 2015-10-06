@@ -14,7 +14,7 @@
         <h:head>    
 
 
-            <title>#{telveConfigResolver.getProperty('app.title')} - #{ pageTitleResolver.pageTitle }</title>
+            <title>#{telveConfigResolver.getProperty('app.title')} - #{ messages[pageTitleResolver.pageTitle] }</title>
 
             <ui:include src="/layout/templateHeader.xhtml" />
 

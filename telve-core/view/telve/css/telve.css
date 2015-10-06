@@ -2,6 +2,10 @@
 Telve  CSS
 */
 
+body{
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
+
 .prop .name {
     display: block;
     vertical-align: top;

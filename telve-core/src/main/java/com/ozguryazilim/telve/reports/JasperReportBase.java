@@ -105,17 +105,6 @@ public abstract class JasperReportBase implements ReportController, Serializable
         }
     }
 
-    public void closeDialog() {
-        try {
-            byte[] data = jasperReportHandler.reportToPDFBytes( getTemplateName(), getTemplateName(), new HashMap());
-            reportHome.setReportData(data);
-        } catch (JRException ex) {
-            FacesMessages.error(ex.getMessage());
-        }
-
-        RequestContext.getCurrentInstance().closeDialog("Rapor Çalıştı");
-    }
-
     /**
      * Dialogu hiç bir şey seçmeden kapatır.
      */

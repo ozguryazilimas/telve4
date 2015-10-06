@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.reports;
 
+import com.google.common.base.CaseFormat;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import javax.enterprise.context.Dependent;
 import javax.inject.Named;
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 
 /**
  * Sistemde tanımlı Raporlara erişim ve çalıştırma için API sağlar.
@@ -34,6 +36,20 @@ public class ReportManager implements Serializable{
      * keza folder parent'da da parent pah'in tamamı duruyor.
      */
     private Map<String,ReportFolder> folders = new HashMap<>();
+
+    /**
+     * İsmi verilen raporu bileşen kütüphanesinde bulup çalıştırır.
+     * 
+     * @param report 
+     */
+    public void execReport(String report) {
+        //Sınıf ismini EL ismi haline getiriyoruz.
+        String name = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, report);
+        ReportController rc = BeanProvider.getContextualReference(name, true, ReportController.class);
+        if (rc != null) {
+            rc.execute();
+        }
+    }
     
     /**
      * sistemde tanımlı bütün klasörleri döndürür.

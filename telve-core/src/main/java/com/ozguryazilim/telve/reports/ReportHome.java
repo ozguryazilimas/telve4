@@ -5,22 +5,14 @@
  */
 package com.ozguryazilim.telve.reports;
 
-import com.google.common.base.CaseFormat;
-import com.ozguryazilim.mutfak.kahve.Kahve;
-import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
-import com.ozguryazilim.telve.config.TelveConfigResolver;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Any;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
-import org.picketlink.Identity;
 import org.primefaces.event.RateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +20,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Rapor Listesini sunan GUI'i Control Sınıfı.
  *
- * TODO: FavReportlar rate'e göre sıralanmalı
- * TODO: PDF.js ile inline PDF gösterelim. 
- * 
  * @author Hakan Uygun
  */
 @Named
@@ -44,25 +33,6 @@ public class ReportHome implements Serializable {
 
     private ReportFolder selectedFolder;
     
-    /**
-     * Favori raporlar için rapor rating bilgisi.
-     */
-    private Map<String, Integer> reportRatings = new HashMap<>();
-
-    @Inject
-    @Any
-    private Identity identity;
-
-    @Inject
-    private TelveConfigResolver configResolver;
-
-    @Inject @UserAware
-    private Kahve kahve;
-
-    @Inject
-    @Named("messages")
-    private transient Map<String, String> messages;
-
     @PostConstruct
     public void init() {
         selectFolder("/favorites");
@@ -74,12 +44,7 @@ public class ReportHome implements Serializable {
      * @param report
      */
     public void execReport(String report) {
-        //Sınıf ismini EL ismi haline getiriyoruz.
-        String name = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, report);
-        ReportController rc = BeanProvider.getContextualReference(name, true, ReportController.class);
-        if (rc != null) {
-            rc.execute();
-        }
+        reportManager.execReport(report);
     }
 
     /**
@@ -88,7 +53,7 @@ public class ReportHome implements Serializable {
      * @return
      */
     public Map<String, Integer> getReportRatings() {
-        return reportRatings;
+        return reportManager.getReportRatings();
     }
 
     /**
@@ -97,47 +62,17 @@ public class ReportHome implements Serializable {
      * @param reportRatings
      */
     public void setReportRatings(Map<String, Integer> reportRatings) {
-        this.reportRatings = reportRatings;
-    }
-
-    /**
-     * Rating değerlerine göre favori raporları düzenler.
-     */
-    protected void checkFavReports() {
-        /*
-        for (Entry<String, Integer> e : reportRatings.entrySet()) {
-            if (e.getValue() > 0) {
-                if (!favReports.contains(e.getKey())) {
-                    favReports.add(e.getKey());
-                    new DefaultTreeNode("JasperReport", e.getKey(), favNode);
-                }
-            } else {
-                if (favReports.contains(e.getKey())) {
-                    favReports.remove(e.getKey());
-                    for (TreeNode n : favNode.getChildren()) {
-                        if (e.getKey().equals(n.getData())) {
-                            favNode.getChildren().remove(n);
-                            return;
-                        }
-                    }
-                }
-            }
-        }*/
-
+        reportManager.setReportRatings(reportRatings);
     }
 
     public void onrate(RateEvent rateEvent) {
-        LOG.info("OnRate");
-        LOG.info("Ratings : {}", reportRatings);
-        checkFavReports();
-        //saveFavReports();
+        reportManager.checkFavReports();
+        reportManager.saveFavReports();
     }
 
     public void oncancel() {
-        LOG.info("OnCancel : {}");
-        LOG.info("Ratings : {}", reportRatings);
-        checkFavReports();
-        //saveFavReports();
+        reportManager.checkFavReports();
+        reportManager.saveFavReports();
     }
 
     /**
