@@ -5,7 +5,6 @@
  */
 package com.ozguryazilim.telve.calendar;
 
-import com.ozguryazilim.telve.entities.CalendarEvent;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
@@ -31,8 +30,8 @@ import org.slf4j.LoggerFactory;
 public class CalendarHome implements Serializable{
     private static final Logger LOG = LoggerFactory.getLogger(CalendarHome.class);
     
-    @Inject 
-    private DefaultCaledarEventStore caledarEventStore;
+    @Inject
+    private CalendarFilterModel filterModel;
     
     private ScheduleModel model;
     private ScheduleEvent selectedEvent;
@@ -43,7 +42,10 @@ public class CalendarHome implements Serializable{
 
             @Override
             public void loadEvents(Date start, Date end) {
-                caledarEventStore.loadEvents(this, start, end);
+                for( String s : filterModel.getCalendarSources() ){
+                    CalendarEventController cec = (CalendarEventController) BeanProvider.getContextualReference(s);
+                    cec.loadEvents(this, start, end);
+                }
             }
             
         };
@@ -69,7 +71,7 @@ public class CalendarHome implements Serializable{
     }
     
     public void editEvent(){
-        CalendarEvent ce = (CalendarEvent)selectedEvent.getData();
+        CalendarEventMetadata ce = (CalendarEventMetadata)selectedEvent.getData();
         
         CalendarEventController cec = (CalendarEventController) BeanProvider.getContextualReference(ce.getSourceName());
         cec.process( ce );
@@ -77,7 +79,7 @@ public class CalendarHome implements Serializable{
     
     public void onEventSelect(SelectEvent selectEvent) {
         selectedEvent = (ScheduleEvent) selectEvent.getObject();
-        CalendarEvent ce = (CalendarEvent)selectedEvent.getData();
+        CalendarEventMetadata ce = (CalendarEventMetadata)selectedEvent.getData();
         
         CalendarEventController cec = (CalendarEventController) BeanProvider.getContextualReference(ce.getSourceName());
         cec.process( ce );

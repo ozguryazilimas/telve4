@@ -7,6 +7,8 @@
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 template="/layout/primeTemplate.xhtml">
 
+    <ui:param name="showListBar" value="true" />
+
     <ui:define name="outerspace">
         <ui:remove>
             <ui:include src="/layout/ajaxLoadingPopup.xhtml" />
@@ -60,7 +62,7 @@
         <div class="box">
             <div class="box-body no-padding">
                 <h:form>
-                    <p:schedule id="schedule" value="#{calendarHome.model}" widgetVar="telveCalendar" timeZone="GMT+2" rightHeaderTemplate="" tooltip="true" aspectRatio="1.5" >
+                    <p:schedule id="schedule" value="#{calendarHome.model}" widgetVar="telveCalendar" timeZone="GMT+2" rightHeaderTemplate="" tooltip="true" aspectRatio="2" >
                         <p:ajax event="eventSelect" listener="#{calendarHome.onEventSelect}" oncomplete="editEvent();"/>
                         <p:ajax event="viewChange" listener="#{calendarHome.onViewChange}" />
                     </p:schedule>
@@ -98,12 +100,14 @@
             </a>
         </li>
 
+        <ui:remove>
         <li>
             <a href="#" onclick="PF('calendarFilterPopup').show();" >
                 <h:graphicImage value="/img/ribbon/small/calendar_group.png" />
                 <span >#{messages['calendar.button.Filter']}</span> 
             </a>
         </li>
+            </ui:remove>
 
         <li>
             <p:commandLink id="calb1" action="#{calendarFilterModel.toggleShowClosedEvent()}" update="calb1" process="@this" oncomplete="PF('telveCalendar').update();">
@@ -120,4 +124,89 @@
         </li>
     </ui:define>
 
+    <ui:define name="content-list">
+        <div class="box-header">
+            <h4 class="box-title">#{messages['calendar.label.EventSources']}</h4>
+        </div>
+
+        <ul class="list-group">
+            <ui:repeat value="#{calendarFilterModel.getRegisteredEventSources()}" var="es" >
+                <li class="list-group-item"> 
+                    <p:commandLink action="#{calendarFilterModel.toggleSelectSource(es)}" process="@this" update="@this" oncomplete="PF('telveCalendar').update();">
+                        <i class="fa #{calendarFilterModel.getIsSourceSelected(es) ? 'fa-check-square-o' : 'fa-square-o'}" />
+                    </p:commandLink>
+
+                    <h:panelGroup id="cbtn" layout="span">
+
+                        <button class="btn btn-sm #{calendarFilterModel.getSourceStyle(es)} dropdown-toggle" style="width: 14px; height: 16px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+
+                        </button>
+
+                        <ui:remove>
+                            <a href="#" class="dropdown-toggle #{calendarFilterModel.getSourceStyle(es)}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span>
+                            </a>
+                        </ui:remove>
+                        <ul class="dropdown-menu" >
+                            <li><p:commandLink action="#{calendarFilterModel.setSourceStyle(es, 'bg-blue')}"  process="@this" update="cbtn" oncomplete="PF('telveCalendar').update();">
+                                    <i class="fa fa-square text-blue"></i> Mavi
+                                </p:commandLink></li>
+                            <li><p:commandLink action="#{calendarFilterModel.setSourceStyle(es, 'bg-yellow')}"  process="@this" update="cbtn" oncomplete="PF('telveCalendar').update();">
+                                    <i class="fa fa-square text-yellow"></i> Sarı
+
+                                </p:commandLink></li>
+                            <li><p:commandLink action="#{calendarFilterModel.setSourceStyle(es, 'bg-red')}" process="@this" update="cbtn" oncomplete="PF('telveCalendar').update();">
+                                    <i class="fa fa-square text-red"></i> Kırmızı
+
+                                </p:commandLink></li>
+                            <li>
+                                <p:commandLink action="#{calendarFilterModel.setSourceStyle(es, 'bg-maroon')}" process="@this" update="cbtn" oncomplete="PF('telveCalendar').update();">
+                                    <i class="fa fa-square text-maroon"></i> Bordo
+
+                                </p:commandLink>
+                            </li>
+                            <li>
+                                <p:commandLink action="#{calendarFilterModel.setSourceStyle(es, 'bg-aqua')}" process="@this" update="cbtn" oncomplete="PF('telveCalendar').update();">
+                                    <i class="fa fa-square text-aqua"></i> Auqa
+
+                                </p:commandLink>
+                            </li>
+                            <li>
+                                <p:commandLink action="#{calendarFilterModel.setSourceStyle(es, 'bg-green')}" process="@this" update="cbtn" oncomplete="PF('telveCalendar').update();">
+                                    <i class="fa fa-square text-green"></i> Yeşil
+
+                                </p:commandLink>
+                            </li>
+                            <li>
+                                <p:commandLink action="#{calendarFilterModel.setSourceStyle(es, 'bg-light-blue')}" process="@this" update="cbtn" oncomplete="PF('telveCalendar').update();">
+                                    <i class="fa fa-square text-light-blue"></i> Açık Mavi
+
+                                </p:commandLink>
+                            </li>
+                            <li>
+                                <p:commandLink action="#{calendarFilterModel.setSourceStyle(es, 'bg-orange')}" process="@this" update="cbtn" oncomplete="PF('telveCalendar').update();">
+                                    <i class="fa fa-square text-orange"></i> Turuncu
+
+                                </p:commandLink>
+                            </li>
+                            <li>
+                                <p:commandLink action="#{calendarFilterModel.setSourceStyle(es, 'bg-olive')}" process="@this" update="cbtn" oncomplete="PF('telveCalendar').update();">
+                                    <i class="fa fa-square text-olive"></i> Zeytuni
+
+                                </p:commandLink>
+                            </li>
+                            <li>
+                                <p:commandLink action="#{calendarFilterModel.setSourceStyle(es, 'bg-purple')}" process="@this" update="cbtn" oncomplete="PF('telveCalendar').update();">
+                                    <i class="fa fa-square text-purple"></i> Mor
+
+                                </p:commandLink>
+                            </li>
+                        </ul>
+                    </h:panelGroup>
+                    #{messages[ 'calendar.source.name.'.concat( es ) ]} 
+
+                </li>
+            </ui:repeat>
+        </ul>
+    </ui:define>
 </ui:composition>

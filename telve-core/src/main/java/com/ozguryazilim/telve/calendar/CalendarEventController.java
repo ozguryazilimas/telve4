@@ -5,7 +5,10 @@
  */
 package com.ozguryazilim.telve.calendar;
 
-import com.ozguryazilim.telve.entities.CalendarEvent;
+import java.util.Date;
+import java.util.List;
+import org.primefaces.model.LazyScheduleModel;
+import org.primefaces.model.ScheduleEvent;
 
 /**
  * Olay kaynakları ( CalendarEventSource ile işaretlenmiş ) sınıflar için temel API.
@@ -26,5 +29,18 @@ public interface CalendarEventController {
      * Duruma göre dialog açmak ya da redirect etmek için çalışır.
      * @param event 
      */
-    void process( CalendarEvent event );
+    void process( CalendarEventMetadata event );
+    
+    /**
+     * Verilen model'in içine verilen tarih aralığına uygun eventler yerleştirilir.
+     * 
+     * Ex: model.addEvent(...)
+     * 
+     * @param model
+     * @param start
+     * @param end 
+     */
+    void loadEvents( LazyScheduleModel model, Date start, Date end );
+
+    List<ScheduleEvent> getEvents( Date start, Date end );
 }

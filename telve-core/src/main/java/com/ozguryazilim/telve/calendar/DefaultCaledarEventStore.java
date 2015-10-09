@@ -55,14 +55,15 @@ public class DefaultCaledarEventStore implements CalendarEventStore, Serializabl
     @Override
     public void loadEvents(LazyScheduleModel model, Date start, Date end) {
         
-        List<CalendarEvent> events = repository.findFilteredEvents(start, end, filterModel.getCalendarSources(), userId, userLookup.getUnifiedRoles(), filterModel.getShowPersonalEvents(), filterModel.getShowClosedEvents());
-        for( CalendarEvent e : events ){
-            model.addEvent(getScheduleEvent(e));
+        List<ScheduleEvent> events = getEvents( start, end );
+        
+        for( ScheduleEvent e : events ){
+            model.addEvent(e);
         }
     }
     
     public List<ScheduleEvent> getEvents( Date start, Date end ){
-        List<CalendarEvent> events = repository.findFilteredEvents(start, end, filterModel.getCalendarSources(), userId, userRoles, filterModel.getShowPersonalEvents(), filterModel.getShowClosedEvents());
+        List<CalendarEvent> events = repository.findFilteredEvents(start, end, filterModel.getCalendarSources(), userId, userLookup.getUnifiedRoles(), filterModel.getShowPersonalEvents(), filterModel.getShowClosedEvents());
         List<ScheduleEvent> result = new ArrayList<>();
         
         for( CalendarEvent e : events ){

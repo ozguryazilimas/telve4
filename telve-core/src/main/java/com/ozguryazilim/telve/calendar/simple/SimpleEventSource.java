@@ -53,5 +53,10 @@ public class SimpleEventSource extends AbtsractCalendarEventSource<SimpleEvent> 
     public Class<SimpleEvent> getPayloadClass() {
         return SimpleEvent.class;
     }
+
+    @Override
+    protected String getEventSourceName() {
+        return "simpleEventSource";
+    }
     
 }

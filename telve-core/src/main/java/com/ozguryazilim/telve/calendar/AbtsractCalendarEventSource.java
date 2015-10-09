@@ -6,13 +6,16 @@
 package com.ozguryazilim.telve.calendar;
 
 import com.google.gson.Gson;
+import com.ozguryazilim.telve.auth.ActiveUserLookup;
 import com.ozguryazilim.telve.entities.CalendarEvent;
 import com.ozguryazilim.telve.reminder.ReminderService;
 import com.ozguryazilim.telve.utils.DateUtils;
 import com.ozguryazilim.telve.utils.ScheduleModel;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
@@ -21,6 +24,8 @@ import org.apache.deltaspike.core.util.ProxyUtils;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultScheduleEvent;
+import org.primefaces.model.LazyScheduleModel;
+import org.primefaces.model.ScheduleEvent;
 
 /**
  * DefaultCalendarEventStore kullanacak olan kaynaklar için taban sınıf.
@@ -38,6 +43,15 @@ public abstract class AbtsractCalendarEventSource<E> implements CalendarEventCon
     
     @Inject
     protected ReminderService reminderService;
+
+    /**
+     * Context üzerinde tanımlı filtre
+     */
+    @Inject
+    private CalendarFilterModel filterModel;
+    
+    @Inject
+    private ActiveUserLookup userLookup;
     
     private CalendarEvent calendarEvent;
     private E data;
@@ -89,8 +103,11 @@ public abstract class AbtsractCalendarEventSource<E> implements CalendarEventCon
         e.setStartDate(event.getStartDate());
         e.setEndDate(event.getEndDate());
         
-        e.setStyleClass("calendar.source.style."+getClass().getSimpleName());
-        e.setData(getContentData(event));
+        e.setStyleClass( filterModel.getSourceStyle(getEventSourceName()));
+        CalendarEventMetadata meta = new CalendarEventMetadata();
+        meta.setSourceKey(event.getSourceKey());
+        meta.setSourceName(event.getSourceName());
+        e.setData(meta);
         
         return e;
     }
@@ -102,11 +119,11 @@ public abstract class AbtsractCalendarEventSource<E> implements CalendarEventCon
     }
 
     @Override
-    public void process(CalendarEvent event) {
-        //FIXME: Burada kontrolün becerisine bakıp redirect edilebilir.
-        this.setCalendarEvent(event);
-        this.setData( getContentData(event));
-        openDialog();
+    public void process(CalendarEventMetadata event) {
+        //FIXME: Burada Tavır tamamen değişmeli.
+        //this.setCalendarEvent(event);
+        //this.setData( getContentData(event));
+        //openDialog();
     }
     
     
@@ -210,6 +227,34 @@ public abstract class AbtsractCalendarEventSource<E> implements CalendarEventCon
     public void setData(E data) {
         this.data = data;
     }
+
+          
+    @Override
+    public void loadEvents(LazyScheduleModel model, Date start, Date end) {
+        
+        List<ScheduleEvent> events = getEvents( start, end );
+        
+        for( ScheduleEvent e : events ){
+            model.addEvent(e);
+        }
+    }
     
+    @Override
+    public List<ScheduleEvent> getEvents( Date start, Date end ){
+        List<CalendarEvent> events = repository.findFilteredEvents(start, end, getEventSourceName(), userLookup.getActiveUser().getLoginName(), userLookup.getUnifiedRoles(), filterModel.getShowPersonalEvents(), filterModel.getShowClosedEvents());
+        List<ScheduleEvent> result = new ArrayList<>();
+        
+        for( CalendarEvent e : events ){
+            result.add(getScheduleEvent(e));
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Sınıf adından event Source adnına dönüştürüyoruz.
+     * @return 
+     */
+    protected abstract String getEventSourceName();
     
 }

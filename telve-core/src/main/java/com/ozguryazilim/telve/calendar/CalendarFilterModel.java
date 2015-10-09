@@ -7,11 +7,15 @@ package com.ozguryazilim.telve.calendar;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.ozguryazilim.mutfak.kahve.Kahve;
 import com.ozguryazilim.mutfak.kahve.KahveEntry;
 import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -36,19 +40,22 @@ public class CalendarFilterModel implements Serializable {
     private Boolean showPersonalEvents;
     private Boolean showClosedEvents;
 
+    private Map<String,String> calendarSourceStyles = new HashMap<>();
+    
     public List<String> getCalendarSources() {
 
         if (calendarSources == null) {
+            calendarSources = new ArrayList<>();
             KahveEntry o = kahve.get("calendar.filter.sources");
             //Kullanıcı için önceden tanımlanmış bir liste var mı?
             if( o != null){
-                calendarSources = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(o.getAsString());
+                calendarSources.addAll( Splitter.on(',').omitEmptyStrings().trimResults().splitToList(o.getAsString()));
             }
             
-            //Yoksa ya da boşsa sistemdekilerin hepsi.
-            if (calendarSources == null || calendarSources.isEmpty()) {
-                calendarSources = CalendarEventSourceRegistery.getRegisteredEventSources();
-            }
+            //TODO: Yoksa ya da boşsa sistemdekilerin hepsi gelse mi?
+            //if (calendarSources == null || calendarSources.isEmpty()) {
+            //    calendarSources = CalendarEventSourceRegistery.getRegisteredEventSources();
+            //}
         }
 
         return calendarSources;
@@ -103,5 +110,36 @@ public class CalendarFilterModel implements Serializable {
      */
     public List<String> getRegisteredEventSources() {
         return CalendarEventSourceRegistery.getRegisteredEventSources();
+    }
+    
+    public String getSourceStyle( String name ){
+        
+        String style = calendarSourceStyles.get(name);
+        if( Strings.isNullOrEmpty(style)){
+            KahveEntry o = kahve.get("calendar.style." + name, "bg-yellow");
+            style = o.getAsString();
+            calendarSourceStyles.put(name, style);
+        }
+        return style;
+    }
+    
+    public void setSourceStyle( String name, String style ){
+        calendarSourceStyles.put(name, style);
+        kahve.put("calendar.style." + name, style);
+    }
+    
+    public void toggleSelectSource( String name ){
+        if( calendarSources.contains(name)){
+            calendarSources.remove(name);
+        } else {
+            calendarSources.add(name);
+        }
+        //Değişiklikleri kaydedelim
+        String s = Joiner.on(',').join(calendarSources);
+        kahve.put("calendar.filter.sources", s);
+    }
+    
+    public Boolean getIsSourceSelected( String name ){
+        return calendarSources.contains(name);
     }
 }

@@ -75,6 +75,49 @@ public abstract class CalendarEventRepository extends RepositoryBase<CalendarEve
         
         return crit.getResultList();
     }
+
+    
+    /**
+     * Verilen iki tarih arasındaki filtrelenmiş eventlerin listesini döndürür.
+     * 
+     * @param startDate başlangıç tarihi
+     * @param endDate bitiş tarihi
+     * @param sources hangi kaynaklara bakılacak
+     * @param userId arama yapılacak olan kullanıcı 
+     * @param userRoles arama yapılacak roller
+     * @param onlyPersonalEvents sadece kişiye atanmış eventler bulunsun
+     * @param closedEvents kapalı eventlerde bulunsun
+     * @return 
+     */
+    public List<CalendarEvent> findFilteredEvents( Date startDate, Date endDate, 
+                                    String sourceName, String userId, List<String> userRoles,
+                                    Boolean onlyPersonalEvents, Boolean closedEvents ){
+
+        //Actor Filtresi hazırlıyoruz.
+        List<Criteria<CalendarEvent,CalendarEvent>> actorFilter = new ArrayList<>();
+        for( String r : userRoles ){
+            if( r.startsWith("P")){
+                actorFilter.add(criteria().like(CalendarEvent_.actor, r + "%"));
+            } else {
+                actorFilter.add(criteria().eq(CalendarEvent_.actor, r));
+            }
+        }
+        
+        
+        Criteria<CalendarEvent,CalendarEvent> crit = criteria()
+                .gtOrEq(CalendarEvent_.startDate, startDate)
+                .ltOrEq(CalendarEvent_.endDate, endDate)
+                .eq(CalendarEvent_.sourceName, sourceName )
+                .or(actorFilter);
+                //.in(CalendarEvent_.actor, actors.toArray(new String[]{}) );
+            
+        //Kapalıları gösterecek miyiz?
+        if( !closedEvents ){
+            crit.eq(CalendarEvent_.done, Boolean.FALSE);
+        }
+        
+        return crit.getResultList();
+    }
     
     /**
      * Verilen kaynak için tamamlanmamış eventleri döndürür.
