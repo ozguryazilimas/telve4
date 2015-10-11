@@ -26,7 +26,8 @@
 
     <composite:implementation>
         <div id="#{cc.clientId}" class="prop #{cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }" rendered="#{cc.rendered}" >
-            <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
+            <ui:remove>PF 5.3 ile PE 3.0 arasında sorun var sanırım. for="#{cc.id}_inp" </ui:remove>
+            <p:outputLabel value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
             <span class="value">
                 <pe:inputNumber id="#{cc.id}_inp" value="#{cc.attrs.value}"  required="#{cc.attrs.required}"  
                                 symbol="#{cc.attrs.symbol}" symbolPosition="#{cc.attrs.symbolPosition}" emptyValue="#{cc.attrs.emptyValue}" 

@@ -557,6 +557,18 @@
 .ui-icon-search:before {
   content: "\f002";
 }
+.ui-icon-seek-first:before {
+  content: "\f100";
+}
+.ui-icon-seek-prev:before {
+  content: "\f104";
+}
+.ui-icon-seek-next:before {
+  content: "\f105";
+}
+.ui-icon-seek-end:before {
+  content: "\f101";
+}
 /* positioning */
 /*
 .ui-icon-carat-1-n { background-position: 0 0; }
@@ -997,6 +1009,9 @@ textarea.ui-inputfield {
 .ui-selectonemenu-panel {
   background-color: #fff;
 }
+.ui-selectonemenu-table {
+  border-color: #f4f4f4;
+}
 .ui-selectonemenu-filter-container {
   background-color: #fff;
 }
@@ -1433,6 +1448,9 @@ ui-picklist-list-wrapper {
 .ui-overlaypanel {
   background-color: #fff;
 }
+.ui-paginator {
+  font-size: 10px;
+}
 .ui-paginator-pages {
   padding: 0px !important;
 }
@@ -1446,7 +1464,7 @@ ui-picklist-list-wrapper {
 }
 .ui-paginator-pages .ui-paginator-page {
   border: 1px solid #d2d6de;
-  padding: 8px 16px !important;
+  padding: 4px 8px !important;
   margin-left: -1px !important;
   border-radius: 0px;
 }
@@ -1456,6 +1474,32 @@ ui-picklist-list-wrapper {
   border: 1px solid #3c8dbc;
 }
 .ui-paginator-pages .ui-paginator-page.ui-state-hover {
+  background-color: #eeeeee !important;
+}
+.ui-paginator-first,
+.ui-paginator-prev,
+.ui-paginator-next,
+.ui-paginator-last {
+  color: #fff !important;
+  padding: 5px 8px !important;
+}
+.ui-paginator-first > span:before,
+.ui-paginator-prev > span:before,
+.ui-paginator-next > span:before,
+.ui-paginator-last > span:before {
+  color: #333333 !important;
+  text-indent: 0px !important;
+}
+.ui-paginator-first > span,
+.ui-paginator-prev > span,
+.ui-paginator-next > span,
+.ui-paginator-last > span {
+  text-indent: 9px !important;
+}
+.ui-paginator-first.ui-state-hover,
+.ui-paginator-prev.ui-state-hover,
+.ui-paginator-next.ui-state-hover,
+.ui-paginator-last.ui-state-hover {
   background-color: #eeeeee !important;
 }
 .ui-dashboard-column {

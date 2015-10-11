@@ -66,7 +66,7 @@
             </div>
             <div class="row">
                 <t:accordion label="general.label.Today">
-                    <div class="list-group list-group">
+                    <div class="list-group no-margin">
                         <ui:repeat value="#{eventsDashlet.todayEvents}" var="event">
                             <p:commandLink action="#{eventsDashlet.onEventSelect(event.data)}"  styleClass="list-group-item" process="@this">
                                 <p class="list-group-item-text">#{event.title}</p>
@@ -81,7 +81,7 @@
                     </div>
                 </t:accordion>
                 <t:accordion label="general.label.Tomorrow">
-                    <div class="list-group">
+                    <div class="list-group no-margin">
                         <ui:repeat value="#{eventsDashlet.tomorrowEvents}" var="event">
                             <p:commandLink action="#{eventsDashlet.onEventSelect(event.data)}"  styleClass="list-group-item" process="@this">
                                 <p class="list-group-item-text">#{event.title}</p>
@@ -96,7 +96,7 @@
                     </div>
                 </t:accordion>
                 <t:accordion label="general.label.Soon">
-                    <div class="list-group">
+                    <div class="list-group no-margin">
                         <ui:repeat value="#{eventsDashlet.soonEvents}" var="event">
                             <p:commandLink action="#{eventsDashlet.onEventSelect(event.data)}"  styleClass="list-group-item" process="@this">
                                 <p class="list-group-item-text">#{event.title}</p>

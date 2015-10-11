@@ -48,7 +48,7 @@
                                          selectionMode="single"
                                          selection="#{bean.selectedItem}" 
                                          rowKey="#{item.id}"
-
+                                         reflow="true"
                                          emptyMessage="#{messages['general.message.browse.EmptyDesc']}">                      
 
                                 <p:ajax event="rowSelect"  update=":contextForm, :browseListForm:detailPanel, #{onSelectUpdate}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');"/>
