@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.ozguryazilim.mutfak</groupId>
-	<artifactId>telve-theme</artifactId>
-	<version>4.0.0.A14</version> 
-	<name>Telve Theme</name>
-	<packaging>jar</packaging>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.ozguryazilim.mutfak</groupId>
+    <artifactId>telve-theme</artifactId>
+    <version>4.0.0.A14</version> 
+    <name>Telve Theme</name>
+    <packaging>jar</packaging>
 	
 
     <build>
         <plugins>
+            <!--
+            <plugin>
+                <groupId>org.lesscss</groupId>
+                <artifactId>lesscss-maven-plugin</artifactId>
+                <version>1.7.0.1.1</version>
+                <configuration>
+                    <sourceDirectory>${project.basedir}/src/main/less</sourceDirectory>
+                    <outputDirectory>${project.build.directory}/${project.build.finalName}/META-INF/resources/primefaces-telve</outputDirectory>
+                    <compress>true</compress>
+                    <includes>
+                        <include>theme.less</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
             <plugin>
                 <groupId>org.primefaces</groupId>
                 <artifactId>maven-jsf-plugin</artifactId>
