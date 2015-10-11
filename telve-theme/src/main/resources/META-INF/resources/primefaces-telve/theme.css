@@ -1009,8 +1009,8 @@ textarea.ui-inputfield {
 .ui-selectonemenu-panel {
   background-color: #fff;
 }
-.ui-selectonemenu-table {
-  border-color: #f4f4f4;
+.ui-selectonemenu-table td {
+  border-color: #f4f4f4 !important;
 }
 .ui-selectonemenu-filter-container {
   background-color: #fff;
