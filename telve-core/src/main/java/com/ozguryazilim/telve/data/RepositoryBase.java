@@ -7,13 +7,18 @@ package com.ozguryazilim.telve.data;
 
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.entities.ViewModel;
+import com.ozguryazilim.telve.query.QueryDefinition;
+import com.ozguryazilim.telve.query.columns.Column;
 import com.ozguryazilim.telve.query.filters.Filter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.data.api.AbstractEntityRepository;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
@@ -101,7 +106,7 @@ public abstract class RepositoryBase<E extends EntityBase, R extends ViewModel> 
     protected abstract Class<R> getResultClass();
     
     
-    public List<R> browseQuery( List<Filter<E, ?>> filters ){
+    public List<R> browseQuery( QueryDefinition queryDefinition  ){
         return Collections.EMPTY_LIST;
     }
     
@@ -118,6 +123,19 @@ public abstract class RepositoryBase<E extends EntityBase, R extends ViewModel> 
             f.decorateCriteriaQuery(predicates, builder, from);
         }
         
+    }
+    
+    protected List<Order> decorateSorts( List<Column<? super E>> sorters, CriteriaBuilder builder, Root<E> from ){
+        List<Order> result = new ArrayList<>();
+        for( Column<? super E> c : sorters ){
+            if( c.getSortAsc()){
+                result.add( builder.asc(from.get((SingularAttribute<E, ?>)c.getAttribute())));
+            } else {
+                result.add( builder.desc(from.get((SingularAttribute<E, ?>)c.getAttribute())));
+            }
+        }
+        
+        return result;
     }
     
     /**

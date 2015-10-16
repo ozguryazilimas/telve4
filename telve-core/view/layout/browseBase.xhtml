@@ -4,9 +4,13 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 template="/layout/primeTemplate.xhtml">
 
     <ui:param name="showListBar" value="true" />
+    <ui:param name="hideListBar" value="true" />
+    <ui:param name="dontShowContentHeader" value="true" />
 
     <ui:define name="outerspace">
         <ui:remove>
@@ -15,29 +19,224 @@
         <ui:insert name="includes" />
     </ui:define>
 
+    <ui:define name="customHeader">
+
+        <h:form id="qrySaveFrm">
+            <p:dialog id="qrySave" widgetVar="qrySave" header="#{messages['general.caption.SaveQuery']}" width="350px">
+                <div class="row">
+                    <t:inputText label="general.label.QueryName" value="#{bean.newQueryName}" columnClass="col-xs-12" required="true"/>
+                </div>
+
+                <h:panelGroup id="dialogButtons" styleClass="actionButtons" layout="block">
+                    <p:commandButton id="saveQuery" value="#{messages['general.button.Save']}" action="#{bean.save()}" update="bheader" styleClass="btn-primary" oncomplete="PF('qrySave').hide();"/>
+                </h:panelGroup>
+            </p:dialog>
+        </h:form>
+
+        <section class="content-header">
+            <small class="text-muted">#{ messages[pageTitleResolver.pageTitle] }</small>
+            <h:form id="bheader">
+                <div class="row">
+                    <div class="value col-md-3">
+
+                        <h3 style="margin-top: 0px; margin-bottom: 0px; ">
+                            <div class="dropdown" style="display: inline-block;">
+                                <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #333;">
+                                    #{messages[bean.queryName]}  
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" >
+                                    <li class="dropdown-header">#{messages['browse.label.SystemQueries']}</li>
+                                    <ui:repeat value="#{bean.systemQueryNames}" var="qn" >
+                                        <li><p:commandLink action="#{bean.loadQuery(qn)}" process="@this" update="@([id$=results]),bheader">#{messages[qn]}</p:commandLink></li>
+                                    </ui:repeat>
+                                    <li role="separator" class="divider"></li>
+                                    <li class="dropdown-header">#{messages['browse.label.PersonalQueries']}</li>
+                                    <ui:repeat value="#{bean.queryNames}" var="qn" >
+                                        <li><p:commandLink action="#{bean.loadQuery(qn)}" process="@this" update="@([id$=results]),bheader">#{qn}</p:commandLink></li>
+                                    </ui:repeat>
+                                    <li role="separator" class="divider"></li>
+                                    <li><p:commandLink process="@this" update="qrySaveFrm" oncomplete="PF('qrySave').show();"><i class="fa fa-save"/>#{messages['general.button.SaveAsNew']}</p:commandLink></li>
+                                    <li><p:commandLink action="#{bean.save()}" process="@this" disabled="#{bean.isSystemQuery}"><i class="fa fa-save"/>#{messages['general.button.Update']}</p:commandLink></li>
+                                    <li><p:commandLink action="#{bean.deleteQuery()}" process="@this" disabled="#{bean.isSystemQuery}" update="@([id$=results]),bheader"><i class="fa fa-trash-o"/>#{messages['general.button.Delete']}</p:commandLink></li>
+                                </ul>
+                            </div>
+                        </h3>
+                    </div>
+
+                    <ui:fragment rendered="#{showQuickSearch}">
+                        <div class="col-md-3 col-xs-12 pull-right">
+                            <span class="value">
+                                <div class="input-group">
+                                    <p:inputText id="filter" value="#{bean.queryDefinition.searchText}" 
+                                                 placeholder="#{messages['general.info.SearchText']}" />
+                                    <div class="input-group-btn">
+                                        <p:commandButton action="#{bean.search()}" process="@form" icon="fa fa-search" styleClass="ui-icon-only btn btn-default" update="@([id$=results])" />
+                                    </div>
+                                </div>
+                            </span>
+                        </div>
+                    </ui:fragment>
+
+                    <ui:insert name="QuickSearchExtra" />
+
+                </div>
+            </h:form>
+
+        </section>
+    </ui:define>
+
     <ui:define name="body">
 
 
         <ui:include src="/layout/messages.xhtml"/>
 
 
+        <h:form id="popups">
+            <p:overlayPanel id="columnsPop" for="browseListForm:columnsPop" hideEffect="fade" dynamic="true" appendToBody="false" widgetVar="columnsPop">  
+
+                <div class="box-header">
+                    #{messages['general.label.ResultColumns']}
+                </div>
+                <div class="box-body">
+
+                    <div class="row">
+                        <p:pickList value="#{bean.queryDefinition.pickListColumns}" 
+                                    var="item"
+                                    itemValue="#{item}" itemLabel="#{messages[item.labelKey]}"
+                                    showTargetControls="true"
+                                    styleClass="col-xs-12"
+                                    converter="ColumnConverter">
+                            <f:facet name="sourceCaption">#{messages['general.label.Available']}</f:facet>  
+                            <f:facet name="targetCaption">#{messages['general.label.Selected']}</f:facet>
+                            <p:column>
+                                #{messages[item.labelKey]}
+                            </p:column>
+                        </p:pickList>
+                    </div>
+                    <div class="row">
+                        <t:inputText label="general.label.ResultLimit" value="#{bean.queryDefinition.resultLimit}" />
+                        <t:inputText label="general.label.RowLimit" value="#{bean.queryDefinition.rowLimit}" />
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <div class="pull-right">
+                        <p:commandButton styleClass="btn btn-primary" ajax="true" process="@form" value="#{messages['general.button.Ok']}" update="@([id$=results])" oncomplete="PF('columnsPop').hide();"/>
+                        <p:button styleClass="btn btn-default" onclick="PF('columnsPop').hide();return false;" value="#{messages['general.button.Cancel']}" />
+                    </div>
+                </div>
+            </p:overlayPanel>
+
+
+            <p:overlayPanel id="sortersPop" for="browseListForm:sortersPop" hideEffect="fade" dynamic="true" appendToBody="false" widgetVar="sortersPop">  
+
+                <div class="box-header">
+                    #{messages['general.label.Sorters']}
+                </div>
+                <div class="box-body">
+
+                    <pe:remoteCommand id="toggleSort" name="toggleSort" process="@this" actionListener="#{bean.queryDefinition.toggleSortOrder}">  
+                        <pe:methodSignature parameters="java.lang.String" />  
+                        <pe:methodParam name="name"/>  
+                    </pe:remoteCommand>  
+                    
+                    <div class="row">
+                        <p:pickList id="sorters" value="#{bean.queryDefinition.sortListColumns}" 
+                                    var="item"
+                                    itemValue="#{item}" itemLabel="#{messages[item.labelKey]}"
+                                    showTargetControls="true"
+                                    styleClass="col-xs-12"
+                                    converter="ColumnConverter">
+                            <f:facet name="sourceCaption">#{messages['general.label.Available']}</f:facet>  
+                            <f:facet name="targetCaption">#{messages['general.label.Selected']}</f:facet>
+                            <p:column>
+                                #{messages[item.labelKey]}
+                            </p:column>
+                            <p:column class="pull-right">
+                                <a href="javascript:" onclick="toggleSort('#{item.name}');jQuery('#str#{item.name}').toggleClass('fa-sort-alpha-asc');jQuery('#str#{item.name}').toggleClass('fa-sort-alpha-desc');">
+                                    <i id="str#{item.name}" class="text-blue  fa #{item.sortAsc ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'}" />
+                                </a>
+                            </p:column>
+                        </p:pickList>
+                    </div>
+
+                </div>
+                <div class="box-footer">
+                    <div class="pull-right">
+                        <p:commandButton styleClass="btn btn-primary" ajax="true" process="@form" value="#{messages['general.button.Ok']}" update="@([id$=results])" oncomplete="PF('sortersPop').hide();"/>
+                        <p:button styleClass="btn btn-default" onclick="PF('sortersPop').hide();return false;" value="#{messages['general.button.Cancel']}" />
+                    </div>
+                </div>
+            </p:overlayPanel>
+        </h:form>
 
 
         <h:form id="browseListForm">
-            
+
             <div class="row">
 
                 <div id="main-col" class="#{showDetailPanel ? 'col-md-9 col-xs-12' : 'col-xs-12' }">
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <ui:fragment rendered="#{showDetailPanel eq 'true'}">
-                                <div class="tools">
-                                    <a href="#" onclick="jQuery('#detail-col').toggle();jQuery('#main-col').toggleClass('col-md-9');"><i class="fa fa-align-right pull-right"></i></a>
-                                </div>
-                            </ui:fragment>
+
                             <h3 class="box-title">
-                            <h:outputText value="#{messages['general.label.Results']}" />
+                                <h:outputText value="#{messages['general.label.Results']}" />
                             </h3>
+                            <div class="box-tools pull-right">
+                                <p:commandLink actionListener="#{bean.search()}" styleClass="btn btn-box-tool" update="@([id$=results])" process="@this" title="#{messages['general.button.Refresh']}">
+                                    <i class="fa fa-refresh"/>
+                                </p:commandLink>
+                                <ui:fragment rendered="#{identity.hasPermission( permission, 'export')}">
+                                    <div class="doropdown" style="display: inline-block;" title="#{messages['general.button.Export']}">
+                                        <a href="javascript:" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-download"/>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <ui:remove>
+                                                <li>
+                                                    <p:commandLink ajax="false">
+                                                        <i class="fa fa-file-pdf-o" /> PDF
+                                                        <p:dataExporter type="pdf" target=":browseListForm:results" fileName="results" /> 
+                                                    </p:commandLink>
+                                                </li>
+                                            </ui:remove>
+                                            <li>
+                                                <p:commandLink ajax="false">
+                                                    <i class="fa fa-file-text-o" /> CSV
+                                                    <p:dataExporter type="csv" target=":browseListForm:results" fileName="results" /> 
+                                                </p:commandLink>
+                                            </li>
+                                            <li>
+                                                <p:commandLink ajax="false">
+                                                    <i class="fa fa-file-excel-o" /> XLS
+                                                    <p:dataExporter type="xls" target=":browseListForm:results" fileName="results" /> 
+                                                </p:commandLink>
+                                            </li>
+                                            <li>
+                                                <p:commandLink ajax="false">
+                                                    <i class="fa fa-file-code-o" /> XML
+                                                    <p:dataExporter type="xml" target=":browseListForm:results" fileName="results" /> 
+                                                </p:commandLink>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </ui:fragment>
+                                <i class="margin-r-5" />
+                                <a title="#{messages['general.button.Filter']}" href="javascript:" class="btn btn-box-tool" onclick="jQuery('#content-list-col').toggle();
+                                        jQuery('#content-list-col').toggleClass('col-md-3 col-xs-12 col-md-pull-9');
+                                        jQuery('#content-data-col').toggleClass('col-md-9 col-md-push-3');">
+                                    <i class="fa fa-filter"/>
+                                </a>
+                                <p:commandLink id="sortersPop" styleClass="btn btn-box-tool" onclick="return false;" title="#{messages['general.button.Sort']}">
+                                    <i class="fa fa-sort-alpha-asc"/>
+                                </p:commandLink>
+                                <p:commandLink id="columnsPop" styleClass="btn btn-box-tool" onclick="return false;" title="#{messages['general.button.Columns']}">
+                                    <i class="fa fa-columns"/>
+                                </p:commandLink>
+                                <ui:fragment rendered="#{showDetailPanel eq 'true'}">
+                                    <a href="javascript:" class="btn btn-box-tool" onclick="jQuery('#detail-col').toggle();jQuery('#main-col').toggleClass('col-md-9');"><i class="fa fa-align-right pull-right"></i></a>
+                                </ui:fragment>
+                            </div>
                         </div>
                         <div class="box-body">
                             <p:dataTable id="results" var="item" widgetVar="results"
@@ -66,7 +265,7 @@
                                 </ui:remove>
 
                                 <ui:insert name="beforeColumns" />
-                                
+
                                 <c:forEach items="#{bean.queryDefinition.columns}" var="col" varStatus="loop">
                                     <p:column>
                                         <c:set var="ind" value="#{loop.index}" />
@@ -77,7 +276,7 @@
 
                                         <ui:remove>Burada bir bug var eğer aşağıdaki gib boş bir include almazsak DOCTYPE yanlış üretiliyor.</ui:remove>
                                         <ui:include src="/columns/empty.xhtml" />
-                                        
+
                                     </p:column>
                                 </c:forEach>
                                 <ui:insert name="afterColumns" />
@@ -101,15 +300,15 @@
                 </ui:fragment>
 
             </div>
-                
+
         </h:form>
-        
+
     </ui:define>
 
     <ui:define name="content-list">
-        
+
         <ui:include src="/layout/browseFilters.xhtml" />
-        
+
     </ui:define>
 
     <ui:define name="context-menu">

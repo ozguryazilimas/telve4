@@ -84,22 +84,22 @@
                         <h:inputHidden id="selectedNodes" value="#{lookupBean.model.selectedNodes}" />
                         
                         <div class="pull-right">
-                            <a href="#" onclick="jQuery('#${cc.id}data').jstree('close_all');">
+                            <a href="#" onclick="jQuery('##{cc.id}data').jstree('close_all');">
                                 <i class="fa fa-minus-square" />
                             </a>
-                            <a href="#" onclick="jQuery('#${cc.id}data').jstree('open_all');">
+                            <a href="#" onclick="jQuery('##{cc.id}data').jstree('open_all');">
                                 <i class="fa fa-plus-square" />
                             </a>
                         </div>
                         
                         
-                        <div id="${cc.id}data" ></div>
+                        <div id="#{cc.id}data" ></div>
                         
                         <script type="text/javascript">
                             
                             function buildTree(){
                                     // inline data 
-                                    jQuery("#${cc.id}data")
+                                    jQuery("##{cc.id}data")
                                         .on("changed.jstree", function (e, data) {
                                             //alert( data.instance.get_node(data.selected[0]).id );
                                             //selectNode( [ { 'name': 'nodeId', 'value' : data.instance.get_node(data.selected[0]).id }]);
@@ -125,18 +125,18 @@
                                     buildTree();
                                     
                                     function setNodeSelections(){
-                                            $('#${cc.id}data').jstree().select_node(jQuery(PrimeFaces.escapeClientId("lookupForm:selectedNodes")).val().split(','));
+                                            $('##{cc.id}data').jstree().select_node(jQuery(PrimeFaces.escapeClientId("lookupForm:selectedNodes")).val().split(','));
                                     }
 
                                     function setSelections(){
-                                            var s = jQuery('#${cc.id}data').jstree().get_selected();
+                                            var s = jQuery('##{cc.id}data').jstree().get_selected();
                                             jQuery(PrimeFaces.escapeClientId("#{ccId}:selectedNodes")).val(s);
                                     }
 
                                     //setNodeSelections();                                
                                     
                                     
-                jQuery( '#${cc.id}data' ).slimScroll({
+                jQuery( '##{cc.id}data' ).slimScroll({
                     height : '250px',
                     width : '428px'
                 });

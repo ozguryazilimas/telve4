@@ -23,8 +23,16 @@ import org.primefaces.model.DualListModel;
  */
 public class QueryDefinition<E, R> {
 
-    private List<Filter<E, ?>> allFilters = new ArrayList<>();
-    private List<Filter<E, ?>> reqFilters = new ArrayList<>();
+    /**
+     * Genel bir sorgu alanı için veri saklanır.
+     * Sorgu implementasyonu hangi alanları arayacağını belirler.
+     * Genelde Ad Soyad, Açıklama v.b. gibi alanlar için kullanılır.
+     * 
+     * QueryModel üzerinde saklanmaz.
+     */
+    private String searchText;
+    
+    private List<Filter<E, ?>> visibleFilters = new ArrayList<>();
     private List<Filter<E, ?>> filters = new ArrayList<>();
 
     /**
@@ -37,6 +45,13 @@ public class QueryDefinition<E, R> {
      */
     private List<Column<? super E>> columns = new ArrayList<>();
 
+    /**
+     * Sıralama için kullanılabilecek kolonlar.
+     */
+    private List<Column<? super E>> sortables = new ArrayList<>();
+    
+    private List<Column<? super E>> sorters = new ArrayList<>();
+    
     private Integer resultLimit = 100;
     private Integer rowLimit = 20;
 
@@ -48,47 +63,45 @@ public class QueryDefinition<E, R> {
      * @param required
      * @return
      */
-    public QueryDefinition<E, R> addFilter(Filter<E, ?> filter, boolean visible, boolean required) {
+    public QueryDefinition<E, R> addFilter(Filter<E, ?> filter, boolean visible ) {
 
-        allFilters.add(filter);
+        filters.add(filter);
 
-        if (visible || required) {
-            filters.add(filter);
-        }
-
-        if (required) {
-            reqFilters.add(filter);
+        if (visible ) {
+            visibleFilters.add(filter);
         }
 
         return this;
     }
 
-    public QueryDefinition<E, R> addFilter(Filter<E, ?> filter, boolean visible) {
-        return addFilter(filter, visible, false);
-    }
-
+    
     public QueryDefinition<E, R> addFilter(Filter<E, ?> filter) {
-        return addFilter(filter, false, false);
+        return addFilter(filter, true);
     }
 
-    public QueryDefinition<E, R> addColumn(Column<? super E> column, boolean visible) {
+    public QueryDefinition<E, R> addColumn(Column<? super E> column, boolean visible, boolean sortable) {
         allColumns.add(column);
         if (visible) {
             columns.add(column);
         }
+        
+        if( sortable ){
+            sortables.add(column);
+        }
+        
         return this;
     }
 
+    public QueryDefinition<E, R> addColumn(Column<? super E> column, boolean visible) {
+        return addColumn(column, visible, true);
+    }
+    
     public QueryDefinition<E, R> addColumn(Column<? super E> column) {
-        return addColumn(column, false);
+        return addColumn(column, false, true);
     }
 
-    public List<Filter<E, ?>> getAllFilters() {
-        return allFilters;
-    }
-
-    public List<Filter<E, ?>> getReqFilters() {
-        return reqFilters;
+    public List<Filter<E, ?>> getVisibleFilters() {
+        return visibleFilters;
     }
 
     public List<Filter<E, ?>> getFilters() {
@@ -120,22 +133,7 @@ public class QueryDefinition<E, R> {
     }
 
     public boolean isVisible(Filter filter) {
-        return filters.contains(filter);
-    }
-
-    public boolean isRequired(Filter filter) {
-        return reqFilters.contains(filter);
-    }
-
-    public void toggleFilter(Filter filter) {
-
-        if (!isRequired(filter)) {
-            if (filters.contains(filter)) {
-                filters.remove(filter);
-            } else {
-                filters.add(filter);
-            }
-        }
+        return visibleFilters.contains(filter);
     }
 
     /**
@@ -174,6 +172,59 @@ public class QueryDefinition<E, R> {
     }
 
     /**
+     * PrimeFaces pickList bileşeni için model
+     *
+     * @return
+     */
+    public DualListModel<Column<? super E>> getSortListColumns() {
+        //TODO: Burada bir performans problemi olabilir mi bir inceleyelim
+        DualListModel<Column<? super E>> pickListColumns = new DualListModel<>(getAvailSortables(), getSorters());
+        return pickListColumns;
+    }
+    
+    public void setSortListColumns(DualListModel<Column<? super E>> columns) {
+        this.sorters.clear();
+        this.sorters.addAll(columns.getTarget());
+    }
+
+    public List<Column<? super E>> getAvailSortables() {
+        List<Column<? super E>> ls = new ArrayList<>();
+
+        for (Column col : sortables) {
+            //TODO: Burada hak kontrolüne de bakılmalı...
+            if (!sorters.contains(col)) {
+                ls.add(col);
+            }
+        }
+
+        return ls;
+    }
+
+    public void setAvailSortables(List<Column<? super E>> allColumns) {
+    }
+    
+    public List<Column<? super E>> getSortables() {
+        return sortables;
+    }
+
+    public void setSortables(List<Column<? super E>> sortables) {
+        this.sortables = sortables;
+    }
+
+    public List<Column<? super E>> getSorters() {
+        return sorters;
+    }
+
+    public void setSorters(List<Column<? super E>> sorters) {
+        this.sorters = sorters;
+    }
+    
+    public void toggleSortOrder( String name ){
+        Column<? super E> c = findColumnByName( name );
+        c.setSortAsc(!c.getSortAsc());
+    }
+    
+    /**
      * Verilen isimli kolon tanımını arar bulamazsa null döner.
      * @param name
      * @return 
@@ -191,9 +242,19 @@ public class QueryDefinition<E, R> {
      * @return 
      */
     public Filter<E, ?> findFilterByName( String name ){
-        for( Filter<E, ?> c : allFilters ){
+        for( Filter<E, ?> c : filters ){
             if( c.getAttribute().getName().equals(name) ) return c;
         }
         return null;
     }
+
+    public String getSearchText() {
+        return searchText;
+    }
+
+    public void setSearchText(String searchText) {
+        this.searchText = searchText;
+    }
+    
+    
 }

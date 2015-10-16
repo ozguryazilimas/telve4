@@ -9,6 +9,7 @@ package com.ozguryazilim.telve.suggestion;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.SuggestionItem;
 import com.ozguryazilim.telve.entities.SuggestionItem_;
+import com.ozguryazilim.telve.query.QueryDefinition;
 import com.ozguryazilim.telve.query.filters.Filter;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,9 @@ public abstract class SuggestionRepository extends RepositoryBase<SuggestionItem
     public abstract List<SuggestionItem> findByGroupAndKey(String group, String key);
     
     @Override
-    public List<SuggestionItem> browseQuery(List<Filter<SuggestionItem, ?>> filters) {
+    public List<SuggestionItem> browseQuery(QueryDefinition queryDefinition) {
+        List<Filter<SuggestionItem, ?>> filters = queryDefinition.getFilters();
+        
         CriteriaBuilder criteriaBuilder = entityManager().getCriteriaBuilder();
         //Geriye PersonViewModel dönecek cq'yu ona göre oluşturuyoruz.
         CriteriaQuery<SuggestionItem> criteriaQuery = criteriaBuilder.createQuery(SuggestionItem.class);

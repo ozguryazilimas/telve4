@@ -524,3 +524,34 @@ textarea.ui-inputfield, .ui-selectonemenu {
   background-color: #d9534f;
   border-color: #d9534f;
 }
+
+
+.dropdown-menu > li > span {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857;
+    color: #333;
+    white-space: nowrap;
+}
+
+.dropdown-menu > li > span > .fa {
+    margin-right: 10px;
+}
+
+.content-header{
+    padding-top: 0px !important;
+}
+
+.navbar-inverse .navbar-nav > li > span {
+    color: #9D9D9D;
+}
+.navbar-nav > li > span {
+    padding: 15px;
+}
+
+.nav > li > span {
+    position: relative;
+    display: block;
+}

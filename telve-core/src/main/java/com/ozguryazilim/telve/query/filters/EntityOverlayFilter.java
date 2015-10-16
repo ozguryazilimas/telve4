@@ -29,7 +29,7 @@ public class EntityOverlayFilter<E extends EntityBase, T extends EntityBase> ext
         super(attribute, lookupClazz, label);
         
         //TODO: Burada riskli bir durum var. Bu nesne bulunduğu browse memory'den atıldığında ne olacak?
-        getLookupBean().registerListener(new LookupSelectListener() {
+        getLookupBean().registerListener("event:"+attribute.getName(),new LookupSelectListener() {
             @Override
             public void onSelect(Object o) {
                 setValue((T)o);

@@ -25,6 +25,8 @@ public class QueryModel implements Serializable{
     private List<String> columns = new ArrayList<>();
     private List<String> filters= new ArrayList<>();
     private Map<String,String> filterValues = new HashMap<>();
+    private List<String> sorters = new ArrayList<>();
+    private Map<String,String> sorterValues = new HashMap<>();
 
     public String getName() {
         return name;
@@ -74,6 +76,20 @@ public class QueryModel implements Serializable{
         this.filterValues = filterValues;
     }
 
-    
-    
+    public List<String> getSorters() {
+        return sorters;
+    }
+
+    public void setSorters(List<String> sorters) {
+        this.sorters = sorters;
+    }
+
+    public Map<String, String> getSorterValues() {
+        return sorterValues;
+    }
+
+    public void setSorterValues(Map<String, String> sorterValues) {
+        this.sorterValues = sorterValues;
+    }
+
 }

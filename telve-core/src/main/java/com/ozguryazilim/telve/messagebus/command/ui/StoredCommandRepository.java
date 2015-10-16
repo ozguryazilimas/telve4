@@ -10,6 +10,7 @@ import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.StoredCommand;
 import com.ozguryazilim.telve.entities.StoredCommand_;
 import com.ozguryazilim.telve.messagebus.command.StorableCommand;
+import com.ozguryazilim.telve.query.QueryDefinition;
 import com.ozguryazilim.telve.query.filters.Filter;
 import java.util.ArrayList;
 import java.util.List;
@@ -75,9 +76,11 @@ public abstract class StoredCommandRepository extends RepositoryBase<StoredComma
         
         return sc;
     }
-    
+
     @Override
-    public List<StoredCommand> browseQuery(List<Filter<StoredCommand, ?>> filters) {
+    public List<StoredCommand> browseQuery(QueryDefinition queryDefinition) {
+        List<Filter<StoredCommand, ?>> filters = queryDefinition.getFilters();
+        
         CriteriaBuilder criteriaBuilder = entityManager().getCriteriaBuilder();
         //Geriye PersonViewModel dönecek cq'yu ona göre oluşturuyoruz.
         CriteriaQuery<StoredCommand> criteriaQuery = criteriaBuilder.createQuery(StoredCommand.class);

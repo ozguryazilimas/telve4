@@ -68,5 +68,9 @@ public enum FilterOperand {
     /**
      * İki değer arasında olma hali. Tarih, sayısal değerler için
      */
-    Between
+    Between,
+    /**
+     * Ağaç tipi hierarşiler için seçilen nodun altında olma
+     */
+    Under
 }

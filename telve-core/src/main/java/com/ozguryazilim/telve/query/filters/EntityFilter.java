@@ -56,6 +56,8 @@ public class EntityFilter<E extends EntityBase, T extends EntityBase> extends Fi
                 default:
                     break;
             }
+        } else if( getOperand() == FilterOperand.None ){
+            criteria.isNull(getAttribute());
         }
     }
 

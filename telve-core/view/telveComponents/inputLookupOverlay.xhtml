@@ -15,6 +15,7 @@
         <composite:attribute name="placeholder" required="false"/>
         <composite:attribute name="update" required="false"/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:attribute name="showLabel" required="false" type="java.lang.Boolean" default="true"/>
         <composite:attribute name="columnClass" required="false" default="col-xs-6"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
     </composite:interface>
@@ -22,7 +23,7 @@
     <composite:implementation>
         <div id="#{cc.clientId}" class="prop #{cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
 
-            <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
+            <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" rendered="#{cc.attrs.showLabel}"/>
 
             <span class="value">
 
@@ -37,7 +38,7 @@
                                     converter="entityConverter"
                                     required="#{cc.attrs.required}"
                                     disabled="#{cc.attrs.disabled}"
-                                    placeholder="#{cc.attrs.placeholder}"
+                                    placeholder="#{messages[cc.attrs.placeholder]}"
                                     >
                         <p:clientValidator />
                     </p:autoComplete>
@@ -46,15 +47,16 @@
                     <p:commandButton id="popdown" action="#{cc.attrs.lookupBean.initOverlay(cc.attrs.lookupProfile, cc.attrs.lookupListener)}" ajax="true" 
                                      partialSubmit="true" process="@this"
                                      update="ovl1" onsuccess="PF('#{cc.id}lookupOverlay').loadContents();PF('#{cc.id}lookupOverlay').show()"
-                                     icon="fa fa-search" styleClass="ui-icon-only btn btn-default"/>
+                                     icon="fa fa-caret-down" styleClass="ui-icon-only btn btn-default"/>
                     </div>
                 </div>
 
                 <p:overlayPanel id="ovl1" for="#{cc.id}_inp" 
                                 showEvent="none"
                                 hideEffect="fade" dynamic="true"  
-                                appendToBody="false" at="left bottom"
-                                showCloseIcon="false" widgetVar="#{cc.id}lookupOverlay" >
+                                appendToBody="true" at="left bottom"
+                                showCloseIcon="false" widgetVar="#{cc.id}lookupOverlay" 
+                                >
                     <ui:include src="/layout/lookupBaseOverlay.xhtml" >
                         <ui:param name="lookupBean" value="#{cc.attrs.lookupBean}" />
                         <ui:param name="widgetVar" value="#{cc.id}lookupOverlay" />

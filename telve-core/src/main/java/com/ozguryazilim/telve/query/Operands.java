@@ -23,6 +23,7 @@ public class Operands {
     private static List<FilterOperand> entityOperands;
     private static List<FilterOperand> numberOperands;
     private static List<FilterOperand> equalOperands;
+    private static List<FilterOperand> treeEntityOperands;
 
     /**
      * Public contructor gizleniyor
@@ -101,6 +102,18 @@ public class Operands {
             entityOperands.add(FilterOperand.NotEqual);
         }
         return entityOperands;
+    }
+    
+    public static List<FilterOperand> getTreeEntityOperands() {
+        if (treeEntityOperands == null) {
+            treeEntityOperands = new ArrayList<FilterOperand>();
+            treeEntityOperands.add(FilterOperand.All);
+            treeEntityOperands.add(FilterOperand.None);
+            treeEntityOperands.add(FilterOperand.Equal);
+            treeEntityOperands.add(FilterOperand.NotEqual);
+            treeEntityOperands.add(FilterOperand.Under);
+        }
+        return treeEntityOperands;
     }
 
     public static List<FilterOperand> getReportOperands() {

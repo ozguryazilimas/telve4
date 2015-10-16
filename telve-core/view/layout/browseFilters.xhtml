@@ -9,218 +9,36 @@
 
     <h:form id="pfilterForm">
 
-        <ui:remove>
-        <!-- p:panel id="pffilter" header="#{messages[moduleCaption]} :" toggleable="true" styleClass="panel-primary" widgetVar="pffpanel" -->
-            <!-- f:facet name="actions" -->  
-        </ui:remove>
+        <div class="box-body">
+            <p:outputPanel id="filterPanel">
+                <h:panelGroup layout="block" rendered="#{not empty bean.queryDefinition.filters }">
 
+                    <c:forEach id="filterRepeater2" items="#{bean.queryDefinition.visibleFilters}"
+                               var="filter" varStatus="rowCounter">
+                        <div class="row">
 
-        <ui:remove>
-            <!-- FIXME: Filtre silmede hata yapıyor o yüzden kapandı -->
-            <div class="pull-right" >
+                            <ui:include src="/filterTemplates/#{filter.template}.xhtml" >
+                                <ui:param name="filter" value="#{filter}" />
+                                <ui:param name="idprefix" value="#{filter.attribute.name}#{rowCounter.index}" />
+                            </ui:include>
 
+                            <ui:include src="/filterTemplates/empty.xhtml" />
 
-                <p:commandLink id="filterBtn" 
-                               title="#{messages['general.label.FilterItems']}"
-                               partialSubmit="true"
-                               process="@this">  
-                    <i class="fa fa-filter" > </i>
-                </p:commandLink>  
-                <p:commandLink id="columnBtn" 
-                               title="#{messages['general.label.ResultColumns']}"
-                               partialSubmit="true"
-                               process="@this">  
-                    <i class="fa fa-columns" > </i>
-                </p:commandLink>  
-
-
-
-
-            </div>
-
-
-            <div class="context-menu">
-                <p:commandLink id="queryBtn" type="button" 
-
-                               title="#{messages['general.label.FilterItems']}"
-                               partialSubmit="true"
-                               process="@this">  
-                    #{bean.queryName} <i class="fa fa-caret-down" > </i> 
-                </p:commandLink>  
-            </div>
-
-            <p:dialog id="qrySave" widgetVar="qrySave" header="#{messages['general.caption.SaveQuery']}" width="350px">
-                <div class="row">
-                    <t:inputText label="general.label.QueryName" value="#{bean.queryName}" columnClass="col-xs-12" required="true"/>
-                    <t:inputCheckbox label="general.label.Status" itemLabel="general.label.Default" value="#{bean.defaultQuery}" columnClass="col-xs-12"/>
-                </div>
-
-                <h:panelGroup id="dialogButtons" styleClass="actionButtons" layout="block">
-                    <p:commandButton id="saveQuery" value="#{messages['general.button.Save']}" action="#{bean.save()}" update="pfilterForm" styleClass="btn-primary"/>
-                </h:panelGroup>
-            </p:dialog>
-
-            <p:overlayPanel id="queryPop" for="queryBtn" hideEffect="fade" dynamic="false">  
-
-
-                <ui:repeat value="#{bean.queryNames}"
-                           var="qryName" varStatus="rowCounter">
-                    <p:commandLink action="#{bean.loadQuery(qryName)}" 
-                                   update=":pfilterForm, @([id$=results])" 
-                                   partialSubmit="true"
-                                   process="@this" style="display: block; padding: 4px;">
-                        <i class="fa fa-bookmark-o" />
-                        <h:outputText value="#{qryName}" />
-                    </p:commandLink>
-                </ui:repeat>
-
-
-                <p:commandLink partialSubmit="true"
-                               process="@this" style="display: block; padding: 4px; border-top: 1px solid #444; "
-                               onclick="PF('qrySave').show();">
-                    <i class="fa fa-check-square" />
-                    <h:outputText value="#{messages['general.button.Save']}" />
-                </p:commandLink>
-                <p:commandLink action="#{bean.deleteAll()}" 
-                               update=":pfilterForm, @([id$=results])" 
-                               partialSubmit="true"
-                               process="@this" style="display: block; padding: 4px;">
-                    <i class="fa fa-trash btn-delete" />
-                    <h:outputText value="#{messages['general.button.Delete']}" />
-                </p:commandLink>
-            </p:overlayPanel>
-
-
-            <p:overlayPanel id="filtersPop" for="filterBtn" hideEffect="fade" dynamic="true" appendToBody="true">  
-                <p>#{messages['general.label.FilterItems']}</p>
-                <h:panelGroup id="filterSelector" layout="block">
-                    <ui:repeat value="#{bean.queryDefinition.allFilters}"
-                               var="filterr" varStatus="rowCounter">
-                        <p:commandLink action="#{bean.queryDefinition.toggleFilter(filterr)}" 
-                                       update=":pfilterForm:filterPanel, :pfilterForm:filterSelector" 
-                                       partialSubmit="true"
-                                       process="@this" style="display: block; padding: 4px;">
-                            <i class="fa #{bean.queryDefinition.isRequired(filterr) ? 'fa-check-square' : bean.queryDefinition.isVisible(filterr) ? 'fa-check-square-o' : 'fa-square-o'}" />
-                            <h:outputText value="#{messages[filterr.labelKey]}" />
-                        </p:commandLink>
-                    </ui:repeat>
-                </h:panelGroup>
-            </p:overlayPanel>
-
-            <p:overlayPanel id="columnsPop" for="columnBtn" hideEffect="fade" dynamic="true" appendToBody="true">  
-                <div class="row">
-                    <p>#{messages['general.label.ResultColumns']}</p>
-                </div>
-                <div class="row">
-                    <p:pickList value="#{bean.queryDefinition.pickListColumns}" 
-                                var="item"
-                                itemValue="#{item}" itemLabel="#{messages[item.labelKey]}"
-                                showTargetControls="true"
-                                converter="ColumnConverter">
-                        <f:facet name="sourceCaption">#{messages['general.label.Available']}</f:facet>  
-                        <f:facet name="targetCaption">#{messages['general.label.Selected']}</f:facet>
-                        <p:column>
-                            #{messages[item.labelKey]}
-                        </p:column>
-                    </p:pickList>
-                </div>
-                <h:panelGrid columns="2">
-                    <t:inputText label="general.label.ResultLimit" value="#{bean.queryDefinition.resultLimit}" />
-                    <t:inputText label="general.label.RowLimit" value="#{bean.queryDefinition.rowLimit}" />
-                </h:panelGrid>
-            </p:overlayPanel>
-
-        </ui:remove>
-
-
-        
-
-            <div class="box-body">
-                <p:outputPanel id="filterPanel">
-                    <h:panelGroup layout="block" rendered="#{not empty bean.queryDefinition.filters }">
-
-                        <c:forEach id="filterRepeater2" items="#{bean.queryDefinition.filters}"
-                                   var="filter" varStatus="rowCounter">
-                            <div class="row">
-                                
-                                <ui:include src="/filterTemplates/#{filter.template}.xhtml" >
-                                    <ui:param name="filter" value="#{filter}" />
-                                    <ui:param name="idprefix" value="#{filter.attribute.name}" />
-                                </ui:include>
-                                
-                                <ui:include src="/filterTemplates/empty.xhtml" />
-                                
-                            </div>
-                        </c:forEach>
-                        
-                    </h:panelGroup>
-
-                </p:outputPanel>
-            </div>
-            <div class="box-footer">
-                <h:panelGroup id="actionButtons" styleClass="pull-right" layout="block">
-                    <p:commandButton value="#{messages['general.button.Search']}" actionListener="#{bean.search()}" partialSubmit="false" process="@form" icon="fa fa-search" update="@([id$=results]), actionButtons"
-                                     styleClass="btn-success"/> 
-                    <ui:fragment rendered="#{not empty bean.entityList and identity.hasPermission( permission, 'export')}">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Export <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <ui:remove>
-                                    <li>
-                                        <p:commandLink ajax="false">
-                                            <i class="fa fa-file-pdf-o" /> PDF
-                                            <p:dataExporter type="pdf" target=":browseListForm:results" fileName="results" /> 
-                                        </p:commandLink>
-                                    </li>
-                                </ui:remove>
-                                <li>
-                                    <p:commandLink ajax="false">
-                                        <i class="fa fa-file-text-o" /> CSV
-                                        <p:dataExporter type="csv" target=":browseListForm:results" fileName="results" /> 
-                                    </p:commandLink>
-                                </li>
-                                <li>
-                                    <p:commandLink ajax="false">
-                                        <i class="fa fa-file-excel-o" /> XLS
-                                        <p:dataExporter type="xls" target=":browseListForm:results" fileName="results" /> 
-                                    </p:commandLink>
-                                </li>
-                                <li>
-                                    <p:commandLink ajax="false">
-                                        <i class="fa fa-file-code-o" /> XML
-                                        <p:dataExporter type="xml" target=":browseListForm:results" fileName="results" /> 
-                                    </p:commandLink>
-                                </li>
-                            </ul>
                         </div>
-                    </ui:fragment>
-                    <ui:remove>
-                        <p:menuButton value="Export" rendered="#{not empty bean.entityList and identity.hasPermission( permission, 'export')}" >
-                            <ui:remove>
-                                <p:menuitem value="PDF" ajax="false" icon="fa fa-file-pdf-o">
-                                    <p:dataExporter type="pdf" target=":browseListForm:results" fileName="results" /> 
-                                </p:menuitem>
-                            </ui:remove>
-                            <p:menuitem value="CSV" ajax="false" icon="fa fa-file-text-o">
-                                <p:dataExporter type="csv" target=":browseListForm:results" fileName="results" /> 
-                            </p:menuitem>
-                            <p:menuitem value="XLS" ajax="false" icon="fa fa-file-excel-o">
-                                <p:dataExporter type="xls" target=":browseListForm:results" fileName="results" /> 
-                            </p:menuitem>
-                            <p:menuitem value="XML" ajax="false" icon="fa fa-file-code-o">
-                                <p:dataExporter type="xml" target=":browseListForm:results" fileName="results" /> 
-                            </p:menuitem>
-                        </p:menuButton>
-                    </ui:remove>
-                    <ui:insert name="extraButtons" />
+                    </c:forEach>
+
                 </h:panelGroup>
-            
+
+            </p:outputPanel>
+        </div>
+        <div class="box-footer">
+            <h:panelGroup id="actionButtons" styleClass="pull-right" layout="block">
+                <p:commandButton value="#{messages['general.button.Search']}" actionListener="#{bean.search()}" partialSubmit="false" process="@form" icon="fa fa-search" update="@([id$=results]), actionButtons"
+                                 styleClass="btn-success"/> 
+                <ui:insert name="extraButtons" />
+            </h:panelGroup>
+
         </div>    
-        <ui:remove>
-            <!-- /p:panel -->
-        </ui:remove>
 
     </h:form>
 

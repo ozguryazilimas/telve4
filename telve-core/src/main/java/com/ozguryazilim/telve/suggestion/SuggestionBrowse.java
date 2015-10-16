@@ -41,8 +41,8 @@ public class SuggestionBrowse extends BrowseBase<SuggestionItem, SuggestionItem>
     protected void buildQueryDefinition(QueryDefinition<SuggestionItem, SuggestionItem> queryDefinition) {
         
         queryDefinition
-                .addFilter(new StringListFilter<>(SuggestionItem_.group, SuggestionGroupRegistery.intance().getGroupNames(), "general.label.Group", "suggestionGroup.label."), true, true)
-                .addFilter(new StringFilter<>(SuggestionItem_.key, "general.label.Key"), true );
+                .addFilter(new StringListFilter<>(SuggestionItem_.group, SuggestionGroupRegistery.intance().getGroupNames(), "general.label.Group", "suggestionGroup.label."))
+                .addFilter(new StringFilter<>(SuggestionItem_.key, "general.label.Key"));
         
         queryDefinition.addColumn(new MessageColumn<>(SuggestionItem_.group, "general.label.Group", "suggestionGroup.label." ),true);
         queryDefinition.addColumn(new TextColumn<>(SuggestionItem_.data, "general.label.Data"),true);

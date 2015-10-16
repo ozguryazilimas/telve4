@@ -8,7 +8,9 @@ package com.ozguryazilim.telve.query;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ozguryazilim.mutfak.kahve.Kahve;
 import com.ozguryazilim.mutfak.kahve.KahveEntry;
 import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
@@ -17,10 +19,20 @@ import com.ozguryazilim.telve.entities.ViewModel;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.query.columns.Column;
+import com.ozguryazilim.telve.view.PageTitleResolver;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.Serializable;
+import java.lang.reflect.Type;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import org.apache.deltaspike.data.api.criteria.Criteria;
@@ -51,11 +63,18 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
     
     //Sorguyu saklamak için kullanılacak değerler.
     private String queryName;
+    //Yeni sorgu ismi için geçici alan.
+    private String newQueryName;
     private Boolean defaultQuery = false;
     private Boolean personal = true;
-
+    
+    private Map<String,QueryModel> systemQueries = new HashMap<>();
+    
     @Inject @UserAware
     Kahve kahve;
+    
+    @Inject
+    PageTitleResolver pageTitleResolver;
     
     /**
      * GUI için sorgu özellikleri tanımlanır.
@@ -68,7 +87,9 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
     @PostConstruct
     public void init(){
         buildQueryDefinition(queryDefinition);
+        loadSystemQueries();
         loadDefaultQuery();
+        
     }
 
     
@@ -106,7 +127,7 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
      * @return 
      */
     protected List<R> executeCriteria(){
-        return getRepository().browseQuery(queryDefinition.getFilters());
+        return getRepository().browseQuery(queryDefinition);
     }
     
     public void search(){
@@ -136,6 +157,12 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
     }
     
     public void save(){
+    
+        //Eğer yeni bir sorgu kaydı ise newQueryName dolu olacaktır. Aksi halde eski bir sorgu güncelleniyordur.
+        if( !Strings.isNullOrEmpty(newQueryName)){
+            queryName = newQueryName;
+            newQueryName = "";
+        }
         
         QueryModel model = new QueryModel();
         model.setName(queryName);
@@ -146,9 +173,17 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
             model.getColumns().add(c.getName());
         }
         
-        for( Filter c : queryDefinition.getFilters()){
+        //Sadece visible filtreleri saklayacağız. Visible olmayanlar programla yönetiliyorlar.
+        for( Filter c : queryDefinition.getVisibleFilters()){
             model.getFilters().add(c.getAttribute().getName());
             model.getFilterValues().put(c.getAttribute().getName(), c.serialize());
+        }
+        
+        
+        //Sorterları saklıyoruz
+        for( Column c : queryDefinition.getSorters()){
+            model.getSorters().add(c.getName());
+            model.getSorterValues().put(c.getName(), c.getSortAsc() ? "A" : "D" );
         }
         
         Gson gson = new Gson();
@@ -162,15 +197,35 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
             kahve.put( getDefaultQueryKey(), queryName);
         }
         
-        //Sorgu adı listeye ekleniyor. 
+        //Sorgu adı yoksa listeye ekleniyor. 
         List<String> ls = new ArrayList(getQueryNames());
-        ls.add(queryName);
+        if( !ls.contains(queryName)){
+            ls.add(queryName);
+        }
         
         String ss = Joiner.on(',').join(ls);
         kahve.put(getQueryNamesKey(), ss );
     }
 
-    public void load( String name ){
+    public void deleteQuery(){
+        deleteQuery(queryName);
+    }
+    
+    public void deleteQuery(String name){
+        kahve.remove(getQueryKey( name ));
+        
+        List<String> ls = new ArrayList(getQueryNames());
+        if( ls.contains(name)){
+            ls.remove(name);
+        }
+        
+        String ss = Joiner.on(',').join(ls);
+        kahve.put(getQueryNamesKey(), ss );
+        //Uygulama tanımlı ilk sorguya dönüyoruz.
+        loadQuery(pageTitleResolver.getPageTitle());
+    }
+    
+    public void loadFromSaved( String name ){
         KahveEntry e = kahve.get( getQueryKey(name) );
         if( e == null ) {
             LOG.error("Saved Query not found : {}", getQueryKey(name) );
@@ -180,6 +235,10 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
         Gson gson = new Gson();
         QueryModel model = gson.fromJson(e.getAsString(), QueryModel.class);
         
+        loadFromModel(model);
+    }
+    
+    protected void loadFromModel( QueryModel model ){
         queryName = model.getName();
         queryDefinition.setResultLimit(model.getResultLimit());
         queryDefinition.setRowLimit(model.getRowLimit());
@@ -189,14 +248,31 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
             queryDefinition.getColumns().add( queryDefinition.findColumnByName(s));
         }
         
-        queryDefinition.getFilters().clear();
+        //Filtre değerlerini setliyoruz
         for( String s : model.getFilters() ){
             Filter f = queryDefinition.findFilterByName(s);
-            queryDefinition.getFilters().add( f );
-            String val = model.getFilterValues().get(s);
-            if( val != null ){
-                f.deserialize(model.getFilterValues().get(s));
+            if( f != null ){
+                String val = model.getFilterValues().get(s);
+                if( val != null ){
+                    f.deserialize(val);
+                }   
             }
+        }
+        
+        //Sıralama bilgilerini düzenliyoruz.
+        queryDefinition.getSorters().clear();
+        for( String s : model.getSorters()){
+            Column c = queryDefinition.findColumnByName(s);
+            String val = model.getFilterValues().get(s);
+            c.setSortAsc("A".equals(val));
+            queryDefinition.getSorters().add( c );
+        }
+    }
+    
+    protected void loadFromSystem( String name ){
+        QueryModel model = systemQueries.get(name);
+        if( model != null ){
+            loadFromModel(model);
         }
     }
     
@@ -229,12 +305,25 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
     }
     
     /**
+     * Sistem sorgularının isim listesini döndürür.
+     * @return 
+     */
+    public List<String> getSystemQueryNames(){
+        return new ArrayList<>(systemQueries.keySet());
+    }
+    
+    /**
      * Verilen isimli sorguyu yükler
      * @param name 
      */
     public void loadQuery( String name ){
         queryName = name;
-        load( name );
+        if( systemQueries.containsKey(name)){
+            loadFromSystem(name);
+        } else {
+            loadFromSaved( name );
+        }
+        kahve.put( getDefaultQueryKey(), queryName);
         search();
     }
     
@@ -244,12 +333,58 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
     public void loadDefaultQuery(){
         KahveEntry e = kahve.get(getDefaultQueryKey());
         if( e != null ){
-            load(e.getAsString());
+            loadQuery(e.getAsString());
         } else {
-            queryName = "Standart";
+            queryName = pageTitleResolver.getPageTitle();
         }
     }
 
+    
+    /**
+     * QueryController için sistem tarafından önceden tanımlanmış olan sorguları yükler.
+     * 
+     * Bu sorgular /Sınıfİsmi.queries.json dosyalarında bulunur.
+     * 
+     * Aynı isimli dosya birden fazla jar içinde tanımlanabilir. Böylece farklı modüller farklı sorgular tanımlayabilirler.
+     * 
+     * JSON formatı QueryModel listesinden oluşur.
+     */
+    protected void loadSystemQueries(){
+        systemQueries.clear();
+        
+        try {
+            Enumeration<URL> jsons = getClass().getClassLoader().getResources("/" +getClass().getSimpleName() + ".queries.json");
+            
+            Gson gson = new Gson();
+            Type collectionType = new TypeToken<List<QueryModel>>() {}.getType();
+            
+            while( jsons.hasMoreElements() ){
+                InputStream is = jsons.nextElement().openStream();
+                if( is != null ){
+                    Reader r = new InputStreamReader(is);
+                    List<QueryModel> models = gson.fromJson( r, collectionType);
+                    for( QueryModel m : models ){
+                        systemQueries.put(m.getName(), m);
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            LOG.error("IO Error on SystemQueries Load", ex);
+        }
+
+        /*
+        InputStream is = getClass().getResourceAsStream("/" +getClass().getSimpleName() + ".queries.json");
+        if( is != null ){
+            Reader r = new InputStreamReader(is);
+            Gson gson = new Gson();
+            Type collectionType = new TypeToken<List<QueryModel>>() {}.getType();
+            List<QueryModel> models = gson.fromJson( r, collectionType);
+            for( QueryModel m : models ){
+                systemQueries.put(m.getName(), m);
+            }
+        }*/
+    }
+    
     public String getQueryName() {
         return queryName;
     }
@@ -297,6 +432,27 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
      */
     protected String getDefaultQueryKey(){
         return "query.default." + getClass().getSimpleName();
+    }
+
+    public String getNewQueryName() {
+        return newQueryName;
+    }
+
+    public void setNewQueryName(String newQueryName) {
+        this.newQueryName = newQueryName;
+    }
+
+    /**
+     * Verilen isimli sorgunun sistem sorgusu olup olamadığı.
+     * @param name
+     * @return 
+     */
+    public Boolean getIsSystemQuery( String name ){
+        return systemQueries.containsKey(name);
+    }
+    
+    public Boolean getIsSystemQuery(){
+        return getIsSystemQuery( queryName );
     }
     
 }

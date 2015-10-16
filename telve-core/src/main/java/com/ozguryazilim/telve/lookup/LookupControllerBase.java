@@ -42,7 +42,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
 
     private LookupModel<R, ?> model;
 
-    private List<LookupSelectListener> listeners = new ArrayList<>();
+    private Map<String,List<LookupSelectListener>> listeners = new HashMap<>();
     
     @Inject
     private ViewConfigResolver viewConfigResolver;
@@ -127,11 +127,17 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
 
         LookupSelectTuple sl = getLookupSelectTuple();
 
+        //Eğer listener bir expression ise
         if( !sl.getExpression().isEmpty() ){
             ELUtils.setObject(sl.getExpression(), sl.getValue());
         }
 
-        triggerListeners(sl.getValue());
+        //Eğer listener bir event ise
+        if( model.getListener().startsWith("event:")){
+            triggerListeners(model.getListener(),sl.getValue());
+        }
+        
+        //Bundan emin değilim...
         lookupSelectEvent.fire((E)sl.getValue());
     }
 
@@ -225,7 +231,10 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
 
         LookupSelectTuple sl = getLookupSelectTuple();
 
-        triggerListeners(sl.getValue());
+        //eğer bir event listener var ise
+        if( model.getListener().contains("event:")){
+            triggerListeners(model.getListener(),sl.getValue());
+        }
         //Buraya listede gelebilir
         //lookupSelectEvent.fire((E)sl.getValue());
         
@@ -369,7 +378,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         LookupSelectTuple sl;
 
         String expression = "";
-        if( !Strings.isNullOrEmpty(model.getListener())){
+        if( !Strings.isNullOrEmpty(model.getListener()) && !model.getListener().contains(":")){
             expression = "#{" + model.getListener() + "}";
         }
 
@@ -405,28 +414,37 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      * Lookup için yeni bir select listener ekler.
      * @param l 
      */
-    public void registerListener( LookupSelectListener l ){
-        listeners.add(l);
+    public void registerListener( String event, LookupSelectListener l ){
+        List<LookupSelectListener> ls = listeners.get(event);
+        if( ls == null ){
+            ls = new ArrayList<>();
+            listeners.put(event, ls);
+        }
+        ls.add(l);
     }
     
     /**
      * Lookupdan daha önce kaydedilmiş bir listener'ı çıkarır.
      * @param l 
      */
-    public void unregisterListener( LookupSelectListener l ){
-        listeners.remove(l);
+    public void unregisterListener( String event, LookupSelectListener l ){
+        List<LookupSelectListener> ls = listeners.get(event);
+        if( ls != null ){
+            ls.remove(l);
+        }
     }
     
     /**
      * Seçim sonrası listener'la mesaj gönderilir.
      * @param o 
      */
-    protected void triggerListeners( Object o ){
-        
-        for( LookupSelectListener l : listeners ){
-            l.onSelect(o);
+    protected void triggerListeners( String event, Object o ){
+        List<LookupSelectListener> ls = listeners.get(event);
+        if( ls != null ){
+            for( LookupSelectListener l : ls ){
+                l.onSelect(o);
+            }
         }
-        
     }
 
     /**

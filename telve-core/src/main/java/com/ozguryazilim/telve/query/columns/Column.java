@@ -23,6 +23,7 @@ public abstract class Column<E> implements Serializable {
     private String labelKey;
     private String permission;
     private String keyPrefix;
+    private Boolean sortAsc = Boolean.TRUE;
 
     public Column(Attribute<? super E, ?> attribute, String labelKey) {
         this.attribute = attribute;
@@ -70,6 +71,20 @@ public abstract class Column<E> implements Serializable {
     public void setKeyPrefix(String keyPrefix) {
         this.keyPrefix = keyPrefix;
     }
+
+    /**
+     * Eğer sort için kullanılacak ise asc olacak.
+     * @return 
+     */
+    public Boolean getSortAsc() {
+        return sortAsc;
+    }
+
+    public void setSortAsc(Boolean sortAsc) {
+        this.sortAsc = sortAsc;
+    }
+    
+    
 
     @Override
     public int hashCode() {

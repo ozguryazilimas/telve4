@@ -2,10 +2,11 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 xmlns:p="http://primefaces.org/ui">
 
     <div class="col-xs-12">
-        <h:outputText value="#{messages[filter.labelKey]}" />
+        <h:outputText value="#{messages[filter.labelKey]}" style="font-weight: bold;"/>
     </div>
     <div class="col-xs-12">
         <p:selectOneMenu id="strOp#{idprefix}" value="#{filter.operand}" styleClass="small" >
@@ -15,43 +16,13 @@
         </p:selectOneMenu>
     </div>
     <div class="col-xs-12">
-        <div class="row">
-            <h:panelGroup id="strInput#{idprefix}" layout="block" styleClass="col-xs-12">
-
-                <div class="ui-input-group">
-                        <p:autoComplete id="entInp#{idprefix}" value="#{filter.value}" 
-                                        forceSelection="true" 
-                                        completeMethod="#{filter.lookupBean.suggest}"
-                                        var="item"
-                                        itemLabel="#{item[filter.lookupBean.captionFieldName]}"
-                                        itemValue="#{item}"
-                                        queryDelay="500"
-                                        converter="entityConverter"
-                                        rendered="#{filter.operand ne 'All'}"
-                                        >
-                        </p:autoComplete>
-
-                        <p:commandButton id="popdown" action="#{filter.lookupBean.initOverlay(filter.profile, '' )}" ajax="true" 
-                                             update="ovl1#{idprefix}" onsuccess="PF('lookupOverlay#{idprefix}').loadContents();PF('lookupOverlay#{idprefix}').show()"
-                                             icon="ui-icon-search" styleClass="ui-icon-only" rendered="#{filter.operand ne 'All'}"/>
-                    </div>
-                    
-                    <p:overlayPanel id="ovl1#{idprefix}" for="entInp#{idprefix}" 
-                                    showEvent="none"
-                                    hideEffect="fade" dynamic="true"  
-                                    appendToBody="false" at="left bottom"
-                                    showCloseIcon="false" widgetVar="lookupOverlay#{idprefix}">
-                        <ui:include src="/layout/lookupBaseOverlay.xhtml" >
-                            <ui:param name="bean" value="#{filter.lookupBean}" />
-                            <ui:param name="widgetVar" value="lookupOverlay#{idprefix}" />
-                            <ui:param name="update" value="entInp#{idprefix}" />
-                            <ui:param name="hideStandartFilter" value="false" />
-                        </ui:include>
-
-                    </p:overlayPanel>
-
-            </h:panelGroup>
-        </div>
+        
+        <h:panelGroup id="strInput#{idprefix}" layout="block" styleClass="row">
+            <t:inputLookupOverlay value="#{filter.value}" label="" placeholder="" 
+                                  lookupBean="#{filter.lookupBean}" lookupListener="event:#{filter.attribute.name}" 
+                                  caption="name" columnClass="col-xs-12" lookupProfile="" leafSelect="false" showLabel="false"
+                                  rendered="#{filter.operand ne 'All' and filter.operand ne 'None'}"/>
+        </h:panelGroup>
     </div>
 
 </ui:composition>
