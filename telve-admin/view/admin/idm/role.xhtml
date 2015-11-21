@@ -21,12 +21,12 @@
                     
                     <script type="text/javascript">
                         function toggleChkBoxes(group, act) {
-                            jQuery('[id$="' + act + '"]').find('[id*="' + group + '"]').trigger('click');
+                            jQuery('[id*="' + group + '"]').find('[id$="' + act + '"] div').trigger('click');
                         }
 
                         function toggleRowChkBoxes(group, elm) {
                             row = jQuery(elm).parent().parent().attr('data-ri');
-                            jQuery('[id*="' + group + '\\:' + row + '\\:"]').trigger('click');
+                            jQuery('[id*="' + group + '\\:' + row + '\\:"] div').trigger('click');
                         }
                     </script>
                     
