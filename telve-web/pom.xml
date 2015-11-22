@@ -4,12 +4,12 @@
     <parent>
     <artifactId>telve-parent</artifactId>
     <groupId>com.ozguryazilim.mutfak</groupId>
-    <version>4.0.0.A14</version>
+    <version>4.0.0.Beta1</version>
   </parent>
 
     <groupId>com.ozguryazilim.mutfak</groupId>
     <artifactId>telve-web</artifactId>
-    <version>4.0.0.A14</version>
+    <version>4.0.0.Beta1</version>
     <packaging>war</packaging>
 
     <name>telve-web</name>
