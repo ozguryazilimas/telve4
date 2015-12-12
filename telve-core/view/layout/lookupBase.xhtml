@@ -46,7 +46,7 @@
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}"
                                      paginatorAlwaysVisible="false">
 
-                            <p:ajax event="rowSelect" listener="#{bean.onRowSelect}" update=":lookupForm:selectionResult,:lookupForm:selectedResuls" process="@form"/>
+                            <p:ajax event="rowSelect" update=":lookupForm:selectionResult,:lookupForm:selectedResuls" process="@form"/>
                             
                             <ui:remove>
                             <p:column selectionMode="multiple" style="width:36px;" />  
@@ -93,7 +93,7 @@
                             function setSelections(){}
                         </script>
                     </c:if>
-
+                    
                     <c:if test="#{bean.model.modelType eq 'Tree' }" >
 
                         <h:inputHidden id="selectedNodes" value="#{bean.model.selectedNodes}" />
@@ -155,7 +155,7 @@
                                 </script>
                         
                     </c:if>
-
+                    
                 </div>
             </h:panelGroup>
             <h:panelGroup styleClass="row actionButtons" layout="block">
