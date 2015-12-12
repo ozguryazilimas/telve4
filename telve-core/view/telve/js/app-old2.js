@@ -242,20 +242,98 @@ function _init() {
       var _this = this;
       _this.fix();
       _this.fixSidebar();
+      
       $(window, ".wrapper").resize(function () {
         _this.fix();
         _this.fixSidebar();
       });
     },
     fix: function () {
+      //DOCTYPE hatası yüzünden window.height çalışmıyor. Onun yerine sağ alta bir div koyduk
+      
+      if( $('#bottom-pos').size() == 0 ) return;
+      
+      
+      var wh = $('#bottom-pos').offset().top;
+      var ww = $('#bottom-pos').offset().left;
+      var hh = $(".main-header").height();
+      var h = wh - 15;// - hh;
+      
+      $(".main-sidebar").height( h );
+      //$(".main-footer").width(ww - 50);
+      $(".main-listbar").height( h );
+      $(".main-sidebar, .right-side").height( h );
+      $(".content-wrapper").height( h );
+      //$(".content-wrapper, .right-side").css('min-height', window_height - neg);
+      $(".wrapper").height( h );
+      
+      //- $('.main-footer').outerHeight() - 2
+      $(".content-wrapper, .right-side").css('min-height', h );
+        
+        $(".content-wrapper").slimScroll({destroy: true}).height("auto");
+        //Add slimscroll
+        $(".content-wrapper").slimscroll({
+            height: ( h ) + "px",
+            color: "rgba(0,0,0,0.2)",
+            size: "3px"
+        });
+        $(".content-wrapper").css('overflow','hidden');
+        $(".wrapper").css('overflow','hidden');
+        
+        
+        if( $('#content-list-bar').length > 0 ){
+          
+            var clbTop = $('#content-list-bar').offset().top;
+            var clbheight = wh - clbTop - 60;
+            
+            var cdbheight = $("#content-data-col > section").height();
+            if( cdbheight > clbheight ){
+                clbheight = cdbheight;
+            }
+            $("#content-list-bar").height(clbheight);
+            $("#content-list-bar > .box").css("min-height", clbheight);
+
+            $("#content-list-bar > .box").slimScroll({destroy: true}).height("auto");
+            //Add slimscroll
+            $("#content-list-bar > .box").slimscroll({
+                  height: (clbheight) + "px",
+                  color: "rgba(0,0,0,0.2)",
+                  size: "3px"
+            });
+      
+        }
+        /*
       //Get window height and the wrapper height
       var neg = $('.main-header').outerHeight() + $('.main-footer').outerHeight();
       var window_height = $(window).height();
       var sidebar_height = $(".sidebar").height();
+      
+        var ftTop = $('#content-list-bar').offset().top;
+      var wh = $(window).height();
+        var hh = $(".main-header").height();
+        var h = wh - hh - ftTop;
+        $(".main-sidebar").height( h );
+        $(".main-listbar").height( h );
+        $(".main-sidebar, .content-wrapper, .right-side").height( h );
+        //$(".content-wrapper, .right-side").css('min-height', window_height - neg);
+        $(".wrapper").height( h );
+      
+      
       //Set the min-height of the content and sidebar based on the
       //the height of the document.
       if ($("body").hasClass("fixed")) {
-        $(".content-wrapper, .right-side").css('min-height', window_height - $('.main-footer').outerHeight());
+        $(".content-wrapper, .right-side").css('min-height', window_height - $('.main-footer').outerHeight() - 2);
+        
+        $(".content-wrapper").slimScroll({destroy: true}).height("auto");
+        //Add slimscroll
+        $(".content-wrapper").slimscroll({
+            height: ($(window).height() - $(".main-header").height()) + "px",
+            color: "rgba(0,0,0,0.2)",
+            size: "3px"
+        });
+        $(".content-wrapper").css('overflow','hidden');
+        $(".wrapper").css('overflow','hidden');
+        
       } else {
         var postSetWidth;
         if (window_height >= sidebar_height) {
@@ -269,13 +347,39 @@ function _init() {
         //Fix for the control sidebar height
         var controlSidebar = $($.AdminLTE.options.controlSidebarOptions.selector);
         if (typeof controlSidebar !== "undefined") {
+         
           if (controlSidebar.height() > postSetWidth)
             $(".content-wrapper, .right-side").css('min-height', controlSidebar.height());
+         
         }
 
-      }
+      }*/
+    },
+    fixSizes: function(){
+        var wh = $(window).height();
+        var hh = $(".main-header").height();
+        var h = wh - hh;
+        $(".main-sidebar").height( h );
+        $(".main-listbar").height( h );
+        $(".main-sidebar, .content-wrapper, .right-side").height( h );
+        //$(".content-wrapper, .right-side").css('min-height', window_height - neg);
+        $(".wrapper").height( h );
     },
     fixSidebar: function () {
+        if( $('#bottom-pos').size() == 0 ) return;
+        
+        var wh = $('#bottom-pos').offset().top;
+        var hh = $(".main-header").height();
+      
+        $(".sidebar").slimScroll({destroy: true}).height("auto");
+          //Add slimscroll
+          $(".sidebar").slimscroll({
+            height: (wh - hh) + "px",
+            color: "rgba(0,0,0,0.2)",
+            size: "3px"
+          });
+        
+        /*
       //Make sure the body tag has the .fixed class
       if (!$("body").hasClass("fixed")) {
         if (typeof $.fn.slimScroll != 'undefined') {
@@ -297,7 +401,28 @@ function _init() {
             size: "3px"
           });
         }
+      }*/
+    },
+    fixContentListBar: function () {
+      //Uygulama içinde content-list-bar da boyut olarak ayarlanmalı...
+      //TODO: Buranın da sidebar gibi kontroller ile yazılması lazım.
+      //Eğer yoksa çıkalım
+      if( $('#content-list-bar') === null ){
+          return;
       }
+      
+      var clbTop = $('#content-list-bar').offset().top;
+      var clbheight = $(window).height() - clbTop - 55;
+      $("#content-list-bar").height(lbheight);
+      $("#content-list-bar > .box").css("min-height", clbheight);
+      
+      $("#content-list-bar").slimScroll({destroy: true}).height("auto");
+      //Add slimscroll
+      $("#content-list-bar").slimscroll({
+            height: (clbheight) + "px",
+            color: "rgba(0,0,0,0.2)",
+            size: "3px"
+      });
     }
   };
 
@@ -515,9 +640,17 @@ function _init() {
       sidebar.css({
         'position': 'fixed',
         'max-height': '100%',
-        'overflow': 'auto',
+        /*'overflow': 'auto',*/
         'padding-bottom': '50px'
       });
+      
+      //Slimscroll
+      sidebar.slimScroll({destroy: true}).height("auto");
+      sidebar.slimscroll({
+            height: $(".wrapper").height() + 15 + 'px',
+            alwaysVisible: false,
+            size: '3px'
+      }).css("width", "230px");
     },
     _fixForContent: function (sidebar) {
       $(".content-wrapper, .right-side").css('min-height', sidebar.height());
