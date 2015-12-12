@@ -222,7 +222,7 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
         String ss = Joiner.on(',').join(ls);
         kahve.put(getQueryNamesKey(), ss );
         //Uygulama tanımlı ilk sorguya dönüyoruz.
-        loadQuery(pageTitleResolver.getPageTitle());
+        loadQuery("");
     }
     
     public void loadFromSaved( String name ){
@@ -335,7 +335,7 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
         if( e != null ){
             loadQuery(e.getAsString());
         } else {
-            queryName = pageTitleResolver.getPageTitle();
+            queryName = "";
         }
     }
 
@@ -386,6 +386,9 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
     }
     
     public String getQueryName() {
+        if( Strings.isNullOrEmpty(queryName)){
+            queryName = pageTitleResolver.getPageTitle();
+        }
         return queryName;
     }
 
