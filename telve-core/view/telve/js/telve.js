@@ -81,7 +81,7 @@ function bindEnters(){
             return false;
         } else if( e.ctrlKey && e.keyCode == 10 ){
             
-            if( jQuery(e.target).parent().hasClass('ui-input-group') || jQuery(e.target).parent().parent().hasClass('ui-input-group') ){
+            if( jQuery(e.target).parent().hasClass('input-group') || jQuery(e.target).parent().parent().hasClass('input-group') ){
                 jQuery(e.target).parent().parent().find('button:first').click();
                 e.preventDefault();
                 e.stopImmediatePropagation();
@@ -89,7 +89,7 @@ function bindEnters(){
             }
         } else if( e.ctrlKey && e.keyCode == 13 ){
             
-            if( jQuery(e.target).parent().hasClass('ui-input-group') || jQuery(e.target).parent().parent().hasClass('ui-input-group') ){
+            if( jQuery(e.target).parent().hasClass('input-group') || jQuery(e.target).parent().parent().hasClass('input-group') ){
                 jQuery(e.target).parent().parent().find('button:first').click();
                 e.preventDefault();
                 e.stopImmediatePropagation();
