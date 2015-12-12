@@ -53,7 +53,9 @@ public class RoleHome extends AbstractIdentityHome<Role> {
 
     @Override
     public List<Role> getEntityList() {
-        return getIdentityManager().createIdentityQuery(Role.class).getResultList();
+        return getIdentityManager().createIdentityQuery(Role.class)
+                .sortBy(getIdentityManager().getQueryBuilder().asc(Role.NAME))
+                .getResultList();
     }
 
     @PostConstruct

@@ -99,12 +99,14 @@ public class UserHome extends AbstractIdentityHome<User> {
         IdentityQueryBuilder builder = identityManager.getQueryBuilder();
         if( Strings.isNullOrEmpty(filterGroup)){
             return builder.createIdentityQuery(User.class)
+                    .sortBy(builder.asc(User.LOGIN_NAME))
                     .getResultList();
         } else {
             Condition c = builder.equal(IdentityType.QUERY_ATTRIBUTE.byName("UserGroup"), filterGroup);
 
             return builder.createIdentityQuery(User.class)
                     .where(c)
+                    .sortBy(builder.asc(User.LOGIN_NAME))
                     .getResultList();
         }
         
@@ -145,13 +147,17 @@ public class UserHome extends AbstractIdentityHome<User> {
 
     private List<Role> getAvilRoles(){
         if( availRoles == null ){
-            availRoles = getIdentityManager().createIdentityQuery(Role.class).getResultList();
+            availRoles = getIdentityManager().createIdentityQuery(Role.class)
+                    .sortBy(getIdentityManager().getQueryBuilder().asc(Role.NAME))
+                    .getResultList();
         }
         return availRoles;
     }
     
     public List<Role> getRoles() {
-        return getIdentityManager().createIdentityQuery(Role.class).getResultList();
+        return getIdentityManager().createIdentityQuery(Role.class)
+                .sortBy(getIdentityManager().getQueryBuilder().asc(Role.NAME))
+                .getResultList();
     }
 
     /**
