@@ -55,7 +55,7 @@ public class UserHome extends AbstractIdentityHome<User> {
 
     private String userType = UserModelRegistery.getDefaultUserType();
     private String userGroup;
-    private String filterGroup = "";
+    private String filterGroup = "ALL";
 
     private List<Role> oldRoles = new ArrayList<>();
     //sistemde mevcut bulunan rollerin listesi
@@ -97,7 +97,7 @@ public class UserHome extends AbstractIdentityHome<User> {
     @Override
     public List<User> getEntityList() {
         IdentityQueryBuilder builder = identityManager.getQueryBuilder();
-        if( Strings.isNullOrEmpty(filterGroup)){
+        if( Strings.isNullOrEmpty(filterGroup) || "ALL".equals(filterGroup)){
             return builder.createIdentityQuery(User.class)
                     .sortBy(builder.asc(User.LOGIN_NAME))
                     .getResultList();
