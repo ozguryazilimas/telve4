@@ -555,3 +555,7 @@ textarea.ui-inputfield, .ui-selectonemenu {
     position: relative;
     display: block;
 }
+
+.pe-inputNumber{
+    text-align: right;
+}
