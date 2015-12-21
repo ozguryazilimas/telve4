@@ -6,9 +6,11 @@
 package com.ozguryazilim.telve.messagebus.command.ui;
 
 import com.ozguryazilim.telve.entities.StoredCommand;
+import com.ozguryazilim.telve.forms.RefreshBrowserEvent;
 import com.ozguryazilim.telve.messagebus.command.StorableCommand;
 import java.io.Serializable;
 import java.util.Date;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
@@ -35,6 +37,9 @@ public abstract class CommandEditorBase< C extends StorableCommand> implements S
     @Inject
     private StoredCommandRepository repository;
     
+    @Inject
+    Event<RefreshBrowserEvent> refreshBrowserEvent;
+    
     public void createNew(){
         entity = new StoredCommand();
         command = createNewCommand();
@@ -56,6 +61,8 @@ public abstract class CommandEditorBase< C extends StorableCommand> implements S
         repository.save(entity);
         
         onAfterSave();
+        
+        refreshBrowserEvent.fire(new RefreshBrowserEvent( "StoredCommand", 0l ));
     }
     
     

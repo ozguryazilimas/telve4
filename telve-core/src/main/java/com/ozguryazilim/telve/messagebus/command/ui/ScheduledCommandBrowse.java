@@ -7,6 +7,7 @@ package com.ozguryazilim.telve.messagebus.command.ui;
 
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.entities.StoredCommand;
+import com.ozguryazilim.telve.forms.RefreshBrowserEvent;
 import com.ozguryazilim.telve.messagebus.command.CommandScheduler;
 import com.ozguryazilim.telve.messagebus.command.CommandSender;
 import com.ozguryazilim.telve.messagebus.command.ScheduledCommand;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import javax.ejb.Timer;
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
@@ -229,6 +231,16 @@ public class ScheduledCommandBrowse implements Serializable{
         entity = selectedItem.getStoredCommand();
         repository.remove(entity);
         search();
+    }
+
+    /**
+     * RefreshBrowseEvent'i dinlenir ve ilgili domain ise search komutu çalıştırılır.
+     * @param event 
+     */
+    public void refreshListener( @Observes RefreshBrowserEvent event ) throws ClassNotFoundException{
+        if( event.getDomain().equals( "StoredCommand" ) ){
+            search();
+        }
     }
     
     /**
