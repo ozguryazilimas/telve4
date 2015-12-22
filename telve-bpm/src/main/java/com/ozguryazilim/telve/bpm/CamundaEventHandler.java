@@ -46,8 +46,10 @@ public class CamundaEventHandler implements Serializable {
 
         } else if (businessProcessEvent.getType().getTypeName().equals(TaskListener.EVENTNAME_CREATE)) {
             for (IdentityLink il : businessProcessEvent.getTask().getCandidates()) {
-                //TODO: Grup atamalarında buranın düzenlenmesi lazım.
-                sendNotification( il.getUserId(), businessProcessEvent.getTask(), businessProcessEvent.getProcessDefinition(), "CandidateAssignment" );
+                if( !Strings.isNullOrEmpty( il.getUserId() ) && !il.getUserId().equals( businessProcessEvent.getTask().getAssignee())){
+                    //TODO: Grup atamalarında buranın düzenlenmesi lazım.
+                    sendNotification( il.getUserId(), businessProcessEvent.getTask(), businessProcessEvent.getProcessDefinition(), "CandidateAssignment" );
+                }
             }
         }
     }
