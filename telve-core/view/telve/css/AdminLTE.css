@@ -101,13 +101,13 @@ body {
 }
 .main-footer {
   background: #fff;
-  padding: 15px;
+  padding: 10px;
   color: #444;
   border-top: 1px solid #d2d6de;
-  position: absolute;
-  width: 100%;
+  position: relative;
   bottom: 0px;
   /*Hakan
+  width: 100%;
   position: fixed;
   z-index: 900;
   margin-left: 0px;

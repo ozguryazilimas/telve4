@@ -75,7 +75,7 @@
 
                     <h:link outcome="/home.xhtml" styleClass="nav-brand logo">
                         <span class="logo-mini">
-                            OHS
+                            #{telveConfigResolver.getProperty('app.title.mini')}
                         </span>
                         <span class="logo-lg">
                             #{telveConfigResolver.getProperty('app.title')}
@@ -407,9 +407,20 @@
 
                     <section class="sidebar" style="height: auto;">
 
+
+                        <h:panelGroup styleClass="user-panel" layout="block" rendered="#{telveConfigResolver.getProperty('brand.company') eq 'TRUE'}">
+                            <div class="pull-left image">
+                                <h:graphicImage library="brand" name="img/#{telveConfigResolver.getProperty('brand.company.logo')}" styleClass="img-responsive img-thumbnail"/>
+                            </div>
+                            <div class="pull-left info">
+                                <p>#{telveConfigResolver.getProperty('brand.company.name')}</p>
+                                <p class="text-sm">#{telveConfigResolver.getProperty('brand.company.info')}</p>
+                            </div>
+                        </h:panelGroup>
+
                         <ui:remove>
                             <h:form id="globalSearch">
-                                <div class="ui-input-group" style="padding: 10px;">
+                                <div class="input-group" style="padding: 10px;">
                                     <p:inputText value="#{quickLauncher.key}" required="false"  placeholder="#{messages['general.label.SearchText']}"/>
                                     <p:commandButton action="#{quickLauncher.redirect()}" icon="fa fa-search" partialSubmit="false" />
                                 </div>
@@ -634,21 +645,21 @@
                         }
                     </script>
 
-
                 </div>
 
                 <div id="bottom-pos" style="position: fixed; bottom: 0; right: 0;"></div>
-                <ui:remove>
-                    <footer class="main-footer">
 
-                        <div class="pull-right hidden-xs">
-                            <b>Version</b> #{telveConfigResolver.getProperty('app.version')}
-                        </div>
 
-                        <strong>#{telveConfigResolver.getProperty('app.footer')}</strong> 
+                <footer class="main-footer">
 
-                    </footer>
-                </ui:remove>
+                    <div class="pull-right hidden-xs">
+                        #{telveConfigResolver.getProperty('app.version')}
+                    </div>
+
+                    <strong>#{telveConfigResolver.getProperty('app.footer')}</strong> 
+                    #{telveConfigResolver.getProperty('brand.company.footer')}
+
+                </footer>
 
 
                 <aside class="control-sidebar control-sidebar-dark" style="overflow: hidden;">

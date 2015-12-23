@@ -10,36 +10,252 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>#{telveConfigResolver.getProperty('app.title')}</title>
         <ui:include src="/layout/templateHeader.xhtml" />
+        <h:outputScript library="telve" name="js/jquery.backstretch.min.js" />
+        
+        <script type="text/javascript">
+            jQuery(document).ready(function() {
+               jQuery.backstretch("javax.faces.resource/img/#{telveConfigResolver.getProperty('app.login.image')}.jsf?ln=brand"); 
+            });
+        </script>
+        
     </h:head>
 
     <h:body styleClass="login-page">
         <ds:windowId />
 
+        <style>
+            strong { font-weight: 500; }
 
-        <div class="login-box">
-            <div class="login-logo">#{telveConfigResolver.getProperty('app.title')}</div>
-            <div class="login-box-body">
-                <p:messages globalOnly="true"/>
-                <div class="login-box-msg">#{messages['general.label.PleaseEnterUserNameAndPassword']}</div>
-                <h:form>
+a, a:hover, a:focus {
+	color: #de615e;
+	text-decoration: none;
+    -o-transition: all .3s; -moz-transition: all .3s; -webkit-transition: all .3s; -ms-transition: all .3s; transition: all .3s;
+}
+
+h1, h2 {
+	margin-top: 10px;
+	font-size: 38px;
+    font-weight: 100;
+    color: #555;
+    line-height: 50px;
+}
+
+h3 {
+	font-size: 22px;
+    font-weight: 300;
+    color: #555;
+    line-height: 30px;
+}
+
+            
+            .inner-bg {
+    padding: 100px 0 170px 0;
+}
+
+.top-content .text {
+	color: #fff;
+}
+
+.top-content .text h1 { color: #fff; }
+
+.top-content .description {
+	margin: 20px 0 10px 0;
+}
+
+.top-content .description p { opacity: 0.8; }
+
+.top-content .description a {
+	color: #fff;
+}
+.top-content .description a:hover, 
+.top-content .description a:focus { border-bottom: 1px dotted #fff; }
+
+.form-box {
+	margin-top: 35px;
+}
+
+.form-top {
+	overflow: hidden;
+	padding: 0 25px 15px 25px;
+	background: #444;
+	background: rgba(0, 0, 0, 0.35);
+	-moz-border-radius: 4px 4px 0 0; -webkit-border-radius: 4px 4px 0 0; border-radius: 4px 4px 0 0;
+	text-align: left;
+}
+
+.form-top-left {
+	float: left;
+	width: 75%;
+	padding-top: 25px;
+}
+
+.form-top-left h3 { margin-top: 0; color: #fff; }
+.form-top-left p { opacity: 0.8; color: #fff; }
+
+.form-top-right {
+	float: left;
+	width: 25%;
+	padding-top: 5px;
+	font-size: 66px;
+	color: #fff;
+	line-height: 100px;
+	text-align: right;
+	opacity: 0.3;
+}
+
+.form-bottom {
+	padding: 25px 25px 30px 25px;
+	background: #444;
+	background: rgba(0, 0, 0, 0.3);
+	-moz-border-radius: 0 0 4px 4px; -webkit-border-radius: 0 0 4px 4px; border-radius: 0 0 4px 4px;
+	text-align: left;
+}
+
+.form-bottom form textarea {
+	height: 100px;
+}
+
+.form-bottom form button.btn {
+	width: 100%;
+}
+
+.form-bottom form .input-error {
+	border-color: #de615e;
+}
+        </style>
+
+        <div class="top-content">
+            <div class="inner-bg">
+                <div class="container">
+                    <ui:remove>
                     <div class="row">
-                        <t:inputAny label="general.label.UserName" columnClass="col-xs-12">
-                            <h:inputText id="name" value="#{loginCredentials.userId}" style="width: 100%"/>
-                        </t:inputAny>
-
-                        <t:inputAny label="general.label.Password" columnClass="col-xs-12">
-                            <h:inputSecret id="password" value="#{loginCredentials.password}" redisplay="true" style="width: 100%"/>
-                        </t:inputAny>
-
-
-                        <div class="col-xs-12 text-center">
-                            <p:commandButton id="login" value="#{messages['general.label.Login']}" action="#{loginController.login()}" 
-                                             style="margin: 4px; width: 120px;" ajax="false"/>
+                        <div class="col-sm-8 col-sm-offset-2 text">
+                            <h1><strong>#{telveConfigResolver.getProperty('app.title')}</strong> Login Form</h1>
+                            <div class="description">
+                                <p>
+                                    Buraya uygulama ile ilgili hoş geldin v.b. yazıları gelecek.
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </h:form>
+                    </ui:remove>
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 form-box">
+                            <div class="form-top">
+                                <div class="form-top-left">
+                                    <h3>#{telveConfigResolver.getProperty('app.title')}</h3>
+                                    <p>#{messages['general.label.PleaseEnterUserNameAndPassword']}</p>
+                                    <p><p:messages globalOnly="true"/></p>
+                                </div>
+                                <div class="form-top-right">
+                                    <i class="fa fa-lock"></i>
+                                </div>
+                            </div>
+                            <div class="form-bottom">
+                                <h:form id="login-form" role="form" class="login-form">
+                                    <div class="form-group">
+                                        <label class="sr-only" for="form-username">#{messages['general.label.UserName']}</label>
+                                        <p:inputText id="form-username" placeholder="#{messages['general.label.UserName']}" styleClass="form-username form-control" value="#{loginCredentials.userId}" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="sr-only" for="form-password">#{messages['general.label.Password']}</label>
+                                        <p:password id="form-password" placeholder="#{messages['general.label.Password']}" styleClass="form-password form-control" value="#{loginCredentials.password}" />
+                                    </div>
+                                    <p:commandButton id="login" value="#{messages['general.label.Login']}" action="#{loginController.login()}" ajax="false" styleClass="btn"/>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                    <ui:remove>
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3 social-login">
+                            <h3>...or login with:</h3>
+                            <div class="social-login-buttons">
+                                <a class="btn btn-link-2" href="#">
+                                    <i class="fa fa-facebook"></i> Facebook
+                                </a>
+                                <a class="btn btn-link-2" href="#">
+                                    <i class="fa fa-twitter"></i> Twitter
+                                </a>
+                                <a class="btn btn-link-2" href="#">
+                                    <i class="fa fa-google-plus"></i> Google Plus
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                        </ui:remove>
+                </div>
             </div>
+
+
         </div>
+        <ui:remove>
+
+
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4 col-md-offset-3">
+                        <div class="login-box">
+                            <div class="login-logo">#{telveConfigResolver.getProperty('app.title')}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-md-offset-7">
+                        <div class="login-box">
+
+                            <div class="login-box-body">
+                                <p:messages globalOnly="true"/>
+                                <div class="login-box-msg">#{messages['general.label.PleaseEnterUserNameAndPassword']}</div>
+                                <h:form>
+                                    <div class="row">
+                                        <t:inputAny label="general.label.UserName" columnClass="col-xs-12">
+                                            <h:inputText id="name" value="#{loginCredentials.userId}" style="width: 100%"/>
+                                        </t:inputAny>
+
+                                        <t:inputAny label="general.label.Password" columnClass="col-xs-12">
+                                            <h:inputSecret id="password" value="#{loginCredentials.password}" redisplay="true" style="width: 100%"/>
+                                        </t:inputAny>
+
+
+                                        <div class="col-xs-12 text-center">
+                                            <p:commandButton id="login" value="#{messages['general.label.Login']}" action="#{loginController.login()}" 
+                                                             style="margin: 4px; width: 120px;" ajax="false"/>
+                                        </div>
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ui:remove>
+
+        <ui:remove>
+            <div class="login-box">
+                <div class="login-logo">#{telveConfigResolver.getProperty('app.title')}</div>
+                <div class="login-box-body">
+                    <p:messages globalOnly="true"/>
+                    <div class="login-box-msg">#{messages['general.label.PleaseEnterUserNameAndPassword']}</div>
+                    <h:form>
+                        <div class="row">
+                            <t:inputAny label="general.label.UserName" columnClass="col-xs-12">
+                                <h:inputText id="name" value="#{loginCredentials.userId}" style="width: 100%"/>
+                            </t:inputAny>
+
+                            <t:inputAny label="general.label.Password" columnClass="col-xs-12">
+                                <h:inputSecret id="password" value="#{loginCredentials.password}" redisplay="true" style="width: 100%"/>
+                            </t:inputAny>
+
+
+                            <div class="col-xs-12 text-center">
+                                <p:commandButton id="login" value="#{messages['general.label.Login']}" action="#{loginController.login()}" 
+                                                 style="margin: 4px; width: 120px;" ajax="false"/>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+            </div>
+        </ui:remove>
 
         <ui:remove>
 

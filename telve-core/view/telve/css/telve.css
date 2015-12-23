@@ -324,23 +324,23 @@ textarea.ui-inputfield, .ui-selectonemenu {
 }
 
 .btn-add{
-  color:  #699934 !important;
+    color:  #699934 !important;
 }
 
 .btn-refresh{
-  color:  #04519b !important;
+    color:  #04519b !important;
 }
 
 .btn-edit{
-  color:  #c94e00 !important;
+    color:  #c94e00 !important;
 }
 
 .btn-delete{
-  color:  #b5191f !important;
+    color:  #b5191f !important;
 }
 
 .btn-link{
-  color:  #4582ec !important;
+    color:  #4582ec !important;
 }
 
 
@@ -463,17 +463,17 @@ textarea.ui-inputfield, .ui-selectonemenu {
 
 
 .panel-primary {
-  border-color: #4582ec;
+    border-color: #4582ec;
 }
 
 .panel-primary > .ui-panel-titlebar {
-  color: #ffffff;
-  background-color: #4582ec;
-  border-color: #4582ec;
+    color: #ffffff;
+    background-color: #4582ec;
+    border-color: #4582ec;
 }
 
 .panel-primary > .ui-panel-content {
-  border: 1px solid #4582ec !important;
+    border: 1px solid #4582ec !important;
 }
 
 .panel-primary > .ui-widget-header .ui-state-default {
@@ -486,43 +486,43 @@ textarea.ui-inputfield, .ui-selectonemenu {
 }
 
 .panel-success {
-  border-color: #88c149;
+    border-color: #88c149;
 }
 .panel-success > .ui-panel-titlebar {
-  color: #ffffff;
-  background-color: #88c149;
-  border-color: #88c149;
+    color: #ffffff;
+    background-color: #88c149;
+    border-color: #88c149;
 }
 
 .panel-info {
-  border-color: #5bc0de;
+    border-color: #5bc0de;
 }
 .panel-info > .ui-panel-titlebar {
-  color: #ffffff;
-  background-color: #5bc0de;
-  border-color: #5bc0de;
+    color: #ffffff;
+    background-color: #5bc0de;
+    border-color: #5bc0de;
 }
 
 .panel-info > .ui-panel-content {
-  border: 1px solid #5bc0de !important;
+    border: 1px solid #5bc0de !important;
 }
 
 .panel-warning {
-  border-color: #f0ad4e;
+    border-color: #f0ad4e;
 }
 .panel-warning > .ui-panel-titlebar {
-  color: #ffffff;
-  background-color: #f0ad4e;
-  border-color: #f0ad4e;
+    color: #ffffff;
+    background-color: #f0ad4e;
+    border-color: #f0ad4e;
 }
 
 .panel-danger {
-  border-color: #d9534f;
+    border-color: #d9534f;
 }
 .panel-danger > .ui-panel-titlebar {
-  color: #ffffff;
-  background-color: #d9534f;
-  border-color: #d9534f;
+    color: #ffffff;
+    background-color: #d9534f;
+    border-color: #d9534f;
 }
 
 
@@ -570,20 +570,20 @@ textarea.ui-inputfield, .ui-selectonemenu {
     background-color: #fbeed5;
     border-color: #fcf8e3;
     color: #c09853;
-        
+
 }
 
 .ui-growl-image{
-     	display:inline-block;
-	font:normal normal normal 14px/1 FontAwesome;
-	font-size:inherit;
-	text-rendering:auto;
-	-webkit-font-smoothing:antialiased;
-	-moz-osx-font-smoothing:grayscale;
-	transform:translate(0, 0);
-        text-indent: 0px!important;
-        font-size:2em;
-        background: none !important;
+    display:inline-block;
+    font:normal normal normal 14px/1 FontAwesome;
+    font-size:inherit;
+    text-rendering:auto;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    transform:translate(0, 0);
+    text-indent: 0px!important;
+    font-size:2em;
+    background: none !important;
 }
 
 .ui-growl-image-info{
@@ -604,4 +604,10 @@ textarea.ui-inputfield, .ui-selectonemenu {
 
 .ui-growl-image-warn::before{
     content:"\f071";
+}
+
+.login-page{
+    background-image: url("#{resource[telveConfigResolver.getProperty('app.login.image')]}") !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
 }
