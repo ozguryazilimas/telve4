@@ -14,7 +14,7 @@
         
         <script type="text/javascript">
             jQuery(document).ready(function() {
-               jQuery.backstretch("javax.faces.resource/img/#{telveConfigResolver.getProperty('app.login.image')}.jsf?ln=brand"); 
+               jQuery.backstretch("#{request.contextPath}/javax.faces.resource/img/#{telveConfigResolver.getProperty('app.login.image')}.jsf?ln=brand"); 
             });
         </script>
         
@@ -300,6 +300,7 @@ h3 {
                                 <div class="large-12 medium-12 small-12 columns">
                                     <p:commandButton id="login" value="#{messages['general.label.Login']}" action="#{loginController.login()}" 
                                                      style="margin: 4px; width: 120px;" ajax="false"/>
+                                    <p:defaultCommand target="login" />
                                 </div>
                             </div>
                         </div>

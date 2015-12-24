@@ -49,13 +49,14 @@ function adminLTEActivate(){
 }
 
 function bindEnters(){
+    /*
     jQuery(window).off('.telve').on('keydown.telve', function (e) {
         if ( !e.ctrlKey && e.keyCode == 13 ) {
             e.preventDefault();
             e.stopImmediatePropagation();
             return false;
         }
-    });
+    });*/
     
     jQuery('.ui-autocomplete-input').off('.telve').on('keyup.telve', function (e) {
         if ( !e.ctrlKey && e.keyCode == 13 ) {
@@ -65,8 +66,7 @@ function bindEnters(){
         }
     });
     
-    
-    jQuery(window).on('keyup.telve', function (e) {
+    jQuery('.input-group > .ui-inputfield').off('.telve').on('keyup.telve', function (e) {
         if ( !e.ctrlKey && e.keyCode == 13 ) {
             e.preventDefault();
             e.stopImmediatePropagation();
@@ -74,7 +74,17 @@ function bindEnters(){
         }
     });
     
-    jQuery(window).on('keypress.telve', function (e) {
+    /*
+    jQuery(window).on('keyup.telve', function (e) {
+        if ( !e.ctrlKey && e.keyCode == 13 ) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            return false;
+        }
+    });*/
+    
+    
+    jQuery('.input-group > .ui-inputfield').off('.telve').on('keypress.telve', function (e) {
         if ( !e.ctrlKey && e.keyCode == 13 ) {
             e.preventDefault();
             e.stopImmediatePropagation();
@@ -97,5 +107,6 @@ function bindEnters(){
             }
         }
     });
+    
 }
 
