@@ -4,3 +4,6 @@ faces-config.NavData
 *~
 *.versionsBackup
 /telve-core/nbproject/
+.settings
+.project
+.classpath
