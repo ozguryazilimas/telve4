@@ -17,14 +17,14 @@
                 <ui:insert name="extraButtons" />
 
                 <p:commandButton id="edit" 
-                                 value="#{messages['general.button.Edit']}"
+                                 value="#{messages['general.button.Edit']} #{entityName}"
                                  action="#{bean.edit()}"
                                  icon="fa fa-edit" 
                                  partialSubmit="true"
                                  process="@this"
                                  ajax="true"
                                  styleClass="btn-warning"
-                                 rendered="#{not empty entity.id and identity.hasPermission( entityName, 'update') and hideEditBtn ne 'true' }"/>
+                                 rendered="#{identity.hasPermission( entityName, 'update') and hideEditBtn ne 'true' }"/>
                 <p:commandButton id="done" 
                                  value="#{messages['general.button.Close']}"
                                  action="#{bean.close()}"

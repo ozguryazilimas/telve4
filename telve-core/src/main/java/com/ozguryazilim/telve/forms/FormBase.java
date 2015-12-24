@@ -26,6 +26,7 @@ import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.apache.deltaspike.core.util.ProxyUtils;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
+import org.omnifaces.cdi.Param;
 import org.picketlink.Identity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,6 +66,10 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     
     @Inject
     Event<RefreshBrowserEvent> refreshBrowserEvent;
+
+
+    @Inject @Param
+    private Long eid;
     
     private List<String> subViewList = new ArrayList<String>();
     private Map<String,List<String>> subViews = new HashMap<>();
@@ -72,6 +77,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
 
     @PostConstruct
     public void init() {
+        setId((PK)eid);
         initSubViews();
     }
 
@@ -134,6 +140,18 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         setId(eid);
     }
 
+    /**
+     * Yeni veri girişi için formu hazırlar.
+     * 
+     * Veri girişi hazırlandıktan sonra editPage'e yönlendirir.
+     * 
+     * @return 
+     */
+    public Class<? extends ViewConfig> create() {
+        createNew();
+        return getEditPage();
+    }
+    
     @Transactional
     public Class<? extends ViewConfig> save() {
         if (entity == null) {
