@@ -68,8 +68,6 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     Event<RefreshBrowserEvent> refreshBrowserEvent;
 
 
-    @Inject @Param
-    private Long eid;
     
     private List<String> subViewList = new ArrayList<String>();
     private Map<String,List<String>> subViews = new HashMap<>();
@@ -77,7 +75,6 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
 
     @PostConstruct
     public void init() {
-        setId((PK)eid);
         initSubViews();
     }
 
