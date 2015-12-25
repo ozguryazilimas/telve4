@@ -12,7 +12,7 @@
         <f:viewParam name="eid" value="#{bean.id}" />
     </f:metadata>
     
-    <ui:param name="showListBar" value="#{not empty bean.subViewList}" />
+    <ui:param name="showListBar" value="#{showListBar or not empty bean.subViewList}" />
 
     <ui:define name="outerspace">
         <ui:remove>
