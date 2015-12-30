@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.ozguryazilim.mutfak</groupId>
         <artifactId>telve-parent</artifactId>
-        <version>4.0.0.Beta1</version>
+        <version>4.0.0.Beta1-1</version>
     </parent>
     <artifactId>telve-doc</artifactId>
     <description>Online Help and Document Project Base POM</description>

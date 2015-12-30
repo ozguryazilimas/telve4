@@ -4,7 +4,7 @@
     <parent>
         <artifactId>telve-parent</artifactId>
         <groupId>com.ozguryazilim.mutfak</groupId>
-        <version>4.0.0.Beta1</version>
+        <version>4.0.0.Beta1-1</version>
     </parent>
 
     <groupId>com.ozguryazilim.mutfak</groupId>
