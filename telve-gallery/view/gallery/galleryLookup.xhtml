@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                template="/layout/dialogBase.xhtml">
+    <ui:param name="title" value="#{galleryLookup.selectedGallery}" />
+    <ui:define name="form" >
+        <h:form id="lookupForm">
+
+            <div class="row">
+                <t:inputAny label="general.label.SearchKey" columnClass="col-xs-12">
+                    <h:panelGroup styleClass="input-group" layout="block">
+                        <p:inputText value="#{galleryLookup.searchText}" />
+                        <div class="input-group-btn">
+                            <p:commandButton id="search2" icon="fa fa-search" action="#{galleryLookup.search()}" update=":lookupForm:resultLists" styleClass="ui-icon-only btn btn-default" />
+                        </div>
+                    </h:panelGroup>
+                </t:inputAny>
+
+                <div class="col-xs-12" style="padding-top: 4px;">
+                    <ui:insert name="filters" />
+                </div>
+            </div>
+
+
+            <h:panelGroup id="resultLists" layout="block" styleClass="row">
+                <ui:repeat value="#{galleryLookup.files}" var="file">
+                    <div class="col-xs-3">
+                        <div class="box">
+                            <div class="box-body">
+                                <p:commandLink action="#{galleryLookup.selectItem(file.id)}" process="@this" >
+                                    <img src="#{request.contextPath}/rest/gallery/image/#{file.id}" class="img-responsive img-rounded"/>
+                                </p:commandLink>
+                            </div>
+                            <div class="box-footer">
+                                <h:outputText value="#{file.name}" styleClass="info-box-text"/>
+                                <h:outputText value="#{file.tags}" styleClass="text-muted"/>
+                            </div>
+                        </div>
+                    </div>
+                </ui:repeat>
+            </h:panelGroup>
+            <h:panelGroup styleClass="row actionButtons" layout="block">
+                <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{galleryLookup.cancelDialog()}" process="@this"/>
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

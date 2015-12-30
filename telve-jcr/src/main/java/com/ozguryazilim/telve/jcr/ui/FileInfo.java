@@ -25,6 +25,7 @@ public class FileInfo {
     private String info;
     private String category;
     private String mimeType;
+    private String tags;
 
     public String getId() {
         return id;
@@ -113,7 +114,13 @@ public class FileInfo {
     public void setMimeType(String mimeType) {
         this.mimeType = mimeType;
     }
-    
-    
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
     
 }

@@ -239,6 +239,7 @@
         <module>telve-dynaform</module>
         <module>telve-jcr</module>
         <module>telve-theme</module>
+        <module>telve-gallery</module>
     </modules>
     
     <distributionManagement>

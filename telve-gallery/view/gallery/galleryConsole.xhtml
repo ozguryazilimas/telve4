@@ -1,0 +1,140 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/primeTemplate.xhtml">
+
+    <ui:param name="showListBar" value="false" />
+    <ui:param name="dontShowContentHeader" value="true" />
+
+    <ui:define name="customHeader">
+        <section class="content-header">
+            <small class="text-muted">#{ messages[pageTitleResolver.pageTitle] }</small>
+            <h:form id="bheader">
+                <div class="row">
+                    <div class="value col-md-3">
+
+                        <h3 style="margin-top: 0px; margin-bottom: 0px; ">
+                            <div class="dropdown" style="display: inline-block;">
+                                <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #333;">
+                                    #{messages[galleryConsole.selectedGallery]}  
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" >
+                                    <ui:repeat value="#{galleryConsole.galleries}" var="qn" >
+                                        <li><p:commandLink action="#{galleryConsole.setSelectedGallery(qn)}" process="@this" update="@([id$=galleryView]),bheader">#{messages[qn]}</p:commandLink></li>
+                                    </ui:repeat>
+                                </ul>
+                            </div>
+                        </h3>
+                    </div>
+
+                    <div class="col-md-3 col-xs-12 pull-right">
+
+                        <span class="value">
+                            <div class="input-group">
+                                <p:inputText id="filter" value="#{galleryConsole.searchText}" 
+                                             placeholder="#{messages['general.info.SearchText']}" />
+                                <div class="input-group-btn">
+                                    <p:commandButton action="#{galleryConsole.search()}" process="@form" icon="fa fa-search" styleClass="ui-icon-only btn btn-default" update="@([id$=galleryView])" />
+                                </div>
+                            </div>
+                        </span>
+
+                    </div>
+
+                </div>
+            </h:form>
+
+        </section>
+    </ui:define>
+
+    <ui:define name="body">
+
+        <ui:include src="/layout/messages.xhtml"/>
+
+        <h:panelGroup id="galleryView">
+            <div class="row">
+                <ui:repeat value="#{galleryConsole.files}" var="file">
+                    <div class="col-lg-2 col-md-3 col-sm-6 col-xs-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <img src="#{request.contextPath}/rest/gallery/image/#{file.id}" class="img-responsive img-rounded"/>
+                            </div>
+                            <div class="box-footer">
+                                <div class="box-tools pull-right">
+                                    <p:commandLink action="#{galleryConsole.selectItem(file.id)}" styleClass="btn btn-box-tool" oncomplete="PF('metadata').show();" update="metadata" process="@this">
+                                        <i class="fa fa-pencil"/>
+                                    </p:commandLink>
+                                    <p:commandLink action="#{galleryConsole.deleteItem(file.id)}" styleClass="btn btn-box-tool" update="@([id$=galleryView])" process="@this">
+                                        <i class="fa fa-trash"/>
+                                    </p:commandLink>
+                                </div>
+                                <h:outputText value="#{file.name}" styleClass="info-box-text"/>
+                                <h:outputText value="#{file.tags}" styleClass="text-muted"/>
+                            </div>
+                        </div>
+                    </div>
+                </ui:repeat>
+            </div>
+            <ui:remove>
+                <!-- TODO: Pager için-->
+                <div class="row">
+                    <div class="col-xs-1 col-xs-offset-6">
+                        <p:commandLink update="@([id$=galleryView])">
+                            <i class="fa fa-chevron-down"/>
+                        </p:commandLink>
+                    </div>
+                </div>
+            </ui:remove>
+
+
+        </h:panelGroup>
+
+        <h:form id="uploaddialog" enctype="multipart/form-data">
+            <p:dialog header="#{messages['gallery.caption.UploadFileDialog']}" widgetVar="fdlg" showEffect="clip" hideEffect="clip">
+                <p:fileUpload fileUploadListener="#{galleryConsole.handleFileUpload}" mode="advanced" dragDropSupport="true"
+                              update="@([id$=galleryView])" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|.*)$/" />
+            </p:dialog>
+        </h:form>
+
+        <p:dialog id="metadata" widgetVar="metadata" modal="true" width="550" minWidth="550">
+            <f:facet name="header">
+                #{galleryConsole.selectedNodeName}
+            </f:facet>
+            <h:form id="metadataf">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <img src="/openohs/rest/gallery/image/#{galleryConsole.selectedNodeId}" class="img-responsive img-thumbnail" />
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="row">
+                                <t:inputTextarea label="general.label.Info" value="#{galleryConsole.selectedNodeInfo}" columnClass="col-xs-12"/>
+                                <t:inputText label="general.label.Tags" value="#{galleryConsole.selectedNodeTags}" columnClass="col-xs-12" placeholder="Virgüllerle ayrımış şekilde giriniz"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer" style="text-align: right" >
+                    <p:commandButton value="Tamam" action="#{galleryConsole.saveSelectedItem()}" oncomplete="PF('metadata').hide();" styleClass="btn btn-primary" process="@form"/>
+                    <p:commandButton value="Vazgeç" oncomplete="PF('metadata').hide();" process="@this" styleClass="btn"/>
+                </div>
+            </h:form>
+        </p:dialog>
+
+    </ui:define>
+
+
+    <ui:define name="context-menu">
+        <li>
+            <p:commandLink title="#{messages['gallery.hint.UploadFile']}" onclick="PF('fdlg').show();" process="@this">
+                <i class="fa fa-upload" />
+                Image Upload - i18n
+            </p:commandLink>
+        </li>
+    </ui:define>
+</ui:composition>
