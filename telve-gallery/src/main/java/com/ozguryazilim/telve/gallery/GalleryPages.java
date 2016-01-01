@@ -21,6 +21,6 @@ import org.apache.deltaspike.jsf.api.config.view.View;
 @Folder(name="/gallery")
 public interface GalleryPages extends Pages{
     
-    @SecuredPage() @View @Navigation( icon = "fa fa-image", section = AdminNavigationSection.class)
+    @SecuredPage("gallery") @View @Navigation( icon = "fa fa-image", section = AdminNavigationSection.class)
     class GalleryConsole implements GalleryPages {};
 }

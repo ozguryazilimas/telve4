@@ -66,10 +66,10 @@
                             </div>
                             <div class="box-footer">
                                 <div class="box-tools pull-right">
-                                    <p:commandLink action="#{galleryConsole.selectItem(file.id)}" styleClass="btn btn-box-tool" oncomplete="PF('metadata').show();" update="metadata" process="@this">
+                                    <p:commandLink action="#{galleryConsole.selectItem(file.id)}" styleClass="btn btn-box-tool" oncomplete="PF('metadata').show();" update="metadata" process="@this" rendered="#{identity.hasPermission('gallery','update')}">
                                         <i class="fa fa-pencil"/>
                                     </p:commandLink>
-                                    <p:commandLink action="#{galleryConsole.deleteItem(file.id)}" styleClass="btn btn-box-tool" update="@([id$=galleryView])" process="@this">
+                                    <p:commandLink action="#{galleryConsole.deleteItem(file.id)}" styleClass="btn btn-box-tool" update="@([id$=galleryView])" process="@this" rendered="#{identity.hasPermission('gallery','delete')}">
                                         <i class="fa fa-trash"/>
                                     </p:commandLink>
                                 </div>
@@ -131,9 +131,9 @@
 
     <ui:define name="context-menu">
         <li>
-            <p:commandLink title="#{messages['gallery.hint.UploadFile']}" onclick="PF('fdlg').show();" process="@this">
+            <p:commandLink title="#{messages['general.hint.Upload']}" onclick="PF('fdlg').show();" process="@this" rendered="#{identity.hasPermission('gallery','insert')}">
                 <i class="fa fa-upload" />
-                Image Upload - i18n
+                #{messages['general.button.Upload']}
             </p:commandLink>
         </li>
     </ui:define>
