@@ -15,6 +15,11 @@ package com.ozguryazilim.telve.reports;
  */
 public enum ReportType {
     JasperReport,
+    /**
+     * Geliştirici kendi rapor motorunu kullanıyor.
+     * Özellikle Excel v.b. için kullanılır.
+     */
+    CustomReport,
     //Browse,
     //Birt,
     //3Party

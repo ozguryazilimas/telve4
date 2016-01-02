@@ -8,19 +8,20 @@
     <packaging>pom</packaging>
     
     <properties>
-        <deltaspike.version>1.5.0</deltaspike.version>
+        <deltaspike.version>1.5.2</deltaspike.version>
         <picketlink.version>2.7.0.Final</picketlink.version>
         <primeface.version>5.3</primeface.version>
         <primefaces-ext.version>3.0.0</primefaces-ext.version>
         <atmosphere.version>2.4.0-RC3</atmosphere.version>
-        <omnifaces.version>2.1</omnifaces.version>
+        <omnifaces.version>2.2</omnifaces.version>
         <liquibase.version>3.4.0</liquibase.version>
         
         <mysql.version>5.1.26</mysql.version>
         
         <camel.version>2.14.0</camel.version>
         <camunda.version>7.3.0</camunda.version>
-        <jasperreports.version>6.0.0</jasperreports.version>
+        <jasperreports.version>6.2.0</jasperreports.version>
+        <jasperreports-fonts.version>6.0.0</jasperreports-fonts.version>
         <infinispan.version>7.2.4.Final</infinispan.version>
         <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
     </properties>
@@ -368,7 +369,7 @@
             <dependency>
                 <groupId>net.sf.jasperreports</groupId>
                 <artifactId>jasperreports-fonts</artifactId>
-                <version>${jasperreports.version}</version>
+                <version>${jasperreports-fonts.version}</version>
             </dependency>
 
             <!--

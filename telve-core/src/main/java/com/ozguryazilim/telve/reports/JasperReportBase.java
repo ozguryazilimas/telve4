@@ -104,6 +104,34 @@ public abstract class JasperReportBase implements ReportController, Serializable
             FacesMessages.error(ex.getMessage());
         }
     }
+    
+    public void execCSV() {
+        try {
+            
+            Map<String, Object> params = new HashMap<>();
+            if( buildParam(params) ){
+                decorateParams( params );
+                jasperReportHandler.reportToCSV(getTemplateName(), getTemplateName(), params );
+            }
+        } catch (JRException ex) {
+            LOG.error("JasperReport Error", ex);
+            FacesMessages.error(ex.getMessage());
+        }
+    }
+    
+    public void execXLS() {
+        try {
+            
+            Map<String, Object> params = new HashMap<>();
+            if( buildParam(params) ){
+                decorateParams( params );
+                jasperReportHandler.reportToXLS(getTemplateName(), getTemplateName(), params );
+            }
+        } catch (JRException ex) {
+            LOG.error("JasperReport Error", ex);
+            FacesMessages.error(ex.getMessage());
+        }
+    }
 
     /**
      * Dialogu hiç bir şey seçmeden kapatır.
