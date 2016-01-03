@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
         
     <groupId>com.ozguryazilim.mutfak</groupId>
-    <version>4.0.0.Beta1</version>
+    <version>4.0.0.Beta2</version>
     <artifactId>telve-bom</artifactId>
     <packaging>pom</packaging>
     
