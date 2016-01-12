@@ -1,20 +1,34 @@
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %><!DOCTYPE html>
+<%@ page import="org.tobarsegais.webapp.ServletContextListenerImpl" %>
+<%@ page import="org.apache.commons.lang3.StringUtils" %>
 <%--
-  ~ Copyright 2012 Stephen Connolly
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~     http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  --%>
+ ~ Copyright 2012 Stephen Connolly
+ ~
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~     http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing, software
+ ~ distributed under the License is distributed on an "AS IS" BASIS,
+ ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ~ See the License for the specific language governing permissions and
+ ~ limitations under the License.
+ --%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" trimDirectiveWhitespaces="true" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%
+    String cacheControl = ServletContextListenerImpl.getInitParameter(application, "cache-control.mime.text/html");
+    if (cacheControl == null) {
+        cacheControl = ServletContextListenerImpl.getInitParameter(application, "cache-control.mime.text/*");
+    }
+    if (cacheControl == null) {
+        cacheControl = ServletContextListenerImpl.getInitParameter(application, "cache-control.default");
+    }
+    if (StringUtils.isNotBlank(cacheControl)) {
+        response.setHeader("Cache-Control", cacheControl);
+    }
+%><!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -65,15 +79,17 @@
     }
 %>
 <ul class="nav nav-tabs">
-    <li class="<%=contentsActive%>"><a href="#contents-nav" data-toggle="tab"><i class="icon-book"></i>İçindekiler</a>
+    <li class="<%=contentsActive%>"><a href="#contents-nav" data-toggle="tab"><i class="icon-book"></i>Contents</a>
     </li>
-    <li class="<%=indexActive%>"><a href="#index-nav" data-toggle="tab"><i class="icon-list"></i>İndeks</a></li>
-    <li class="<%=searchActive%>"><a href="#search-nav" data-toggle="tab"><i class="icon-search"></i>Arama</a></li>
+    <li class="<%=indexActive%>"><a href="#index-nav" data-toggle="tab"><i class="icon-list"></i>Index</a></li>
+    <li class="<%=searchActive%>"><a href="#search-nav" data-toggle="tab"><i class="icon-search"></i>Search</a></li>
 </ul>
+
 <div class="tab-content" id="sidebar-content">
 <div class="tab-pane <%=contentsActive%>" id="contents-nav"><tags:toc id="toc"/></div>
-<div class="tab-pane <%=indexActive%>" id="index-nav"><tags:keywords/></div>
-<div class="tab-pane <%=searchActive%>" id="search-nav"><tags:search/></div>
+<div class="tab-pane <%=indexActive%>" id="index-nav"><tags:keywords /></div>
+<div class="tab-pane <%=searchActive%>" id="search-nav"><tags:search /></div>
+
 </div>
 </div>
 <!--/.well -->
@@ -86,5 +102,6 @@
 <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/jquery.treeview.js"></script>
 <script src="${pageContext.request.contextPath}/js/tobar-segais.js"></script>
+
 </body>
 </html>

@@ -10,7 +10,7 @@
 
     <groupId>com.ozguryazilim.mutfak</groupId>
     <artifactId>telve-help</artifactId>
-    <version>4.0.0.A12</version>
+    <version>4.0.0.Beta2</version>
     <packaging>war</packaging>
 
     <name>telve-help</name>
@@ -33,12 +33,16 @@
             <version>1.15</version>
             <scope>provided</scope>
         </dependency>
+        
+        
         <dependency>
             <groupId>com.ozguryazilim.mutfak</groupId>
             <artifactId>telve-core-doc</artifactId>
-            <version>4.0.0.A12</version>
+            <version>4.0.0.Beta2</version>
             <scope>provided</scope>
         </dependency>
+        
+        
     </dependencies>
 
     

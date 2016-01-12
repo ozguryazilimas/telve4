@@ -11,8 +11,11 @@
     <packaging>pom</packaging>
     
     <properties>
-        <dita.dir>${env.DITA_HOME}</dita.dir>
-        <transtype>oyas-pdf</transtype>
+        <transtype>eclipsehelp</transtype>
+        <dita.temp.dir>${project.build.directory}/dita/temp</dita.temp.dir>
+        <input.file>${basedir}/src/main/dita/${root.map}</input.file>
+        <output.dir>${project.build.outputDirectory}</output.dir>
+        <dita.log>${project.build.directory}/dita/log</dita.log>
     </properties>
 
     <build>
@@ -27,36 +30,11 @@
     <profiles>
         <profile>
             <id>doc</id>
+            
          
             <build>
                 <pluginManagement>
                     <plugins>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-resources-plugin</artifactId>
-                            <executions>
-                                <execution>
-                                    <id>copy-proerties.temp</id>
-                                    <phase>initialize</phase>
-                                    <goals>
-                                        <goal>copy-resources</goal>
-                                    </goals>
-                                    <configuration>
-                                        <outputDirectory>${project.build.directory}</outputDirectory>
-                                        <resources>
-                                            <resource>
-                                                <directory>src/main/dita-resources</directory>
-                                                <filtering>true</filtering>
-                                                <includes>
-                                                    <include>dita.properties</include>
-                                                </includes>
-                                            </resource>
-                                        </resources>
-                                    </configuration>
-                                </execution>
-                            </executions>
-                        </plugin>
-
                         <plugin>
                             <artifactId>exec-maven-plugin</artifactId>
                             <groupId>org.codehaus.mojo</groupId>
@@ -69,9 +47,14 @@
                                         <goal>exec</goal>
                                     </goals>
                                     <configuration>
-                                        <executable>${dita.dir}/dita.sh</executable>
+                                        <executable>dita</executable>
                                         <arguments>
-                                            <argument>${project.build.directory}/dita.properties</argument>
+                                            <argument>-i</argument>
+                                            <argument>${input.file}</argument>
+                                            <argument>-f</argument>
+                                            <argument>${transtype}</argument>
+                                            <argument>-o</argument>
+                                            <argument>${output.dir}</argument>
                                         </arguments>
                                     </configuration>
                                 </execution>
