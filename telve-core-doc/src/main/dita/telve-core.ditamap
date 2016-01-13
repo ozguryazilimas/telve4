@@ -6,6 +6,8 @@
 
   <topichead navtitle="Genel Bilgiler">
     <topicref href="general/paramEdit.dita"/>
+    <topicref href="general/treeParamEdit.dita"/>
+    <topicref href="general/codeDescription.dita"/>
   </topichead>
   <topichead navtitle="Genel Ekranlar">
     <topicref href="admin/suggestionBrowse.dita"/>
