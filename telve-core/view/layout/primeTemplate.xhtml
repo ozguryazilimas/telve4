@@ -610,6 +610,11 @@
 
                     <ui:fragment rendered="#{dontShowContentHeader ne true}">
                         <section class="content-header">
+                            <ui:fragment rendered="#{viewState ne ''}" >
+                                <div class="pull-right">
+                                    #{viewState}
+                                </div>
+                            </ui:fragment>
                             <h1>#{ messages[pageTitleResolver.pageTitle] }  <small>#{ viewIdentifier }</small></h1> 
                         </section>
                     </ui:fragment>
