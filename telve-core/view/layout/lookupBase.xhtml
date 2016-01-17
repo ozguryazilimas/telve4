@@ -67,7 +67,7 @@
                             <h:panelGroup id="selectedResuls" layout="block" styleClass="col-xs-6">
                                 <p:dataTable value="#{bean.model.getSelectedViewModels()}" var="item">
                                     <p:column headerText="#{messages['general.label.SearchSelections']}">
-                                    #{item.name}
+                                    #{item[bean.captionFieldName]}
                                     </p:column>
                                 </p:dataTable>
                             </h:panelGroup>
