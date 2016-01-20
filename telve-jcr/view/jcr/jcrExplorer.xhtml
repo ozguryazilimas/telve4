@@ -330,7 +330,9 @@
                                 
                                    
                                 function setNodeSelections(){
+                                    if( jQuery('#data').length > 0 ){
                                         jQuery('#data').jstree().select_node(selectedNode);
+                                    }
                                 }
 
                                 function setSelections(){
