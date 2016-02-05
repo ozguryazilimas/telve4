@@ -64,6 +64,8 @@
                         </h3>
                     </div>
 
+                    <ui:remove>
+                        <!-- Yeni Quick Filter sistemi yapılana kadar kapatalım -->
                     <ui:fragment rendered="#{showQuickSearch}">
                         <div class="col-md-3 col-xs-12 pull-right">
                             <span class="value">
@@ -77,9 +79,13 @@
                             </span>
                         </div>
                     </ui:fragment>
+                        
 
                     <ui:insert name="QuickSearchExtra" />
+                    <!-- Sadece özel yerlerde kullanmak için quick search düzelene kadar QuickSearchExtraTmp eklendi-->
+                    </ui:remove>
 
+                    <ui:insert name="QuickSearchExtraTmp" />
                 </div>
             </h:form>
 
