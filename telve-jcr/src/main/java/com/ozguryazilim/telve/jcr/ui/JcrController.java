@@ -229,8 +229,9 @@ public class JcrController {
         JcrTools jcrTools = new JcrTools();
         Node folder = jcrTools.findOrCreateNode(session, getSelectedPath() + "/" + folderName, "nt:folder");
 
-        folders.add(folder);
-        parentMap.put(folder.getIdentifier(), folder.getParent().getIdentifier());
+        //Bir şekilde parent id yanlış geliyor. Dolayısı ile ilk ekleme sırasında sorun çıkıyor o yüzden kayıt bittikten sonra folderların hepsini yeniden çekiyoruz.
+        //folders.add(folder);
+        //parentMap.put(folder.getIdentifier(), folder.getParent().getIdentifier());
 
         setSelectedPath(folder.getPath());
         setSelectedId(folder.getIdentifier());
@@ -238,9 +239,9 @@ public class JcrController {
         LOG.info("Folder Node: {}", folder);
 
         session.save();
+        
+        populateFolders();
 
-        //FacesMessage msg = new FacesMessage("Success! ", folderName + " is created.");
-        //FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void handleFileUpload(FileUploadEvent event) throws RepositoryException {
