@@ -11,6 +11,7 @@ import com.ozguryazilim.telve.jcr.ui.FileInfo;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -67,10 +68,12 @@ public class GalleryConsole extends AbstractGalleryController {
 
     
 
-    public void handleFileUpload(FileUploadEvent event) throws RepositoryException {
+    public void handleFileUpload(FileUploadEvent event) throws RepositoryException, UnsupportedEncodingException {
         LOG.info("Uploaded File : {}", event.getFile().getFileName());
 
         String fileNamePath = event.getFile().getFileName();
+        //TODO: Buarada aslında böyle birşey yapmaya gerek olmaması lazım. Dosya adının UTF-8 alınabilmesi gerek.
+        fileNamePath = new String(fileNamePath.getBytes("ISO-8859-1"));
         String fileName = fileNamePath.substring(fileNamePath.lastIndexOf(File.separatorChar) + 1);
 
         try {

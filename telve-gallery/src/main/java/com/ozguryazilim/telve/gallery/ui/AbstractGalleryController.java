@@ -19,6 +19,7 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
+import org.modeshape.common.text.UrlEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +67,11 @@ public abstract class AbstractGalleryController implements Serializable{
         FileInfo fm = new FileInfo();
 
         fm.setId(node.getIdentifier());
-        fm.setName(node.getName());
+        
+        UrlEncoder encoder = new UrlEncoder();
+        encoder.setSlashEncoded(false);
+        
+        fm.setName(encoder.decode( node.getName()));
         fm.setPath(node.getPath());
 
         fm.setCreateBy(node.getProperty("jcr:createdBy").getString());
@@ -142,8 +147,14 @@ public abstract class AbstractGalleryController implements Serializable{
             files.clear();
         }
 
+        UrlEncoder encoder = new UrlEncoder();
+        encoder.setSlashEncoded(false);
+        
         QueryManager qm = getSession().getWorkspace().getQueryManager();
-        String sql = "SELECT * FROM [nt:file] as t WHERE ISDESCENDANTNODE( ['" + getSelectedPath() + "'] ) AND ( name(t) like '%" + getSearchText() + "%' OR t.[tlv:tags] like '%" + getSearchText() + "%' ) ";
+        
+        String encodedSearchText = encoder.encode(getSearchText());
+        
+        String sql = "SELECT * FROM [nt:file] as t WHERE ISDESCENDANTNODE( ['" + getSelectedPath() + "'] ) AND ( name(t) like '%" + encodedSearchText + "%' OR t.[tlv:tags] like '%" + getSearchText() + "%' ) ";
 
         Query query = qm.createQuery(sql, Query.JCR_SQL2);
         QueryResult result = query.execute();
