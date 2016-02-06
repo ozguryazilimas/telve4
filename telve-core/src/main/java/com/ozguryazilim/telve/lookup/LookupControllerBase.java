@@ -167,11 +167,25 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      * @param listener sonuçlar nereye gidecek?
      */
     public void openDialog(Boolean multiSelect, Boolean leafSelect, String profile, String listener) {
+        openDialog( multiSelect, leafSelect, true, profile, listener );
+    }
+    
+    /**
+     * İlgili sınıfa ait dialogu açar
+     *
+     * @param multiSelect çoklu seçime izin var mı?
+     * @param leafSelect ağaçlar için leaf node seçim izni
+     * @param profile sorgu profili
+     * @param listener sonuçlar nereye gidecek?
+     */
+    public void openDialog(Boolean multiSelect, Boolean leafSelect, Boolean fullPath, String profile, String listener) {
         model.setMultiSelect(multiSelect);
         model.setLeafSelect(leafSelect);
         model.setProfile(profile);
         model.setListener(listener);
 
+        model.setFullPathResult(fullPath);
+        
         model.clearSelections();
         model.setSearchText("");
         

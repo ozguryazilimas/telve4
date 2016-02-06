@@ -253,6 +253,16 @@ public class LookupTableModel<T extends ViewModel> extends ListDataModel<T> impl
         clearSelectedAllDatas();
     }
 
+    @Override
+    public Boolean getFullPathResult() {
+        return false;
+    }
+
+    @Override
+    public void setFullPathResult(Boolean fullPathResult) {
+        //Sadece ağaç için anlamlı bir bilgi
+    }
+
     
     
 }

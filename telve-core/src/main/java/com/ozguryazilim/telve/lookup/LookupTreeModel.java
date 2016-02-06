@@ -35,6 +35,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
     private String profile;
     private String listener;
     private String searchText;
+    private Boolean fullPathResult = false;
     private TreeNodeTypeSelector typeSelector;
     private Map<String, String> profileProperties;
 
@@ -43,6 +44,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
     
     private List<T> allItems = new ArrayList<>();
     private List<T> resultItems = new ArrayList<>();
+    private Map<Long, T> resultIdMap = new HashMap<>();
     private Map<Long, T> idMap = new HashMap<>();
     private Map<String, Long> pathMap = new HashMap<>();
     
@@ -51,6 +53,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         allItems.clear();
         resultItems.clear();
         idMap.clear();
+        resultIdMap.clear();
         pathMap.clear();
     }
 
@@ -146,6 +149,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         allItems.addAll(dataList);
         
         idMap.clear();
+        resultIdMap.clear();
         pathMap.clear();
         for( T e : allItems ){
             idMap.put(e.getId(), e);
@@ -261,9 +265,11 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
     
     public void buildResultList(){
         resultItems.clear();
+        resultIdMap.clear();
         
         if (Strings.isNullOrEmpty(getSearchText())) {
             resultItems.addAll(allItems);
+            resultIdMap.putAll(idMap);
         } else {
             
             for( T ent : allItems ){
@@ -276,6 +282,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
                         for( T it : findChildNodes(ent) ){
                             if( !resultItems.contains(it) ){
                                 resultItems.add( it );
+                                resultIdMap.put(it.getId(), it);
                             }
                         }
                     }
@@ -288,7 +295,10 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         //Hali hazırda eklenmemişse ekleyelim...
         if( !resultItems.contains(item) ){
             resultItems.add(item);
-            addFilteredItemPath(item.getParentId());
+            resultIdMap.put(item.getId(), item);
+            if( fullPathResult ){
+                addFilteredItemPath(item.getParentId());
+            }
         }
     }
     
@@ -299,6 +309,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         if( ent != null ){
             if( !resultItems.contains(ent) ){
                 resultItems.add( ent );
+                resultIdMap.put(ent.getId(), ent);
             }
             addFilteredItemPath(ent.getParentId());
         }
@@ -326,7 +337,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
      * @return 
      */
     public T findParent( T node ){
-        return node == null ? null : idMap.get(node.getParentId());
+        return node == null ? null : resultIdMap.get(node.getParentId());
     }
 
     /**
@@ -411,6 +422,22 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
     @Override
     public void clearSelections() {
         this.selectedNodes = "";
+    }
+
+    /**
+     * Arama sonuçlarının arama kriterine uygumasa da parent nodelerının da sonuca eklenip eklenmeyeceği bilgisi
+     * @return 
+     */
+    public Boolean getFullPathResult() {
+        return fullPathResult;
+    }
+
+    /**
+     * Arama sonuçlarının arama kriterine uygumasa da parent nodelerının da sonuca eklenip eklenmeyeceği bilgisi
+     * @param fullPathResult 
+     */
+    public void setFullPathResult(Boolean fullPathResult) {
+        this.fullPathResult = fullPathResult;
     }
     
     

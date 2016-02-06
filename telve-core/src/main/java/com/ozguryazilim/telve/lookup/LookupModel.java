@@ -89,4 +89,22 @@ public interface LookupModel<R extends ViewModel, S> {
      * Seçilmiş olan verileri siler.
      */
     void clearSelections();
+    
+    /**
+     * Arama sonuçlarının arama kriterine uygumasa da parent nodelerının da sonuca eklenip eklenmeyeceği bilgisi
+     * 
+     * Ağaç tipi için geçerli
+     * 
+     * @return 
+     */
+    Boolean getFullPathResult();
+
+    /**
+     * Arama sonuçlarının arama kriterine uygumasa da parent nodelerının da sonuca eklenip eklenmeyeceği bilgisi
+     * 
+     * Ağaç tipi için geçerli
+     * 
+     * @param fullPathResult 
+     */
+    void setFullPathResult(Boolean fullPathResult);
 }
