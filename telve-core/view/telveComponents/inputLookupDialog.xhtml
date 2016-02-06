@@ -48,7 +48,8 @@
                         <f:attribute name="lookupProfile" value="#{cc.attrs.lookupProfile}" />
                     </p:autoComplete>
                     <div class="input-group-btn">
-                    <p:commandButton action="#{cc.attrs.lookupBean.openDialog( cc.attrs.multiSelect, cc.attrs.leafSelect, cc.attrs.lookupProfile, cc.attrs.lookupListener )}" partialSubmit="true" process="@this" icon="fa fa-search" styleClass="btn btn-default">
+                    <p:commandButton action="#{cc.attrs.lookupBean.openDialog( cc.attrs.multiSelect, cc.attrs.leafSelect, cc.attrs.lookupProfile, cc.attrs.lookupListener )}" 
+                                     partialSubmit="true" process="@this" icon="fa fa-search" styleClass="btn btn-default" disabled="#{cc.attrs.disabled}">
                         <p:ajax event="dialogReturn"  listener="#{cc.attrs.lookupBean.onSelect}" update="#{cc.id}_inp,#{cc.attrs.update}" partialSubmit="true" process="@this" />   
                     </p:commandButton>
                         </div>
