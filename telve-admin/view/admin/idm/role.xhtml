@@ -26,7 +26,7 @@
 
                         function toggleRowChkBoxes(group, elm) {
                             row = jQuery(elm).parent().parent().attr('data-ri');
-                            jQuery('[id*="' + group + '\\:' + row + '\\:"] div').trigger('click');
+                            jQuery('[id*="' + group + '\\:' + row + '\\:"] div.ui-chkbox-box').trigger('click');
                         }
                     </script>
                     
@@ -36,7 +36,7 @@
 
                             <p:dataTable id="#{pg.name}" value="#{pg.permissions}" var="pd" >
                                 <p:column headerText="#{messages['role.label.Domain']}">
-                                    <a href="#" onclick="toggleRowChkBoxes('#{pg.name}', this)" title="#{messages[ 'permission.hint.'.concat( pd.definition.target)]}">
+                                    <a href="#" onclick="toggleRowChkBoxes('#{pg.name}', this); return false;" title="#{messages[ 'permission.hint.'.concat( pd.definition.target)]}">
                                         #{messages[ 'permission.label.'.concat( pd.definition.target)]}
                                     </a>
                                 </p:column>
