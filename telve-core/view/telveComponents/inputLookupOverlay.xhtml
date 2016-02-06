@@ -41,6 +41,7 @@
                                     placeholder="#{messages[cc.attrs.placeholder]}"
                                     >
                         <p:clientValidator />
+                        <p:ajax event="itemSelect" update="#{cc.attrs.update}" />
                     </p:autoComplete>
 
                     <div class="input-group-btn">
