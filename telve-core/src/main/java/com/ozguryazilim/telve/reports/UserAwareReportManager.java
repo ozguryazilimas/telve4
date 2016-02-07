@@ -19,6 +19,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.picketlink.Identity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,6 +69,11 @@ public class UserAwareReportManager extends ReportManager implements Serializabl
                 p = e.getKey();
             }
 
+            //Yetki çıkarma kontrolü
+            if( "true".equals(ConfigResolver.getPropertyValue("permission.exclude." + p, "false"))){
+                continue;
+            }
+            
             if (identity.hasPermission(p, "select")) {
                 //Eğer kullanıcının yetkisi varsa sisteme ekliyoruz.
                 addReport(e.getValue().path(), e.getKey());
