@@ -129,7 +129,7 @@ public abstract class SubViewQueryBase<E extends EntityBase,R extends ViewModel>
      */
     public void selectionListener( @Observes SubViewSelectEvent event ){
         String s = viewConfigResolver.getViewConfigDescriptor(getViewPage()).getViewId();
-        if( event.getSubViewId().equals(s)){
+        if( s.equals(event.getSubViewId())){
             search();
         }
     }
