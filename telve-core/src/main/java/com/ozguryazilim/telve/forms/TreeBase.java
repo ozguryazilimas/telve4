@@ -219,8 +219,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
     public void initTreeModel() {
         treeModel = new LookupTreeModel<>();
         treeModel.setTypeSelector(this);
-        treeModel.setData(getEntityList());
-
+        getEntityList();
     }
 
     public LookupTreeModel<E> getTreeModel() {
