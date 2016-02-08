@@ -16,6 +16,7 @@ import com.ozguryazilim.telve.view.Pages;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.event.Event;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
@@ -39,6 +40,9 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
     private List<E> entityList;
 
     private String filter;
+    
+    @Inject
+    private Event<RefreshBrowserEvent> refreshBrowserEvent;
 
     @Inject
     private GroupedConversation conversation;
@@ -145,6 +149,8 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         FacesMessages.info("general.message.record.SaveSuccess");
 
         refreshEntityList();
+        
+        raiseRefreshBrowserEvent( getEntity().getId());
 
         return null;
     }
@@ -182,6 +188,8 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
 
         refreshEntityList();
 
+        raiseRefreshBrowserEvent( getEntity().getId());
+        
         return null;
     }
 
@@ -203,6 +211,10 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
      */
     public void refreshEntityList() {
 
+    }
+    
+    protected void raiseRefreshBrowserEvent( Long id ) {
+        refreshBrowserEvent.fire(new RefreshBrowserEvent(getRepository().getEntityClass().getName(), id ));
     }
 
     public E getEntity() {

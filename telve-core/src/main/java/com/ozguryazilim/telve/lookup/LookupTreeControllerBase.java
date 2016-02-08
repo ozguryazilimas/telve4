@@ -8,8 +8,10 @@ package com.ozguryazilim.telve.lookup;
 
 import com.ozguryazilim.telve.entities.TreeNodeEntityBase;
 import com.ozguryazilim.telve.entities.TreeNodeModel;
+import com.ozguryazilim.telve.forms.RefreshBrowserEvent;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.event.Observes;
 
 /**
  * Ağaç tipi veriler için Lookup Temel sınıfı.
@@ -77,5 +79,18 @@ public abstract class LookupTreeControllerBase<E extends TreeNodeEntityBase, F e
     @Override
     public String getNodeType(E node) {
         return "default";
+    }
+    
+    /**
+     * RefreshBrowseEvent'i dinlenir ve ilgili domain ise search komutu çalıştırılır.
+     * @param event 
+     */
+    public void refreshListener( @Observes RefreshBrowserEvent event ){
+        if( event.getDomain().equals( getRepository().getEntityClass().getName()) ){
+            if( !getModel().isDataEmpty() ){
+                getModel().clearData();
+                search();
+            }
+        }
     }
 }
