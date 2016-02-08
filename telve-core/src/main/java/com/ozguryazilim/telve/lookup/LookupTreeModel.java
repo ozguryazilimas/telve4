@@ -252,6 +252,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
     public void addItem( T item ){
         allItems.add(item);
         idMap.put(item.getId(), item);
+        resultIdMap.put( item.getId(), item);
         pathMap.put(item.getPath(), item.getId());
         resultItems.add(item);
     }
@@ -259,6 +260,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
     public void removeItem( T item ){
         allItems.remove(item);
         idMap.remove(item.getId());
+        resultIdMap.remove(item.getId());
         pathMap.remove(item.getPath());
         resultItems.remove(item);
     }
