@@ -3,14 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
         
     <groupId>com.ozguryazilim.mutfak</groupId>
-    <version>4.0.0.Beta2</version>
+    <version>4.0.0.Beta3</version>
     <artifactId>telve-bom</artifactId>
     <packaging>pom</packaging>
     
     <properties>
         <deltaspike.version>1.5.2</deltaspike.version>
         <picketlink.version>2.7.0.Final</picketlink.version>
-        <primeface.version>5.3</primeface.version>
+        <primeface.version>6.0-OYAS1</primeface.version>
         <primefaces-ext.version>3.0.0</primefaces-ext.version>
         <atmosphere.version>2.4.0-RC3</atmosphere.version>
         <omnifaces.version>2.2</omnifaces.version>
