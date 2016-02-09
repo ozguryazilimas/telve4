@@ -112,7 +112,7 @@ public class SuggestionControl implements Serializable {
         if( sl.getExpression().isEmpty() ) return;
         
         //EL üzerinden değeri yazacağız
-        ELUtils.setObject(sl.getExpression(), sl.getValue());
+        ELUtils.setObject(sl.getExpression(), ((SuggestionItem)sl.getValue()).getData());
     }
 
     public String getListener() {

@@ -17,8 +17,11 @@
             </div>
             
             <h:panelGroup styleClass="actionButtons" layout="block">
-                <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{suggestionControl.closeDialog()}" />
-                <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{suggestionControl.cancelDialog()}" />
+                <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" 
+                                 validateClient="true"
+                                 action="#{suggestionControl.closeDialog()}" 
+                                 styleClass="btn-primary"/>
+                <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{suggestionControl.cancelDialog()}" process="@this"/>
             </h:panelGroup>
         </h:form>
     </ui:define>
