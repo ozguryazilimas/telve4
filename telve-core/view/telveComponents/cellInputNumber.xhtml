@@ -22,17 +22,12 @@
     </composite:interface>
 
     <composite:implementation>
-            <ui:remove>PF 5.3 ile PE 3.0 arasında sorun var sanırım. for="#{cc.id}_inp" </ui:remove>
-            <p:outputLabel value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" style="display:none;"/>
-            <pe:inputNumber id="#{cc.id}_inp" value="#{cc.attrs.value}"  required="#{cc.attrs.required}"  
+            <p:inputNumber id="#{cc.id}_inp" value="#{cc.attrs.value}"  required="#{cc.attrs.required}"  
                                 symbol="#{cc.attrs.symbol}" symbolPosition="#{cc.attrs.symbolPosition}" emptyValue="#{cc.attrs.emptyValue}" 
                                 decimalPlaces="#{cc.attrs.decimalPlaces}" decimalSeparator="#{cc.attrs.decimalSeparator}" thousandSeparator="#{cc.attrs.thousandSeparator}"
                                 maxValue="#{cc.attrs.maxValue}" minValue="#{cc.attrs.minValue}" >
-                    <ui:remove>
-                        <!-- PF Ext 3.0 la birlikte çalışmaz olmuş-->
                         <p:clientValidator />
-                    </ui:remove>
-            </pe:inputNumber>
+            </p:inputNumber>
             <p:message for="#{cc.id}_inp" display="tooltip"/>
     </composite:implementation>
 
