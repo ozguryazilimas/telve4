@@ -34,7 +34,7 @@ public class SuggestionItem extends EntityBase implements ViewModel{
     /**
      * Öneri metni
      */
-    @Column(name = "DATA", nullable = false, unique = true)
+    @Column(name = "DATA", nullable = false, unique = false)
     @NotNull
     private String data;
 

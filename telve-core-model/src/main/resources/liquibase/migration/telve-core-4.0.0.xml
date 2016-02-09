@@ -130,7 +130,4 @@
     <changeSet author="haky (generated)" id="1438162495087-13">
         <addPrimaryKey columnNames="ID" constraintName="TLV_SUGGESTION_ITEMPK" tableName="TLV_SUGGESTION_ITEM"/>
     </changeSet>
-    <changeSet author="haky (generated)" id="1438162495087-14">
-        <addUniqueConstraint columnNames="DATA" constraintName="UC_TLV_SUGGESTION_ITEMDATA_COL" tableName="TLV_SUGGESTION_ITEM"/>
-    </changeSet>
 </databaseChangeLog>
