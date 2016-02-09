@@ -213,7 +213,7 @@ public class UserHome extends AbstractIdentityHome<User> {
     protected boolean doBeforeSave() {
         //Önce kullanıcı tipini yerleştiriyoruz. Sonra da extenderlara işi bırakıyoruz.
         getCurrent().setAttribute(new Attribute<>("UserType", userType));
-        getCurrent().setAttribute(new Attribute<>("UserGroup", userGroup));
+        getCurrent().setAttribute(new Attribute<>("UserGroup", userGroup == null ? "" : userGroup ));
         return super.doBeforeSave();
     }
 
