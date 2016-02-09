@@ -5,10 +5,16 @@
  */
 package com.ozguryazilim.telve.reports;
 
+import com.ozguryazilim.telve.messages.FacesMessages;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.primefaces.context.RequestContext;
@@ -28,6 +34,9 @@ public abstract class CustomReportBase implements ReportController, Serializable
 
     @Inject
     private ViewConfigResolver viewConfigResolver;
+    
+    @Inject
+    private FacesContext facesContext;
     
     @Override
     public void execute() {
@@ -81,4 +90,38 @@ public abstract class CustomReportBase implements ReportController, Serializable
         RequestContext.getCurrentInstance().closeDialog("Rapordan İptalle Çıkıldı");
     }
     
+    
+    /**
+     * Üretilen raporu http response olarak gönderir.
+     *
+     * @param fileName sonuç dosya adı
+     * @param mimeType dosya mimeType bilgisi
+     * @param data gönderilecek olan veri
+     */
+    protected void sendResponse(String fileName, String mimeType, byte[] data) {
+
+        //System ayarlarından raporlar icin tanimlanan on eki alir.
+        String repPrefix = ConfigResolver.getProjectStageAwarePropertyValue("report.prefix");
+        repPrefix = repPrefix == null ? "" : repPrefix + "_";
+
+        HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+        response.reset();
+        response.setContentType(mimeType);
+        
+        response.setHeader("Content-disposition", "attachment;filename=" + repPrefix + fileName );
+        response.setContentLength(data.length);
+
+        try {
+
+            try (OutputStream out = response.getOutputStream()) {
+                out.write(data);
+
+                out.flush();
+            }
+
+            facesContext.responseComplete();
+        } catch (IOException ex) {
+            FacesMessages.error("Error while downloading the file: " + fileName );
+        }
+    }
 }
