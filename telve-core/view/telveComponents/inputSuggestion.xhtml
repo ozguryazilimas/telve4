@@ -28,6 +28,8 @@
                     <p:selectOneMenu id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" 
                                      filter="true" 
                                      filterMatchMode="startsWith" >
+                        <f:selectItem itemLabel="#{messages['general.value.Nac']}" 
+                                       itemValue="" />
                         <f:selectItems value="#{suggestionControl.suggestions(cc.attrs.group, cc.attrs.key)}" 
                                        var="item" 
                                        itemLabel="#{item.data}" 
