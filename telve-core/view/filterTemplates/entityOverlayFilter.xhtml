@@ -18,7 +18,7 @@
     <div class="col-xs-12">
         
         <h:panelGroup id="strInput#{idprefix}" layout="block" styleClass="row">
-            <t:inputLookupOverlay value="#{filter.value}" label="" placeholder="" 
+            <t:inputLookupDialog value="#{filter.value}" label="" placeholder="" 
                                   lookupBean="#{filter.lookupBean}" lookupListener="event:#{filter.attribute.name}" 
                                   caption="name" columnClass="col-xs-12" lookupProfile="" leafSelect="false" showLabel="false"
                                   rendered="#{filter.operand ne 'All' and filter.operand ne 'None'}"/>
