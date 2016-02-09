@@ -41,7 +41,7 @@
                                     <p:commandButton id="save" 
                                                      value="#{messages['general.button.Save']}" 
                                                      action="#{homeBean.save()}"
-                                                     rendered="#{identity.hasPermission( entityName, 'insert')}"
+                                                     rendered="#{not hideSave and identity.hasPermission( entityName, 'insert')}"
                                                      ajax="true"
                                                      process="@form"
                                                      validateClient="true"
@@ -51,7 +51,7 @@
                                     <p:commandButton id="delete" 
                                                      value="#{messages['general.button.Delete']}" 
                                                      action="#{homeBean.delete()}"
-                                                     rendered="#{not empty entity.id and identity.hasPermission( entityName, 'delete') }"
+                                                     rendered="#{not hideDelete and not empty entity.id and identity.hasPermission( entityName, 'delete') }"
                                                      validateClient="true"
                                                      styleClass="btn-danger"
                                                      icon="fa fa-trash">
