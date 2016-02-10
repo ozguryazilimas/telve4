@@ -19,8 +19,10 @@
                              icon="ui-icon-disk" 
                              partialSubmit="false"
                              validateClient="true"
+                             styleClass="btn-primary"
                              process="@form"
                              ajax="false"/>
+            <ui:remove>
             <p:commandButton id="cancel" 
                              value="#{messages['general.button.Close']}"
                              action="#{bean.cancel()}"
@@ -28,6 +30,7 @@
                              partialSubmit="true"
                              process="@this"
                              ajax="true"/>
+            </ui:remove>
         </div>
     </h:form>
 
