@@ -11,6 +11,7 @@
         <composite:attribute name="itemLabel" required="true"/>
         <composite:attribute name="hasNullValue" required="false" type="java.lang.Boolean" default="true"/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:clientBehavior name="change" event="change" targets="#{cc.id}_inp" />
     </composite:interface>
 
     <composite:implementation>

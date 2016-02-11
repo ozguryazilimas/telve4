@@ -1,0 +1,15 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="col-md-3 col-xs-12 pull-right">
+        <p:selectOneMenu id="qfenumINP#{idprefix}" value="#{qf.stringValue}" >
+            <f:selectItem itemLabel="#{messages['general.value.All']}" itemValue="" />
+            <f:selectItems value="#{qf.enums}" var="item" itemLabel="#{messages[ ''.concat( qf.keyPrefix ).concat( item )]}" />
+            <p:ajax event="change" listener="#{bean.search()}" process="@this" update="@([id$=results])" />
+        </p:selectOneMenu>
+        <p:message for="qfenumINP#{idprefix}" display="tooltip" />
+    </div>
+</ui:composition>

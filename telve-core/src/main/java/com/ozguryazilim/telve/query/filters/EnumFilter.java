@@ -8,6 +8,7 @@ package com.ozguryazilim.telve.query.filters;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.ozguryazilim.telve.query.Operands;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -32,6 +33,7 @@ public class EnumFilter<E, T extends Enum<T> > extends Filter<E, T>{
      */
     private String keyPrefix;
     private T[] enums;
+    private Class<T> enumClass;
     
     /**
      * Enum tipler için filtre oluşturur.
@@ -46,7 +48,13 @@ public class EnumFilter<E, T extends Enum<T> > extends Filter<E, T>{
         super(attribute, label);
         
         keyPrefix = itemLabel;
-        enums = defaultValue.getDeclaringClass().getEnumConstants();
+        if( defaultValue != null ){
+            enumClass = defaultValue.getDeclaringClass();
+        }
+        
+        enums = enumClass.getEnumConstants();
+    
+         
         
         setOperands(Operands.getEnumOperands());
         setOperand(FilterOperand.Equal);
@@ -66,6 +74,12 @@ public class EnumFilter<E, T extends Enum<T> > extends Filter<E, T>{
         
         keyPrefix = itemLabel;
         enums = filterValues;
+        
+        if( defaultValue != null ){
+            enumClass = defaultValue.getDeclaringClass();
+        } else {
+            enumClass = enums[0].getDeclaringClass();
+        }
         
         setOperands(Operands.getEnumOperands());
         setOperand(FilterOperand.Equal);
@@ -131,7 +145,7 @@ public class EnumFilter<E, T extends Enum<T> > extends Filter<E, T>{
      * @return 
      */
     public String getStringValue(){
-        return getValue().name();
+        return getValue() == null ? null : getValue().name();
     }
     
     /**
@@ -140,7 +154,11 @@ public class EnumFilter<E, T extends Enum<T> > extends Filter<E, T>{
      * @param val 
      */
     public void setStringValue( String val ){
-        setValue( T.valueOf( getValue().getDeclaringClass() , val));
+        if(Strings.isNullOrEmpty(val)){
+            setValue(null);
+        } else {
+            setValue( T.valueOf( enumClass , val));
+        }
     }
 
     @Override

@@ -135,6 +135,19 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
         selectedItem = null;
         selectedItems = null;
     }
+    
+    /**
+     * Sadece ana filtrelerin çalıştırılıp, quick filterların çalıştırılmadığı sorgu
+     */
+    public void mainSearch(){
+        
+        //Öncesinde quick filterların içini boşaltıyoruz.
+        for( Filter f : queryDefinition.getQuickFilters() ){
+            f.setValue(null);
+        }
+        
+        search();
+    }
 
     public List<R> getEntityList() {
         return entityList;

@@ -64,8 +64,7 @@
                         </h3>
                     </div>
 
-                    <ui:remove>
-                        <!-- Yeni Quick Filter sistemi yapılana kadar kapatalım -->
+
                     <ui:fragment rendered="#{showQuickSearch}">
                         <div class="col-md-3 col-xs-12 pull-right">
                             <span class="value">
@@ -73,19 +72,22 @@
                                     <p:inputText id="filter" value="#{bean.queryDefinition.searchText}" 
                                                  placeholder="#{messages['general.info.SearchText']}" />
                                     <div class="input-group-btn">
-                                        <p:commandButton action="#{bean.search()}" process="@form" icon="fa fa-search" styleClass="ui-icon-only btn btn-default" update="@([id$=results])" />
+                                        <p:commandButton action="#{bean.mainSearch()}" process="@form" icon="fa fa-search" styleClass="ui-icon-only btn btn-default" update="@([id$=results])" />
                                     </div>
                                 </div>
                             </span>
                         </div>
                     </ui:fragment>
-                        
+
+                    <c:forEach id="filterRepeater2" items="#{bean.queryDefinition.quickFilters}"
+                               var="qf" varStatus="rowCounter">
+                        <ui:include src="/filterTemplates/quick#{qf.template}.xhtml" >
+                            <ui:param name="qf" value="#{qf}" />
+                            <ui:param name="idprefix" value="#{qf.attribute.name}#{rowCounter.index}" />
+                        </ui:include>
+                    </c:forEach>
 
                     <ui:insert name="QuickSearchExtra" />
-                    <!-- Sadece özel yerlerde kullanmak için quick search düzelene kadar QuickSearchExtraTmp eklendi-->
-                    </ui:remove>
-
-                    <ui:insert name="QuickSearchExtraTmp" />
                 </div>
             </h:form>
 
@@ -145,7 +147,7 @@
                         <pe:methodSignature parameters="java.lang.String" />  
                         <pe:methodParam name="name"/>  
                     </pe:remoteCommand>  
-                    
+
                     <div class="row">
                         <p:pickList id="sorters" value="#{bean.queryDefinition.sortListColumns}" 
                                     var="item"

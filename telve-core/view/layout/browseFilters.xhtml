@@ -33,7 +33,7 @@
         </div>
         <div class="box-footer">
             <h:panelGroup id="actionButtons" styleClass="pull-right" layout="block">
-                <p:commandButton value="#{messages['general.button.Search']}" actionListener="#{bean.search()}" partialSubmit="false" process="@form" icon="fa fa-search" update="@([id$=results]), actionButtons"
+                <p:commandButton value="#{messages['general.button.Search']}" actionListener="#{bean.mainSearch()}" partialSubmit="false" process="@form" icon="fa fa-search" update="@([id$=results]), actionButtons, bheader"
                                  styleClass="btn-success"/> 
                 <ui:insert name="extraButtons" />
             </h:panelGroup>
