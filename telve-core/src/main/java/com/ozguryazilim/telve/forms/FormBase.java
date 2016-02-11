@@ -20,13 +20,13 @@ import javax.enterprise.event.Event;
 import javax.enterprise.inject.Any;
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.apache.deltaspike.core.util.ProxyUtils;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
-import org.omnifaces.cdi.Param;
 import org.picketlink.Identity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,6 +87,10 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         if (ls != null) {
             for (SubView sv : ls) {
                 //Eğer kullanıcının yetkisi varsa listeye ekleniyor.
+                if( "true".equals(ConfigResolver.getPropertyValue("permission.exclude." + sv.permission(), "false"))){
+                    continue;
+                }
+                
                 if (identity.hasPermission(sv.permission(), "select")) {
                     subViewList.add(viewConfigResolver.getViewConfigDescriptor(sv.viewPage()).getViewId());
                     
