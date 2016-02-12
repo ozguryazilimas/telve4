@@ -138,6 +138,8 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         if (!getEntityList().contains(entity)) {
             getEntityList().add(entity);
             getTreeModel().addItem(entity);
+        } else {
+            getTreeModel().updateItem(entity);
         }
 
         if (!onAfterSave()) {

@@ -248,6 +248,26 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         //
     }
 
+    /**
+     * Elde olan node bilgilerini yeni nesne ile güncelliyoruz.
+     * @param item 
+     */
+    public void updateItem( T item ){
+        
+        allItems.remove(item);
+        allItems.add(item);
+        
+        idMap.put(item.getId(), item);
+        
+        if( resultIdMap.containsKey(item.getId())){
+            resultIdMap.put( item.getId(), item);
+        }
+        
+        if( resultItems.contains(item)){
+            resultItems.remove(item);
+            resultItems.add(item);
+        }
+    }
     
     public void addItem( T item ){
         allItems.add(item);
