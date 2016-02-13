@@ -280,7 +280,10 @@
                                         <f:facet name="header">
                                             <h:outputText value="#{messages[col.labelKey]}" />
                                         </f:facet>
-                                        <ui:include src="/columns/#{col.template}.xhtml" />
+                                        
+                                        <ui:fragment rendered="#{col.template ne null }">
+                                            <ui:include src="/columns/#{col.template eq null ? 'empty' : col.template }.xhtml" />
+                                        </ui:fragment>
 
                                         <ui:remove>Burada bir bug var eğer aşağıdaki gib boş bir include almazsak DOCTYPE yanlış üretiliyor.</ui:remove>
                                         <ui:include src="/columns/empty.xhtml" />
