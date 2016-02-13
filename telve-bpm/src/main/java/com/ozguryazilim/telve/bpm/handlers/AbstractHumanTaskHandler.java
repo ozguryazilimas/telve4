@@ -98,6 +98,11 @@ public abstract class AbstractHumanTaskHandler implements Serializable {
         //Eğer task kimse tarafından sahiplenilmemiş ise önce claim edelim...
         if (Strings.isNullOrEmpty(task.getTask().getAssignee())) {
             taskService.claim(task.getId(), userInfo.getLoginName());
+            //Claim'den sonra bir saniye bekliyelim... Bazen complete için değerler yetişemiyor.
+            try {
+                Thread.sleep(1000l);
+            } catch (InterruptedException ex) {
+            }
         }
         taskService.complete(task.getId(), task.getVariables());
         onAfterClose(result);
