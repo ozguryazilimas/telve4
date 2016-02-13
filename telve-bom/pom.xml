@@ -19,7 +19,7 @@
         <mysql.version>5.1.26</mysql.version>
         
         <camel.version>2.14.0</camel.version>
-        <camunda.version>7.3.0</camunda.version>
+        <camunda.version>7.4.0</camunda.version>
         <jasperreports.version>6.2.0</jasperreports.version>
         <jasperreports-fonts.version>6.0.0</jasperreports-fonts.version>
         <infinispan.version>7.2.4.Final</infinispan.version>

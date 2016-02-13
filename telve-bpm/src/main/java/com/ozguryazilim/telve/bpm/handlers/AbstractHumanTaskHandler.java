@@ -22,7 +22,6 @@ import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.TaskAlreadyClaimedException;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Comment;
-import org.camunda.bpm.engine.task.IdentityLink;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -98,7 +97,7 @@ public abstract class AbstractHumanTaskHandler implements Serializable {
 
         //Eğer task kimse tarafından sahiplenilmemiş ise önce claim edelim...
         if (Strings.isNullOrEmpty(task.getTask().getAssignee())) {
-            claimTask();
+            taskService.claim(task.getId(), userInfo.getLoginName());
         }
         taskService.complete(task.getId(), task.getVariables());
         onAfterClose(result);
