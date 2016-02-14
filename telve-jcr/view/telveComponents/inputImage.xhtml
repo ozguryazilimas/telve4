@@ -1,0 +1,55 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:composite="http://java.sun.com/jsf/composite"
+              xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <composite:interface>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="label" required="true"/>
+        <composite:attribute name="update" required="false" default=""/>
+        <composite:attribute name="emptyImage" required="false" default="defaultCameraImage.jpg"/>
+        <composite:attribute name="contextRoot" required="false" default="/system/images"/>
+        <composite:attribute name="placeholder" required="false" default="general.label.SelectImage"/>
+        <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:attribute name="columnClass" required="false" default="col-md-6 col-xs-12"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <div id="#{cc.clientId}" class="prop #{cc.attrs.columnClass}">
+
+            <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
+
+            <p:outputPanel id="#{cc.id}_pnl" layout="block" styleClass="value input-group ui-state-default" style="padding: 5px;" >
+                <h:inputHidden  id="#{cc.id}_inp" value="#{cc.attrs.value}" />
+
+
+                <h:graphicImage value="#{imageLookupController.getImageResourcePath(cc.attrs.value, cc.attrs.contextRoot, cc.attrs.emptyImage )}" styleClass="img-responsive img-rounded" rendered="#{cc.attrs.value ne null}" width="100%"/>
+                <h:outputText value="#{messages[cc.attrs.placeholder]}" styleClass="text-muted" rendered="#{cc.attrs.value eq null}" />
+
+
+
+                <p:commandLink action="#{imageLookupController.prepareToUpload(cc.attrs.value, cc.attrs.contextRoot)}" 
+                               oncomplete="PF('imageUpload').show()" rendered="#{cc.attrs.value ne null}"
+                               partialSubmit="true" process="@this">
+                    <i class="fa fa-camera" ></i>
+                    #{messages['general.button.UploadImage']}
+                </p:commandLink>
+
+
+                <p:dialog id="imageUpload"  widgetVar="imageUpload"  header="#{messages['general.button.UploadImage']}" closable="true">
+                    <p:fileUpload fileUploadListener="#{imageLookupController.handleFileUpload}" mode="advanced"
+                                  update="#{cc.id}_pnl" auto="true" sizeLimit="100000" allowTypes="/(\.|\/)(jpe?g|png)$/" 
+                                  oncomplete="PF('imageUpload').hide()" >
+                    </p:fileUpload>
+                </p:dialog>
+
+                
+            </p:outputPanel>
+            <p:message for="#{cc.id}_inp" display="tooltip"/>
+        </div>
+    </composite:implementation>
+
+</ui:component>

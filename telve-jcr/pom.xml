@@ -60,7 +60,11 @@
             <artifactId>infinispan-cachestore-jdbc</artifactId>
             <version>7.2.4.Final</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>jaxrs-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.modeshape</groupId>
             <artifactId>modeshape-jcr</artifactId>

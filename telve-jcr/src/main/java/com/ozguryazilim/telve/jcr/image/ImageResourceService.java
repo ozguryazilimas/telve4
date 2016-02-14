@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ozguryazilim.telve.gallery;
+package com.ozguryazilim.telve.jcr.image;
 
+import java.io.InputStream;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
@@ -19,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Galerideki imajlar için REST API.
+ * Fotolar için REST API.
  * 
  * Bu servis sayesinde galerideki imajlar normal imaj dosyaları olarak sunucudan istenebilir hale gelecekler.
  * 
@@ -27,12 +28,10 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Hakan Uygun
  */
-@Path("/gallery")
-public class GalleryResourceService {
+@Path("/images")
+public class ImageResourceService {
     
-    private static final Logger LOG = LoggerFactory.getLogger(GalleryResourceService.class);
-    
-    private static final String CONTEXT_ROOT = "/gallery";
+    private static final Logger LOG = LoggerFactory.getLogger(ImageResourceService.class);
     
     @GET    
     @Path("/image/{id}")
@@ -47,6 +46,21 @@ public class GalleryResourceService {
         
         //İçeriği yollayalım.
         return Response.ok(cn.getProperty("jcr:data").getBinary().getStream(), mt).build();
+        
+    }
+    
+    @GET    
+    @Path("/default/{id}")
+    @Produces("image/*")
+    public Response getDefaultImage( @PathParam("id") String id ) throws RepositoryException{
+        
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("/" + id );
+        
+        //MimeType Mapping
+        String mt = "image/jpg";
+        
+        //İçeriği yollayalım.
+        return Response.ok(is, mt).build();
         
     }
     
