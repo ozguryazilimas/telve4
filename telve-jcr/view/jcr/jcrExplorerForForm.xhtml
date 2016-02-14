@@ -6,163 +6,13 @@
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
 
-    <ui:remove>
-
-       <p:panelGrid id="jcr">
-            <f:facet name="header">
-                <p:row>
-                    <p:column style="width: 20%;" rendered="#{showFolder}">
-                        <h:outputText value=" #{messages['jcr.label.Folders']}" />
-                        <h:form style="display: inline">
-                            
-                            <p:commandLink title="#{messages['jcr.hint.DeleteFolder']}" action="#{jcrController.deleteFolder()}" 
-                                           update="@([id$=folderTree]),jcr" 
-                                           oncomplete="buildTree();"
-                                           styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
-                                <i class="fa fa-minus-circle" />
-                                <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocumentFolder']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
-                            </p:commandLink>
-                            
-                            <p:commandLink title="#{messages['jcr.hint.NewFolder']}" update=":folderDialog" oncomplete="PF('dlg').show();" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
-                                <i class="fa fa-plus-circle" />
-                            </p:commandLink>
-                        </h:form>
-                    </p:column>
-                    <p:column styleClass="actionColumn">
-                        <h:outputText value=" #{messages['jcr.label.Files']}" />
-                        <h:form style="display: inline">
-                            <p:remoteCommand name="selectNode" action="#{jcrController.selectNode}" update="@([id$=filesPanel])" partialSubmit="true" process="@this" />
-
-                            <p:commandLink title="#{messages['jcr.hint.UploadFile']}" onclick="PF('fdlg').show();" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
-                                <i class="fa fa-upload" />
-                            </p:commandLink>
-                            
-                            <p:commandLink title="#{messages['jcr.hint.WidgetMode']}" action="#{jcrController.setViewMode('widget')}" update="@([id$=filesPanel])" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
-                                <i class="fa fa-th" />
-                            </p:commandLink>
-                            
-                            <p:commandLink title="#{messages['jcr.hint.TableMode']}" action="#{jcrController.setViewMode('table')}" update="@([id$=filesPanel])" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default pull-right" >
-                                <i class="fa fa-table" />
-                            </p:commandLink>
-                        </h:form>
-                    </p:column>
-                </p:row>
-            </f:facet>
-            <p:row>
-                <p:column style="width: 20%;" rendered="#{showFolder}">
-                    <h:panelGroup layout="block" id="data2" ></h:panelGroup>
-
-                </p:column>
-                <p:column >
-                    <h:panelGroup id="filesPanel2" layout="block" styleClass="row" style="padding: 4px;">
-
-                        <ui:fragment rendered="#{not jcrController.isViewModeWidget}">
-                            <p:dataTable value="#{jcrController.files}" var="file" >
-                                <p:column headerText="#{messages['jcr.label.FileName']}" >
-                                    <i class="fa #{jcrController.getIcon(file.mimeType)}"/>
-                                    <h:outputText value=" #{file.name}" />
-                                </p:column>
-                                <p:column headerText="#{messages['jcr.label.CreatedBy']}" >
-                                    #{userLookup.getUserName( file.createBy )}
-                                </p:column>
-                                <p:column headerText="#{messages['jcr.label.CreatedDate']}" >
-                                    <t:cellOutputDate value="#{file.createDate}" />
-                                </p:column>
-                                <p:column headerText="#{messages['jcr.label.Actions']}" >
-                                    <h:form>
-                                                    <p:commandLink title="#{messages['jcr.hint.Download']}" action="#{jcrController.downloadFile(file.id)}" ajax="false"  style="width: auto;">
-                                                        <i class="fa fa-download" />
-                                                        <h:outputText value=" #{messages['jcr.label.Download']}" />
-                                                    </p:commandLink>
-
-
-                                                    <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update="@([id$=filesPanel])"  style="width: auto;">
-                                                        <i class="fa fa-trash" />
-                                                        <h:outputText value=" #{messages['jcr.label.Delete']}" />
-                                                        <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocument']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
-                                                    </p:commandLink>
-
-                                                </h:form>
-                                                <ui:remove>
-                                                    <p:commandLink title="#{messages['jcr.hint.Edit']}" action="#{JcrDocumentControl.downloadFile(file.id)}" ajax="false" styleClass="ui-menuitem-link" style="width: auto;">
-                                                        <h:outputText styleClass="ui-menuitem-icon ui-icon ui-icon-pencil" />
-                                                        <h:outputText value="#{messages['jcr.label.Edit']}" styleClass="ui-menuitem-text"/>
-                                                    </p:commandLink>
-                                                </ui:remove>
-                                </p:column>
-                            </p:dataTable>
-                        </ui:fragment>
-                        
-                        <ui:fragment rendered="#{jcrController.isViewModeWidget}">
-                        <ui:repeat value="#{jcrController.files}" var="file">
-
-                            <div class="large-6 medium-6 small-12 columns">
-                                <div class="widget" >
-                                    <div class="row">
-
-
-                                        <div class="large-2 medium-2 small-2 columns">
-                                            <i class="fa fa-3x #{jcrController.getIcon(file.mimeType)}"/>
-                                        </div>
-                                        <div class="large-10 medium-10 small-10 columns">
-
-                                            <div class="row">
-                                                <h:outputText value="#{file.name}" style="font-weight: bold;"/>
-
-                                            </div>
-                                            <div class="row">
-                                                <h:outputText value=" #{file.info}" />
-                                            </div>
-                                            <div class="row">
-                                                <!-- i class="fa fa-user"></i -->
-                                                <h:outputText value=" #{userLookup.getUserName( file.createBy )} " /> 
-                                                <!-- i class="fa fa-calendar" / -->
-                                                <t:cellOutputDate value="#{file.createDate}" />
-                                            </div>
-
-                                            <div class="row">
-                                                <h:form>
-                                                    <p:commandLink title="#{messages['jcr.hint.Download']}" action="#{jcrController.downloadFile(file.id)}" ajax="false"  style="width: auto;">
-                                                        <i class="fa fa-download" />
-                                                        <h:outputText value=" #{messages['jcr.label.Download']}" />
-                                                    </p:commandLink>
-
-
-                                                    <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update="@([id$=filesPanel])"  style="width: auto;">
-                                                        <i class="fa fa-trash" />
-                                                        <h:outputText value=" #{messages['jcr.label.Delete']}" />
-                                                        <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocument']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
-                                                    </p:commandLink>
-
-                                                </h:form>
-                                                <ui:remove>
-                                                    <p:commandLink title="#{messages['jcr.hint.Edit']}" action="#{JcrDocumentControl.downloadFile(file.id)}" ajax="false" styleClass="ui-menuitem-link" style="width: auto;">
-                                                        <h:outputText styleClass="ui-menuitem-icon ui-icon ui-icon-pencil" />
-                                                        <h:outputText value="#{messages['jcr.label.Edit']}" styleClass="ui-menuitem-text"/>
-                                                    </p:commandLink>
-                                                </ui:remove>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                            </div>
-                        </ui:repeat>
-                            </ui:fragment>
-                    </h:panelGroup>
-                </p:column>
-            </p:row>
-        </p:panelGrid>
-    </ui:remove>
-    
     <div class="row">
         <ui:fragment rendered="#{showFolder}">
         <div class="col-md-3 col-xs-12">
             <div class="box box-primary">
                 <div class="box-header">
                     <div class="tools pull-right">
-                        <h:form style="display: inline">
+                        
                             
                             <p:commandLink title="#{messages['jcr.hint.NewFolder']}" update="@([id$=folderDialog])" oncomplete="PF('dlg').show();"  >
                                 <i class="fa fa-plus-circle" />
@@ -177,7 +27,7 @@
                             </p:commandLink>
                             
                             
-                        </h:form>
+                        
                     </div>
                     <h:outputText value=" #{messages['jcr.label.Folders']}" />
                 </div>
@@ -191,7 +41,7 @@
             <div class="box box-info">
                 <div class="box-header">
                     <div class="tools pull-right">
-                        <h:form style="display: inline">
+                        
                             <p:remoteCommand name="selectNode" action="#{jcrController.selectNode}" update="@([id$=filesPanel])" partialSubmit="true" process="@this" />
 
                             <p:commandLink title="#{messages['jcr.hint.UploadFile']}" onclick="PF('fdlg').show();" process="@this">
@@ -205,7 +55,7 @@
                             <p:commandLink title="#{messages['jcr.hint.TableMode']}" action="#{jcrController.setViewMode('table')}" update="@([id$=filesPanel])" process="@this">
                                 <i class="fa fa-th" />
                             </p:commandLink>
-                        </h:form>
+                        
                     </div>
                     <h:outputText value=" #{messages['jcr.label.Files']}" />
                 </div>
@@ -233,7 +83,7 @@
                                                 <t:cellOutputDate value="#{file.createDate}" />
                                         </span>
                                         <span class="text-md">
-                                            <h:form>
+                                            
                                                     <p:commandLink title="#{messages['jcr.hint.Download']}" action="#{jcrController.downloadFile(file.id)}" ajax="false"  style="width: auto;">
                                                         <i class="fa fa-download" />
                                                         <h:outputText value=" #{messages['jcr.label.Download']}" />
@@ -246,7 +96,7 @@
                                                         <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocument']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
                                                     </p:commandLink>
 
-                                                </h:form>
+                                            
                                         </span>
                                     </div>
                                 </div>
@@ -259,10 +109,10 @@
                         <tr>
                             <td><i class="fa #{jcrController.getIcon(file.mimeType)}"/></td>
                             <td><h:outputText value="#{file.name}" /></td>
-                            <td>#{userLookup.getUserName( file.createBy )} </td>
+                            <td><h:outputText value=" #{userLookup.getUserName( file.createBy )} " /></td>
                             <td><t:cellOutputDate value="#{file.createDate}" /></td>
                             <td>
-                                <h:form>
+                                
                                                     <p:commandLink title="#{messages['jcr.hint.Download']}" action="#{jcrController.downloadFile(file.id)}" ajax="false"  style="width: auto;">
                                                         <i class="fa fa-download" />
                                                         <h:outputText value=" #{messages['jcr.label.Download']}" />
@@ -275,7 +125,7 @@
                                                         <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocument']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
                                                     </p:commandLink>
 
-                                                </h:form>
+                                
                             </td>
                         </tr>
                     </ui:repeat>
@@ -345,15 +195,15 @@
         </script>
         
         
-    <h:form id="uploaddialog" enctype="multipart/form-data">
-        <p:dialog header="#{messages['jcr.caption.UploadFileDialog']}" widgetVar="fdlg" showEffect="clip" hideEffect="clip">
+    
+        <p:dialog id="uploaddialog" header="#{messages['jcr.caption.UploadFileDialog']}" widgetVar="fdlg" showEffect="clip" hideEffect="clip">
             <p:fileUpload fileUploadListener="#{jcrController.handleFileUpload}" mode="advanced" dragDropSupport="true"
                           update="@([id$=filesPanel])" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|.*)$/" />
         </p:dialog>
-    </h:form>
+    
 
-    <h:form id="folderDialog">
-        <p:dialog header="#{messages['jcr.caption.NewFolderDialog']}" widgetVar="dlg" >
+    
+        <p:dialog id="folderDialog" header="#{messages['jcr.caption.NewFolderDialog']}" widgetVar="dlg" >
             
             <h:panelGrid columns="2" cellpadding="5">
                 <h:outputLabel for="name" value="#{messages['jcr.label.FolderName']}:" />
@@ -365,7 +215,7 @@
                                  oncomplete="buildTree();setNodeSelections();PF('dlg').hide();" />
             </f:facet>
         </p:dialog>
-    </h:form>
+    
 
 
 </ui:composition>

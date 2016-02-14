@@ -6,6 +6,7 @@
 package com.ozguryazilim.telve.jcr.ui;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.auth.ActiveUserLookup;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -291,9 +292,10 @@ public class JcrController {
             n.setProperty("tlv:sourceDomain", getSourceDomain());
             n.setProperty("tlv:sourceId", getSourceId());
             session.save();
-            //FIXME: Burada aktif kullanıcı adı UserLookup'dan alınacak. Eğer yoksa ( session yoksa yoktur ) anonim bırkılacak.
-            //n.getProperty("jcr:createdBy").setValue("Hakan");
-            //session.save();
+            
+            n.getProperty("jcr:createdBy").setValue(userId());
+            session.save();
+            
             LOG.debug("Dosya JCR'e kondu : {}", fullName);
         } catch (RepositoryException ex) {
             LOG.error("Reporsitory Exception", ex);
@@ -320,12 +322,12 @@ public class JcrController {
             n.setProperty("tlv:sourceCaption", getSourceCaption());
             n.setProperty("tlv:sourceDomain", getSourceDomain());
             n.setProperty("tlv:sourceId", getSourceId());
-
+            
             session.save();
 
-            //FIXME: Burada aktif kullanıcı adı UserLookup'dan alınacak. Eğer yoksa ( session yoksa yoktur ) anonim bırkılacak.
-            //n.getProperty("jcr:createdBy").setValue("Hakan");
-            //session.save();
+            n.getProperty("jcr:createdBy").setValue(userId());
+            session.save();
+            
             //View Modele de ekleyelim.
             files.add(buildFileInfo(n));
 
@@ -498,4 +500,15 @@ public class JcrController {
         return "widget".equals(viewMode);
     }
 
+    /**
+     * Geriye varsa kullanıcı adı döndürür.
+     * @return 
+     */
+    protected String userId(){
+        ActiveUserLookup aul = BeanProvider.getContextualReference(ActiveUserLookup.class, true);
+        if( aul != null ){
+            return aul.getActiveUser().getLoginName();
+        }
+        return "";
+    }
 }
