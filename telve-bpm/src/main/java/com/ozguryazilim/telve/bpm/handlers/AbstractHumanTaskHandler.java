@@ -104,6 +104,11 @@ public abstract class AbstractHumanTaskHandler implements Serializable {
             } catch (InterruptedException ex) {
             }
         }
+        
+        if( task.getVariables().containsKey("ASSIGNEE")){
+            task.getVariables().put("ASSIGNEE", Strings.isNullOrEmpty(task.getTask().getAssignee()) ? userInfo.getLoginName() : task.getTask().getAssignee());
+        }
+        
         taskService.complete(task.getId(), task.getVariables());
         onAfterClose(result);
         taskConsole.refresh();
