@@ -17,7 +17,7 @@
     <composite:implementation>
             <div id="#{cc.clientId}" class="prop #{ cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
                 <p:outputLabel value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
-                <span class="value">
+                <span class="value" style="height: 30px;">
                 <composite:insertChildren />
                 </span>
                 <ui:remove>
