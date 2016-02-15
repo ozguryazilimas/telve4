@@ -121,21 +121,16 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
             }
         }
 
-        //try {
         entity = getRepository().saveAndFlush(entity);
+        
+        //Eğer elimizdeki listede yoksa ekleyelim
         if (!getEntityList().contains(entity)) {
             getEntityList().add(entity);
+        } else {
+            //Varsa replace edelim. Çünkü veri tabanından yeni nesne geldi.
+            int ix = getEntityList().indexOf(entity);
+            getEntityList().set( ix, entity );
         }
-        /*
-         } catch (ConstraintViolationException e) {
-         log.error("Hata : #0", e);
-         facesMessages.add("#{messages['general.message.record.NotUnique']}");
-         return BaseConsts.FAIL;
-         } catch (Exception e) {
-         log.error("Hata : #0", e);
-         facesMessages.add("#{messages['general.message.record.SaveFail']}");
-         return BaseConsts.FAIL;
-         }*/
 
         onAfterSave();
 

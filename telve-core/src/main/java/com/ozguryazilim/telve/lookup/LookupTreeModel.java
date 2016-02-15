@@ -264,8 +264,8 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         }
         
         if( resultItems.contains(item)){
-            resultItems.remove(item);
-            resultItems.add(item);
+            int ix = resultItems.indexOf(item);
+            resultItems.set( ix, item);
         }
     }
     
