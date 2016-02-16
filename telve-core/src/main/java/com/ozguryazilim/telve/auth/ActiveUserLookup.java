@@ -74,6 +74,8 @@ public class ActiveUserLookup implements Serializable{
     public User getActiveUser(){
         
         if( activeUser == null ){
+            //Eğer oturum açılmamış, identity yok ise geriye null döndürelim.
+            if( identityManager == null || identity == null || identity.getAccount() == null ) return null;
             activeUser = identityManager.lookupIdentityById(User.class, identity.getAccount().getId());
         }
         
