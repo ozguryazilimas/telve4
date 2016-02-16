@@ -6,7 +6,6 @@
 package com.ozguryazilim.telve.jcr.ui;
 
 import com.google.common.base.Strings;
-import com.ozguryazilim.telve.auth.ActiveUserLookup;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -293,7 +292,7 @@ public class JcrController {
             n.setProperty("tlv:sourceId", getSourceId());
             session.save();
             
-            n.getProperty("jcr:createdBy").setValue(userId());
+            n.getProperty("jcr:createdBy").setValue(getUserId());
             session.save();
             
             LOG.debug("Dosya JCR'e kondu : {}", fullName);
@@ -325,7 +324,7 @@ public class JcrController {
             
             session.save();
 
-            n.getProperty("jcr:createdBy").setValue(userId());
+            n.getProperty("jcr:createdBy").setValue(getUserId());
             session.save();
             
             //View Modele de ekleyelim.
@@ -504,11 +503,12 @@ public class JcrController {
      * Geriye varsa kullanıcı adı döndürür.
      * @return 
      */
-    protected String userId(){
+    protected String getUserId(){
+        /* FIXME: Login olmama durumunu daha detaylı bir kontrol etmek gerekiyor.
         ActiveUserLookup aul = BeanProvider.getContextualReference(ActiveUserLookup.class, true);
-        if( aul != null ){
+        if( aul != null && aul.getActiveUser() != null ){
             return aul.getActiveUser().getLoginName();
-        }
+        }*/
         return "";
     }
 }
