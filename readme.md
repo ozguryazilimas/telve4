@@ -1,3 +1,3 @@
-TelveNG
+Telve 4
 
-JavaEE7 teknolojilerini kullanan telve'nin yeni sürümü
+JavaEE7 teknolojilerini kullanan Telve'nin yeni sürümü
