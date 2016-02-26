@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
+
+    <h:form id="contentForm">
+        <div class="box-body">
+            <ui:insert name="content" />
+        </div>
+
+        <div class="box-footer">
+
+            <div class="pull-right">
+
+                <ui:insert name="extraButtons" />
+
+                <p:commandButton id="save" 
+                                 value="#{messages['general.button.Save']}" 
+                                 action="#{bean.save()}"
+                                 rendered="#{not hideSave and identity.hasPermission( entityName, 'insert')}"
+                                 ajax="true"
+                                 process="@form"
+                                 validateClient="true"
+                                 styleClass="btn-success"
+                                 icon="fa fa-save" />  
+
+                <p:commandButton id="delete" 
+                                 value="#{messages['general.button.Delete']}" 
+                                 action="#{bean.delete()}"
+                                 rendered="#{not hideDelete and not empty entity.id and identity.hasPermission( entityName, 'delete') }"
+                                 validateClient="true"
+                                 styleClass="btn-danger"
+                                 icon="fa fa-trash">
+                    <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
+                </p:commandButton>
+
+
+                <p:commandButton id="done" 
+                                 value="#{messages['general.button.Close']}"
+                                 action="#{bean.close()}"
+                                 icon="ui-icon-close" 
+                                 partialSubmit="true"
+                                 process="@this"
+                                 ajax="true"/>
+            </div>
+
+        </div>
+    </h:form>
+
+
+</ui:composition>
