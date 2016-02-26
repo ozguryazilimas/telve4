@@ -18,6 +18,7 @@
             <title>#{telveConfigResolver.getProperty('app.title')} - #{ messages[pageTitleResolver.pageTitle] }</title>
 
             <ui:include src="/layout/templateHeader.xhtml" />
+            <ui:insert name="extraHead" />
 
         </h:head>
 
