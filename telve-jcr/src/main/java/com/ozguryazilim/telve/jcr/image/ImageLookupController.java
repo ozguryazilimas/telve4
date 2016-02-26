@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.jcr.image;
 
+import com.google.common.base.Strings;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +15,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import org.modeshape.common.text.UrlEncoder;
@@ -24,68 +26,105 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Image yönetim için özelleşmiş JCR controller.
- * 
+ *
  * inputLookupImage bileşeni tarafından kullanılır.
- * 
+ *
  * @author Hakan Uygun
  */
 @SessionScoped
 @Named
-public class ImageLookupController implements Serializable{
-    
+public class ImageLookupController implements Serializable {
+
     private static final Logger LOG = LoggerFactory.getLogger(ImageLookupController.class);
-    
+
     @Inject
     private Session session;
-    
+
     private String keyValue;
     private String contextRoot;
-    
-    
+
     /**
      * Verilen bilgiler ile imaj içeriğinin id'sini döndürür.
+     *
      * @param keyValue
      * @param contextRoot
      * @return
-     * @throws RepositoryException 
+     * @throws RepositoryException
      */
-    public String getImageId( String keyValue, String contextRoot ) throws RepositoryException{
-        
+    public String getImageId(String keyValue, String contextRoot) throws RepositoryException {
+
         String folderName = contextRoot + "/";
         String path = folderName + buildPath(keyValue) + keyValue;
-        
+
         JcrTools jcrTools = new JcrTools();
-            
+
         UrlEncoder encoder = new UrlEncoder();
         encoder.setSlashEncoded(false);
         String fileName = encoder.encode(path);
-            
+
         Node node = session.getNode(fileName);
-        
+
         return node.getIdentifier();
     }
-    
+
     /**
      * Geriye Rest ile çakilecek imaj path'ini döndürür.
+     *
      * @param keyValue
      * @param contextRoot
      * @param emptyImage eğer imaj bulunamaz ise default ne döndürülecek?
      * @return
      */
-    public String getImageResourcePath( String keyValue, String contextRoot, String emptyImage ){
+    public String getImageResourcePath(String keyValue, String contextRoot, String emptyImage) {
         try {
             return "/rest/images/image/" + getImageId(keyValue, contextRoot);
         } catch (RepositoryException ex) {
             LOG.debug("Hata var:", ex);
         }
-        
+
         return "/rest/images/default/" + emptyImage;
     }
-    
+
+    /**
+     * Geriye Rest ile çakilecek imaj path'ini döndürür.
+     *
+     * eğer verilen key için imaj bulunamaz ise fallbackImage için kontrol
+     * yapılır. O da bulunamaz ise emptyImage döndürülür.
+     *
+     * @param keyValue
+     * @param contextRoot
+     * @param fallbackImage eğer asıl imaj bulunamaz ise buna bakılacak bu da
+     * bulunamaz ise emptyImage'a bakılacak
+     * @param emptyImage eğer imaj bulunamaz ise default ne döndürülecek?
+     * @return
+     */
+    public String getImageResourcePath(String keyValue, String contextRoot, String fallbackImage, String emptyImage) {
+        try {
+            return "/rest/images/image/" + getImageId(keyValue, contextRoot);
+        } catch (PathNotFoundException ex) {
+            LOG.debug("Hata var:", ex);
+        } catch (RepositoryException ex) {
+            LOG.debug("Hata var:", ex);
+        }
+
+        if (!Strings.isNullOrEmpty(fallbackImage)) {
+            try {
+                return "/rest/images/image/" + getImageId(fallbackImage, contextRoot);
+            } catch (PathNotFoundException ex) {
+                LOG.debug("Hata var:", ex);    
+            } catch (RepositoryException ex) {
+                LOG.debug("Hata var:", ex);
+            }
+        }
+
+        return "/rest/images/default/" + emptyImage;
+    }
+
     /**
      * Upload işlemi başlamadan önce gerekli değişkenleri düzenler.
+     *
      * @param keyValue
-     * @param contextRoot 
+     * @param contextRoot
      */
     public void prepareToUpload(String keyValue, String contextRoot) {
         this.contextRoot = contextRoot;
@@ -94,8 +133,9 @@ public class ImageLookupController implements Serializable{
 
     /**
      * Upload işlemi için PF upload bileşeninin henadler'ı
+     *
      * @param event
-     * @throws RepositoryException 
+     * @throws RepositoryException
      */
     public void handleFileUpload(FileUploadEvent event) throws RepositoryException {
         LOG.info("Uploaded File : {}", event.getFile().getFileName());
@@ -119,26 +159,26 @@ public class ImageLookupController implements Serializable{
     }
 
     /**
-     * Asıl veri yükleme işini yapar. 
-     * 
+     * Asıl veri yükleme işini yapar.
+     *
      * PF upload'dan gelen dosyayı JCR'ye yükler.
-     * 
+     *
      * @param fileName
-     * @param in 
+     * @param in
      */
     protected void copyFile(String fileName, InputStream in) {
 
         try {
             JcrTools jcrTools = new JcrTools();
-            
+
             UrlEncoder encoder = new UrlEncoder();
             encoder.setSlashEncoded(false);
             fileName = encoder.encode(fileName);
-            
+
             Node n = jcrTools.uploadFile(session, fileName, in);
 
             LOG.info("Session root : {}", session.getRootNode());
-            
+
             session.save();
 
             LOG.info("Dosya JCR'e kondu : {}", fileName);
@@ -150,18 +190,19 @@ public class ImageLookupController implements Serializable{
         }
 
     }
-    
+
     /**
      * URL olarak verilmiş dosyayı JCR'ye yükler.
+     *
      * @param fileName
-     * @param fileURL 
+     * @param fileURL
      */
-    protected void copyFileURL(String fileName, URL fileURL ) {
+    protected void copyFileURL(String fileName, URL fileURL) {
 
         try {
             JcrTools jcrTools = new JcrTools();
             UrlEncoder encoder = new UrlEncoder();
-            Node n = jcrTools.uploadFile(session, fileName, fileURL );
+            Node n = jcrTools.uploadFile(session, fileName, fileURL);
 
             session.save();
 
@@ -176,12 +217,12 @@ public class ImageLookupController implements Serializable{
     }
 
     /**
-     * Çok fazla dosya olması durumunu kontrol etmek için. 
-     * 
+     * Çok fazla dosya olması durumunu kontrol etmek için.
+     *
      * Şimdilikkapalı aslında
-     * 
+     *
      * @param tckn
-     * @return 
+     * @return
      */
     protected String buildPath(String tckn) {
 
@@ -193,6 +234,6 @@ public class ImageLookupController implements Serializable{
         }
 
         return sb.toString();
-        */
+         */
     }
 }

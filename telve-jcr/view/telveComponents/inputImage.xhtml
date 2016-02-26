@@ -10,6 +10,7 @@
         <composite:attribute name="value" required="true"/>
         <composite:attribute name="label" required="true"/>
         <composite:attribute name="update" required="false" default=""/>
+        <composite:attribute name="fallbackImage" required="false" default=""/>
         <composite:attribute name="emptyImage" required="false" default="defaultCameraImage.jpg"/>
         <composite:attribute name="contextRoot" required="false" default="/system/images"/>
         <composite:attribute name="placeholder" required="false" default="general.label.SelectImage"/>
@@ -26,7 +27,7 @@
                 <h:inputHidden  id="#{cc.id}_inp" value="#{cc.attrs.value}" />
 
 
-                <h:graphicImage value="#{imageLookupController.getImageResourcePath(cc.attrs.value, cc.attrs.contextRoot, cc.attrs.emptyImage )}" styleClass="img-responsive img-rounded" rendered="#{cc.attrs.value ne null}" width="100%"/>
+                <h:graphicImage value="#{imageLookupController.getImageResourcePath(cc.attrs.value, cc.attrs.contextRoot, cc.attrs.fallbackImage, cc.attrs.emptyImage )}" styleClass="img-responsive img-rounded" rendered="#{cc.attrs.value ne null}" width="100%"/>
                 <h:outputText value="#{messages[cc.attrs.placeholder]}" styleClass="text-muted" rendered="#{cc.attrs.value eq null}" />
 
 
