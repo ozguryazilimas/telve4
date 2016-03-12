@@ -121,6 +121,32 @@ public class ImageLookupController implements Serializable {
     }
 
     /**
+     * Verilen bilgilere sahip bir imaj var mı bilgisini döndürür.
+     * 
+     * Örnek : imageLookupController.hasImage( "727272-828282", "/deneme/images" );
+     * 
+     * @param keyValue
+     * @param contextRoot
+     * @return 
+     */
+    public Boolean hasImage( String keyValue, String contextRoot ){
+        
+        try {
+            String s = getImageId(keyValue, contextRoot);
+            if( !Strings.isNullOrEmpty(s)){
+                return true;
+            }
+        } catch (PathNotFoundException ex) {
+            LOG.debug("Hata var:", ex);
+        } catch (RepositoryException ex) {
+            LOG.debug("Hata var:", ex);
+        }
+        
+        return false;
+    }
+    
+    
+    /**
      * Upload işlemi başlamadan önce gerekli değişkenleri düzenler.
      *
      * @param keyValue
