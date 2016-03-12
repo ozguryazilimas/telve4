@@ -601,6 +601,10 @@
                                         <ul class="nav navbar-nav">
 
                                             <ui:insert name="context-menu" />
+                                            
+                                            <c:forEach items="#{contextMenuResolver.getContextMenuFragments()}" var="entry">
+                                                <ui:include src="#{entry}" />
+                                            </c:forEach>
                                         </ul>
                                     </h:form>
 
