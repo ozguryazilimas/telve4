@@ -6,7 +6,12 @@
 package com.ozguryazilim.telve.admin.ui;
 
 import com.ozguryazilim.telve.admin.AbstractIdentityHome;
+import com.ozguryazilim.telve.audit.AuditLogCommand;
+import com.ozguryazilim.telve.audit.AuditLogger;
+import com.ozguryazilim.telve.audit.ChangeLogStore;
 import com.ozguryazilim.telve.auth.AbstractIdentityHomeExtender;
+import com.ozguryazilim.telve.auth.ActiveUserLookup;
+import com.ozguryazilim.telve.entities.AuditLogDetail;
 import com.ozguryazilim.telve.permisson.ActionConsts;
 import com.ozguryazilim.telve.permisson.PermissionDefinition;
 import com.ozguryazilim.telve.permisson.PermissionGroup;
@@ -47,10 +52,18 @@ public class RoleHome extends AbstractIdentityHome<Role> {
     @Inject
     private PermissionManager permissionManager;
 
+    @Inject
+    private AuditLogger auditLogger;
+    
+    @Inject 
+    private ActiveUserLookup userLookup;
+    
     private Map<String, PermissionGroupUIModel> permissionGroups = new HashMap<>();
     private Map<String, PermissionUIModel> permissionModels = new HashMap<>();
     private List<Permission> currentPermmissions;
 
+    private ChangeLogStore changeLogStore = new ChangeLogStore();
+    
     @Override
     public List<Role> getEntityList() {
         return getIdentityManager().createIdentityQuery(Role.class)
@@ -84,8 +97,12 @@ public class RoleHome extends AbstractIdentityHome<Role> {
 
     protected void buildPermissionModelValues() {
         clearPermissionValues();
+                
+        changeLogStore.clear();
+        
         for (Permission perm : getCurrentPermmissions()) {
             setPermissionValue((String)perm.getResourceIdentifier(), perm.getOperation());
+            changeLogStore.appendOldValue("permission.label." + (String)perm.getResourceIdentifier(), perm.getOperation());
         }
     }
 
@@ -172,6 +189,7 @@ public class RoleHome extends AbstractIdentityHome<Role> {
     protected void grantRevokePermission(PermissionUIModel pd, String action) {
         if (pd.hasPermission(action)) {
             permissionManager.grantPermission(getCurrent(), pd.getDefinition().getTarget(), action);
+            changeLogStore.appendNewValue("permission.label." + pd.getDefinition().getTarget(), action);
         } else if (hasCurrentPermission(pd.getDefinition().getTarget(), action)) {
             permissionManager.revokePermission(getCurrent(), pd.getDefinition().getTarget(), action);
         }
@@ -189,7 +207,19 @@ public class RoleHome extends AbstractIdentityHome<Role> {
             grantRevokePermission( pd, ActionConsts.EXEC_ACTION );
         }
 
+        List<AuditLogDetail> changes = changeLogStore.getChangeValues();
+        auditLogger.authLog( getCurrent().getClass().getSimpleName(), getCurrent().getName(), userLookup.getActiveUser().getLoginName(), getCurrent().getName() + " rol yetkileri değişti", changes );
+        
         return super.doAfterSave();
     }
 
+    @Override
+    protected boolean doBeforeDelete() {
+        
+        auditLogger.actionLog( getCurrent().getClass().getSimpleName(), null, getCurrent().getName(),  AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_DELETE, userLookup.getActiveUser().getLoginName(), getCurrent().getName() + " rol silindi");
+        
+        return super.doAfterDelete(); 
+    }
+
+    
 }

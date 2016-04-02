@@ -1,0 +1,37 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/browseBase.xhtml">
+
+    <ui:param name="moduleCaption" value="module.caption.AuditLog" />
+    <ui:param name="bean" value="#{auditLogBrowse}" />
+    <ui:param name="advanceEnabled" value="true" />
+    <ui:param name="saveEnabled" value="true" />
+    <ui:param name="filterEnabled" value="true" />
+    <ui:param name="permission" value="auditLog" />
+    <ui:param name="showDetailPanel" value="true" />
+
+    
+    <ui:define name="context-menu">
+    </ui:define>
+
+    <ui:define name="detailBar">
+        <ul class="products-list product-list-in-box">
+        <ui:repeat value="#{auditLogBrowse.selectedItem.items}" var="item">
+            <li class="item">
+                <div class="product-title">
+                    #{messages[item.attribute]} : 
+                </div>
+                <div class="product-description">
+                    #{item.oldValue} -> #{item.newValue}
+                </div>
+            </li>
+        </ui:repeat>
+        </ul>
+        
+    </ui:define>
+    
+</ui:composition>

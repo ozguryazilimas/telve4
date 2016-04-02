@@ -112,6 +112,34 @@
         </createTable>
     </changeSet>
     
+    <changeSet author="haky (generated)" id="1438162495087-14">
+        <createTable tableName="TLV_AUDIT_LOG">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TS" type="datetime"/>
+            <column name="DNAME" type="VARCHAR(255)"/>
+            <column name="DPK" type="BIGINT"/>
+            <column name="DBK" type="VARCHAR(255)"/>
+            <column name="ACT" type="VARCHAR(255)"/>
+            <column name="MSG" type="VARCHAR(255)"/>
+            <column name="CAT" type="VARCHAR(255)"/>
+            <column name="UID" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="haky (generated)" id="1438162495087-16">
+        <createTable tableName="TLV_AUDIT_LOG_DET">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LID" type="BIGINT"/>
+            <column name="ATTR" type="VARCHAR(255)"/>
+            <column name="OVAL" type="VARCHAR(255)"/>
+            <column name="NVAL" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    
     <changeSet author="haky (generated)" id="1438162495087-8">
         <addPrimaryKey columnNames="ID" constraintName="TLV_CALENDARPK" tableName="TLV_CALENDAR"/>
     </changeSet>
@@ -120,6 +148,12 @@
     </changeSet>
     <changeSet author="haky (generated)" id="1438162495087-10">
         <addPrimaryKey columnNames="ID" constraintName="TLV_EXEC_LOGPK" tableName="TLV_EXEC_LOG"/>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1438162495087-15">
+        <addPrimaryKey columnNames="ID" constraintName="TLV_AUDIT_LOGPK" tableName="TLV_AUDIT_LOG"/>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1438162495087-17">
+        <addPrimaryKey columnNames="ID" constraintName="TLV_AUDIT_DPK" tableName="TLV_AUDIT_LOG_DET"/>
     </changeSet>
     <changeSet author="haky (generated)" id="1438162495087-11">
         <addPrimaryKey columnNames="ID" constraintName="TLV_NOTEPK" tableName="TLV_NOTE"/>

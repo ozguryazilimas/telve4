@@ -6,11 +6,16 @@
 package com.ozguryazilim.telve.forms;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.annotations.BizKey;
+import com.ozguryazilim.telve.audit.AuditLogCommand;
+import com.ozguryazilim.telve.audit.AuditLogger;
+import com.ozguryazilim.telve.auth.ActiveUserLookup;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.view.PageTitleResolver;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +63,12 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     @Any
     private Identity identity;
 
+    @Inject
+    private ActiveUserLookup userLookup;
+    
+    @Inject
+    private AuditLogger auditLogger;
+    
     @Inject
     private PageTitleResolver pageTitleResolver;
 
@@ -163,8 +174,12 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         try {
             if( !onBeforeSave() ) return null;
 
+            String act = entity.getId() == null ? AuditLogCommand.ACT_INSERT : AuditLogCommand.ACT_UPDATE;
+            
             entity = getRepository().saveAndFlush(entity);
 
+            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, act, userLookup.getActiveUser().getLoginName(), "" );
+            
             //Save'den sonra elde sakladığımız id'yi değiştirelim ki bir sonraki request için ortalık karışmasın ( bakınız setId )
             this.id = (PK) entity.getId();
         
@@ -188,6 +203,35 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         return getContainerViewPage();
     }
 
+    /**
+     * Entity üzerinde @BizKey annotation'ını bulunana field değerini döner.
+     * 
+     * İstenilir ise form için override edilebilir.
+     * 
+     * @return 
+     */
+    protected String getBizKeyValue(){
+        
+        String result = "";
+        
+        Field[] fields = entity.getClass().getDeclaredFields();
+        
+        for( Field f : fields ){
+            if( f.isAnnotationPresent(BizKey.class) ){
+                try {
+                    f.setAccessible(true);
+                    result += f.get(entity).toString();
+                } catch (IllegalArgumentException ex) {
+                    LOG.debug("BizKey not found", ex);
+                } catch (IllegalAccessException ex) {
+                    LOG.debug("BizKey not found", ex);
+                }
+            }
+        }
+        
+        return result;
+    }
+    
     /**
      * Entity kaydedilmeden hemen önce atl sınıflar birşey yapmak isterlerse bu
      * methodu override edebilirler...
@@ -248,6 +292,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             
             if( !onBeforeDelete() ) return null;
             
+            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, AuditLogCommand.ACT_DELETE, userLookup.getActiveUser().getLoginName(), "" );
             //getRepository().deleteById(entity.getId());
             getRepository().remove(entity);
             

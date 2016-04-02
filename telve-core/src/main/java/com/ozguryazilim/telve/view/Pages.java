@@ -50,6 +50,10 @@ public interface Pages extends ViewConfig {
         @Navigation(icon = "/suggestion.png", section = AdminNavigationSection.class)
         class SuggestionBrowse implements Admin {};
         
+        @SecuredPage("auditLog")
+        @Navigation(icon = "/suggestion.png", section = AdminNavigationSection.class)
+        class AuditLogBrowse implements Admin {};
+        
         class AllOptionsPane implements Admin {};
         class GuiOptionPane implements Admin {};
     }

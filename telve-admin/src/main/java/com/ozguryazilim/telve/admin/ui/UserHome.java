@@ -5,12 +5,18 @@
  */
 package com.ozguryazilim.telve.admin.ui;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.admin.AbstractIdentityHome;
 import com.ozguryazilim.telve.admin.IdentityEvent;
+import com.ozguryazilim.telve.audit.AuditLogCommand;
+import com.ozguryazilim.telve.audit.AuditLogger;
+import com.ozguryazilim.telve.audit.ChangeLogStore;
 import com.ozguryazilim.telve.auth.AbstractIdentityHomeExtender;
+import com.ozguryazilim.telve.auth.ActiveUserLookup;
 import com.ozguryazilim.telve.auth.UserModel;
 import com.ozguryazilim.telve.auth.UserModelRegistery;
+import com.ozguryazilim.telve.entities.AuditLogDetail;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.event.Observes;
@@ -48,6 +54,12 @@ public class UserHome extends AbstractIdentityHome<User> {
     @Inject
     private ViewConfigResolver viewConfigResolver;
 
+    @Inject
+    private AuditLogger auditLogger;
+    
+    @Inject
+    private ActiveUserLookup userLookup;
+    
     private DualListModel<Role> roleList;
 
     private List<String> fragments;
@@ -62,6 +74,9 @@ public class UserHome extends AbstractIdentityHome<User> {
     private List<Role> availRoles;
 
     private String password;
+    
+    //List<AuditLogDetail> values = new ArrayList<>();
+    ChangeLogStore changeLogStore = new ChangeLogStore();
     
     @Inject
     private RelationshipManager relationshipManager;
@@ -244,9 +259,65 @@ public class UserHome extends AbstractIdentityHome<User> {
             
         }
 
+        List<AuditLogDetail> changes = buildChangeLog();
+        
+        auditLogger.authLog( getCurrent().getClass().getSimpleName(), getCurrent().getLoginName(), userLookup.getActiveUser().getLoginName(), getCurrent().getFirstName() + " " + getCurrent().getLastName() + " kullanıcısının bilgileri değişti", changes );
+        
         //Ve sırada extenderlar var.
         return super.doAfterSave();
 
+        
+        
+    }
+    
+    /**
+     * Geriye değişen veri logunu hazırlayıp döndürür.
+     * 
+     * @return 
+     */
+    protected List<AuditLogDetail> buildChangeLog(){
+        List<AuditLogDetail> changes = new ArrayList<>();
+        
+        //Önce chageStore
+        changeLogStore.addNewValue("user.label.UserType", userType );
+        changeLogStore.addNewValue("general.label.Group", userGroup );
+        changeLogStore.addNewValue("user.label.Email", getCurrent().getEmail() );
+        changeLogStore.addNewValue("user.label.FirstName", getCurrent().getFirstName() );
+        changeLogStore.addNewValue("user.label.LastName", getCurrent().getLastName() );
+        changeLogStore.addNewValue("user.label.UserName", getCurrent().getLoginName() );
+        changes.addAll( changeLogStore.getChangeValues());
+        
+        //Kullanıcı rol değişimi
+        AuditLogDetail auDet = new AuditLogDetail();
+        auDet.setAttribute("general.label.Roles");
+
+        //Eski roller
+        List<String> rl = new ArrayList<>();
+        for( Role r : oldRoles ){
+            rl.add( r.getName() ); 
+        }
+        auDet.setOldValue(Joiner.on(',').join(rl));
+        
+        //yeni roller
+        rl = new ArrayList<>();
+        for( Role r : roleList.getTarget() ){
+            rl.add( r.getName() ); 
+        }
+        auDet.setNewValue(Joiner.on(',').join(rl));
+        
+        //Eğer veride değişiklik yoksa ekleme
+        if( !auDet.getOldValue().equals(auDet.getNewValue()) ){
+            changes.add(auDet);
+        }
+        
+        //Eğer password değişmiş ise sadece onu yazalım.
+        if( !Strings.isNullOrEmpty(password)){
+            auDet = new AuditLogDetail();
+            auDet.setAttribute("user.label.Password");
+            changes.add(auDet);
+        }
+        
+        return changes;
     }
 
     @Override
@@ -257,6 +328,17 @@ public class UserHome extends AbstractIdentityHome<User> {
         at = getCurrent().getAttribute("UserGroup");
         userGroup = at != null ? at.getValue() : null;
 
+        
+        //Change log için verileri toplayalım.
+        changeLogStore.clear();
+        
+        changeLogStore.addOldValue("user.label.UserType", userType );
+        changeLogStore.addOldValue("general.label.Group", userGroup );
+        changeLogStore.addOldValue("user.label.Email", getCurrent().getEmail() );
+        changeLogStore.addOldValue("user.label.FirstName", getCurrent().getFirstName() );
+        changeLogStore.addOldValue("user.label.LastName", getCurrent().getLastName() );
+        changeLogStore.addOldValue("user.label.UserName", getCurrent().getLoginName() );
+        
         //mevcut rolleri toplayalım
         oldRoles.clear();
         
@@ -301,5 +383,14 @@ public class UserHome extends AbstractIdentityHome<User> {
     public void search(){
         //
     }
+
+    @Override
+    protected boolean doBeforeDelete() {
+        auditLogger.actionLog( getCurrent().getClass().getSimpleName(), null, getCurrent().getLoginName(),  AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_DELETE, userLookup.getActiveUser().getLoginName(), getCurrent().getFirstName() + " " + getCurrent().getLastName() +  " kullanıcısı silindi");
+        return super.doBeforeDelete(); 
+    }
+    
+    
+    
     
 }

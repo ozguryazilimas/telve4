@@ -187,7 +187,7 @@ public class PermissionDefinition implements Serializable{
                     !ActionConsts.UPDATE_ACTION.equals(s) &&
                     !ActionConsts.EXPORT_ACTION.equals(s) &&
                     !ActionConsts.DELETE_ACTION.equals(s)){
-                    execAction = Boolean.TRUE;
+                    otherAction = Boolean.TRUE;
                     break;
                 }
             }
