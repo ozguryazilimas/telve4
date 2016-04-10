@@ -6,6 +6,10 @@
 package com.ozguryazilim.telve.forms;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.annotations.BizKey;
+import com.ozguryazilim.telve.audit.AuditLogCommand;
+import com.ozguryazilim.telve.audit.AuditLogger;
+import com.ozguryazilim.telve.auth.ActiveUserLookup;
 import com.ozguryazilim.telve.data.TreeRepositoryBase;
 import com.ozguryazilim.telve.entities.TreeNodeEntityBase;
 import com.ozguryazilim.telve.lookup.LookupTreeModel;
@@ -14,6 +18,7 @@ import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.utils.TreeUtils;
 import com.ozguryazilim.telve.view.Pages;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import javax.enterprise.event.Event;
@@ -47,6 +52,12 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
     @Inject
     private GroupedConversation conversation;
 
+    @Inject
+    private ActiveUserLookup userLookup;
+    
+    @Inject
+    private AuditLogger auditLogger;
+    
     /**
      * Geriye kullanılacak olan repository'i döndürür.
      *
@@ -118,6 +129,8 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
             return null;
         }
 
+        String act = entity.isPersisted() ? AuditLogCommand.ACT_INSERT : AuditLogCommand.ACT_UPDATE;
+        
         if (!entity.isPersisted()) {
             //Unique Code olup olmadığını bir kontrol edelim...
             List<E> ls = getRepository().findByCode(entity.getCode());
@@ -135,6 +148,8 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         entity.setPath(TreeUtils.getNodeIdPath(entity));
         getRepository().save(entity);
 
+        auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, act, userLookup.getActiveUser().getLoginName(), "" );
+        
         if (!getEntityList().contains(entity)) {
             getEntityList().add(entity);
             getTreeModel().addItem(entity);
@@ -167,6 +182,9 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
 
         //FIXME: Eğer ağacın alt dalları varsa diye kontrol edilmesi lazım...
         try {
+            
+            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, AuditLogCommand.ACT_DELETE, userLookup.getActiveUser().getLoginName(), "" );
+            
             getRepository().deleteById(entity.getId());
             //getRepository().remove(entity);
             getTreeModel().removeItem(entity);
@@ -340,6 +358,35 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
      */
     protected void onAfterDelete() {
 
+    }
+    
+    /**
+     * Entity üzerinde @BizKey annotation'ını bulunana field değerini döner.
+     * 
+     * İstenilir ise form için override edilebilir.
+     * 
+     * @return 
+     */
+    protected String getBizKeyValue(){
+        
+        String result = "";
+        
+        Field[] fields = entity.getClass().getDeclaredFields();
+        
+        for( Field f : fields ){
+            if( f.isAnnotationPresent(BizKey.class) ){
+                try {
+                    f.setAccessible(true);
+                    result += f.get(entity).toString();
+                } catch (IllegalArgumentException ex) {
+                    LOG.debug("BizKey not found", ex);
+                } catch (IllegalAccessException ex) {
+                    LOG.debug("BizKey not found", ex);
+                }
+            }
+        }
+        
+        return result;
     }
 
 }

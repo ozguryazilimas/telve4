@@ -5,6 +5,10 @@
  */
 package com.ozguryazilim.telve.forms;
 
+import com.ozguryazilim.telve.annotations.BizKey;
+import com.ozguryazilim.telve.audit.AuditLogCommand;
+import com.ozguryazilim.telve.audit.AuditLogger;
+import com.ozguryazilim.telve.auth.ActiveUserLookup;
 import com.ozguryazilim.telve.data.ParamRepositoryBase;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
@@ -12,6 +16,7 @@ import com.ozguryazilim.telve.entities.ParamEntityBase;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.view.Pages;
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.List;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
@@ -37,6 +42,12 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
 
     @Inject
     private GroupedConversation conversation;
+    
+    @Inject
+    private ActiveUserLookup userLookup;
+    
+    @Inject
+    private AuditLogger auditLogger;
 
     public List<E> getEntityList() {
         LOG.debug("super.getEntityList");
@@ -108,6 +119,8 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
             return null;
         }
 
+        String act = entity.isPersisted() ? AuditLogCommand.ACT_INSERT : AuditLogCommand.ACT_UPDATE;
+        
         if (!entity.isPersisted()) {
             //Eğer ParamEntityBase'den gelen bir entity ise Unique Code olup olmadığını bir kontrol edelim...
             if (getRepository() instanceof ParamRepositoryBase
@@ -122,6 +135,8 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
         }
 
         entity = getRepository().saveAndFlush(entity);
+        
+        auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, act, userLookup.getActiveUser().getLoginName(), "" );
         
         //Eğer elimizdeki listede yoksa ekleyelim
         if (!getEntityList().contains(entity)) {
@@ -154,8 +169,12 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
         }
 
         try {
+            
+            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, AuditLogCommand.ACT_DELETE, userLookup.getActiveUser().getLoginName(), "" );
+            
             //getRepository().deleteById(entity.getId());
             getRepository().remove(entity);
+            
         } catch (Exception e) {
             LOG.error("Hata : {}", e);
             FacesMessages.error("general.message.record.DeleteFaild");
@@ -240,5 +259,34 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
 
     public boolean onAfterDelete() {
         return true;
+    }
+    
+    /**
+     * Entity üzerinde @BizKey annotation'ını bulunana field değerini döner.
+     * 
+     * İstenilir ise form için override edilebilir.
+     * 
+     * @return 
+     */
+    protected String getBizKeyValue(){
+        
+        String result = "";
+        
+        Field[] fields = entity.getClass().getDeclaredFields();
+        
+        for( Field f : fields ){
+            if( f.isAnnotationPresent(BizKey.class) ){
+                try {
+                    f.setAccessible(true);
+                    result += f.get(entity).toString();
+                } catch (IllegalArgumentException ex) {
+                    LOG.debug("BizKey not found", ex);
+                } catch (IllegalAccessException ex) {
+                    LOG.debug("BizKey not found", ex);
+                }
+            }
+        }
+        
+        return result;
     }
 }
