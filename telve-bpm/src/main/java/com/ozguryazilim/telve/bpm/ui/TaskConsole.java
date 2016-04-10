@@ -268,4 +268,25 @@ public class TaskConsole implements Serializable {
     public void showDiagram(){
         diagramPopup.openPopup(selectedTask);
     }
+    
+    public void setTaskListType( String typ ){
+        taskOwnerType = typ;
+        refresh();
+    }
+    
+    public void showMyTasks(){
+        setTaskListType( "myTasks" );
+    }
+    
+    public void showPotTasks(){
+        setTaskListType( "potTasks" );
+    }
+    
+    public Integer getMyTaskCount(){
+        return taskRepository.getTaskCount(userInfo.getLoginName(), true );
+    }
+    
+    public Integer getPotTaskCount(){
+        return taskRepository.getTaskCount(userInfo.getLoginName(), false );
+    }
 }

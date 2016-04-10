@@ -87,6 +87,27 @@ public class TaskRepository implements Serializable {
         return buildTaskInfos(taskList);
     }
 
+    
+    public Integer getTaskCount( String userId, Boolean assigned ){
+        //Önce bir task listesini alalım.
+        TaskQuery qry = taskService.createTaskQuery()
+                .initializeFormKeys() // must be invoked
+                .active()
+                .orderByDueDate().asc()
+                .orderByTaskName().asc();
+
+        //Atanma kontrolü bakalım.
+        if (assigned ) {
+            qry.taskAssignee(userId);
+        } else {
+            qry.taskCandidateUser(userId);
+        }
+        
+        List<Task> taskList = qry.list();
+        
+        return taskList.size();
+    }
+    
     /**
      * Verilen Task ID'si için geriye task info döndürür.
      *

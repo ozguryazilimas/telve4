@@ -29,38 +29,62 @@
 
     <ui:define name="content-list">
         <h:form id="console">
+            <div class="box">
+                <div class="box-body no-padding no-shadow">
+                    <ui:remove>
+                        <div class="ui-input-group" style="padding: 10px;">
+                            <p:inputText value="#{quickLauncher.key}" required="false"  placeholder="#{messages['general.label.SearchText']}"/>
+                            <p:commandButton action="#{quickLauncher.redirect()}" icon="fa fa-search" partialSubmit="false" />
+                        </div>
+                    </ui:remove>
 
-            <ui:remove>
-                <div class="ui-input-group" style="padding: 10px;">
-                    <p:inputText value="#{quickLauncher.key}" required="false"  placeholder="#{messages['general.label.SearchText']}"/>
-                    <p:commandButton action="#{quickLauncher.redirect()}" icon="fa fa-search" partialSubmit="false" />
+                    <p:inputText value="#{taskConsole.searchText}" required="false"  placeholder="#{messages['general.label.SearchText']}">
+                        <p:ajax event="blur" listener="#{taskConsole.refresh}" update="console" />
+                    </p:inputText>
+
+
+                    <p:selectOneMenu id="processType" value="#{taskConsole.searchProcessType}">
+                        <f:selectItem itemLabel="" itemValue="" />
+                        <f:selectItems value="#{taskConsole.processTypeNames}" var="item" itemLabel="#{messages['processName.'.concat(item)]}" itemValue="#{item}"/>
+                        <p:ajax event="change" listener="#{taskConsole.refresh}" update="console" />
+                    </p:selectOneMenu>
+
+                    <ui:remove>
+                        <p:selectOneMenu id="taskType" value="#{taskConsole.searchTaskType}">
+                            <f:selectItem itemLabel="" itemValue="" />
+                            <f:selectItems value="#{taskConsole.taskTypeNames}" var="item" itemLabel="#{messages['taskName.'.concat(item)]}" itemValue="#{item}"/>
+                            <p:ajax event="change" listener="#{taskConsole.refresh}" update="console" />
+                        </p:selectOneMenu>
+                    </ui:remove>
+
+                    <ui:remove>
+                        <p:selectOneButton value="#{taskConsole.taskOwnerType}">
+                            <f:selectItem itemLabel="#{messages['taskConsole.label.MyTasks']}" itemValue="myTasks" />
+                            <f:selectItem itemLabel="#{messages['taskConsole.label.CandidateTasks']}" itemValue="potTasks" />
+                            <p:ajax event="change" listener="#{taskConsole.refresh}" update="console" />
+                        </p:selectOneButton>
+                    </ui:remove>
+
+
+                    <ul class="nav nav-pills nav-stacked">
+                        <li class="#{taskConsole.taskOwnerType eq 'myTasks' ? 'active' : '' }">
+                            <p:commandLink action="#{taskConsole.showMyTasks()}" update=":console">
+                                <i class="fa fa-user"></i>
+                                #{messages['taskConsole.label.MyTasks']}
+                                <span class="label label-warning pull-right">#{taskConsole.myTaskCount}</span>
+                            </p:commandLink>
+                        </li>
+                        <li class="#{taskConsole.taskOwnerType eq 'potTasks' ? 'active' : '' }">
+                            <p:commandLink action="#{taskConsole.showPotTasks()}" update=":console">
+                                <i class="fa fa-users"></i>
+                                #{messages['taskConsole.label.CandidateTasks']}
+                                <span class="label label-info pull-right">#{taskConsole.potTaskCount}</span>
+                            </p:commandLink>
+                        </li>
+                    </ul>
                 </div>
-            </ui:remove>
+            </div>
 
-            <p:inputText value="#{taskConsole.searchText}" required="false"  placeholder="#{messages['general.label.SearchText']}">
-                <p:ajax event="blur" listener="#{taskConsole.refresh}" update="console" />
-            </p:inputText>
-
-
-            <p:selectOneMenu id="processType" value="#{taskConsole.searchProcessType}">
-                <f:selectItem itemLabel="" itemValue="" />
-                <f:selectItems value="#{taskConsole.processTypeNames}" var="item" itemLabel="#{messages['processName.'.concat(item)]}" itemValue="#{item}"/>
-                <p:ajax event="change" listener="#{taskConsole.refresh}" update="console" />
-            </p:selectOneMenu>
-
-            <ui:remove>
-                <p:selectOneMenu id="taskType" value="#{taskConsole.searchTaskType}">
-                    <f:selectItem itemLabel="" itemValue="" />
-                    <f:selectItems value="#{taskConsole.taskTypeNames}" var="item" itemLabel="#{messages['taskName.'.concat(item)]}" itemValue="#{item}"/>
-                    <p:ajax event="change" listener="#{taskConsole.refresh}" update="console" />
-                </p:selectOneMenu>
-            </ui:remove>
-
-            <p:selectOneButton value="#{taskConsole.taskOwnerType}">
-                <f:selectItem itemLabel="#{messages['taskConsole.label.MyTasks']}" itemValue="myTasks" />
-                <f:selectItem itemLabel="#{messages['taskConsole.label.CandidateTasks']}" itemValue="potTasks" />
-                <p:ajax event="change" listener="#{taskConsole.refresh}" update="console" />
-            </p:selectOneButton>
 
             <div class="list-group">
                 <ui:repeat value="#{taskConsole.taskList}" var="item" varStatus="loop2">
@@ -74,7 +98,7 @@
                                 <t:cellOutputDateTime value="#{item.endDate}" />
                             </ui:remove>
                         </span>
-                        <h4 class="list-group-item-heading">#{item.subject}</h4>
+                        <p class="list-group-item-heading text-bold">#{item.subject}</p>
                         <p class="list-group-item-text">#{item.info}</p>
                         <span class="text-sm text-muted">#{messages['taskName.'.concat(item.task.taskDefinitionKey)]} | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.task.assignee)} </span>
                         <ui:remove>
@@ -83,25 +107,25 @@
                     </p:commandLink>
                 </ui:repeat>
             </div>
-            
+
             <ui:remove>
-            <ul class="products-list product-list-in-box">
-                <ui:repeat value="#{taskConsole.taskList}" var="item" varStatus="loop2">
-                    <li class="item">
-                        <div class="product-img">
-                            <i class="fa fa-2x #{taskConsole.getTaskIcon(item.formKey)}" />  
-                        </div>
-                        <div class="product-info">
-                            <p:commandLink action="#{taskConsole.onSelectTask(item)}" ajax="true" process="@this" update=":taskView" styleClass="product-title">
-                                #{item.subject}  <span class="label label-primary pull-right"><t:cellOutputDateTime value="#{item.endDate}" /></span>
-                            </p:commandLink>
-                            <span class="product-description">#{item.info}</span>
-                            <span class="product-description text-sm">#{messages['taskName.'.concat(item.task.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.task.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.task.assignee)} </span>
-                        </div>
-                    </li>
-                </ui:repeat>
-            </ul>
-             </ui:remove>
+                <ul class="products-list product-list-in-box">
+                    <ui:repeat value="#{taskConsole.taskList}" var="item" varStatus="loop2">
+                        <li class="item">
+                            <div class="product-img">
+                                <i class="fa fa-2x #{taskConsole.getTaskIcon(item.formKey)}" />  
+                            </div>
+                            <div class="product-info">
+                                <p:commandLink action="#{taskConsole.onSelectTask(item)}" ajax="true" process="@this" update=":taskView" styleClass="product-title">
+                                    #{item.subject}  <span class="label label-primary pull-right"><t:cellOutputDateTime value="#{item.endDate}" /></span>
+                                </p:commandLink>
+                                <span class="product-description">#{item.info}</span>
+                                <span class="product-description text-sm">#{messages['taskName.'.concat(item.task.taskDefinitionKey)]} | <t:cellOutputDateTime value="#{item.task.createTime}"/> | <i class="fa fa-user" > </i>#{userLookup.getUserName( item.task.assignee)} </span>
+                            </div>
+                        </li>
+                    </ui:repeat>
+                </ul>
+            </ui:remove>
 
         </h:form>
     </ui:define>
