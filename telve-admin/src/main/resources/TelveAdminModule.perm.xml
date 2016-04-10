@@ -8,8 +8,5 @@
         <permission target="role" >
             <entityActions/>
         </permission>
-        <permission target="suggestion" >
-            <entityActions/>
-        </permission>
     </permissionGroup>
 </permissions>

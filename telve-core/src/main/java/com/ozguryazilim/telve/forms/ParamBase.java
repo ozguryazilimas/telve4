@@ -136,7 +136,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
 
         entity = getRepository().saveAndFlush(entity);
         
-        auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, act, userLookup.getActiveUser().getLoginName(), "" );
+        auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_PARAM, act, userLookup.getActiveUser().getLoginName(), "" );
         
         //Eğer elimizdeki listede yoksa ekleyelim
         if (!getEntityList().contains(entity)) {
@@ -170,7 +170,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
 
         try {
             
-            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, AuditLogCommand.ACT_DELETE, userLookup.getActiveUser().getLoginName(), "" );
+            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_PARAM, AuditLogCommand.ACT_DELETE, userLookup.getActiveUser().getLoginName(), "" );
             
             //getRepository().deleteById(entity.getId());
             getRepository().remove(entity);

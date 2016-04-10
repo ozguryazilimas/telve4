@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<permissions>
+    <permissionGroup name="Admin">
+        <permission target="suggestion" >
+            <entityActions/>
+        </permission>
+        <permission target="scheduledCommand" >
+            <entityActions/>
+        </permission>
+        <permission target="executionLog" >
+            <entityActions/>
+        </permission>
+        <permission target="auditLog" >
+            <entityActions/>
+        </permission>
+    </permissionGroup>
+</permissions>

@@ -148,7 +148,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         entity.setPath(TreeUtils.getNodeIdPath(entity));
         getRepository().save(entity);
 
-        auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, act, userLookup.getActiveUser().getLoginName(), "" );
+        auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_PARAM, act, userLookup.getActiveUser().getLoginName(), "" );
         
         if (!getEntityList().contains(entity)) {
             getEntityList().add(entity);
@@ -183,7 +183,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         //FIXME: Eğer ağacın alt dalları varsa diye kontrol edilmesi lazım...
         try {
             
-            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, AuditLogCommand.ACT_DELETE, userLookup.getActiveUser().getLoginName(), "" );
+            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_PARAM, AuditLogCommand.ACT_DELETE, userLookup.getActiveUser().getLoginName(), "" );
             
             getRepository().deleteById(entity.getId());
             //getRepository().remove(entity);

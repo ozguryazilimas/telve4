@@ -20,10 +20,10 @@ import org.apache.deltaspike.jsf.api.config.view.View;
 @ApplicationScoped
 @Folder(name="/admin/idm")
 public interface AdminPages extends Pages.Admin{
-    @SecuredPage("user") @View @Navigation(icon = "/user.png", section = AdminNavigationSection.class, order = 20)
+    @SecuredPage("user") @View @Navigation(icon = "fa fa-users", section = AdminNavigationSection.class, order = 20)
     class User implements Admin {};
     
-    @SecuredPage("role") @View @Navigation(icon = "/role.png", section = AdminNavigationSection.class, order = 21)
+    @SecuredPage("role") @View @Navigation(icon = "fa fa-slideshare", section = AdminNavigationSection.class, order = 21)
     class Role implements Admin {};
     
     @SecuredPage @View 

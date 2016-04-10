@@ -18,6 +18,7 @@ import java.util.List;
 public class AuditLogCommand extends AbstractCommand{
     
     public static final String CAT_ENTITY = "ENTITY"; 
+    public static final String CAT_PARAM = "PARAM"; 
     public static final String CAT_AUTH = "AUTH";
     public static final String CAT_SYSTEM = "SYSTEM";
     public static final String CAT_DEBUG = "DEBUG";

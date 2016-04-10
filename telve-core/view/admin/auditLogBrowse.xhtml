@@ -19,6 +19,7 @@
     </ui:define>
 
     <ui:define name="detailBar">
+        <p class="text-bold">#{auditLogBrowse.selectedItem.message}</p>
         <ul class="products-list product-list-in-box">
         <ui:repeat value="#{auditLogBrowse.selectedItem.items}" var="item">
             <li class="item">
