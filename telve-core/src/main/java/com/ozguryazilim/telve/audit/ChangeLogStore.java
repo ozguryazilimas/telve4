@@ -83,8 +83,9 @@ public class ChangeLogStore implements Serializable{
         
         
         for( Entry<String,ValueTuple> vt : values.entrySet()){
-            
-            if( !vt.getValue().getOldValue().equals(vt.getValue().getNewValue())){
+            if( vt.getValue() == null ) continue;
+            if( ( vt.getValue().getOldValue() == null && vt.getValue().getNewValue() != null ) 
+                    || ( vt.getValue().getOldValue() != null && !vt.getValue().getOldValue().equals(vt.getValue().getNewValue()))){
                 AuditLogDetail au = new AuditLogDetail();
                 au.setAttribute(vt.getKey());
                 au.setOldValue(vt.getValue().getOldValue());
