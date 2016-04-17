@@ -8,7 +8,7 @@
     <packaging>pom</packaging>
     
     <properties>
-        <deltaspike.version>1.5.2</deltaspike.version>
+        <deltaspike.version>1.6.0</deltaspike.version>
         <picketlink.version>2.7.2.OYAS2</picketlink.version>
         <primeface.version>5.3</primeface.version>
         <primefaces-ext.version>3.0.0</primefaces-ext.version>
@@ -22,7 +22,7 @@
         <camunda.version>7.4.0</camunda.version>
         <jasperreports.version>6.2.0</jasperreports.version>
         <jasperreports-fonts.version>6.0.0</jasperreports-fonts.version>
-        <infinispan.version>7.2.4.Final</infinispan.version>
+        <infinispan.version>8.1.0.Final</infinispan.version>
         <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
     </properties>
     
@@ -327,7 +327,7 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
-                <version>4.3.6.Final</version>
+                <version>5.0.7.Final</version>
                 <scope>provided</scope>
             </dependency>
 
