@@ -268,6 +268,10 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
     public String getNodeCodePath() {
         return TreeUtils.getNodeCodePath(entity);
     }
+    
+    public String getNodeNamePath() {
+        return TreeUtils.getNodeNamePath(entity);
+    }
 
     public String getFilter() {
         return filter;

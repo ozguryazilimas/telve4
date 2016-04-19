@@ -41,7 +41,7 @@
                             <div class="box-body">
                                 <div class="text-sm">
                                     <div class="fa fa-sitemap" style="display: inline-block;vertical-align: middle"></div>
-                                    <h:outputText value="#{homeBean.getNodeCodePath()}" />
+                                    <h:outputText value="#{telveConfigResolver.getProperty('ui.tree.Path') eq 'code' ? homeBean.getNodeCodePath() : homeBean.getNodeNamePath()}" />
                                 </div>
 
                                 <h:panelGroup id="contentArea" layout="block">
