@@ -166,6 +166,8 @@ public class ImageLookupController implements Serializable {
     public void handleFileUpload(FileUploadEvent event) throws RepositoryException {
         LOG.info("Uploaded File : {}", event.getFile().getFileName());
 
+        deleteImage( keyValue, contextRoot );
+        
         String fileNamePath = event.getFile().getFileName();
         String fileName = fileNamePath.substring(fileNamePath.lastIndexOf(File.separatorChar) + 1);
 
@@ -261,5 +263,22 @@ public class ImageLookupController implements Serializable {
 
         return sb.toString();
          */
+    }
+    
+    public void deleteImage(String keyValue, String contextRoot) throws RepositoryException{
+        String folderName = contextRoot + "/";
+        String path = folderName + buildPath(keyValue) + keyValue;
+
+        UrlEncoder encoder = new UrlEncoder();
+        encoder.setSlashEncoded(false);
+        String fileName = encoder.encode(path);
+
+        LOG.debug("Item Remove Path : {}", fileName);
+        
+        //Node node = session.getNode(fileName);
+        
+        session.removeItem(fileName);
+        session.save();
+        
     }
 }

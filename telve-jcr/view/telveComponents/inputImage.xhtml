@@ -39,6 +39,13 @@
                     <i class="fa fa-camera" ></i>
                     #{messages['general.button.UploadImage']}
                 </p:commandLink>
+                
+                <p:commandLink action="#{imageLookupController.deleteImage(cc.attrs.value, cc.attrs.contextRoot)}" 
+                               rendered="#{cc.attrs.value ne null}"
+                               styleClass="pull-right" update="#{cc.id}_pnl"
+                               partialSubmit="true" process="@this">
+                    <i class="fa fa-trash" ></i>
+                </p:commandLink>
 
 
                 <p:dialog id="imageUpload"  widgetVar="imageUpload"  header="#{messages['general.button.UploadImage']}" closable="true">
