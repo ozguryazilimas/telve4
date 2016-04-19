@@ -145,7 +145,7 @@ public class GalleryConsole extends AbstractGalleryController {
             //n.getProperty("jcr:createdBy").setValue("Hakan");
             //session.save();
             //View Modele de ekleyelim.
-            files.add(buildFileInfo(n));
+            //files.add(buildFileInfo(n));
 
             LOG.info("Dosya JCR'e kondu : {}", fileName);
 
