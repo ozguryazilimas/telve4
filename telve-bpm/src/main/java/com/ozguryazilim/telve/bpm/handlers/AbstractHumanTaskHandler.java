@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
+import org.apache.deltaspike.core.util.ProxyUtils;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.TaskAlreadyClaimedException;
 import org.camunda.bpm.engine.TaskService;
@@ -366,6 +367,10 @@ public abstract class AbstractHumanTaskHandler implements Serializable {
 
     public void setDelegatedUser(String delegatedUser) {
         this.delegatedUser = delegatedUser;
+    }
+    
+    public Boolean isCommentRequired(){
+        return ((HumanTaskHandler)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(HumanTaskHandler.class))).commentRequired();
     }
 
 }

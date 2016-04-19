@@ -41,4 +41,9 @@ public @interface HumanTaskHandler {
      */
     String icon() default "fa-gears";
     
+    /**
+     * Task actionlarda yorum girişi zorunlu mu?
+     * @return 
+     */
+    boolean commentRequired() default false;
 }

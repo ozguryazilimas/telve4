@@ -42,7 +42,7 @@
                                 </ui:repeat>
                             </ul>
                         </div>
-                        <t:inputTextarea label="general.label.Comment" value="#{bean.comment}" columnClass="col-xs-12" />
+                        <t:inputTextarea label="general.label.Comment" value="#{bean.comment}" columnClass="col-xs-12" required="#{bean.isCommentRequired()}"/>
                     </t:accordion>
                 </div>
 
