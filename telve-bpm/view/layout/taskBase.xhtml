@@ -57,7 +57,9 @@
 
                     <ui:repeat value="#{bean.resultCommands}" var="cmd">
                         <p:button value="#{messages['general.button.'.concat( cmd.result )]}" onclick="PF('#{cmd.widgetId}').show();return false;" icon="#{cmd.icon}" styleClass="#{cmd.style}" rendered="#{cmd.isPopup}"/>
-                        <p:commandButton value="#{messages['general.button.'.concat( cmd.result )]}" icon="#{cmd.icon}" action="#{bean.closeTask(cmd.result)}" styleClass="#{cmd.style}" rendered="#{not cmd.isPopup}" update="console,taskView"/>
+                        <p:commandButton value="#{messages['general.button.'.concat( cmd.result )]}" icon="#{cmd.icon}" action="#{bean.closeTask(cmd.result)}" styleClass="#{cmd.style}" rendered="#{not cmd.isPopup}" update="console,taskView">
+                            <p:confirm icon="ui-icon-alert" header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.AreYouSure']}" rendered="#{cmd.needConfirmation}" />
+                        </p:commandButton>
                     </ui:repeat>
 
                     <p:commandButton id="save" value="#{messages['general.button.Save']}" icon="fa fa-save" action="#{bean.save()}" styleClass="btn-primary" update="taskView"/>

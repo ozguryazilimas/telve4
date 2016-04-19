@@ -24,6 +24,7 @@ public class TaskResultCommand implements Serializable{
     private String icon;
     private String style;
     private String widgetId;
+    private Boolean needConfirmation = Boolean.FALSE;
     
 
     /**
@@ -40,6 +41,24 @@ public class TaskResultCommand implements Serializable{
         this.icon = icon;
         this.style = style;
         this.widgetId = null;
+    }
+    
+    /**
+     * UI tarafında normal bir command oluşturur. 
+     * 
+     * AbstractHumanHandler#close methodunu result değeri ile çağırır.
+     * 
+     * @param result
+     * @param icon
+     * @param style 
+     * @param needConfirm eğer komut confirmasyon istiyor ise true gönderilir.
+     */
+    public TaskResultCommand(String result, String icon, String style, Boolean needConfirm ) {
+        this.result = result;
+        this.icon = icon;
+        this.style = style;
+        this.widgetId = null;
+        this.needConfirmation = needConfirm;
     }
     
     /**
@@ -102,6 +121,17 @@ public class TaskResultCommand implements Serializable{
     public void setWidgetId(String widgetId) {
         this.widgetId = widgetId;
     }
-    
-    
+
+    /**
+     * Geriye bu düğmenin confirmation isteyip istemediği bilgisini döner.
+     * @return 
+     */
+    public Boolean getNeedConfirmation() {
+        return needConfirmation;
+    }
+
+    public void setNeedConfirmation(Boolean needConfirmation) {
+        this.needConfirmation = needConfirmation;
+    }
+
 }
