@@ -27,7 +27,7 @@
             <pe:inputNumber id="#{cc.id}_inp" value="#{cc.attrs.value}"  required="#{cc.attrs.required}"  
                                 symbol="#{cc.attrs.symbol}" symbolPosition="#{cc.attrs.symbolPosition}" emptyValue="#{cc.attrs.emptyValue}" 
                                 decimalPlaces="#{cc.attrs.decimalPlaces}" decimalSeparator="#{cc.attrs.decimalSeparator}" thousandSeparator="#{cc.attrs.thousandSeparator}"
-                                maxValue="#{cc.attrs.maxValue}" minValue="#{cc.attrs.minValue}" >
+                                maxValue="#{cc.attrs.maxValue}" minValue="#{cc.attrs.minValue}" readOnly="#{cc.attrs.readonly}">
                     <ui:remove>
                         <!-- PF Ext 3.0 la birlikte çalışmaz olmuş-->
                         <p:clientValidator />
