@@ -23,6 +23,7 @@ public class PermissionGroupUIModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private String name;
+    private Integer order;
     private List<PermissionUIModel> permissions = new ArrayList<PermissionUIModel>();
 
     public String getName() {
@@ -31,6 +32,14 @@ public class PermissionGroupUIModel implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
     }
 
     public List<PermissionUIModel> getPermissions() {

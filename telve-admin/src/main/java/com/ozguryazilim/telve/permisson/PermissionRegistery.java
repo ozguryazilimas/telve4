@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.permisson;
 
+import com.google.common.base.Strings;
 import com.ozguryazilim.telve.api.module.TelveModuleRegistery;
 import java.io.IOException;
 import java.io.InputStream;
@@ -90,9 +91,21 @@ public class PermissionRegistery implements Serializable{
      */
     private void registerPermissionGroup(Element e) {
         String gn = e.attributeValue("name");
+        String ors = e.attributeValue("order");
+        Integer or = 50;
+        
+        if( !Strings.isNullOrEmpty(ors)){
+            try{
+                or = Integer.parseInt(ors);
+            } catch ( NumberFormatException ex ){
+                //Yapılacka bir şey yok. eğer hata varsa 50 default alacağız.
+                LOG.warn("Order format exception", ex);
+            }
+        }
+        
         List<Element> elements = e.elements("permission");
         for (Element a : elements) {
-            registerPermission(a, gn);
+            registerPermission(a, gn, or );
         }
     }
 
@@ -101,7 +114,7 @@ public class PermissionRegistery implements Serializable{
      * @param e
      * @param gn
      */
-    private void registerPermission(Element e, String gn) {
+    private void registerPermission(Element e, String gn, Integer or ) {
         Attribute target = e.attribute("target");
         
         String t = target.getText();
@@ -119,6 +132,7 @@ public class PermissionRegistery implements Serializable{
         if( pg == null ){
             pg = new PermissionGroup();
             pg.setName(gn);
+            pg.setOrder(or);
             permMap.put(gn, pg);
         }
 

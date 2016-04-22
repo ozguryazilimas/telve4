@@ -34,7 +34,7 @@
                     
                     <c:forEach id="groups" items="#{roleHome.permissions}"
                                var="pg" varStatus="pgs">
-                        <t:accordion id="#{pg.name}a" label="#{messages[ 'permission.label.'.concat( pg.name )]}" >
+                        <t:accordion id="#{pg.name}a" label="#{messages[ 'permission.label.'.concat( pg.name )]}" hide="true">
 
                             <p:dataTable id="#{pg.name}" value="#{pg.permissions}" var="pd" >
                                 <p:column headerText="#{messages['role.label.Domain']}">

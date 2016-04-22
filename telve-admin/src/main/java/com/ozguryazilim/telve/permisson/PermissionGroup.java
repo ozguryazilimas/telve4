@@ -22,6 +22,8 @@ public class PermissionGroup implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private String name;
+    private Integer order;
+    
     private List<PermissionDefinition> definitions = new ArrayList<>();
 
     public List<PermissionDefinition> getDefinitions() {
@@ -38,6 +40,14 @@ public class PermissionGroup implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
     }
 
     @Override

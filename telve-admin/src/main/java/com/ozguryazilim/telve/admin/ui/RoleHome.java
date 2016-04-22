@@ -18,6 +18,7 @@ import com.ozguryazilim.telve.permisson.PermissionGroup;
 import com.ozguryazilim.telve.permisson.PermissionRegistery;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,14 +84,25 @@ public class RoleHome extends AbstractIdentityHome<Role> {
     }
 
     public List<PermissionGroupUIModel> getPermissions() {
-        return new ArrayList(permissionGroups.values());
+        List<PermissionGroupUIModel> ls = new ArrayList(permissionGroups.values());
+        ls.sort(new Comparator<PermissionGroupUIModel>() {
+            @Override
+            public int compare(PermissionGroupUIModel t, PermissionGroupUIModel t1) {
+                int result = t.getOrder().compareTo(t1.getOrder());
+                if( result == 0 ){
+                    result = t.getName().compareTo(t1.getName());
+                }
+                return result;
+            }
+        });
+        return ls;
     }
 
     protected void buildPermissionModel() {
         permissionGroups.clear();
         for (PermissionGroup pg : PermissionRegistery.instance().getPermMap().values()) {
             for (PermissionDefinition pd : pg.getDefinitions()) {
-                addPermissionModel(pg.getName(), pd);
+                addPermissionModel(pg, pd);
             }
         }
     }
@@ -106,12 +118,13 @@ public class RoleHome extends AbstractIdentityHome<Role> {
         }
     }
 
-    private void addPermissionModel(String group, PermissionDefinition pd) {
-        PermissionGroupUIModel pgm = permissionGroups.get(group);
+    private void addPermissionModel(PermissionGroup group, PermissionDefinition pd) {
+        PermissionGroupUIModel pgm = permissionGroups.get(group.getName());
         if (pgm == null) {
             pgm = new PermissionGroupUIModel();
-            pgm.setName(group);
-            permissionGroups.put(group, pgm);
+            pgm.setName(group.getName());
+            pgm.setOrder(group.getOrder());
+            permissionGroups.put(group.getName(), pgm);
         }
 
         PermissionUIModel pm = new PermissionUIModel();
