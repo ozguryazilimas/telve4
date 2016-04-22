@@ -12,7 +12,7 @@
     <ui:define name="body">
 
         <ui:remove>
-        <ui:include src="/layout/messages.xhtml" />
+            <ui:include src="/layout/messages.xhtml" />
         </ui:remove>
 
         <style>
@@ -50,6 +50,7 @@
                         </c:forEach>
                     </div>
 
+                    <ui:fragment rendered="#{telveConfigResolver.getProperty('ui.user.ShowPassword') eq 'true'}">
                     <div class="row">
                         <t:accordion id="pwdAcc" label="#{messages['user.caption.Password']}" hide="false">
                             <p:messages id="messages" for=":form:pwdAcc:pwd1:pwd1" showDetail="true" autoUpdate="true" />
@@ -67,29 +68,32 @@
                             </div>
                         </t:accordion>
                     </div>
+                    </ui:fragment>
 
-                    <div class="row">
-                        <t:accordion id="roleacc" label="#{messages['user.caption.Roles']}" hide="false">
-                            <div class="row">
-                                <t:inputAny id="roleacca" label="general.label.Roles" columnClass="col-xs-12">
-                                    <p:pickList id="rolepicker" 
-                                                value="#{userHome.roleList}" 
-                                                var="role" 
-                                                itemLabel="#{role.name}" 
-                                                itemValue="#{role}"
-                                                showSourceFilter="true" 
-                                                showTargetFilter="true" 
-                                                showCheckbox="true"
-                                                filterMatchMode="contains"
-                                                converter="roleConverter"
-                                                style="width: 100%;">
-                                        <f:facet name="sourceCaption">#{messages['general.label.Available']}</f:facet>
-                                        <f:facet name="targetCaption">#{messages['general.label.Selected']}</f:facet>
-                                    </p:pickList>
-                                </t:inputAny>
-                            </div>
-                        </t:accordion>
-                    </div>
+                    <ui:fragment rendered="#{telveConfigResolver.getProperty('ui.user.ShowRoles') eq 'true'}">
+                        <div class="row">
+                            <t:accordion id="roleacc" label="#{messages['user.caption.Roles']}" hide="false">
+                                <div class="row">
+                                    <t:inputAny id="roleacca" label="general.label.Roles" columnClass="col-xs-12">
+                                        <p:pickList id="rolepicker" 
+                                                    value="#{userHome.roleList}" 
+                                                    var="role" 
+                                                    itemLabel="#{role.name}" 
+                                                    itemValue="#{role}"
+                                                    showSourceFilter="true" 
+                                                    showTargetFilter="true" 
+                                                    showCheckbox="true"
+                                                    filterMatchMode="contains"
+                                                    converter="roleConverter"
+                                                    style="width: 100%;">
+                                            <f:facet name="sourceCaption">#{messages['general.label.Available']}</f:facet>
+                                            <f:facet name="targetCaption">#{messages['general.label.Selected']}</f:facet>
+                                        </p:pickList>
+                                    </t:inputAny>
+                                </div>
+                            </t:accordion>
+                        </div>
+                    </ui:fragment>
                 </div>
                 <div class="box-footer">
                     <div class="actionButtons">
