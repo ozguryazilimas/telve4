@@ -5,6 +5,9 @@
     	<permission target="user" >
             <entityActions/>
         </permission>
+        <permission target="userRole" >
+            <entityActions/>
+        </permission>
         <permission target="role" >
             <entityActions/>
         </permission>
