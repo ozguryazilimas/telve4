@@ -174,7 +174,7 @@ public class UserRoleHome extends AbstractIdentityHome<User>{
 
         List<AuditLogDetail> changes = buildChangeLog();
         
-        auditLogger.authLog( getCurrent().getClass().getSimpleName(), getCurrent().getLoginName(), userLookup.getActiveUser().getLoginName(), getCurrent().getFirstName() + " " + getCurrent().getLastName() + " kullanıcısının bilgileri değişti", changes );
+        auditLogger.authLog( "UserRole", getCurrent().getLoginName(), userLookup.getActiveUser().getLoginName(), getCurrent().getFirstName() + " " + getCurrent().getLastName() + " kullanıcısının bilgileri değişti", changes );
         
         //Ve sırada extenderlar var.
         return super.doAfterSave();
