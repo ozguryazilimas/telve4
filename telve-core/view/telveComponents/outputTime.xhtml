@@ -20,6 +20,7 @@
                 <h:outputText id="#{cc.id}_inp" value="#{cc.attrs.value}" >
                     <f:convertDateTime pattern="#{messages['general.format.Time']}" />
                 </h:outputText>
+                <h:outputText value="." style="color: #FFF" rendered="#{cc.attrs.value eq null}"/>
             </span>
         </div>
     </composite:implementation>

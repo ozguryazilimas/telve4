@@ -28,6 +28,7 @@ body, h4{
     position: relative;
 }
 
+/*
 .disprop .name{
     display: inline;
     vertical-align: top;
@@ -46,7 +47,31 @@ body, h4{
     padding: 0px 5px 2px 5px;
     clear: left;
 }
+*/
 
+.disprop .name{
+    display: block;
+    vertical-align: top;
+    font-weight: bold;
+    color: #555;
+    /*width: 115px;*/
+    float: left;
+    /*padding: 3px 4px 2px 0px; */
+    margin-top: 8px;
+    margin-bottom:  0;
+    clear: left;
+}
+
+
+.disprop .value {
+    content: " ";
+    float: left;
+    color: #555;
+    /*padding: 0px 5px 2px 5px;*/
+    clear: left;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+}
 .actionButtons {
     width: 100%;
     margin-top: 10px;
@@ -60,7 +85,7 @@ body, h4{
     /*font-size: 14px;
     color: #447799; 	
     color: #4582ec;*/
-    border-bottom:   1px solid #ccc;
+    border-bottom:   1px solid #999;
     padding-bottom: 4px;
 }
 

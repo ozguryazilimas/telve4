@@ -17,6 +17,7 @@
             <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]} :" styleClass="name" />
             <span class="value">
                 <h:outputText id="#{cc.id}_inp" value="#{cc.attrs.value}" />
+                <h:outputText value="." style="color: #FFF" rendered="#{cc.attrs.value eq null or cc.attrs.value eq ''}"/>
             </span>
         </div>
     </composite:implementation>
