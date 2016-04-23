@@ -43,6 +43,7 @@ public class UserLookup implements Serializable{
     private static final Logger LOG = LoggerFactory.getLogger(UserLookup.class);
     
     private static final String USER_TYPE = "UserType"; 
+    private static final String USER_GROUP = "UserGroup"; 
     
     @Inject
     private IdentityManager identityManager;
@@ -98,6 +99,47 @@ public class UserLookup implements Serializable{
                 .getResultList();
     }
     
+    
+    /**
+     * Kullanıcı grubuna göre kullanıcı listesi döndürür.
+     * 
+     * Bahsi geçen tipler UserModelExtention ile verilebilmektedir.
+     * 
+     * @param group
+     * @return 
+     */
+    public List<User> getUsersByGroup( String group ){
+        
+        IdentityQueryBuilder builder = identityManager.getQueryBuilder();
+        
+        Condition c = builder.equal(IdentityType.QUERY_ATTRIBUTE.byName(USER_GROUP), group);
+        
+        return builder.createIdentityQuery(User.class)
+                .where(c)
+                .getResultList();
+    }
+    
+    /**
+     * Kullanıcı tipine ve grup'a göre kullanıcı listesi döndürür.
+     * 
+     * Bahsi geçen tipler UserModelExtention ile verilebilmektedir.
+     * 
+     * @param type
+     * @param group
+     * @return 
+     */
+    public List<User> getUsersByTypeAndGroup( String type, String group ){
+        
+        IdentityQueryBuilder builder = identityManager.getQueryBuilder();
+        
+        Condition c1 = builder.equal(IdentityType.QUERY_ATTRIBUTE.byName(USER_TYPE), type);
+        Condition c2 = builder.equal(IdentityType.QUERY_ATTRIBUTE.byName(USER_GROUP), group);
+        
+        return builder.createIdentityQuery(User.class)
+                .where(c1, c2)
+                .getResultList();
+    }
+    
     /**
      * Verilen tip boş ise tüm kullanıcıları değil ise verilen tipteki kullanıcıları döndürür.
      * @param type
@@ -108,6 +150,27 @@ public class UserLookup implements Serializable{
             return getUsers();
         } else {
             return getUsersByType(type);
+        }
+    }
+    
+    /**
+     * Tip ve Grup kontrolü ile kullanıcı listesi döndürür.
+     * 
+     * Eğer verilen değerler boş ise tüm kullanıcıları döndürür.
+     * 
+     * @param type
+     * @param group
+     * @return 
+     */
+    public List<User> getUsers( String type, String group ){
+        if( Strings.isNullOrEmpty(type) && !Strings.isNullOrEmpty(group)) {
+            return getUsersByGroup(group);
+        } else if( !Strings.isNullOrEmpty(type) && Strings.isNullOrEmpty(group)) {
+            return getUsersByType(type);
+        } else if( !Strings.isNullOrEmpty(type) && !Strings.isNullOrEmpty(group)) {
+            return getUsersByTypeAndGroup(type, group);
+        } else {
+            return getUsers();
         }
     }
     

@@ -10,6 +10,7 @@
         <composite:attribute name="value" required="true"/>
         <composite:attribute name="label" required="false" default="general.label.UserName"/>
         <composite:attribute name="userType" required="false" default=""/>
+        <composite:attribute name="userGroup" required="false" default=""/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="columnClass" required="false" default="col-md-6 col-xs-12"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
@@ -21,7 +22,7 @@
             <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
             <span class="value" style="height: 30px;">
                 <p:selectOneMenu id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" filter="true" filterMatchMode="contains">
-                    <f:selectItems value="#{userLookup.getUsers(cc.attrs.userType)}" var="item" itemLabel="#{ item.firstName } #{ item.lastName }" itemValue="#{item.loginName}" />
+                    <f:selectItems value="#{userLookup.getUsers(cc.attrs.userType, cc.attrs.userGroup)}" var="item" itemLabel="#{ item.firstName } #{ item.lastName }" itemValue="#{item.loginName}" />
                 </p:selectOneMenu>
             </span>
             <p:message for="#{cc.id}_inp" display="tooltip" />

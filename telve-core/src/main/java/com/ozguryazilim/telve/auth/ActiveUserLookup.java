@@ -35,6 +35,7 @@ public class ActiveUserLookup implements Serializable{
     private static final Logger LOG = LoggerFactory.getLogger(ActiveUserLookup.class);
     
     private static final String USER_TYPE = "UserType"; 
+    private static final String USER_GROUP = "UserGroup"; 
     
     private User activeUser;
     
@@ -65,6 +66,15 @@ public class ActiveUserLookup implements Serializable{
     public String getActiveUserType(){
         Attribute<String> ut = getActiveUser().getAttribute(USER_TYPE);
         return ut == null ? "STANDART" : ut.getValue();
+    }
+    
+    /**
+     * Geriye login olan aktif kullanıcının userType bilgisini döndürür.
+     * @return 
+     */
+    public String getActiveUserGroup(){
+        Attribute<String> ut = getActiveUser().getAttribute(USER_GROUP);
+        return ut == null ? "" : ut.getValue();
     }
     
     /**
