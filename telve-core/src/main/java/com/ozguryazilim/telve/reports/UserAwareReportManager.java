@@ -124,7 +124,7 @@ public class UserAwareReportManager extends ReportManager implements Serializabl
         ReportFolder favReports = findOrCreateFolder("/favorites", "favorite");
         
         for (Entry<String, Integer> e : reportRatings.entrySet()) {
-            if (e.getValue() > 0) {
+            if ( e.getValue() != null && e.getValue() > 0) {
                 if (!favReports.getReports().contains(e.getKey())) {
                     favReports.getReports().add(e.getKey());
                 }
