@@ -34,7 +34,7 @@
             </div>
 
 
-            <h:panelGroup id="resultLists" layout="block" styleClass="row">
+            <h:panelGroup id="resultLists" layout="block" styleClass="row" style="height: 320px; overflow: auto;">
                 <div class="col-xs-12">
 
                     <c:if test="#{ bean.model.modelType eq 'Table' and bean.model.getMultiSelect()}" >
@@ -158,7 +158,7 @@
                     
                 </div>
             </h:panelGroup>
-            <h:panelGroup styleClass="row actionButtons" layout="block">
+            <h:panelGroup styleClass="row actionButtons" layout="block" style="position: fixed; bottom: 0; display: block;">
                 <ui:insert name="actionButtons" />
                 <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="fa fa-check" action="#{bean.closeDialog()}" onclick="setSelections()" styleClass="btn-primary"/>
                 <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{bean.cancelDialog()}" />
