@@ -41,7 +41,10 @@ public class CamundaEventHandler implements Serializable {
         if (businessProcessEvent.getType().getTypeName().equals(TaskListener.EVENTNAME_ASSIGNMENT)) {
 
             if (!Strings.isNullOrEmpty(businessProcessEvent.getTask().getAssignee())) {
-                sendNotification( businessProcessEvent.getTask().getAssignee(), businessProcessEvent.getTask(), businessProcessEvent.getProcessDefinition(), "Assignment" );
+                Boolean b = (Boolean) businessProcessEvent.getTask().getVariableLocal("NOTIFICATION");
+                if( b == null || b ){
+                    sendNotification( businessProcessEvent.getTask().getAssignee(), businessProcessEvent.getTask(), businessProcessEvent.getProcessDefinition(), "Assignment" );
+                }
             }
 
         } else if (businessProcessEvent.getType().getTypeName().equals(TaskListener.EVENTNAME_CREATE)) {
