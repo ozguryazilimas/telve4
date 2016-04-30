@@ -14,7 +14,7 @@
         <div class="row">
             <ui:remove>
             <t:inputText label="general.label.Subject" value="#{todoTask.subject}" required="true" />
-            <t:inputTextarea label="general.label.Info" value="#{todoTask.info}" required="false" />
+            <t:inputTextarea label="general.label.Info" value="#{todoTask.info}" maxlength="255" required="false" />
             </ui:remove>
             <t:inputDateTime label="general.label.BeginDate" value="#{todoTask.startDate}" />
             <t:inputDateTime label="general.label.EndDate" value="#{todoTask.endDate}" />

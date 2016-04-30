@@ -124,7 +124,7 @@
                     <f:selectItem itemLabel="2 Day Before" itemValue="2d" />
                 </t:inputCombobox>
                 
-                <t:inputTextarea value="#{simpleEventSource.calendarEvent.info}" label="general.label.Info" columnClass="col-xs-12" />
+                <t:inputTextarea value="#{simpleEventSource.calendarEvent.info}" label="general.label.Info" maxlength="255" columnClass="col-xs-12" />
             </div>
             <h:panelGroup styleClass="actionButtons" layout="block">
                 <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{simpleEventSource.closeDialog()}" />

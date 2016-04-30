@@ -42,7 +42,7 @@
                                 </ui:repeat>
                             </ul>
                         </div>
-                        <t:inputTextarea label="general.label.Comment" value="#{bean.comment}" columnClass="col-xs-12" required="#{bean.isCommentRequired()}"/>
+                        <t:inputTextarea label="general.label.Comment" value="#{bean.comment}" columnClass="col-xs-12" maxlength="255" required="#{bean.isCommentRequired()}"/>
                     </t:accordion>
                 </div>
 
@@ -75,7 +75,7 @@
 
             <div class="row">
                 <t:inputUser label="general.label.User" value="#{bean.delegatedUser}" columnClass="col-xs-12"/>
-                <t:inputTextarea label="general.label.Comment" value="#{bean.comment}" columnClass="col-xs-12" />
+                <t:inputTextarea label="general.label.Comment" value="#{bean.comment}" maxlength="255" columnClass="col-xs-12" />
             </div>
 
             <h:panelGroup styleClass="row actionButtons" layout="block">

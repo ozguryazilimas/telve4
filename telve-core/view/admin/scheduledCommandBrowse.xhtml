@@ -137,7 +137,7 @@
 
                     <div class="row">
                         <t:inputText label="general.label.Name" value="#{scheduledCommandBrowse.currentEditor.entity.name}"  required="true" columnClass="col-xs-12" />
-                        <t:inputTextarea label="general.label.Info" value="#{scheduledCommandBrowse.currentEditor.entity.info}"  columnClass="col-xs-12" />
+                        <t:inputTextarea label="general.label.Info" value="#{scheduledCommandBrowse.currentEditor.entity.info}"  maxlength="255" columnClass="col-xs-12" />
                     </div>
 
                     <ui:include src="#{scheduledCommandBrowse.currentEditor.dialogPageViewId}" />
