@@ -921,7 +921,7 @@ input[type="search"]::-webkit-search-decoration {
   background-color: #f2dede;
 }
 textarea.ui-inputfield {
-  height: 70px !important;
+  height: 100% !important;
 }
 .ui-selectonemenu,
 .ui-autocomplete {
