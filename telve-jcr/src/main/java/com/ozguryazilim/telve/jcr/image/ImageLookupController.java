@@ -14,10 +14,13 @@ import java.net.URL;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.lock.LockException;
+import javax.jcr.nodetype.ConstraintViolationException;
 import org.modeshape.common.text.UrlEncoder;
 import org.modeshape.jcr.api.JcrTools;
 import org.primefaces.event.FileUploadEvent;
@@ -275,10 +278,16 @@ public class ImageLookupController implements Serializable {
 
         LOG.debug("Item Remove Path : {}", fileName);
         
-        //Node node = session.getNode(fileName);
-        
-        session.removeItem(fileName);
-        session.save();
+        try {
+            //Node node = session.getNode(fileName);
+            session.removeItem(fileName);
+            session.save();
+        } catch (LockException | ConstraintViolationException | AccessDeniedException ex) {
+            throw new RepositoryException(ex);
+        } catch (RepositoryException ex) {
+            //Silinecek dosya bulunaması bir hata olarak fılatılmayacak.
+            LOG.debug("File Not found", ex );
+        }
         
     }
 }
