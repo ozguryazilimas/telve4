@@ -53,8 +53,12 @@ public abstract class AuditLogRepository extends RepositoryBase<AuditLog, AuditL
         //İsme göre sıralayalım
         criteriaQuery.orderBy(criteriaBuilder.desc(from.get(AuditLog_.date)));
         
+        
+        
+        
         //Haydi bakalım sonuçları alalım
         TypedQuery<AuditLog> typedQuery = entityManager().createQuery(criteriaQuery);
+        typedQuery.setMaxResults(queryDefinition.getRowLimit());
         List<AuditLog> resultList = typedQuery.getResultList();
 
         return resultList;
