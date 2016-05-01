@@ -8,7 +8,7 @@
     <packaging>pom</packaging>
     
     <properties>
-        <deltaspike.version>1.6.0</deltaspike.version>
+        <deltaspike.version>1.6.1</deltaspike.version>
         <picketlink.version>2.7.2.OYAS2</picketlink.version>
         <primeface.version>6.0.RC2</primeface.version>
         <primefaces-ext.version>3.2.0</primefaces-ext.version>
