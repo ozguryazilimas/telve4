@@ -10,11 +10,11 @@
     <properties>
         <deltaspike.version>1.6.0</deltaspike.version>
         <picketlink.version>2.7.2.OYAS2</picketlink.version>
-        <primeface.version>6.0-SNAPSHOT</primeface.version>
+        <primeface.version>6.0.RC2</primeface.version>
         <primefaces-ext.version>3.2.0</primefaces-ext.version>
         <atmosphere.version>2.4.0-RC3</atmosphere.version>
-        <omnifaces.version>2.2</omnifaces.version>
-        <liquibase.version>3.4.0</liquibase.version>
+        <omnifaces.version>2.3</omnifaces.version>
+        <liquibase.version>3.5.0</liquibase.version>
         
         <mysql.version>5.1.26</mysql.version>
         
@@ -229,11 +229,13 @@
                 <version>1.0.10</version>  
             </dependency>
                 
+                
             <dependency>
                 <groupId>org.primefaces.extensions</groupId>
                 <artifactId>primefaces-extensions</artifactId>
                 <version>${primefaces-ext.version}</version>
             </dependency>
+            
             
             <dependency>
                 <groupId>org.omnifaces</groupId>
@@ -318,6 +320,17 @@
                 <artifactId>guava</artifactId>
                 <version>17.0</version>
             </dependency>
+            <dependency>
+                    <groupId>com.google.code.gson</groupId>
+                    <artifactId>gson</artifactId>
+                    <version>2.6.2</version>
+            </dependency>
+            <dependency>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                    <version>3.4</version>
+            </dependency>
+
             <dependency>
                 <groupId>dom4j</groupId>
                 <artifactId>dom4j</artifactId>
