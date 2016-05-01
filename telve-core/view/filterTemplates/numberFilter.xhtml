@@ -3,7 +3,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:pe="http://primefaces.org/ui/extensions" >
+                >
     <ui:remove>
         <p:column>
             <h:outputText value="#{messages[filter.labelKey]}" />
@@ -18,12 +18,12 @@
         <p:column>
             <h:panelGroup id="strInput#{idprefix}" layout="block">
                 <h:panelGroup layout="block" styleClass="#{filter.operand eq 'Between' ? 'col-md-6 col-xs-12' : 'col-xs-12'}  columns" >
-                    <pe:inputNumber id="numINP#{idprefix}" value="#{filter.value}"
+                    <p:inputNumber id="numINP#{idprefix}" value="#{filter.value}"
                                     title="#{messages[filter.hintKey]}" decimalPlaces="#{filter.decimalPlaces}"
                                     rendered="#{filter.operand ne 'All'}" />
                 </h:panelGroup>
                 <h:panelGroup layout="block" styleClass="col-md-6 col-xs-12" rendered="#{filter.operand eq 'Between'}">
-                    <pe:inputNumber id="numINP2#{idprefix}" value="#{filter.value2}"
+                    <p:inputNumber id="numINP2#{idprefix}" value="#{filter.value2}"
                                     title="#{messages[filter.hintKey]}" decimalPlaces="#{filter.decimalPlaces}"
                                     rendered="#{filter.operand eq 'Between'}" />
                 </h:panelGroup>
@@ -44,12 +44,12 @@
     <div class="col-xs-8">
         <h:panelGroup id="strInput#{idprefix}" layout="block" styleClass="row">
             <h:panelGroup layout="block" styleClass="#{filter.operand eq 'Between' ? 'col-xs-12' : 'col-xs-12'}  columns" >
-                <pe:inputNumber id="numINP#{idprefix}" value="#{filter.value}"
+                <p:inputNumber id="numINP#{idprefix}" value="#{filter.value}"
                                 title="#{messages[filter.hintKey]}" decimalPlaces="#{filter.decimalPlaces}"
                                 rendered="#{filter.operand ne 'All'}" />
             </h:panelGroup>
             <h:panelGroup layout="block" styleClass="col-xs-12" rendered="#{filter.operand eq 'Between'}">
-                <pe:inputNumber id="numINP2#{idprefix}" value="#{filter.value2}"
+                <p:inputNumber id="numINP2#{idprefix}" value="#{filter.value2}"
                                 title="#{messages[filter.hintKey]}" decimalPlaces="#{filter.decimalPlaces}"
                                 rendered="#{filter.operand eq 'Between'}" />
             </h:panelGroup>
