@@ -10,11 +10,11 @@
     <properties>
         <deltaspike.version>1.6.1</deltaspike.version>
         <picketlink.version>2.7.2.OYAS2</picketlink.version>
-        <primeface.version>6.0.RC2</primeface.version>
+        <primeface.version>6.0.RC3</primeface.version>
         <primefaces-ext.version>3.2.0</primefaces-ext.version>
         <atmosphere.version>2.4.0-RC3</atmosphere.version>
         <omnifaces.version>2.3</omnifaces.version>
-        <liquibase.version>3.5.0</liquibase.version>
+        <liquibase.version>3.5.1</liquibase.version>
         
         <mysql.version>5.1.26</mysql.version>
         
