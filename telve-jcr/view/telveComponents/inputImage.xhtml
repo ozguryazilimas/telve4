@@ -15,6 +15,7 @@
         <composite:attribute name="contextRoot" required="false" default="/system/images"/>
         <composite:attribute name="placeholder" required="false" default="general.label.SelectImage"/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:attribute name="readOnly" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="sizeLimit" required="false" type="java.lang.Integer" default="100000"/>
         <composite:attribute name="columnClass" required="false" default="col-md-6 col-xs-12"/>
     </composite:interface>
@@ -34,14 +35,14 @@
 
 
                 <p:commandLink action="#{imageLookupController.prepareToUpload(cc.attrs.value, cc.attrs.contextRoot)}" 
-                               oncomplete="PF('imageUpload').show()" rendered="#{cc.attrs.value ne null}"
+                               oncomplete="PF('imageUpload').show()" rendered="#{cc.attrs.value ne null and not cc.attrs.readOnly}"
                                partialSubmit="true" process="@this">
                     <i class="fa fa-camera" ></i>
                     #{messages['general.button.UploadImage']}
                 </p:commandLink>
                 
                 <p:commandLink action="#{imageLookupController.deleteImage(cc.attrs.value, cc.attrs.contextRoot)}" 
-                               rendered="#{cc.attrs.value ne null}"
+                               rendered="#{cc.attrs.value ne null and not cc.attrs.readOnly}"
                                styleClass="pull-right" update="#{cc.id}_pnl"
                                partialSubmit="true" process="@this">
                     <i class="fa fa-trash" ></i>
