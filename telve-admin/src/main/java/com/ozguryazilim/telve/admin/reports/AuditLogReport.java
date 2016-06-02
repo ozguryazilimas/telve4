@@ -1,14 +1,29 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *   Copyleft 2013 IOVA SOFTWARE
+ *   
+ *  Distributable under LGPL license.
+ *  See terms of license at gnu.org.
+ *  http://www.gnu.org/licenses/lgpl.html
+ *   
+ *  www.openohs.com
+ *  www.iova.com.tr
  */
+
 package com.ozguryazilim.telve.admin.reports;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
+import javax.inject.Inject;
+
+import org.joda.time.DateTime;
+
 import com.ozguryazilim.telve.admin.AdminReportPages;
+import com.ozguryazilim.telve.config.TelveConfigResolver;
 import com.ozguryazilim.telve.reports.JasperReportBase;
 import com.ozguryazilim.telve.reports.Report;
-import java.util.Map;
 
 /**
  * AuditLog'lar için standart rapor
@@ -18,8 +33,51 @@ import java.util.Map;
 @Report( filterPage = AdminReportPages.AuditLogReport.class, permission="auditLogReport", path="/admin/audit", template = "auditLogReport", resource = "adminReports")
 public class AuditLogReport extends JasperReportBase{
 
+    @Inject
+    private TelveConfigResolver telveConfigResolver;
+    
+    private AuditLogFilter filter;
+    
+    public AuditLogFilter getFilter() {
+	if (filter == null) {
+            buildFilter();
+        }
+        return filter;
+    }
+
+    public void setFilter(AuditLogFilter filter) {
+        this.filter = filter;
+    }
+
+    public void buildFilter() {
+        filter = new AuditLogFilter();
+
+        DateTime dt = new DateTime();
+
+        filter.setEndDate(dt.toDate());
+        filter.setBeginDate(dt.minusDays(1).toDate());
+    }
+
     @Override
     protected boolean buildParam(Map<String, Object> params) {
+	params.put("BEGIN_DATE", getFilter().getBeginDate());
+        params.put("END_DATE", getFilter().getEndDate());
+        
+        String logo = telveConfigResolver.getProperty("brand.company.reportLogo");
+        String title = telveConfigResolver.getProperty("brand.company.reportTitle");
+
+        if (logo != null) {
+            BufferedImage image;
+	    try {
+		image = ImageIO.read(getClass().getResource("/META-INF/resources/brand/img/".concat(logo)));
+		params.put("FIRM_LOGO", image);
+	    } catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
+        }
+        params.put("FIRM_TITLE", title);
+        
         return true;
     }
     

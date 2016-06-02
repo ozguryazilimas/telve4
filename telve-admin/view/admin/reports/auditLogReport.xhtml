@@ -13,15 +13,8 @@
     
     <ui:define name="filter">
         <div class="row" >
-            <ui:remove>
-            <t:inputLookupOverlay value="#{personListReport.filter.organization}" label="general.label.Organization" lookupBean="#{organizationLookup}" lookupListener="personListReport.filter.organization" caption="caption" columnClass="col-xs-12" lookupProfile="SelectType:Organization" leafSelect="true"/>
-            <t:inputLookupOverlay value="#{personListReport.filter.workspace}" label="general.label.Workspace" lookupBean="#{workspaceLookup}" lookupListener="personListReport.filter.workspace" caption="caption" required="#{telveConfigResolver.getProperty('workspaceEnforced') eq 'true'}" lookupProfile="Org:#{personListReport.filter.organization.id}"/>            
-            <t:inputLookupOverlay value="#{personListReport.filter.job}" label="general.label.Job" lookupBean="#{JobLookup}" lookupListener="personListReport.filter.job" caption="caption" />
-            <t:inputEnum value="#{personListReport.filter.personState}" label="person.label.Status" itemLabel="personState.label." columnClass="col-xs-3" />
-            <t:inputEnum value="#{personListReport.filter.sex}" label="person.label.Sex" itemLabel="sex.label." columnClass="col-xs-3" />
-            <t:inputNumber label="general.label.FirstAge" value="#{personListReport.filter.firstAge}" decimalPlaces="0" columnClass="col-xs-3" />
-            <t:inputNumber label="general.label.LastAge" value="#{personListReport.filter.lastAge}" decimalPlaces="0" columnClass="col-xs-3" />
-            </ui:remove>
+        	<t:inputDateTime value="#{bean.filter.beginDate}" label="general.label.BeginDate" columnClass="col-xs-6" />
+        	<t:inputDateTime value="#{bean.filter.endDate}" label="general.label.EndDate" columnClass="col-xs-6" />
         </div>
     </ui:define>
 
