@@ -24,6 +24,12 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>com.alexnederlof</groupId>
+                <artifactId>jasperreports-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 
     <dependencies>

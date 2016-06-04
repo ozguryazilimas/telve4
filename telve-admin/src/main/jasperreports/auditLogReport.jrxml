@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="auditLogReport" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1a2287fe-3247-448a-a475-61c7b0f3542c">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="OpenOHS9"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Kolon_basliklar" hAlign="Left" vAlign="Middle" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1254"/>
+	<style name="Detail" vAlign="Middle" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" pdfEncoding="Cp1254"/>
+	<style name="Baslik" forecolor="#000066" backcolor="#FFFFFF" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="16" isBold="true" pdfEncoding="Cp1254"/>
+	<style name="Footer_Info" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" isBold="true" pdfEncoding="Cp1254"/>
+	<style name="Kolon_basliklar_border" vAlign="Middle" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1254">
+		<box leftPadding="2">
+			<pen lineWidth="0.5"/>
+			<topPen lineWidth="0.5"/>
+			<leftPen lineWidth="0.5"/>
+			<bottomPen lineWidth="0.5"/>
+			<rightPen lineWidth="0.5"/>
+		</box>
+	</style>
+	<style name="Detail_border" vAlign="Middle" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" pdfEncoding="Cp1254">
+		<box leftPadding="2">
+			<pen lineWidth="0.5"/>
+			<topPen lineWidth="0.5"/>
+			<leftPen lineWidth="0.5"/>
+			<bottomPen lineWidth="0.5"/>
+			<rightPen lineWidth="0.5"/>
+		</box>
+	</style>
+	<parameter name="BEGIN_DATE" class="java.util.Date"/>
+	<parameter name="END_DATE" class="java.util.Date"/>
+	<parameter name="FIRM_LOGO" class="java.awt.image.BufferedImage" isForPrompting="false"/>
+	<parameter name="FIRM_TITLE" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["D:\\git\\telve4\\telve-admin\\src\\main\\jasperreports\\"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select
+	au.ID,
+	au.TS,
+	au.DNAME,
+	au.DPK,
+	au.DBK,
+	au.ACT,
+	au.MSG,
+	au.CAT,
+	au.UID
+from	TLV_AUDIT_LOG au
+where	au.TS between $P{BEGIN_DATE} AND $P{END_DATE}]]>
+	</queryString>
+	<field name="ID" class="java.lang.Long"/>
+	<field name="TS" class="java.sql.Timestamp"/>
+	<field name="DNAME" class="java.lang.String"/>
+	<field name="DPK" class="java.lang.Long"/>
+	<field name="DBK" class="java.lang.String"/>
+	<field name="ACT" class="java.lang.String"/>
+	<field name="MSG" class="java.lang.String"/>
+	<field name="CAT" class="java.lang.String"/>
+	<field name="UID" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="66" splitType="Stretch">
+			<textField>
+				<reportElement style="Baslik" x="223" y="19" width="354" height="20" uuid="2566d14e-10a7-4d4e-aef4-954488952d71"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="14" isBold="true" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{AuditLogReport}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Center">
+				<reportElement mode="Transparent" x="10" y="0" width="120" height="50" uuid="1a7d728c-0e6b-4fd2-8d89-3705f88d0a68"/>
+				<imageExpression><![CDATA[$P{FIRM_LOGO}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement style="Detail" mode="Opaque" x="10" y="51" width="120" height="10" uuid="3f31e09c-2ca2-4c29-a28d-73f9fc627632"/>
+				<textElement textAlignment="Center">
+					<font size="7" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FIRM_TITLE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement style="Kolon_basliklar" x="0" y="0" width="110" height="12" uuid="d82047aa-c90f-4481-bf68-f5afa90fad10"/>
+				<textElement markup="none">
+					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{AuditLogReport.TS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Kolon_basliklar" x="115" y="0" width="140" height="12" uuid="7c8f394c-ff45-4c67-a89e-b53497fda7fa"/>
+				<textElement markup="none">
+					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{AuditLogReport.DNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Kolon_basliklar" x="260" y="0" width="89" height="12" uuid="f11efbad-a0a8-49f0-8766-d94de7062c09"/>
+				<textElement markup="none">
+					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{AuditLogReport.DBK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Kolon_basliklar" x="355" y="0" width="83" height="12" uuid="672546c3-996b-4ecb-8f0e-4a6bfe1bdc49"/>
+				<textElement markup="none">
+					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{AuditLogReport.ACT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Kolon_basliklar" x="445" y="0" width="255" height="12" uuid="500839ab-09de-404a-9687-410d719a0e9a"/>
+				<textElement markup="none">
+					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{AuditLogReport.MSG}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Kolon_basliklar" x="704" y="0" width="91" height="12" uuid="1b1fd021-cc20-4302-b942-4429f501cae0"/>
+				<textElement markup="none">
+					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{AuditLogReport.UID}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement style="Detail" x="0" y="0" width="110" height="12" uuid="7490219a-46be-4894-8913-0591ffb95929"/>
+				<textFieldExpression><![CDATA[$F{TS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="115" y="0" width="140" height="12" uuid="80b19666-d99b-4e09-98b9-e5f577935f40"/>
+				<textFieldExpression><![CDATA[$F{DNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="260" y="0" width="89" height="12" uuid="bf71575c-375e-4e34-8bd9-3128f1362862"/>
+				<textFieldExpression><![CDATA[$F{DBK}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="355" y="0" width="83" height="12" uuid="741890f5-2888-4a4a-af35-48e3492d2120"/>
+				<textFieldExpression><![CDATA[$F{ACT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="445" y="0" width="255" height="12" uuid="68306b4e-3ac6-498b-9791-c6d7c4603c8f"/>
+				<textFieldExpression><![CDATA[$F{MSG}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="704" y="0" width="91" height="12" uuid="1b49cfd4-20b5-4a6e-a166-0e28831227f1"/>
+				<textFieldExpression><![CDATA[$F{UID}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="5">
+			<subreport>
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="0" y="0" width="795" height="5" uuid="17282581-2cf8-40be-8556-72c12708673e"/>
+				<subreportParameter name="LID">
+					<subreportParameterExpression><![CDATA[$F{ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "auditLogReportDetail.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>
