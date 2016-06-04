@@ -22,8 +22,10 @@ import org.joda.time.DateTime;
 
 import com.ozguryazilim.telve.admin.AdminReportPages;
 import com.ozguryazilim.telve.config.TelveConfigResolver;
+import com.ozguryazilim.telve.messages.TelveResourceBundle;
 import com.ozguryazilim.telve.reports.JasperReportBase;
 import com.ozguryazilim.telve.reports.Report;
+import net.sf.jasperreports.engine.JRParameter;
 
 /**
  * AuditLog'lar için standart rapor
@@ -80,6 +82,15 @@ public class AuditLogReport extends JasperReportBase{
         
         return true;
     }
+
+    @Override
+    protected void decorateI18NParams(Map<String, Object> params) {
+        super.decorateI18NParams(params); //To change body of generated methods, choose Tools | Templates.
+        
+        params.put(JRParameter.REPORT_RESOURCE_BUNDLE, TelveResourceBundle.getBundle());
+
+    }
     
+
     
 }

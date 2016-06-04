@@ -62,7 +62,7 @@ where	audet.LID=$P{LID}]]>
 		<band height="12" splitType="Stretch">
 			<textField>
 				<reportElement style="Detail" x="125" y="0" width="152" height="12" uuid="f72b167a-61e9-438a-991f-25085422260e"/>
-				<textFieldExpression><![CDATA[$F{ATTR}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[msg( str($F{ATTR}),null)]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement style="Detail" x="277" y="0" width="220" height="12" uuid="fb1d26db-8b77-4a2d-a46c-b4380f4fc1f3"/>
