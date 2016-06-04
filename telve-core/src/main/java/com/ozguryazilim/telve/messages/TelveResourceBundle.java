@@ -9,6 +9,7 @@ import com.ozguryazilim.telve.api.module.TelveModuleRegistery;
 import com.ozguryazilim.telve.config.LocaleSelector;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Locale;
@@ -26,6 +27,10 @@ import org.apache.deltaspike.core.api.config.ConfigResolver;
  */
 public class TelveResourceBundle extends java.util.ResourceBundle {
 
+    
+    private static final String TELVE_RESOUCE_ORDINAL_KEY = "telve_ordinal";
+    private static final Integer TELVE_RESOUCE_DEFAULT_ORDINAL = 100;
+    
     private Map<String, Map<Locale, List<ResourceBundle>>> bundleCache = new ConcurrentHashMap<>();
 
     private Map<Locale, List<ResourceBundle>> getCachedBundle() {
@@ -38,7 +43,7 @@ public class TelveResourceBundle extends java.util.ResourceBundle {
     }
 
     /**
-     * Get an instance for the current Seam Locale
+     * Get an instance for the current Locale
      *
      * @see Locale
      *
@@ -93,7 +98,64 @@ public class TelveResourceBundle extends java.util.ResourceBundle {
             bundles.add(bundle);
         }
 
+        sortBundles(bundles);
         return Collections.unmodifiableList(bundles);
+    }
+    
+    /**
+     * Telve Ordinal değerine göre resource'ları sıraya koyar.
+     * 
+     * Bu sayede farklı dosyaların bir birlerini override edebilmesi granti altına alınır.
+     * 
+     * @param bundles
+     * @return 
+     */
+    private void sortBundles(List<ResourceBundle> bundles){
+        
+        Collections.sort(bundles, new Comparator<ResourceBundle>() {
+            @Override
+            public int compare(ResourceBundle s, ResourceBundle t) {
+
+                String sos = null;
+                String tos = null;
+                
+                try{
+                    sos = s.getString(TELVE_RESOUCE_ORDINAL_KEY);
+                } catch (MissingResourceException mre) {
+                  //Key tanımlı değil  
+                }
+                
+                try{
+                    tos = t.getString(TELVE_RESOUCE_ORDINAL_KEY);
+                } catch (MissingResourceException mre) {
+                  //Key tanımlı değil  
+                }
+                
+                
+                Integer so  = TELVE_RESOUCE_DEFAULT_ORDINAL;
+                Integer to  = TELVE_RESOUCE_DEFAULT_ORDINAL;
+                
+                if( sos != null ){
+                    try{
+                        so = Integer.parseInt(sos);
+                        //Integer to = sos != null ?  Integer.getInteger(sos) : TELVE_RESOUCE_DEFAULT_ORDINAL;
+                    } catch( Exception ex ){
+                        //Ya ordinal tanımlı değil ya da integer değil
+                    }
+                }
+                
+                if( tos != null ){
+                    try{
+                        to = Integer.parseInt(tos);
+                    } catch( Exception ex ){
+                        //Ya ordinal tanımlı değil ya da integer değil
+                    }
+                }
+                
+                return so.compareTo(to);
+            }
+        });
+        
     }
 
     @Override
