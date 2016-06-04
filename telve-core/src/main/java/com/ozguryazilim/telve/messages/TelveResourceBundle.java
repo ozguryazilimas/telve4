@@ -97,6 +97,12 @@ public class TelveResourceBundle extends java.util.ResourceBundle {
         if (bundle != null) {
             bundles.add(bundle);
         }
+        
+        //Uygulamaya özel dil bundle'ı
+        ResourceBundle bundle2 = loadBundle("application-messages");
+        if (bundle2 != null) {
+            bundles.add(bundle2);
+        }
 
         sortBundles(bundles);
         return Collections.unmodifiableList(bundles);
