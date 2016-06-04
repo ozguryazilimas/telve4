@@ -194,19 +194,8 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         
         Map<String, Object> options = new HashMap<>();
         
-        options.put("modal", true);
-        //options.put("draggable", false);  
-        options.put("resizable", false);
-        options.put("contentHeight", 450);
+        decorateDialog(options);
         
-        /*
-        options.put("modal", true);
-        options.put("width", 640);
-        options.put("height", 340);
-        options.put("contentWidth", "100%");
-        options.put("contentHeight", "100%");
-        */
-
         if( autoSearch() ){
             search();
         }
@@ -214,6 +203,20 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
     }
 
+    /**
+     * Açılacak olan diolog özellikleri setlenir.
+     * 
+     * Alt sınıflar isterse bu methodu override ederk dialoğ özellikleirni değiştirebilirler.
+     * 
+     * @param options 
+     */
+    protected void decorateDialog(Map<String, Object> options){
+        options.put("modal", true);
+        //options.put("draggable", false);  
+        options.put("resizable", false);
+        options.put("contentHeight", 450);
+    }
+    
     /**
      * Popup açıldığında otomatik arama yapmaması için override edilmeli.
      * @return 
