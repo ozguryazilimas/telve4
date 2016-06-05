@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/dialogBase.xhtml">
+
+    <ui:param name="title" value="reportScheduler.caption" />
+
+    <ui:define name="form">
+
+        <h:form id="schedulrForm">
+
+            <div class="row">
+                <div class="col-xs-12" >
+                    <strong>#{messages['report.name.'.concat( reportScheduleDialog.command.name )]}</strong>
+                </div> 
+                <div class="col-xs-12" >
+                    #{messages['report.desc.'.concat( reportScheduleDialog.command.name )]}
+                </div>
+            </div>
+
+            <h5>#{messages['general.label.Scheduling']}</h5>
+            <div class="row">
+                <t:inputCombobox id="tip" label="general.label.ScheduleType" value="#{reportScheduleDialog.scheduleType}">
+                    <f:selectItem itemLabel="#{messages['general.period.type.Once']}" itemValue="O" />
+                    <f:selectItem itemLabel="#{messages['general.period.type.Period']}" itemValue="P" />
+                    <f:selectItem itemLabel="#{messages['general.period.type.Scheduled']}" itemValue="S" />
+                    <f:selectItem itemLabel="#{messages['general.period.type.Advance']}" itemValue="SE" />
+                    <p:ajax event="change" update=":schedulrForm:schinputs"/>
+                </t:inputCombobox>
+            </div>
+            <div class="row">
+                <p:outputPanel id="schinputs" autoUpdate="false">
+                    <t:inputDateTime id="bd" label="general.label.BeginDate" value="#{reportScheduleDialog.startDate}" />
+                    <t:inputDateTime id="ed" label="general.label.EndDate" value="#{reportScheduleDialog.endDate}" rendered="#{reportScheduleDialog.scheduleType ne 'O'}"/>
+
+                    <t:inputCombobox id="per" label="general.label.SchedulePeriod" value="#{reportScheduleDialog.schedule}" rendered="#{reportScheduleDialog.scheduleType eq 'S'}" columnClass="col-xs-12">
+
+                        <f:selectItem itemLabel="#{messages['general.period.item.Hourly']}" itemValue="Hourly" />
+                        <f:selectItem itemLabel="#{messages['general.period.item.Daily']}" itemValue="Daily" />
+                        <f:selectItem itemLabel="#{messages['general.period.item.weekly']}" itemValue="Weekly" />
+                        <f:selectItem itemLabel="#{messages['general.period.item.Monthly']}" itemValue="Monthly" />
+                    </t:inputCombobox>
+                    <t:inputText id="sc2" label="genaral.label.Schedule" value="#{reportScheduleDialog.schedule}" rendered="#{reportScheduleDialog.scheduleType eq 'SE'  or reportScheduleDialog.scheduleType eq 'P' }" columnClass="col-xs-12"/>
+                </p:outputPanel>
+            </div>
+
+
+
+            <h5>#{messages['general.label.Receipts']}</h5>
+            <div class="row">
+                <t:inputTextarea label="general.label.Emails" value="#{reportScheduleDialog.command.emails}" placeholder="#{messages['reportScheduler.hint.Emails']}"/>
+            </div>
+
+            <div class="row">
+                <t:inputTextarea label="general.label.Info" value="#{reportScheduleDialog.command.info}" />
+            </div>
+
+
+            <div class="actionButtons row">
+                <p:commandButton id="run" value="#{messages['general.button.Execute']}" icon="fa fa-cogs" action="#{reportScheduleDialog.schedule()}" styleClass="btn-primary"/>
+                <p:commandButton id="close" value="#{messages['general.button.Close']}" icon="ui-icon-close" action="#{reportScheduleDialog.cancelDialog()}" />
+            </div>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,74 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/primeTemplate.xhtml">
+
+    <ui:param name="showListBar" value="false" />
+
+    <ui:define name="outerspace">
+        <ui:remove>
+            <ui:include src="/layout/ajaxLoadingPopup.xhtml" />
+        </ui:remove>
+        <ui:insert name="includes" />
+    </ui:define>
+
+    <ui:define name="body">
+
+
+        <ui:include src="/layout/messages.xhtml"/>
+        
+        <div class="box box-primary">
+            <div class="box-body">
+                <p:dataTable id="commandList" value="#{scheduledReportsControl.commands}" var="item"
+                             rowKey="#{item.id}" >
+                    <p:column headerText="#{messages['general.label.Name']}">
+                        #{messages['report.name.'.concat( item.command.command.name) ]}
+                    </p:column>
+                    <p:column headerText="#{messages['general.label.Info']}">
+                        #{item.command.command.info}
+                    </p:column>
+                    <p:column headerText="#{messages['general.label.CreatedBy']}">
+                        #{userLookup.getUserName(item.createdBy)}
+                    </p:column>
+                    <p:column headerText="#{messages['general.label.NextTimeout']}">
+                        <t:cellOutputDateTime value="#{item.nextTimeout}" /> - #{item.timeRemainingStr}
+                    </p:column>
+                    <p:column headerText="#{messages['general.label.Schedule']}">
+                        #{item.scheduleStr}
+                    </p:column>
+
+                    <p:column styleClass="actionColumn">
+                        <f:facet name="header">
+                            <p:commandLink action="#{scheduledReportsControl.refresh()}" update="commandList">
+                                <i class="fa fa-refresh"/>
+                            </p:commandLink>
+                        </f:facet>
+                        <p:commandLink action="#{scheduledReportsControl.delete(item.id)}" update="commandList">
+                            <i class="fa fa-trash btn-delete"/>
+                            <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </div>
+    </ui:define>
+
+    <ui:define name="context-menu">
+        <li>
+            <h:link outcome="/reports/reportConsole.xhtml" >
+                <i class="fa fa-print"></i>
+                #{messages['page.title.ReportConsole']}
+            </h:link>
+        </li>
+        <li>
+            <h:link outcome="/reports/scheduledReportConsole.xhtml" >
+                <i class="fa fa-history"></i>
+                #{messages['page.title.ScheduledReportConsole']}
+            </h:link>
+        </li>
+    </ui:define>
+</ui:composition>

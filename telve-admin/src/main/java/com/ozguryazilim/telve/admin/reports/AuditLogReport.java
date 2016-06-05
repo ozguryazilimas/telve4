@@ -23,8 +23,10 @@ import org.joda.time.DateTime;
 import com.ozguryazilim.telve.admin.AdminReportPages;
 import com.ozguryazilim.telve.config.TelveConfigResolver;
 import com.ozguryazilim.telve.messages.TelveResourceBundle;
+import com.ozguryazilim.telve.query.filters.DateValueType;
 import com.ozguryazilim.telve.reports.JasperReportBase;
 import com.ozguryazilim.telve.reports.Report;
+import com.ozguryazilim.telve.reports.ReportDate;
 import net.sf.jasperreports.engine.JRParameter;
 
 /**
@@ -56,8 +58,8 @@ public class AuditLogReport extends JasperReportBase{
 
         DateTime dt = new DateTime();
 
-        filter.setEndDate(dt.toDate());
-        filter.setBeginDate(dt.minusDays(1).toDate());
+        filter.setEndDate(new ReportDate(DateValueType.Today));
+        filter.setBeginDate(new ReportDate(DateValueType.Yesterday));
     }
 
     @Override

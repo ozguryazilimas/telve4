@@ -5,6 +5,8 @@
  */
 package com.ozguryazilim.telve.channel.email;
 
+import java.util.Map;
+import javax.activation.DataHandler;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -28,11 +30,22 @@ public class EmailChannelDispacher {
     
     public void execute( Exchange exchange ){
         LOG.debug("MailMessage Dispach : {}", exchange.getIn().toString() );
-    
+
+        
         try {
-            emailSender.send(exchange.getIn().getHeader("target", String.class),
+            
+            Map<String,DataHandler> attachments = exchange.getIn().getAttachments();
+            
+            if( attachments.isEmpty()){
+                emailSender.send(exchange.getIn().getHeader("target", String.class),
                     exchange.getIn().getHeader("subject", String.class),
                     exchange.getIn().getBody(String.class));
+            } else {
+                emailSender.send(exchange.getIn().getHeader("target", String.class),
+                    exchange.getIn().getHeader("subject", String.class),
+                    exchange.getIn().getBody(String.class),
+                    attachments);
+            }
         } catch (MessagingException ex) {
             LOG.error("EMail cannot send", ex);
         }
