@@ -10,6 +10,7 @@ import com.ozguryazilim.telve.channel.email.EmailChannel;
 import com.ozguryazilim.telve.channel.notify.NotifyChannel;
 import com.ozguryazilim.telve.messagebus.command.AbstractCommandExecuter;
 import com.ozguryazilim.telve.messagebus.command.CommandExecutor;
+import com.ozguryazilim.telve.messages.TelveResourceBundle;
 import com.ozguryazilim.telve.reports.JasperReportHandler;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +59,11 @@ public class ReportCommandExecutor extends AbstractCommandExecuter<ReportCommand
             
             //Sonra resource bundle'ı bağlayalım,
             Locale locale = new Locale(command.getLocale());
-            params.put(JRParameter.REPORT_RESOURCE_BUNDLE, ResourceBundle.getBundle(command.getBundleName(), locale));
+            if( "TelveResourceBundle".equals(command.getBundleName())){
+                params.put(JRParameter.REPORT_RESOURCE_BUNDLE, TelveResourceBundle.getBundle());
+            } else {
+                params.put(JRParameter.REPORT_RESOURCE_BUNDLE, ResourceBundle.getBundle(command.getBundleName(), locale));
+            }
 
             //Şimdide Locele bilgisini bağlayaalım...
             params.put(JRParameter.REPORT_LOCALE, locale);

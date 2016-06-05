@@ -8,6 +8,7 @@ package com.ozguryazilim.telve.reports;
 import com.ozguryazilim.telve.auth.ActiveUserLookup;
 import com.ozguryazilim.telve.config.LocaleSelector;
 import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.messages.TelveResourceBundle;
 import com.ozguryazilim.telve.reports.schedule.ReportCommand;
 import com.ozguryazilim.telve.reports.schedule.ReportScheduleDialog;
 import java.io.Serializable;
@@ -120,12 +121,24 @@ public abstract class JasperReportBase implements ReportController, Serializable
         if (buildParam(params)) {
             decorateParams(params);
             
+            ReportCommand command = new ReportCommand();
+            
+            //rapor locale bilgilerini koyuyoruz.
             //Bundle ve Locale varsa siliyoruz. Çünkü serialize olmuyorlar.
+            Object o = params.get(JRParameter.REPORT_RESOURCE_BUNDLE);
+            
+            if( o instanceof TelveResourceBundle ){
+                command.setBundleName("TelveResourceBundle");
+            } else {
+                command.setBundleName(getBundleName());
+            }
+            
+            Locale locale = LocaleSelector.instance().getLocale();
+            command.setLocale(locale.getLanguage());
+            
             params.remove(JRParameter.REPORT_RESOURCE_BUNDLE);
             params.remove(JRParameter.REPORT_LOCALE);
             
-
-            ReportCommand command = new ReportCommand();
 
             command.setName(getClass().getSimpleName());
             command.setTemplateName(getTemplateName());
@@ -133,10 +146,6 @@ public abstract class JasperReportBase implements ReportController, Serializable
             command.setReportParams(params);
             command.setUser(userLookup.getActiveUser().getLoginName());
             
-            //rapor locale bilgilerini koyuyoruz.
-            command.setBundleName(getBundleName());
-            Locale locale = LocaleSelector.instance().getLocale();
-            command.setLocale(locale.getLanguage());
             
             scheduleDialog.openDialog(command);
         }
