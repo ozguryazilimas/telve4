@@ -174,7 +174,8 @@ public abstract class JasperReportBase implements ReportController, Serializable
      * Dialogu hiç bir şey seçmeden kapatır.
      */
     public void cancelDialog() {
-        RequestContext.getCurrentInstance().closeDialog("Rapordan İptalle Çıkıldı");
+        //RequestContext.getCurrentInstance().closeDialog("Rapordan İptalle Çıkıldı");
+        RequestContext.getCurrentInstance().closeDialog(null);
     }
 
     protected String getTemplateName() {
@@ -221,6 +222,18 @@ public abstract class JasperReportBase implements ReportController, Serializable
             s = getTemplateName();
         }
         
+        return s;
+    }
+    
+    /**
+     * Raporun yetki domainini döndürür.
+     * @return 
+     */
+    public String getPermission(){
+        String s = this.getClass().getAnnotation(Report.class).permission();
+        if (s.isEmpty()) {
+            s = this.getClass().getSimpleName();
+        }
         return s;
     }
 

@@ -11,7 +11,7 @@
             <ui:insert name="filter"/>
 
             <div class="actionButtons">
-                <p:commandButton id="execCheduler" value="#{messages['general.button.Schedule']}" icon="fa fa-history" action="#{bean.execScheduler()}" ajax="true" styleClass="btn-warning pull-left"/>
+                <p:commandButton id="execCheduler" value="#{messages['general.button.Schedule']}" icon="fa fa-history" action="#{bean.execScheduler()}" ajax="true" styleClass="btn-warning pull-left" rendered="#{identity.hasPermission(bean.permission,'exec')}"/>
                 <p:commandButton id="execPDF" value="#{messages['general.button.PDF']}" icon="fa fa-file-pdf-o" action="#{bean.execPDF()}" ajax="false" styleClass="btn-primary"/>
                 <p:commandButton id="execCSV" value="#{messages['general.button.CSV']}" icon="fa fa-file-excel-o" action="#{bean.execCSV()}" ajax="false" styleClass="btn-default" rendered="#{supportCSV}"/>
                 <ui:remove>

@@ -44,13 +44,20 @@
                                     #{messages['command.name.'.concat( item.command.class.simpleName) ]}
                                 </p:column>
                                 <p:column headerText="#{messages['general.label.Name']}">
-                                    #{item.name}
+                                    <ui:fragment rendered="#{item.command.class.simpleName eq 'ScheduledCommand'}">
+                                        <ui:fragment rendered="#{item.command.command.class.simpleName eq 'ReportCommand'}">
+                                            #{messages['report.name.'.concat( item.name ) ]}
+                                        </ui:fragment>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{item.command.class.simpleName ne 'ScheduledCommand'}">
+                                        #{item.name}
+                                    </ui:fragment>
                                 </p:column>
                                 <p:column headerText="#{messages['general.label.Info']}">
                                     #{item.info}
                                 </p:column>
                                 <p:column headerText="#{messages['general.label.CreatedBy']}">
-                                    #{item.createdBy}
+                                    #{userLookup.getUserName(item.createdBy)}
                                 </p:column>
                                 <ui:remove>
                                     <p:column headerText="#{messages['general.label.Params']}">

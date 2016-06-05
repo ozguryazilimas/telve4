@@ -62,6 +62,9 @@ public interface Pages extends ViewConfig {
     interface Reports extends Pages{
         @Navigation( icon = "fa fa-print", section = MainNavigationSection.class, order = 100 )
         class ReportConsole implements Reports {};
+        
+        //Navigasyon yok. ReportConsole contextine gidecek
+        class ScheduledReportConsole implements Reports {};
     }
     
     @SecuredPage
