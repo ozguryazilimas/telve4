@@ -23,8 +23,10 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Any;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
@@ -73,10 +75,13 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     private PageTitleResolver pageTitleResolver;
 
     @Inject
-    Event<SubViewSelectEvent> subViewEvent;
+    private Event<SubViewSelectEvent> subViewEvent;
     
     @Inject
-    Event<RefreshBrowserEvent> refreshBrowserEvent;
+    private Event<RefreshBrowserEvent> refreshBrowserEvent;
+    
+    @Inject
+    private FacesContext facesContext;
 
 
     
@@ -451,6 +456,11 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
 
     public void setId(PK id) {
         if (entity != null && id != -1 && id.equals(this.id) && !getNeedCreateNew()) {
+            
+            if( isRequestNeedRefresh()){
+                refresh();
+            }
+            
             return;
         } //Zaten bu conv için entitymiz var elimizde...
 
@@ -537,6 +547,32 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
 
     protected void setNeedCreateNew(Boolean needCreateNew) {
         this.needCreateNew = needCreateNew;
+    }
+
+    /**
+     * Eğer sayfaya gelen request edit ya da container View'den gelmiyorsa verileri tazeleyelim.
+     * 
+     * Bu fonksiyon conversation açık olduğu için browse'dan tekrar gelindiğinde verilerin tazelenmemesini engelleyecek.
+     * 
+     * @return 
+     */
+    private boolean isRequestNeedRefresh() {
+        HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+        
+        String ref = request.getHeader("Referer");
+        if( !Strings.isNullOrEmpty(ref)){
+            //TODO: Burada aslında BrowsePage'in ismine bakmak daha makul sanırım.
+            //Ya da edit/view page'ler dışında mı diye de bakılabilir.
+
+            String editView = viewConfigResolver.getViewConfigDescriptor(getEditPage()).getViewId();
+            String containerView = viewConfigResolver.getViewConfigDescriptor(getContainerViewPage()).getViewId();
+
+            editView = editView.replace(".xhtml", ".jsf");
+            containerView = containerView.replace(".xhtml", ".jsf");
+            
+            return !(ref.contains(editView) || ref.contains(containerView));
+        }
+        return false;
     }
     
     
