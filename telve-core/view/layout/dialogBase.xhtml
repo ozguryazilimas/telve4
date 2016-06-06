@@ -24,5 +24,11 @@
         <div class="container-fluid">
             <ui:insert name="form" />
         </div>
+        <script type="text/javascript">
+            //TODO:Dialogların TOP position yanlış hesaplanıyor. Daha doğru bir çözüm bulana kadar geçici olarak kondu
+            setTimeout(function () {
+                jQuery('.ui-dialog', parent.document).css('top', '100px');
+            }, 100);
+        </script>
     </h:body>
 </html>

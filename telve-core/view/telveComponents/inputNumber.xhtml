@@ -2,7 +2,6 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:pe="http://primefaces.org/ui/extensions" 
                 xmlns:composite="http://java.sun.com/jsf/composite">
 
 
@@ -27,17 +26,14 @@
     <composite:implementation>
         <div id="#{cc.clientId}" class="prop #{cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }" rendered="#{cc.rendered}" >
             <ui:remove>PF 5.3 ile PE 3.0 arasında sorun var sanırım. for="#{cc.id}_inp" </ui:remove>
-            <p:outputLabel value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
+            <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
             <span class="value">
-                <pe:inputNumber id="#{cc.id}_inp" value="#{cc.attrs.value}"  required="#{cc.attrs.required}"  
+                <p:inputNumber id="#{cc.id}_inp" value="#{cc.attrs.value}"  required="#{cc.attrs.required}"  
                                 symbol="#{cc.attrs.symbol}" symbolPosition="#{cc.attrs.symbolPosition}" emptyValue="#{cc.attrs.emptyValue}" 
                                 decimalPlaces="#{cc.attrs.decimalPlaces}" decimalSeparator="#{cc.attrs.decimalSeparator}" thousandSeparator="#{cc.attrs.thousandSeparator}"
                                 maxValue="#{cc.attrs.maxValue}" minValue="#{cc.attrs.minValue}" readOnly="#{cc.attrs.readonly}">
-                    <ui:remove>
-                        <!-- PF Ext 3.0 la birlikte çalışmaz olmuş-->
                         <p:clientValidator />
-                    </ui:remove>
-                </pe:inputNumber>
+                </p:inputNumber>
             </span>
             <p:message for="#{cc.id}_inp" display="tooltip"/>
         </div>

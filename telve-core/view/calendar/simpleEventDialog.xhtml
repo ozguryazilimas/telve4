@@ -3,7 +3,6 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:pe="http://primefaces.org/ui/extensions" 
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 template="/layout/dialogBase.xhtml">
@@ -99,7 +98,7 @@
 
                 <ui:remove>
                     <t:inputAny label="general.label.StartTime">
-                        <pe:timePicker value="#{simpleEventSource.calendarEvent.startDate}" mode="popup" onHourShow="tpStartOnHourShowCallback"  
+                        <p:timePicker value="#{simpleEventSource.calendarEvent.startDate}" mode="popup" onHourShow="tpStartOnHourShowCallback"  
                                        onMinuteShow="tpStartOnMinuteShowCallback" widgetVar="startTimeWidget"/> 
                     </t:inputAny>
                 </ui:remove>
@@ -107,7 +106,7 @@
                 <t:inputDateTime value="#{simpleEventSource.calendarEvent.endDate}" label="general.label.EndDate" />
                 <ui:remove>
                     <t:inputAny label="general.label.EndTime">
-                        <pe:timePicker value="#{simpleEventSource.calendarEvent.endDate}" mode="popup" onHourShow="tpEndOnHourShowCallback"  
+                        <p:timePicker value="#{simpleEventSource.calendarEvent.endDate}" mode="popup" onHourShow="tpEndOnHourShowCallback"  
                                        onMinuteShow="tpEndOnMinuteShowCallback" widgetVar="endTimeWidget"/> 
                     </t:inputAny>
                 </ui:remove>

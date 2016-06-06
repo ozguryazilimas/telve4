@@ -54,6 +54,8 @@ public class CookieUtils {
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
+        if( facesContext == null ) return null;
+        
         HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
         Cookie cookie = null;
 

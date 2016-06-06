@@ -5,8 +5,12 @@
  */
 package com.ozguryazilim.telve.reports;
 
+import com.ozguryazilim.telve.auth.ActiveUserLookup;
 import com.ozguryazilim.telve.config.LocaleSelector;
 import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.messages.TelveResourceBundle;
+import com.ozguryazilim.telve.reports.schedule.ReportCommand;
+import com.ozguryazilim.telve.reports.schedule.ReportScheduleDialog;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Locale;
@@ -29,7 +33,7 @@ import org.slf4j.LoggerFactory;
 public abstract class JasperReportBase implements ReportController, Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(JasperReportBase.class);
-    
+
     @Inject
     private ViewConfigResolver viewConfigResolver;
 
@@ -38,6 +42,12 @@ public abstract class JasperReportBase implements ReportController, Serializable
 
     @Inject
     private ReportHome reportHome;
+    
+    @Inject
+    private ReportScheduleDialog scheduleDialog;
+    
+    @Inject
+    private ActiveUserLookup userLookup;
 
     @Override
     public void execute() {
@@ -83,49 +93,85 @@ public abstract class JasperReportBase implements ReportController, Serializable
     }
 
     /**
-     * JasperReport'a gönderilecek parametreler setlenir.
-     * Eğer bir sorun varsa geriye "False" döndürürlür.
-     * Hataları FacesMessage olarak bildirilebilir.
+     * JasperReport'a gönderilecek parametreler setlenir. Eğer bir sorun varsa
+     * geriye "False" döndürürlür. Hataları FacesMessage olarak bildirilebilir.
+     *
      * @param params
-     * @return 
+     * @return
      */
-    protected abstract boolean buildParam( Map<String, Object> params );
-    
+    protected abstract boolean buildParam(Map<String, Object> params);
+
     public void execPDF() {
         try {
-            
+
             Map<String, Object> params = new HashMap<>();
-            if( buildParam(params) ){
-                decorateParams( params );
-                jasperReportHandler.reportToPDF( getTemplateName(), getTemplateName(), params );
+            if (buildParam(params)) {
+                decorateParams(params);
+                jasperReportHandler.reportToPDF(getTemplateName(), getTemplateName(), params);
             }
         } catch (JRException ex) {
             LOG.error("JasperReport Error", ex);
             FacesMessages.error(ex.getMessage());
         }
     }
-    
+
+    public void execScheduler() {
+
+        Map<String, Object> params = new HashMap<>();
+        if (buildParam(params)) {
+            decorateParams(params);
+            
+            ReportCommand command = new ReportCommand();
+            
+            //rapor locale bilgilerini koyuyoruz.
+            //Bundle ve Locale varsa siliyoruz. Çünkü serialize olmuyorlar.
+            Object o = params.get(JRParameter.REPORT_RESOURCE_BUNDLE);
+            
+            if( o instanceof TelveResourceBundle ){
+                command.setBundleName("TelveResourceBundle");
+            } else {
+                command.setBundleName(getBundleName());
+            }
+            
+            Locale locale = LocaleSelector.instance().getLocale();
+            command.setLocale(locale.getLanguage());
+            
+            params.remove(JRParameter.REPORT_RESOURCE_BUNDLE);
+            params.remove(JRParameter.REPORT_LOCALE);
+            
+
+            command.setName(getClass().getSimpleName());
+            command.setTemplateName(getTemplateName());
+            command.setResultName(getTemplateName());
+            command.setReportParams(params);
+            command.setUser(userLookup.getActiveUser().getLoginName());
+            
+            
+            scheduleDialog.openDialog(command);
+        }
+    }
+
     public void execCSV() {
         try {
-            
+
             Map<String, Object> params = new HashMap<>();
-            if( buildParam(params) ){
-                decorateParams( params );
-                jasperReportHandler.reportToCSV(getTemplateName(), getTemplateName(), params );
+            if (buildParam(params)) {
+                decorateParams(params);
+                jasperReportHandler.reportToCSV(getTemplateName(), getTemplateName(), params);
             }
         } catch (JRException ex) {
             LOG.error("JasperReport Error", ex);
             FacesMessages.error(ex.getMessage());
         }
     }
-    
+
     public void execXLS() {
         try {
-            
+
             Map<String, Object> params = new HashMap<>();
-            if( buildParam(params) ){
-                decorateParams( params );
-                jasperReportHandler.reportToXLS(getTemplateName(), getTemplateName(), params );
+            if (buildParam(params)) {
+                decorateParams(params);
+                jasperReportHandler.reportToXLS(getTemplateName(), getTemplateName(), params);
             }
         } catch (JRException ex) {
             LOG.error("JasperReport Error", ex);
@@ -137,48 +183,67 @@ public abstract class JasperReportBase implements ReportController, Serializable
      * Dialogu hiç bir şey seçmeden kapatır.
      */
     public void cancelDialog() {
-        RequestContext.getCurrentInstance().closeDialog("Rapordan İptalle Çıkıldı");
+        //RequestContext.getCurrentInstance().closeDialog("Rapordan İptalle Çıkıldı");
+        RequestContext.getCurrentInstance().closeDialog(null);
     }
-    
-    
-    protected String getTemplateName(){
+
+    protected String getTemplateName() {
         String s = this.getClass().getAnnotation(Report.class).template();
-        if( s.isEmpty() ){
+        if (s.isEmpty()) {
             s = this.getClass().getSimpleName();
         }
         return s;
     }
-    
+
     /**
-     * Jasper rapor parametrelerini sistem tarafından gelen değerlerle zenginleştirir.
-     * 
-     * @param params 
+     * Jasper rapor parametrelerini sistem tarafından gelen değerlerle
+     * zenginleştirir.
+     *
+     * @param params
      */
-    protected void decorateParams( Map<String, Object > params ){
-       decorateI18NParams( params ); 
+    protected void decorateParams(Map<String, Object> params) {
+        decorateI18NParams(params);
     }
-    
+
     /**
      * Jasper Report I18N desteği eklenir.
-     * 
-     * @param params 
+     *
+     * @param params
      */
-    protected void decorateI18NParams( Map<String, Object > params ){
-        
+    protected void decorateI18NParams(Map<String, Object> params) {
+
+        String s = getBundleName();
+
+        //Sonra resource bundle'ı bağlayalım,
+        Locale locale = LocaleSelector.instance().getLocale();
+        params.put(JRParameter.REPORT_RESOURCE_BUNDLE, ResourceBundle.getBundle(s, locale));
+
+        //Şimdide Locele bilgisini bağlayaalım...
+        params.put(JRParameter.REPORT_LOCALE, locale);
+
+    }
+    
+    protected String getBundleName(){
         //Önce Resource Bundle adını öğrenelim
         String s = this.getClass().getAnnotation(Report.class).resource();
-        if( s.isEmpty() ){
+        if (s.isEmpty()) {
             //Eğer Resorce tanımlanmamışsa template ile aynı ismi kullanıyoruz.
             s = getTemplateName();
         }
         
-        //Sonra resource bundle'ı bağlayalım,
-        Locale locale = LocaleSelector.instance().getLocale();
-        params.put(JRParameter.REPORT_RESOURCE_BUNDLE, ResourceBundle.getBundle(s, locale ));
-        
-        //Şimdide Locele bilgisini bağlayaalım...
-        params.put(JRParameter.REPORT_LOCALE, locale );
-        
+        return s;
     }
     
+    /**
+     * Raporun yetki domainini döndürür.
+     * @return 
+     */
+    public String getPermission(){
+        String s = this.getClass().getAnnotation(Report.class).permission();
+        if (s.isEmpty()) {
+            s = this.getClass().getSimpleName();
+        }
+        return s;
+    }
+
 }

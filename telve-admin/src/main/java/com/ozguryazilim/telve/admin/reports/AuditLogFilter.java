@@ -11,11 +11,8 @@
 
 package com.ozguryazilim.telve.admin.reports;
 
+import com.ozguryazilim.telve.reports.ReportDate;
 import java.io.Serializable;
-import java.util.Date;
-
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  * 
@@ -24,27 +21,29 @@ import javax.persistence.TemporalType;
  */
 public class AuditLogFilter implements Serializable {
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date beginDate;
     
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date endDate;
+    private ReportDate beginDate;
     
-    public Date getBeginDate() {
+    
+    private ReportDate endDate;
+
+    public ReportDate getBeginDate() {
         return beginDate;
     }
-    
-    public void setBeginDate(Date beginDate) {
+
+    public void setBeginDate(ReportDate beginDate) {
         this.beginDate = beginDate;
     }
-    
-    public Date getEndDate() {
+
+    public ReportDate getEndDate() {
         return endDate;
     }
-    
-    public void setEndDate(Date endDate) {
+
+    public void setEndDate(ReportDate endDate) {
         this.endDate = endDate;
     }
+    
+    
     
     
 }

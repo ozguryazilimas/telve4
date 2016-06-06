@@ -76,7 +76,7 @@ public class LocaleSelector implements Serializable {
         country = tokens.hasMoreTokens() ? tokens.nextToken() : null;
         variant = tokens.hasMoreTokens() ? tokens.nextToken() : null;
         
-        setLocale(calculateLocale(FacesContext.getCurrentInstance().getViewRoot().getLocale()));
+        setLocale(calculateLocale(FacesContext.getCurrentInstance() == null ? null : FacesContext.getCurrentInstance().getViewRoot().getLocale()));
     }
 
     public Locale getLocale() {
@@ -85,6 +85,7 @@ public class LocaleSelector implements Serializable {
 
     public void setLocale(Locale locale) {
         this.locale = locale;
+        if( FacesContext.getCurrentInstance() == null ) return;
         FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
         CookieUtils.setCookie(LOCALE_COOKIE, locale.toString(), -1);
     }

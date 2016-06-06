@@ -361,9 +361,18 @@ public class JasperReportHandler {
      * @param params
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    protected void decorateParams(Map params) {
+    protected void decorateParams(Map<String,Object> params) {
         if (params != null) {
             params.put("SUBREPORT_DIR", "jasper/");
+            
+            //MAcro durumdaki dateleri date'e çevirelim.
+            for( Map.Entry<String,Object> ent : params.entrySet()){
+                
+                if( ent.getValue() instanceof ReportDate ){
+                    ent.setValue(((ReportDate)ent.getValue()).getCalculatedValue());
+                }
+            }
+            LOG.debug("Decorated Report Params {}", params);
         }
     }
 

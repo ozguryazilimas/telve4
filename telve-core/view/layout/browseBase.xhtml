@@ -143,10 +143,14 @@
                 </div>
                 <div class="box-body">
 
+                    <ui:remove>
+                        FIXME: PE remote command yapısı yerine p:remoteCommand param pass yöntemini kullanmak gerekiyor. 
+                        </ui:remove>
                     <pe:remoteCommand id="toggleSort" name="toggleSort" process="@this" actionListener="#{bean.queryDefinition.toggleSortOrder}">  
                         <pe:methodSignature parameters="java.lang.String" />  
                         <pe:methodParam name="name"/>  
                     </pe:remoteCommand>  
+                    
 
                     <div class="row">
                         <p:pickList id="sorters" value="#{bean.queryDefinition.sortListColumns}" 
@@ -280,7 +284,7 @@
                                         <f:facet name="header">
                                             <h:outputText value="#{messages[col.labelKey]}" />
                                         </f:facet>
-                                        
+
                                         <ui:fragment rendered="#{col.template ne null }">
                                             <ui:include src="/columns/#{col.template eq null ? 'empty' : col.template }.xhtml" />
                                         </ui:fragment>

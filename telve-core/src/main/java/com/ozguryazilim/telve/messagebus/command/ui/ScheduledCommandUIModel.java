@@ -44,6 +44,12 @@ public class ScheduledCommandUIModel {
      * @return 
      */
     public String getName(){
+        if( scheduledCommand != null ){
+            return scheduledCommand.getCommand().getName();
+        } else if( storableCommand != null ){
+            return storableCommand.getName();
+        } 
+        
         return getCommand().getName();
     }
 
