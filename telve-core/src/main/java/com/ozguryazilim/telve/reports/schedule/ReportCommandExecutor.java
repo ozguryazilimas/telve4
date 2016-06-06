@@ -80,11 +80,19 @@ public class ReportCommandExecutor extends AbstractCommandExecuter<ReportCommand
         Map<String,DataHandler> attachments = new HashMap<>();
         attachments.put(command.getResultName(), dataHandler);
         
-        notifyChannel.sendMessage(command.getUser(), "İstenilen Rapor Hazırlandı", "Rapor hazır ve gönderildi");
+        
+        Map<String,Object> headers = new HashMap<>();
+        headers.put("reportName", command.getName());
+        headers.put("info", command.getInfo());
+        headers.put("messageClass", "REPORT");
+        
+        notifyChannel.sendMessage(command.getUser(), "İstenilen Rapor Hazırlandı", "Rapor hazır ve gönderildi", headers);
+        
+        
         
         List<String> emails =Splitter.on(',').omitEmptyStrings().trimResults().splitToList(command.getEmails());
         for( String mailAddr : emails ){
-            emailChannel.sendMessageWithAttachments(mailAddr, "Rapor hazırlandı", "Rapor hazır ve nazırdır.", attachments);
+            emailChannel.sendMessageWithAttachments(mailAddr, "Rapor hazırlandı", "Rapor hazır ve nazırdır.", attachments, headers);
         }
     }
     

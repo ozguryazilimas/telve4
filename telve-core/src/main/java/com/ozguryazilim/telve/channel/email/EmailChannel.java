@@ -45,12 +45,18 @@ public class EmailChannel implements Channel{
     }
     
     
-    public void sendMessageWithAttachments( String to, String subject, String message, Map<String, DataHandler> attachments ){
+    public void sendMessageWithAttachments( String to, String subject, String message, String messageClass, Map<String, DataHandler> attachments ){
         Map<String, Object> headers = new HashMap<>();
+        
+        headers.put("messageClass", messageClass);
+        
+        sendMessageWithAttachments( to, subject, message, attachments, headers );
+    }
+    
+    public void sendMessageWithAttachments( String to, String subject, String message, Map<String, DataHandler> attachments, Map<String, Object> headers ){
         
         headers.put("target", to);
         headers.put("subject", subject);
-        headers.put("messageClass", "GENERIC");
         
         Exchange exchange = mailProducer.getDefaultEndpoint().createExchange();
         

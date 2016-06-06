@@ -31,11 +31,15 @@ public class NotifyChannel implements Channel{
     
     @Override
     public void sendMessage( String to, String subject, String message ){
+        sendMessage(to, subject, message, "GENERIC");
+    }
+    
+    public void sendMessage( String to, String subject, String message, String messageClass ){
         Map<String, Object> headers = new HashMap<>();
         
         headers.put("target", to);
         headers.put("subject", subject);
-        headers.put("messageClass", "GENERIC");
+        headers.put("messageClass", messageClass);
         
         notifyProducer.sendBodyAndHeaders(message, headers);
     }
