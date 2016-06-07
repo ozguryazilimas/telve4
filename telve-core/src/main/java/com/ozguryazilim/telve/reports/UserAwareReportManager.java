@@ -79,6 +79,8 @@ public class UserAwareReportManager extends ReportManager implements Serializabl
                 addReport(e.getValue().path(), e.getKey());
             }
         }
+        
+        sortReports();
     }
     
     /**

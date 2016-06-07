@@ -11,6 +11,7 @@ import com.google.common.base.Splitter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -194,6 +195,32 @@ public class ReportManager implements Serializable{
             }
         }
         return null;
+    }
+    
+    /**
+     * Folder'larda bulunan raporları order'a göre sıralar.
+     * Orderlar aynı ise rapor Sınıf ismine göre
+     * 
+     */
+    public void sortReports(){
+        for( Map.Entry<String,ReportFolder> folder : folders.entrySet()){
+            
+            
+            List<String> ls = folder.getValue().getReports();
+            Collections.sort(ls, new Comparator<String>() {
+                @Override
+                public int compare(String t1, String t2) {
+                    Report r1 = ReportRegistery.getReports().get(t1);
+                    Report r2 = ReportRegistery.getReports().get(t2);
+                    Integer o1 = r1.order();
+                    Integer o2 = r2.order();
+                    
+                    int result = o1.compareTo(o2);
+                    return result == 0 ? t1.compareTo(t2) : result;
+                }
+            } );
+            
+        }
     }
     
 }
