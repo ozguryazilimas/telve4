@@ -408,6 +408,8 @@
 
                 <aside class="main-sidebar">
 
+                    <p:cache region="main-sidebar" key="#{identity.account.id}" >
+                    
                     <section class="sidebar" style="height: auto;">
 
 
@@ -497,6 +499,7 @@
                             </div>
                         </ui:remove>
                     </section>
+                    </p:cache>
                 </aside>
 
                 <ui:remove>

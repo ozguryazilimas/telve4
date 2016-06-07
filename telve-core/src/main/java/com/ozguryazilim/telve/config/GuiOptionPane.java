@@ -16,6 +16,8 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import org.picketlink.Identity;
+import org.primefaces.context.RequestContext;
 
 /**
  * Kullanıcı için Tema ve Dil seçimlerini ayarlar.
@@ -40,6 +42,9 @@ public class GuiOptionPane extends AbstractOptionPane{
     
     @Inject @UserAware
     private Kahve kahve;
+    
+    @Inject
+    private Identity identity;
     
     @PostConstruct
     public void init(){
@@ -130,8 +135,8 @@ public class GuiOptionPane extends AbstractOptionPane{
     public void saveLocale(){
         localeSelector.setLocaleString(locale);
         kahve.put("locale.name", new KahveEntry(locale));
-        //FIXME: #15465
-        //RequestContext.getCurrentInstance().getApplicationContext().getCacheProvider().clear();
+        
+        RequestContext.getCurrentInstance().getApplicationContext().getCacheProvider().remove("main-sidebar", identity.getAccount().getId());
     }
     
     
