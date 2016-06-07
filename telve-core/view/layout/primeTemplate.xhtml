@@ -136,6 +136,7 @@
                                                 <i class="fa fa-bars"></i>
                                             </a>
                                         </li>
+                                        <!-- p:cache region="main-menu" key="#{identity.account.id}" -->
                                         <!-- Main Navigations -->
                                         <ui:repeat value="#{nagivationController.mainNavigations}" var="nav" >
                                             <li >
@@ -144,6 +145,7 @@
                                                 </h:link>
                                             </li>
                                         </ui:repeat>
+                                        <!-- /p:cache -->
                                     </ul>
                                 </div>
 
@@ -408,7 +410,7 @@
 
                 <aside class="main-sidebar">
 
-                    <p:cache region="main-sidebar" key="#{identity.account.id}" >
+                    <!-- p:cache region="main-sidebar" key="#{identity.account.id}" -->
                     
                     <section class="sidebar" style="height: auto;">
 
@@ -499,7 +501,7 @@
                             </div>
                         </ui:remove>
                     </section>
-                    </p:cache>
+                    <!-- /p:cache -->
                 </aside>
 
                 <ui:remove>
