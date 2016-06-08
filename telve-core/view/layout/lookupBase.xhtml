@@ -138,23 +138,23 @@
                                                     <ui:repeat value = "#{bean.model.dataModel()}" var = "node" >
                                                         { "id" : "#{node.id}", "parent" : "#{bean.model.findParent( node ) eq null ? '#' : node.parentId}", "text" : "#{fn:escapeXml(node.caption)}", "type" : "#{bean.model.getNodeType(node)}" },
                                                     </ui:repeat>
-
+                                                     
                                                 ]
                                             }
-                                        });
+                                        })
+                                        .bind("loaded.jstree", function (e, data) {
+                                            jQuery('#data').jstree("select_node", "#{bean.model.selectedNodes}", true); 
+                                        }); 
+                                        
                                     }
                                     buildTree();
                                     
-                                    function setNodeSelections(){
-                                            $('#data').jstree().select_node(jQuery(PrimeFaces.escapeClientId("lookupForm:selectedNodes")).val().split(','));
-                                    }
-
                                     function setSelections(){
                                             var s = jQuery('#data').jstree().get_selected();
                                             jQuery(PrimeFaces.escapeClientId("lookupForm:selectedNodes")).val(s);
                                     }
 
-                                    setNodeSelections();                                
+                                    
                                 </script>
                         
                     </c:if>

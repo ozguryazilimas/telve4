@@ -13,6 +13,7 @@
         <composite:attribute name="update" required="false" default=""/>
         <composite:attribute name="multiSelect" required="false" default="false"/>
         <composite:attribute name="leafSelect" required="false" default="false"/>
+        <composite:attribute name="fullPath" required="false" default="false"/>
         <composite:attribute name="lookupBean" required="true"/>
         <composite:attribute name="lookupListener" required="true"/>
         <composite:attribute name="lookupProfile" required="false" default=""/>
@@ -48,7 +49,7 @@
                         <f:attribute name="lookupProfile" value="#{cc.attrs.lookupProfile}" />
                     </p:autoComplete>
                     <div class="input-group-btn">
-                    <p:commandButton action="#{cc.attrs.lookupBean.openDialog( cc.attrs.multiSelect, cc.attrs.leafSelect, cc.attrs.lookupProfile, cc.attrs.lookupListener )}" 
+                    <p:commandButton action="#{cc.attrs.lookupBean.openDialog( cc.attrs.multiSelect, cc.attrs.leafSelect, cc.attrs.fullPath, cc.attrs.lookupProfile, cc.attrs.lookupListener, cc.attrs.value )}" 
                                      partialSubmit="true" process="@this" icon="fa fa-search" styleClass="btn btn-default" disabled="#{cc.attrs.disabled}">
                         <p:ajax event="dialogReturn"  listener="#{cc.attrs.lookupBean.onSelect}" update="#{cc.id}_inp,#{cc.attrs.update}" partialSubmit="true" process="@this" />   
                     </p:commandButton>
