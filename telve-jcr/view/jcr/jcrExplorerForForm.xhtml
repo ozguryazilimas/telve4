@@ -19,7 +19,7 @@
                             </p:commandLink>
                             
                             <p:commandLink title="#{messages['jcr.hint.DeleteFolder']}" action="#{jcrController.deleteFolder()}" 
-                                           update="@([id$=folderTree]),@([id$=filesPanel])" 
+                                           update="@([id$=folderTree]),@([id$=data]),@([id$=filesPanel])" 
                                            oncomplete="buildTree();"
                                            >
                                 <i class="fa fa-minus-circle" />

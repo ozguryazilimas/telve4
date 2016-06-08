@@ -169,7 +169,7 @@
                             </p:commandLink>
                             
                             <p:commandLink title="#{messages['jcr.hint.DeleteFolder']}" action="#{jcrController.deleteFolder()}" 
-                                           update="@([id$=folderTree]),@([id$=filesPanel])" 
+                                           update="@([id$=folderTree]),@([id$=data]),@([id$=filesPanel])" 
                                            oncomplete="buildTree();"
                                            rendered="#{ permissionDom eq '' or identity.hasPermission( permissonDomain, 'delete')}">
                                 <i class="fa fa-minus-circle" />
