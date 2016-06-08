@@ -350,7 +350,8 @@
     <h:form id="uploaddialog" enctype="multipart/form-data">
         <p:dialog header="#{messages['jcr.caption.UploadFileDialog']}" widgetVar="fdlg" showEffect="clip" hideEffect="clip">
             <p:fileUpload fileUploadListener="#{jcrController.handleFileUpload}" mode="advanced" dragDropSupport="true"
-                          update="@([id$=filesPanel])" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|.*)$/" />
+                          update="@([id$=filesPanel])" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|.*)$/" 
+                          label="#{messages['general.label.SelectFile']}" uploadLabel="#{messages['general.button.Upload']}" cancelLabel="#{messages['general.button.Cancel']}"/>
         </p:dialog>
     </h:form>
 

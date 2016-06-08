@@ -52,7 +52,8 @@
                 <p:dialog id="imageUpload"  widgetVar="imageUpload"  header="#{messages['general.button.UploadImage']}" closable="true">
                     <p:fileUpload fileUploadListener="#{imageLookupController.handleFileUpload}" mode="advanced"
                                   update="#{cc.id}_pnl" auto="true" sizeLimit="#{cc.attrs.sizeLimit}" allowTypes="/(\.|\/)(jpe?g|png)$/" 
-                                  oncomplete="PF('imageUpload').hide()" >
+                                  oncomplete="PF('imageUpload').hide()" 
+                                  label="#{messages['general.label.SelectFile']}" uploadLabel="#{messages['general.button.Upload']}" cancelLabel="#{messages['general.button.Cancel']}">
                     </p:fileUpload>
                 </p:dialog>
 
