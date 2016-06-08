@@ -9,7 +9,7 @@
     
     <properties>
         <deltaspike.version>1.6.1</deltaspike.version>
-        <picketlink.version>2.7.2.OYAS2</picketlink.version>
+        <picketlink.version>2.7.2.OYAS3</picketlink.version>
         <primeface.version>6.0</primeface.version>
         <primefaces-ext.version>3.2.0</primefaces-ext.version>
         <atmosphere.version>2.4.0-RC3</atmosphere.version>
