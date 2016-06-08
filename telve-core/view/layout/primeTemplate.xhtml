@@ -354,8 +354,7 @@
 
                                                     <p:commandLink action="#{notifyStore.clear(identity.account.loginName)}" ajax="true" 
                                                                    partialSubmit="true" process="@this" update=":notifyCount" 
-                                                                   styleClass="pull-right"
-                                                                   oncomplete="PF('notifyPanel').hide();">
+                                                                   styleClass="pull-right">
                                                         <i class="fa fa-trash"></i>
                                                         #{messages['general.button.Delete']}
                                                     </p:commandLink>
