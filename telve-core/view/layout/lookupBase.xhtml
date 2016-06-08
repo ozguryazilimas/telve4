@@ -77,10 +77,13 @@
 
                     <c:if test="#{bean.model.modelType eq 'Table' and not bean.model.getMultiSelect()}" >
                         <p:dataTable id="singleSelectDialog" var="item" value="#{bean.model.dataModel()}" 
+                                     selectionMode="single"
                                      selection="#{bean.model.selectedData}" rows="8"  paginator="true" rowKey="#{item.id}"
                                      paginatorPosition="bottom" 
                                      paginatorAlwaysVisible="false">
+                            <ui:remove>
                             <p:column selectionMode="single" style="width:36px;" />  
+                            </ui:remove>
 
                             <c:forEach items="#{bean.model.columns.entrySet()}" var="col" varStatus="loop">
                                 <p:column headerText="#{messages[col.value]}">
