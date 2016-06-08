@@ -57,22 +57,29 @@
                 <h:form id="suggestionPopupForm">
 
                     <div class="row">
-                        <t:inputCombobox label="general.label.Group" value="#{suggestionBrowse.suggestionItem.group}" required="true">
+                        <t:inputCombobox label="general.label.Group" value="#{suggestionBrowse.suggestionItem.group}" required="true" columnClass="col-xs-12">
                             <f:selectItems value="#{suggestionGroupRegistery.getGroupNames()}" var="group" itemLabel="#{messages[ 'suggestionGroup.label.'.concat(group) ]}" itemValue="#{group}" />
                         </t:inputCombobox>
 
-                        <t:inputText label="general.label.Data" value="#{suggestionBrowse.suggestionItem.data}" required="true" />
+                        <t:inputText label="general.label.Data" value="#{suggestionBrowse.suggestionItem.data}" required="true" columnClass="col-xs-12"/>
                     </div>
 
                     <div class="row">
+                        <t:inputTextarea label="general.label.Info" value="#{suggestionBrowse.suggestionItem.info}" maxlength="255" />
                         <t:inputCheckboxGroup label="general.label.Status">
                             <p:selectBooleanCheckbox value="#{suggestionBrowse.suggestionItem.active}" itemLabel="#{messages['general.label.Active']}" />
                         </t:inputCheckboxGroup>
-                        <t:inputTextarea label="general.label.Info" value="#{suggestionBrowse.suggestionItem.info}" maxlength="255" />
                     </div>
 
                     <div class="actionButtons">
-                        <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{suggestionBrowse.closeDialog()}" update=":browseListForm:results" oncomplete="PF('suggestionPopup').hide();"/>
+                        <p:commandButton id="select" 
+                                         value="#{messages['general.button.Ok']}" 
+                                         icon="fa fa-save" 
+                                         action="#{suggestionBrowse.closeDialog()}" 
+                                         update=":browseListForm:results" 
+                                         oncomplete="PF('suggestionPopup').hide();" 
+                                         validateClient="true"
+                                         styleClass="btn-primary"/>
                         <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{suggestionBrowse.cancelDialog()}" oncomplete="PF('suggestionPopup').hide();" partialSubmit="true" process="@this"/>
                     </div>
                 </h:form>
