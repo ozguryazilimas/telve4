@@ -50,7 +50,9 @@
                                 </ui:remove>
                                 <div class="box-header">
                                     <p:commandLink value="#{messages['report.name.'.concat( item )]}" action="#{reportHome.execReport(item)}" ajax="true" partialSubmit="true" process="@this" style="font-weight: bold;">
-                                        <p:ajax event="dialogReturn"  listener="#{reportHome.onReportRun}" update=":rform" partialSubmit="true" process="@this"/>
+                                        <ui:remove>
+                                            <p:ajax event="dialogReturn"  listener="#{reportHome.onReportRun}" update=":rform" partialSubmit="true" process="@this"/>
+                                        </ui:remove>
                                     </p:commandLink>
                                 </div>
                                 <div class="box-body">
