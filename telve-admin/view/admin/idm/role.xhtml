@@ -76,7 +76,7 @@
                                     <f:facet name="header">
                                         <i class="fa fa-gear" title="#{messages['role.label.Exec']}" onclick="toggleChkBoxes('#{pg.name}', 'exec')"> </i>
                                     </f:facet>
-                                    <p:selectBooleanCheckbox id="exec" value="#{pd.exec}" rendered="#{pd.definition.hasSelectAction()}"/> 
+                                    <p:selectBooleanCheckbox id="exec" value="#{pd.exec}" rendered="#{pd.definition.hasExecAction()}"/> 
                                 </p:column>
                             </p:dataTable>
                         </t:accordion>

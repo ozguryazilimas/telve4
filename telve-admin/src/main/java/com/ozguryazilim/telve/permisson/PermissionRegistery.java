@@ -136,6 +136,11 @@ public class PermissionRegistery implements Serializable{
             permMap.put(gn, pg);
         }
 
+        //Order düzenleme eğer üzerinde default order varsa yenisini yazıyoruz.
+        if( pg.getOrder() == 50 ){
+            pg.setOrder(or);
+        }
+        
         PermissionDefinition pd = new PermissionDefinition();
         pd.setTarget(t);
         pd.getActions().addAll(al);
@@ -157,6 +162,7 @@ public class PermissionRegistery implements Serializable{
             als.add(ActionConsts.UPDATE_ACTION);
             als.add(ActionConsts.DELETE_ACTION);
             als.add(ActionConsts.EXPORT_ACTION);
+            als.add(ActionConsts.EXEC_ACTION);
         }
 
     }
@@ -169,6 +175,7 @@ public class PermissionRegistery implements Serializable{
     private void populateActions(Element e, List<String> als) {
         List<Element> elements = e.elements("action");
         for (Element a : elements) {
+            LOG.debug("element : {} ; action : {}", e, a.attributeValue("name"));
             als.add(a.attributeValue("name"));
         }
     }
