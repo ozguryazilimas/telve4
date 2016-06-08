@@ -83,7 +83,6 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     @Inject
     private FacesContext facesContext;
 
-
     
     private List<String> subViewList = new ArrayList<String>();
     private Map<String,List<String>> subViews = new HashMap<>();
@@ -412,10 +411,15 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public String getSubViewId() {
+        //Eğer requestEdilen bir subview varsa onu bir işleme alalım.
+        checkRequestedSubView();
+        
+        //Eğer seçili subView varsa onu döndürelim
         if ( !Strings.isNullOrEmpty(selectedSubView) ) {
             return selectedSubView;
         }
 
+        //Default subview dönecek
         return getMasterSubViewId();
     }
 
@@ -573,6 +577,28 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             return !(ref.contains(editView) || ref.contains(containerView));
         }
         return false;
+    }
+    
+    /**
+     * Request olarak gelen subView parametresine bakarak selectedSubView setler
+     */
+    private void checkRequestedSubView(){
+        HttpServletRequest request = (HttpServletRequest) facesContext.getExternalContext().getRequest();
+        String subView = request.getParameter("subView");
+
+        //Eğer bir parametre gelmemiş ise çıkalım
+        if(Strings.isNullOrEmpty(subView)) return;
+        
+        //Gelen parametre tanıdığımız ( ve yetkimiz olan ) bir subView ise setliyoruz. sonda .xhtml yazılmasına gerek kalmasın
+        for( String sv : subViewList ){
+            if( sv.startsWith(subView)){
+                //Eğer zaten seçili olan o değilse setleyelim.
+                if( !sv.equals(selectedSubView)){
+                    setSelectedSubView(sv);
+                }
+            }
+        }
+        
     }
     
     
