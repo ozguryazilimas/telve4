@@ -926,6 +926,7 @@ textarea.ui-inputfield {
 .ui-selectonemenu,
 .ui-autocomplete {
   width: 100% !important;
+  min-width: 0 !important;
 }
 .ui-input-group .ui-selectonemenu-trigger {
   border-bottom-right-radius: 0px !important;
