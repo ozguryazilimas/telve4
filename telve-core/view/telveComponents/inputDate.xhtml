@@ -16,6 +16,8 @@
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="yearRange" required="false"  default="c-10:c+10"/>
         <composite:attribute name="readonlyInput" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:attribute name="mindate" />
+        <composite:attribute name="maxdate" />
         <composite:clientBehavior name="dateSelect" event="dateSelect" targets="#{cc.id}_inp" />
     </composite:interface>
 
@@ -26,7 +28,8 @@
                 <span class="value">
                     <p:calendar id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}"
                                 placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.Date']}" showOn="#{cc.attrs.readonly ? 'none' : 'button'}"
-                                navigator="true" yearRange="#{cc.attrs.yearRange}" mask="true" readonlyInput="#{cc.attrs.readonlyInput}">
+                                navigator="true" yearRange="#{cc.attrs.yearRange}" mask="true" readonlyInput="#{cc.attrs.readonlyInput}"
+                                mindate="#{cc.attrs.mindate}" maxdate="#{cc.attrs.maxdate}">
                         <f:convertDateTime pattern="#{messages['general.format.Date']}" />
                         <p:clientValidator />
                     </p:calendar>
