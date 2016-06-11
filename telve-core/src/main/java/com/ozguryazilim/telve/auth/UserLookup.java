@@ -6,6 +6,7 @@
 
 package com.ozguryazilim.telve.auth;
 
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -90,15 +91,38 @@ public class UserLookup implements Serializable{
      */
     public List<User> getUsersByType( String type ){
         
-        IdentityQueryBuilder builder = identityManager.getQueryBuilder();
+        List<User> result = new ArrayList();
         
+        if( type.contains(",")){
+            List<String> ls = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(type);
+            for( String s : ls ){
+                result.addAll( getUsersByTypeImpl(s) );
+            }
+        } else {
+            result.addAll( getUsersByTypeImpl(type) );
+        }
+        
+        return result;
+    }
+    
+    
+    /**
+     * Tek bir userType için sorgu sonucu döndürür.
+     * 
+     * Aslında  c = builder.in(IdentityType.QUERY_ATTRIBUTE.byName(USER_TYPE), ls.toArray(new String[0])); yapılması lazım ama doğru çalışmıyor.
+     * 
+     * @param type
+     * @return 
+     */
+    protected List<User> getUsersByTypeImpl( String type ){
+        IdentityQueryBuilder builder = identityManager.getQueryBuilder();
         Condition c = builder.equal(IdentityType.QUERY_ATTRIBUTE.byName(USER_TYPE), type);
         
         return builder.createIdentityQuery(User.class)
                 .where(c)
                 .getResultList();
     }
-    
+            
     
     /**
      * Kullanıcı grubuna göre kullanıcı listesi döndürür.
@@ -129,6 +153,21 @@ public class UserLookup implements Serializable{
      * @return 
      */
     public List<User> getUsersByTypeAndGroup( String type, String group ){
+        List<User> result = new ArrayList();
+        
+        if( type.contains(",")){
+            List<String> ls = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(type);
+            for( String s : ls ){
+                result.addAll( getUsersByTypeAndGroupImpl(s, group) );
+            }
+        } else {
+            result.addAll( getUsersByTypeAndGroupImpl(type, group) );
+        }
+        
+        return result;
+    }
+    
+    protected List<User> getUsersByTypeAndGroupImpl( String type, String group ){
         
         IdentityQueryBuilder builder = identityManager.getQueryBuilder();
         
