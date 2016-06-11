@@ -180,7 +180,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      * @param listener sonuçlar nereye gidecek?
      */
     public void openDialog(Boolean multiSelect, Boolean leafSelect, Boolean fullPath, String profile, String listener) {
-        openDialog( multiSelect, leafSelect, true, profile, listener, null );
+        openDialog( multiSelect, leafSelect, fullPath, profile, listener, null );
     }
     
     /**
