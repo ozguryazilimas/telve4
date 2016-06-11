@@ -76,7 +76,7 @@ public abstract class SubViewQueryBase<E extends EntityBase,R extends ViewModel>
     @Transactional
     public void removeItem( Long id ){
         editItem(id);
-        onBeforeDelete();
+        if( !onBeforeDelete() ) return;
         //FIXME: Normal remove bir şekilde silmedi
         //getRepository().remove(entity);
         getRepository().deleteById(id);
@@ -89,7 +89,7 @@ public abstract class SubViewQueryBase<E extends EntityBase,R extends ViewModel>
      */
     @Transactional
     public void save(){
-        onBeforeSave();
+        if( !onBeforeSave() ) return;
         getRepository().save(entity);
         search();
         onAfterSave();
@@ -97,30 +97,37 @@ public abstract class SubViewQueryBase<E extends EntityBase,R extends ViewModel>
     
     /**
      * Saklama işleminden hemen önce çağrılır.
+     * 
+     * Eğer geriye false dönerse işlem devam etmez
      */
-    public void onBeforeSave(){
+    public boolean onBeforeSave(){
         //Bu method override edilmek için var.
+        return true;
     }
     
     /**
      * Saklama işleminden hemen sonra çağrılır.
      */
-    public void onAfterSave(){
+    public boolean onAfterSave(){
         //Bu method override edilmek için var.
+        return true;
     }
     
     /**
      * Silme işleminden hemen önce çağrılır.
+     * Eğer geriye false dönerse işlem devam etmez
      */
-    public void onBeforeDelete(){
+    public boolean onBeforeDelete(){
         //Bu method override edilmek için var.
+        return true;
     }
     
     /**
      * Silme işleminden hemen sonra çağrılır.
      */
-    public void onAfterDelete(){
+    public boolean onAfterDelete(){
         //Bu method override edilmek için var.
+        return true;
     }
 
     /**
