@@ -24,7 +24,7 @@
                 <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
                 <span class="value">
                     <p:calendar id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}"
-                                placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.DateTime']}" showOn="button"
+                                placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.DateTime']}" showOn="#{cc.attrs.readonly ? 'none' : 'button'}"
                                 navigator="true" mask="true" readonlyInput="#{cc.attrs.readonlyInput}">
                         <f:convertDateTime pattern="#{messages['general.format.DateTime']}" />
                         <p:clientValidator />

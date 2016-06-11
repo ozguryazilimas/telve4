@@ -20,7 +20,7 @@
         <div style="position: relative">
             <p:outputLabel for="#{cc.id}_inp" value="#{messages['medicalExamination.label.RestDurationMinute']}" style="display: none"/>
             <p:calendar id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}"
-                        placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.Date']}" showOn="button"
+                        placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.Date']}" showOn="#{cc.attrs.readonly ? 'none' : 'button'}"
                         navigator="true" mask="true" readonlyInput="#{cc.attrs.readonlyInput}" yearRange="#{cc.attrs.yearRange}">
                 <f:convertDateTime pattern="#{messages['general.format.Date']}" />
             </p:calendar>
