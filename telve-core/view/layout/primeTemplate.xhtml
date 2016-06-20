@@ -140,7 +140,7 @@
                                         <!-- Main Navigations -->
                                         <ui:repeat value="#{nagivationController.mainNavigations}" var="nav" >
                                             <li >
-                                                <h:link  outcome="#{nav.viewId}" >
+                                                <h:link  outcome="#{nav.viewId}" title="#{nav.label}">
                                                     <i class="#{nav.icon}"></i>
                                                 </h:link>
                                             </li>
