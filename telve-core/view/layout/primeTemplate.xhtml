@@ -132,7 +132,7 @@
                                 <div class="navbar-custom-menu pull-left">
                                     <ul class="nav navbar-nav">
                                         <li>
-                                            <a id="sideToggle" href="#" role="button" >
+                                            <a id="sideToggle" href="#" role="button" title="#{messages['nav.label.MainMenu']}">
                                                 <i class="fa fa-bars"></i>
                                             </a>
                                         </li>
@@ -140,7 +140,7 @@
                                         <!-- Main Navigations -->
                                         <ui:repeat value="#{nagivationController.mainNavigations}" var="nav" >
                                             <li >
-                                                <h:link  outcome="#{nav.viewId}" title="#{nav.label}">
+                                                <h:link  outcome="#{nav.viewId}" title="#{messages[nav.label]}">
                                                     <i class="#{nav.icon}"></i>
                                                 </h:link>
                                             </li>
@@ -159,12 +159,12 @@
                                                 -->
                                             </ui:remove>
                                             <p:commandLink action="#{bookmarkDashlet.addBookmark( messages[pageTitleResolver.pageTitle], viewIdentifier, request.getHeader('Referer'))}" 
-                                                           ajax="true" partialSubmit="true" process="@this" >
+                                                           ajax="true" partialSubmit="true" process="@this" title="#{messages['nav.label.Bookmark']}">
                                                 <i class="fa fa-bookmark" />
                                             </p:commandLink>
                                         </li>
                                         <li class="">
-                                            <a href="#{helpResolver.helpPath}" target="HelpWinId" onclick="openHelp();" >
+                                            <a href="#{helpResolver.helpPath}" target="HelpWinId" onclick="openHelp();" title="#{messages['nav.label.Help']}">
                                                 <i class="fa fa-question-circle"></i>
 
                                             </a>
@@ -229,7 +229,7 @@
 
                                         <ui:fragment rendered="#{noteController.canAddNote()}">
                                             <li>
-                                                <a href="#" data-toggle="control-sidebar">
+                                                <a href="#" data-toggle="control-sidebar" title="#{messages['nav.label.Notes']}">
                                                     <i class="fa fa-comments-o"></i>
                                                     <ui:fragment rendered="#{noteController.hasNotes('')}">
                                                         <span class="label label-success">#{noteController.noteCount('')}</span>
@@ -324,7 +324,7 @@
 
                                         <!-- Notifications: style can be found in dropdown.less -->
                                         <li class="dropdown messages-menu">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="#{messages['nav.label.Notifications']}">
                                                 <i class="fa fa-bell-o"></i>
                                                 <h:panelGroup id="notifyCount" styleClass="#{notifyStore.getNotifyCount(identity.account.loginName) gt 0 ? 'label label-warning' : ''}">
                                                     <h:outputText value="#{notifyStore.getNotifyCount(identity.account.loginName)}" styleClass="" rendered="#{notifyStore.getNotifyCount(identity.account.loginName) gt 0}"/>
