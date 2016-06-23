@@ -66,7 +66,7 @@
                                     <p:commandButton id="save"
                                                      value="#{messages['general.button.Save']}"
                                                      action="#{homeBean.save()}"
-                                                     rendered="#{identity.hasPermission( entityName, 'insert')}"
+                                                     rendered="#{( empty homeBean.entity.id and identity.hasPermission( entityName, 'insert')) or ( not empty homeBean.entity.id and identity.hasPermission( entityName, 'update'))}"
                                                      ajax="true"
                                                      partialSubmit="false"
                                                      process="@form"

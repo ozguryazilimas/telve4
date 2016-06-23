@@ -24,94 +24,7 @@
                 });
             });
         </script>
-        <ui:remove>
-            <p:layout >
-                <p:layoutUnit position="west" size="300" header="#{messages['general.caption.List']}" collapsible="false" resizable="true" styleClass="panel-primary">
-                    <h:form id="listForm">
-                        <p:remoteCommand name="newParameter" update=":form" action="#{homeBean.createNew()}"  partialSubmit="true" process="@this" />
-                        <p:dataTable id="itemlist" 
-                                     var="item"
-                                     value="#{itemList}" 
-                                     rowKey="rowKey"
-                                     emptyMessage="#{messages['general.hint.EmptyList']}"
-                                     rows="15"
-                                     filteredValue="#{homeBean.filteredList}"
-                                     paginatorAlwaysVisible="false"
-                                     paginator="true"
-                                     paginatorPosition="bottom"
-                                     paginatorTemplate="{PageLinks}">
-                            <p:column filterBy="#{item[itemCaption]}" 
-                                      filterMatchMode="contains">
-                                <p:commandLink action="#{homeBean.edit(item)}" ajax="true" partialSubmit="true" process="@this" update=":form">
-                                    <h:outputText value="#{item[itemCaption]}" />
-                                </p:commandLink>
-
-                            </p:column>
-                        </p:dataTable>
-                    </h:form>
-                </p:layoutUnit>
-                <p:layoutUnit position="center"  >
-                    <ui:include src="/layout/messages.xhtml" />
-                    <p:panel header="#{messages[formCaption]}">
-                        <h:form id="form" >
-
-                            <ui:insert name="form" />
-
-                            <div class="actionButtons">
-                                <p:commandButton id="saveAndNew" 
-                                                 value="#{messages['general.button.SaveAndNew']}" 
-                                                 action="#{homeBean.saveAndNew()}"
-                                                 rendered="#{identity.hasPermission( entityName, 'update') }"
-                                                 ajax="true"
-                                                 partialSubmit="false"
-                                                 process="@form"
-                                                 update=":form,:listForm:itemlist"
-                                                 validateClient="true"
-                                                 styleClass="btn-primary"
-                                                 icon="fa fa-save"/>  
-
-                                <p:commandButton id="save" 
-                                                 value="#{messages['general.button.Save']}" 
-                                                 action="#{homeBean.save()}"
-                                                 rendered="#{identity.hasPermission( entityName, 'insert')}"
-                                                 ajax="true"
-                                                 partialSubmit="false"
-                                                 process="@form"
-                                                 update=":form,:listForm:itemlist"
-                                                 validateClient="true"
-                                                 styleClass="btn-success"
-                                                 icon="fa fa-save" />  
-
-
-
-                                <p:commandButton id="delete" 
-                                                 value="#{messages['general.button.Delete']}" 
-                                                 action="#{homeBean.delete()}"
-                                                 rendered="#{not empty homeBean.entity.id and identity.hasPermission( entityName, 'delete') }"
-                                                 ajax="true"
-                                                 partialSubmit="false"
-                                                 process="@form"
-                                                 update=":form,:listForm:itemlist"
-                                                 validateClient="true"
-                                                 styleClass="btn-danger"
-                                                 icon="fa fa-trash">
-                                    <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
-                                </p:commandButton>
-                                <p:commandButton id="close" 
-                                                 value="#{messages['general.button.Close']}" 
-                                                 action="#{homeBean.close()}"
-                                                 ajax="true"
-                                                 partialSubmit="true"
-                                                 process="@this"
-                                                 icon="ui-icon-close"/>
-                            </div>
-                        </h:form>
-                    </p:panel>
-                </p:layoutUnit>
-            </p:layout>
-
-        </ui:remove>
-
+        
         <ui:include src="/layout/messages.xhtml" />
 
         <h:form id="form" >
@@ -126,7 +39,7 @@
                     <p:commandButton id="saveAndNew" 
                                      value="#{messages['general.button.SaveAndNew']}" 
                                      action="#{homeBean.saveAndNew()}"
-                                     rendered="#{identity.hasPermission( entityName, 'update') }"
+                                     rendered="#{identity.hasPermission( entityName, 'update') and identity.hasPermission( entityName, 'insert') }"
                                      ajax="true"
                                      partialSubmit="false"
                                      process="@form"
@@ -138,7 +51,7 @@
                     <p:commandButton id="save" 
                                      value="#{messages['general.button.Save']}" 
                                      action="#{homeBean.save()}"
-                                     rendered="#{identity.hasPermission( entityName, 'insert')}"
+                                     rendered="#{( empty homeBean.entity.id and identity.hasPermission( entityName, 'insert')) or ( not empty homeBean.entity.id and identity.hasPermission( entityName, 'update'))}"
                                      ajax="true"
                                      partialSubmit="false"
                                      process="@form"

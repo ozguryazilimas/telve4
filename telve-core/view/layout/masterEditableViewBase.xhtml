@@ -20,7 +20,7 @@
                 <p:commandButton id="save" 
                                  value="#{messages['general.button.Save']}" 
                                  action="#{bean.save()}"
-                                 rendered="#{not hideSave and identity.hasPermission( entityName, 'insert')}"
+                                 rendered="#{not hideSave and identity.hasPermission( entityName, 'update')}"
                                  ajax="true"
                                  process="@form"
                                  validateClient="true"
