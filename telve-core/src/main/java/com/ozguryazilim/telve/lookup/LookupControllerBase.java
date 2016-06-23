@@ -275,6 +275,12 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
 
         LookupSelectTuple sl = getLookupSelectTuple();
 
+        //Eğer bir şey seçilmemiş ise sadece dialoğu kapatalım.
+        if( sl == null ){
+            RequestContext.getCurrentInstance().closeDialog(null);
+            return;
+        }
+        
         //eğer bir event listener var ise
         if( model.getListener().contains("event:")){
             triggerListeners(model.getListener(),sl.getValue());
@@ -419,7 +425,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      * @return
      */
     protected LookupSelectTuple getLookupSelectTuple() {
-        LookupSelectTuple sl;
+        LookupSelectTuple sl = null;
 
         String expression = "";
         if( !Strings.isNullOrEmpty(model.getListener()) && !model.getListener().contains(":")){
@@ -437,12 +443,16 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
                 }
             }
 
-            //Listeyi el ile value olarak gömmek için...
-            sl = new LookupSelectTuple(expression, ls);
+            if( !ls.isEmpty() ){
+                //Listeyi el ile value olarak gömmek için...
+                sl = new LookupSelectTuple(expression, ls);
+            }
 
         } else {
-            E e = getEntity(model.getSelectedViewModel());
-            sl = new LookupSelectTuple(expression, e);
+            if( model.getSelectedViewModel() != null ){
+                E e = getEntity(model.getSelectedViewModel());
+                sl = new LookupSelectTuple(expression, e);
+            }
         }
 
         return sl;
