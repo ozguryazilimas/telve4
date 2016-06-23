@@ -14,6 +14,7 @@
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="columnClass" required="false" default="col-md-6 col-xs-12"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:attribute name="disabled" required="false" type="java.lang.Boolean" default="false"/>
         <composite:clientBehavior name="change" event="change" targets="#{cc.id}_inp" />
     </composite:interface>
 
@@ -22,7 +23,7 @@
 
             <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
             <span class="value" style="height: 30px;">
-                <p:selectOneMenu id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" >
+                <p:selectOneMenu id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" disabled="#{cc.attrs.readonly}">
                     <f:selectItems value="#{cc.items}" var="item" 
                                    itemLabel="#{messages[ ''.concat( cc.attrs.itemLabel ).concat( item )]}" 
                                    itemValue="#{item}" />
