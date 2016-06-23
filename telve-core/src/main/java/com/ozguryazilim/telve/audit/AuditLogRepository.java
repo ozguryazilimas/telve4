@@ -58,7 +58,7 @@ public abstract class AuditLogRepository extends RepositoryBase<AuditLog, AuditL
         
         //Haydi bakalım sonuçları alalım
         TypedQuery<AuditLog> typedQuery = entityManager().createQuery(criteriaQuery);
-        typedQuery.setMaxResults(queryDefinition.getRowLimit());
+        typedQuery.setMaxResults(queryDefinition.getResultLimit());
         List<AuditLog> resultList = typedQuery.getResultList();
 
         return resultList;
