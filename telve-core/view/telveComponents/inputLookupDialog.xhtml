@@ -9,7 +9,7 @@
     <composite:interface>
         <composite:attribute name="value" required="true"/>
         <composite:attribute name="label" required="true"/>
-        <composite:attribute name="caption" required="true" shortDescription="gösterilecek alan adı"/>
+        <composite:attribute name="caption" required="false" shortDescription="gösterilecek alan adı"/>
         <composite:attribute name="update" required="false" default=""/>
         <composite:attribute name="multiSelect" required="false" default="false"/>
         <composite:attribute name="leafSelect" required="false" default="false"/>
@@ -35,7 +35,7 @@
                                     forceSelection="true" 
                                     completeMethod="#{cc.attrs.lookupBean.suggest}"
                                     var="item"
-                                    itemLabel="#{item[cc.attrs.caption]}"
+                                    itemLabel="#{item[ empty cc.attrs.caption ? cc.attrs.lookupBean.captionFieldName : cc.attrs.caption]}"
                                     itemValue="#{item}"
                                     queryDelay="500"
                                     converter="entityConverter"
