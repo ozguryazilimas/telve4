@@ -12,12 +12,10 @@
 
     <ui:define name="taskForm">
         <div class="row">
-            <ui:remove>
-            <t:inputText label="general.label.Subject" value="#{todoTask.subject}" required="true" />
-            <t:inputTextarea label="general.label.Info" value="#{todoTask.info}" maxlength="255" required="false" />
-            </ui:remove>
-            <t:inputDateTime label="general.label.BeginDate" value="#{todoTask.startDate}" />
-            <t:inputDateTime label="general.label.EndDate" value="#{todoTask.endDate}" />
+            <t:outputText label="general.label.Subject" value="#{todoTask.subject}" columnClass="col-xs-12" />
+            <t:inputTextarea label="general.label.Info" value="#{todoTask.info}" maxlength="255" required="false" columnClass="col-xs-12" readonly="true"/>
+            <t:outputDateTime label="general.label.BeginDate" value="#{todoTask.startDate}" />
+            <t:outputDateTime label="general.label.EndDate" value="#{todoTask.endDate}" />
         </div>
     </ui:define>
 </ui:composition>
