@@ -50,7 +50,7 @@ public class User extends ParamEntityBase{
      * Uygulama tarafından register edilen farklı kullanıcı tipleri.
      */
     @Column(name = "USER_TYPE")
-    private String userType;
+    private String userType = "STANDART";
     
     /**
      * Kullanıcıya ek veri tanım alanları. Extention2lar için

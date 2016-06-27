@@ -8,9 +8,11 @@ package com.ozguryazilim.telve.idm.entities;
 import com.ozguryazilim.telve.entities.EntityBase;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -28,9 +30,11 @@ public class GroupRole extends EntityBase{
     private Long id;
     
     @ManyToOne
+    @JoinColumn(name = "GROUP_ID", foreignKey = @ForeignKey(name = "FK_GR_GROUPID"))
     private Group group;
     
     @ManyToOne
+    @JoinColumn(name = "ROLE_ID", foreignKey = @ForeignKey(name = "FK_GR_ROLEID"))
     private Role role;
 
     @Override

@@ -8,9 +8,11 @@ package com.ozguryazilim.telve.idm.entities;
 import com.ozguryazilim.telve.entities.EntityBase;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -29,7 +31,7 @@ public class RolePermission extends EntityBase{
     private Long id;
     
     @ManyToOne
-    @Column(name = "ROLE_ID")
+    @JoinColumn(name = "ROLE_ID", foreignKey = @ForeignKey(name = "FK_RP_ROLEID"))
     private Role role;
     
     @Column( name = "PERMISSION")

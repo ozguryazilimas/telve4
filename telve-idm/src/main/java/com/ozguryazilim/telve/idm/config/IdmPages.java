@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ozguryazilim.telve.admin;
+package com.ozguryazilim.telve.idm.config;
 
 import com.ozguryazilim.telve.auth.SecuredPage;
 import com.ozguryazilim.telve.nav.AdminNavigationSection;
@@ -14,12 +14,13 @@ import org.apache.deltaspike.jsf.api.config.view.Folder;
 import org.apache.deltaspike.jsf.api.config.view.View;
 
 /**
- *
- * @author haky
+ * IDM sayfa tanımları
+ * 
+ * @author Hakan Uygun
  */
 @ApplicationScoped
 @Folder(name="/admin/idm")
-public interface AdminPages extends Pages.Admin{
+public interface IdmPages extends Pages.Admin{
     @SecuredPage("user") @View @Navigation(icon = "fa fa-users", section = AdminNavigationSection.class, order = 20)
     class User implements Admin {};
     

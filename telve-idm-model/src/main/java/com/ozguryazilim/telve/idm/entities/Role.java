@@ -13,10 +13,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -41,8 +41,7 @@ public class Role extends ParamEntityBase{
     @Column(name="TYPE")
     private RoleType type;
     
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "PERM_ID")
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<RolePermission> permissions = new ArrayList<>();
 
     public Long getId() {
@@ -60,6 +59,15 @@ public class Role extends ParamEntityBase{
     public void setType(RoleType type) {
         this.type = type;
     }
+
+    public List<RolePermission> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(List<RolePermission> permissions) {
+        this.permissions = permissions;
+    }
+
     
     
     

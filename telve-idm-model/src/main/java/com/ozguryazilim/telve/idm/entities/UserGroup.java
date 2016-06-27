@@ -8,9 +8,11 @@ package com.ozguryazilim.telve.idm.entities;
 import com.ozguryazilim.telve.entities.EntityBase;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -29,16 +31,19 @@ public class UserGroup extends EntityBase{
     private Long id;
     
     @ManyToOne
+    @JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "FK_UG_USERID"))
     private User user;
     /**
      * Üyesi olunan grup
      */
     @ManyToOne
+    @JoinColumn(name = "GROUP_ID", foreignKey = @ForeignKey(name = "FK_UG_GROUPID"))
     private Group group;
     /**
      * Bu grupta hangi role sahip olduğu
      */
     @ManyToOne
+    @JoinColumn(name = "ROLE_ID", foreignKey = @ForeignKey(name = "FK_UG_ROLEID"))
     private Role role;
 
     @Override

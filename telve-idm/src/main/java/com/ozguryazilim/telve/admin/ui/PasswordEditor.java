@@ -6,9 +6,8 @@
 package com.ozguryazilim.telve.admin.ui;
 
 import com.google.common.base.Strings;
-import com.ozguryazilim.telve.admin.AdminPages;
+
 import com.ozguryazilim.telve.config.AbstractOptionPane;
-import com.ozguryazilim.telve.config.OptionPane;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -26,7 +25,7 @@ import org.picketlink.idm.model.basic.User;
  * 
  * @author Hakan Uygun
  */
-@OptionPane(optionPage = AdminPages.PasswordOptionPane.class)
+//@OptionPane(optionPage = AdminPages.PasswordOptionPane.class)
 public class PasswordEditor extends AbstractOptionPane{
 
     private String newPassword;
