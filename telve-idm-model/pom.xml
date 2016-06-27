@@ -17,6 +17,11 @@
             <groupId>org.picketlink</groupId>
             <artifactId>picketlink-idm-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>telve-core-model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
     
     <build>

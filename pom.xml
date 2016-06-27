@@ -240,6 +240,7 @@
         <module>telve-jcr</module>
         <module>telve-theme</module>
         <module>telve-gallery</module>
+        <module>telve-idm</module>
     </modules>
     
     <distributionManagement>

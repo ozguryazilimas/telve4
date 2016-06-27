@@ -1,0 +1,128 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:p="http://primefaces.org/ui"                   
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/layout/primeTemplate.xhtml">
+
+    <ui:param name="showListBar" value="true" />
+
+    <ui:define name="body">
+
+        <ui:remove>
+            <ui:include src="/layout/messages.xhtml" />
+        </ui:remove>
+
+        <style>
+            .ui-picklist .ui-picklist-list{
+                width: 100% !important;
+                height: 300px !important;
+            }
+        </style>
+
+        <div class="box box-primary">
+
+            <h:form id="form" >
+                <div class="box-body">
+
+                    <div class="row">
+                        <t:outputText label="user.label.UserName" value="#{userHome.current.loginName}" />
+                        <t:outputText label="user.label.FirstName" value="#{userHome.current.firstName}" />
+                        <t:outputText label="user.label.Email" value="#{userHome.current.email}" />
+                        <t:outputText label="user.label.LastName" value="#{userHome.current.lastName}" />
+                    </div>  
+
+
+                    <div class="row">
+                        <t:accordion id="roleacc" label="#{messages['user.caption.Roles']}" hide="false">
+                            <div class="row">
+                                <t:inputAny id="roleacca" label="general.label.Roles" columnClass="col-xs-12">
+                                    <p:pickList id="rolepicker" 
+                                                value="#{userHome.roleList}" 
+                                                var="role" 
+                                                itemLabel="#{role.name}" 
+                                                itemValue="#{role}"
+                                                showSourceFilter="true" 
+                                                showTargetFilter="true" 
+                                                showCheckbox="true"
+                                                filterMatchMode="contains"
+                                                converter="roleConverter"
+                                                style="width: 100%;">
+                                        <f:facet name="sourceCaption">#{messages['general.label.Available']}</f:facet>
+                                        <f:facet name="targetCaption">#{messages['general.label.Selected']}</f:facet>
+                                    </p:pickList>
+                                </t:inputAny>
+                            </div>
+                        </t:accordion>
+                    </div>
+
+                </div>
+                <div class="box-footer">
+                    <div class="actionButtons">
+
+                        <p:commandButton id="save" 
+                                         value="#{messages['general.button.Save']}" 
+                                         action="#{userHome.save()}"
+                                         rendered="#{identity.hasPermission( 'user', 'insert')}"
+                                         ajax="true"
+                                         partialSubmit="false"
+                                         process="@form"
+                                         update=":form,:listForm:itemlist"
+                                         validateClient="true"
+                                         icon="fa fa-save"
+                                         styleClass="btn-success"/>  
+
+                        <p:commandButton id="close" 
+                                         value="#{messages['general.button.Close']}" 
+                                         action="#{userHome.close()}"
+                                         ajax="true"
+                                         partialSubmit="true"
+                                         process="@this"
+                                         icon="fa fa-close"/>
+                    </div>
+                </div>
+
+            </h:form>
+        </div>
+    </ui:define>
+
+    <ui:define name="content-list">
+        <h:form id="listForm">
+            <p:selectOneMenu value="#{userHome.filterGroup}" >
+                <f:selectItem itemLabel="" itemValue="ALL" />
+                <f:selectItems value="#{suggestionControl.suggestions( 'userGroup', '')}" 
+                               var="item" 
+                               itemLabel="#{item.data}" 
+                               itemValue="#{item.data}" />
+                <p:ajax event="change" update="itemlist" />
+            </p:selectOneMenu>
+            <p:dataTable id="itemlist" 
+                         var="item"
+                         value="#{userHome.entityList}" 
+                         rowKey="rowKey"
+                         emptyMessage="#{messages['general.hint.EmptyList']}"
+                         rows="15"
+                         filteredValue="#{userHome.filteredList}"
+                         paginatorAlwaysVisible="false"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         paginatorTemplate="{PageLinks}">
+                <p:column headerText="#{messages['general.label.Group']}">
+                    <h:outputText value="#{item.attributesMap['UserGroup'].value}" />
+                </p:column>
+                <p:column filterBy="#{item.loginName}" 
+                          filterMatchMode="contains">
+                    <p:commandLink action="#{userHome.edit(item)}" ajax="true" partialSubmit="true" process="@this" update=":form">
+                        <h:outputText value="#{item.loginName}" />
+                    </p:commandLink>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+    <ui:define name="context-menu">
+    </ui:define>
+</ui:composition>
