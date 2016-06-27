@@ -78,7 +78,7 @@ public class SuggestionBrowse extends BrowseBase<SuggestionItem, SuggestionItem>
     @Transactional
     public void deleteSuggestion(){
         if( selectedItem != null ){
-            repository.remove(suggestionItem);
+            repository.remove(selectedItem);
             search();
         }
     }
