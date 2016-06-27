@@ -52,7 +52,7 @@ public class OptionPaneController implements Serializable{
                 p = e.getKey();
             }
             
-            if( identity.hasPermission(p, "select")){
+            if( p.equals("PasswordEditor") || identity.hasPermission(p, "select")){
                 optionPanes.add(e.getKey());
                 
                 String viewId = getOptiponPageViewId(e.getValue().optionPage());
