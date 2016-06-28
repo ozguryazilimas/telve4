@@ -43,7 +43,7 @@
 
                     </p:column>
                 </c:forEach>
-                <p:column rendered="#{showActionColumn eq 'true' }">
+                <p:column rendered="#{showActionColumn eq 'true' }" styleClass="#{actionColumnStyle}">
                     <ui:insert name="actionColumn" />
                 </p:column>
                 <p:column rendered="#{canInsert eq 'true' }" styleClass="actionColumnDouble">

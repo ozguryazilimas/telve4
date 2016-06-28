@@ -5,16 +5,14 @@
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 xmlns:p="http://primefaces.org/ui"                   
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
-                template="/layout/paramBase.xhtml">
+                template="/layout/editBase.xhtml">
 
     <ui:param name="moduleCaption" value="module.caption.User" />
     <ui:param name="formCaption" value="module.caption.User" />
     <ui:param name="homeBean" value="#{userHome}" />
-    <ui:param name="itemList" value="#{userHome.entityList}" />
     <ui:param name="entityName" value="user" />
-    <ui:param name="itemCaption" value="caption" />
-    <ui:param name="renderActive" value="true" />
-
+    <ui:param name="entity" value="#{capaHome.entity}" />
+    
     <ui:remove>
         <ui:define name="body">
 
@@ -210,11 +208,10 @@
                     <p:ajax event="onchange" update=":form:extentions" />
                 </ui:remove>
             </t:inputCombobox>
-            <t:inputText label="global.label.LoginName" value="#{userHome.entity.name}" required="true" />
+            <t:inputText label="global.label.LoginName" value="#{userHome.entity.loginName}" required="true" />
             <t:inputText label="global.label.FirstName" value="#{userHome.entity.firstName}" required="true" />
             <t:inputText label="global.label.LastName" value="#{userHome.entity.lastName}" required="true" />
             <t:inputText label="global.label.Email" value="#{userHome.entity.email}" required="true" />
-            <t:inputText label="global.label.Code" value="#{userHome.entity.code}" required="#{telveConfigResolver.getProperty('serial.core.param.User') eq ''}" />
         </div>            
 
         <div id="extentions" class="row">

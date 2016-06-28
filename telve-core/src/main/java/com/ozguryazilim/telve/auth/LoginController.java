@@ -17,6 +17,7 @@ import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandl
 import org.picketlink.Identity;
 import org.picketlink.Identity.AuthenticationResult;
 import org.picketlink.authentication.UserAlreadyLoggedInException;
+import org.picketlink.credential.DefaultLoginCredentials;
 import org.picketlink.idm.model.basic.User;
 
 /**
@@ -29,6 +30,10 @@ public class LoginController {
 
     @Inject
     private Identity identity;
+    
+    @Inject
+    private DefaultLoginCredentials loginCredentials;
+    
     @Inject
     private FacesContext facesContext;
 
@@ -41,6 +46,17 @@ public class LoginController {
     public void login() {
         AuthenticationResult result = AuthenticationResult.FAILED;
         try{
+            //FIXME: Default kullanıcı için bir şey düşünelim.
+            //SecurityUtils.getSecurityManager();
+            /*
+            Subject currentUser = SecurityUtils.getSubject();
+            if( !currentUser.isAuthenticated()){
+                UsernamePasswordToken token = new UsernamePasswordToken(loginCredentials.getUserId(), loginCredentials.getPassword());
+                //this is all you have to do to support 'remember me' (no config - built in!):
+                //token.setRememberMe(true);
+                currentUser.login(token);
+            }*/
+            
             result = identity.login();
         } catch ( UserAlreadyLoggedInException ex ){
             //Zaten login olduğu için hata vermek biraz saçma :) 

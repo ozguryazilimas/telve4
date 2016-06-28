@@ -5,7 +5,8 @@
  */
 package com.ozguryazilim.telve.idm.entities;
 
-import com.ozguryazilim.telve.entities.ParamEntityBase;
+import com.ozguryazilim.telve.annotations.BizKey;
+import com.ozguryazilim.telve.entities.EntityBase;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.CascadeType;
@@ -25,12 +26,16 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "TLI_USER")
-public class User extends ParamEntityBase{
+public class User extends EntityBase{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "genericSeq")
     @Column(name = "ID")
     private Long id;
+    
+    @Column(name = "LOGIN_NAME")
+    @BizKey
+    private String loginName;
     
     @Column(name = "FIRST_NAME")
     private String firstName;
@@ -43,8 +48,12 @@ public class User extends ParamEntityBase{
     
     @Column(name = "PW_HASH")
     private String passwordEncodedHash;
+    
     @Column(name = "PW_SALT")
     private String passwordSalt;
+    
+    @Column(name = "ISACTIVE")
+    private Boolean active = Boolean.TRUE;
     
     /**
      * Uygulama tarafından register edilen farklı kullanıcı tipleri.
@@ -59,6 +68,9 @@ public class User extends ParamEntityBase{
     @MapKey(name = "key")
     private Map<String,UserAttribute> attributes = new HashMap<>();
 
+    
+    @Column(name = "INFO")
+    private String info;
     
     public Long getId() {
         return id;
@@ -123,7 +135,30 @@ public class User extends ParamEntityBase{
     public void setAttributes(Map<String, UserAttribute> attributes) {
         this.attributes = attributes;
     }
-    
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
     
     
 }

@@ -57,11 +57,8 @@
                 <constraints primaryKey="true" primaryKeyName="TLI_USERPK"/>
             </column>
             <column name="ISACTIVE" type="BOOLEAN"/>
-            <column name="CODE" type="VARCHAR(30)">
-                <constraints nullable="false"/>
-            </column>
             <column name="INFO" type="VARCHAR(255)"/>
-            <column name="NAME" type="VARCHAR(100)">
+            <column name="LOGIN_NAME" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
             <column name="EMAIL" type="VARCHAR(255)"/>
@@ -150,6 +147,6 @@
         <addUniqueConstraint columnNames="CODE" constraintName="UC_TLI_ROLECODE_COL" deferrable="false" disabled="false" initiallyDeferred="false" tableName="TLI_ROLE"/>
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-23">
-        <addUniqueConstraint columnNames="CODE" constraintName="UC_TLI_USERCODE_COL" deferrable="false" disabled="false" initiallyDeferred="false" tableName="TLI_USER"/>
+        <addUniqueConstraint columnNames="LOGIN_NAME" constraintName="UC_TLI_USERCODE_COL" deferrable="false" disabled="false" initiallyDeferred="false" tableName="TLI_USER"/>
     </changeSet>
 </databaseChangeLog>

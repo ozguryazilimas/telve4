@@ -44,6 +44,19 @@ public class Role extends ParamEntityBase{
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<RolePermission> permissions = new ArrayList<>();
 
+    public Role() {
+    }
+
+    public Role(Long id, String code, String name ) {
+        super();
+        this.id = id;
+        setCode(code);
+        setName(name);
+    }
+
+    
+    
+    @Override
     public Long getId() {
         return id;
     }

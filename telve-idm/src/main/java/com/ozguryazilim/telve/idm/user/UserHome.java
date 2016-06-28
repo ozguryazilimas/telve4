@@ -11,8 +11,9 @@ import com.ozguryazilim.telve.auth.UserModel;
 import com.ozguryazilim.telve.auth.UserModelRegistery;
 import com.ozguryazilim.telve.config.TelveConfigResolver;
 import com.ozguryazilim.telve.data.RepositoryBase;
-import com.ozguryazilim.telve.forms.ParamBase;
-import com.ozguryazilim.telve.forms.ParamEdit;
+import com.ozguryazilim.telve.forms.FormBase;
+import com.ozguryazilim.telve.forms.FormEdit;
+import com.ozguryazilim.telve.idm.config.IdmPages;
 import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.sequence.SequenceManager;
 import java.util.ArrayList;
@@ -27,8 +28,8 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Hakan Uygun
  */
-@ParamEdit
-public class UserHome extends ParamBase<User, Long>{
+@FormEdit(browsePage = IdmPages.UserBrowse.class, editPage = IdmPages.User.class, viewContainerPage = IdmPages.UserView.class, masterViewPage = IdmPages.UserMasterView.class)
+public class UserHome extends FormBase<User, Long>{
     
     private static final Logger LOG = LoggerFactory.getLogger(UserHome.class);
 
@@ -51,12 +52,6 @@ public class UserHome extends ParamBase<User, Long>{
 
     @Override
     public boolean onBeforeSave() {
-        if (Strings.isNullOrEmpty(getEntity().getCode())) {
-            String cc = telveConfigResolver.getProperty("serial.core.param.User");
-            if (cc != null) {
-                getEntity().setCode(sequenceManager.getNewSerialNumber(cc, 6));
-            }
-        }
         
         if( !Strings.isNullOrEmpty(password)){
             //FIXME: Burada password hash ve salt işlemleri yapılacak

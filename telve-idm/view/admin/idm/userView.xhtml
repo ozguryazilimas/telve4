@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"                
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"               
+                xmlns:p="http://primefaces.org/ui"
+                template="/layout/containerViewBase.xhtml">
+
+
+
+    <ui:param name="browseCaption" value="module.caption.UserBrowse" />
+    <ui:param name="moduleCaption" value="module.caption.User" />
+    <ui:param name="viewMaster" value="userHome" />
+    <ui:param name="bean" value="#{userHome}" />
+    <ui:param name="viewIdentifier" value="#{userHome.entity.loginName}" />
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="eid" value="#{userHome.id}" />
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="caption">
+        <h:outputText value="#{userHome.entity.id}" />
+    </ui:define>
+    
+</ui:composition>

@@ -1,0 +1,43 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/querySubViewBase.xhtml">
+
+    <ui:param name="moduleCaption" value="module.caption.UserRole" />
+    <ui:param name="bean" value="#{userRoleSubView}" />
+    <ui:param name="ItemPopupId" value="userRolePopup" />
+    <ui:param name="advanceEnabled" value="true" />
+    <ui:param name="saveEnabled" value="true" />
+    <ui:param name="filterEnabled" value="false" />
+    <ui:param name="canFilter" value="false" />
+    <ui:param name="canInsert" value="false" />
+    <ui:param name="canEdit" value="false" />
+    <ui:param name="canDelete" value="false" />
+    <ui:param name="showActionColumn" value="true" />
+    <ui:param name="actionColumnStyle" value="actionColumnDouble" />
+    <ui:param name="permission" value="userRole" />
+
+
+    <ui:define name="actionColumn">
+        <f:facet name="header">
+            <p:commandLink action="#{roleLookup.openDialog( true, '' )}" style="text-decoration:none;padding:4px;"
+                                   partialSubmit="true" process="@this" styleClass="fa fa-plus-circle btn-add"
+                                   title="#{messages['general.label.Add']}">
+                        <p:ajax event="dialogReturn" listener="#{userRoleSubView.onRoleSelect}" partialSubmit="true" 
+                                process="@this" update="results"/>   
+                    </p:commandLink>
+        </f:facet>
+        <p:commandLink action="#{bean.removeItem( item.id )}" 
+                       update="results" 
+                       title="#{messages['general.label.DeleteLine']}"
+                       partialSubmit="true" process="@this">
+            <i class="fa fa-trash-o btn-delete" ></i>
+            <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
+        </p:commandLink>
+    </ui:define>
+    
+
+</ui:composition>
