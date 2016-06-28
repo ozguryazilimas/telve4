@@ -33,6 +33,9 @@ public interface IdmPages extends Pages.Admin{
     @SecuredPage("user") @View 
     class UserMasterView implements Admin {};
     
+    @SecuredPage() @View 
+    class UserLookup implements Admin {};
+    
     @SecuredPage("userRole") @View 
     class UserRoleSubView implements Admin {};
     
@@ -41,6 +44,12 @@ public interface IdmPages extends Pages.Admin{
     
     @SecuredPage() @View 
     class RoleLookup implements Admin {};
+    
+    @SecuredPage("group") @View @Navigation(icon = "fa fa-slideshare", section = AdminNavigationSection.class, order = 22)
+    class Group implements Admin {};
+    
+    @SecuredPage() @View 
+    class GroupLookup implements Admin {};
     
     @SecuredPage("userRole") @View @Navigation(icon = "fa fa-street-view", section = AdminNavigationSection.class, order = 21)
     class UserRole implements Admin {};

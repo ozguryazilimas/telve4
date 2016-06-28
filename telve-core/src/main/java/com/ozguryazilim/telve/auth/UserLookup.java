@@ -11,9 +11,7 @@ import com.google.common.base.Strings;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
-import javax.inject.Named;
 import org.picketlink.Identity;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.RelationshipManager;
@@ -36,8 +34,8 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Hakan Uygun
  */
-@Named
-@Dependent
+//@Named
+//@Dependent
 public class UserLookup implements Serializable{
     
     
