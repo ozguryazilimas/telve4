@@ -21,7 +21,8 @@ import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigDescriptor;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
-import org.picketlink.Identity;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,9 +40,6 @@ import org.slf4j.LoggerFactory;
 public class NagivationController implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(NagivationController.class);
-
-    @Inject
-    private Identity identity;
 
     @Inject
     private ViewConfigResolver viewConfigResolver;
@@ -64,6 +62,8 @@ public class NagivationController implements Serializable {
     }
 
     protected void buildNav() throws InstantiationException, IllegalAccessException {
+        Subject identity = SecurityUtils.getSubject();
+        
         //FIXME: Burada yetki kontrolü de yapılacak.
         for (ViewConfigDescriptor vi : viewConfigResolver.getViewConfigDescriptors()) {
 
@@ -72,7 +72,7 @@ public class NagivationController implements Serializable {
             if (!sec.isEmpty()) {
                 SecuredPage sc = sec.get(0);
                 if (!Strings.isNullOrEmpty(sc.value())) {
-                    if (!identity.hasPermission(sc.value(), "select")) {
+                    if (!identity.isPermitted(sc.value() + ":select")) {
                         continue;
                     }
                     //Yetki çıkarma kontrolü

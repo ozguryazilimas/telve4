@@ -14,6 +14,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.picketlink.Identity;
 import org.picketlink.Identity.AuthenticationResult;
 import org.picketlink.authentication.UserAlreadyLoggedInException;
@@ -48,14 +51,14 @@ public class LoginController {
         try{
             //FIXME: Default kullanıcı için bir şey düşünelim.
             //SecurityUtils.getSecurityManager();
-            /*
+            
             Subject currentUser = SecurityUtils.getSubject();
             if( !currentUser.isAuthenticated()){
                 UsernamePasswordToken token = new UsernamePasswordToken(loginCredentials.getUserId(), loginCredentials.getPassword());
                 //this is all you have to do to support 'remember me' (no config - built in!):
                 //token.setRememberMe(true);
                 currentUser.login(token);
-            }*/
+            }
             
             result = identity.login();
         } catch ( UserAlreadyLoggedInException ex ){
@@ -75,6 +78,8 @@ public class LoginController {
     
     public String logout(){
         auditLogger.actionLog("Logout", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, ((User)identity.getAccount()).getLoginName(), "" );
+        Subject currentUser = SecurityUtils.getSubject();
+        currentUser.logout();
         identity.logout();
         facesContext.getExternalContext().invalidateSession();
         return "/login.xhtml";

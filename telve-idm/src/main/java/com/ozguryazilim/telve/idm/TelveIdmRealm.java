@@ -5,10 +5,15 @@
  */
 package com.ozguryazilim.telve.idm;
 
+import com.ozguryazilim.telve.idm.entities.RolePermission;
 import com.ozguryazilim.telve.idm.entities.User;
+import com.ozguryazilim.telve.idm.entities.UserRole;
 import com.ozguryazilim.telve.idm.role.RoleRepository;
 import com.ozguryazilim.telve.idm.user.UserRepository;
-import java.sql.Connection;
+import com.ozguryazilim.telve.idm.user.UserRoleRepository;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -41,6 +46,9 @@ public class TelveIdmRealm extends AuthorizingRealm {
 
     @Inject
     private RoleRepository roleRepository;
+    
+    @Inject
+    private UserRoleRepository userRoleRepository;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -51,15 +59,17 @@ public class TelveIdmRealm extends AuthorizingRealm {
 
         String username = (String) getAvailablePrincipal(principals);
 
-        Connection conn = null;
+        
         Set<String> roleNames = null;
         Set<String> permissions = null;
 
+        User user = userRepository.findAnyByLoginName(username);
+        
         // Retrieve roles and permissions from database
-        roleNames = getRoleNamesForUser(username);
+        roleNames = getRoleNamesForUser(user);
         //TODO: Bunu config'e almalı mı?
         //if (permissionsLookupEnabled) {
-        permissions = getPermissions(username, roleNames);
+        permissions = getPermissions(user);
         //}
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roleNames);
@@ -121,14 +131,49 @@ public class TelveIdmRealm extends AuthorizingRealm {
         return info;
     }
 
-    private Set<String> getRoleNamesForUser(String username) {
-        //Burada UserRole üzerinden rol isimleri toplanacak.
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    //TODO: Acaba bu kodları repository'e mi taşısak?
+    private Set<String> getRoleNamesForUser(User user) {
+        
+        Set<String> roleNames = new HashSet<>();
+        
+        //Böyle bir kullanıcımız yok.
+        if( user == null ) return Collections.emptySet();
+        
+        //Kullanıcı aktif değil.
+        if( !user.getActive() ) return Collections.emptySet();
+        
+        List<UserRole> userRoles = userRoleRepository.findByUser(user);
+        
+        
+        for( UserRole ur : userRoles ){
+            roleNames.add( ur.getRole().getName());
+        }
+        
+        return roleNames;
+        
     }
 
-    private Set<String> getPermissions(String username, Set<String> roleNames) {
-        //Burada role ismi üzerinden yetki listesi dönecek
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    //TODO: Bu kodları acaba repository'ye mi taşısak?
+    private Set<String> getPermissions(User user) {
+        //Böyle bir kullanıcımız yok.
+        if( user == null ) return Collections.emptySet();
+        
+        //Kullanıcı aktif değil.
+        if( !user.getActive() ) return Collections.emptySet();
+        
+        //Şu anda sadece user'ın rolleri üzerinden permission veriliyor.
+        //Eğer grup ya da doğrudan kullanıcı üzerinden yetki verilecek ise onların da toplanması lazım.
+        Set<String> permissions = new HashSet<>();
+        
+        List<UserRole> userRoles = userRoleRepository.findByUser(user);
+        
+        for( UserRole ur : userRoles ){
+            for( RolePermission rp :  ur.getRole().getPermissions() ){
+                permissions.add(rp.getPermission());
+            }
+        }
+        
+        return permissions;
     }
 
 }
