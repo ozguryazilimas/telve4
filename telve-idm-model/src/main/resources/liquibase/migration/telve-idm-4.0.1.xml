@@ -10,20 +10,11 @@
                 <constraints nullable="false"/>
             </column>
             <column name="INFO" type="VARCHAR(255)"/>
-            <column name="NAME" type="VARCHAR(100)">
+            <column name="NAME" type="VARCHAR(30)">
                 <constraints nullable="false"/>
             </column>
             <column name="PATH" type="VARCHAR(255)"/>
             <column name="PID" type="BIGINT"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="oyas (generated)" id="1467025451677-2">
-        <createTable tableName="TLI_GROUP_ROLE">
-            <column autoIncrement="true" name="ID" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="TLI_GROUP_ROLPK"/>
-            </column>
-            <column name="GROUP_ID" type="BIGINT"/>
-            <column name="ROLE_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-3">
@@ -36,10 +27,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="INFO" type="VARCHAR(255)"/>
-            <column name="NAME" type="VARCHAR(100)">
+            <column name="NAME" type="VARCHAR(30)">
                 <constraints nullable="false"/>
             </column>
-            <column name="TYPE" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-4">
@@ -85,16 +75,6 @@
                 <constraints primaryKey="true" primaryKeyName="TLI_USER_GROUPK"/>
             </column>
             <column name="GROUP_ID" type="BIGINT"/>
-            <column name="ROLE_ID" type="BIGINT"/>
-            <column name="USER_ID" type="BIGINT"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="oyas (generated)" id="1467025451677-8">
-        <createTable tableName="TLI_USER_PERM">
-            <column autoIncrement="true" name="ID" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="TLI_USER_PERMPK"/>
-            </column>
-            <column name="PERSMISSION" type="VARCHAR(255)"/>
             <column name="USER_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
@@ -107,9 +87,7 @@
             <column name="USER_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
-    <changeSet author="oyas (generated)" id="1467025451677-10">
-        <addForeignKeyConstraint baseColumnNames="ROLE_ID" baseTableName="TLI_GROUP_ROLE" constraintName="FK_a0krxef6u1gm79jfsaonnero7" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="TLI_ROLE"/>
-    </changeSet>
+    
     <changeSet author="oyas (generated)" id="1467025451677-11">
         <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="TLI_USER_GROUP" constraintName="FK_cwoua04a5pyfbd082up2tfmx6" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="TLI_USER"/>
     </changeSet>
@@ -118,9 +96,6 @@
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-13">
         <addForeignKeyConstraint baseColumnNames="GROUP_ID" baseTableName="TLI_USER_GROUP" constraintName="FK_kjnhw3iwif4nnfmicyqqjcht0" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="TLI_GROUP"/>
-    </changeSet>
-    <changeSet author="oyas (generated)" id="1467025451677-14">
-        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="TLI_USER_PERM" constraintName="FK_kq1xon3xdwhamxa0ces5l71h9" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="TLI_USER"/>
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-15">
         <addForeignKeyConstraint baseColumnNames="ROLE_ID" baseTableName="TLI_USER_ROLE" constraintName="FK_mfodp7tbtxxp6pj1rf14otrdk" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="TLI_ROLE"/>
@@ -131,22 +106,13 @@
     <changeSet author="oyas (generated)" id="1467025451677-17">
         <addForeignKeyConstraint baseColumnNames="ROLE_ID" baseTableName="TLI_ROLE_PERM" constraintName="FK_p1jwmramrq4uks7ode7qo9slo" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="TLI_ROLE"/>
     </changeSet>
-    <changeSet author="oyas (generated)" id="1467025451677-18">
-        <addForeignKeyConstraint baseColumnNames="GROUP_ID" baseTableName="TLI_GROUP_ROLE" constraintName="FK_q53vthv4gtj2nr1bq87loo563" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="TLI_GROUP"/>
-    </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-19">
         <addForeignKeyConstraint baseColumnNames="PID" baseTableName="TLI_GROUP" constraintName="FK_sfuft7xjl327e7an6qtreau2k" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="TLI_GROUP"/>
-    </changeSet>
-    <changeSet author="oyas (generated)" id="1467025451677-20">
-        <addForeignKeyConstraint baseColumnNames="ROLE_ID" baseTableName="TLI_USER_GROUP" constraintName="FK_srt72gb1s30bl95xnq9rso5y6" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="TLI_ROLE"/>
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-21">
         <addUniqueConstraint columnNames="CODE" constraintName="UC_TLI_GROUPCODE_COL" deferrable="false" disabled="false" initiallyDeferred="false" tableName="TLI_GROUP"/>
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-22">
         <addUniqueConstraint columnNames="CODE" constraintName="UC_TLI_ROLECODE_COL" deferrable="false" disabled="false" initiallyDeferred="false" tableName="TLI_ROLE"/>
-    </changeSet>
-    <changeSet author="oyas (generated)" id="1467025451677-23">
-        <addUniqueConstraint columnNames="LOGIN_NAME" constraintName="UC_TLI_USERCODE_COL" deferrable="false" disabled="false" initiallyDeferred="false" tableName="TLI_USER"/>
     </changeSet>
 </databaseChangeLog>

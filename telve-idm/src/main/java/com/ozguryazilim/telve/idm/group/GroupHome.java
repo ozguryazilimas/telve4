@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -119,5 +120,11 @@ public class GroupHome extends TreeBase<Group>{
         }
 
         return ls;
+    }
+    
+    @Transactional
+    public void removeItem( Long id ){
+        UserGroup ug = userGrouprepository.findBy(id);
+        userGrouprepository.remove(ug);
     }
 }

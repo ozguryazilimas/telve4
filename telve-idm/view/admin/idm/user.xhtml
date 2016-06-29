@@ -7,8 +7,6 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 template="/layout/editBase.xhtml">
 
-    <ui:param name="moduleCaption" value="module.caption.User" />
-    <ui:param name="formCaption" value="module.caption.User" />
     <ui:param name="homeBean" value="#{userHome}" />
     <ui:param name="entityName" value="user" />
     <ui:param name="entity" value="#{capaHome.entity}" />
@@ -208,10 +206,10 @@
                     <p:ajax event="onchange" update=":form:extentions" />
                 </ui:remove>
             </t:inputCombobox>
-            <t:inputText label="global.label.LoginName" value="#{userHome.entity.loginName}" required="true" />
-            <t:inputText label="global.label.FirstName" value="#{userHome.entity.firstName}" required="true" />
-            <t:inputText label="global.label.LastName" value="#{userHome.entity.lastName}" required="true" />
-            <t:inputText label="global.label.Email" value="#{userHome.entity.email}" required="true" />
+            <t:inputText label="general.label.LoginName" value="#{userHome.entity.loginName}" required="true" />
+            <t:inputText label="general.label.FirstName" value="#{userHome.entity.firstName}" required="true" />
+            <t:inputText label="general.label.LastName" value="#{userHome.entity.lastName}" required="true" />
+            <t:inputText label="general.label.Email" value="#{userHome.entity.email}" required="true" />
         </div>            
 
         <div id="extentions" class="row">
@@ -221,9 +219,9 @@
         </div>
 
         <div class="row">        
-            <t:inputTextarea label="global.label.Info" value="#{userHome.entity.info}" required="false" />                                            
-            <t:inputCheckboxGroup label="global.label.Status">
-                <p:selectBooleanCheckbox value="#{userHome.entity.active}" itemLabel="#{messages['global.label.Active']}" />
+            <t:inputTextarea label="general.label.Info" value="#{userHome.entity.info}" required="false" />                                            
+            <t:inputCheckboxGroup label="general.label.Status">
+                <p:selectBooleanCheckbox value="#{userHome.entity.active}" itemLabel="#{messages['general.label.Active']}" />
             </t:inputCheckboxGroup>
         </div>  
 

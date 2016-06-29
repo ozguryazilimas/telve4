@@ -31,12 +31,13 @@ public class UserBrowse extends BrowseBase<User, UserViewModel>{
     @Override
     protected void buildQueryDefinition(QueryDefinition<User, UserViewModel> queryDefinition) {
         queryDefinition
-                .addFilter(new StringFilter<>(User_.lastName, "general.label.Name"))
+                .addFilter(new StringFilter<>(User_.lastName, "general.label.LastName"))
                 .addFilter(new StringFilter<>(User_.firstName, "general.label.FirstName"));
         queryDefinition
-                .addColumn(new LinkColumn<>(User_.loginName, "general.label.Serial"), true)
-                .addColumn(new LinkColumn<>(User_.lastName, "general.label.Serial"), true)
-                .addColumn(new TextColumn<>(User_.firstName, "general.label.Subject"), true, false);
+                .addColumn(new LinkColumn<>(User_.loginName, "general.label.LoginName"), true)
+                .addColumn(new TextColumn<>(User_.firstName, "general.label.FirstName"), true)
+                .addColumn(new TextColumn<>(User_.lastName, "general.label.LastName"), true)
+                .addColumn(new TextColumn<>(User_.email, "general.label.EMail"), true);
         
     }
 

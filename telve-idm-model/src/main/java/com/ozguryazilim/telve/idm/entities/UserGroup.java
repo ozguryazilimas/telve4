@@ -39,12 +39,6 @@ public class UserGroup extends EntityBase{
     @ManyToOne
     @JoinColumn(name = "GROUP_ID", foreignKey = @ForeignKey(name = "FK_UG_GROUPID"))
     private Group group;
-    /**
-     * Bu grupta hangi role sahip olduğu
-     */
-    @ManyToOne
-    @JoinColumn(name = "ROLE_ID", foreignKey = @ForeignKey(name = "FK_UG_ROLEID"))
-    private Role role;
 
     @Override
     public Long getId() {
@@ -71,14 +65,5 @@ public class UserGroup extends EntityBase{
         this.group = group;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-    
-    
     
 }

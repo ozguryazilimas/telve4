@@ -24,7 +24,7 @@ public interface IdmPages extends Pages.Admin{
     @SecuredPage("user") @View 
     class User implements Admin {};
     
-    @SecuredPage("user") @View @Navigation(icon = "fa fa-users", section = AdminNavigationSection.class, order = 20)
+    @SecuredPage("user") @View @Navigation(icon = "fa fa-user", section = AdminNavigationSection.class, order = 20)
     class UserBrowse implements Admin {};
     
     @SecuredPage("user") @View 
@@ -39,20 +39,20 @@ public interface IdmPages extends Pages.Admin{
     @SecuredPage("userRole") @View 
     class UserRoleSubView implements Admin {};
     
-    @SecuredPage("role") @View @Navigation(icon = "fa fa-slideshare", section = AdminNavigationSection.class, order = 22)
+    @SecuredPage("userGroup") @View 
+    class UserGroupSubView implements Admin {};
+    
+    @SecuredPage("role") @View @Navigation(icon = "fa fa-shield", section = AdminNavigationSection.class, order = 22)
     class Role implements Admin {};
     
     @SecuredPage() @View 
     class RoleLookup implements Admin {};
     
-    @SecuredPage("group") @View @Navigation(icon = "fa fa-slideshare", section = AdminNavigationSection.class, order = 22)
+    @SecuredPage("group") @View @Navigation(icon = "fa fa-users", section = AdminNavigationSection.class, order = 22)
     class Group implements Admin {};
     
     @SecuredPage() @View 
     class GroupLookup implements Admin {};
-    
-    @SecuredPage("userRole") @View @Navigation(icon = "fa fa-street-view", section = AdminNavigationSection.class, order = 21)
-    class UserRole implements Admin {};
     
     @SecuredPage @View 
     class PasswordOptionPane implements Admin {};

@@ -11,8 +11,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,13 +32,6 @@ public class Role extends ParamEntityBase{
     @Column(name = "ID")
     private Long id;
 
-    /**
-     * Bu rolün nerede kullanılabileceği.
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(name="TYPE")
-    private RoleType type;
-    
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<RolePermission> permissions = new ArrayList<>();
 
@@ -55,7 +46,6 @@ public class Role extends ParamEntityBase{
     }
 
     
-    
     @Override
     public Long getId() {
         return id;
@@ -65,13 +55,6 @@ public class Role extends ParamEntityBase{
         this.id = id;
     }
 
-    public RoleType getType() {
-        return type;
-    }
-
-    public void setType(RoleType type) {
-        this.type = type;
-    }
 
     public List<RolePermission> getPermissions() {
         return permissions;
@@ -81,7 +64,5 @@ public class Role extends ParamEntityBase{
         this.permissions = permissions;
     }
 
-    
-    
     
 }
