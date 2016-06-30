@@ -15,9 +15,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import javax.inject.Named;
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -37,18 +35,7 @@ import org.apache.shiro.util.ByteSource;
  * 
  * @author Hakan Uygun
  */
-@Dependent
-@Named
 public class TelveIdmRealm extends AuthorizingRealm {
-
-    @Inject
-    private UserRepository userRepository;
-
-    @Inject
-    private RoleRepository roleRepository;
-    
-    @Inject
-    private UserRoleRepository userRoleRepository;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
@@ -63,7 +50,7 @@ public class TelveIdmRealm extends AuthorizingRealm {
         Set<String> roleNames = null;
         Set<String> permissions = null;
 
-        User user = userRepository.findAnyByLoginName(username);
+        User user = getUserRepository().findAnyByLoginName(username);
         
         // Retrieve roles and permissions from database
         roleNames = getRoleNamesForUser(user);
@@ -110,7 +97,7 @@ public class TelveIdmRealm extends AuthorizingRealm {
                 salt = getSaltForUser(username);
             }*/
 
-        User user = userRepository.findAnyByLoginName(username);
+        User user = getUserRepository().findAnyByLoginName(username);
         if (user == null) {
             throw new UnknownAccountException("No account found for user [" + username + "]");
         }
@@ -142,7 +129,7 @@ public class TelveIdmRealm extends AuthorizingRealm {
         //Kullanıcı aktif değil.
         if( !user.getActive() ) return Collections.emptySet();
         
-        List<UserRole> userRoles = userRoleRepository.findByUser(user);
+        List<UserRole> userRoles = getUserRoleRepository().findByUser(user);
         
         
         for( UserRole ur : userRoles ){
@@ -165,7 +152,7 @@ public class TelveIdmRealm extends AuthorizingRealm {
         //Eğer grup ya da doğrudan kullanıcı üzerinden yetki verilecek ise onların da toplanması lazım.
         Set<String> permissions = new HashSet<>();
         
-        List<UserRole> userRoles = userRoleRepository.findByUser(user);
+        List<UserRole> userRoles = getUserRoleRepository().findByUser(user);
         
         for( UserRole ur : userRoles ){
             for( RolePermission rp :  ur.getRole().getPermissions() ){
@@ -180,4 +167,18 @@ public class TelveIdmRealm extends AuthorizingRealm {
     public void clearAuthCache(PrincipalCollection principal){
         clearCachedAuthorizationInfo(principal);
     }
+
+    public UserRepository getUserRepository() {
+        return BeanProvider.getContextualReference(UserRepository.class);
+    }
+
+    public RoleRepository getRoleRepository() {
+        return BeanProvider.getContextualReference(RoleRepository.class);
+    }
+
+    public UserRoleRepository getUserRoleRepository() {
+        return BeanProvider.getContextualReference(UserRoleRepository.class);
+    }
+    
+    
 }
