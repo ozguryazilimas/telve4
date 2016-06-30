@@ -8,15 +8,15 @@ package com.ozguryazilim.telve.idm.user;
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.auth.UserModel;
 import com.ozguryazilim.telve.auth.UserModelRegistery;
-import com.ozguryazilim.telve.config.TelveConfigResolver;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.forms.FormBase;
 import com.ozguryazilim.telve.forms.FormEdit;
+import com.ozguryazilim.telve.idm.IdmEvent;
 import com.ozguryazilim.telve.idm.config.IdmPages;
 import com.ozguryazilim.telve.idm.entities.User;
-import com.ozguryazilim.telve.sequence.SequenceManager;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.slf4j.Logger;
@@ -38,11 +38,8 @@ public class UserHome extends FormBase<User, Long>{
     @Inject
     private UserRepository repository;
 
-    @Inject
-    private TelveConfigResolver telveConfigResolver;
-
-    @Inject
-    private SequenceManager sequenceManager;
+    @Inject 
+    private Event<IdmEvent>  event;
 
     private String password;
     
@@ -61,6 +58,19 @@ public class UserHome extends FormBase<User, Long>{
         
         return true;
     }
+
+    @Override
+    public boolean onAfterSave() {
+        event.fire(new IdmEvent(IdmEvent.FROM_USER, IdmEvent.CREATE, getEntity().getLoginName()));
+        return super.onAfterSave(); 
+    }
+    
+    @Override
+    public boolean onBeforeDelete() {
+        event.fire(new IdmEvent(IdmEvent.FROM_USER, IdmEvent.DELETE, getEntity().getLoginName()));
+        return super.onAfterSave(); 
+    }
+    
     
 
     /**

@@ -8,6 +8,7 @@ package com.ozguryazilim.telve.idm.group;
 import com.ozguryazilim.telve.data.TreeRepositoryBase;
 import com.ozguryazilim.telve.forms.ParamEdit;
 import com.ozguryazilim.telve.forms.TreeBase;
+import com.ozguryazilim.telve.idm.IdmEvent;
 import com.ozguryazilim.telve.idm.entities.Group;
 import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.idm.entities.UserGroup;
@@ -16,6 +17,7 @@ import com.ozguryazilim.telve.lookup.LookupSelectTuple;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import org.primefaces.event.SelectEvent;
@@ -32,6 +34,9 @@ public class GroupHome extends TreeBase<Group>{
     
     @Inject
     private UserGroupRepository userGrouprepository;
+    
+    @Inject 
+    private Event<IdmEvent>  event;
     
     @Override
     protected TreeRepositoryBase<Group> getRepository() {
@@ -127,4 +132,18 @@ public class GroupHome extends TreeBase<Group>{
         UserGroup ug = userGrouprepository.findBy(id);
         userGrouprepository.remove(ug);
     }
+
+    @Override
+    protected boolean onAfterSave() {
+        event.fire(new IdmEvent(IdmEvent.FROM_GROUP, IdmEvent.CREATE, getEntity().getName()));
+        return super.onAfterSave(); 
+    }
+
+    @Override
+    protected void onBeforeDelete() {
+        event.fire(new IdmEvent(IdmEvent.FROM_GROUP, IdmEvent.DELETE, getEntity().getName()));
+        super.onAfterDelete();
+    }
+    
+    
 }

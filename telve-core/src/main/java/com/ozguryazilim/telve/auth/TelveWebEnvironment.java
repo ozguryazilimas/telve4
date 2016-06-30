@@ -6,6 +6,10 @@
 package com.ozguryazilim.telve.auth;
 
 import org.apache.deltaspike.core.api.provider.BeanProvider;
+import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.cache.MemoryConstrainedCacheManager;
+import org.apache.shiro.realm.CachingRealm;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.util.Initializable;
 import org.apache.shiro.web.env.DefaultWebEnvironment;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -49,10 +53,18 @@ public class TelveWebEnvironment extends DefaultWebEnvironment implements Initia
         
         SecurityManagerConfig config = BeanProvider.getContextualReference(SecurityManagerConfig.class, true);
         
-        LOG.info("Realms : {}", config.getRealms());
         
-        WebSecurityManager wsm = new DefaultWebSecurityManager( config.getRealms());
-
+        CacheManager cm = new MemoryConstrainedCacheManager();
+        
+        for( Realm r : config.getRealms() ){
+            LOG.info("Actived Realm : {}", r.getName());
+            if( r instanceof CachingRealm ){
+                ((CachingRealm)r).setCacheManager(cm);
+            }
+        }
+        
+        DefaultWebSecurityManager wsm = new DefaultWebSecurityManager( config.getRealms());
+        wsm.setCacheManager(cm);
         return wsm;
     }
     

@@ -3,9 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ozguryazilim.telve.admin;
-
-import org.picketlink.idm.model.IdentityType;
+package com.ozguryazilim.telve.idm;
 
 /**
  * Identity olayları ile ilgili event.
@@ -14,7 +12,7 @@ import org.picketlink.idm.model.IdentityType;
  * 
  * @author Hakan Uygun
  */
-public class IdentityEvent {
+public class IdmEvent {
     
     public static final String CREATE = "create";
     public static final String UPDATE = "update";
@@ -22,28 +20,16 @@ public class IdentityEvent {
 
     public static final String FROM_ROLE = "Role";
     public static final String FROM_USER = "User";
+    public static final String FROM_GROUP = "Group";
     
     private String from = FROM_ROLE;
-    private IdentityType identity;
     private String action = CREATE;
+    private String subject;
 
-    public IdentityEvent(IdentityType identity) {
-        this.identity = identity;
-    }
-    
-    public IdentityEvent(IdentityType identity, String action) {
-        this.identity = identity;
-        this.action = action;
-    }
-    
-    public IdentityEvent(IdentityType identity, String from, String action) {
-        this.identity = identity;
+    public IdmEvent(String from, String action, String subject) {
         this.action = action;
         this.from = from;
-    }
-
-    public IdentityType getIdentity() {
-        return identity;
+        this.subject = subject;
     }
 
     public String getAction() {
@@ -54,9 +40,9 @@ public class IdentityEvent {
         return from;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public String getSubject() {
+        return subject;
     }
-    
+
     
 }

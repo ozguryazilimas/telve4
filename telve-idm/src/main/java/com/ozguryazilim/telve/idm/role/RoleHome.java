@@ -13,6 +13,7 @@ import com.ozguryazilim.telve.admin.ui.PermissionUIModel;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.forms.ParamBase;
 import com.ozguryazilim.telve.forms.ParamEdit;
+import com.ozguryazilim.telve.idm.IdmEvent;
 import com.ozguryazilim.telve.idm.entities.Role;
 import com.ozguryazilim.telve.idm.entities.RolePermission;
 import com.ozguryazilim.telve.permisson.ActionConsts;
@@ -25,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +44,8 @@ public class RoleHome extends ParamBase<Role, Long>{
     @Inject
     private RoleRepository repository;
 
+    @Inject 
+    private Event<IdmEvent>  event;
     
     private Map<String, PermissionGroupUIModel> permissionGroups = new HashMap<>();
     private Map<String, PermissionUIModel> permissionModels = new HashMap<>();
@@ -180,7 +184,18 @@ public class RoleHome extends ParamBase<Role, Long>{
         buildPermissionModelValues();
         return super.onAfterLoad(); 
     }
-    
+
+    @Override
+    public boolean onAfterSave() {
+        event.fire(new IdmEvent(IdmEvent.FROM_ROLE, IdmEvent.CREATE, getEntity().getName()));
+        return super.onAfterSave();
+    }
+
+    @Override
+    public boolean onBeforeDelete() {
+        event.fire(new IdmEvent(IdmEvent.FROM_ROLE, IdmEvent.DELETE, getEntity().getName()));
+        return super.onAfterDelete();
+    }
     
     public List<PermissionGroupUIModel> getPermissions() {
         List<PermissionGroupUIModel> ls = new ArrayList(permissionGroups.values());

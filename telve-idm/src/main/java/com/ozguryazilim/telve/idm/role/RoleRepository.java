@@ -46,6 +46,7 @@ public abstract class RoleRepository extends ParamRepositoryBase<Role, Role> imp
         
         return entityManager().find(Role.class, id, hints);
     }
-    
+
+    public abstract Role findAnyByName( String name );
     
 }

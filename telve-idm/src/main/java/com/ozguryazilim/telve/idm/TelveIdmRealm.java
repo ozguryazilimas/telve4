@@ -176,4 +176,8 @@ public class TelveIdmRealm extends AuthorizingRealm {
         return permissions;
     }
 
+    
+    public void clearAuthCache(PrincipalCollection principal){
+        clearCachedAuthorizationInfo(principal);
+    }
 }
