@@ -9,6 +9,7 @@ import com.ozguryazilim.telve.audit.AuditLogCommand;
 import com.ozguryazilim.telve.audit.AuditLogger;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.event.Event;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -38,6 +39,9 @@ public class LoginController {
     @Inject
     private LoginCredentials loginCredentials;
     
+    @Inject
+    private Event<LoggedInEvent> loggedInEvent;
+    
     public void login() {
         Boolean result = Boolean.FALSE;
         //try{
@@ -51,6 +55,7 @@ public class LoginController {
                 //token.setRememberMe(true);
                 currentUser.login(token);
                 result = currentUser.isAuthenticated();
+                loggedInEvent.fire(new LoggedInEvent());
             }
             
             
@@ -65,7 +70,7 @@ public class LoginController {
         if (!result) {
             FacesMessages.error("general.message.editor.AuthFail");
         } else {
-            auditLogger.actionLog("Login", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, "", "" );
+            auditLogger.actionLog("Login", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, currentUser.getPrincipal().toString(), "" );
         } 
     }
     
