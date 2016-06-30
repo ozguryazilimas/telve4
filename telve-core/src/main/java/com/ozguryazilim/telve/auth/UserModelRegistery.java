@@ -5,12 +5,10 @@
  */
 package com.ozguryazilim.telve.auth;
 
-import com.google.common.base.CaseFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,21 +57,7 @@ public class UserModelRegistery {
         return new ArrayList( userModels.keySet() );
     }
     
-    /**
-     * Geriye extender sınıfların CDI Bileşen listesini döndürür.
-     * @return 
-     */
-    public static List<AbstractIdentityHomeExtender> getExtenders() {
-        List<AbstractIdentityHomeExtender> result = new ArrayList<>();
-        for( String s : userModels.keySet() ){
-            //Sınıf ismini EL ismi haline getiriyoruz.
-            String name = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, s);
-            result.add(BeanProvider.getContextualReference(name, true, AbstractIdentityHomeExtender.class));
-        }
-                
-        return result;
-    }
-
+    
     /**
      * Geriye kullanıcı tip listesini döndürür.
      * @return 

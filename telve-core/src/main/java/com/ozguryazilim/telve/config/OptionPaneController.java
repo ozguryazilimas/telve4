@@ -20,7 +20,8 @@ import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
-import org.picketlink.Identity;
+import org.apache.shiro.subject.Subject;
+
 
 /**
  * OptionPane'leri kullanarak kullanıcıların sistem ayarlarını tanımlaması için UI kontrol sınıfı.
@@ -35,7 +36,7 @@ public class OptionPaneController implements Serializable{
     private final Map<String, String> optionPaneViews = new HashMap<>();
     
     @Inject @Any
-    private Identity identity;
+    private Subject identity;
     
     @Inject
     private ViewConfigResolver viewConfigResolver;
@@ -52,7 +53,7 @@ public class OptionPaneController implements Serializable{
                 p = e.getKey();
             }
             
-            if( identity.hasPermission(p, "select")){
+            if( identity.isPermitted(p + ":select")){
                 optionPanes.add(e.getKey());
                 
                 String viewId = getOptiponPageViewId(e.getValue().optionPage());

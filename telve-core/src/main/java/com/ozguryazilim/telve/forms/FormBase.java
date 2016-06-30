@@ -9,7 +9,7 @@ import com.google.common.base.Strings;
 import com.ozguryazilim.telve.annotations.BizKey;
 import com.ozguryazilim.telve.audit.AuditLogCommand;
 import com.ozguryazilim.telve.audit.AuditLogger;
-import com.ozguryazilim.telve.auth.ActiveUserLookup;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.messages.FacesMessages;
@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
-import javax.enterprise.inject.Any;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
@@ -34,7 +33,6 @@ import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.apache.deltaspike.core.util.ProxyUtils;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
-import org.picketlink.Identity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,11 +60,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     private ViewConfigResolver viewConfigResolver;
 
     @Inject
-    @Any
     private Identity identity;
-
-    @Inject
-    private ActiveUserLookup userLookup;
     
     @Inject
     private AuditLogger auditLogger;
@@ -106,7 +100,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
                     continue;
                 }
                 
-                if (identity.hasPermission(sv.permission(), "select")) {
+                if (identity.isPermitted(sv.permission() + ":select")) {
                     subViewList.add(viewConfigResolver.getViewConfigDescriptor(sv.viewPage()).getViewId());
                     
                     //Grup tanımına göre subviewları dolduruyoruz.
@@ -182,7 +176,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             
             entity = getRepository().saveAndFlush(entity);
 
-            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, act, userLookup.getActiveUser().getLoginName(), "" );
+            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, act, identity.getLoginName(), "" );
             
             //Save'den sonra elde sakladığımız id'yi değiştirelim ki bir sonraki request için ortalık karışmasın ( bakınız setId )
             this.id = (PK) entity.getId();
@@ -296,7 +290,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             
             if( !onBeforeDelete() ) return null;
             
-            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, AuditLogCommand.ACT_DELETE, userLookup.getActiveUser().getLoginName(), "" );
+            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, AuditLogCommand.ACT_DELETE, identity.getLoginName(), "" );
             //getRepository().deleteById(entity.getId());
             getRepository().remove(entity);
             

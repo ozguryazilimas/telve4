@@ -5,11 +5,13 @@
  */
 package com.ozguryazilim.telve.auth;
 
+import javax.enterprise.inject.Model;
+
 /**
  *
  * @author oyas
  */
-//@Model
+@Model
 public class LoginCredentials {
     
     private String username;

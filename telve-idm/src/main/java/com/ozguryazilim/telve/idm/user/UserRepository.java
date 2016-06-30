@@ -155,4 +155,6 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
     }
     
     public abstract User findAnyByLoginName( String loginname );
+    
+    public abstract List<User> findByUserTypeAndActive( String userType, Boolean active);
 }

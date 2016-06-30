@@ -8,7 +8,13 @@
         <permission target="userRole" >
             <entityActions/>
         </permission>
+        <permission target="userGroup" >
+            <entityActions/>
+        </permission>
         <permission target="role" >
+            <entityActions/>
+        </permission>
+        <permission target="group" >
             <entityActions/>
         </permission>
     </permissionGroup>

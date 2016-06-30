@@ -92,5 +92,6 @@ public abstract class UserGroupRepository extends RepositoryBase<UserGroup, User
     public abstract UserGroup findAnyByUserAndGroup( User user, Group grup );
     
     public abstract List<UserGroup> findByGroup( Group grup );
+    public abstract List<UserGroup> findByUser( User user );
     
 }

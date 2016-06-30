@@ -9,7 +9,6 @@ import com.google.common.base.Strings;
 import com.ozguryazilim.telve.annotations.BizKey;
 import com.ozguryazilim.telve.audit.AuditLogCommand;
 import com.ozguryazilim.telve.audit.AuditLogger;
-import com.ozguryazilim.telve.auth.ActiveUserLookup;
 import com.ozguryazilim.telve.data.TreeRepositoryBase;
 import com.ozguryazilim.telve.entities.TreeNodeEntityBase;
 import com.ozguryazilim.telve.lookup.LookupTreeModel;
@@ -27,6 +26,7 @@ import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +53,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
     private GroupedConversation conversation;
 
     @Inject
-    private ActiveUserLookup userLookup;
+    private Subject idendity;
     
     @Inject
     private AuditLogger auditLogger;
@@ -148,7 +148,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         entity.setPath(TreeUtils.getNodeIdPath(entity));
         getRepository().save(entity);
 
-        auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_PARAM, act, userLookup.getActiveUser().getLoginName(), "" );
+        auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_PARAM, act, idendity.getPrincipal().toString(), "" );
         
         if (!getEntityList().contains(entity)) {
             getEntityList().add(entity);
@@ -183,7 +183,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         //FIXME: Eğer ağacın alt dalları varsa diye kontrol edilmesi lazım...
         try {
             
-            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_PARAM, AuditLogCommand.ACT_DELETE, userLookup.getActiveUser().getLoginName(), "" );
+            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_PARAM, AuditLogCommand.ACT_DELETE, idendity.getPrincipal().toString(), "" );
             
             getRepository().deleteById(entity.getId());
             //getRepository().remove(entity);

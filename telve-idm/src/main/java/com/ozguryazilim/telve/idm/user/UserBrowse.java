@@ -37,7 +37,7 @@ public class UserBrowse extends BrowseBase<User, UserViewModel>{
                 .addColumn(new LinkColumn<>(User_.loginName, "general.label.LoginName"), true)
                 .addColumn(new TextColumn<>(User_.firstName, "general.label.FirstName"), true)
                 .addColumn(new TextColumn<>(User_.lastName, "general.label.LastName"), true)
-                .addColumn(new TextColumn<>(User_.email, "general.label.EMail"), true);
+                .addColumn(new TextColumn<>(User_.email, "general.label.Email"), true);
         
     }
 

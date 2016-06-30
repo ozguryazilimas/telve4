@@ -24,7 +24,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
-import org.picketlink.Identity;
+import org.apache.shiro.subject.Subject;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.DashboardReorderEvent;
 import org.primefaces.model.DashboardColumn;
@@ -86,7 +86,7 @@ public class DashboardManager implements Serializable {
 
     @Inject
     @Any
-    private Identity identity;
+    private Subject identity;
 
     @PostConstruct
     public void init() {
@@ -601,7 +601,7 @@ public class DashboardManager implements Serializable {
                 p = e.getKey();
             }
             //Kullanıcının bu dashlet'i görme yetkisi var mı?
-            if (identity.hasPermission(p, "select")) {
+            if (identity.isPermitted(p  + ":select")) {
                 ls.add(e.getKey());
             }
         }

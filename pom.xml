@@ -232,7 +232,7 @@
         <module>telve-doc</module>
         <!-- module>telve-help</module -->
         <module>telve-web</module>
-        <module>telve-admin</module>
+        <!-- module>telve-admin</module -->
         <module>telve-idm-model</module>
         <module>kahve</module>
         <module>telve-bpm</module>

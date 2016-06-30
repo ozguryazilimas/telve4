@@ -6,14 +6,7 @@
 package com.ozguryazilim.telve.auth;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
 import javax.inject.Named;
-import org.apache.deltaspike.core.api.config.ConfigResolver;
-import org.picketlink.annotations.PicketLink;
-import org.picketlink.authentication.Authenticator;
-import org.picketlink.authentication.internal.IdmAuthenticator;
 
 /**
  * LDAP/IDM Authenticator seçimi sağlar.
@@ -26,23 +19,23 @@ import org.picketlink.authentication.internal.IdmAuthenticator;
 @Named
 public class AuthenticatorSelector {
     
-    @Inject
-    private Instance<LDAPAuthenticator> ldapAuthenticator;
-
-    @Inject 
-    private Instance<IdmAuthenticator> idmAuthenticator;
-    
-    @Produces
-    @PicketLink
-    @Named
-    @RequestScoped
-    public Authenticator selectAuthenticator() {
-        String authenticator = ConfigResolver.getPropertyValue("auth.method","IDM");
-        if ("IDM".equals(authenticator)) {
-            return idmAuthenticator.get();
-        } else {
-            return ldapAuthenticator.get();
-        }
-
-    }
+//    @Inject
+//    private Instance<LDAPAuthenticator> ldapAuthenticator;
+//
+//    @Inject 
+//    private Instance<IdmAuthenticator> idmAuthenticator;
+//    
+//    @Produces
+//    @PicketLink
+//    @Named
+//    @RequestScoped
+//    public Authenticator selectAuthenticator() {
+//        String authenticator = ConfigResolver.getPropertyValue("auth.method","IDM");
+//        if ("IDM".equals(authenticator)) {
+//            return idmAuthenticator.get();
+//        } else {
+//            return ldapAuthenticator.get();
+//        }
+//
+//    }
 }

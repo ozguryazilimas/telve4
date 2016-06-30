@@ -11,9 +11,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import javax.inject.Inject;
-import org.picketlink.idm.IdentityManager;
-import org.picketlink.idm.model.basic.User;
+
 
 /**
  * User JSF Converter.
@@ -24,17 +22,19 @@ import org.picketlink.idm.model.basic.User;
 @RequestScoped
 public class UserConverter implements Converter{
 
-    @Inject
-    private IdentityManager identityManager;
+//    @Inject
+//    private IdentityManager identityManager;
     
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        return identityManager.lookupIdentityById(User.class, value);
+        //return identityManager.lookupIdentityById(User.class, value);
+        return null;
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        return ((User)value).getId();
+        //return ((User)value).getId();
+        return "";
     }
     
 }

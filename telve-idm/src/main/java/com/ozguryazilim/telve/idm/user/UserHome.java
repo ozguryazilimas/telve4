@@ -6,7 +6,6 @@
 package com.ozguryazilim.telve.idm.user;
 
 import com.google.common.base.Strings;
-import com.ozguryazilim.telve.auth.AbstractIdentityHomeExtender;
 import com.ozguryazilim.telve.auth.UserModel;
 import com.ozguryazilim.telve.auth.UserModelRegistery;
 import com.ozguryazilim.telve.config.TelveConfigResolver;
@@ -48,7 +47,7 @@ public class UserHome extends FormBase<User, Long>{
     private String password;
     
     private List<String> fragments;
-    private List<AbstractIdentityHomeExtender> extenders;
+    //private List<AbstractIdentityHomeExtender> extenders;
 
     @Override
     public boolean onBeforeSave() {
@@ -96,12 +95,12 @@ public class UserHome extends FormBase<User, Long>{
      *
      * @return
      */
-    public List<AbstractIdentityHomeExtender> getExtenders() {
-        if (extenders == null) {
-            extenders = UserModelRegistery.getExtenders();
-        }
-        return extenders;
-    }
+//    public List<AbstractIdentityHomeExtender> getExtenders() {
+//        if (extenders == null) {
+//            extenders = UserModelRegistery.getExtenders();
+//        }
+//        return extenders;
+//    }
     
     /**
      * Geriye kullanıcı tiplerini döndürür.

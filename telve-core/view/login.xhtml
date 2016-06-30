@@ -155,7 +155,7 @@ h3 {
                                 <h:form id="login-form" role="form" class="login-form">
                                     <div class="form-group">
                                         <label class="sr-only" for="form-username">#{messages['general.label.UserName']}</label>
-                                        <p:inputText id="form-username" placeholder="#{messages['general.label.UserName']}" styleClass="form-username form-control" value="#{loginCredentials.userId}" />
+                                        <p:inputText id="form-username" placeholder="#{messages['general.label.UserName']}" styleClass="form-username form-control" value="#{loginCredentials.username}" />
                                     </div>
                                     <div class="form-group">
                                         <label class="sr-only" for="form-password">#{messages['general.label.Password']}</label>
@@ -189,125 +189,5 @@ h3 {
 
 
         </div>
-        <ui:remove>
-
-
-
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-4 col-md-offset-3">
-                        <div class="login-box">
-                            <div class="login-logo">#{telveConfigResolver.getProperty('app.title')}</div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 col-md-offset-7">
-                        <div class="login-box">
-
-                            <div class="login-box-body">
-                                <p:messages globalOnly="true"/>
-                                <div class="login-box-msg">#{messages['general.label.PleaseEnterUserNameAndPassword']}</div>
-                                <h:form>
-                                    <div class="row">
-                                        <t:inputAny label="general.label.UserName" columnClass="col-xs-12">
-                                            <h:inputText id="name" value="#{loginCredentials.userId}" style="width: 100%"/>
-                                        </t:inputAny>
-
-                                        <t:inputAny label="general.label.Password" columnClass="col-xs-12">
-                                            <h:inputSecret id="password" value="#{loginCredentials.password}" redisplay="true" style="width: 100%"/>
-                                        </t:inputAny>
-
-
-                                        <div class="col-xs-12 text-center">
-                                            <p:commandButton id="login" value="#{messages['general.label.Login']}" action="#{loginController.login()}" 
-                                                             style="margin: 4px; width: 120px;" ajax="false"/>
-                                        </div>
-                                    </div>
-                                </h:form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </ui:remove>
-
-        <ui:remove>
-            <div class="login-box">
-                <div class="login-logo">#{telveConfigResolver.getProperty('app.title')}</div>
-                <div class="login-box-body">
-                    <p:messages globalOnly="true"/>
-                    <div class="login-box-msg">#{messages['general.label.PleaseEnterUserNameAndPassword']}</div>
-                    <h:form>
-                        <div class="row">
-                            <t:inputAny label="general.label.UserName" columnClass="col-xs-12">
-                                <h:inputText id="name" value="#{loginCredentials.userId}" style="width: 100%"/>
-                            </t:inputAny>
-
-                            <t:inputAny label="general.label.Password" columnClass="col-xs-12">
-                                <h:inputSecret id="password" value="#{loginCredentials.password}" redisplay="true" style="width: 100%"/>
-                            </t:inputAny>
-
-
-                            <div class="col-xs-12 text-center">
-                                <p:commandButton id="login" value="#{messages['general.label.Login']}" action="#{loginController.login()}" 
-                                                 style="margin: 4px; width: 120px;" ajax="false"/>
-                            </div>
-                        </div>
-                    </h:form>
-                </div>
-            </div>
-        </ui:remove>
-
-        <ui:remove>
-
-            <div class="login_bg" style="margin-top: 200px; width: 600px; margin-left: auto; margin-right: auto; background-color: #FFF">
-
-                <ui:fragment rendered="#{identity.loggedIn}">
-                    <div>Congratulations! You are currently logged in as: <b>#{identity.account.loginName}</b></div>
-
-                    <h:form>
-                        <h:commandButton id="logout" value="Log out" action="#{identity.logout}"/>
-                    </h:form>
-                </ui:fragment>
-
-                <h:form id="loginForm" rendered="#{not identity.loggedIn}" style="border-left: 1px solid #CCCCCC; border-right: 1px solid #CCCCCC; box-shadow: 0 1px 3px #8B9097;">
-                    <p:messages globalOnly="true"/>
-
-
-                    <div class="row">
-
-                        <div class="large-4 medium-4 small-12 columns">
-
-                            <h:graphicImage value="/img/password.png" 
-                                            style="height:128px" />
-
-                        </div>
-                        <div class="large-8 medium-8 small-12 columns">
-                            <div class="row">
-                                <div class="large-12 medium-12 small-12 columns">
-                                    <p>#{messages['general.label.PleaseEnterUserNameAndPassword']}</p>
-                                </div>
-
-                                <t:inputAny label="general.label.UserName" columnClass="large-12 medium-12 small-12">
-                                    <h:inputText id="name" value="#{loginCredentials.userId}"/>
-                                </t:inputAny>
-
-                                <t:inputAny label="general.label.Password" columnClass="large-12 medium-12 small-12">
-                                    <h:inputSecret id="password" value="#{loginCredentials.password}" redisplay="true"/>
-                                </t:inputAny>
-
-
-
-                                <div class="large-12 medium-12 small-12 columns">
-                                    <p:commandButton id="login" value="#{messages['general.label.Login']}" action="#{loginController.login()}" 
-                                                     style="margin: 4px; width: 120px;" ajax="false"/>
-                                    <p:defaultCommand target="login" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </h:form>
-            </div>
-            <br style="clear:both"/>
-        </ui:remove>
     </h:body>
 </html>

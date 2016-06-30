@@ -8,7 +8,6 @@ package com.ozguryazilim.telve.auth;
 import com.ozguryazilim.telve.audit.AuditLogCommand;
 import com.ozguryazilim.telve.audit.AuditLogger;
 import com.ozguryazilim.telve.messages.FacesMessages;
-import com.ozguryazilim.telve.view.Pages;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -17,11 +16,7 @@ import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandl
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.picketlink.Identity;
-import org.picketlink.Identity.AuthenticationResult;
-import org.picketlink.authentication.UserAlreadyLoggedInException;
-import org.picketlink.credential.DefaultLoginCredentials;
-import org.picketlink.idm.model.basic.User;
+
 
 /**
  *
@@ -32,12 +27,6 @@ import org.picketlink.idm.model.basic.User;
 public class LoginController {
 
     @Inject
-    private Identity identity;
-    
-    @Inject
-    private DefaultLoginCredentials loginCredentials;
-    
-    @Inject
     private FacesContext facesContext;
 
     @Inject
@@ -46,41 +35,44 @@ public class LoginController {
     @Inject
     private AuditLogger auditLogger;
     
+    @Inject
+    private LoginCredentials loginCredentials;
+    
     public void login() {
-        AuthenticationResult result = AuthenticationResult.FAILED;
-        try{
+        Boolean result = Boolean.FALSE;
+        //try{
             //FIXME: Default kullanıcı için bir şey düşünelim.
             //SecurityUtils.getSecurityManager();
             
             Subject currentUser = SecurityUtils.getSubject();
             if( !currentUser.isAuthenticated()){
-                UsernamePasswordToken token = new UsernamePasswordToken(loginCredentials.getUserId(), loginCredentials.getPassword());
+                UsernamePasswordToken token = new UsernamePasswordToken(loginCredentials.getUsername(), loginCredentials.getPassword());
                 //this is all you have to do to support 'remember me' (no config - built in!):
                 //token.setRememberMe(true);
                 currentUser.login(token);
+                result = currentUser.isAuthenticated();
             }
             
-            result = identity.login();
-        } catch ( UserAlreadyLoggedInException ex ){
-            //Zaten login olduğu için hata vermek biraz saçma :) 
-            //Aslında buraya da gelmemesi gerektiği için doğrudan home'a yönlendiriyoruz.
-            result = AuthenticationResult.SUCCESS;
-            this.viewNavigationHandler.navigateTo(Pages.Home.class);
-            return;
-        }
+            
+//        } catch ( UserAlreadyLoggedInException ex ){
+//            //Zaten login olduğu için hata vermek biraz saçma :) 
+//            //Aslında buraya da gelmemesi gerektiği için doğrudan home'a yönlendiriyoruz.
+//            result = AuthenticationResult.SUCCESS;
+//            this.viewNavigationHandler.navigateTo(Pages.Home.class);
+//            return;
+//        }
         
-        if (AuthenticationResult.FAILED.equals(result)) {
+        if (!result) {
             FacesMessages.error("general.message.editor.AuthFail");
         } else {
-            auditLogger.actionLog("Login", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, ((User)identity.getAccount()).getLoginName(), "" );
+            auditLogger.actionLog("Login", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, "", "" );
         } 
     }
     
     public String logout(){
-        auditLogger.actionLog("Logout", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, ((User)identity.getAccount()).getLoginName(), "" );
         Subject currentUser = SecurityUtils.getSubject();
+        auditLogger.actionLog("Logout", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, currentUser.getPrincipal().toString(), "" );
         currentUser.logout();
-        identity.logout();
         facesContext.getExternalContext().invalidateSession();
         return "/login.xhtml";
     }

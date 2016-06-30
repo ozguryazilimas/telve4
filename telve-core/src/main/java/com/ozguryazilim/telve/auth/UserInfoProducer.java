@@ -7,20 +7,10 @@ package com.ozguryazilim.telve.auth;
 
 import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
 import javax.inject.Named;
-import org.picketlink.Identity;
-import org.picketlink.idm.IdentityManager;
-import org.picketlink.idm.RelationshipManager;
-import org.picketlink.idm.model.Attribute;
-import org.picketlink.idm.model.basic.Grant;
-import org.picketlink.idm.model.basic.Role;
-import org.picketlink.idm.model.basic.User;
-import org.picketlink.idm.query.RelationshipQuery;
 
 /**
  * Aktif kullanıcı ve ona ait bilgileri üretir.
@@ -35,46 +25,46 @@ public class UserInfoProducer implements Serializable{
     
     private static final String USER_TYPE = "UserType"; 
     
-    private List<Role> roles;
+//    private List<Role> roles;
     private List<String> roleNames;
     
-    @Inject
-    private Identity identity;
+//    @Inject
+//    private Identity identity;
+//    
+//    @Inject
+//    private UserInfo userInfo;
+//    
+//    @Inject
+//    private RelationshipManager relationshipManager;
+//
+//    @Inject
+//    private IdentityManager identityManager;
     
-    @Inject
-    private UserInfo userInfo;
-    
-    @Inject
-    private RelationshipManager relationshipManager;
-
-    @Inject
-    private IdentityManager identityManager;
-    
-    @Produces @SessionScoped @ActiveUserRoles
-    public List<String> getActiveUserRoleNames(){
-        if( roleNames == null ){
-            populateRoles();
-            roleNames = new ArrayList<>();
-            for( Role r : roles ){
-                roleNames.add(r.getName());
-            }
-            //Eğer boşsa içine none ekliyoruz. Böylece IN içine konan sorgular hata vermeyecek.
-            if( roleNames.isEmpty() ){
-                roleNames.add("NONE");
-            }
-        }
-        return roleNames;
-    }
+//    @Produces @SessionScoped @ActiveUserRoles
+//    public List<String> getActiveUserRoleNames(){
+//        if( roleNames == null ){
+//            populateRoles();
+//            roleNames = new ArrayList<>();
+//            for( Role r : roles ){
+//                roleNames.add(r.getName());
+//            }
+//            //Eğer boşsa içine none ekliyoruz. Böylece IN içine konan sorgular hata vermeyecek.
+//            if( roleNames.isEmpty() ){
+//                roleNames.add("NONE");
+//            }
+//        }
+//        return roleNames;
+//    }
     
     protected void populateRoles(){
-        roles = new ArrayList<>();
+//        roles = new ArrayList<>();
         
-        RelationshipQuery<Grant> query = relationshipManager.createRelationshipQuery(Grant.class);
-        query.setParameter(Grant.ASSIGNEE, identity.getAccount());
-        List<Grant> result = query.getResultList();
-        for (Grant grant : result) {
-            roles.add(grant.getRole());
-        }
+//        RelationshipQuery<Grant> query = relationshipManager.createRelationshipQuery(Grant.class);
+//        query.setParameter(Grant.ASSIGNEE, identity.getAccount());
+//        List<Grant> result = query.getResultList();
+//        for (Grant grant : result) {
+//            roles.add(grant.getRole());
+//        }
     }
     
     /**
@@ -83,7 +73,8 @@ public class UserInfoProducer implements Serializable{
      */
     @Produces @UserAware
     public String produceUserName(){
-        return userInfo.getLoginName();
+        //return userInfo.getLoginName();
+        return "";
     }
     
     /**
@@ -93,17 +84,17 @@ public class UserInfoProducer implements Serializable{
     @Produces @SessionScoped @Named
     public UserInfo produceUserInfo(){
             UserInfo ui = new UserInfo();
-            
-            User user = identityManager.lookupIdentityById(User.class, identity.getAccount().getId());
-            
-            ui.setId( user.getId());
-            ui.setLoginName(user.getLoginName());
-            ui.setFirstName(user.getFirstName());
-            ui.setLastName(user.getLastName());
-            ui.setEmail(user.getEmail());
-            
-            Attribute<String> ut = user.getAttribute(USER_TYPE);
-            ui.setUserType( ut == null ? "STANDART" : ut.getValue());
+//            
+//            User user = identityManager.lookupIdentityById(User.class, identity.getAccount().getId());
+//            
+//            ui.setId( user.getId());
+//            ui.setLoginName(user.getLoginName());
+//            ui.setFirstName(user.getFirstName());
+//            ui.setLastName(user.getLastName());
+//            ui.setEmail(user.getEmail());
+//            
+//            Attribute<String> ut = user.getAttribute(USER_TYPE);
+//            ui.setUserType( ut == null ? "STANDART" : ut.getValue());
             
             return ui;
     }

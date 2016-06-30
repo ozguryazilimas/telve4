@@ -33,21 +33,28 @@ import java.util.List;
 public interface UserRoleResolver {
 
     /**
-     * Role isimleri listeye eklenmiş olarak dönmeli
+     * İsmi verilen kullanıcı için Role isimleri listeye eklenmiş olarak dönmeli
+     * 
+     * Roller standart yetki rolleridir. 
+     * 
+     * @param loginName
      * @return 
      */
-    List<String> getRoles();
+    List<String> getRoles( String loginName );
     
     /**
-     * UnifiedRole için prefix'leri verilmiş rol listesi. 
+     * İsmi verilen kullanıcı için UnifiedRole için prefix'leri verilmiş rol listesi. 
+     * 
+     * Unified roller ise normal yetki rollerinin dışında farklı amaçlar için kullanıcı gruplamayı sağlayacak tanımlar olabilir.
      * 
      * Örneğin :
      * 
      * OP:/1/2/3
      * OI:3
      * 
+     * @param loginName
      * @return 
      */
-    List<String> getUnifiedRoles();
+    List<String> getUnifiedRoles( String loginName );
     
 }

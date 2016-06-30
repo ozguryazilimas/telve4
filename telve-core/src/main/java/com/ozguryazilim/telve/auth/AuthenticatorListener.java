@@ -6,15 +6,12 @@
 
 package com.ozguryazilim.telve.auth;
 
-import com.ozguryazilim.telve.view.Pages;
 import java.io.Serializable;
-import java.util.Map;
 import javax.enterprise.context.SessionScoped;
-import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.navigation.NavigationParameterContext;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
-import org.picketlink.authentication.event.LoggedInEvent;
+
 
 /**
  * Login Event dinler ve kullanıcıyı doğru sayfaya yönlendirir.
@@ -27,8 +24,8 @@ public class AuthenticatorListener implements Serializable{
     @Inject
     private ViewNavigationHandler viewNavigationHandler;
     
-    @Inject
-    private PicketLinkAccessDecisionVoter accessDecisionVoter;
+    //@Inject
+    //private PicketLinkAccessDecisionVoter accessDecisionVoter;
     
     @Inject
     private NavigationParameterContext navigationParameterContext;
@@ -37,19 +34,19 @@ public class AuthenticatorListener implements Serializable{
      * Login olunduktan sonra bir şekilde hata nedeniyle logine gelmiş isek o sayfaya geri dönelim...
      * @param event 
      */
-    public void handleLoggedIn(@Observes LoggedInEvent event) {
-        //Geri dönülecek sayfa için request parametreleri varsa koyalım
-        Map<String,String> m = accessDecisionVoter.getRequestParams();
-        if( m.containsKey("javax.faces.partial.ajax")){
-            //Ajax sorgusu. Dolayısı ile büyük ihtimal çağrıldığı yerle ilgili şeyler kayıp.
-            //O yüzden ana sayfaya gidiyoruz.
-            this.viewNavigationHandler.navigateTo(Pages.Home.class);
-        } else {
-            for( Map.Entry<String,String> e : m.entrySet() ){
-                navigationParameterContext.addPageParameter(e.getKey(), e.getValue());
-            }
-            //Şimdi de sayfaya gidelim
-            this.viewNavigationHandler.navigateTo(accessDecisionVoter.getDeniedPage());
-        }
-    }
+//    public void handleLoggedIn(@Observes LoggedInEvent event) {
+//        //Geri dönülecek sayfa için request parametreleri varsa koyalım
+//        Map<String,String> m = accessDecisionVoter.getRequestParams();
+//        if( m.containsKey("javax.faces.partial.ajax")){
+//            //Ajax sorgusu. Dolayısı ile büyük ihtimal çağrıldığı yerle ilgili şeyler kayıp.
+//            //O yüzden ana sayfaya gidiyoruz.
+//            this.viewNavigationHandler.navigateTo(Pages.Home.class);
+//        } else {
+//            for( Map.Entry<String,String> e : m.entrySet() ){
+//                navigationParameterContext.addPageParameter(e.getKey(), e.getValue());
+//            }
+//            //Şimdi de sayfaya gidelim
+//            this.viewNavigationHandler.navigateTo(accessDecisionVoter.getDeniedPage());
+//        }
+//    }
 }

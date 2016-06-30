@@ -19,7 +19,7 @@ import javax.inject.Inject;
  * @author oyas
  */
 @Lookup(dialogPage = IdmPages.UserLookup.class)
-public class UserLookup extends LookupTableControllerBase<User, UserViewModel>{
+public class IdmUserLookup extends LookupTableControllerBase<User, UserViewModel>{
 
     @Inject
     private UserRepository repository;
