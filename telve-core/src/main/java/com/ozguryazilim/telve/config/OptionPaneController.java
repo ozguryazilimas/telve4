@@ -53,7 +53,8 @@ public class OptionPaneController implements Serializable{
                 p = e.getKey();
             }
             
-            if( identity.isPermitted(p + ":select")){
+            //Herkesin kendi parolasını değiştirme hakkı vardır!
+            if( p.contains("PasswordEditor") || identity.isPermitted(p + ":select")){
                 optionPanes.add(e.getKey());
                 
                 String viewId = getOptiponPageViewId(e.getValue().optionPage());
