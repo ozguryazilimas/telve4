@@ -15,9 +15,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.ExcessiveAttemptsException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-
 
 /**
  *
@@ -32,24 +35,21 @@ public class LoginController {
 
     @Inject
     private ViewNavigationHandler viewNavigationHandler;
-    
+
     @Inject
     private AuditLogger auditLogger;
-    
+
     @Inject
     private LoginCredentials loginCredentials;
-    
+
     @Inject
     private Event<LoggedInEvent> loggedInEvent;
-    
+
     public void login() {
         Boolean result = Boolean.FALSE;
-        //try{
-            //FIXME: Default kullanıcı için bir şey düşünelim.
-            //SecurityUtils.getSecurityManager();
-            
-            Subject currentUser = SecurityUtils.getSubject();
-            if( !currentUser.isAuthenticated()){
+        Subject currentUser = SecurityUtils.getSubject();
+        try {
+            if (!currentUser.isAuthenticated()) {
                 UsernamePasswordToken token = new UsernamePasswordToken(loginCredentials.getUsername(), loginCredentials.getPassword());
                 //this is all you have to do to support 'remember me' (no config - built in!):
                 //token.setRememberMe(true);
@@ -57,26 +57,22 @@ public class LoginController {
                 result = currentUser.isAuthenticated();
                 loggedInEvent.fire(new LoggedInEvent());
             }
-            
-            
-//        } catch ( UserAlreadyLoggedInException ex ){
-//            //Zaten login olduğu için hata vermek biraz saçma :) 
-//            //Aslında buraya da gelmemesi gerektiği için doğrudan home'a yönlendiriyoruz.
-//            result = AuthenticationResult.SUCCESS;
-//            this.viewNavigationHandler.navigateTo(Pages.Home.class);
-//            return;
-//        }
-        
-        if (!result) {
+        } catch (UnknownAccountException | IncorrectCredentialsException uae) {
+            result = false;
             FacesMessages.error("general.message.editor.AuthFail");
-        } else {
-            auditLogger.actionLog("Login", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, currentUser.getPrincipal().toString(), "" );
+        } catch (LockedAccountException | ExcessiveAttemptsException lae) {
+            result = false;
+            FacesMessages.error("general.message.editor.AccountLocked");
         } 
+
+        if (result) {
+            auditLogger.actionLog("Login", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, currentUser.getPrincipal().toString(), "");
+        }
     }
-    
-    public String logout(){
+
+    public String logout() {
         Subject currentUser = SecurityUtils.getSubject();
-        auditLogger.actionLog("Logout", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, currentUser.getPrincipal().toString(), "" );
+        auditLogger.actionLog("Logout", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, currentUser.getPrincipal().toString(), "");
         currentUser.logout();
         facesContext.getExternalContext().invalidateSession();
         return "/login.xhtml";
