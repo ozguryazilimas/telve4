@@ -170,12 +170,14 @@ public class TelveIdmRealm extends JndiLdapRealm {
 
         User user = getUserRepository().findAnyByLoginName(username);
 
-        // Retrieve roles and permissions from database
-        roleNames = getRoleNamesForUser(user);
-        //TODO: Bunu config'e almalı mı?
-        //if (permissionsLookupEnabled) {
-        permissions = getPermissions(user);
-        //}
+        if( "SUPERADMIN".equals(user.getUserType())){
+            permissions = new HashSet<>();
+            permissions.add("*:*:*");
+        } else {
+            // Retrieve roles and permissions from database
+            roleNames = getRoleNamesForUser(user);
+            permissions = getPermissions(user);
+        }
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roleNames);
         info.setStringPermissions(permissions);

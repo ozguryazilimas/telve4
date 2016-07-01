@@ -41,6 +41,10 @@ public class UserModelRegistery {
         }
     }
 
+    public static void registerUserType( String userType ) {
+        userTypes.add(userType);
+    }
+    
     /**
      * User Model Meta data listesini döndürür.
      * @return 
