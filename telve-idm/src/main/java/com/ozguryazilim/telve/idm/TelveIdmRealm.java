@@ -78,7 +78,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
     
     private String firstNameAttr = "givenName";
     private String lastNameAttr = "sn";
-    private String emailAttr = "email";
+    private String emailAttr = "mail";
     
     private String defaultRole = "";
 
@@ -382,7 +382,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
         getUserRepository().save(user);
         
         //Varsayılan bir role varsa onun da atamasını yapalım.
-        if( Strings.isNullOrEmpty(getDefaultRole()) ){
+        if( !Strings.isNullOrEmpty(getDefaultRole()) ){
             
             Role r = getRoleRepository().findAnyByName(getDefaultRole());
             
