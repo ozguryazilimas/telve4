@@ -380,6 +380,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
+        user.setAutoCreated(Boolean.TRUE);
         
         getUserRepository().save(user);
         

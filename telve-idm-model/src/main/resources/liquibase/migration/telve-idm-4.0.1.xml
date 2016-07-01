@@ -47,6 +47,7 @@
                 <constraints primaryKey="true" primaryKeyName="TLI_USERPK"/>
             </column>
             <column name="ISACTIVE" type="BOOLEAN"/>
+            <column name="ISAUTOCREATED" type="BOOLEAN"/>
             <column name="INFO" type="VARCHAR(255)"/>
             <column name="LOGIN_NAME" type="VARCHAR(100)">
                 <constraints nullable="false"/>
@@ -87,6 +88,26 @@
             <column name="USER_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
+    
+    
+
+    <changeSet author="oyas (generated)" id="default-user">
+        <insert tableName="TLI_USER">
+            <column name="ID" type="BIGINT" valueNumeric="1"/>
+            <column name="ISACTIVE" type="BOOLEAN" valueBoolean="TRUE"/>
+            <column name="ISAUTOCREATED" type="BOOLEAN" valueBoolean="FALSE"/>
+            <column name="INFO" type="VARCHAR(255)"/>
+            <column name="LOGIN_NAME" type="VARCHAR(100)" value="telve"/>
+            <column name="EMAIL" type="VARCHAR(255)"/>
+            <column name="FIRST_NAME" type="VARCHAR(255)" value="Telve"/>
+            <column name="LAST_NAME" type="VARCHAR(255)" value="TELVE"/>
+            <column name="PW_HASH" type="VARCHAR(255)" value="telve"/>
+            <column name="PW_SALT" type="VARCHAR(255)" value="telve"/>
+            <column name="USER_TYPE" type="VARCHAR(255)" value="SUPERADMIN"/>
+        </insert>
+    </changeSet>
+
+
     
     <changeSet author="oyas (generated)" id="1467025451677-11">
         <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="TLI_USER_GROUP" constraintName="FK_cwoua04a5pyfbd082up2tfmx6" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="TLI_USER"/>

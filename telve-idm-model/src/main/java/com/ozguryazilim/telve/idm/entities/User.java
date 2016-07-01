@@ -54,6 +54,9 @@ public class User extends EntityBase{
     
     @Column(name = "ISACTIVE")
     private Boolean active = Boolean.TRUE;
+
+    @Column(name = "ISAUTOCREATED")
+    private Boolean autoCreated = Boolean.FALSE;
     
     /**
      * Uygulama tarafından register edilen farklı kullanıcı tipleri.
@@ -158,6 +161,14 @@ public class User extends EntityBase{
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public Boolean getAutoCreated() {
+        return autoCreated;
+    }
+
+    public void setAutoCreated(Boolean autoCreated) {
+        this.autoCreated = autoCreated;
     }
     
     
