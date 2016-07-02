@@ -1,0 +1,65 @@
+[{
+        "name": "userBrowse.caption.AllUsers",
+        "resultLimit": 100,
+        "rowLimit": 20,
+        "columns": ["loginName", "firstName", "lastName", "userType", "email"],
+        "filters": ["loginName", "firstName", "lastName", "active", "autoCreated"],
+        "filterValues": {
+            "firstName": "Contains::",
+            "lastName": "Contains::",
+            "loginName": "Contains::",
+            "active": "All::F",
+            "autoCreated": "All::T"
+        },
+        "sorters": [],
+        "sorterValues": {}
+    },
+    {
+        "name": "userBrowse.caption.ActiveUsers",
+        "resultLimit": 100,
+        "rowLimit": 20,
+        "columns": ["loginName", "firstName", "lastName", "userType", "email"],
+        "filters": ["loginName", "firstName", "lastName", "active", "autoCreated"],
+        "filterValues": {
+            "firstName": "Contains::",
+            "lastName": "Contains::",
+            "loginName": "Contains::",
+            "active": "Equal::T",
+            "autoCreated": "All::T"
+        },
+        "sorters": [],
+        "sorterValues": {}
+    },
+    {
+        "name": "userBrowse.caption.LockedUsers",
+        "resultLimit": 100,
+        "rowLimit": 20,
+        "columns": ["loginName", "firstName", "lastName", "userType", "email"],
+        "filters": ["loginName", "firstName", "lastName", "active", "autoCreated"],
+        "filterValues": {
+            "firstName": "Contains::",
+            "lastName": "Contains::",
+            "loginName": "Contains::",
+            "active": "Equal::F",
+            "autoCreated": "All::T"
+        },
+        "sorters": [],
+        "sorterValues": {}
+    },
+    {
+        "name": "userBrowse.caption.CreatedUsers",
+        "resultLimit": 100,
+        "rowLimit": 20,
+        "columns": ["loginName", "firstName", "lastName", "userType", "email"],
+        "filters": ["loginName", "firstName", "lastName", "active", "autoCreated"],
+        "filterValues": {
+            "firstName": "Contains::",
+            "lastName": "Contains::",
+            "loginName": "Contains::",
+            "active": "All::F",
+            "autoCreated": "Equal::T"
+        },
+        "sorters": [],
+        "sorterValues": {}
+    }
+]

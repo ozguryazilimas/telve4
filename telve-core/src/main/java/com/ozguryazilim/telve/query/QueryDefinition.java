@@ -35,6 +35,7 @@ public class QueryDefinition<E, R> {
     private List<Filter<E, ?>> visibleFilters = new ArrayList<>();
     private List<Filter<E, ?>> filters = new ArrayList<>();
     private List<Filter<E, ?>> quickFilters = new ArrayList<>();
+    private List<Filter<?, ?>> extraFilters = new ArrayList<>();
 
     /**
      * Tüm kolonlar
@@ -85,6 +86,11 @@ public class QueryDefinition<E, R> {
         addFilter(filter,false);
         return this;
     }
+    
+    public QueryDefinition<E, R> addExtraFilter(Filter<?, ?> filter) {
+        extraFilters.add(filter);
+        return this;
+    }
 
     public QueryDefinition<E, R> addColumn(Column<? super E> column, boolean visible, boolean sortable) {
         allColumns.add(column);
@@ -117,6 +123,10 @@ public class QueryDefinition<E, R> {
 
     public List<Filter<E, ?>> getQuickFilters() {
         return quickFilters;
+    }
+    
+    public List<Filter<?, ?>> getExtraFilters() {
+        return extraFilters;
     }
     
     public List<Column<? super E>> getAllColumns() {

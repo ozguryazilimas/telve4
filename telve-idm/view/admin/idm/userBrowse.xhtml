@@ -25,6 +25,10 @@
     </ui:define>
     
     <ui:define name="QuickSearchExtra">
+        <t:inputLookupDialog value="#{userBrowse.selectedGroup}" label="" update="@([id$=results])" 
+                             lookupBean="#{groupLookup}" lookupListener="userBrowse.selectedGroup" 
+                             leafSelect="false" required="false" columnClass="col-md-3 col-xs-12 pull-right" 
+                             placeholder="user.info.UserGroupFilter"/>
     </ui:define>
     
 </ui:composition>

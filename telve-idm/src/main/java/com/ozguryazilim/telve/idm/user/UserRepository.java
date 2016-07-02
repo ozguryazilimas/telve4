@@ -8,6 +8,8 @@ package com.ozguryazilim.telve.idm.user;
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.idm.entities.User;
+import com.ozguryazilim.telve.idm.entities.UserGroup;
+import com.ozguryazilim.telve.idm.entities.UserGroup_;
 import com.ozguryazilim.telve.idm.entities.User_;
 import com.ozguryazilim.telve.query.QueryDefinition;
 import com.ozguryazilim.telve.query.filters.Filter;
@@ -19,6 +21,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 
@@ -63,6 +66,25 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
         
         //Filtreleri ekleyelim.
         List<Predicate> predicates = new ArrayList<>();
+        
+        if( !queryDefinition.getExtraFilters().isEmpty() ){
+            //Gelen extra filtre UserGroup bilgisi içermeli
+            Filter<?,?> f = (Filter<?,?>) queryDefinition.getExtraFilters().get(0);
+            if( f.getAttribute().equals(UserGroup_.group) && f.getValue() != null ){
+                Subquery<UserGroup> subquery = criteriaQuery.subquery(UserGroup.class);
+                Root fromUserGroup = subquery.from(UserGroup.class);
+                //Join<UserGroup, User> sqUser = fromUserGroup.join(UserGroup_.user);
+                subquery.select(fromUserGroup.get(User_.id));
+            
+                List<Predicate> subPredicates = new ArrayList<>();
+                f.decorateCriteriaQuery(subPredicates, criteriaBuilder, fromUserGroup);
+                subPredicates.add(criteriaBuilder.equal(fromUserGroup.get(UserGroup_.user), from));
+                
+                subquery.where(subPredicates.toArray(new Predicate[]{}));
+                
+                predicates.add(criteriaBuilder.exists(subquery));
+            }
+        }
         
         //FIXME: Burada Grup Manager olanlar için grup bazlı bir sorgu lazım
         //Root<UserOrganization> uoFrom = criteriaQuery.from(UserOrganization.class);
