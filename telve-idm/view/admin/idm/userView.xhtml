@@ -3,11 +3,14 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"               
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 template="/layout/containerViewBase.xhtml">
 
     <ui:param name="bean" value="#{userHome}" />
     <ui:param name="entityName" value="user" />
     <ui:param name="viewIdentifier" value="#{userHome.entity.loginName}" />
+    <ui:param name="viewState" value="#{userHome.entity.active ? messages['general.label.AccountActive'] : messages['general.label.AccountLocked']}" />
+    <ui:param name="showCaption" value="true"/>
 
     <ui:define name="metadata">
         <f:metadata>
@@ -16,7 +19,17 @@
     </ui:define>
 
     <ui:define name="caption">
-        <h:outputText value="#{userHome.entity.id}" />
+        <div class="col-xs-12">
+            <h:panelGroup layout="block" styleClass="callout callout-warning" rendered="#{not userHome.entity.active}">
+                <i class="fa fa-lock" style="margin-right: 5px;"/>
+                <h:outputText value="#{messages['general.label.AccountLocked']}"  />
+            </h:panelGroup>
+        </div>
+        <t:outputText label="general.label.LoginName" value="#{userHome.entity.loginName}" />
+        <t:outputText label="user.label.UserType" value="#{messages[ 'userType.label.'.concat(userHome.entity.userType) ]}" />
+        <t:outputText label="general.label.FirstName" value="#{userHome.entity.firstName}" />
+        <t:outputText label="general.label.LastName" value="#{userHome.entity.lastName}" />
+        <t:outputText label="general.label.Info" value="#{userHome.entity.info}" columnClass="col-xs-12"/>
     </ui:define>
-    
+
 </ui:composition>

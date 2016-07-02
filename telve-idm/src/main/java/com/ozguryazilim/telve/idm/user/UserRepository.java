@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.idm.user;
 
+import com.google.common.base.Strings;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.idm.entities.User_;
@@ -69,6 +70,12 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
         //predicates.add( criteriaBuilder.equal(from.get(Capa_.organization), uoFrom.get(UserOrganization_.organization)));
         
         decorateFilters(filters, predicates, criteriaBuilder, from);
+
+        if (!Strings.isNullOrEmpty(queryDefinition.getSearchText())) {
+            predicates.add(criteriaBuilder.or(criteriaBuilder.like(from.get(User_.loginName), "%" + queryDefinition.getSearchText() + "%"),
+                    criteriaBuilder.like(from.get(User_.firstName), "%" + queryDefinition.getSearchText() + "%"),
+                    criteriaBuilder.like(from.get(User_.lastName), "%" + queryDefinition.getSearchText() + "%")));
+        }
         
         //Person filtremize ekledik.
         criteriaQuery.where(predicates.toArray(new Predicate[]{}));

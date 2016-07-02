@@ -10,7 +10,19 @@
     <ui:param name="saveEnabled" value="true" />
     <ui:param name="filterEnabled" value="true" />
     <ui:param name="permission" value="user" />
+    <ui:param name="showQuickSearch" value="true" />
     
+    
+    <ui:define name="beforeColumns">
+        <p:column styleClass="actionColumn">
+            <ui:fragment rendered="#{not item.active}" >
+                <i class="fa fa-lock text-red" />
+            </ui:fragment>
+            <ui:fragment rendered="#{item.active}" >
+                <i class="fa fa-unlock-alt text-blue" />
+            </ui:fragment>
+        </p:column>
+    </ui:define>
     
     <ui:define name="QuickSearchExtra">
     </ui:define>

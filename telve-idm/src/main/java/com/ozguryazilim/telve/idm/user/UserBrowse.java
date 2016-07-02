@@ -13,6 +13,7 @@ import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.idm.entities.User_;
 import com.ozguryazilim.telve.query.QueryDefinition;
 import com.ozguryazilim.telve.query.columns.LinkColumn;
+import com.ozguryazilim.telve.query.columns.MessageColumn;
 import com.ozguryazilim.telve.query.columns.TextColumn;
 import com.ozguryazilim.telve.query.filters.StringFilter;
 import javax.inject.Inject;
@@ -37,6 +38,7 @@ public class UserBrowse extends BrowseBase<User, UserViewModel>{
                 .addColumn(new LinkColumn<>(User_.loginName, "general.label.LoginName"), true)
                 .addColumn(new TextColumn<>(User_.firstName, "general.label.FirstName"), true)
                 .addColumn(new TextColumn<>(User_.lastName, "general.label.LastName"), true)
+                .addColumn(new MessageColumn<>(User_.userType, "user.label.UserType", "userType.label."), true)
                 .addColumn(new TextColumn<>(User_.email, "general.label.Email"), true);
         
     }
