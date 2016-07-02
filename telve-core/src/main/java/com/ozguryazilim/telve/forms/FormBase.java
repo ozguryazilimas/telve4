@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Instance;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
@@ -77,6 +79,9 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     @Inject
     private FacesContext facesContext;
 
+    @Inject
+    @Any
+    private Instance<SubViewFilter> subViewFilters;
     
     private List<String> subViewList = new ArrayList<String>();
     private Map<String,List<String>> subViews = new HashMap<>();
@@ -445,7 +450,14 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return 
      */
     public List<String> getSubViews( String grp ){
-        return subViews.get(grp);
+        List<String> ls = new ArrayList<>(subViews.get(grp));
+        
+        //SubViewFilter ile filtreleme yapalım
+        for( SubViewFilter f : subViewFilters ){
+            f.filter(getContainerViewPage(), ls);
+        }
+        
+        return ls;
     }
     
     public PK getId() {
