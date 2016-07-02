@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -64,7 +65,7 @@ public class User extends EntityBase{
     /**
      * Kullanıcıya ek veri tanım alanları. Extention2lar için
      */
-    @OneToMany( mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany( mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @MapKey(name = "key")
     private Map<String,UserAttribute> attributes = new HashMap<>();
 
