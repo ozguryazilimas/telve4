@@ -32,14 +32,15 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authc.credential.SimpleCredentialsMatcher;
+import org.apache.shiro.authc.credential.AllowAllCredentialsMatcher;
+import org.apache.shiro.authc.credential.CredentialsMatcher;
+import org.apache.shiro.authc.credential.PasswordMatcher;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.ldap.UnsupportedAuthenticationMechanismException;
 import org.apache.shiro.realm.ldap.JndiLdapRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.apache.shiro.util.ByteSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -82,6 +83,9 @@ public class TelveIdmRealm extends JndiLdapRealm {
     private String emailAttr = "mail";
     
     private String defaultRole = "";
+    
+    private CredentialsMatcher ldapMatcher = new AllowAllCredentialsMatcher();
+    private CredentialsMatcher idmMatcher = new PasswordMatcher();
 
     public Boolean getUseLdap() {
         return useLdap;
@@ -191,6 +195,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
         SimpleAuthenticationInfo info= null;
         if (useLdap) {
             try {
+                setCredentialsMatcher(ldapMatcher);
                 info = (SimpleAuthenticationInfo) queryForAuthenticationInfo(token, getContextFactory());
             } catch (AuthenticationNotSupportedException e) {
                 String msg = "Unsupported configured authentication mechanism";
@@ -213,29 +218,8 @@ public class TelveIdmRealm extends JndiLdapRealm {
             throw new AccountException("Null usernames are not allowed by this realm.");
         }
 
-        //SimpleAuthenticationInfo info = null;
-
         String password = null;
-        String salt = null;
-        /* TODO: Salt Konusunda bu tür optionlar yapmalı mı?
-            switch (saltStyle) {
-            case NO_SALT:
-                password = getPasswordForUser(conn, username)[0];
-                break;
-            case CRYPT:
-                // TODO: separate password and hash from getPasswordForUser[0]
-                throw new ConfigurationException("Not implemented yet");
-                //break;
-            case COLUMN:
-                String[] queryResults = getPasswordForUser(conn, username);
-                password = queryResults[0];
-                salt = queryResults[1];
-                break;
-            case EXTERNAL:
-                password = getPasswordForUser(conn, username)[0];
-                salt = getSaltForUser(username);
-            }*/
-
+        
         User user = getUserRepository().findAnyByLoginName(username);
         if (user == null) {
             if( !useLdap || info == null ){
@@ -262,7 +246,6 @@ public class TelveIdmRealm extends JndiLdapRealm {
         //LDAP kullanılmıyor ya da LDAP kullanıcısı olmasa da idm kullanıcı ise doğrulama yapalım.
         if( !useLdap || ( optionalLdap && info == null )){
             password = user.getPasswordEncodedHash();
-            salt = user.getPasswordSalt();
 
             if (password == null) {
                 throw new UnknownAccountException("No account found for user [" + username + "]");
@@ -270,11 +253,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
 
             info = new SimpleAuthenticationInfo(username, password.toCharArray(), getName());
 
-            if (salt != null) {
-                info.setCredentialsSalt(ByteSource.Util.bytes(salt));
-            }
-            
-            setCredentialsMatcher(new SimpleCredentialsMatcher());
+            setCredentialsMatcher(idmMatcher);
         }
 
         return info;

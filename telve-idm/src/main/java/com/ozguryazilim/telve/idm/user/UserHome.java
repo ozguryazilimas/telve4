@@ -19,6 +19,7 @@ import java.util.List;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
+import org.apache.shiro.authc.credential.DefaultPasswordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,8 +52,9 @@ public class UserHome extends FormBase<User, Long>{
         
         if( !Strings.isNullOrEmpty(password)){
             //FIXME: Burada password hash ve salt işlemleri yapılacak
-            getEntity().setPasswordEncodedHash(password);
-            getEntity().setPasswordSalt(password);
+            
+            DefaultPasswordService passwordService = new DefaultPasswordService();
+            getEntity().setPasswordEncodedHash(passwordService.encryptPassword(password));
             
         }
         

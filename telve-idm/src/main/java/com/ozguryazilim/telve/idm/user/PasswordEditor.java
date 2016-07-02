@@ -15,6 +15,7 @@ import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import javax.inject.Inject;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
+import org.apache.shiro.authc.credential.DefaultPasswordService;
 
 
 /**
@@ -56,9 +57,9 @@ public class PasswordEditor extends AbstractOptionPane{
             return;
         }
 
-        //FIXME: Şu HASH işini halledelim.
-        user.setPasswordEncodedHash(newPassword);
-        user.setPasswordSalt(newPassword);
+        DefaultPasswordService passwordService = new DefaultPasswordService();
+        user.setPasswordEncodedHash(passwordService.encryptPassword(newPassword));
+        
         
         userRepository.save(user);
         

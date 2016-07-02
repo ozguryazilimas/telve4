@@ -49,9 +49,6 @@ public class User extends EntityBase{
     @Column(name = "PW_HASH")
     private String passwordEncodedHash;
     
-    @Column(name = "PW_SALT")
-    private String passwordSalt;
-    
     @Column(name = "ISACTIVE")
     private Boolean active = Boolean.TRUE;
 
@@ -113,14 +110,6 @@ public class User extends EntityBase{
 
     public void setPasswordEncodedHash(String passwordEncodedHash) {
         this.passwordEncodedHash = passwordEncodedHash;
-    }
-
-    public String getPasswordSalt() {
-        return passwordSalt;
-    }
-
-    public void setPasswordSalt(String passwordSalt) {
-        this.passwordSalt = passwordSalt;
     }
 
     public String getUserType() {
