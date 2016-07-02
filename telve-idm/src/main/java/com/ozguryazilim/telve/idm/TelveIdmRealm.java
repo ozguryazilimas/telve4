@@ -183,6 +183,11 @@ public class TelveIdmRealm extends JndiLdapRealm {
             roleNames = getRoleNamesForUser(user);
             permissions = getPermissions(user);
         }
+        
+        //Normal kullanıcılar ( LDAP'tan vs gelmeyen ) kendi parolasını değiştirebilmeli.
+        if( !user.getAutoCreated()){
+            permissions.add("PasswordEditor:*");
+        }
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roleNames);
         info.setStringPermissions(permissions);

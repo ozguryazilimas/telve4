@@ -54,7 +54,7 @@
                             </c:forEach>
                         </div>
 
-                        <ui:fragment rendered="#{telveConfigResolver.getProperty('ui.user.ShowPassword') eq 'true'}">
+                        <ui:fragment rendered="#{telveConfigResolver.getProperty('ui.user.ShowPassword') eq 'true' or ( not userHome.entity.autoCreated )}">
                             <div class="row">
                                 <t:accordion id="pwdAcc" label="#{messages['user.caption.Password']}" hide="false">
                                     <p:messages id="messages" for=":form:pwdAcc:pwd1:pwd1" showDetail="true" autoUpdate="true" />
