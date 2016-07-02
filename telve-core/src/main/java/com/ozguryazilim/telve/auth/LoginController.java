@@ -59,10 +59,10 @@ public class LoginController {
             }
         } catch (UnknownAccountException | IncorrectCredentialsException uae) {
             result = false;
-            FacesMessages.error("general.message.editor.AuthFail");
+            FacesMessages.error("general.message.AuthFail");
         } catch (LockedAccountException | ExcessiveAttemptsException lae) {
             result = false;
-            FacesMessages.error("general.message.editor.AccountLocked");
+            FacesMessages.error("general.message.AccountLocked");
         } 
 
         if (result) {

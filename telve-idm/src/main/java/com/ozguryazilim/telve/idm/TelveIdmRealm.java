@@ -28,6 +28,7 @@ import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -253,6 +254,10 @@ public class TelveIdmRealm extends JndiLdapRealm {
                 }
             }
         }
+        
+        if( user != null && !user.getActive()){
+            throw new LockedAccountException("Account is lock for user [" + username + "]");
+        }
 
         //LDAP kullanılmıyor ya da LDAP kullanıcısı olmasa da idm kullanıcı ise doğrulama yapalım.
         if( !useLdap || ( optionalLdap && info == null )){
@@ -398,6 +403,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
             }
         }
         
+        LOG.debug("User {} is created with role {}", upToken.getUsername(), getDefaultRole());
     }
 
 }
