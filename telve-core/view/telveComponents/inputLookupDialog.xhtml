@@ -41,7 +41,7 @@
                                     converter="entityConverter"
                                     required="#{cc.attrs.required}"
                                     disabled="#{cc.attrs.disabled}"
-                                    placeholder="#{cc.attrs.placeholder}">
+                                    placeholder="#{messages[cc.attrs.placeholder]}">
                         <p:clientValidator />
                         <p:ajax event="itemSelect" update="#{cc.attrs.update}" />
                         <f:attribute name="leafSelect" value="#{cc.attrs.leafSelect}" />

@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.idm.user;
 
+import com.ozguryazilim.telve.auth.UserModelRegistery;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.forms.Browse;
 import com.ozguryazilim.telve.forms.BrowseBase;
@@ -21,6 +22,7 @@ import com.ozguryazilim.telve.query.columns.TextColumn;
 import com.ozguryazilim.telve.query.filters.BooleanFilter;
 import com.ozguryazilim.telve.query.filters.FilterOperand;
 import com.ozguryazilim.telve.query.filters.StringFilter;
+import com.ozguryazilim.telve.query.filters.StringListFilter;
 import com.ozguryazilim.telve.query.filters.TreeEntityFilter;
 import javax.inject.Inject;
 
@@ -54,6 +56,7 @@ public class UserBrowse extends BrowseBase<User, UserViewModel>{
                 .addFilter(new StringFilter<>(User_.loginName, "general.label.LoginName"))
                 .addFilter(new StringFilter<>(User_.firstName, "general.label.FirstName"))
                 .addFilter(new StringFilter<>(User_.lastName, "general.label.LastName"))
+                .addFilter(new StringListFilter<>(User_.userType, UserModelRegistery.getUserTypes(), "user.label.UserType", "userType.label."))
                 .addFilter(new BooleanFilter<>(User_.active, "general.label.Active", "general.boolean.yesno."))
                 .addFilter(new BooleanFilter<>(User_.autoCreated, "user.label.LDAP", "general.boolean.yesno."));
                 

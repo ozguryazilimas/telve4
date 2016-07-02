@@ -3,11 +3,12 @@
         "resultLimit": 100,
         "rowLimit": 20,
         "columns": ["loginName", "firstName", "lastName", "userType", "email"],
-        "filters": ["loginName", "firstName", "lastName", "active", "autoCreated"],
+        "filters": ["loginName", "firstName", "lastName", "userType", "active", "autoCreated"],
         "filterValues": {
             "firstName": "Contains::",
             "lastName": "Contains::",
             "loginName": "Contains::",
+            "userType": "All::",
             "active": "All::F",
             "autoCreated": "All::T"
         },
@@ -19,11 +20,12 @@
         "resultLimit": 100,
         "rowLimit": 20,
         "columns": ["loginName", "firstName", "lastName", "userType", "email"],
-        "filters": ["loginName", "firstName", "lastName", "active", "autoCreated"],
+        "filters": ["loginName", "firstName", "lastName", "userType", "active", "autoCreated"],
         "filterValues": {
             "firstName": "Contains::",
             "lastName": "Contains::",
             "loginName": "Contains::",
+            "userType": "All::",
             "active": "Equal::T",
             "autoCreated": "All::T"
         },
@@ -35,11 +37,12 @@
         "resultLimit": 100,
         "rowLimit": 20,
         "columns": ["loginName", "firstName", "lastName", "userType", "email"],
-        "filters": ["loginName", "firstName", "lastName", "active", "autoCreated"],
+        "filters": ["loginName", "firstName", "lastName", "userType", "active", "autoCreated"],
         "filterValues": {
             "firstName": "Contains::",
             "lastName": "Contains::",
             "loginName": "Contains::",
+            "userType": "All::",
             "active": "Equal::F",
             "autoCreated": "All::T"
         },
@@ -51,13 +54,31 @@
         "resultLimit": 100,
         "rowLimit": 20,
         "columns": ["loginName", "firstName", "lastName", "userType", "email"],
-        "filters": ["loginName", "firstName", "lastName", "active", "autoCreated"],
+        "filters": ["loginName", "firstName", "lastName", "userType", "active", "autoCreated"],
+        "filterValues": {
+            "firstName": "Contains::",
+            "lastName": "Contains::",
+            "loginName": "Contains::",
+            "userType": "All::",
+            "active": "All::F",
+            "autoCreated": "Equal::T"
+        },
+        "sorters": [],
+        "sorterValues": {}
+    },
+    {
+        "name": "userBrowse.caption.SuperAdmins",
+        "resultLimit": 100,
+        "rowLimit": 20,
+        "columns": ["loginName", "firstName", "lastName", "userType", "email"],
+        "filters": ["loginName", "firstName", "lastName", "userType", "active", "autoCreated"],
         "filterValues": {
             "firstName": "Contains::",
             "lastName": "Contains::",
             "loginName": "Contains::",
             "active": "All::F",
-            "autoCreated": "Equal::T"
+            "userType": "Equal::SUPERADMIN",
+            "autoCreated": "All::T"
         },
         "sorters": [],
         "sorterValues": {}
