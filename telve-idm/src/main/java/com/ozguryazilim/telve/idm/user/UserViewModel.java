@@ -6,6 +6,7 @@
 package com.ozguryazilim.telve.idm.user;
 
 import com.ozguryazilim.telve.entities.ViewModel;
+import com.ozguryazilim.telve.idm.entities.Group;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -24,8 +25,9 @@ public class UserViewModel implements ViewModel, Serializable{
     private Boolean active;
     private String userType;
     private String info;
+    private Group domainGroup;
 
-    public UserViewModel(Long id, String loginName, String firstName, String lastName, String email, Boolean active, String userType, String info) {
+    public UserViewModel(Long id, String loginName, String firstName, String lastName, String email, Boolean active, String userType, String info, Long groupId, String groupName ) {
         this.id = id;
         this.loginName = loginName;
         this.firstName = firstName;
@@ -34,6 +36,10 @@ public class UserViewModel implements ViewModel, Serializable{
         this.active = active;
         this.userType = userType;
         this.info = info;
+        
+        this.domainGroup = new Group();
+        this.domainGroup.setId(groupId);
+        this.domainGroup.setName(groupName);
     }
 
     @Override
@@ -99,6 +105,14 @@ public class UserViewModel implements ViewModel, Serializable{
 
     public void setInfo(String info) {
         this.info = info;
+    }
+
+    public Group getDomainGroup() {
+        return domainGroup;
+    }
+
+    public void setDomainGroup(Group domainGroup) {
+        this.domainGroup = domainGroup;
     }
 
     @Override

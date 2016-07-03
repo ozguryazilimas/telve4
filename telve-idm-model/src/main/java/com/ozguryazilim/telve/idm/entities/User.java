@@ -13,9 +13,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -69,6 +72,9 @@ public class User extends EntityBase{
     @MapKey(name = "key")
     private Map<String,UserAttribute> attributes = new HashMap<>();
 
+    @ManyToOne
+    @JoinColumn(name = "GROUP_ID", foreignKey = @ForeignKey(name = "FK_U_GROUPID"))
+    private Group domainGroup;
     
     @Column(name = "INFO")
     private String info;
@@ -159,6 +165,14 @@ public class User extends EntityBase{
 
     public void setAutoCreated(Boolean autoCreated) {
         this.autoCreated = autoCreated;
+    }
+
+    public Group getDomainGroup() {
+        return domainGroup;
+    }
+
+    public void setDomainGroup(Group domainGroup) {
+        this.domainGroup = domainGroup;
     }
     
     

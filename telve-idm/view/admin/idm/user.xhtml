@@ -210,6 +210,9 @@
             <t:inputText label="general.label.FirstName" value="#{userHome.entity.firstName}" required="true" />
             <t:inputText label="general.label.LastName" value="#{userHome.entity.lastName}" required="true" />
             <t:inputText label="general.label.Email" value="#{userHome.entity.email}" required="true" />
+            <t:inputLookupDialog value="#{userHome.entity.domainGroup}" label="user.label.DomainGroup"  
+                             lookupBean="#{groupLookup}" lookupListener="userHome.entity.domainGroup" 
+                             leafSelect="false" required="#{userHome.domainGroupRequired}" />
         </div>            
 
         <div id="extentions" class="row">

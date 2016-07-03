@@ -44,6 +44,7 @@ public class UserService {
     private Map<String, List<String>> userGroups = new HashMap<>();
     private Map<String, List<String>> userUnifiedRoles = new HashMap<>();
     private Map<String, Map<String, String>> userAttrs = new HashMap<>();
+    private Map<String, UserInfo> userInfos = new HashMap<>();
 
     /**
      * Geriye sistemde tanımlı kullanıcı login isimlerini döndürür.
@@ -205,6 +206,20 @@ public class UserService {
         return result;
     }
 
+    
+    public UserInfo getUserInfo( String loginName ){
+        UserInfo ui = userInfos.get(loginName);
+        
+        if( ui == null ){
+            ui = populateUserInfo(loginName);
+            if( ui != null ){
+                userInfos.put(loginName, ui);
+            }
+        }
+        
+        return ui;
+    }
+    
     private void populateLoginNames() {
         loginNames = new ArrayList<>();
 
@@ -221,6 +236,15 @@ public class UserService {
         }
 
         return ls;
+    }
+    
+    private UserInfo populateUserInfo(String loginName) {
+        for (UserServiceProvider usp : userServiceProviders) {
+            UserInfo ui = usp.getUserInfo(loginName);
+            if( ui != null ) return ui;
+        }
+        
+        return null;
     }
 
     private List<String> populateUsersByGroup(String group) {

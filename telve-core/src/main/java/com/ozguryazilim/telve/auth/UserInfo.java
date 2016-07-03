@@ -31,6 +31,9 @@ public class UserInfo implements Serializable{
     private String lastName;
     private String userType;
     private String email;
+    private Long   domainGroupId;
+    private String domainGroupName;
+    private String domainGroupPath;
 
     /**
      * Geriye Kullanıcının ID'sini döndürür.
@@ -87,8 +90,31 @@ public class UserInfo implements Serializable{
     public void setEmail(String email) {
         this.email = email;
     }
-    
 
+    public Long getDomainGroupId() {
+        return domainGroupId;
+    }
+
+    public void setDomainGroupId(Long domainGroupId) {
+        this.domainGroupId = domainGroupId;
+    }
+
+    public String getDomainGroupName() {
+        return domainGroupName;
+    }
+
+    public void setDomainGroupName(String domainGroupName) {
+        this.domainGroupName = domainGroupName;
+    }
+
+    public String getDomainGroupPath() {
+        return domainGroupPath;
+    }
+
+    public void setDomainGroupPath(String domainGroupPath) {
+        this.domainGroupPath = domainGroupPath;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 5;

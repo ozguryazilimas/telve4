@@ -18,6 +18,7 @@ import com.ozguryazilim.telve.idm.entities.User_;
 import com.ozguryazilim.telve.query.QueryDefinition;
 import com.ozguryazilim.telve.query.columns.LinkColumn;
 import com.ozguryazilim.telve.query.columns.MessageColumn;
+import com.ozguryazilim.telve.query.columns.SubTextColumn;
 import com.ozguryazilim.telve.query.columns.TextColumn;
 import com.ozguryazilim.telve.query.filters.BooleanFilter;
 import com.ozguryazilim.telve.query.filters.FilterOperand;
@@ -66,6 +67,7 @@ public class UserBrowse extends BrowseBase<User, UserViewModel>{
                 .addColumn(new TextColumn<>(User_.firstName, "general.label.FirstName"), true)
                 .addColumn(new TextColumn<>(User_.lastName, "general.label.LastName"), true)
                 .addColumn(new MessageColumn<>(User_.userType, "user.label.UserType", "userType.label."), true)
+                .addColumn(new SubTextColumn<>(User_.domainGroup, Group_.name, "user.label.DomainGroup"), true)
                 .addColumn(new TextColumn<>(User_.email, "general.label.Email"), true);
         
         queryDefinition.addExtraFilter(groupFilter);

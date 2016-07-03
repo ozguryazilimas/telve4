@@ -6,7 +6,12 @@
 package com.ozguryazilim.telve.idm.user;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.auth.Identity;
+import com.ozguryazilim.telve.auth.UserInfo;
 import com.ozguryazilim.telve.data.RepositoryBase;
+import com.ozguryazilim.telve.entities.TreeNodeEntityBase;
+import com.ozguryazilim.telve.idm.entities.Group;
+import com.ozguryazilim.telve.idm.entities.Group_;
 import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.idm.entities.UserGroup;
 import com.ozguryazilim.telve.idm.entities.UserGroup_;
@@ -16,23 +21,30 @@ import com.ozguryazilim.telve.query.filters.Filter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 
 /**
  * Kullanıcı verilerine erişim için repository sınıf
- * 
+ *
  * @author Hakan Uygun
  */
 @Repository
 @Dependent
-public abstract class UserRepository extends RepositoryBase<User, UserViewModel> implements CriteriaSupport<User>{
+public abstract class UserRepository extends RepositoryBase<User, UserViewModel> implements CriteriaSupport<User> {
+
+    @Inject
+    private Identity identity;
 
     public User createNew() throws InstantiationException, IllegalAccessException {
         User result = super.createNew();
@@ -41,17 +53,17 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
     }
 
     @Override
-    public List<UserViewModel> browseQuery( QueryDefinition queryDefinition ){
+    public List<UserViewModel> browseQuery(QueryDefinition queryDefinition) {
         List<Filter<User, ?>> filters = queryDefinition.getFilters();
-        
+
         CriteriaBuilder criteriaBuilder = entityManager().getCriteriaBuilder();
         //Geriye PersonViewModel dönecek cq'yu ona göre oluşturuyoruz.
         CriteriaQuery<UserViewModel> criteriaQuery = criteriaBuilder.createQuery(UserViewModel.class);
 
         //From Tabii ki User
         Root<User> from = criteriaQuery.from(User.class);
-        
-        
+        Join<User, Group> groupFrom = from.join(User_.domainGroup, JoinType.LEFT);
+
         //Sonuç filtremiz
         criteriaQuery.multiselect(
                 from.get(User_.id),
@@ -61,36 +73,76 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
                 from.get(User_.email),
                 from.get(User_.active),
                 from.get(User_.userType),
-                from.get(User_.info)
+                from.get(User_.info),
+                groupFrom.get(Group_.id),
+                groupFrom.get(Group_.name)
         );
-        
+
         //Filtreleri ekleyelim.
         List<Predicate> predicates = new ArrayList<>();
-        
-        if( !queryDefinition.getExtraFilters().isEmpty() ){
-            //Gelen extra filtre UserGroup bilgisi içermeli
-            Filter<?,?> f = (Filter<?,?>) queryDefinition.getExtraFilters().get(0);
-            if( f.getAttribute().equals(UserGroup_.group) && f.getValue() != null ){
+
+        Boolean domainGroupcontrol = "true".equals(ConfigResolver.getPropertyValue("security.domainGroup.control", "false"));
+        Boolean multiGroupcontrol = "true".equals(ConfigResolver.getPropertyValue("security.multiGroup.control", "false"));
+
+        if (multiGroupcontrol) {
+            //Eğer UI üzerinden filre gelmiş ya da domainGroupcontrol gerekiyorsa
+            if (!queryDefinition.getExtraFilters().isEmpty() || domainGroupcontrol) {
+
                 Subquery<UserGroup> subquery = criteriaQuery.subquery(UserGroup.class);
                 Root fromUserGroup = subquery.from(UserGroup.class);
                 //Join<UserGroup, User> sqUser = fromUserGroup.join(UserGroup_.user);
                 subquery.select(fromUserGroup.get(User_.id));
-            
+
                 List<Predicate> subPredicates = new ArrayList<>();
-                f.decorateCriteriaQuery(subPredicates, criteriaBuilder, fromUserGroup);
-                subPredicates.add(criteriaBuilder.equal(fromUserGroup.get(UserGroup_.user), from));
-                
-                subquery.where(subPredicates.toArray(new Predicate[]{}));
-                
-                predicates.add(criteriaBuilder.exists(subquery));
+
+                //Gelen extra filtre UserGroup bilgisi içermeli
+                Filter<?, ?> f = (Filter<?, ?>) queryDefinition.getExtraFilters().get(0);
+                if (f.getAttribute().equals(UserGroup_.group) && f.getValue() != null) {
+                    f.decorateCriteriaQuery(subPredicates, criteriaBuilder, fromUserGroup);
+                }
+
+                //Yetki kontrolü yapacak mıyız?
+                if (domainGroupcontrol) {
+                    UserInfo ui = identity.getUserInfo();
+                    //SuperAdmin için grup yetki kontrolü yapılmayacak
+                    if (!"SUPERADMIN".equals(ui.getUserType())) {
+                        //FIXME: Eğer grup tanımı yoksa ne yapalım? Şu hali ile her şeyi getirecek...
+                        if (!Strings.isNullOrEmpty(ui.getDomainGroupPath())) {
+                            Join<UserGroup, Group> o = fromUserGroup.join(UserGroup_.group, JoinType.INNER);
+                            subPredicates.add(criteriaBuilder.like(fromUserGroup.get(UserGroup_.group).get(Group_.path), ui.getDomainGroupPath() + "%"));
+                        }
+                    }
+                }
+
+                //Eğer detay UserGroup sorgu için filtre var sa ekleyelim...
+                if (!subPredicates.isEmpty()) {
+                    subPredicates.add(criteriaBuilder.equal(fromUserGroup.get(UserGroup_.user), from));
+                    subquery.where(subPredicates.toArray(new Predicate[]{}));
+                    predicates.add(criteriaBuilder.exists(subquery));
+                }
+            }
+        } else if (!queryDefinition.getExtraFilters().isEmpty() || domainGroupcontrol) {
+            //Eğer UI üzerinden filre gelmiş ya da domainGroupcontrol gerekiyorsa
+            //Tek bir grup tanımı var o da domainGroup üzerinde dolayısı ile UserGroup tablosuna bakılmayacak.
+
+            //Gelen extra filtre UserGroup bilgisi içermeli o yüzden burada path kontrolüne kendimiz ekliyoruz.
+            Filter<?, ?> f = (Filter<?, ?>) queryDefinition.getExtraFilters().get(0);
+            if (f.getAttribute().equals(UserGroup_.group) && f.getValue() != null) {
+                predicates.add(criteriaBuilder.like(from.get(User_.domainGroup).get(Group_.path), ((TreeNodeEntityBase) f.getValue()).getPath() + "%"));
+            }
+
+            if (domainGroupcontrol) {
+                UserInfo ui = identity.getUserInfo();
+                //SuperAdmin için grup yetki kontrolü yapılmayacak
+                if (!"SUPERADMIN".equals(ui.getUserType())) {
+                    //FIXME: Eğer grup tanımı yoksa ne yapalım? Şu hali ile her şeyi getirecek...
+                    if (!Strings.isNullOrEmpty(ui.getDomainGroupPath())) {
+                        predicates.add(criteriaBuilder.like(from.get(User_.domainGroup).get(Group_.path), ui.getDomainGroupPath() + "%"));
+                    }
+                }
             }
         }
-        
-        //FIXME: Burada Grup Manager olanlar için grup bazlı bir sorgu lazım
-        //Root<UserOrganization> uoFrom = criteriaQuery.from(UserOrganization.class);
-        //predicates.add( criteriaBuilder.equal(uoFrom.get(UserOrganization_.username), userLookup.getActiveUser().getLoginName()));
-        //predicates.add( criteriaBuilder.equal(from.get(Capa_.organization), uoFrom.get(UserOrganization_.organization)));
-        
+
         decorateFilters(filters, predicates, criteriaBuilder, from);
 
         if (!Strings.isNullOrEmpty(queryDefinition.getSearchText())) {
@@ -98,17 +150,17 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
                     criteriaBuilder.like(from.get(User_.firstName), "%" + queryDefinition.getSearchText() + "%"),
                     criteriaBuilder.like(from.get(User_.lastName), "%" + queryDefinition.getSearchText() + "%")));
         }
-        
+
         //Person filtremize ekledik.
         criteriaQuery.where(predicates.toArray(new Predicate[]{}));
-        
+
         // Öncelikle default sıralama verelim eğer kullanıcı tarafından tanımlı sıralama var ise onu setleyelim
-        if ( queryDefinition.getSorters().isEmpty() )  {
+        if (queryDefinition.getSorters().isEmpty()) {
             criteriaQuery.orderBy(criteriaBuilder.asc(from.get(User_.loginName)));
         } else {
             criteriaQuery.orderBy(decorateSorts(queryDefinition.getSorters(), criteriaBuilder, from));
         }
-        
+
         //Haydi bakalım sonuçları alalım
         TypedQuery<UserViewModel> typedQuery = entityManager().createQuery(criteriaQuery);
         typedQuery.setMaxResults(queryDefinition.getResultLimit());
@@ -130,18 +182,17 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
                 .setMaxResults(100)
                 .getResultList();
     }
-    
+
     @Override
     public List<UserViewModel> lookupQuery(String searchText) {
-        
+
         CriteriaBuilder criteriaBuilder = entityManager().getCriteriaBuilder();
         //Geriye PersonViewModel dönecek cq'yu ona göre oluşturuyoruz.
         CriteriaQuery<UserViewModel> criteriaQuery = criteriaBuilder.createQuery(UserViewModel.class);
 
         //From Tabii ki User
         Root<User> from = criteriaQuery.from(User.class);
-        
-        
+
         //Sonuç filtremiz
         criteriaQuery.multiselect(
                 from.get(User_.id),
@@ -153,37 +204,34 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
                 from.get(User_.userType),
                 from.get(User_.info)
         );
-        
+
         //Filtreleri ekleyelim.
         List<Predicate> predicates = new ArrayList<>();
-        
+
         //FIXME: Burada Grup Manager olanlar için grup bazlı bir sorgu lazım
         //Root<UserOrganization> uoFrom = criteriaQuery.from(UserOrganization.class);
         //predicates.add( criteriaBuilder.equal(uoFrom.get(UserOrganization_.username), userLookup.getActiveUser().getLoginName()));
         //predicates.add( criteriaBuilder.equal(from.get(Capa_.organization), uoFrom.get(UserOrganization_.organization)));
-        
         predicates.add(
-                criteriaBuilder.or( 
-                    criteriaBuilder.like(from.get( User_.loginName ), "%" + searchText + "%"),
-                    criteriaBuilder.like(from.get( User_.firstName ), "%" + searchText + "%"),
-                    criteriaBuilder.like(from.get( User_.lastName ), "%" + searchText + "%")));
+                criteriaBuilder.or(
+                        criteriaBuilder.like(from.get(User_.loginName), "%" + searchText + "%"),
+                        criteriaBuilder.like(from.get(User_.firstName), "%" + searchText + "%"),
+                        criteriaBuilder.like(from.get(User_.lastName), "%" + searchText + "%")));
 
-        
         //Person filtremize ekledik.
         criteriaQuery.where(predicates.toArray(new Predicate[]{}));
-        
+
         // Öncelikle default sıralama verelim eğer kullanıcı tarafından tanımlı sıralama var ise onu setleyelim
         criteriaQuery.orderBy(criteriaBuilder.asc(from.get(User_.loginName)));
-        
-        
+
         //Haydi bakalım sonuçları alalım
         TypedQuery<UserViewModel> typedQuery = entityManager().createQuery(criteriaQuery);
         List<UserViewModel> resultList = typedQuery.getResultList();
 
         return resultList;
     }
-    
-    public abstract User findAnyByLoginName( String loginname );
-    
-    public abstract List<User> findByUserTypeAndActive( String userType, Boolean active);
+
+    public abstract User findAnyByLoginName(String loginname);
+
+    public abstract List<User> findByUserTypeAndActive(String userType, Boolean active);
 }

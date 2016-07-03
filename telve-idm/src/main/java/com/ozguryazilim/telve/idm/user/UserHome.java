@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.shiro.authc.credential.DefaultPasswordService;
 import org.slf4j.Logger;
@@ -131,6 +132,10 @@ public class UserHome extends FormBase<User, Long>{
         this.password = password;
     }
 
+    public Boolean getDomainGroupRequired(){
+        return "true".equals(ConfigResolver.getPropertyValue("security.domainGroup.control", "false"));
+    }
+    
     @Override
     protected RepositoryBase<User, ?> getRepository() {
         return repository;

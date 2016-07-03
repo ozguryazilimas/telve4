@@ -57,6 +57,7 @@
             <column name="LAST_NAME" type="VARCHAR(255)"/>
             <column name="PW_HASH" type="VARCHAR(255)"/>
             <column name="USER_TYPE" type="VARCHAR(255)"/>
+            <column name="GROUP_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-6">
@@ -87,8 +88,6 @@
             <column name="USER_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
-    
-    
 
     <changeSet author="oyas (generated)" id="default-user">
         <insert tableName="TLI_USER">
@@ -115,6 +114,9 @@
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-13">
         <addForeignKeyConstraint baseColumnNames="GROUP_ID" baseTableName="TLI_USER_GROUP" constraintName="FK_kjnhw3iwif4nnfmicyqqjcht0" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="TLI_GROUP"/>
+    </changeSet>
+    <changeSet author="oyas (generated)" id="1467025451677-25">
+        <addForeignKeyConstraint baseColumnNames="GROUP_ID" baseTableName="TLI_USER" constraintName="FK_kjnhw3iwif4nnfmicyqqjcht1" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="TLI_GROUP"/>
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-15">
         <addForeignKeyConstraint baseColumnNames="ROLE_ID" baseTableName="TLI_USER_ROLE" constraintName="FK_mfodp7tbtxxp6pj1rf14otrdk" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="TLI_ROLE"/>

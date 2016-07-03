@@ -52,6 +52,14 @@ public interface UserServiceProvider {
      * @return 
      */
     String getUserName( String loginName );
+
+
+    /**
+     * LoginName'i verilen kullanıcının temel bilgilerini döndürür.
+     * @param loginName
+     * @return 
+     */
+    UserInfo getUserInfo( String loginName );
     
     /**
      * Login name verilen kullanıcının role listesini döndürür.

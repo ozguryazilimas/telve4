@@ -73,4 +73,12 @@ public class Identity {
     public List<String> getGroups(){
         return userService.getUserGroups(getLoginName());
     }
+    
+    /**
+     * Geriye kullanıcının temel bilgilerini paket olarak döndürür.
+     * @return 
+     */
+    public UserInfo getUserInfo(){
+        return userService.getUserInfo(getLoginName());
+    }
 }

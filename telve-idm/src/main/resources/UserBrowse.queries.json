@@ -2,7 +2,7 @@
         "name": "userBrowse.caption.AllUsers",
         "resultLimit": 100,
         "rowLimit": 20,
-        "columns": ["loginName", "firstName", "lastName", "userType", "email"],
+        "columns": ["loginName", "firstName", "lastName", "userType", "domainGroup", "email"],
         "filters": ["loginName", "firstName", "lastName", "userType", "active", "autoCreated"],
         "filterValues": {
             "firstName": "Contains::",
@@ -19,7 +19,7 @@
         "name": "userBrowse.caption.ActiveUsers",
         "resultLimit": 100,
         "rowLimit": 20,
-        "columns": ["loginName", "firstName", "lastName", "userType", "email"],
+        "columns": ["loginName", "firstName", "lastName", "userType", "domainGroup", "email"],
         "filters": ["loginName", "firstName", "lastName", "userType", "active", "autoCreated"],
         "filterValues": {
             "firstName": "Contains::",
@@ -36,7 +36,7 @@
         "name": "userBrowse.caption.LockedUsers",
         "resultLimit": 100,
         "rowLimit": 20,
-        "columns": ["loginName", "firstName", "lastName", "userType", "email"],
+        "columns": ["loginName", "firstName", "lastName", "userType", "domainGroup", "email"],
         "filters": ["loginName", "firstName", "lastName", "userType", "active", "autoCreated"],
         "filterValues": {
             "firstName": "Contains::",
@@ -53,7 +53,7 @@
         "name": "userBrowse.caption.CreatedUsers",
         "resultLimit": 100,
         "rowLimit": 20,
-        "columns": ["loginName", "firstName", "lastName", "userType", "email"],
+        "columns": ["loginName", "firstName", "lastName", "userType", "domainGroup", "email"],
         "filters": ["loginName", "firstName", "lastName", "userType", "active", "autoCreated"],
         "filterValues": {
             "firstName": "Contains::",
@@ -70,7 +70,7 @@
         "name": "userBrowse.caption.SuperAdmins",
         "resultLimit": 100,
         "rowLimit": 20,
-        "columns": ["loginName", "firstName", "lastName", "userType", "email"],
+        "columns": ["loginName", "firstName", "lastName", "userType", "domainGroup", "email"],
         "filters": ["loginName", "firstName", "lastName", "userType", "active", "autoCreated"],
         "filterValues": {
             "firstName": "Contains::",

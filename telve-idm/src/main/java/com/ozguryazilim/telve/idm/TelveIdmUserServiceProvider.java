@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.idm;
 
+import com.ozguryazilim.telve.auth.UserInfo;
 import com.ozguryazilim.telve.auth.UserServiceProvider;
 import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.idm.entities.UserAttribute;
@@ -136,6 +137,31 @@ public class TelveIdmUserServiceProvider implements UserServiceProvider, Seriali
         }
         
         return result;
+    }
+
+    @Override
+    public UserInfo getUserInfo(String loginName) {
+        
+        User u = userRepository.findAnyByLoginName(loginName);
+        if( u == null ){
+            return null;
+        }
+        
+        UserInfo ui = new UserInfo();
+
+        ui.setId( u.getId().toString());
+        ui.setLoginName(u.getLoginName());
+        ui.setFirstName(u.getFirstName());
+        ui.setLastName(u.getLastName());
+        ui.setEmail(u.getEmail());
+        ui.setUserType(u.getUserType());
+        if( u.getDomainGroup() != null ){
+            ui.setDomainGroupId(u.getDomainGroup().getId());
+            ui.setDomainGroupName(u.getDomainGroup().getName());
+            ui.setDomainGroupPath(u.getDomainGroup().getPath());
+        }
+        
+        return ui;
     }
     
 }
