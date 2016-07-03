@@ -71,4 +71,8 @@ public class UserLookup implements Serializable{
         return userService.getUserName(loginName);
     }
     
+    public UserInfo getUserInfo(String loginName ){
+        return userService.getUserInfo(loginName);
+    }
+    
 }

@@ -115,6 +115,10 @@ public class UserInfo implements Serializable{
         this.domainGroupPath = domainGroupPath;
     }
     
+    public String getUserName(){
+        return getFirstName() + " " + getLastName();
+    }
+    
     @Override
     public int hashCode() {
         int hash = 5;
