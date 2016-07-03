@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.idm.group;
 
+import com.ozguryazilim.telve.audit.AuditLogCommand;
 import com.ozguryazilim.telve.data.TreeRepositoryBase;
 import com.ozguryazilim.telve.forms.ParamEdit;
 import com.ozguryazilim.telve.forms.TreeBase;
@@ -144,6 +145,12 @@ public class GroupHome extends TreeBase<Group>{
         event.fire(new IdmEvent(IdmEvent.FROM_GROUP, IdmEvent.DELETE, getEntity().getName()));
         super.onAfterDelete();
     }
+
+    @Override
+    protected String getAuditLogCategory() {
+        return AuditLogCommand.CAT_AUTH;
+    }
+ 
     
     
 }

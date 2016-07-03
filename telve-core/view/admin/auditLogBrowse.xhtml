@@ -27,7 +27,12 @@
                     #{messages[item.attribute]} : 
                 </div>
                 <div class="product-description">
-                    #{item.oldValue} -> #{item.newValue}
+                    <div class="text-yellow">
+                        <i class="fa fa-minus"/> #{item.oldValue}
+                    </div>
+                    <div class="text-green">
+                        <i class="fa fa-plus"/> #{item.newValue}
+                    </div>
                 </div>
             </li>
         </ui:repeat>

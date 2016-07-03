@@ -10,6 +10,9 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.admin.ui.PermissionGroupUIModel;
 import com.ozguryazilim.telve.admin.ui.PermissionUIModel;
+import com.ozguryazilim.telve.audit.AuditLogCommand;
+import com.ozguryazilim.telve.audit.ChangeLogStore;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.forms.ParamBase;
 import com.ozguryazilim.telve.forms.ParamEdit;
@@ -43,6 +46,9 @@ public class RoleHome extends ParamBase<Role, Long>{
     
     @Inject
     private RoleRepository repository;
+    
+    @Inject
+    private Identity identity;
 
     @Inject 
     private Event<IdmEvent>  event;
@@ -50,6 +56,7 @@ public class RoleHome extends ParamBase<Role, Long>{
     private Map<String, PermissionGroupUIModel> permissionGroups = new HashMap<>();
     private Map<String, PermissionUIModel> permissionModels = new HashMap<>();
 
+    private ChangeLogStore changeLogStore = new ChangeLogStore();
     
     @PostConstruct
     public void init() {
@@ -68,24 +75,29 @@ public class RoleHome extends ParamBase<Role, Long>{
     protected void buildPermissionModelValues() {
         clearPermissionValues();
             
+        changeLogStore.clear();
+        
         for( RolePermission rp : getEntity().getPermissions() ){
             //FIXME: Bu kod buradan bir util sınıfa taşınmalı 
             //FIXME: şu anda sadece domain:action,action,action yapısı destekleniyor.
+            
+            
             List<String> parts = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(rp.getPermission());
             List<String> actions = Splitter.on(',').trimResults().omitEmptyStrings().splitToList(parts.get(1));
+            changeLogStore.addOldValue("permission.label." + parts.get(0), parts.get(1));
             for( String action : actions ){
                 setPermissionValue(parts.get(0), action);
             }
         }
         
-        /*
-        changeLogStore.clear();
         
+        
+        /*
         for (Permission perm : getCurrentPermmissions()) {
             setPermissionValue((String)perm.getResourceIdentifier(), perm.getOperation());
             changeLogStore.appendOldValue("permission.label." + (String)perm.getResourceIdentifier(), perm.getOperation());
-        }
-        */
+        }*/
+        
     }
 
     private void addPermissionModel(PermissionGroup group, PermissionDefinition pd) {
@@ -172,6 +184,7 @@ public class RoleHome extends ParamBase<Role, Long>{
                 rp.setRole(getEntity());
                 rp.setPermission(domain + ":" + acts );
                 getEntity().getPermissions().add(rp);
+                changeLogStore.addNewValue("permission.label." + domain, acts);
             }
         }
         
@@ -216,6 +229,11 @@ public class RoleHome extends ParamBase<Role, Long>{
     @Override
     protected RepositoryBase<Role, ?> getRepository() {
         return  repository;
+    }
+
+    @Override
+    protected void auditLog(String action) {
+        getAuditLogger().actionLog(getEntity().getClass().getSimpleName(), getEntity().getId(), getBizKeyValue(), AuditLogCommand.CAT_AUTH,  action, identity.getLoginName(), "", changeLogStore.getChangeValues());
     }
     
 }

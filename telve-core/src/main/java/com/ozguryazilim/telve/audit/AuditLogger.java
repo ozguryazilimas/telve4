@@ -79,4 +79,21 @@ public class AuditLogger implements Serializable{
         commandSender.sendCommand(new AuditLogCommand( domain, pk, bizKey, action, category,  user, message));
     }
     
+    /**
+     * Entity detail action logu gönderir.
+     * 
+     * @param domain
+     * @param pk
+     * @param bizKey
+     * @param category
+     * @param action
+     * @param user
+     * @param message 
+     */
+    public void actionLog( String domain, Long pk, String bizKey, String category, String action, String user, String message, List<AuditLogDetail> items  ){
+        AuditLogCommand cm = new AuditLogCommand( domain, pk, bizKey, action, category,  user, message);
+        cm.setItems(items);
+        commandSender.sendCommand(cm);
+    }
+    
 }
