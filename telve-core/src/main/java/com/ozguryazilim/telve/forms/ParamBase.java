@@ -119,7 +119,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
             return null;
         }
 
-        String act = entity.isPersisted() ? AuditLogCommand.ACT_INSERT : AuditLogCommand.ACT_UPDATE;
+        String act = entity.isPersisted() ? AuditLogCommand.ACT_UPDATE : AuditLogCommand.ACT_INSERT;
         
         if (!entity.isPersisted()) {
             //Eğer ParamEntityBase'den gelen bir entity ise Unique Code olup olmadığını bir kontrol edelim...

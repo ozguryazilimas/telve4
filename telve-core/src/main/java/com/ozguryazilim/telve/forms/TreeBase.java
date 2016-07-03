@@ -129,7 +129,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
             return null;
         }
 
-        String act = entity.isPersisted() ? AuditLogCommand.ACT_INSERT : AuditLogCommand.ACT_UPDATE;
+        String act = entity.isPersisted() ? AuditLogCommand.ACT_UPDATE : AuditLogCommand.ACT_INSERT;
         
         if (!entity.isPersisted()) {
             //Unique Code olup olmadığını bir kontrol edelim...
