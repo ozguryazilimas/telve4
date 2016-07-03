@@ -45,6 +45,11 @@ public class UserLookup implements Serializable{
         return getLoginNames();
     }
     
+
+    public List<String> getUsers( String type, String group ){
+        return userService.getUsersByTypeAndGroup(type, group);
+    }
+    
     /**
      * Kullanıcı tipine göre kullanıcı ( loginName ) listesi döndürür.
      * 

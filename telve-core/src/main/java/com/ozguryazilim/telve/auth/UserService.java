@@ -15,6 +15,8 @@ import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 
 /**
  * Telve alt yapısında kullanılan providerlaraın sağladığı bilgiler için temel
@@ -36,9 +38,6 @@ public class UserService {
     @Any
     private Instance<UserRoleResolver> userRoleResolvers;
 
-    private List<String> loginNames;
-    private Map<String, List<String>> userByTypes = new HashMap<>();
-    private Map<String, List<String>> userByGroups = new HashMap<>();
     private Map<String, String> userNames = new HashMap<>();
     private Map<String, List<String>> userRoles = new HashMap<>();
     private Map<String, List<String>> userGroups = new HashMap<>();
@@ -47,56 +46,97 @@ public class UserService {
     private Map<String, UserInfo> userInfos = new HashMap<>();
 
     /**
-     * Geriye sistemde tanımlı kullanıcı login isimlerini döndürür.
+     * Geriye var ise login olan mevcut kullanıcının bilgisini döndürür.
      *
      * @return
      */
-    public List<String> getLoginNames() {
+    private String getCurrentUser() {
+        Subject currentUser = SecurityUtils.getSubject();
 
-        if (loginNames == null) {
-            populateLoginNames();
+        if (currentUser != null) {
+            return currentUser.getPrincipal().toString();
         }
 
-        return loginNames;
+        return "";
+    }
+
+    /**
+     * Eğer aktif bir kullanıcı var ise o kullanıcının yetkili ( domainGroup ) olduğu kullanıcıların listesini döndürür.
+     *
+     * Eğer aktif kullanıcı yoksa bütün kullanıcı listesini döndürür.
+     * @return
+     */
+    public List<String> getLoginNames() {
+        List<String> result = new ArrayList<>();
+
+        for (UserServiceProvider usp : userServiceProviders) {
+            result.addAll(usp.getLoginNames());
+        }
+
+        return result;
     }
 
     /**
      * Kullanıcı tipine göre kullanıcı ( loginName ) listesi döndürür.
      *
-     * Bahsi geçen tipler UserModelExtention ile verilebilmektedir.
+     * Bahsi geçen tipler UserModelExtention ile verilebilmektedir
+     * 
+     * Kullanıcı tipleri virgüller ile ayrılmış olarak gelebilir. Böylece bir den fazla tipte kullanıcı çekilebilir.
      *
      * @param type
      * @return
      */
     public List<String> getUsersByType(String type) {
-        List<String> ls = userByTypes.get(type);
+        List<String> result = new ArrayList<>();
 
-        if (ls == null) {
-            ls = populateUsersByType(type);
-            userByTypes.put(type, ls);
+        for (UserServiceProvider usp : userServiceProviders) {
+            result.addAll(usp.getUsersByType(type));
         }
 
-        return ls;
+        return result;
     }
 
     /**
      * Verilen Grup üyesi kullanıcı listesini döndürür.
      *
      * Grup yapısı ağaç ise o ağacın alt dallarında olan kullanıcıları da
-     * döndürür.
+     * döndürür. Eğer ağaç bir yapı ise parametre olarak Path verilmelidir.
      *
      * @param group
      * @return
      */
     public List<String> getUsersByGroup(String group) {
-        List<String> ls = userByGroups.get(group);
 
-        if (ls == null) {
-            ls = populateUsersByGroup(group);
-            userByGroups.put(group, ls);
+        List<String> result = new ArrayList<>();
+
+        for (UserServiceProvider usp : userServiceProviders) {
+            result.addAll(usp.getUsersByGroup(group));
         }
 
-        return ls;
+        return result;
+    }
+    
+    
+    public List<String> getUsersByTypeAndGroup(String type, String group) {
+
+        List<String> result = new ArrayList<>();
+
+        for (UserServiceProvider usp : userServiceProviders) {
+            result.addAll(usp.getUsersByTypeAndGroup(type, group));
+        }
+
+        return result;
+    }
+    
+    
+    public List<String> getUsersByTextAndTypeAndGroup( String searchText, String type, String group) {
+        List<String> result = new ArrayList<>();
+
+        for (UserServiceProvider usp : userServiceProviders) {
+            result.addAll(usp.getUsersByTextAndTypeAndGroup( searchText, type, group));
+        }
+
+        return result;
     }
 
     /**
@@ -206,29 +246,20 @@ public class UserService {
         return result;
     }
 
-    
-    public UserInfo getUserInfo( String loginName ){
+    public UserInfo getUserInfo(String loginName) {
         UserInfo ui = userInfos.get(loginName);
-        
-        if( ui == null ){
+
+        if (ui == null) {
             ui = populateUserInfo(loginName);
-            if( ui != null ){
+            if (ui != null) {
                 userInfos.put(loginName, ui);
             }
         }
-        
+
         return ui;
     }
-    
-    private void populateLoginNames() {
-        loginNames = new ArrayList<>();
 
-        for (UserServiceProvider usp : userServiceProviders) {
-            loginNames.addAll(usp.getLoginNames());
-        }
-    }
-
-    public List<String> populateUsersByType(String type) {
+    private List<String> populateUsersByType(String type) {
         List<String> ls = new ArrayList<>();
 
         for (UserServiceProvider usp : userServiceProviders) {
@@ -237,13 +268,15 @@ public class UserService {
 
         return ls;
     }
-    
+
     private UserInfo populateUserInfo(String loginName) {
         for (UserServiceProvider usp : userServiceProviders) {
             UserInfo ui = usp.getUserInfo(loginName);
-            if( ui != null ) return ui;
+            if (ui != null) {
+                return ui;
+            }
         }
-        
+
         return null;
     }
 
@@ -285,7 +318,7 @@ public class UserService {
      * @param attributes
      * @return
      */
-    public Map<String, String> populateUserAttibutes(String loginName) {
+    private Map<String, String> populateUserAttibutes(String loginName) {
         Map<String, String> result = new HashMap<>();
 
         for (UserServiceProvider usp : userServiceProviders) {

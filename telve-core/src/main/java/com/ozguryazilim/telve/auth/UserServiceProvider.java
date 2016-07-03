@@ -45,6 +45,26 @@ public interface UserServiceProvider {
     List<String> getUsersByGroup( String group );
     
     /**
+     * Verilen Grup üyesi kullanıcı listesini döndürür.
+     * 
+     * Grup yapısı ağaç ise o ağacın alt dallarında olan kullanıcıları da döndürür.
+     * 
+     * @param group
+     * @return 
+     */
+    List<String> getUsersByTypeAndGroup( String type, String group );
+    
+    /**
+     * Verilen parametrelere uyan değer döner.
+     * 
+     * @param searchText
+     * @param type
+     * @param group
+     * @return 
+     */
+    List<String> getUsersByTextAndTypeAndGroup( String searchText, String type, String group);
+    
+    /**
      * LoginName'i kullanıcı adına çevirir. 
      * 
      * 

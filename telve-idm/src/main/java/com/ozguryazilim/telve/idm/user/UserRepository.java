@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.idm.user;
 
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.auth.UserInfo;
@@ -65,18 +66,7 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
         Join<User, Group> groupFrom = from.join(User_.domainGroup, JoinType.LEFT);
 
         //Sonuç filtremiz
-        criteriaQuery.multiselect(
-                from.get(User_.id),
-                from.get(User_.loginName),
-                from.get(User_.firstName),
-                from.get(User_.lastName),
-                from.get(User_.email),
-                from.get(User_.active),
-                from.get(User_.userType),
-                from.get(User_.info),
-                groupFrom.get(Group_.id),
-                groupFrom.get(Group_.name)
-        );
+        buildVieModelSelect(criteriaQuery, from, groupFrom);
 
         //Filtreleri ekleyelim.
         List<Predicate> predicates = new ArrayList<>();
@@ -103,15 +93,7 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
 
                 //Yetki kontrolü yapacak mıyız?
                 if (domainGroupcontrol) {
-                    UserInfo ui = identity.getUserInfo();
-                    //SuperAdmin için grup yetki kontrolü yapılmayacak
-                    if (!"SUPERADMIN".equals(ui.getUserType())) {
-                        //FIXME: Eğer grup tanımı yoksa ne yapalım? Şu hali ile her şeyi getirecek...
-                        if (!Strings.isNullOrEmpty(ui.getDomainGroupPath())) {
-                            Join<UserGroup, Group> o = fromUserGroup.join(UserGroup_.group, JoinType.INNER);
-                            subPredicates.add(criteriaBuilder.like(fromUserGroup.get(UserGroup_.group).get(Group_.path), ui.getDomainGroupPath() + "%"));
-                        }
-                    }
+                    buildMultiGroupDomainControl( criteriaBuilder, subPredicates, fromUserGroup);
                 }
 
                 //Eğer detay UserGroup sorgu için filtre var sa ekleyelim...
@@ -132,26 +114,16 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
             }
 
             if (domainGroupcontrol) {
-                UserInfo ui = identity.getUserInfo();
-                //SuperAdmin için grup yetki kontrolü yapılmayacak
-                if (!"SUPERADMIN".equals(ui.getUserType())) {
-                    //FIXME: Eğer grup tanımı yoksa ne yapalım? Şu hali ile her şeyi getirecek...
-                    if (!Strings.isNullOrEmpty(ui.getDomainGroupPath())) {
-                        predicates.add(criteriaBuilder.like(from.get(User_.domainGroup).get(Group_.path), ui.getDomainGroupPath() + "%"));
-                    }
-                }
+                buildSingleGroupDomainControl(criteriaBuilder, predicates, from);
             }
         }
 
         decorateFilters(filters, predicates, criteriaBuilder, from);
 
-        if (!Strings.isNullOrEmpty(queryDefinition.getSearchText())) {
-            predicates.add(criteriaBuilder.or(criteriaBuilder.like(from.get(User_.loginName), "%" + queryDefinition.getSearchText() + "%"),
-                    criteriaBuilder.like(from.get(User_.firstName), "%" + queryDefinition.getSearchText() + "%"),
-                    criteriaBuilder.like(from.get(User_.lastName), "%" + queryDefinition.getSearchText() + "%")));
-        }
+        
+        buildSearchTextControl(queryDefinition.getSearchText(),criteriaBuilder, predicates, from);
 
-        //Person filtremize ekledik.
+        //Oluşan filtreleri sorgumuza ekliyoruz
         criteriaQuery.where(predicates.toArray(new Predicate[]{}));
 
         // Öncelikle default sıralama verelim eğer kullanıcı tarafından tanımlı sıralama var ise onu setleyelim
@@ -183,8 +155,14 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
                 .getResultList();
     }
 
+    
     @Override
     public List<UserViewModel> lookupQuery(String searchText) {
+        return lookupQuery( searchText, null, null );
+    }
+    
+    
+    public List<UserViewModel> lookupQuery(String searchText, String userType, String groupPath ) {
 
         CriteriaBuilder criteriaBuilder = entityManager().getCriteriaBuilder();
         //Geriye PersonViewModel dönecek cq'yu ona göre oluşturuyoruz.
@@ -192,32 +170,59 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
 
         //From Tabii ki User
         Root<User> from = criteriaQuery.from(User.class);
+        Join<User, Group> groupFrom = from.join(User_.domainGroup, JoinType.LEFT);
 
         //Sonuç filtremiz
-        criteriaQuery.multiselect(
-                from.get(User_.id),
-                from.get(User_.loginName),
-                from.get(User_.firstName),
-                from.get(User_.lastName),
-                from.get(User_.email),
-                from.get(User_.active),
-                from.get(User_.userType),
-                from.get(User_.info)
-        );
+        buildVieModelSelect(criteriaQuery, from, groupFrom);
 
         //Filtreleri ekleyelim.
         List<Predicate> predicates = new ArrayList<>();
 
-        //FIXME: Burada Grup Manager olanlar için grup bazlı bir sorgu lazım
-        //Root<UserOrganization> uoFrom = criteriaQuery.from(UserOrganization.class);
-        //predicates.add( criteriaBuilder.equal(uoFrom.get(UserOrganization_.username), userLookup.getActiveUser().getLoginName()));
-        //predicates.add( criteriaBuilder.equal(from.get(Capa_.organization), uoFrom.get(UserOrganization_.organization)));
-        predicates.add(
-                criteriaBuilder.or(
-                        criteriaBuilder.like(from.get(User_.loginName), "%" + searchText + "%"),
-                        criteriaBuilder.like(from.get(User_.firstName), "%" + searchText + "%"),
-                        criteriaBuilder.like(from.get(User_.lastName), "%" + searchText + "%")));
+        Boolean domainGroupcontrol = "true".equals(ConfigResolver.getPropertyValue("security.domainGroup.control", "false"));
+        Boolean multiGroupcontrol = "true".equals(ConfigResolver.getPropertyValue("security.multiGroup.control", "false"));
 
+        if( domainGroupcontrol ){
+            if( multiGroupcontrol ){
+                
+                Subquery<UserGroup> subquery = criteriaQuery.subquery(UserGroup.class);
+                Root fromUserGroup = subquery.from(UserGroup.class);
+                //Join<UserGroup, User> sqUser = fromUserGroup.join(UserGroup_.user);
+                subquery.select(fromUserGroup.get(User_.id));
+
+                List<Predicate> subPredicates = new ArrayList<>();
+                
+                buildMultiGroupDomainControl(criteriaBuilder, subPredicates, fromUserGroup);
+                
+                //Eğer belirli bir grup için isteniyor ise
+                if( !Strings.isNullOrEmpty(groupPath)){
+                    subPredicates.add(criteriaBuilder.like(fromUserGroup.get(UserGroup_.group).get(Group_.path), groupPath + "%"));
+                }
+                
+                //Eğer detay UserGroup sorgu için filtre var sa ekleyelim...
+                if (!subPredicates.isEmpty()) {
+                    subPredicates.add(criteriaBuilder.equal(fromUserGroup.get(UserGroup_.user), from));
+                    subquery.where(subPredicates.toArray(new Predicate[]{}));
+                    predicates.add(criteriaBuilder.exists(subquery));
+                }
+                
+            } else {
+                buildSingleGroupDomainControl(criteriaBuilder, predicates, from);
+                
+                //Eğer belirli bir grup için isteniyor ise
+                if( !Strings.isNullOrEmpty(groupPath)){
+                    predicates.add(criteriaBuilder.like(from.get(User_.domainGroup).get(Group_.path), groupPath + "%"));
+                }
+            }
+        }
+        
+        buildSearchTextControl(searchText, criteriaBuilder, predicates, from);
+
+        //Lookup'da geriye sadece aktifler döner.
+        predicates.add( criteriaBuilder.equal(from.get(User_.active), Boolean.TRUE));
+        
+        //UserType ile ilgili filtreleri ekleyelim
+        buildUserTypeControl(userType, criteriaBuilder, predicates, from);
+        
         //Person filtremize ekledik.
         criteriaQuery.where(predicates.toArray(new Predicate[]{}));
 
@@ -234,4 +239,105 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
     public abstract User findAnyByLoginName(String loginname);
 
     public abstract List<User> findByUserTypeAndActive(String userType, Boolean active);
+
+
+    //**************************************
+    // Helpers
+    //**************************************
+    /**
+     * UserViewModel için criteria selectini hazırlar.
+     */
+    private void buildVieModelSelect(CriteriaQuery<UserViewModel> criteriaQuery, Root<User> from, Join<User, Group> groupFrom) {
+        criteriaQuery.multiselect(
+                from.get(User_.id),
+                from.get(User_.loginName),
+                from.get(User_.firstName),
+                from.get(User_.lastName),
+                from.get(User_.email),
+                from.get(User_.active),
+                from.get(User_.userType),
+                from.get(User_.info),
+                groupFrom.get(Group_.id),
+                groupFrom.get(Group_.name)
+        );
+    }
+
+    /**
+     * MultiGroup yapısında domainGroup filtelemesi
+     *
+     * @param criteriaBuilder
+     * @param subPredicates
+     * @param fromUserGroup
+     */
+    private void buildMultiGroupDomainControl(CriteriaBuilder criteriaBuilder, List<Predicate> subPredicates, Root fromUserGroup) {
+        if( identity == null ) return;
+        
+        UserInfo ui = identity.getUserInfo();
+        //SuperAdmin için grup yetki kontrolü yapılmayacak
+        if (!"SUPERADMIN".equals(ui.getUserType())) {
+            //FIXME: Eğer grup tanımı yoksa ne yapalım? Şu hali ile her şeyi getirecek...
+            if (!Strings.isNullOrEmpty(ui.getDomainGroupPath())) {
+                Join<UserGroup, Group> o = fromUserGroup.join(UserGroup_.group, JoinType.INNER);
+                subPredicates.add(criteriaBuilder.like(fromUserGroup.get(UserGroup_.group).get(Group_.path), ui.getDomainGroupPath() + "%"));
+            }
+        }
+    }
+
+    /**
+     * Sadece User üzerinde bulunan domainGroup üzerinden domain kontrol yapılacak ise
+     * @param criteriaBuilder
+     * @param predicates
+     * @param from 
+     */
+    private void buildSingleGroupDomainControl(CriteriaBuilder criteriaBuilder, List<Predicate> predicates, Root<User> from) {
+        if( identity == null ) return;
+        
+        UserInfo ui = identity.getUserInfo();
+        //SuperAdmin için grup yetki kontrolü yapılmayacak
+        if (!"SUPERADMIN".equals(ui.getUserType())) {
+            //FIXME: Eğer grup tanımı yoksa ne yapalım? Şu hali ile her şeyi getirecek...
+            if (!Strings.isNullOrEmpty(ui.getDomainGroupPath())) {
+                predicates.add(criteriaBuilder.like(from.get(User_.domainGroup).get(Group_.path), ui.getDomainGroupPath() + "%"));
+            }
+        }
+    }
+    
+    /**
+     * Verilen searchText'i loginName, firstName ve lastName'de like ile arayacak şekilde filtreler
+     * @param searchText
+     * @param criteriaBuilder
+     * @param predicates
+     * @param from 
+     */
+    private void buildSearchTextControl( String searchText, CriteriaBuilder criteriaBuilder, List<Predicate> predicates, Root<User> from ){
+        if (!Strings.isNullOrEmpty(searchText)) {
+            predicates.add(criteriaBuilder.or(criteriaBuilder.like(from.get(User_.loginName), "%" + searchText + "%"),
+                    criteriaBuilder.like(from.get(User_.firstName), "%" + searchText + "%"),
+                    criteriaBuilder.like(from.get(User_.lastName), "%" + searchText + "%")));
+        }
+    }
+    
+    
+    /**
+     * Eğer gelen UserType virgüller ile ayrılmış ise in ile değil ise equal ile kontrol ekler.
+     * @param userType
+     * @param criteriaBuilder
+     * @param predicates
+     * @param from 
+     */
+    private void buildUserTypeControl( String userType, CriteriaBuilder criteriaBuilder, List<Predicate> predicates, Root<User> from  ){
+        
+        if (!Strings.isNullOrEmpty(userType)) {
+            
+            List<String> userTypes = Splitter.on(',').trimResults().omitEmptyStrings().splitToList(userType);
+            if( userTypes.isEmpty() ) return;
+            
+            if( userTypes.size() > 1 ){
+                predicates.add( from.get(User_.userType).in(userTypes));
+            } else {
+                predicates.add( criteriaBuilder.equal( from.get(User_.userType), userTypes.get(0)));
+            }
+        }
+    }
+
 }
