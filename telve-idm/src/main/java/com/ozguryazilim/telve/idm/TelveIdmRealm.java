@@ -279,7 +279,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
             return Collections.emptySet();
         }
 
-        List<UserRole> userRoles = getUserRoleRepository().findByUser(user);
+        List<UserRole> userRoles = getUserRoleRepository().findByUserAndRole_active( user, true );
 
         for (UserRole ur : userRoles) {
             roleNames.add(ur.getRole().getName());
@@ -305,7 +305,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
         //Eğer grup ya da doğrudan kullanıcı üzerinden yetki verilecek ise onların da toplanması lazım.
         Set<String> permissions = new HashSet<>();
 
-        List<UserRole> userRoles = getUserRoleRepository().findByUser(user);
+        List<UserRole> userRoles = getUserRoleRepository().findByUserAndRole_active(user, true);
 
         for (UserRole ur : userRoles) {
             for (RolePermission rp : ur.getRole().getPermissions()) {
