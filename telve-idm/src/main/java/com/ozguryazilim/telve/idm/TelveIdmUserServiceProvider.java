@@ -70,7 +70,7 @@ public class TelveIdmUserServiceProvider implements UserServiceProvider, Seriali
     @Override
     public List<String> getUsersByGroup(String group) {
         List<String> result = new ArrayList<>();
-        //FIXME: Burada sorgu düzeltilecek. 
+        
         List<UserViewModel> ls = userRepository.lookupQuery(null, null, group);
 
         for (UserViewModel u : ls) {
@@ -83,7 +83,7 @@ public class TelveIdmUserServiceProvider implements UserServiceProvider, Seriali
     @Override
     public List<String> getUsersByTypeAndGroup(String type, String group) {
         List<String> result = new ArrayList<>();
-        //FIXME: Burada sorgu düzeltilecek. 
+        
         List<UserViewModel> ls = userRepository.lookupQuery(null, type, group);
 
         for (UserViewModel u : ls) {
@@ -96,7 +96,7 @@ public class TelveIdmUserServiceProvider implements UserServiceProvider, Seriali
     @Override
     public List<String> getUsersByTextAndTypeAndGroup( String searchText, String type, String group) {
         List<String> result = new ArrayList<>();
-        //FIXME: Burada sorgu düzeltilecek. 
+        
         List<UserViewModel> ls = userRepository.lookupQuery(searchText, type, group);
 
         for (UserViewModel u : ls) {

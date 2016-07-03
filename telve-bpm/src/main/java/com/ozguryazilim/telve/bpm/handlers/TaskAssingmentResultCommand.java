@@ -5,7 +5,7 @@
  */
 package com.ozguryazilim.telve.bpm.handlers;
 
-import com.ozguryazilim.telve.auth.UserInfo;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.bpm.TaskInfo;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 
@@ -29,9 +29,9 @@ public class TaskAssingmentResultCommand extends TaskResultCommand{
         super.execute(task); 
         
         //Mevcut identity'i bulalım
-        UserInfo id = BeanProvider.getContextualReference(UserInfo.class, true);
+        Identity identity = BeanProvider.getContextualReference(Identity.class, true);
         //Şimdide bunun atamasını yapalım.
-        task.getVariables().put("ASSIGNEE", id.getLoginName());
+        task.getVariables().put("ASSIGNEE", identity.getLoginName());
     }
     
 }

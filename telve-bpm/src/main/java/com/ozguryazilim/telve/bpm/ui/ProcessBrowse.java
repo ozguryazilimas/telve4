@@ -6,7 +6,7 @@
 package com.ozguryazilim.telve.bpm.ui;
 
 import com.google.common.base.Strings;
-import com.ozguryazilim.telve.auth.UserInfo;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.bpm.TaskRepository;
 import com.ozguryazilim.telve.bpm.handlers.ProcessHandlerRegistery;
 import java.io.Serializable;
@@ -49,7 +49,7 @@ public class ProcessBrowse implements Serializable{
     private IdentityService identityService;
 
     @Inject
-    private UserInfo userInfo;
+    private Identity identity;
     
     @Inject
     private DiagramPopup diagramPopup;
@@ -230,7 +230,7 @@ public class ProcessBrowse implements Serializable{
      */
     protected void saveComment() {
         if (!Strings.isNullOrEmpty(comment)) {
-            identityService.setAuthenticatedUserId(userInfo.getLoginName());
+            identityService.setAuthenticatedUserId(identity.getLoginName());
             Comment c = taskService.createComment(selectedTask.getId(), selectedTask.getProcessInstanceId(), comment);
         }
         comment = "";

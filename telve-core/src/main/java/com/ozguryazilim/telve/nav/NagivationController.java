@@ -64,7 +64,6 @@ public class NagivationController implements Serializable {
     protected void buildNav() throws InstantiationException, IllegalAccessException {
         Subject identity = SecurityUtils.getSubject();
         
-        //FIXME: Burada yetki kontrolü de yapılacak.
         for (ViewConfigDescriptor vi : viewConfigResolver.getViewConfigDescriptors()) {
 
             //Yetki kontrolü yapıyoruz. Eğer erişim yetkisi yoksa bahsi geçen View için nav oluşturulmayacak.

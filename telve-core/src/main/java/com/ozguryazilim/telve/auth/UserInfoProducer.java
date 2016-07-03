@@ -56,16 +56,7 @@ public class UserInfoProducer implements Serializable{
 //        return roleNames;
 //    }
     
-    protected void populateRoles(){
-//        roles = new ArrayList<>();
-        
-//        RelationshipQuery<Grant> query = relationshipManager.createRelationshipQuery(Grant.class);
-//        query.setParameter(Grant.ASSIGNEE, identity.getAccount());
-//        List<Grant> result = query.getResultList();
-//        for (Grant grant : result) {
-//            roles.add(grant.getRole());
-//        }
-    }
+
     
     /**
      * UserAware Kahve için gerekli
@@ -77,26 +68,5 @@ public class UserInfoProducer implements Serializable{
         return "";
     }
     
-    /**
-     * PicketLink Identity üzerinden loginolan kullanıcının bilgileri session scope'a yerleştirir.
-     * @return 
-     */
-    @Produces @SessionScoped @Named
-    public UserInfo produceUserInfo(){
-            UserInfo ui = new UserInfo();
-//            
-//            User user = identityManager.lookupIdentityById(User.class, identity.getAccount().getId());
-//            
-//            ui.setId( user.getId());
-//            ui.setLoginName(user.getLoginName());
-//            ui.setFirstName(user.getFirstName());
-//            ui.setLastName(user.getLastName());
-//            ui.setEmail(user.getEmail());
-//            
-//            Attribute<String> ut = user.getAttribute(USER_TYPE);
-//            ui.setUserType( ut == null ? "STANDART" : ut.getValue());
-            
-            return ui;
-    }
     
 }

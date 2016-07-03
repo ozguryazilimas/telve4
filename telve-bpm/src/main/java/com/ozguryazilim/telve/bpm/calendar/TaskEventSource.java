@@ -5,7 +5,7 @@
  */
 package com.ozguryazilim.telve.bpm.calendar;
 
-import com.ozguryazilim.telve.auth.UserInfo;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.calendar.CalendarEventController;
 import com.ozguryazilim.telve.calendar.CalendarEventMetadata;
 import com.ozguryazilim.telve.calendar.CalendarEventSource;
@@ -35,7 +35,7 @@ import org.primefaces.model.ScheduleEvent;
 public class TaskEventSource implements CalendarEventController, Serializable{
 
     @Inject
-    private UserInfo userInfo;
+    private Identity identity;
     
     @Inject
     private TaskService taskService;
@@ -68,7 +68,7 @@ public class TaskEventSource implements CalendarEventController, Serializable{
     public List<ScheduleEvent> getEvents(Date start, Date end) {
         List<Task> tasks = taskService.createTaskQuery()
                     .active()
-                    .taskAssignee(userInfo.getLoginName())
+                    .taskAssignee(identity.getLoginName())
                     .dueBefore(end)
                     .dueAfter(start)
                     .orderByTaskPriority().asc()

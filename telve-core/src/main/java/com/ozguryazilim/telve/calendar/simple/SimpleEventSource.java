@@ -5,7 +5,7 @@
  */
 package com.ozguryazilim.telve.calendar.simple;
 
-import com.ozguryazilim.telve.auth.UserInfo;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.calendar.AbtsractCalendarEventSource;
 import com.ozguryazilim.telve.calendar.CalendarEventSource;
 import com.ozguryazilim.telve.contact.Contact;
@@ -24,7 +24,7 @@ import org.joda.time.DateTime;
 public class SimpleEventSource extends AbtsractCalendarEventSource<SimpleEvent> implements Serializable{
 
     @Inject
-    private UserInfo userInfo;
+    private Identity identity;
     
     @Override
     public void createNewModel() {
@@ -32,11 +32,11 @@ public class SimpleEventSource extends AbtsractCalendarEventSource<SimpleEvent> 
         ce.setSourceName("simpleEventSource");
         //FIXME: Burada activeUserContact alınmalı
         Contact activeUserContact = new Contact();
-        activeUserContact.setId(userInfo.getLoginName());
+        activeUserContact.setId(identity.getLoginName());
         activeUserContact.setFirstname("Hakan");
         activeUserContact.setLastname("Uygun");
         activeUserContact.setEmail("hakan.uygun@ozguryazilim.com.tr");
-        ce.setActor(userInfo.getLoginName());
+        ce.setActor(identity.getLoginName());
         ce.setReminderTarget(activeUserContact.toString());
         
         DateTime dt = new DateTime();

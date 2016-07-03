@@ -5,18 +5,14 @@
  */
 package com.ozguryazilim.telve;
 
-import com.ozguryazilim.telve.auth.UserInfo;
 import javax.cache.Cache;
 import javax.cache.Caching;
 import javax.cache.configuration.MutableConfiguration;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import org.apache.deltaspike.data.api.audit.CurrentUser;
 
 /**
  * Telve uygulamaları içerisinde kullanılacak temel kaynakları üretir.
@@ -26,20 +22,12 @@ import org.apache.deltaspike.data.api.audit.CurrentUser;
 @RequestScoped
 public class DefaultResourceProducer {
 
-    @Inject @Any
-    private UserInfo userInfo;
-    
     @Produces @Default
     @RequestScoped
     public FacesContext produceFacesContext() {
         return FacesContext.getCurrentInstance();
     }
     
-    @Produces @CurrentUser
-    public String currentUser() {
-        return userInfo.getLoginName();
-    }
- 
     @Produces
     @Default
     @ApplicationScoped

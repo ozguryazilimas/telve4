@@ -46,14 +46,11 @@ public class UserHome extends FormBase<User, Long>{
     private String password;
     
     private List<String> fragments;
-    //private List<AbstractIdentityHomeExtender> extenders;
 
     @Override
     public boolean onBeforeSave() {
         
         if( !Strings.isNullOrEmpty(password)){
-            //FIXME: Burada password hash ve salt işlemleri yapılacak
-            
             DefaultPasswordService passwordService = new DefaultPasswordService();
             getEntity().setPasswordEncodedHash(passwordService.encryptPassword(password));
             
@@ -103,17 +100,6 @@ public class UserHome extends FormBase<User, Long>{
         }
     }
 
-    /**
-     * Geriye extender CDI bileşen listesini döndürür.
-     *
-     * @return
-     */
-//    public List<AbstractIdentityHomeExtender> getExtenders() {
-//        if (extenders == null) {
-//            extenders = UserModelRegistery.getExtenders();
-//        }
-//        return extenders;
-//    }
     
     /**
      * Geriye kullanıcı tiplerini döndürür.
