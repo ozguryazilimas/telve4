@@ -181,7 +181,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             
             entity = getRepository().saveAndFlush(entity);
 
-            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, act, identity.getLoginName(), "" );
+            auditLog(act);
             
             //Save'den sonra elde sakladığımız id'yi değiştirelim ki bir sonraki request için ortalık karışmasın ( bakınız setId )
             this.id = (PK) entity.getId();
@@ -206,6 +206,14 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         return getContainerViewPage();
     }
 
+    /**
+     * Kayıt işlemlerin eilişkin auditLog gönderir.
+     * @param action 
+     */
+    protected void auditLog( String action ){
+        auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), getAuditLogCategory(), action, identity.getLoginName(), "" );
+    }
+    
     /**
      * Entity üzerinde @BizKey annotation'ını bulunana field değerini döner.
      * 
@@ -233,6 +241,16 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         }
         
         return result;
+    }
+    
+    /**
+     * Geriye AuditLog kategorisini döndürür.
+     * 
+     * Default : AuditLogCommand.CAT_ENTITY;
+     * @return 
+     */
+    protected String getAuditLogCategory(){
+        return AuditLogCommand.CAT_ENTITY;
     }
     
     /**
@@ -294,8 +312,8 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         try {
             
             if( !onBeforeDelete() ) return null;
-            
-            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, AuditLogCommand.ACT_DELETE, identity.getLoginName(), "" );
+
+            auditLog(AuditLogCommand.ACT_DELETE);
             //getRepository().deleteById(entity.getId());
             getRepository().remove(entity);
             
@@ -606,6 +624,18 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         }
         
     }
+
+    /**
+     * Inject edilmiş auditLogger instance.
+     * 
+     * Alt sınıflarda kullanılabilmesi için
+     * 
+     * @return 
+     */
+    protected AuditLogger getAuditLogger() {
+        return auditLogger;
+    }
     
+
     
 }
