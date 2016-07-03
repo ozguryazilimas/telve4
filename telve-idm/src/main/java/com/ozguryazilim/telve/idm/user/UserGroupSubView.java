@@ -5,6 +5,9 @@
  */
 package com.ozguryazilim.telve.idm.user;
 
+import com.ozguryazilim.telve.audit.AuditLogCommand;
+import com.ozguryazilim.telve.audit.AuditLogger;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.forms.SubView;
 import com.ozguryazilim.telve.forms.SubViewQueryBase;
@@ -34,6 +37,12 @@ public class UserGroupSubView extends SubViewQueryBase<UserGroup, UserGroupViewM
     @Inject
     private UserHome userHome;
     
+    @Inject
+    private Identity identity;
+    
+    @Inject
+    private AuditLogger auditLogger;
+    
     @Override
     protected void buildQueryDefinition(QueryDefinition<UserGroup, UserGroupViewModel> queryDefinition) {
         queryDefinition
@@ -57,6 +66,14 @@ public class UserGroupSubView extends SubViewQueryBase<UserGroup, UserGroupViewM
         addGroups(ls);
     }
 
+    @Override
+    public boolean onBeforeDelete() {
+        auditLogger.actionLog(userHome.getEntity().getClass().getSimpleName(), userHome.getEntity().getId(), userHome.getEntity().getLoginName(), AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_DELETE, identity.getLoginName(), "User removed from group "+ getEntity().getGroup().getName());
+        return true;
+    }
+    
+    
+
     /**
      * Verilen şikayetleri muayene'ye ekler
      *
@@ -69,6 +86,7 @@ public class UserGroupSubView extends SubViewQueryBase<UserGroup, UserGroupViewM
                 ur.setUser(userHome.getEntity());
                 ur.setGroup(c);
                 repository.save(ur);
+                auditLogger.actionLog(userHome.getEntity().getClass().getSimpleName(), userHome.getEntity().getId(), userHome.getEntity().getLoginName(), AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_INSERT, identity.getLoginName(), "User added to group "+c.getName());
             }
         }
         search();

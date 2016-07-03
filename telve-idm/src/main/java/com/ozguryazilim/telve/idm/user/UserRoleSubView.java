@@ -5,6 +5,9 @@
  */
 package com.ozguryazilim.telve.idm.user;
 
+import com.ozguryazilim.telve.audit.AuditLogCommand;
+import com.ozguryazilim.telve.audit.AuditLogger;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.forms.SubView;
 import com.ozguryazilim.telve.forms.SubViewQueryBase;
@@ -34,6 +37,12 @@ public class UserRoleSubView extends SubViewQueryBase<UserRole, UserRoleViewMode
     @Inject
     private UserHome userHome;
 
+    @Inject
+    private Identity identity;    
+    
+    @Inject
+    private AuditLogger auditLogger;
+
     @Override
     protected void buildQueryDefinition(QueryDefinition<UserRole, UserRoleViewModel> queryDefinition) {
         queryDefinition
@@ -44,6 +53,12 @@ public class UserRoleSubView extends SubViewQueryBase<UserRole, UserRoleViewMode
     protected RepositoryBase<UserRole, UserRoleViewModel> getRepository() {
         repository.setUser(userHome.getEntity());
         return repository;
+    }
+    
+    @Override
+    public boolean onBeforeDelete() {
+        auditLogger.actionLog(userHome.getEntity().getClass().getSimpleName(), userHome.getEntity().getId(), userHome.getEntity().getLoginName(), AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_DELETE, identity.getLoginName(), "User role "+ getEntity().getRole().getName() + " removed");
+        return true;
     }
     
     @Override
@@ -70,6 +85,7 @@ public class UserRoleSubView extends SubViewQueryBase<UserRole, UserRoleViewMode
                 ur.setUser(userHome.getEntity());
                 ur.setRole(c);
                 repository.save(ur);
+                auditLogger.actionLog(userHome.getEntity().getClass().getSimpleName(), userHome.getEntity().getId(), userHome.getEntity().getLoginName(), AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_INSERT, identity.getLoginName(), "Role "+c.getName() + " given to User " + userHome.getEntity().getLoginName());
             }
         }
         search();

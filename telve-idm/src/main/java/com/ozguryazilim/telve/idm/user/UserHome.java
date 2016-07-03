@@ -6,6 +6,9 @@
 package com.ozguryazilim.telve.idm.user;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.audit.AuditLogCommand;
+import com.ozguryazilim.telve.audit.ChangeLogStore;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.auth.UserModel;
 import com.ozguryazilim.telve.auth.UserModelRegistery;
 import com.ozguryazilim.telve.data.RepositoryBase;
@@ -42,19 +45,46 @@ public class UserHome extends FormBase<User, Long>{
 
     @Inject 
     private Event<IdmEvent>  event;
+    
+    @Inject
+    private Identity identity;
 
     private String password;
     
     private List<String> fragments;
+    
+    private ChangeLogStore changeLogStore = new ChangeLogStore();
 
+    @Override
+    public boolean onAfterLoad() {
+        changeLogStore.clear();
+        
+        changeLogStore.addOldValue("general.label.FirstName", getEntity().getFirstName());
+        changeLogStore.addOldValue("general.label.LastName", getEntity().getLastName());
+        changeLogStore.addOldValue("user.label.UserType", getEntity().getUserType());
+        changeLogStore.addOldValue("general.label.Email", getEntity().getEmail());
+        changeLogStore.addOldValue("user.label.DomainGroup", getEntity().getDomainGroup() != null ? getEntity().getDomainGroup().getName() : null );
+        
+        return true;
+    }
+
+    
+    
     @Override
     public boolean onBeforeSave() {
         
         if( !Strings.isNullOrEmpty(password)){
             DefaultPasswordService passwordService = new DefaultPasswordService();
             getEntity().setPasswordEncodedHash(passwordService.encryptPassword(password));
-            
+            changeLogStore.addNewValue("user.caption.Password", "Changed");
         }
+        
+        changeLogStore.addNewValue("general.label.FirstName", getEntity().getFirstName());
+        changeLogStore.addNewValue("general.label.LastName", getEntity().getLastName());
+        changeLogStore.addNewValue("user.label.UserType", getEntity().getUserType());
+        changeLogStore.addNewValue("general.label.Email", getEntity().getEmail());
+        changeLogStore.addNewValue("user.label.DomainGroup", getEntity().getDomainGroup() != null ? getEntity().getDomainGroup().getName() : null );
+        
         
         return true;
     }
@@ -126,4 +156,12 @@ public class UserHome extends FormBase<User, Long>{
     protected RepositoryBase<User, ?> getRepository() {
         return repository;
     }    
+
+    
+    @Override
+    protected void auditLog(String action) {
+        getAuditLogger().actionLog(getEntity().getClass().getSimpleName(), getEntity().getId(), getBizKeyValue(), AuditLogCommand.CAT_AUTH,  action, identity.getLoginName(), "", changeLogStore.getChangeValues());
+    }
+    
+    
 }
