@@ -6,6 +6,7 @@
 
 package com.ozguryazilim.telve.entities;
 
+import com.ozguryazilim.telve.annotations.BizKey;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotNull;
@@ -24,7 +25,7 @@ public abstract class ParamEntityBase extends EntityBase{
     private String code;
     
     @Column(name = "NAME", length= 100, nullable = false )
-    @NotNull @Size(min = 1, max = 100) 
+    @NotNull @Size(min = 1, max = 100) @BizKey
     private String name; 
 
     @Column(name="ISACTIVE")

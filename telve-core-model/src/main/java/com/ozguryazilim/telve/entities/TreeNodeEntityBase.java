@@ -6,6 +6,7 @@
 
 package com.ozguryazilim.telve.entities;
 
+import com.ozguryazilim.telve.annotations.BizKey;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -30,7 +31,7 @@ public abstract class TreeNodeEntityBase<E extends TreeNodeModel> extends Entity
     private String code;
 
     @Column(name = "NAME", length = 255, nullable = false)
-    @NotNull
+    @NotNull @BizKey
     @Size(min = 1, max = 255)
     private String name;
 
