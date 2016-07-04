@@ -14,8 +14,8 @@
     <properties>
         <jdk.debug>true</jdk.debug>
         <jdk.optimize>false</jdk.optimize>
-        <jdk.source>1.7</jdk.source>
-        <jdk.target>1.7</jdk.target>
+        <jdk.source>1.8</jdk.source>
+        <jdk.target>1.8</jdk.target>
     </properties>
 
     <dependencyManagement>

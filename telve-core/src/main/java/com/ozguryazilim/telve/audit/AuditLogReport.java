@@ -9,8 +9,9 @@
  *  www.iova.com.tr
  */
 
-package com.ozguryazilim.telve.admin.reports;
+package com.ozguryazilim.telve.audit;
 
+import com.ozguryazilim.telve.audit.AuditLogFilter;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
@@ -20,13 +21,14 @@ import javax.inject.Inject;
 
 import org.joda.time.DateTime;
 
-import com.ozguryazilim.telve.admin.AdminReportPages;
+
 import com.ozguryazilim.telve.config.TelveConfigResolver;
 import com.ozguryazilim.telve.messages.TelveResourceBundle;
 import com.ozguryazilim.telve.query.filters.DateValueType;
 import com.ozguryazilim.telve.reports.JasperReportBase;
 import com.ozguryazilim.telve.reports.Report;
 import com.ozguryazilim.telve.reports.ReportDate;
+import com.ozguryazilim.telve.view.Pages;
 import net.sf.jasperreports.engine.JRParameter;
 
 /**
@@ -34,7 +36,7 @@ import net.sf.jasperreports.engine.JRParameter;
  * 
  * @author Hakan Uygun
  */
-@Report( filterPage = AdminReportPages.AuditLogReport.class, permission="auditLogReport", path="/admin/audit", template = "auditLogReport", resource = "adminReports")
+@Report( filterPage = Pages.Admin.AdminReportPages.AuditLogReport.class, permission="auditLogReport", path="/admin/audit", template = "auditLogReport", resource = "adminReports")
 public class AuditLogReport extends JasperReportBase{
 
     @Inject

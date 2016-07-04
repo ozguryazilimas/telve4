@@ -9,7 +9,7 @@
  *  www.iova.com.tr
  */
 
-package com.ozguryazilim.telve.admin.reports;
+package com.ozguryazilim.telve.audit;
 
 import com.ozguryazilim.telve.reports.ReportDate;
 import java.io.Serializable;
