@@ -9,6 +9,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Named;
+import org.apache.deltaspike.data.api.audit.CurrentUser;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
@@ -27,6 +28,16 @@ public class AuthProducers {
         Subject s = SecurityUtils.getSubject();
         
         return SecurityUtils.getSubject();
+    }
+    
+    /**
+     * DeltaSpike Audit için kullanılıyor.
+     * @return 
+     */
+    @Produces @CurrentUser
+    public String currentUser() {
+        Subject s = SecurityUtils.getSubject();
+        return s.getPrincipal().toString();
     }
     
         
