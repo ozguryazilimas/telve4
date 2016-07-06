@@ -636,3 +636,7 @@ textarea.ui-inputfield, .ui-selectonemenu {
     background-repeat: no-repeat !important;
     background-size: cover !important;
 }
+
+.products-list .product-info {
+    margin-left: 30px !important;
+}

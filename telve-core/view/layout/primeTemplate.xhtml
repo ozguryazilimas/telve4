@@ -232,7 +232,7 @@
                                         <ui:fragment rendered="#{noteController.canAddNote()}">
                                             <li>
                                                 <a href="#" data-toggle="control-sidebar" title="#{messages['nav.label.Notes']}">
-                                                    <i class="fa fa-comments-o"></i>
+                                                    <i class="fa fa-sticky-note-o"></i>
                                                     <ui:fragment rendered="#{noteController.hasNotes('')}">
                                                         <span class="label label-success">#{noteController.noteCount('')}</span>
                                                     </ui:fragment>
@@ -916,7 +916,7 @@
                             <h3 class="control-sidebar-heading">Notes <small class="tools text-sm" style="background-color: transparent;">
                                     <p:commandLink action="#{noteController.createNewNote(request.getHeader('Referer'))}" 
                                                    ajax="true" partialSubmit="true" process="@this" update="noteFormPanel" styleClass="pull-right">
-                                        <i class="fa fa-comment"/>
+                                        <i class="fa fa-sticky-note"/>
                                         #{messages['general.button.New']}
                                     </p:commandLink></small></h3>
 
