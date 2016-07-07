@@ -2,7 +2,7 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
     <changeSet author="oyas (generated)" id="1467025451677-1">
         <createTable tableName="TLI_GROUP">
-            <column autoIncrement="true" name="ID" type="BIGINT">
+            <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="TLI_GROUPPK"/>
             </column>
             <column name="ISACTIVE" type="BOOLEAN"/>
@@ -19,7 +19,7 @@
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-3">
         <createTable tableName="TLI_ROLE">
-            <column autoIncrement="true" name="ID" type="BIGINT">
+            <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="TLI_ROLEPK"/>
             </column>
             <column name="ISACTIVE" type="BOOLEAN"/>
@@ -34,7 +34,7 @@
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-4">
         <createTable tableName="TLI_ROLE_PERM">
-            <column autoIncrement="true" name="ID" type="BIGINT">
+            <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="TLI_ROLE_PERMPK"/>
             </column>
             <column name="PERMISSION" type="VARCHAR(255)"/>
@@ -43,7 +43,7 @@
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-5">
         <createTable tableName="TLI_USER">
-            <column autoIncrement="true" name="ID" type="BIGINT">
+            <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="TLI_USERPK"/>
             </column>
             <column name="ISACTIVE" type="BOOLEAN"/>
@@ -62,7 +62,7 @@
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-6">
         <createTable tableName="TLI_USER_ATTR">
-            <column autoIncrement="true" name="ID" type="BIGINT">
+            <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="TLI_USER_ATTRPK"/>
             </column>
             <column name="ATTR_KEY" type="VARCHAR(255)"/>
@@ -72,7 +72,7 @@
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-7">
         <createTable tableName="TLI_USER_GROUP">
-            <column autoIncrement="true" name="ID" type="BIGINT">
+            <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="TLI_USER_GROUPK"/>
             </column>
             <column name="GROUP_ID" type="BIGINT"/>
@@ -81,7 +81,7 @@
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-9">
         <createTable tableName="TLI_USER_ROLE">
-            <column autoIncrement="true" name="ID" type="BIGINT">
+            <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="TLI_USER_ROLEPK"/>
             </column>
             <column name="ROLE_ID" type="BIGINT"/>
