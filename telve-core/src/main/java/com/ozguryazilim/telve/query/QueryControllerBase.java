@@ -42,6 +42,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Sorgular View Control Sınıfları için taban sınıf.
  * 
+ * FIXME: Repository'lere transfer edilen methodlar temizlenmeli
+ * 
  * @author Hakan Uygun
  * @param <E> Entity sınıfı
  * @param <R> Result sınıfı
@@ -55,8 +57,7 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
      */
     private QueryDefinition<E, R> queryDefinition = new QueryDefinition<>();
     
-    //FIXME: Aslında R tipinde olmalı
-    private List<R> entityList = Collections.EMPTY_LIST;
+    private List<R> entityList = Collections.emptyList();
     
     protected R selectedItem;
     protected R[] selectedItems;

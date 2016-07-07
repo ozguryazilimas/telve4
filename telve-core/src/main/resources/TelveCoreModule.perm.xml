@@ -14,5 +14,9 @@
         <permission target="auditLog" >
             <entityActions/>
         </permission>
+        <permission target="auditLogReport" >
+            <action name="select" />
+            <action name="exec" />
+        </permission>
     </permissionGroup>
 </permissions>

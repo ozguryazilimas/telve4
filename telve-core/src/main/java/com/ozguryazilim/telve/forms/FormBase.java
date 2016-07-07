@@ -9,7 +9,7 @@ import com.google.common.base.Strings;
 import com.ozguryazilim.telve.annotations.BizKey;
 import com.ozguryazilim.telve.audit.AuditLogCommand;
 import com.ozguryazilim.telve.audit.AuditLogger;
-import com.ozguryazilim.telve.auth.ActiveUserLookup;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.messages.FacesMessages;
@@ -23,6 +23,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Instance;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
@@ -34,7 +35,6 @@ import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.apache.deltaspike.core.util.ProxyUtils;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
-import org.picketlink.Identity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,11 +62,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     private ViewConfigResolver viewConfigResolver;
 
     @Inject
-    @Any
     private Identity identity;
-
-    @Inject
-    private ActiveUserLookup userLookup;
     
     @Inject
     private AuditLogger auditLogger;
@@ -83,6 +79,9 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     @Inject
     private FacesContext facesContext;
 
+    @Inject
+    @Any
+    private Instance<SubViewFilter> subViewFilters;
     
     private List<String> subViewList = new ArrayList<String>();
     private Map<String,List<String>> subViews = new HashMap<>();
@@ -106,7 +105,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
                     continue;
                 }
                 
-                if (identity.hasPermission(sv.permission(), "select")) {
+                if (identity.isPermitted(sv.permission() + ":select")) {
                     subViewList.add(viewConfigResolver.getViewConfigDescriptor(sv.viewPage()).getViewId());
                     
                     //Grup tanımına göre subviewları dolduruyoruz.
@@ -182,7 +181,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             
             entity = getRepository().saveAndFlush(entity);
 
-            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, act, userLookup.getActiveUser().getLoginName(), "" );
+            auditLog(act);
             
             //Save'den sonra elde sakladığımız id'yi değiştirelim ki bir sonraki request için ortalık karışmasın ( bakınız setId )
             this.id = (PK) entity.getId();
@@ -207,6 +206,14 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         return getContainerViewPage();
     }
 
+    /**
+     * Kayıt işlemlerin eilişkin auditLog gönderir.
+     * @param action 
+     */
+    protected void auditLog( String action ){
+        auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), getAuditLogCategory(), action, identity.getLoginName(), "" );
+    }
+    
     /**
      * Entity üzerinde @BizKey annotation'ını bulunana field değerini döner.
      * 
@@ -234,6 +241,16 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         }
         
         return result;
+    }
+    
+    /**
+     * Geriye AuditLog kategorisini döndürür.
+     * 
+     * Default : AuditLogCommand.CAT_ENTITY;
+     * @return 
+     */
+    protected String getAuditLogCategory(){
+        return AuditLogCommand.CAT_ENTITY;
     }
     
     /**
@@ -295,8 +312,8 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         try {
             
             if( !onBeforeDelete() ) return null;
-            
-            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_ENTITY, AuditLogCommand.ACT_DELETE, userLookup.getActiveUser().getLoginName(), "" );
+
+            auditLog(AuditLogCommand.ACT_DELETE);
             //getRepository().deleteById(entity.getId());
             getRepository().remove(entity);
             
@@ -451,7 +468,14 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return 
      */
     public List<String> getSubViews( String grp ){
-        return subViews.get(grp);
+        List<String> ls = new ArrayList<>(subViews.get(grp));
+        
+        //SubViewFilter ile filtreleme yapalım
+        for( SubViewFilter f : subViewFilters ){
+            f.filter(getContainerViewPage(), ls);
+        }
+        
+        return ls;
     }
     
     public PK getId() {
@@ -600,6 +624,18 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         }
         
     }
+
+    /**
+     * Inject edilmiş auditLogger instance.
+     * 
+     * Alt sınıflarda kullanılabilmesi için
+     * 
+     * @return 
+     */
+    protected AuditLogger getAuditLogger() {
+        return auditLogger;
+    }
     
+
     
 }

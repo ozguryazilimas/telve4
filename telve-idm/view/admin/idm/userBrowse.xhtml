@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"               
+                xmlns:ui="http://java.sun.com/jsf/facelets"               
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"                
+                template="/layout/browseBase.xhtml">
+    
+    <ui:param name="moduleCaption" value="module.caption.User" />
+    <ui:param name="bean" value="#{userBrowse}" />
+    <ui:param name="advanceEnabled" value="true" />
+    <ui:param name="saveEnabled" value="true" />
+    <ui:param name="filterEnabled" value="true" />
+    <ui:param name="permission" value="user" />
+    <ui:param name="showQuickSearch" value="true" />
+    
+    
+    <ui:define name="beforeColumns">
+        <p:column styleClass="actionColumn">
+            <ui:fragment rendered="#{not item.active}" >
+                <i class="fa fa-lock text-red" />
+            </ui:fragment>
+            <ui:fragment rendered="#{item.active}" >
+                <i class="fa fa-unlock-alt text-blue" />
+            </ui:fragment>
+        </p:column>
+    </ui:define>
+    
+    <ui:define name="QuickSearchExtra">
+        <t:inputLookupDialog value="#{userBrowse.selectedGroup}" label="" update="@([id$=results])" 
+                             lookupBean="#{groupLookup}" lookupListener="userBrowse.selectedGroup" 
+                             leafSelect="false" required="false" columnClass="col-md-3 col-xs-12 pull-right" 
+                             placeholder="user.info.UserGroupFilter"/>
+    </ui:define>
+    
+</ui:composition>

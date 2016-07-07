@@ -6,7 +6,7 @@
 package com.ozguryazilim.telve.bpm.ui;
 
 import com.google.common.base.Strings;
-import com.ozguryazilim.telve.auth.UserInfo;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.bpm.TaskInfo;
 import com.ozguryazilim.telve.bpm.TaskRepository;
 import com.ozguryazilim.telve.bpm.handlers.AbstractDialogProcessHandler;
@@ -39,7 +39,7 @@ public class TaskConsole implements Serializable {
 
     
     @Inject
-    private UserInfo userInfo;
+    private Identity identity;
     
     @Inject
     private IdentityService identityService;
@@ -73,7 +73,7 @@ public class TaskConsole implements Serializable {
         taskTypeNames = HumanTaskHandlerRegistery.getTaskNames();
         processTypeNames = ProcessHandlerRegistery.getProcessNames();
         //TODO: camnuda için hangi kullanıcı çalışıyor setliyoruz. Aslında bunu login tarafına felan almak lazım sanırım.
-        identityService.setAuthenticatedUserId(userInfo.getLoginName());
+        identityService.setAuthenticatedUserId(identity.getLoginName());
     }
 
     /**
@@ -132,7 +132,7 @@ public class TaskConsole implements Serializable {
 
     public List<TaskInfo> getTaskList() {
         if (taskList == null) {
-            taskList = taskRepository.getTaskList(userInfo.getLoginName(), "myTasks".equals(getTaskOwnerType()), "potTasks".equals(getTaskOwnerType()), searchProcessType, searchTaskType, searchText);
+            taskList = taskRepository.getTaskList(identity.getLoginName(), "myTasks".equals(getTaskOwnerType()), "potTasks".equals(getTaskOwnerType()), searchProcessType, searchTaskType, searchText);
         }
 
         return taskList;
@@ -283,10 +283,10 @@ public class TaskConsole implements Serializable {
     }
     
     public Integer getMyTaskCount(){
-        return taskRepository.getTaskCount(userInfo.getLoginName(), true );
+        return taskRepository.getTaskCount(identity.getLoginName(), true );
     }
     
     public Integer getPotTaskCount(){
-        return taskRepository.getTaskCount(userInfo.getLoginName(), false );
+        return taskRepository.getTaskCount(identity.getLoginName(), false );
     }
 }

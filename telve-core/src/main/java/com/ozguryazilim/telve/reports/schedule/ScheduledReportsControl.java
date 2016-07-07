@@ -5,7 +5,6 @@
  */
 package com.ozguryazilim.telve.reports.schedule;
 
-import com.ozguryazilim.telve.auth.ActiveUserLookup;
 import com.ozguryazilim.telve.messagebus.command.CommandScheduler;
 import com.ozguryazilim.telve.messagebus.command.ScheduledCommand;
 import com.ozguryazilim.telve.messagebus.command.ui.ScheduledCommandUIModel;
@@ -20,6 +19,7 @@ import javax.ejb.Timer;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
+import org.apache.shiro.subject.Subject;
 import org.ocpsoft.prettytime.PrettyTime;
 
 /**
@@ -35,7 +35,7 @@ public class ScheduledReportsControl implements Serializable {
     private CommandScheduler scheduler;
 
     @Inject
-    private ActiveUserLookup userLookup;
+    private Subject identity;
 
     private List<ScheduledCommandUIModel> commands = new ArrayList<>();
 
@@ -46,7 +46,7 @@ public class ScheduledReportsControl implements Serializable {
 
     private void populateScheduledReports() {
 
-        String user = userLookup.getActiveUser().getLoginName();
+        String user = identity.getPrincipal().toString();
         //FIXME: Kullanıcının tercih etiği locale alınmalı
         PrettyTime prettyTime = new PrettyTime(new Locale("tr"));
 

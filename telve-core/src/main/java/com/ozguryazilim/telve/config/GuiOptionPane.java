@@ -16,7 +16,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
-import org.picketlink.Identity;
+import org.apache.shiro.subject.Subject;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -44,7 +44,7 @@ public class GuiOptionPane extends AbstractOptionPane{
     private Kahve kahve;
     
     @Inject
-    private Identity identity;
+    private Subject identity;
     
     @PostConstruct
     public void init(){
@@ -136,7 +136,7 @@ public class GuiOptionPane extends AbstractOptionPane{
         localeSelector.setLocaleString(locale);
         kahve.put("locale.name", new KahveEntry(locale));
         
-        RequestContext.getCurrentInstance().getApplicationContext().getCacheProvider().remove("main-sidebar", identity.getAccount().getId());
+        RequestContext.getCurrentInstance().getApplicationContext().getCacheProvider().remove("main-sidebar", identity.getPrincipal().toString());
     }
     
     

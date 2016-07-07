@@ -8,7 +8,7 @@ package com.ozguryazilim.telve.forms;
 import com.ozguryazilim.telve.annotations.BizKey;
 import com.ozguryazilim.telve.audit.AuditLogCommand;
 import com.ozguryazilim.telve.audit.AuditLogger;
-import com.ozguryazilim.telve.auth.ActiveUserLookup;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.data.ParamRepositoryBase;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
@@ -44,7 +44,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
     private GroupedConversation conversation;
     
     @Inject
-    private ActiveUserLookup userLookup;
+    private Identity identity;
     
     @Inject
     private AuditLogger auditLogger;
@@ -119,7 +119,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
             return null;
         }
 
-        String act = entity.isPersisted() ? AuditLogCommand.ACT_INSERT : AuditLogCommand.ACT_UPDATE;
+        String act = entity.isPersisted() ? AuditLogCommand.ACT_UPDATE : AuditLogCommand.ACT_INSERT;
         
         if (!entity.isPersisted()) {
             //Eğer ParamEntityBase'den gelen bir entity ise Unique Code olup olmadığını bir kontrol edelim...
@@ -136,7 +136,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
 
         entity = getRepository().saveAndFlush(entity);
         
-        auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_PARAM, act, userLookup.getActiveUser().getLoginName(), "" );
+        auditLog( act );
         
         //Eğer elimizdeki listede yoksa ekleyelim
         if (!getEntityList().contains(entity)) {
@@ -170,7 +170,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
 
         try {
             
-            auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), AuditLogCommand.CAT_PARAM, AuditLogCommand.ACT_DELETE, userLookup.getActiveUser().getLoginName(), "" );
+            auditLog(AuditLogCommand.ACT_DELETE);
             
             //getRepository().deleteById(entity.getId());
             getRepository().remove(entity);
@@ -261,6 +261,26 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
         return true;
     }
     
+
+    /**
+     * Inject edilmiş auditLogger instance.
+     * 
+     * Alt sınıflarda kullanılabilmesi için
+     * 
+     * @return 
+     */
+    protected AuditLogger getAuditLogger() {
+        return auditLogger;
+    }
+    
+    /**
+     * Kayıt işlemlerin eilişkin auditLog gönderir.
+     * @param action 
+     */
+    protected void auditLog( String action ){
+        auditLogger.actionLog(entity.getClass().getSimpleName(), entity.getId(), getBizKeyValue(), getAuditLogCategory(), action, identity.getLoginName(), "" );
+    }
+    
     /**
      * Entity üzerinde @BizKey annotation'ını bulunana field değerini döner.
      * 
@@ -288,5 +308,15 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
         }
         
         return result;
+    }
+    
+    /**
+     * Geriye AuditLog kategorisini döndürür.
+     * 
+     * Default : AuditLogCommand.CAT_PARAM;
+     * @return 
+     */
+    protected String getAuditLogCategory(){
+        return AuditLogCommand.CAT_PARAM;
     }
 }

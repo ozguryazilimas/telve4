@@ -7,7 +7,7 @@ package com.ozguryazilim.telve.note;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.ozguryazilim.telve.auth.UserInfo;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.entities.Note;
 import java.io.Serializable;
 import java.util.Date;
@@ -35,7 +35,7 @@ public class NoteController implements Serializable{
     private NoteRepository repository;
     
     @Inject
-    private UserInfo userInfo;
+    private Identity identity;
  
     @Inject
     private FacesContext facesContext;
@@ -52,7 +52,7 @@ public class NoteController implements Serializable{
     public void createNewNote(){
         note = new Note();
         note.setCreateDate(new Date());
-        note.setOwner(userInfo.getLoginName());
+        note.setOwner(identity.getLoginName());
         note.setPermission("OWNER");
         note.setPriority("info");
     }
@@ -124,7 +124,7 @@ public class NoteController implements Serializable{
         System.out.println(attachment);
         
        //TODO: hasNotes methodu değiştiğinde note yükleme kısmı buraya alınmalı. 
-        notes = repository.findNotes(userInfo.getLoginName(), calcAttachmentURI(attachment));
+        notes = repository.findNotes(identity.getLoginName(), calcAttachmentURI(attachment));
         
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
@@ -147,10 +147,10 @@ public class NoteController implements Serializable{
      */
     public Boolean hasNotes( String attachment ){
         
-        String key = "note." + userInfo.getLoginName() + "." + calcAttachmentURI();
+        String key = "note." + identity.getLoginName() + "." + calcAttachmentURI();
         notes = (List)cache.get(key);
         if( notes == null ){
-            notes = repository.findNotes(userInfo.getLoginName(), calcAttachmentURI());
+            notes = repository.findNotes(identity.getLoginName(), calcAttachmentURI());
             cache.put(key, notes);
         }
         return !notes.isEmpty();
@@ -158,10 +158,10 @@ public class NoteController implements Serializable{
     
     public Integer noteCount( String attachment ){
         
-        String key = "note." + userInfo.getLoginName() + "." + calcAttachmentURI();
+        String key = "note." + identity.getLoginName() + "." + calcAttachmentURI();
         notes = (List)cache.get(key);
         if( notes == null ){
-            notes = repository.findNotes(userInfo.getLoginName(), calcAttachmentURI());
+            notes = repository.findNotes(identity.getLoginName(), calcAttachmentURI());
             cache.put(key, notes);
         }
         return notes.size();
@@ -183,7 +183,7 @@ public class NoteController implements Serializable{
     }
     
     public void refresh(){
-        String key = "note." + userInfo.getLoginName() + "." + calcAttachmentURI();
+        String key = "note." + identity.getLoginName() + "." + calcAttachmentURI();
         cache.remove(key);
     }
     
@@ -194,7 +194,7 @@ public class NoteController implements Serializable{
     public void save(){
         repository.save(note);
         notes.add(note);
-        String key = "note." + userInfo.getLoginName() + "." + note.getAttachtment();
+        String key = "note." + identity.getLoginName() + "." + note.getAttachtment();
         cache.put(key, notes);
         newNote = Boolean.FALSE;
     }
@@ -203,7 +203,7 @@ public class NoteController implements Serializable{
     public void delete( Note note ){
         //Sadece kendi eklediği notu silebilir.
         if( canDelete(note)){
-            String key = "note." + userInfo.getLoginName() + "." + note.getAttachtment();
+            String key = "note." + identity.getLoginName() + "." + note.getAttachtment();
             cache.remove(key);
             repository.remove(note);
         }
@@ -214,7 +214,7 @@ public class NoteController implements Serializable{
     }
     
     public Boolean canDelete(Note note){
-        return note.getOwner().equals(userInfo.getLoginName());
+        return note.getOwner().equals(identity.getLoginName());
     }
     
     /**

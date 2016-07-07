@@ -24,7 +24,8 @@ import org.apache.deltaspike.security.api.authorization.Secured;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Documented
-@Secured(PicketLinkAccessDecisionVoter.class)
+//@Secured(PicketLinkAccessDecisionVoter.class)
+@Secured(TelveAccessDecisionVoter.class)
 @ViewMetaData
 public @interface SecuredPage {
     

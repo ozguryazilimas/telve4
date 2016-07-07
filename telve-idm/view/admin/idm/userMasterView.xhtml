@@ -1,0 +1,28 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"               
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/masterViewBase.xhtml">
+
+    <ui:param name="hideEditBtn" value="false" />
+
+
+    <ui:define name="content">     
+        <h:panelGroup id="contentView" >
+            <div class="row">
+                <t:outputText label="user.label.UserType" value="#{messages[ 'userType.label.'.concat(userHome.entity.userType) ]}" />
+                <t:outputText label="user.label.DomainGroup" value="#{userHome.entity.domainGroup.caption}" />
+                <t:outputText label="general.label.Email" value="#{userHome.entity.email}" />
+                
+                <t:outputBoolean label="user.label.LDAP" itemLabel="general.boolean.yesno." value="#{userHome.entity.autoCreated}" />
+                <t:outputText label="general.label.Info" value="#{userHome.entity.info}" columnClass="col-xs-12"/>
+            </div>
+        </h:panelGroup>
+
+
+    </ui:define>
+
+
+</ui:composition>

@@ -21,7 +21,7 @@ import javax.sql.DataSource;
  */
 @ApplicationScoped
 public class KahveProducer {
-
+    
     @Produces
     @Default
     @ApplicationScoped

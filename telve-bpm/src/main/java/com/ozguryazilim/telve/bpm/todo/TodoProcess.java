@@ -5,13 +5,13 @@
  */
 package com.ozguryazilim.telve.bpm.todo;
 
+import com.ozguryazilim.telve.auth.Identity;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
 
-import com.ozguryazilim.telve.auth.UserInfo;
 import com.ozguryazilim.telve.bpm.handlers.AbstractDialogProcessHandler;
 import com.ozguryazilim.telve.bpm.handlers.ProcessHandler;
 import com.ozguryazilim.telve.config.TelveConfigResolver;
@@ -37,7 +37,7 @@ public class TodoProcess extends AbstractDialogProcessHandler{
     private TelveConfigResolver telveConfigResolver;
     
     @Inject
-    private UserInfo userInfo;
+    private Identity identity;
     
     @Override
     public String getDialogName() {
@@ -56,11 +56,11 @@ public class TodoProcess extends AbstractDialogProcessHandler{
         values.put("INFO", info);
         values.put("START_DATE", startDate);
         values.put("END_DATE", endDate);
-        values.put("ASSIGNEE", userInfo.getLoginName());
+        values.put("ASSIGNEE", identity.getLoginName());
         values.put("AppTitle", telveConfigResolver.getProperty("app.title"));
         values.put("LinkDomain", telveConfigResolver.getProperty("app.linkDomain"));
         
-        String bizKey = userInfo.getLoginName() + "-" + sequenceManager.getNewNumber("todo"+ userInfo.getLoginName(), 5);
+        String bizKey = identity.getLoginName() + "-" + sequenceManager.getNewNumber("todo"+ identity.getLoginName(), 5);
         
         startProcess("todo", bizKey, values);
         

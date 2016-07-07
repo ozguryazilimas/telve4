@@ -1,0 +1,43 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:composite="http://java.sun.com/jsf/composite">
+
+
+    <composite:interface>
+        <composite:attribute name="label" required="true"/>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="action" required="true" targets="#{cc.id}_btn"/>
+        <composite:attribute name="icon" required="false" default="fa fa-cogs"/>
+        <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:attribute name="columnClass" required="false" default="col-md-6 col-xs-12"/>
+        <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <div id="#{cc.clientId}" class="prop #{cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
+
+            <p:outputLabel value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
+            <span class="value">
+                <div class="input-group" >
+                    <p:outputPanel id="#{cc.id}_inp" layout="block" style="border-top: 1px solid #d2d6de; border-bottom: 1px solid #d2d6de; border-left: 1px solid #d2d6de; padding: 4px; height: 28px; width: 100%;">
+                        <h:outputText value="#{cc.attrs.value}" />
+                    </p:outputPanel>
+                    <div class="input-group-btn" >
+                        <p:commandButton id="#{cc.id}_btn" process="@this"
+                                       styleClass="btn btn-default"
+                                       icon="#{cc.attrs.icon}"
+                                       style="height: 28px;">
+                            <p:ajax event="dialogReturn" update="#{cc.id}_inp" partialSubmit="true" process="@this" />   
+                        </p:commandButton>
+                    </div>
+                </div>
+            </span>
+            <ui:remove>
+                <p:message for="#{cc.id}_inp" display="tooltip"/>
+            </ui:remove>
+        </div>
+    </composite:implementation>
+
+</ui:component>

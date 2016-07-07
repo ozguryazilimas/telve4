@@ -14,7 +14,7 @@ import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.navigation.NavigationParameterContext;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
-import org.picketlink.authentication.event.LoggedInEvent;
+
 
 /**
  * Login Event dinler ve kullanıcıyı doğru sayfaya yönlendirir.
@@ -28,7 +28,7 @@ public class AuthenticatorListener implements Serializable{
     private ViewNavigationHandler viewNavigationHandler;
     
     @Inject
-    private PicketLinkAccessDecisionVoter accessDecisionVoter;
+    private TelveAccessDecisionVoter accessDecisionVoter;
     
     @Inject
     private NavigationParameterContext navigationParameterContext;

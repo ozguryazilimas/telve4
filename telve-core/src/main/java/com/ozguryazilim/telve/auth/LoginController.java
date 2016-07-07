@@ -8,16 +8,19 @@ package com.ozguryazilim.telve.auth;
 import com.ozguryazilim.telve.audit.AuditLogCommand;
 import com.ozguryazilim.telve.audit.AuditLogger;
 import com.ozguryazilim.telve.messages.FacesMessages;
-import com.ozguryazilim.telve.view.Pages;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.event.Event;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
-import org.picketlink.Identity;
-import org.picketlink.Identity.AuthenticationResult;
-import org.picketlink.authentication.UserAlreadyLoggedInException;
-import org.picketlink.idm.model.basic.User;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.ExcessiveAttemptsException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 
 /**
  *
@@ -28,38 +31,49 @@ import org.picketlink.idm.model.basic.User;
 public class LoginController {
 
     @Inject
-    private Identity identity;
-    @Inject
     private FacesContext facesContext;
 
     @Inject
     private ViewNavigationHandler viewNavigationHandler;
-    
+
     @Inject
     private AuditLogger auditLogger;
-    
+
+    @Inject
+    private LoginCredentials loginCredentials;
+
+    @Inject
+    private Event<LoggedInEvent> loggedInEvent;
+
     public void login() {
-        AuthenticationResult result = AuthenticationResult.FAILED;
-        try{
-            result = identity.login();
-        } catch ( UserAlreadyLoggedInException ex ){
-            //Zaten login olduğu için hata vermek biraz saçma :) 
-            //Aslında buraya da gelmemesi gerektiği için doğrudan home'a yönlendiriyoruz.
-            result = AuthenticationResult.SUCCESS;
-            this.viewNavigationHandler.navigateTo(Pages.Home.class);
-            return;
-        }
-        
-        if (AuthenticationResult.FAILED.equals(result)) {
-            FacesMessages.error("general.message.editor.AuthFail");
-        } else {
-            auditLogger.actionLog("Login", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, ((User)identity.getAccount()).getLoginName(), "" );
+        Boolean result = Boolean.FALSE;
+        Subject currentUser = SecurityUtils.getSubject();
+        try {
+            if (!currentUser.isAuthenticated()) {
+                UsernamePasswordToken token = new UsernamePasswordToken(loginCredentials.getUsername(), loginCredentials.getPassword());
+                //this is all you have to do to support 'remember me' (no config - built in!):
+                //token.setRememberMe(true);
+                currentUser.login(token);
+                result = currentUser.isAuthenticated();
+                loggedInEvent.fire(new LoggedInEvent());
+            }
+        } catch (UnknownAccountException | IncorrectCredentialsException uae) {
+            result = false;
+            FacesMessages.error("general.message.AuthFail");
+        } catch (LockedAccountException | ExcessiveAttemptsException lae) {
+            result = false;
+            FacesMessages.error("general.message.AccountLocked");
         } 
+
+        if (result) {
+            auditLogger.actionLog("Login", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, currentUser.getPrincipal().toString(), "");
+        }
     }
-    
-    public String logout(){
-        auditLogger.actionLog("Logout", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, ((User)identity.getAccount()).getLoginName(), "" );
-        identity.logout();
+
+    public String logout() {
+        Subject currentUser = SecurityUtils.getSubject();
+        auditLogger.actionLog("Logout", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, currentUser.getPrincipal().toString(), "");
+        currentUser.logout();
         facesContext.getExternalContext().invalidateSession();
         return "/login.xhtml";
     }

@@ -93,6 +93,8 @@
             <artifactId>deltaspike-data-module-impl</artifactId>
         </dependency>
         
+        
+        <!--
         <dependency>
             <groupId>org.picketlink</groupId>
             <artifactId>picketlink-api</artifactId>
@@ -117,6 +119,7 @@
             <groupId>org.picketlink</groupId>
             <artifactId>picketlink-idm-impl</artifactId>
         </dependency>
+        -->
         
         <dependency>
             <groupId>org.primefaces</groupId>
@@ -305,6 +308,16 @@
             <version>2.4</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-web</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -321,6 +334,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.alexnederlof</groupId>
+                <artifactId>jasperreports-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

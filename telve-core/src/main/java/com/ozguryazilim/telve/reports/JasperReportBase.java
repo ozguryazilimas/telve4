@@ -5,7 +5,6 @@
  */
 package com.ozguryazilim.telve.reports;
 
-import com.ozguryazilim.telve.auth.ActiveUserLookup;
 import com.ozguryazilim.telve.config.LocaleSelector;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.messages.TelveResourceBundle;
@@ -21,6 +20,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRParameter;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
+import org.apache.shiro.subject.Subject;
 import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public abstract class JasperReportBase implements ReportController, Serializable
     private ReportScheduleDialog scheduleDialog;
     
     @Inject
-    private ActiveUserLookup userLookup;
+    private Subject identity;
 
     @Override
     public void execute() {
@@ -144,7 +144,7 @@ public abstract class JasperReportBase implements ReportController, Serializable
             command.setTemplateName(getTemplateName());
             command.setResultName(getTemplateName());
             command.setReportParams(params);
-            command.setUser(userLookup.getActiveUser().getLoginName());
+            command.setUser(identity.getPrincipal().toString());
             
             
             scheduleDialog.openDialog(command);

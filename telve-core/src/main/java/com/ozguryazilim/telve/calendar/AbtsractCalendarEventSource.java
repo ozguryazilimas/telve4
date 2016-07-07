@@ -6,7 +6,7 @@
 package com.ozguryazilim.telve.calendar;
 
 import com.google.gson.Gson;
-import com.ozguryazilim.telve.auth.ActiveUserLookup;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.entities.CalendarEvent;
 import com.ozguryazilim.telve.reminder.ReminderService;
 import com.ozguryazilim.telve.utils.DateUtils;
@@ -51,7 +51,7 @@ public abstract class AbtsractCalendarEventSource<E> implements CalendarEventCon
     private CalendarFilterModel filterModel;
     
     @Inject
-    private ActiveUserLookup userLookup;
+    private Identity identity;
     
     private CalendarEvent calendarEvent;
     private E data;
@@ -241,7 +241,7 @@ public abstract class AbtsractCalendarEventSource<E> implements CalendarEventCon
     
     @Override
     public List<ScheduleEvent> getEvents( Date start, Date end ){
-        List<CalendarEvent> events = repository.findFilteredEvents(start, end, getEventSourceName(), userLookup.getActiveUser().getLoginName(), userLookup.getUnifiedRoles(), filterModel.getShowPersonalEvents(), filterModel.getShowClosedEvents());
+        List<CalendarEvent> events = repository.findFilteredEvents(start, end, getEventSourceName(), identity.getLoginName(), identity.getUnifiedRoles(), filterModel.getShowPersonalEvents(), filterModel.getShowClosedEvents());
         List<ScheduleEvent> result = new ArrayList<>();
         
         for( CalendarEvent e : events ){

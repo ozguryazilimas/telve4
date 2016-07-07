@@ -5,25 +5,8 @@
  */
 package com.ozguryazilim.telve.auth;
 
-import java.util.Properties;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
-import javax.naming.Context;
-import javax.naming.NamingEnumeration;
-import javax.naming.directory.InitialDirContext;
-import javax.naming.directory.SearchControls;
-import org.apache.deltaspike.core.api.config.ConfigResolver;
-import org.picketlink.authentication.BaseAuthenticator;
-import org.picketlink.authentication.CredentialExpiredException;
-import org.picketlink.authentication.LockedAccountException;
-import org.picketlink.credential.DefaultLoginCredentials;
-import org.picketlink.idm.IdentityManager;
-import org.picketlink.idm.credential.Credentials;
-import org.picketlink.idm.credential.Password;
-import org.picketlink.idm.credential.UsernamePasswordCredentials;
-import org.picketlink.idm.model.basic.BasicModel;
-import org.picketlink.idm.model.basic.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,10 +25,11 @@ import org.slf4j.LoggerFactory;
  */
 @Named
 @RequestScoped
-public class LDAPAuthenticator extends BaseAuthenticator {
+public class LDAPAuthenticator {
 
     private static final Logger LOG = LoggerFactory.getLogger(LDAPAuthenticator.class);
 
+    /*
     @Inject
     private DefaultLoginCredentials credentials;
 
@@ -143,5 +127,5 @@ public class LDAPAuthenticator extends BaseAuthenticator {
         }
         return Credentials.Status.VALID;
     }
-
+*/
 }

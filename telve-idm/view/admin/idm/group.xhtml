@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/treeParamEdit.xhtml">
+
+    <ui:param name="homeBean" value="#{groupHome}" />
+    <ui:param name="homeBeanName" value="groupHome" />
+    <ui:param name="entityName" value="group" />
+    <ui:param name="itemCaption" value="name" />
+
+    <ui:define name="form">
+        <div class="row">
+            <t:inputText label="general.label.Name" value="#{groupHome.entity.name}" styleClass="large" required="true"/>
+        </div>
+        <div class="row">     
+            <t:inputTextarea label="general.label.Info" maxlength="255" value="#{groupHome.entity.info}" />
+            <t:inputCheckboxGroup label="general.label.Status">
+                <p:selectBooleanCheckbox value="#{groupHome.entity.active}" itemLabel="#{messages['general.label.Active']}" />
+            </t:inputCheckboxGroup>
+        </div>  
+
+        <div class="row">     
+            <t:accordion label="general.label.Members">
+                <div class="col-xs-12">
+                    <p:dataTable id="members" value="#{groupHome.members}" var="member">
+                        <p:column headerText="#{messages['general.label.Member']}">
+                            <h:outputText value="#{member.user.firstName} #{member.user.lastName}" />
+                        </p:column>
+                        <p:column styleClass="actionColumn">
+                            <f:facet name="header">
+                                <p:commandLink action="#{idmUserLookup.openDialog( true, '' )}" style="text-decoration:none;padding:4px;"
+                                               partialSubmit="true" process="@this" styleClass="fa fa-plus-circle btn-add"
+                                               title="#{messages['general.label.Add']}">
+                                    <p:ajax event="dialogReturn" listener="#{groupHome.onUserSelect}" partialSubmit="true" 
+                                            process="@this" update="members"/>   
+                                </p:commandLink>
+                            </f:facet>
+                            <p:commandLink action="#{groupHome.removeItem( member.id )}" 
+                                           update="members" 
+                                           title="#{messages['general.label.DeleteLine']}"
+                                           partialSubmit="true" process="@this">
+                                <i class="fa fa-trash-o btn-delete" ></i>
+                                <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </t:accordion>
+        </div>
+
+    </ui:define>
+
+    <ui:define name="context-menu">
+        <li>
+            <p:commandLink action="#{homeBean.newGroup()}" 
+                           update=":form:nodeEditor"
+                           partialSubmit="true" process="@this">
+                <i class="fa fa-sitemap"></i>
+                <h:outputText value=" #{messages['general.button.New']}" />
+            </p:commandLink>
+        </li>
+        <li>
+            <p:commandLink action="#{homeBean.newRootGroup()}" 
+                           styleClass="context-command" 
+                           update=":form:nodeEditor"
+                           partialSubmit="true" process="@this">
+                <i class="fa fa-sitemap"></i>
+                <h:outputText value=" #{messages['general.button.NewRoot']}" />
+            </p:commandLink>
+        </li>
+    </ui:define>
+
+
+</ui:composition>

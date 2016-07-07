@@ -5,7 +5,7 @@
  */
 package com.ozguryazilim.telve.bpm.dashlets;
 
-import com.ozguryazilim.telve.auth.UserInfo;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.dashboard.AbstractDashlet;
 import com.ozguryazilim.telve.dashboard.Dashlet;
 import com.ozguryazilim.telve.dashboard.DashletCapability;
@@ -24,7 +24,7 @@ import org.camunda.bpm.engine.task.Task;
 public class TaskDashlet extends AbstractDashlet{
 
     @Inject
-    private UserInfo userInfo;
+    private Identity identity;
     
     @Inject
     private TaskService taskService;
@@ -38,7 +38,7 @@ public class TaskDashlet extends AbstractDashlet{
         if( tasks == null ){
             tasks = taskService.createTaskQuery()
                     .active()
-                    .taskAssignee(userInfo.getLoginName())
+                    .taskAssignee(identity.getLoginName())
                     .orderByTaskPriority().asc()
                     .orderByFollowUpDate().asc()
                     .orderByDueDate().asc()
@@ -52,7 +52,7 @@ public class TaskDashlet extends AbstractDashlet{
         if( dueTasks == null ){
             dueTasks = taskService.createTaskQuery()
                     .active()
-                    .taskAssignee(userInfo.getLoginName())
+                    .taskAssignee(identity.getLoginName())
                     .dueBefore(new Date())
                     .orderByTaskPriority().asc()
                     .orderByDueDate().asc()
@@ -65,7 +65,7 @@ public class TaskDashlet extends AbstractDashlet{
         if( followupTasks == null ){
             followupTasks = taskService.createTaskQuery()
                     .active()
-                    .taskAssignee(userInfo.getLoginName())
+                    .taskAssignee(identity.getLoginName())
                     .followUpBefore(new Date())
                     .orderByTaskPriority().asc()
                     .orderByFollowUpDate().asc()

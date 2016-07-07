@@ -24,7 +24,7 @@
             <span class="value" style="height: 30px;">
                 <p:selectOneMenu id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" filter="true" filterMatchMode="contains" >
                     <f:selectItem itemValue="#{null}" itemLabel="#{messages['general.value.NotSelected']}" rendered="#{cc.attrs.required}"/>
-                    <f:selectItems value="#{userLookup.getUsers(cc.attrs.userType, cc.attrs.userGroup)}" var="item" itemLabel="#{ item.firstName } #{ item.lastName }" itemValue="#{item.loginName}" />
+                    <f:selectItems value="#{userLookup.getUsersByType(cc.attrs.userType)}" var="item" itemLabel="#{userLookup.getUserName(item)}" itemValue="#{item}" />
                 </p:selectOneMenu>
             </span>
             <p:message for="#{cc.id}_inp" display="tooltip" />

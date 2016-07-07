@@ -20,7 +20,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
-import org.picketlink.Identity;
+import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +38,7 @@ public class UserAwareReportManager extends ReportManager implements Serializabl
     private Kahve kahve;
     
     @Inject
-    private Identity identity;
+    private Subject identity;
     
     /**
      * Favori raporlar için rapor rating bilgisi.
@@ -74,7 +74,7 @@ public class UserAwareReportManager extends ReportManager implements Serializabl
                 continue;
             }
             
-            if (identity.hasPermission(p, "select")) {
+            if (identity.isPermitted( p + ":select")) {
                 //Eğer kullanıcının yetkisi varsa sisteme ekliyoruz.
                 addReport(e.getValue().path(), e.getKey());
             }
@@ -107,7 +107,7 @@ public class UserAwareReportManager extends ReportManager implements Serializabl
             String r = o.getAsString();
 
             //Yetki kontrolü yapıyoruz. Fav'lanan raporun daha sonra yetkisi kaldırılmış olabilir.
-            if (identity.hasPermission(r, "select")) {
+            if (identity.isPermitted(r  + ":select")) {
                 //Eğer kullanıcının yetkisi varsa sisteme ekliyoruz.
                 favReports.getReports().add(r);
                 //Rate'i de kondu.

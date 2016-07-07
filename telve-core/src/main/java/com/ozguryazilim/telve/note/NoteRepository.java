@@ -26,7 +26,7 @@ public abstract class NoteRepository extends RepositoryBase<Note, Note> implemen
     public List<Note> findNotes( String username, String attachment ){
         Criteria<Note,Note> crit = criteria();
         
-        //FIXME: Buraya daha sonra kişiye özel not kontrolü de eklenecek.
+        //TODO: Buraya daha sonra kişiye özel not kontrolü de eklenecek.
         //crit.or(crit.eq(Note_.owner, username), crit.eq( Note_.permission, "ALL"));
         crit.eq(Note_.attachtment, attachment);
         

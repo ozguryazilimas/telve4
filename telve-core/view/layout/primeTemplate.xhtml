@@ -43,7 +43,7 @@
                 <span id="notifyDetail" style="font-size:22px;"></span>
             </p:notificationBar>
 
-            <p:socket onMessage="handleMessage" channel="/notify/#{identity.account.loginName}" />
+            <p:socket onMessage="handleMessage" channel="/notify/#{identity.loginName}" />
 
             <script type="text/javascript">
 
@@ -136,7 +136,9 @@
                                                 <i class="fa fa-bars"></i>
                                             </a>
                                         </li>
-                                        <!-- p:cache region="main-menu" key="#{identity.account.id}" -->
+                                        <ui:remove>
+                                        <!-- p:cache region="main-menu" key="#{identity.loginName}" -->
+                                            </ui:remove>
                                         <!-- Main Navigations -->
                                         <ui:repeat value="#{nagivationController.mainNavigations}" var="nav" >
                                             <li >
@@ -173,7 +175,7 @@
                                         <li class="dropdown user user-menu">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                                 <i class="fa fa-user"/>
-                                                <span class="hidden-xs">#{identity.account.firstName} #{identity.account.lastName}</span>
+                                                <span class="hidden-xs">#{identity.userName}</span>
                                             </a>
                                             <ul class="dropdown-menu">
                                                 <ui:remove>
@@ -230,7 +232,7 @@
                                         <ui:fragment rendered="#{noteController.canAddNote()}">
                                             <li>
                                                 <a href="#" data-toggle="control-sidebar" title="#{messages['nav.label.Notes']}">
-                                                    <i class="fa fa-comments-o"></i>
+                                                    <i class="fa fa-sticky-note-o"></i>
                                                     <ui:fragment rendered="#{noteController.hasNotes('')}">
                                                         <span class="label label-success">#{noteController.noteCount('')}</span>
                                                     </ui:fragment>
@@ -326,18 +328,18 @@
                                         <li class="dropdown messages-menu">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="#{messages['nav.label.Notifications']}">
                                                 <i class="fa fa-bell-o"></i>
-                                                <h:panelGroup id="notifyCount" styleClass="#{notifyStore.getNotifyCount(identity.account.loginName) gt 0 ? 'label label-warning' : ''}">
-                                                    <h:outputText value="#{notifyStore.getNotifyCount(identity.account.loginName)}" styleClass="" rendered="#{notifyStore.getNotifyCount(identity.account.loginName) gt 0}"/>
+                                                <h:panelGroup id="notifyCount" styleClass="#{notifyStore.getNotifyCount(identity.loginName) gt 0 ? 'label label-warning' : ''}">
+                                                    <h:outputText value="#{notifyStore.getNotifyCount(identity.loginName)}" styleClass="" rendered="#{notifyStore.getNotifyCount(identity.loginName) gt 0}"/>
                                                 </h:panelGroup>
                                             </a>
 
 
                                             <ul class="dropdown-menu">
-                                                <li class="header">You have #{notifyStore.getNotifyCount(identity.account.loginName)} notifications</li>
+                                                <li class="header">You have #{notifyStore.getNotifyCount(identity.loginName)} notifications</li>
                                                 <li>
                                                     <!-- inner menu: contains the actual data -->
                                                     <ul class="menu">
-                                                        <ui:repeat value="#{notifyStore.getNotifies(identity.account.loginName)}" var="notify">
+                                                        <ui:repeat value="#{notifyStore.getNotifies(identity.loginName)}" var="notify">
                                                             <li>
                                                                 <a href="#{request.contextPath}#{notify.link}" >
                                                                     <div class="pull-left">
@@ -352,7 +354,7 @@
                                                 </li>
                                                 <li class="footer">
 
-                                                    <p:commandLink action="#{notifyStore.clear(identity.account.loginName)}" ajax="true" 
+                                                    <p:commandLink action="#{notifyStore.clear(identity.loginName)}" ajax="true" 
                                                                    partialSubmit="true" process="@this" update=":notifyCount" 
                                                                    styleClass="pull-right">
                                                         <i class="fa fa-trash"></i>
@@ -409,7 +411,7 @@
 
                 <aside class="main-sidebar">
 
-                    <!-- p:cache region="main-sidebar" key="#{identity.account.id}" -->
+                    <!-- p:cache region="main-sidebar" key="#{identity.loginName}" -->
                     
                     <section class="sidebar" style="height: auto;">
 
@@ -914,7 +916,7 @@
                             <h3 class="control-sidebar-heading">Notes <small class="tools text-sm" style="background-color: transparent;">
                                     <p:commandLink action="#{noteController.createNewNote(request.getHeader('Referer'))}" 
                                                    ajax="true" partialSubmit="true" process="@this" update="noteFormPanel" styleClass="pull-right">
-                                        <i class="fa fa-comment"/>
+                                        <i class="fa fa-sticky-note"/>
                                         #{messages['general.button.New']}
                                     </p:commandLink></small></h3>
 

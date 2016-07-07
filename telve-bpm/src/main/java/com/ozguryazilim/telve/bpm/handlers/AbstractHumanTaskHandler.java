@@ -7,7 +7,7 @@ package com.ozguryazilim.telve.bpm.handlers;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
-import com.ozguryazilim.telve.auth.UserInfo;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.bpm.TaskInfo;
 import com.ozguryazilim.telve.bpm.TaskRepository;
 import com.ozguryazilim.telve.bpm.ui.TaskConsole;
@@ -47,10 +47,10 @@ public abstract class AbstractHumanTaskHandler implements Serializable {
     private TaskConsole taskConsole;
 
     @Inject
-    private UserInfo userInfo;
-
-    @Inject
     private IdentityService identityService;
+    
+    @Inject
+    private Identity identity;
 
     private TaskInfo task;
     private List<TaskResultCommand> resultCommands = new ArrayList<>();
@@ -101,7 +101,7 @@ public abstract class AbstractHumanTaskHandler implements Serializable {
             Map<String,Object> localVars = new HashMap<>();
             localVars.put("NOTIFICATION", Boolean.FALSE);
             taskService.setVariablesLocal(task.getId(), localVars);
-            taskService.claim(task.getId(), userInfo.getLoginName());
+            taskService.claim(task.getId(), identity.getLoginName());
             //Claim'den sonra bir saniye bekliyelim... Bazen complete için değerler yetişemiyor.
             try {
                 Thread.sleep(1000l);
@@ -110,7 +110,7 @@ public abstract class AbstractHumanTaskHandler implements Serializable {
         }
         
         if( task.getVariables().containsKey("ASSIGNEE")){
-            task.getVariables().put("ASSIGNEE", Strings.isNullOrEmpty(task.getTask().getAssignee()) ? userInfo.getLoginName() : task.getTask().getAssignee());
+            task.getVariables().put("ASSIGNEE", Strings.isNullOrEmpty(task.getTask().getAssignee()) ? identity.getLoginName() : task.getTask().getAssignee());
         }
         
         taskService.complete(task.getId(), task.getVariables());
@@ -141,7 +141,7 @@ public abstract class AbstractHumanTaskHandler implements Serializable {
     public void claimTask() {
         try {
             saveComment();
-            taskService.claim(task.getId(), userInfo.getLoginName());
+            taskService.claim(task.getId(), identity.getLoginName());
 
             //Veri tabanından tekrar alıp setleyelim. Değişiklikler yansısın.
             setTask(taskRepository.getTaskById(task.getId()));
@@ -267,7 +267,7 @@ public abstract class AbstractHumanTaskHandler implements Serializable {
     protected void saveComment() {
         if (!Strings.isNullOrEmpty(comment)) {
             //FIXME: userID işini ne yapacağız?
-            identityService.setAuthenticatedUserId(userInfo.getLoginName());
+            identityService.setAuthenticatedUserId(identity.getLoginName());
             Comment c = taskService.createComment(task.getId(), task.getTask().getProcessInstanceId(), comment);
         }
         comment = "";
@@ -361,7 +361,7 @@ public abstract class AbstractHumanTaskHandler implements Serializable {
      */
     public Boolean showDelegateButton() {
         //Eğer taskın sahibi kendisi ise
-        return userInfo.getLoginName().equals(getTask().getTask().getAssignee());
+        return identity.getLoginName().equals(getTask().getTask().getAssignee());
     }
 
     public String getDelegatedUser() {

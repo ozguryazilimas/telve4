@@ -14,8 +14,8 @@
     <properties>
         <jdk.debug>true</jdk.debug>
         <jdk.optimize>false</jdk.optimize>
-        <jdk.source>1.7</jdk.source>
-        <jdk.target>1.7</jdk.target>
+        <jdk.source>1.8</jdk.source>
+        <jdk.target>1.8</jdk.target>
     </properties>
 
     <dependencyManagement>
@@ -232,7 +232,7 @@
         <module>telve-doc</module>
         <!-- module>telve-help</module -->
         <module>telve-web</module>
-        <module>telve-admin</module>
+        <!-- module>telve-admin</module -->
         <module>telve-idm-model</module>
         <module>kahve</module>
         <module>telve-bpm</module>
@@ -240,6 +240,7 @@
         <module>telve-jcr</module>
         <module>telve-theme</module>
         <module>telve-gallery</module>
+        <module>telve-idm</module>
     </modules>
     
     <distributionManagement>

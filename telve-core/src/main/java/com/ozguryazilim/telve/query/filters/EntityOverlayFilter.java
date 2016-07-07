@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.ozguryazilim.telve.query.filters;
 
 import com.ozguryazilim.telve.entities.EntityBase;
@@ -15,29 +14,31 @@ import javax.persistence.metamodel.SingularAttribute;
 
 /**
  * Overlay popup çıkararak kullanıcıya seçim şansı veren entity filter.
- * 
+ *
  * @author Hakan Uygun
  * @param <E> Filtrenin uygulanacağı entity sınıfı
  * @param <T> Filtre için kullanılacak entity sınıfı
  */
-public class EntityOverlayFilter<E extends EntityBase, T extends EntityBase> extends EntityFilter<E , T>{
+public class EntityOverlayFilter<E extends EntityBase, T extends EntityBase> extends EntityFilter<E, T> {
 
     private String profile;
     private String listener;
-    
+
     public EntityOverlayFilter(SingularAttribute<? super E, T> attribute, Class<? extends LookupControllerBase<T, ?>> lookupClazz, String label) {
         super(attribute, lookupClazz, label);
-        
-        //TODO: Burada riskli bir durum var. Bu nesne bulunduğu browse memory'den atıldığında ne olacak?
-        getLookupBean().registerListener("event:"+attribute.getName(),new LookupSelectListener() {
-            @Override
-            public void onSelect(Object o) {
-                setValue((T)o);
-            }
-        });
-        
+
+        if (lookupClazz != null) {
+            //TODO: Burada riskli bir durum var. Bu nesne bulunduğu browse memory'den atıldığında ne olacak?
+            getLookupBean().registerListener("event:" + attribute.getName(), new LookupSelectListener() {
+                @Override
+                public void onSelect(Object o) {
+                    setValue((T) o);
+                }
+            });
+        }
+
     }
-    
+
     @Override
     public String getTemplate() {
         return "entityOverlayFilter";
@@ -58,11 +59,10 @@ public class EntityOverlayFilter<E extends EntityBase, T extends EntityBase> ext
     public void setListener(String listener) {
         this.listener = listener;
     }
-    
-    
-    public void onSelect( @Observes @LookupSelect T value ){
+
+    public void onSelect(@Observes @LookupSelect T value) {
         System.out.println("On Select tetiklendi");
         setValue(value);
     }
-    
+
 }
