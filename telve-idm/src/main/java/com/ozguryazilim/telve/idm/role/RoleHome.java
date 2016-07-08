@@ -24,7 +24,6 @@ import com.ozguryazilim.telve.permisson.PermissionDefinition;
 import com.ozguryazilim.telve.permisson.PermissionGroup;
 import com.ozguryazilim.telve.permisson.PermissionRegistery;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -121,9 +120,9 @@ public class RoleHome extends ParamBase<Role, Long>{
      * Daha önce atanmış bütün değerleri siler.
      */
     protected void clearPermissionValues() {
-        for (PermissionUIModel pd : permissionModels.values()) {
+        permissionModels.values().stream().forEach((pd) -> {
             pd.clearValues();
-        }
+        });
     }
 
     /**
@@ -199,6 +198,14 @@ public class RoleHome extends ParamBase<Role, Long>{
     }
 
     @Override
+    public void createNew() {
+        super.createNew(); 
+        buildPermissionModelValues();
+    }
+    
+    
+
+    @Override
     public boolean onAfterSave() {
         event.fire(new IdmEvent(IdmEvent.FROM_ROLE, IdmEvent.CREATE, getEntity().getName()));
         return super.onAfterSave();
@@ -212,15 +219,12 @@ public class RoleHome extends ParamBase<Role, Long>{
     
     public List<PermissionGroupUIModel> getPermissions() {
         List<PermissionGroupUIModel> ls = new ArrayList(permissionGroups.values());
-        ls.sort(new Comparator<PermissionGroupUIModel>() {
-            @Override
-            public int compare(PermissionGroupUIModel t, PermissionGroupUIModel t1) {
-                int result = t.getOrder().compareTo(t1.getOrder());
-                if( result == 0 ){
-                    result = t.getName().compareTo(t1.getName());
-                }
-                return result;
+        ls.sort((PermissionGroupUIModel t, PermissionGroupUIModel t1) -> {
+            int result = t.getOrder().compareTo(t1.getOrder());
+            if( result == 0 ){
+                result = t.getName().compareTo(t1.getName());
             }
+            return result;
         });
         return ls;
     }
