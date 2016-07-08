@@ -2,6 +2,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"               
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"                
+                xmlns:h="http://java.sun.com/jsf/html"
                 template="/layout/browseBase.xhtml">
     
     <ui:param name="moduleCaption" value="module.caption.User" />
@@ -29,6 +30,17 @@
                              lookupBean="#{groupLookup}" lookupListener="userBrowse.selectedGroup" 
                              leafSelect="false" required="false" columnClass="col-md-3 col-xs-12 pull-right" 
                              placeholder="user.info.UserGroupFilter"/>
+    </ui:define>
+    
+    
+            
+    <ui:define name="context-menu">
+        <li>
+            <p:commandLink action="#{userHome.create()}" styleClass="context-command" >
+                <i class="fa fa-plus-circle"></i>
+                <h:outputText value=" #{messages['general.button.Add']}" />
+            </p:commandLink>
+        </li>
     </ui:define>
     
 </ui:composition>
