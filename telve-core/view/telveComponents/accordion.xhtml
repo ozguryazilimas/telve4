@@ -1,8 +1,8 @@
 <ui:component xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:composite="http://java.sun.com/jsf/composite">
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:composite="http://java.sun.com/jsf/composite">
 
 
     <composite:interface>
@@ -19,26 +19,29 @@
             <h:outputScript library="telveComponents" name="accordion.js" target="head"/>
         </ui:remove>
 
-        <div id="#{cc.clientId}" class="#{ cc.attrs.columnClass} ">
-            
-                <h3 class="accordion #{cc.attrs.hide eq 'true' ? 'hided' : ''}">
+        <div id="#{cc.clientId}" class="#{ cc.attrs.columnClass} " >
+
+            <div class="accordion-header" >
+                <div class="accordion-tools">
+                    <composite:renderFacet name="toolbar" />
+                </div>
+                
+                <div class="accordion #{cc.attrs.hide eq 'true' ? 'hided' : ''} accordion-title">
                     <span class="accordionIcon fa #{cc.attrs.hide eq 'true' ? 'fa-caret-right' : 'fa-caret-down'} "> </span>
                     <ui:fragment rendered="#{cc.attrs.icon ne ''}">
                         <span class="accordionIcon2 #{cc.attrs.icon}"></span>
                     </ui:fragment>
                     <h:outputText value=" #{messages[cc.attrs.label]}" styleClass="accordionLabel"/>
-                    <span style="float: right">
-                        <composite:renderFacet name="toolbar" />
-                    </span>
-                </h3>
+                </div>
 
-                
-                <h:panelGroup layout="block" styleClass="accordioncontent">
-            
-                    <composite:insertChildren />
-            
-                </h:panelGroup>
-            
+            </div>
+
+            <h:panelGroup layout="block" styleClass="accordioncontent">
+
+                <composite:insertChildren />
+
+            </h:panelGroup>
+
         </div>
 
         <script> initAcordionTabs('#{cc.clientId}');</script>

@@ -84,9 +84,9 @@ body, h4{
     /*padding: 4px 4px 4px 16px;*/
     /*font-size: 14px;
     color: #447799; 	
-    color: #4582ec;*/
+    color: #4582ec;
     border-bottom:   1px solid #999;
-    padding-bottom: 4px;
+    padding-bottom: 4px;*/
 }
 
 
@@ -104,7 +104,24 @@ h3.accordion{
     font-weight: bold;
 }
 
+.accordion-header{
+    display: block;
+    padding: 4px;
+    border-bottom: 1px solid #ddd;
+}
 
+.accordion-title{
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+}
+
+.accordion-header > .accordion-tools{
+    position: absolute;
+    right: 10px;
+    top: 4px;
+}
 
 /*Primefaces css düzeltmeleri*/
 /*
@@ -639,4 +656,53 @@ textarea.ui-inputfield, .ui-selectonemenu {
 
 .products-list .product-info {
     margin-left: 30px !important;
+}
+
+.btn-box-tool {
+    color: #97a0b3 ! important;
+}
+
+.btn-box-tool:hover{
+    color: #606c84 ! important;
+}
+
+.btn-box-tool {
+    font-size: 12px !important;
+}
+
+.products-list .product-title{
+    color: #555;
+
+}
+
+.view-tabs{
+    padding: 8px 15px;
+    margin-bottom: 4px;
+    list-style: none;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.view-tabs > li{
+    display: inline-block;
+}
+
+.view-tabs > li > a.ui-widget{
+    font-size: 12px;
+    color: #555;
+}
+
+.view-tabs > li + li:before{
+    padding: 0 5px;
+    color: #ccc;
+    content: "|\00a0";
+}
+
+.view-tabs > li.active{
+    font-weight: bold;
+}
+
+.content{
+    padding-top: 8px ! important;
 }
