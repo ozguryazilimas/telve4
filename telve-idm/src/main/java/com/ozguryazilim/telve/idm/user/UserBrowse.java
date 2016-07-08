@@ -53,13 +53,17 @@ public class UserBrowse extends BrowseBase<User, UserViewModel>{
         groupFilter = new TreeEntityFilter<>(UserGroup_.group, Group_.path, null, "");
         groupFilter.setOperand(FilterOperand.Under);
         
+        
+        BooleanFilter bf = new BooleanFilter<>(User_.autoCreated, "user.label.LDAP", "general.boolean.yesno.");
+        bf.setOperand(FilterOperand.All);
+        
         queryDefinition
                 .addFilter(new StringFilter<>(User_.loginName, "general.label.LoginName"))
                 .addFilter(new StringFilter<>(User_.firstName, "general.label.FirstName"))
                 .addFilter(new StringFilter<>(User_.lastName, "general.label.LastName"))
                 .addFilter(new StringListFilter<>(User_.userType, UserModelRegistery.getUserTypes(), "user.label.UserType", "userType.label."))
                 .addFilter(new BooleanFilter<>(User_.active, "general.label.Active", "general.boolean.yesno."))
-                .addFilter(new BooleanFilter<>(User_.autoCreated, "user.label.LDAP", "general.boolean.yesno."));
+                .addFilter(bf);
                 
                 
         queryDefinition
