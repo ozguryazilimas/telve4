@@ -21,8 +21,7 @@
 
 
         <div class="box box-primary">
-
-            <h:form id="form" >
+            <h:form id="form" class="editForm">
                 <p:focus context="form"/>
 
                 <div class="box-body">
@@ -73,6 +72,21 @@
             </h:form>
         </div>
 
+    </ui:define>
+    
+    <ui:define name="context-menu">
+        <li>
+            <p:commandLink title="#{messages['general.button.Save']}" onclick="jQuery('#form\\:save').click();" rendered="#{not hideSave and (( not empty entity.id and identity.hasPermission( entityName, 'update')) or ( empty entity.id and identity.hasPermission( entityName, 'insert')))}">
+                <i class="fa fa-save"></i>
+                <h:outputText value=" #{messages['general.button.Save']}" />
+            </p:commandLink>
+        </li>
+        <li>
+            <p:commandLink title="#{messages['general.button.Delete']}" action="#{homeBean.delete()}" rendered="#{not hideDelete and not empty entity.id and identity.hasPermission( entityName, 'delete') }">
+                <i class="fa fa-trash-o"></i>
+                <h:outputText value=" #{messages['general.button.Delete']}" />
+            </p:commandLink>
+        </li>
     </ui:define>
     
     <ui:define name="context-menu-right">
