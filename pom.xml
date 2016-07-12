@@ -241,6 +241,7 @@
         <module>telve-theme</module>
         <module>telve-gallery</module>
         <module>telve-idm</module>
+        <module>telve-unit</module>
     </modules>
     
     <distributionManagement>
