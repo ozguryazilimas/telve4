@@ -59,7 +59,7 @@ Temel Kavramımız `Quantity`.
 
 İçerisinde `BigDecimal` olarak miktar ve o miktarın birimini ( `Unit` ) bulundurur.
 
-Mutable'dır. Dolayısı ile bir değer sadece bir kez oluşturulur.
+Imutable'dır. Dolayısı ile bir değer sadece bir kez oluşturulur.
 
 Örnek kullanım : 
 
