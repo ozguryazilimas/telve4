@@ -44,13 +44,13 @@ public class CustomDimensionTest {
     public void testCustomDimention() throws UnitException {
         System.out.println("CustomDimention");
         
-        DimensionBuilder.create("ZAMAN", "SAAT")
+        UnitSetBuilder.create("ZAMAN", "SAAT")
                 .addUnit("GUN", Quantities.of( new BigDecimal(24), "ZAMAN:SAAT"))
                 .addUnit("ISGUN", Quantities.of( new BigDecimal(8), "ZAMAN:SAAT"))
                 .addUnit("EGGUN", Quantities.of( new BigDecimal(6), "ZAMAN:SAAT"))
                 .register();
         
-        Dimension de = DimensionRegistery.getDimension("ZAMAN");
+        UnitSet de = UnitSetRegistery.getUnitSet("ZAMAN");
         
         System.out.println(de.getUnitNames());
      

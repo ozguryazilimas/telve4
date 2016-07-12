@@ -165,15 +165,15 @@ public class Quantity implements Serializable{
         
         if( !this.getUnitName().compatible(unitName) ) throw new UnitException("Uncompatible units : " + this.getUnitName() + " vs " + unitName);
         
-        Dimension dimension = DimensionRegistery.getDimension(unitName.getDimension());
+        UnitSet us = UnitSetRegistery.getUnitSet(unitName.getUnitSet());
         
-        if( dimension == null ) throw new UnitException("Unknown Dimension : " + this.getUnitName().getDimension());
+        if( us == null ) throw new UnitException("Unknown Unit Set : " + this.getUnitName().getUnitSet());
         
         //0'da çarpan değer, 1'de bölen değer var.
-        BigDecimal[] factors = dimension.getFactors(this.getUnitName(), unitName);
+        BigDecimal[] factors = us.getFactors(this.getUnitName(), unitName);
         
         //Biraz optimizasyon yapıp etkisiz eleman 1 gelmiş ise hesaba katmayabiliriz
-        return of( this.getAmount().multiply(factors[0]).divide(factors[1], dimension.getMathContext()), unitName);
+        return of( this.getAmount().multiply(factors[0]).divide(factors[1], us.getMathContext()), unitName);
         
     }
 
@@ -224,8 +224,8 @@ public class Quantity implements Serializable{
     }
     
     public Quantity divide( BigDecimal amount ){
-        Dimension dimension = DimensionRegistery.getDimension(this.getUnitName().getDimension());
-        return of( this.getAmount().divide(amount, dimension.getMathContext()), this.getUnitName());
+        UnitSet us = UnitSetRegistery.getUnitSet(this.getUnitName().getUnitSet());
+        return of( this.getAmount().divide(amount, us.getMathContext()), this.getUnitName());
     }
     
     public Quantity divide( Quantity that ) throws UnitException{
@@ -235,8 +235,8 @@ public class Quantity implements Serializable{
     public Quantity divide( Quantity that, UnitName unitName ) throws UnitException{
         Quantity a = this.convert(unitName);
         Quantity b = that.convert(unitName);
-        Dimension dimension = DimensionRegistery.getDimension(unitName.getDimension());
-        return of( a.getAmount().divide(b.getAmount(), dimension.getMathContext()), unitName);
+        UnitSet us = UnitSetRegistery.getUnitSet(unitName.getUnitSet());
+        return of( a.getAmount().divide(b.getAmount(), us.getMathContext()), unitName);
     }
     
 }

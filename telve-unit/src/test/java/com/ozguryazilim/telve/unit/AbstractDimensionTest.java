@@ -57,12 +57,12 @@ public class AbstractDimensionTest {
     }
 
     /**
-     * Test of getDimensionName method, of class AbstractDimension.
+     * Test of getDimensionName method, of class AbstractUnitSet.
      */
     @Test
     public void testGetDimensionName() {
         System.out.println("getDimensionName");
-        AbstractDimension instance = new AbstractDimensionImpl();
+        AbstractUnitSet instance = new AbstractDimensionImpl();
         String expResult = DIMENSION_NAME;
         String result = instance.getDimensionName();
         assertEquals(expResult, result);
@@ -70,26 +70,26 @@ public class AbstractDimensionTest {
     }
 
     /**
-     * Test of addBaseUnit method, of class AbstractDimension.
+     * Test of addBaseUnit method, of class AbstractUnitSet.
      */
     @Test
     public void testAddBaseUnit() throws UnitException {
         System.out.println("addBaseUnit");
         String unitName = "MILLIGRAM";
-        AbstractDimension instance = new AbstractDimensionImpl();
+        AbstractUnitSet instance = new AbstractDimensionImpl();
         instance.addBaseUnit(unitName);
         System.out.println( instance.getUnitChain(MILLIGRAM_UNIT));
     }
 
     /**
-     * Test of addUnit method, of class AbstractDimension.
+     * Test of addUnit method, of class AbstractUnitSet.
      */
     @Test
     public void testAddUnit_String_Quantity() throws UnitException {
         System.out.println("addUnit");
         String unitName = "CENTIGRAM";
         Quantity base = new Quantity(BigDecimal.TEN, MILLIGRAM);
-        AbstractDimension instance = new AbstractDimensionImpl();
+        AbstractUnitSet instance = new AbstractDimensionImpl();
         instance.addBaseUnit("MILLIGRAM");
         instance.addUnit(unitName, base);
         
@@ -97,26 +97,26 @@ public class AbstractDimensionTest {
     }
 
     /**
-     * Test of addUnit method, of class AbstractDimension.
+     * Test of addUnit method, of class AbstractUnitSet.
      */
     @Test
     public void testAddUnit_Unit() throws UnitException {
         System.out.println("addUnit");
         Unit unit = MILLIGRAM_UNIT;
-        AbstractDimension instance = new AbstractDimensionImpl();
+        AbstractUnitSet instance = new AbstractDimensionImpl();
         instance.addUnit(unit);
         
         System.out.println( instance.getUnitChain(MILLIGRAM_UNIT));
     }
 
     /**
-     * Test of getUnit method, of class AbstractDimension.
+     * Test of getUnit method, of class AbstractUnitSet.
      */
     @Test
     public void testGetUnit() {
         System.out.println("getUnit");
         UnitName unitName = MILLIGRAM;
-        AbstractDimension instance = testDimension;
+        AbstractUnitSet instance = testDimension;
         Unit expResult = MILLIGRAM_UNIT;
         Unit result = instance.getUnit(unitName);
         assertEquals(expResult, result);
@@ -124,13 +124,13 @@ public class AbstractDimensionTest {
     }
 
     /**
-     * Test of getUnitChain method, of class AbstractDimension.
+     * Test of getUnitChain method, of class AbstractUnitSet.
      */
     @Test
     public void testGetUnitChain1() throws UnitException {
         System.out.println("getUnitChain");
         Unit from = GRAM_UNIT;
-        AbstractDimension instance = testDimension;
+        AbstractUnitSet instance = testDimension;
         List<Unit> expResult = Arrays.asList( new Unit[]{GRAM_UNIT, DECIGRAM_UNIT, CENTIGRAM_UNIT, MILLIGRAM_UNIT});
         List<Unit> result = instance.getUnitChain(from);
         assertEquals(expResult, result);
@@ -141,7 +141,7 @@ public class AbstractDimensionTest {
     public void testGetUnitChain2() throws UnitException {
         System.out.println("getUnitChain2");
         Unit from = MILLIGRAM_UNIT;
-        AbstractDimension instance = testDimension;
+        AbstractUnitSet instance = testDimension;
         
         List<Unit> expResult = Arrays.asList( new Unit[]{MILLIGRAM_UNIT});
         List<Unit> result = instance.getUnitChain(from);
@@ -156,7 +156,7 @@ public class AbstractDimensionTest {
     public void testGetUnitChain3() throws UnitException {
         System.out.println("getUnitChain3");
         Unit from = KILOGRAM_UNIT;
-        AbstractDimension instance = testDimension;
+        AbstractUnitSet instance = testDimension;
         instance.getUnitChain(from);
     }
     
@@ -167,7 +167,7 @@ public class AbstractDimensionTest {
     public void testGetUnitChain4() throws UnitException {
         System.out.println("getUnitChain4");
         Unit from = KILOGRAM_UNIT;
-        AbstractDimension instance = new AbstractDimensionImpl();
+        AbstractUnitSet instance = new AbstractDimensionImpl();
         
         instance.addUnit(KILOGRAM_UNIT);
         
@@ -181,7 +181,7 @@ public class AbstractDimensionTest {
         System.out.println("getFactors");
         
         
-        AbstractDimension instance = testDimension;
+        AbstractUnitSet instance = testDimension;
         
         BigDecimal[] result = instance.getFactors(MILLIGRAM, GRAM);
         //Carpan
@@ -222,7 +222,7 @@ public class AbstractDimensionTest {
         
     }
     
-    public class AbstractDimensionImpl extends AbstractDimension {
+    public class AbstractDimensionImpl extends AbstractUnitSet {
 
         public String getDimensionName() {
             return DIMENSION_NAME;

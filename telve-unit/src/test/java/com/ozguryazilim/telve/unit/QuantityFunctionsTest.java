@@ -5,7 +5,7 @@
  */
 package com.ozguryazilim.telve.unit;
 
-import com.ozguryazilim.telve.unit.dimensions.MassDimension;
+import com.ozguryazilim.telve.unit.sets.MassUnitSet;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,9 +47,9 @@ public class QuantityFunctionsTest {
     public void testGroupBy() {
         
         List<Quantity> quantities = new ArrayList<>();
-        quantities.add(Quantity.of(BigDecimal.ONE, MassDimension.GRAM));
-        quantities.add(Quantity.of(BigDecimal.TEN, MassDimension.GRAM));
-        quantities.add(Quantity.of(5, MassDimension.DECIGRAM));
+        quantities.add(Quantity.of(BigDecimal.ONE, MassUnitSet.GRAM));
+        quantities.add(Quantity.of(BigDecimal.TEN, MassUnitSet.GRAM));
+        quantities.add(Quantity.of(5, MassUnitSet.DECIGRAM));
         quantities.add(Quantity.of(4, "ZAMAN:ISSAAT"));
         
         Map<UnitName,List<Quantity>> result = quantities.stream().collect(Collectors.groupingBy(Quantity::getUnitName));

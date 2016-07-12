@@ -11,10 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
- * @author oyas
+ * Unit tanımlarının bir araya toplanması için API
+ * 
+ * @author Hakan Uygun
  */
-public interface Dimension {
+public interface UnitSet {
 
     void addBaseUnit(String unitName);
 
@@ -50,7 +51,7 @@ public interface Dimension {
     Map<UnitName, Unit> getUnitMap();
 
     /**
-     * Geriye ilgili Dimension'ın sahip olduğu birim isimlerini döndürür
+     * Geriye ilgili UnitSet'ın sahip olduğu birim isimlerini döndürür
      * @return
      */
     List<UnitName> getUnitNames();

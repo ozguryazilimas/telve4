@@ -5,7 +5,7 @@
  */
 package com.ozguryazilim.telve.unit;
 
-import com.ozguryazilim.telve.unit.dimensions.MassDimension;
+import com.ozguryazilim.telve.unit.sets.MassUnitSet;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -237,7 +237,7 @@ public class ArithmeticTest {
     @Test
     public void testDividQuantiy(){
         
-        Quantity q = Quantities.of(new BigDecimal(22), MassDimension.GRAM);
+        Quantity q = Quantities.of(new BigDecimal(22), MassUnitSet.GRAM);
         
         Quantity r = Quantities.divide(q, new BigDecimal(7));
         
@@ -249,8 +249,8 @@ public class ArithmeticTest {
     @Test
     public void testDividQuantiy2() throws UnitException{
         
-        Quantity q1 = Quantities.of(new BigDecimal(22), MassDimension.GRAM);
-        Quantity q2 = Quantities.of(new BigDecimal(7), MassDimension.GRAM);
+        Quantity q1 = Quantities.of(new BigDecimal(22), MassUnitSet.GRAM);
+        Quantity q2 = Quantities.of(new BigDecimal(7), MassUnitSet.GRAM);
         
         Quantity r1 = Quantities.divide( q1, q2 );
         Quantity r2 = Quantities.divide( q1, new BigDecimal(7));

@@ -10,11 +10,11 @@ package com.ozguryazilim.telve.unit;
  * 
  * @author Hakan Uygun
  */
-public class CustomDimension extends AbstractDimension{
+public class NamedUnitSet extends AbstractUnitSet{
 
     private String name;
 
-    public CustomDimension(String name) {
+    public NamedUnitSet(String name) {
         this.name = name;
     }
     

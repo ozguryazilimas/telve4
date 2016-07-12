@@ -15,16 +15,16 @@ import java.util.Objects;
  */
 public class UnitName implements Serializable{
     
-    private final String dimension;
+    private final String unitSet;
     private final String name;
 
-    public UnitName(String dimension, String name) {
-        this.dimension = dimension;
+    public UnitName(String unitSet, String name) {
+        this.unitSet = unitSet;
         this.name = name;
     }
 
-    public String getDimension() {
-        return dimension;
+    public String getUnitSet() {
+        return unitSet;
     }
 
     public String getName() {
@@ -38,18 +38,18 @@ public class UnitName implements Serializable{
     }
     
     /**
-     * İki Unit Name'in bir biriyle uyumlu olup olmadığını ( yani aynı dimension'a ait olup olmadıklarına ) bakar.
+     * İki Unit Name'in bir biriyle uyumlu olup olmadığını ( yani aynı unitSet'a ait olup olmadıklarına ) bakar.
      * @param un
      * @return 
      */
     public boolean compatible( UnitName un ){
-        return this.dimension.equals(un.dimension);
+        return this.unitSet.equals(un.unitSet);
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 41 * hash + Objects.hashCode(this.dimension);
+        hash = 41 * hash + Objects.hashCode(this.unitSet);
         hash = 41 * hash + Objects.hashCode(this.name);
         return hash;
     }
@@ -66,7 +66,7 @@ public class UnitName implements Serializable{
             return false;
         }
         final UnitName other = (UnitName) obj;
-        if (!Objects.equals(this.dimension, other.dimension)) {
+        if (!Objects.equals(this.unitSet, other.unitSet)) {
             return false;
         }
         if (!Objects.equals(this.name, other.name)) {
@@ -77,7 +77,7 @@ public class UnitName implements Serializable{
 
     @Override
     public String toString() {
-        return dimension + ":" + name;
+        return unitSet + ":" + name;
     }
 
     

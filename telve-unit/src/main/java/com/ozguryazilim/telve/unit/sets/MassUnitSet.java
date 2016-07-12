@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ozguryazilim.telve.unit.dimensions;
+package com.ozguryazilim.telve.unit.sets;
 
-import com.ozguryazilim.telve.unit.AbstractDimension;
-import com.ozguryazilim.telve.unit.DimensionRegistery;
+import com.ozguryazilim.telve.unit.AbstractUnitSet;
+import com.ozguryazilim.telve.unit.UnitSetRegistery;
 import com.ozguryazilim.telve.unit.Quantity;
 import com.ozguryazilim.telve.unit.Unit;
 import com.ozguryazilim.telve.unit.UnitName;
@@ -17,18 +17,18 @@ import java.math.BigDecimal;
  * 
  * @author Hakan Uygun
  */
-public class MassDimension extends AbstractDimension{
+public class MassUnitSet extends AbstractUnitSet{
 
-    private static final String DIMENSION_NAME = "MASS";
+    private static final String MASS_UNIT_SET = "MASS";
     
     //TODO: Ağırlık ve Kütle için birimlerin tamamı tanımlanacak
-    public static final UnitName MILLIGRAM = new UnitName(DIMENSION_NAME, "MILLIGRAM");
-    public static final UnitName CENTIGRAM = new UnitName(DIMENSION_NAME, "CENTIGRAM");
-    public static final UnitName DECIGRAM = new UnitName(DIMENSION_NAME, "DECIGRAM");
-    public static final UnitName GRAM = new UnitName(DIMENSION_NAME, "GRAM");
-    public static final UnitName DECAGRAM = new UnitName(DIMENSION_NAME, "DECAGRAM");
-    public static final UnitName HECTOGRAM = new UnitName(DIMENSION_NAME, "HECTOGRAM");
-    public static final UnitName KILOGRAM = new UnitName(DIMENSION_NAME, "KILOGRAM");
+    public static final UnitName MILLIGRAM = new UnitName(MASS_UNIT_SET, "MILLIGRAM");
+    public static final UnitName CENTIGRAM = new UnitName(MASS_UNIT_SET, "CENTIGRAM");
+    public static final UnitName DECIGRAM = new UnitName(MASS_UNIT_SET, "DECIGRAM");
+    public static final UnitName GRAM = new UnitName(MASS_UNIT_SET, "GRAM");
+    public static final UnitName DECAGRAM = new UnitName(MASS_UNIT_SET, "DECAGRAM");
+    public static final UnitName HECTOGRAM = new UnitName(MASS_UNIT_SET, "HECTOGRAM");
+    public static final UnitName KILOGRAM = new UnitName(MASS_UNIT_SET, "KILOGRAM");
     
     public final static Unit MILLIGRAM_UNIT = new Unit(MILLIGRAM, new Quantity(BigDecimal.ONE, MILLIGRAM));
     public final static Unit CENTIGRAM_UNIT = new Unit(CENTIGRAM, new Quantity(BigDecimal.TEN, MILLIGRAM));
@@ -41,10 +41,10 @@ public class MassDimension extends AbstractDimension{
     
     @Override
     public String getDimensionName() {
-        return DIMENSION_NAME;
+        return MASS_UNIT_SET;
     }
 
-    public MassDimension() {
+    public MassUnitSet() {
         super();
         addUnit(MILLIGRAM_UNIT);
         addUnit(CENTIGRAM_UNIT);
@@ -56,7 +56,7 @@ public class MassDimension extends AbstractDimension{
     }
     
     static{
-        DimensionRegistery.register(new MassDimension());
+        UnitSetRegistery.register(new MassUnitSet());
     }
     
 }

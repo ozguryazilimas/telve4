@@ -37,7 +37,7 @@ public class UnitNameTest {
     }
 
     /**
-     * Test of getDimension method, of class UnitName.
+     * Test of getUnitSet method, of class UnitName.
      */
     @org.junit.Test
     public void testGetDimension() {
@@ -45,7 +45,7 @@ public class UnitNameTest {
         
         UnitName instance = new UnitName("MASS", "GRAM");
         String expResult = "MASS";
-        String result = instance.getDimension();
+        String result = instance.getUnitSet();
         assertEquals(expResult, result);
         
     }

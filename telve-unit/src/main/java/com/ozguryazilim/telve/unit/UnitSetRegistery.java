@@ -13,17 +13,17 @@ import java.util.Map;
  * 
  * @author Hakan Uygun
  */
-public class DimensionRegistery {
+public class UnitSetRegistery {
     
-    private static final Map<String, Dimension> DIMENSION_MAP = new HashMap<>();
+    private static final Map<String, UnitSet> UNITSET_MAP = new HashMap<>();
     
-    public static void register( Dimension dimension ){
-        DIMENSION_MAP.put(dimension.getDimensionName(), dimension);
+    public static void register( UnitSet unitSet ){
+        UNITSET_MAP.put(unitSet.getDimensionName(), unitSet);
     }
     
     
-    public static Dimension getDimension( String name ){
-        return DIMENSION_MAP.get(name);
+    public static UnitSet getUnitSet( String name ){
+        return UNITSET_MAP.get(name);
     }
     
 }

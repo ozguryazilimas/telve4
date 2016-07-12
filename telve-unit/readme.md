@@ -8,20 +8,20 @@ TODO: Unit ve Quantity için JPA, JSF converter'ları hazırlanacak.
 TODO: Hazır Dimension'lar sağlanacak : Mass, Time, Length, Volume, 
 TODO: Hzır dimension'ların kullanımı için conf yapısı gerekir 
 
-## Birim Sistemi Unit, UnitName, Dimension
+## Birim Sistemi Unit, UnitName, UnitSet
 
 
-### Dimension
+### UnitSet
 
-Sistemde bir birinden bağımsız faklı birimler bulunabilir. Bunların toplandığı gruplar `Dimension` - Boyut olarak adlandırıyoruz.
+Sistemde bir birinden bağımsız faklı birimler bulunabilir. Bunların toplandığı gruplar `UnitSet` - Birim Kümesi olarak adlandırıyoruz.
 
-Her Dimension kendine ait bir isme sahiptir. Sistemde kodlanmış olarak bulunan Dimension'ların yanında kullanıcıya tanıttırılacak, veri tabanında saklanacak boyutlarda bulunabilir.
+Her UnitSet kendine ait bir isme sahiptir. Sistemde kodlanmış olarak bulunan UnitSet'lerin yanında kullanıcıya tanıttırılacak, veri tabanında saklanacak boyutlarda bulunabilir.
 
-Her Dimension, `DimensionRegistery` de tanıtılmış olması gerekir ki sistem bunların içerisinde gerekli çevrim işlemlerini yapabilsin.
+Her UnitSet, `UnitSetRegistery` de tanıtılmış olması gerekir ki sistem bunların içerisinde gerekli çevrim işlemlerini yapabilsin.
 
 ### UnitName
 
-Bir birimin tanımı `DIMENTION:NAME` formatı ile yapılmaktadır. `UnitName` sınıfı bu ismi doğrular, parse eder ve gerekli karşılaştırma işlemlerini sağlar.
+Bir birimin tanımı `UNITSET:NAME` formatı ile yapılmaktadır. `UnitName` sınıfı bu ismi doğrular, parse eder ve gerekli karşılaştırma işlemlerini sağlar.
 
 ```java
 
@@ -45,7 +45,7 @@ Bir birim bir başka birim ile olan çevrimini de beraberinde getirecektir. Bu `
 Sistemde çevrimlerin sağlıklı olması için temel birim kullanılcak en küçük birim olacaktır. Örneğin dakika seviyesin de birim tanımlanacak ise Dimension için BaseUnit dakika olmalı ve diğerleri buna relatif olarak tanımlanmalıdır.
 
 ```java
-DimensionBuilder.create("ZAMAN", "SAAT")
+UnitSetBuilder.create("ZAMAN", "SAAT")
                 .addUnit("GUN", Quantity.of( 24, "ZAMAN:SAAT"))
                 .addUnit("ISGUN", Quantity.of( 8, "ZAMAN:SAAT"))
                 .addUnit("EGGUN", Quantity.of( 6, "ZAMAN:SAAT"))
@@ -77,14 +77,14 @@ public void test(){
 
 ```
 
-Quantity'i oluşturuken birim isimlerini `DIMENSION:NAME` formatında verilebilir. Ayrıca önceden tanımlanmış birim isimleri varsa onlarda kullanılabilir.
+Quantity'i oluşturuken birim isimlerini `UNITSET:NAME` formatında verilebilir. Ayrıca önceden tanımlanmış birim isimleri varsa onlarda kullanılabilir.
 
 ```java
 
 public void test(){
 
-      Quantity q1 = Quantity.of( 5, MassDimension.GRAM );
-      Quantity q2 = Quantity.of( 15, MassDimension.GRAM );
+      Quantity q1 = Quantity.of( 5, MassUnitSet.GRAM );
+      Quantity q2 = Quantity.of( 15, MassUnitSet.GRAM );
 
       Quantity result = q1.add( q2 );
 

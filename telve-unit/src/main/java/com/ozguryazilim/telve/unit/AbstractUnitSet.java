@@ -22,7 +22,7 @@ import java.util.Map;
  * 
  * @author Hakan Uygun
  */
-public abstract class AbstractDimension implements Dimension {
+public abstract class AbstractUnitSet implements UnitSet {
     
     private Map<UnitName,Unit> unitMap = new HashMap<>();
     private MathContext mathContext = MathContext.DECIMAL64; //new MathContext( MathContext.UNLIMITED, RoundingMode.HALF_UP);
@@ -168,7 +168,7 @@ public abstract class AbstractDimension implements Dimension {
     }
     
     /**
-     * Geriye ilgili Dimension'ın sahip olduğu birim isimlerini döndürür
+     * Geriye ilgili UnitSet'ın sahip olduğu birim isimlerini döndürür
      * @return 
      */
     @Override

@@ -5,7 +5,7 @@
  */
 package com.ozguryazilim.telve.unit;
 
-import com.ozguryazilim.telve.unit.dimensions.MassDimension;
+import com.ozguryazilim.telve.unit.sets.MassUnitSet;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
@@ -39,12 +39,12 @@ public class MassDimensionTest {
     }
 
     /**
-     * Test of getDimensionName method, of class MassDimension.
+     * Test of getDimensionName method, of class MassUnitSet.
      */
     @Test
     public void testGetDimensionName() {
         System.out.println("getDimensionName");
-        MassDimension instance = new MassDimension();
+        MassUnitSet instance = new MassUnitSet();
         String expResult = "MASS";
         String result = instance.getDimensionName();
         assertEquals(expResult, result);
@@ -53,17 +53,17 @@ public class MassDimensionTest {
     
     
     /**
-     * Test of getDimensionName method, of class MassDimension.
+     * Test of getDimensionName method, of class MassUnitSet.
      */
     @Test
     public void testGetUnitChain() throws UnitException {
         System.out.println("getUnitChain");
-        MassDimension instance = new MassDimension();
+        MassUnitSet instance = new MassUnitSet();
         String expResult = "MASS";
         String result = instance.getDimensionName();
         
-        System.out.println(instance.getUnitChain(MassDimension.KILOGRAM_UNIT));
-        System.out.println(instance.getUnitChain(MassDimension.GRAM_UNIT));
+        System.out.println(instance.getUnitChain(MassUnitSet.KILOGRAM_UNIT));
+        System.out.println(instance.getUnitChain(MassUnitSet.GRAM_UNIT));
         
         assertEquals(expResult, result);
         
