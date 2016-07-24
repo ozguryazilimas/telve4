@@ -23,7 +23,7 @@
         </div>  
 
         <div class="row">     
-            <t:accordion label="general.label.Members">
+            <t:accordion label="general.label.Members" rendered="#{groupHome.isMultiGroupActive}">
                 <div class="col-xs-12">
                     <p:dataTable id="members" value="#{groupHome.members}" var="member">
                         <p:column headerText="#{messages['general.label.Member']}">
