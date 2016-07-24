@@ -28,6 +28,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
@@ -224,8 +225,8 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     protected String getBizKeyValue(){
         
         String result = "";
-        
-        Field[] fields = entity.getClass().getDeclaredFields();
+
+        Field[] fields = FieldUtils.getFieldsWithAnnotation(entity.getClass(), BizKey.class);
         
         for( Field f : fields ){
             if( f.isAnnotationPresent(BizKey.class) ){
