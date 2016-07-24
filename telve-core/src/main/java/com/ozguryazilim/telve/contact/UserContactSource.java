@@ -40,7 +40,7 @@ public class UserContactSource extends AbstractContactSource {
         
         String p = params.get(ID);
         
-        if (!Strings.isNullOrEmpty(p)) {
+        if (Strings.isNullOrEmpty(p)) {
             p = params.get(USERNAME);
         }
         
