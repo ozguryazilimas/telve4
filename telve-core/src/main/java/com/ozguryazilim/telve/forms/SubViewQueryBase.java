@@ -9,6 +9,7 @@ import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.entities.ViewModel;
 import com.ozguryazilim.telve.query.QueryControllerBase;
 import javax.enterprise.event.Observes;
+import javax.enterprise.event.Reception;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
@@ -134,7 +135,7 @@ public abstract class SubViewQueryBase<E extends EntityBase,R extends ViewModel>
      * Eğer bu subview'ın seçildiğine dair FormBase'den event geldiyse tekrar sorgu çek.
      * @param event 
      */
-    public void selectionListener( @Observes SubViewSelectEvent event ){
+    public void selectionListener( @Observes(notifyObserver = Reception.IF_EXISTS) SubViewSelectEvent event ){
         String s = viewConfigResolver.getViewConfigDescriptor(getViewPage()).getViewId();
         if( s.equals(event.getSubViewId())){
             search();
