@@ -154,8 +154,8 @@
 
                     <div class="actionButtons">
                         <p:commandButton id="save" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{scheduledCommandBrowse.currentEditor.save()}" update=":commands" oncomplete="PF('editorPopup').hide();"
-                                    validateClient="true"
-                                    styleClass="btn-primary"/>
+                                         validateClient="true"
+                                         styleClass="btn-primary"/>
                         <p:button id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" onclick="PF('editorPopup').hide();return false;"/>
                     </div>
                 </h:form>
@@ -166,61 +166,69 @@
 
     <ui:define name="context-menu">
 
-        <li class="dropdown">
-            <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <i class="fa fa-plus-circle"/>
-                <span>#{messages['general.button.New']}</span>
-                <i class="fa fa-caret-down" />
-            </a>
-            <ul class="dropdown-menu">
-                <ui:repeat value="#{scheduledCommandBrowse.editorNames}" var="item" varStatus="loop2">
-                    <li>
-                        <p:commandLink value="#{messages['command.editor.'.concat( item )]}" 
-                                       action="#{scheduledCommandBrowse.createNew(item)}" 
-                                       ajax="true" partialSubmit="true" process="@this" 
-                                       update=":editorPopup"
-                                       oncomplete="PF('editorPopup').show();">
-                        </p:commandLink>
-                    </li>
-                </ui:repeat>
-            </ul>
-        </li>
+        <ui:fragment rendered="#{identity.hasPermission( 'scheduledCommand', 'insert')}">
+            <li class="dropdown">
+                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-plus-circle"/>
+                    <span>#{messages['general.button.New']}</span>
+                    <i class="fa fa-caret-down" />
+                </a>
+                <ul class="dropdown-menu">
+                    <ui:repeat value="#{scheduledCommandBrowse.editorNames}" var="item" varStatus="loop2">
+                        <li>
+                            <p:commandLink value="#{messages['command.editor.'.concat( item )]}" 
+                                           action="#{scheduledCommandBrowse.createNew(item)}" 
+                                           ajax="true" partialSubmit="true" process="@this" 
+                                           update=":editorPopup"
+                                           oncomplete="PF('editorPopup').show();">
+                            </p:commandLink>
+                        </li>
+                    </ui:repeat>
+                </ul>
+            </li>
+        </ui:fragment>
 
-        <li>
-            <p:commandLink  action="#{scheduledCommandBrowse.edit()}" update=":editorPopup"
-                            oncomplete="PF('editorPopup').show();" ajax="true" partialSubmit="true" process="@this" >
-                <i class="fa fa-pencil"/>
-                <span>#{messages['general.button.Edit']}</span>
-            </p:commandLink>
-        </li>
+        <ui:fragment rendered="#{identity.hasPermission( 'scheduledCommand', 'update')}">
+            <li>
+                <p:commandLink  action="#{scheduledCommandBrowse.edit()}" update=":editorPopup"
+                                oncomplete="PF('editorPopup').show();" ajax="true" partialSubmit="true" process="@this" >
+                    <i class="fa fa-pencil"/>
+                    <span>#{messages['general.button.Edit']}</span>
+                </p:commandLink>
+            </li>
+        </ui:fragment>
 
-        <li>
-            <p:commandLink  action="#{scheduledCommandBrowse.delete()}" update=":commands" ajax="true" partialSubmit="true" process="@this" >
-                <i class="fa fa-trash"/>
-                <span>#{messages['general.button.Delete']}</span>
-            </p:commandLink>
-        </li>
+        <ui:fragment rendered="#{identity.hasPermission( 'scheduledCommand', 'delete')}">
+            <li>
+                <p:commandLink  action="#{scheduledCommandBrowse.delete()}" update=":commands" ajax="true" partialSubmit="true" process="@this" >
+                    <i class="fa fa-trash"/>
+                    <span>#{messages['general.button.Delete']}</span>
+                </p:commandLink>
+            </li>
+        </ui:fragment>
 
-        <li>
-            <p:commandLink  action="#{scheduledCommandBrowse.startSchedule()}" update=":schedulePopup" oncomplete="PF('schedulePopup').show();" ajax="true" partialSubmit="true" process="@this" >
-                <i class="fa fa-calendar"/>
-                <span>#{messages['general.button.StartShedule']}</span>
-            </p:commandLink>
-        </li>
+        <ui:fragment rendered="#{identity.hasPermission( 'scheduledCommand', 'exec')}">
+            <li>
+                <p:commandLink  action="#{scheduledCommandBrowse.startSchedule()}" update=":schedulePopup" oncomplete="PF('schedulePopup').show();" ajax="true" partialSubmit="true" process="@this" >
+                    <i class="fa fa-calendar"/>
+                    <span>#{messages['general.button.StartShedule']}</span>
+                </p:commandLink>
+            </li>
 
-        <li>
-            <p:commandLink  action="#{scheduledCommandBrowse.stopSchedule()}" update=":commands" ajax="true" partialSubmit="true" process="@this" >
-                <i class="fa fa-calendar-o"/>
-                <span>#{messages['general.button.StopShedule']}</span>
-            </p:commandLink>
-        </li>
+            <li>
+                <p:commandLink  action="#{scheduledCommandBrowse.stopSchedule()}" update=":commands" ajax="true" partialSubmit="true" process="@this" >
+                    <i class="fa fa-calendar-o"/>
+                    <span>#{messages['general.button.StopShedule']}</span>
+                </p:commandLink>
+            </li>
 
-        <li>
-            <p:commandLink  action="#{scheduledCommandBrowse.run()}" ajax="true" partialSubmit="true" process="@this" >
-                <i class="fa fa-cogs"/>
-                <span>#{messages['general.button.Run']}</span>
-            </p:commandLink>
-        </li>
+            <li>
+                <p:commandLink  action="#{scheduledCommandBrowse.run()}" ajax="true" partialSubmit="true" process="@this" >
+                    <i class="fa fa-cogs"/>
+                    <span>#{messages['general.button.Run']}</span>
+                </p:commandLink>
+            </li>
+        </ui:fragment>
 
     </ui:define>
 
