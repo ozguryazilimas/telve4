@@ -44,6 +44,18 @@ public class TodoProcess extends AbstractDialogProcessHandler{
         return "/bpm/todoProcessPopup";
     }
 
+    @Override
+    public void openDialog() {
+        
+        subject = "";
+        info = "";
+        startDate = new Date();
+        endDate = null;
+        
+        super.openDialog(); 
+    }
+
+    
     /**
      * UI üzerinden alınan değerler ile süreç başlatır.
      */

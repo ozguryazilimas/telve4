@@ -64,6 +64,8 @@ public class NotifyStore implements Serializable{
         for( int i = 0; i < e.getAsInteger(); i++ ){
             KahveEntry ee = kahve.get( "notify.msg." + identity + "." + i, "");
             NotifyMessage m = gson.fromJson(ee.getAsString(), NotifyMessage.class);
+            //JSON'a çevrilirken "=" escape'leniyor.
+            m.setLink( m.getLink().replaceAll("u003d", "="));
             ls.add(m);
         }
         

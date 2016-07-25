@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.enterprise.event.Event;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
@@ -394,7 +395,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         
         String result = "";
         
-        Field[] fields = entity.getClass().getDeclaredFields();
+        Field[] fields = FieldUtils.getFieldsWithAnnotation(entity.getClass(), BizKey.class);
         
         for( Field f : fields ){
             if( f.isAnnotationPresent(BizKey.class) ){

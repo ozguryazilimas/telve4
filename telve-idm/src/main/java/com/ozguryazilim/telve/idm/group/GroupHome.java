@@ -21,6 +21,7 @@ import java.util.List;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -150,7 +151,13 @@ public class GroupHome extends TreeBase<Group>{
     protected String getAuditLogCategory() {
         return AuditLogCommand.CAT_AUTH;
     }
- 
-    
+
+    /**
+     * Multi Group kullanımı aktif ise true aksi halde false döner.
+     * @return 
+     */
+    public boolean getIsMultiGroupActive(){
+        return "true".equals(ConfigResolver.getPropertyValue("security.multiGroup.control", "false"));
+    }
     
 }

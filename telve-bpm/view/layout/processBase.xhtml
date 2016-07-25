@@ -13,8 +13,8 @@
             
             <h:panelGroup styleClass="actionButtons" style="position: fixed; bottom: 8px; padding-right: 18px;" layout="block">
                 <ui:insert name="actionButtons" />
-                <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{bean.closeDialog()}" />
-                <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{bean.cancelDialog()}" />
+                <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{bean.closeDialog()}" styleClass="btn-primary"/>
+                <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{bean.cancelDialog()}" process="@this"/>
             </h:panelGroup>
         </h:form>
     </ui:define>

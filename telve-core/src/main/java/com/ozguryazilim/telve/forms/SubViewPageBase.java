@@ -7,6 +7,7 @@ package com.ozguryazilim.telve.forms;
 
 import java.io.Serializable;
 import javax.enterprise.event.Observes;
+import javax.enterprise.event.Reception;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
@@ -31,7 +32,7 @@ public abstract class SubViewPageBase implements Serializable{
      * Eğer bu subview'ın seçildiğine dair FormBase'den event geldiyse tekrar sorgu çek.
      * @param event 
      */
-    public void selectionListener( @Observes SubViewSelectEvent event ){
+    public void selectionListener( @Observes(notifyObserver = Reception.IF_EXISTS) SubViewSelectEvent event ){
         String s = viewConfigResolver.getViewConfigDescriptor(getViewPage()).getViewId();
         if( s.equals(event.getSubViewId())){
             reload();

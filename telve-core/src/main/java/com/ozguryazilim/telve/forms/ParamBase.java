@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.List;
 import javax.inject.Inject;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
@@ -292,7 +293,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
         
         String result = "";
         
-        Field[] fields = entity.getClass().getDeclaredFields();
+        Field[] fields = FieldUtils.getFieldsWithAnnotation(entity.getClass(), BizKey.class);
         
         for( Field f : fields ){
             if( f.isAnnotationPresent(BizKey.class) ){
