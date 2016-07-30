@@ -32,13 +32,13 @@
                 <h:graphicImage value="#{imageLookupController.getImageResourcePath(cc.attrs.value, cc.attrs.contextRoot, cc.attrs.fallbackImage, cc.attrs.emptyImage )}" styleClass="img-responsive img-rounded" rendered="#{cc.attrs.value ne null}" width="100%"/>
                 <h:outputText value="#{messages[cc.attrs.placeholder]}" styleClass="text-muted" rendered="#{cc.attrs.value eq null}" />
 
-
-
-                <p:commandLink action="#{imageLookupController.prepareToUpload(cc.attrs.value, cc.attrs.contextRoot)}" 
-                               oncomplete="PF('imageUpload').show()" rendered="#{cc.attrs.value ne null and not cc.attrs.readOnly}"
+                
+                <p:commandLink action="#{imageLookupController.uploadDialog(cc.attrs.value, cc.attrs.contextRoot)}" 
+                               rendered="#{cc.attrs.value ne null and not cc.attrs.readOnly}"
                                partialSubmit="true" process="@this">
                     <i class="fa fa-camera" ></i>
                     #{messages['general.button.UploadImage']}
+                    <p:ajax event="dialogReturn" update="#{cc.id}_pnl" partialSubmit="true" process="@this" />   
                 </p:commandLink>
                 
                 <p:commandLink action="#{imageLookupController.deleteImage(cc.attrs.value, cc.attrs.contextRoot)}" 
@@ -48,16 +48,6 @@
                     <i class="fa fa-trash" ></i>
                 </p:commandLink>
 
-
-                <p:dialog id="imageUpload"  widgetVar="imageUpload"  header="#{messages['general.button.UploadImage']}" closable="true">
-                    <p:fileUpload fileUploadListener="#{imageLookupController.handleFileUpload}" mode="advanced"
-                                  update="#{cc.id}_pnl" auto="true" sizeLimit="#{cc.attrs.sizeLimit}" allowTypes="/(\.|\/)(jpe?g|png)$/" 
-                                  oncomplete="PF('imageUpload').hide()" 
-                                  label="#{messages['general.label.SelectFile']}" uploadLabel="#{messages['general.button.Upload']}" cancelLabel="#{messages['general.button.Cancel']}">
-                    </p:fileUpload>
-                </p:dialog>
-
-                
             </p:outputPanel>
             <p:message for="#{cc.id}_inp" display="tooltip"/>
         </div>
