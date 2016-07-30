@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                template="/layout/dialogBase.xhtml">
+    
+    <ui:param name="title" value="general.button.UploadImage" />
+    
+    <ui:define name="form" >
+        <h:form id="imageUploadForm">
+            
+            <p:fileUpload fileUploadListener="#{imageLookupController.handleFileUpload}" mode="advanced"
+                                  auto="true" sizeLimit="#{cc.attrs.sizeLimit}" allowTypes="/(\.|\/)(jpe?g|png)$/" 
+                                  oncomplete="jQuery('#imageUploadForm\\:close').click();"
+                                  label="#{messages['general.label.SelectFile']}" uploadLabel="#{messages['general.button.Upload']}" cancelLabel="#{messages['general.button.Cancel']}">
+            </p:fileUpload>
+            
+            <h:panelGroup styleClass="row actionButtons" layout="block" style="position: fixed; bottom: 0; display: block;">
+                <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{imageLookupController.closeDialog()}" />
+            </h:panelGroup>
+        </h:form>
+    </ui:define>
+</ui:composition>

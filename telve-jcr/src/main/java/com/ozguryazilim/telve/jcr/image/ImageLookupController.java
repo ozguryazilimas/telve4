@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -23,6 +25,7 @@ import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import org.modeshape.common.text.UrlEncoder;
 import org.modeshape.jcr.api.JcrTools;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -289,5 +292,23 @@ public class ImageLookupController implements Serializable {
             LOG.debug("File Not found", ex );
         }
         
+    }
+    
+    
+    
+    public void uploadDialog(String keyValue, String contextRoot){
+        prepareToUpload(keyValue, contextRoot);
+        Map<String, Object> options = new HashMap<>();
+        
+        options.put("modal", true);
+        //options.put("draggable", false);  
+        options.put("resizable", false);
+        options.put("contentHeight", 150);
+        
+        RequestContext.getCurrentInstance().openDialog("/dialogs/imageUploadDialog", options, null);
+    }
+    
+    public void closeDialog(){
+        RequestContext.getCurrentInstance().closeDialog(null);
     }
 }
