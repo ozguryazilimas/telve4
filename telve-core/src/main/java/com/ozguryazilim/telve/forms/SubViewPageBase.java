@@ -6,6 +6,7 @@
 package com.ozguryazilim.telve.forms;
 
 import java.io.Serializable;
+import javax.annotation.PostConstruct;
 import javax.enterprise.event.Observes;
 import javax.enterprise.event.Reception;
 import javax.inject.Inject;
@@ -27,6 +28,11 @@ public abstract class SubViewPageBase implements Serializable{
     
     @Inject
     private ViewConfigResolver viewConfigResolver;
+    
+    @PostConstruct
+    public void init(){
+        reload();
+    }
     
     /**
      * Eğer bu subview'ın seçildiğine dair FormBase'den event geldiyse tekrar sorgu çek.
