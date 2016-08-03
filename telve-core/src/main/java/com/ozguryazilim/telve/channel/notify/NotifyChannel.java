@@ -7,6 +7,7 @@ package com.ozguryazilim.telve.channel.notify;
 
 import com.ozguryazilim.telve.channel.Channel;
 import com.ozguryazilim.telve.contact.Contact;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import javax.enterprise.context.Dependent;
@@ -22,7 +23,7 @@ import org.apache.camel.cdi.Uri;
  */
 @Dependent
 @Named
-public class NotifyChannel implements Channel{
+public class NotifyChannel implements Channel, Serializable{
 
     @Inject @ContextName("telve")
     @Uri("seda:notifyChannel")

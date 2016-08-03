@@ -8,6 +8,7 @@ package com.ozguryazilim.telve.channel.email;
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.channel.Channel;
 import com.ozguryazilim.telve.contact.Contact;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import javax.activation.DataHandler;
@@ -27,7 +28,7 @@ import org.apache.camel.cdi.Uri;
  */
 @Dependent
 @Named
-public class EmailChannel implements Channel{
+public class EmailChannel implements Channel, Serializable{
     
     @Inject @ContextName("telve")
     @Uri("seda:emailChannel")
