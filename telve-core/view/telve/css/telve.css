@@ -706,3 +706,7 @@ textarea.ui-inputfield, .ui-selectonemenu {
 .content{
     padding-top: 8px ! important;
 }
+
+.ui-inputnumber input{
+    text-align: right;
+}
