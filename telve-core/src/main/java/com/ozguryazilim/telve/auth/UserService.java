@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
@@ -348,5 +349,14 @@ public class UserService {
         }
 
         return result;
+    }
+    
+    public void clearCache( @Observes UserDataChangeEvent event){
+        userNames.remove(event.username);
+        userRoles.remove(event.username);
+        userGroups.remove(event.username);
+        userUnifiedRoles.remove(event.username);
+        userAttrs.remove(event.username);
+        userInfos.remove(event.username);
     }
 }

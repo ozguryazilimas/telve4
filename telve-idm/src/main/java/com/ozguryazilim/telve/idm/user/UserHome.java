@@ -9,6 +9,7 @@ import com.google.common.base.Strings;
 import com.ozguryazilim.telve.audit.AuditLogCommand;
 import com.ozguryazilim.telve.audit.ChangeLogStore;
 import com.ozguryazilim.telve.auth.Identity;
+import com.ozguryazilim.telve.auth.UserDataChangeEvent;
 import com.ozguryazilim.telve.auth.UserModel;
 import com.ozguryazilim.telve.auth.UserModelRegistery;
 import com.ozguryazilim.telve.data.RepositoryBase;
@@ -45,6 +46,9 @@ public class UserHome extends FormBase<User, Long>{
 
     @Inject 
     private Event<IdmEvent>  event;
+    
+    @Inject
+    private Event<UserDataChangeEvent> userEvent;
     
     @Inject
     private Identity identity;
@@ -92,12 +96,14 @@ public class UserHome extends FormBase<User, Long>{
     @Override
     public boolean onAfterSave() {
         event.fire(new IdmEvent(IdmEvent.FROM_USER, IdmEvent.CREATE, getEntity().getLoginName()));
+        userEvent.fire(new UserDataChangeEvent(getEntity().getLoginName()));
         return super.onAfterSave(); 
     }
     
     @Override
     public boolean onBeforeDelete() {
         event.fire(new IdmEvent(IdmEvent.FROM_USER, IdmEvent.DELETE, getEntity().getLoginName()));
+        userEvent.fire(new UserDataChangeEvent(getEntity().getLoginName()));
         return super.onAfterSave(); 
     }
     

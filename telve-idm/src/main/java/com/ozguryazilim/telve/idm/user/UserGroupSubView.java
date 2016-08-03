@@ -8,6 +8,7 @@ package com.ozguryazilim.telve.idm.user;
 import com.ozguryazilim.telve.audit.AuditLogCommand;
 import com.ozguryazilim.telve.audit.AuditLogger;
 import com.ozguryazilim.telve.auth.Identity;
+import com.ozguryazilim.telve.auth.UserDataChangeEvent;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.forms.SubView;
 import com.ozguryazilim.telve.forms.SubViewQueryBase;
@@ -21,6 +22,7 @@ import com.ozguryazilim.telve.query.QueryDefinition;
 import com.ozguryazilim.telve.query.columns.SubTextColumn;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import org.primefaces.event.SelectEvent;
 
@@ -43,6 +45,9 @@ public class UserGroupSubView extends SubViewQueryBase<UserGroup, UserGroupViewM
     @Inject
     private AuditLogger auditLogger;
     
+    @Inject
+    private Event<UserDataChangeEvent> userEvent;
+    
     @Override
     protected void buildQueryDefinition(QueryDefinition<UserGroup, UserGroupViewModel> queryDefinition) {
         queryDefinition
@@ -60,7 +65,7 @@ public class UserGroupSubView extends SubViewQueryBase<UserGroup, UserGroupViewM
         getEntity().setUser( userHome.getEntity());
         return true;
     }
-    
+
     public void onGroupSelect(SelectEvent event) {
         List<Group> ls = getGroups(event);
         addGroups(ls);
@@ -69,6 +74,7 @@ public class UserGroupSubView extends SubViewQueryBase<UserGroup, UserGroupViewM
     @Override
     public boolean onBeforeDelete() {
         auditLogger.actionLog(userHome.getEntity().getClass().getSimpleName(), userHome.getEntity().getId(), userHome.getEntity().getLoginName(), AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_DELETE, identity.getLoginName(), "User removed from group "+ getEntity().getGroup().getName());
+        userEvent.fire(new UserDataChangeEvent(userHome.getEntity().getLoginName()));
         return true;
     }
     
@@ -87,6 +93,7 @@ public class UserGroupSubView extends SubViewQueryBase<UserGroup, UserGroupViewM
                 ur.setGroup(c);
                 repository.save(ur);
                 auditLogger.actionLog(userHome.getEntity().getClass().getSimpleName(), userHome.getEntity().getId(), userHome.getEntity().getLoginName(), AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_INSERT, identity.getLoginName(), "User added to group "+c.getName());
+                userEvent.fire(new UserDataChangeEvent(userHome.getEntity().getLoginName()));
             }
         }
         search();
