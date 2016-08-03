@@ -68,14 +68,6 @@ public class UserRoleSubView extends SubViewQueryBase<UserRole, UserRoleViewMode
     }
 
     @Override
-    public boolean onAfterSave() {
-        userEvent.fire(new UserDataChangeEvent(userHome.getEntity().getLoginName()));
-        return super.onAfterSave();
-    }
-    
-    
-    
-    @Override
     public boolean onBeforeSave(){
         getEntity().setUser( userHome.getEntity());
         return true;
@@ -100,6 +92,7 @@ public class UserRoleSubView extends SubViewQueryBase<UserRole, UserRoleViewMode
                 ur.setRole(c);
                 repository.save(ur);
                 auditLogger.actionLog(userHome.getEntity().getClass().getSimpleName(), userHome.getEntity().getId(), userHome.getEntity().getLoginName(), AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_INSERT, identity.getLoginName(), "Role "+c.getName() + " given to User " + userHome.getEntity().getLoginName());
+                userEvent.fire(new UserDataChangeEvent(userHome.getEntity().getLoginName()));
             }
         }
         search();

@@ -66,14 +66,6 @@ public class UserGroupSubView extends SubViewQueryBase<UserGroup, UserGroupViewM
         return true;
     }
 
-    @Override
-    public boolean onAfterSave() {
-        userEvent.fire(new UserDataChangeEvent(userHome.getEntity().getLoginName()));
-        return super.onAfterSave();
-    }
-    
-    
-    
     public void onGroupSelect(SelectEvent event) {
         List<Group> ls = getGroups(event);
         addGroups(ls);
@@ -101,6 +93,7 @@ public class UserGroupSubView extends SubViewQueryBase<UserGroup, UserGroupViewM
                 ur.setGroup(c);
                 repository.save(ur);
                 auditLogger.actionLog(userHome.getEntity().getClass().getSimpleName(), userHome.getEntity().getId(), userHome.getEntity().getLoginName(), AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_INSERT, identity.getLoginName(), "User added to group "+c.getName());
+                userEvent.fire(new UserDataChangeEvent(userHome.getEntity().getLoginName()));
             }
         }
         search();
