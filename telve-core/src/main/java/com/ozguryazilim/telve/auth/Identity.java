@@ -11,6 +11,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Shiro Subject çevresine bir wrapper.
@@ -23,12 +25,28 @@ import org.apache.shiro.subject.Subject;
 @RequestScoped
 public class Identity {
     
+    private static final Logger LOG = LoggerFactory.getLogger(Identity.class);
+    
     @Inject
     private UserService userService;
     
+    /**
+     * Current User login name'ini döndürür.
+     * Eğer bir oturum içerisinde çağırılmamış ise SYSTEM döner.
+     * 
+     * Bu davranış özellikle repository'ler, gün sonu işlemleri, auditLog gibi yerler için kullanılıyor.
+     * @see UserRepository
+     * 
+     * @return 
+     */
     public String getLoginName(){
-        Subject currentUser = SecurityUtils.getSubject();
-        return currentUser.getPrincipal().toString();
+        try{
+            Subject currentUser = SecurityUtils.getSubject();
+            return currentUser.getPrincipal().toString();
+        } catch ( Exception ex ){
+            LOG.debug("Current User not found.", ex);
+            return "SYSTEM";
+        }
     }
     
     public Boolean hasPermission( String domain, String action ){

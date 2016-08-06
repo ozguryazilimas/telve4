@@ -147,10 +147,11 @@ public class TaskConsole implements Serializable {
         selectedTaskViewId = "/bpm/emptyTask.xhtml";
         
         //TaskList'e bulunan ilk item'ı seçer.
+        /* Kullanıcıların kafası karıştığına dair şikayet geldi. Boş ekrana düşecek.
         List<TaskInfo> ls = getTaskList();
         if( !ls.isEmpty()){
             onSelectTask( ls.get(0));
-        }
+        }*/
     }
 
     public TaskInfo getSelectedTask() {
