@@ -124,6 +124,9 @@
                                         .jstree({
                                             "plugins" : [ "wholerow", "types", "conditionalselect", "sort", "#{ bean.model.getMultiSelect() ? 'checkbox' : '' }" ],
                                             "checkbox": { "three_state" : false },
+                                            "sort": function(a,b){
+                                                return this.get_text(a).localeCompare(this.get_text(b)) > 0 ? 1 : -1;
+                                            },
                                             "conditionalselect" : function (node) {
                                                 return (node.children.length &amp;&amp; #{ bean.model.leafSelect} ) ? false : true;
                                             },                                       
