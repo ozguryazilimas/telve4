@@ -273,6 +273,9 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
         if( identity == null ) return;
         
         UserInfo ui = identity.getUserInfo();
+        //Geriye UserInfo gelmiyor ise Login olan bir kullanıcı yok demek.
+        if( ui == null ) return;
+        
         //SuperAdmin için grup yetki kontrolü yapılmayacak
         if (!"SUPERADMIN".equals(ui.getUserType())) {
             //FIXME: Eğer grup tanımı yoksa ne yapalım? Şu hali ile her şeyi getirecek...
@@ -293,6 +296,9 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
         if( identity == null ) return;
         
         UserInfo ui = identity.getUserInfo();
+        //Geriye UserInfo gelmiyor ise Login olan bir kullanıcı yok demek.
+        if( ui == null ) return;
+        
         //SuperAdmin için grup yetki kontrolü yapılmayacak
         if (!"SUPERADMIN".equals(ui.getUserType())) {
             //FIXME: Eğer grup tanımı yoksa ne yapalım? Şu hali ile her şeyi getirecek...
