@@ -49,10 +49,10 @@ public class QuantitiesTest {
         System.out.println("of");
         BigDecimal amount = BigDecimal.TEN;
         
-        Unit unit = new Unit( GRAM, new Quantity(BigDecimal.ONE, GRAM ));
-        Quantity expResult = new Quantity(BigDecimal.TEN, GRAM);
+        Unit unit = new Unit( GRAM, new QuantitativeAmount(BigDecimal.ONE, GRAM ));
+        QuantitativeAmount expResult = new QuantitativeAmount(BigDecimal.TEN, GRAM);
         
-        Quantity result = Quantities.of(amount, unit);
+        QuantitativeAmount result = Quantities.of(amount, unit);
         assertEquals(expResult, result);
     }
 
@@ -64,8 +64,8 @@ public class QuantitiesTest {
         System.out.println("of");
         BigDecimal amount = BigDecimal.TEN;
         UnitName unitName = UnitName.of("MASS:GRAM");
-        Quantity expResult = new Quantity(BigDecimal.TEN, GRAM);
-        Quantity result = Quantities.of(amount, unitName);
+        QuantitativeAmount expResult = new QuantitativeAmount(BigDecimal.TEN, GRAM);
+        QuantitativeAmount result = Quantities.of(amount, unitName);
         assertEquals(expResult, result);
         
     }
@@ -78,8 +78,8 @@ public class QuantitiesTest {
         System.out.println("of");
         BigDecimal amount = BigDecimal.TEN;
         String unitName = "MASS:GRAM";
-        Quantity expResult = new Quantity(BigDecimal.TEN, GRAM);
-        Quantity result = Quantities.of(amount, unitName);
+        QuantitativeAmount expResult = new QuantitativeAmount(BigDecimal.TEN, GRAM);
+        QuantitativeAmount result = Quantities.of(amount, unitName);
         assertEquals(expResult, result);
         
     }
@@ -96,9 +96,9 @@ public class QuantitiesTest {
         System.out.println("convert");
                 
         
-        Quantity q = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity expResult = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity result = Quantities.convert(q, MassUnitSet.GRAM);
+        QuantitativeAmount q = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.convert(q, MassUnitSet.GRAM);
         assertEquals(expResult, result);
         
     }
@@ -113,9 +113,9 @@ public class QuantitiesTest {
     public void testConvert2() throws UnitException {
         System.out.println("convert2");
                 
-        Quantity q = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity expResult = new Quantity( new BigDecimal(100), MassUnitSet.DECIGRAM);
-        Quantity result = Quantities.convert(q, MassUnitSet.DECIGRAM);
+        QuantitativeAmount q = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( new BigDecimal(100), MassUnitSet.DECIGRAM);
+        QuantitativeAmount result = Quantities.convert(q, MassUnitSet.DECIGRAM);
         assertEquals(expResult, result);
         
     }
@@ -130,7 +130,7 @@ public class QuantitiesTest {
     @Test( expected = UnitException.class)
     public void testConver3() throws UnitException {
         System.out.println("convert3");
-        Quantity q = Quantities.of(BigDecimal.ONE, MassUnitSet.GRAM);
+        QuantitativeAmount q = Quantities.of(BigDecimal.ONE, MassUnitSet.GRAM);
         Quantities.convert(q, UnitName.of("HEDE:HODO"));
         
     }
@@ -144,7 +144,7 @@ public class QuantitiesTest {
     @Test( expected = UnitException.class )
     public void testConver4() throws UnitException {
         System.out.println("convert4");
-        Quantity q = Quantities.of(BigDecimal.ONE, MassUnitSet.GRAM);
+        QuantitativeAmount q = Quantities.of(BigDecimal.ONE, MassUnitSet.GRAM);
         Quantities.convert(q, UnitName.of("MASS:HODO"));
         
     }
@@ -158,7 +158,7 @@ public class QuantitiesTest {
     @Test( expected = UnitException.class )
     public void testConver5() throws UnitException {
         System.out.println("convert4");
-        Quantity q = Quantities.of( BigDecimal.ONE, UnitName.of("HODO:BISI"));
+        QuantitativeAmount q = Quantities.of( BigDecimal.ONE, UnitName.of("HODO:BISI"));
         Quantities.convert(q, UnitName.of("HODO:HODO"));
         
     }
@@ -173,9 +173,9 @@ public class QuantitiesTest {
     public void testAdd1() throws UnitException {
         System.out.println("add1");
                 
-        Quantity q = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity expResult = new Quantity( new BigDecimal(20), MassUnitSet.GRAM);
-        Quantity result = Quantities.add( q, BigDecimal.TEN);
+        QuantitativeAmount q = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( new BigDecimal(20), MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.add( q, BigDecimal.TEN);
         assertEquals(expResult, result);
         
     }
@@ -189,10 +189,10 @@ public class QuantitiesTest {
     public void testAdd2() throws UnitException {
         System.out.println("add2");
                 
-        Quantity q1 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity q2 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity expResult = new Quantity( new BigDecimal(20), MassUnitSet.GRAM);
-        Quantity result = Quantities.add( q1, q2);
+        QuantitativeAmount q1 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( new BigDecimal(20), MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.add( q1, q2);
         assertEquals(expResult, result);
         
     }
@@ -206,10 +206,10 @@ public class QuantitiesTest {
     public void testAdd3() throws UnitException {
         System.out.println("add3");
                 
-        Quantity q1 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity q2 = new Quantity(new BigDecimal(100), MassUnitSet.DECIGRAM);
-        Quantity expResult = new Quantity( new BigDecimal(20), MassUnitSet.GRAM);
-        Quantity result = Quantities.add( q1, q2);
+        QuantitativeAmount q1 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount(new BigDecimal(100), MassUnitSet.DECIGRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( new BigDecimal(20), MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.add( q1, q2);
         assertEquals(expResult, result);
         
     }
@@ -223,10 +223,10 @@ public class QuantitiesTest {
     public void testAdd4() throws UnitException {
         System.out.println("add4");
                 
-        Quantity q1 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity q2 = new Quantity(new BigDecimal(100), MassUnitSet.DECIGRAM);
-        Quantity expResult = new Quantity( new BigDecimal(2000), MassUnitSet.CENTIGRAM);
-        Quantity result = Quantities.add(q1, q2, MassUnitSet.CENTIGRAM);
+        QuantitativeAmount q1 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount(new BigDecimal(100), MassUnitSet.DECIGRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( new BigDecimal(2000), MassUnitSet.CENTIGRAM);
+        QuantitativeAmount result = Quantities.add(q1, q2, MassUnitSet.CENTIGRAM);
         assertEquals(expResult, result);
         
     }
@@ -240,9 +240,9 @@ public class QuantitiesTest {
     public void testsubtract1() throws UnitException {
         System.out.println("subtract1");
                 
-        Quantity q = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity expResult = new Quantity( BigDecimal.ZERO, MassUnitSet.GRAM);
-        Quantity result = Quantities.subtract(q, BigDecimal.TEN);
+        QuantitativeAmount q = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( BigDecimal.ZERO, MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.subtract(q, BigDecimal.TEN);
         assertEquals(expResult, result);
         
     }
@@ -256,10 +256,10 @@ public class QuantitiesTest {
     public void testsubtract2() throws UnitException {
         System.out.println("subtract2");
                 
-        Quantity q1 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity q2 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity expResult = new Quantity( BigDecimal.ZERO, MassUnitSet.GRAM);
-        Quantity result = Quantities.subtract( q1, q2);
+        QuantitativeAmount q1 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( BigDecimal.ZERO, MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.subtract( q1, q2);
         assertEquals(expResult, result);
         
     }
@@ -273,10 +273,10 @@ public class QuantitiesTest {
     public void testsubtract3() throws UnitException {
         System.out.println("subtract3");
                 
-        Quantity q1 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity q2 = new Quantity(new BigDecimal(100), MassUnitSet.DECIGRAM);
-        Quantity expResult = new Quantity( BigDecimal.ZERO, MassUnitSet.GRAM);
-        Quantity result = Quantities.subtract( q1, q2);
+        QuantitativeAmount q1 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount(new BigDecimal(100), MassUnitSet.DECIGRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( BigDecimal.ZERO, MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.subtract( q1, q2);
         assertEquals(expResult, result);
         
     }
@@ -290,10 +290,10 @@ public class QuantitiesTest {
     public void testsubtract4() throws UnitException {
         System.out.println("add4");
                 
-        Quantity q1 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity q2 = new Quantity(new BigDecimal(100), MassUnitSet.DECIGRAM);
-        Quantity expResult = new Quantity( BigDecimal.ZERO, MassUnitSet.CENTIGRAM);
-        Quantity result = Quantities.subtract(q1, q2, MassUnitSet.CENTIGRAM);
+        QuantitativeAmount q1 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount(new BigDecimal(100), MassUnitSet.DECIGRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( BigDecimal.ZERO, MassUnitSet.CENTIGRAM);
+        QuantitativeAmount result = Quantities.subtract(q1, q2, MassUnitSet.CENTIGRAM);
         assertEquals(expResult, result);
         
     }
@@ -308,9 +308,9 @@ public class QuantitiesTest {
     public void testmultiply1() throws UnitException {
         System.out.println("multiply1");
                 
-        Quantity q = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity expResult = new Quantity( new BigDecimal(100), MassUnitSet.GRAM);
-        Quantity result = Quantities.multiply(q, BigDecimal.TEN);
+        QuantitativeAmount q = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( new BigDecimal(100), MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.multiply(q, BigDecimal.TEN);
         assertEquals(expResult, result);
         
     }
@@ -324,10 +324,10 @@ public class QuantitiesTest {
     public void testmultiply2() throws UnitException {
         System.out.println("multiply2");
                 
-        Quantity q1 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity q2 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity expResult = new Quantity( new BigDecimal(100), MassUnitSet.GRAM);
-        Quantity result = Quantities.multiply( q1, q2);
+        QuantitativeAmount q1 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( new BigDecimal(100), MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.multiply( q1, q2);
         assertEquals(expResult, result);
         
     }
@@ -341,10 +341,10 @@ public class QuantitiesTest {
     public void testmultiply3() throws UnitException {
         System.out.println("multiply3");
                 
-        Quantity q1 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity q2 = new Quantity(new BigDecimal(100), MassUnitSet.DECIGRAM);
-        Quantity expResult = new Quantity( new BigDecimal(100), MassUnitSet.GRAM);
-        Quantity result = Quantities.multiply( q1, q2);
+        QuantitativeAmount q1 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount(new BigDecimal(100), MassUnitSet.DECIGRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( new BigDecimal(100), MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.multiply( q1, q2);
         assertEquals(expResult, result);
         
     }
@@ -358,10 +358,10 @@ public class QuantitiesTest {
     public void testmultiply4() throws UnitException {
         System.out.println("multiply4");
                 
-        Quantity q1 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity q2 = new Quantity(new BigDecimal(100), MassUnitSet.DECIGRAM);
-        Quantity expResult = new Quantity( new BigDecimal(1000000), MassUnitSet.CENTIGRAM);
-        Quantity result = Quantities.multiply(q1, q2, MassUnitSet.CENTIGRAM);
+        QuantitativeAmount q1 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount(new BigDecimal(100), MassUnitSet.DECIGRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( new BigDecimal(1000000), MassUnitSet.CENTIGRAM);
+        QuantitativeAmount result = Quantities.multiply(q1, q2, MassUnitSet.CENTIGRAM);
         assertEquals(expResult, result);
         
     }
@@ -376,9 +376,9 @@ public class QuantitiesTest {
     public void testdivide1() throws UnitException {
         System.out.println("divide1");
                 
-        Quantity q = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity expResult = new Quantity( BigDecimal.ONE, MassUnitSet.GRAM);
-        Quantity result = Quantities.divide(q, BigDecimal.TEN);
+        QuantitativeAmount q = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( BigDecimal.ONE, MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.divide(q, BigDecimal.TEN);
         assertEquals(expResult, result);
         
     }
@@ -392,10 +392,10 @@ public class QuantitiesTest {
     public void testdivide2() throws UnitException {
         System.out.println("divide2");
                 
-        Quantity q1 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity q2 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity expResult = new Quantity( BigDecimal.ONE, MassUnitSet.GRAM);
-        Quantity result = Quantities.divide( q1, q2);
+        QuantitativeAmount q1 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( BigDecimal.ONE, MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.divide( q1, q2);
         assertEquals(expResult, result);
         
     }
@@ -409,10 +409,10 @@ public class QuantitiesTest {
     public void testdivide3() throws UnitException {
         System.out.println("divide3");
                 
-        Quantity q1 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity q2 = new Quantity(new BigDecimal(100), MassUnitSet.DECIGRAM);
-        Quantity expResult = new Quantity( BigDecimal.ONE, MassUnitSet.GRAM);
-        Quantity result = Quantities.divide( q1, q2);
+        QuantitativeAmount q1 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount(new BigDecimal(100), MassUnitSet.DECIGRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( BigDecimal.ONE, MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.divide( q1, q2);
         assertEquals(expResult, result);
         
     }
@@ -426,10 +426,10 @@ public class QuantitiesTest {
     public void testdivide4() throws UnitException {
         System.out.println("divide4");
                 
-        Quantity q1 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity q2 = new Quantity(new BigDecimal(100), MassUnitSet.DECIGRAM);
-        Quantity expResult = new Quantity( BigDecimal.ONE, MassUnitSet.CENTIGRAM);
-        Quantity result = Quantities.divide(q1, q2, MassUnitSet.CENTIGRAM);
+        QuantitativeAmount q1 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount(new BigDecimal(100), MassUnitSet.DECIGRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( BigDecimal.ONE, MassUnitSet.CENTIGRAM);
+        QuantitativeAmount result = Quantities.divide(q1, q2, MassUnitSet.CENTIGRAM);
         assertEquals(expResult, result);
         
     }
@@ -443,10 +443,10 @@ public class QuantitiesTest {
     public void testdivide5() throws UnitException {
         System.out.println("divide5");
                 
-        Quantity q1 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity q2 = new Quantity(BigDecimal.ZERO, MassUnitSet.DECIGRAM);
-        Quantity expResult = new Quantity( BigDecimal.ONE, MassUnitSet.CENTIGRAM);
-        Quantity result = Quantities.divide(q1, q2, MassUnitSet.CENTIGRAM);
+        QuantitativeAmount q1 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount(BigDecimal.ZERO, MassUnitSet.DECIGRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( BigDecimal.ONE, MassUnitSet.CENTIGRAM);
+        QuantitativeAmount result = Quantities.divide(q1, q2, MassUnitSet.CENTIGRAM);
         assertEquals(expResult, result);
         
     }
@@ -460,10 +460,10 @@ public class QuantitiesTest {
     public void testdivide6() throws UnitException {
         System.out.println("divide6");
                 
-        Quantity q1 = new Quantity(BigDecimal.TEN, MassUnitSet.GRAM);
-        Quantity q2 = new Quantity(BigDecimal.ZERO, MassUnitSet.DECIGRAM);
-        Quantity expResult = new Quantity( BigDecimal.ZERO, MassUnitSet.CENTIGRAM);
-        Quantity result = Quantities.divide(q2, q1, MassUnitSet.CENTIGRAM);
+        QuantitativeAmount q1 = new QuantitativeAmount(BigDecimal.TEN, MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount(BigDecimal.ZERO, MassUnitSet.DECIGRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( BigDecimal.ZERO, MassUnitSet.CENTIGRAM);
+        QuantitativeAmount result = Quantities.divide(q2, q1, MassUnitSet.CENTIGRAM);
         assertEquals(expResult, result);
         
     }
@@ -480,14 +480,14 @@ public class QuantitiesTest {
     public void testdivide7() throws UnitException {
         System.out.println("divide7");
                 
-        Quantity q1 = new Quantity( new BigDecimal(22), MassUnitSet.GRAM);
-        Quantity q2 = new Quantity( new BigDecimal(7), MassUnitSet.GRAM);
-        Quantity expResult = new Quantity( new BigDecimal("3.142857142857143"), MassUnitSet.GRAM);
+        QuantitativeAmount q1 = new QuantitativeAmount( new BigDecimal(22), MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount( new BigDecimal(7), MassUnitSet.GRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( new BigDecimal("3.142857142857143"), MassUnitSet.GRAM);
         
-        Quantity result = Quantities.divide(q1, q2, MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.divide(q1, q2, MassUnitSet.GRAM);
         
         
-        Quantity q3 = Quantities.of(new BigDecimal("3.142857142857143"), MassUnitSet.GRAM);
+        QuantitativeAmount q3 = Quantities.of(new BigDecimal("3.142857142857143"), MassUnitSet.GRAM);
                 
         System.out.println(Quantities.convert(q1, MassUnitSet.CENTIGRAM ));
         System.out.println(Quantities.convert(q2, MassUnitSet.CENTIGRAM ));
@@ -510,14 +510,14 @@ public class QuantitiesTest {
     public void testdivide8() throws UnitException {
         System.out.println("divide8");
                 
-        Quantity q1 = new Quantity( new BigDecimal(22), MassUnitSet.GRAM);
-        Quantity q2 = new Quantity( new BigDecimal(700), MassUnitSet.CENTIGRAM);
-        Quantity expResult = new Quantity( new BigDecimal("3.142857142857143"), MassUnitSet.GRAM);
+        QuantitativeAmount q1 = new QuantitativeAmount( new BigDecimal(22), MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount( new BigDecimal(700), MassUnitSet.CENTIGRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( new BigDecimal("3.142857142857143"), MassUnitSet.GRAM);
         
-        Quantity result = Quantities.divide(q1, q2, MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.divide(q1, q2, MassUnitSet.GRAM);
         
         
-        Quantity q3 = Quantities.of(new BigDecimal("3.142857142857143"), MassUnitSet.GRAM);
+        QuantitativeAmount q3 = Quantities.of(new BigDecimal("3.142857142857143"), MassUnitSet.GRAM);
                 
         System.out.println(Quantities.convert(q1, MassUnitSet.CENTIGRAM ));
         System.out.println(Quantities.convert(q2, MassUnitSet.CENTIGRAM ));
@@ -540,11 +540,11 @@ public class QuantitiesTest {
     public void testdivide9() throws UnitException {
         System.out.println("divide9");
                 
-        Quantity q1 = new Quantity( new BigDecimal(1.3), MassUnitSet.GRAM);
-        Quantity q2 = new Quantity( new BigDecimal(7.21), MassUnitSet.CENTIGRAM);
-        Quantity expResult = new Quantity( new BigDecimal("18.03051317614424"), MassUnitSet.GRAM);
+        QuantitativeAmount q1 = new QuantitativeAmount( new BigDecimal(1.3), MassUnitSet.GRAM);
+        QuantitativeAmount q2 = new QuantitativeAmount( new BigDecimal(7.21), MassUnitSet.CENTIGRAM);
+        QuantitativeAmount expResult = new QuantitativeAmount( new BigDecimal("18.03051317614424"), MassUnitSet.GRAM);
         
-        Quantity result = Quantities.divide(q1, q2, MassUnitSet.GRAM);
+        QuantitativeAmount result = Quantities.divide(q1, q2, MassUnitSet.GRAM);
         
         assertEquals(expResult, result);
         
@@ -561,11 +561,11 @@ public class QuantitiesTest {
     public void testdivide10() throws UnitException {
         System.out.println("divide9");
                 
-        Quantity q1 = Quantity.of(1.3, MassUnitSet.GRAM);
-        Quantity q2 = Quantity.of(7.21, MassUnitSet.CENTIGRAM);
-        Quantity expResult = Quantity.of("18.03051317614424", MassUnitSet.GRAM);
+        QuantitativeAmount q1 = QuantitativeAmount.of(1.3, MassUnitSet.GRAM);
+        QuantitativeAmount q2 = QuantitativeAmount.of(7.21, MassUnitSet.CENTIGRAM);
+        QuantitativeAmount expResult = QuantitativeAmount.of("18.03051317614424", MassUnitSet.GRAM);
         
-        Quantity result = q1.divide(q2, MassUnitSet.GRAM);
+        QuantitativeAmount result = q1.divide(q2, MassUnitSet.GRAM);
         
         assertEquals(expResult, result);
         

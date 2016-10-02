@@ -7,7 +7,7 @@ package com.ozguryazilim.telve.unit.sets;
 
 import com.ozguryazilim.telve.unit.AbstractUnitSet;
 import com.ozguryazilim.telve.unit.UnitSetRegistery;
-import com.ozguryazilim.telve.unit.Quantity;
+import com.ozguryazilim.telve.unit.QuantitativeAmount;
 import com.ozguryazilim.telve.unit.Unit;
 import com.ozguryazilim.telve.unit.UnitName;
 import java.math.BigDecimal;
@@ -30,13 +30,13 @@ public class MassUnitSet extends AbstractUnitSet{
     public static final UnitName HECTOGRAM = new UnitName(MASS_UNIT_SET, "HECTOGRAM");
     public static final UnitName KILOGRAM = new UnitName(MASS_UNIT_SET, "KILOGRAM");
     
-    public final static Unit MILLIGRAM_UNIT = new Unit(MILLIGRAM, new Quantity(BigDecimal.ONE, MILLIGRAM));
-    public final static Unit CENTIGRAM_UNIT = new Unit(CENTIGRAM, new Quantity(BigDecimal.TEN, MILLIGRAM));
-    public final static Unit DECIGRAM_UNIT = new Unit(DECIGRAM, new Quantity(BigDecimal.TEN, CENTIGRAM));
-    public final static Unit GRAM_UNIT = new Unit(GRAM, new Quantity(BigDecimal.TEN, DECIGRAM));
-    public final static Unit DECAGRAM_UNIT = new Unit(DECAGRAM, new Quantity(BigDecimal.TEN, GRAM));
-    public final static Unit HECTOGRAM_UNIT = new Unit(HECTOGRAM, new Quantity(BigDecimal.TEN, DECAGRAM));
-    public final static Unit KILOGRAM_UNIT = new Unit(KILOGRAM, new Quantity(BigDecimal.TEN, HECTOGRAM));
+    public final static Unit MILLIGRAM_UNIT = new Unit(MILLIGRAM, new QuantitativeAmount(BigDecimal.ONE, MILLIGRAM));
+    public final static Unit CENTIGRAM_UNIT = new Unit(CENTIGRAM, new QuantitativeAmount(BigDecimal.TEN, MILLIGRAM));
+    public final static Unit DECIGRAM_UNIT = new Unit(DECIGRAM, new QuantitativeAmount(BigDecimal.TEN, CENTIGRAM));
+    public final static Unit GRAM_UNIT = new Unit(GRAM, new QuantitativeAmount(BigDecimal.TEN, DECIGRAM));
+    public final static Unit DECAGRAM_UNIT = new Unit(DECAGRAM, new QuantitativeAmount(BigDecimal.TEN, GRAM));
+    public final static Unit HECTOGRAM_UNIT = new Unit(HECTOGRAM, new QuantitativeAmount(BigDecimal.TEN, DECAGRAM));
+    public final static Unit KILOGRAM_UNIT = new Unit(KILOGRAM, new QuantitativeAmount(BigDecimal.TEN, HECTOGRAM));
     
     
     @Override

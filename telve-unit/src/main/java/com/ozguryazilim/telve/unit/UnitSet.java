@@ -19,7 +19,7 @@ public interface UnitSet {
 
     void addBaseUnit(String unitName);
 
-    void addUnit(String unitName, Quantity base);
+    void addUnit(String unitName, QuantitativeAmount base);
 
     void addUnit(Unit unit);
 

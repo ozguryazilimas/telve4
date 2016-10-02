@@ -16,9 +16,9 @@ import java.util.Objects;
 public class Unit implements Serializable{
     
     private final UnitName name;
-    private final Quantity base;
+    private final QuantitativeAmount base;
 
-    public Unit(UnitName name, Quantity base) {
+    public Unit(UnitName name, QuantitativeAmount base) {
         this.name = name;
         this.base = base;
     }
@@ -27,7 +27,7 @@ public class Unit implements Serializable{
         return name;
     }
 
-    public Quantity getBase() {
+    public QuantitativeAmount getBase() {
         return base;
     }
     

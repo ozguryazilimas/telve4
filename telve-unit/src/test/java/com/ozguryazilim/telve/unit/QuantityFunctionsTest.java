@@ -46,13 +46,13 @@ public class QuantityFunctionsTest {
     @Test
     public void testGroupBy() {
         
-        List<Quantity> quantities = new ArrayList<>();
-        quantities.add(Quantity.of(BigDecimal.ONE, MassUnitSet.GRAM));
-        quantities.add(Quantity.of(BigDecimal.TEN, MassUnitSet.GRAM));
-        quantities.add(Quantity.of(5, MassUnitSet.DECIGRAM));
-        quantities.add(Quantity.of(4, "ZAMAN:ISSAAT"));
+        List<QuantitativeAmount> quantities = new ArrayList<>();
+        quantities.add(QuantitativeAmount.of(BigDecimal.ONE, MassUnitSet.GRAM));
+        quantities.add(QuantitativeAmount.of(BigDecimal.TEN, MassUnitSet.GRAM));
+        quantities.add(QuantitativeAmount.of(5, MassUnitSet.DECIGRAM));
+        quantities.add(QuantitativeAmount.of(4, "ZAMAN:ISSAAT"));
         
-        Map<UnitName,List<Quantity>> result = quantities.stream().collect(Collectors.groupingBy(Quantity::getUnitName));
+        Map<UnitName,List<QuantitativeAmount>> result = quantities.stream().collect(Collectors.groupingBy(QuantitativeAmount::getUnitName));
         
         System.out.println(result);
         

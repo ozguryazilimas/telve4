@@ -16,39 +16,39 @@ public class Quantities {
    
     
     /**
-     * Verilen miktar ve birim ile Quantity oluşturur.
+     * Verilen miktar ve birim ile QuantitativeAmount oluşturur.
      * 
      * @param amount
      * @param unit
      * @return 
      */
-    public static Quantity of( BigDecimal amount, Unit unit ){
-        return new Quantity(amount, unit.getName());
+    public static QuantitativeAmount of( BigDecimal amount, Unit unit ){
+        return new QuantitativeAmount(amount, unit.getName());
     }
     
     /**
-     * Verilen miktar ve birim ile Quantity oluşturur.
+     * Verilen miktar ve birim ile QuantitativeAmount oluşturur.
      * 
      * @param amount
      * @param unitName 
      * @return 
      */
-    public static Quantity of( BigDecimal amount, UnitName unitName ){
-        return new Quantity(amount, unitName );
+    public static QuantitativeAmount of( BigDecimal amount, UnitName unitName ){
+        return new QuantitativeAmount(amount, unitName );
     }
     
     /**
-     * Verilen miktar ve birim ile Quantity oluşturur.
+     * Verilen miktar ve birim ile QuantitativeAmount oluşturur.
      * 
      * @param amount
      * @param unitName 
      * @return 
      */
-    public static Quantity of( BigDecimal amount, String unitName ){
-        return new Quantity(amount, UnitName.of(unitName) );
+    public static QuantitativeAmount of( BigDecimal amount, String unitName ){
+        return new QuantitativeAmount(amount, UnitName.of(unitName) );
     }
 
-    public static Quantity convert( Quantity quantity, UnitName unitName ) throws UnitException{
+    public static QuantitativeAmount convert( QuantitativeAmount quantity, UnitName unitName ) throws UnitException{
         
         //UnitName'ler aynı ise convert edecek bişi yok
         if( quantity.getUnitName().equals(unitName)) return quantity;
@@ -74,7 +74,7 @@ public class Quantities {
      * @param amount
      * @return 
      */
-    public static Quantity add( Quantity x, BigDecimal amount ){
+    public static QuantitativeAmount add( QuantitativeAmount x, BigDecimal amount ){
         return of( x.getAmount().add(amount), x.getUnitName());
     }
     
@@ -87,7 +87,7 @@ public class Quantities {
      * @return base biriminde toplam
      * @throws UnitException 
      */
-    public static Quantity add( Quantity x, Quantity y ) throws UnitException{
+    public static QuantitativeAmount add( QuantitativeAmount x, QuantitativeAmount y ) throws UnitException{
         return add( x, y, x.getUnitName());
     }
     
@@ -100,9 +100,9 @@ public class Quantities {
      * @return unitName tipinde toplam
      * @throws UnitException 
      */
-    public static Quantity add( Quantity x, Quantity y, UnitName unitName ) throws UnitException{
-        Quantity a = convert(x, unitName);
-        Quantity b = convert(y, unitName);
+    public static QuantitativeAmount add( QuantitativeAmount x, QuantitativeAmount y, UnitName unitName ) throws UnitException{
+        QuantitativeAmount a = convert(x, unitName);
+        QuantitativeAmount b = convert(y, unitName);
         return of( a.getAmount().add(b.getAmount()), unitName);
     }
     
@@ -114,7 +114,7 @@ public class Quantities {
      * @param amount
      * @return 
      */
-    public static Quantity subtract( Quantity x, BigDecimal amount ){
+    public static QuantitativeAmount subtract( QuantitativeAmount x, BigDecimal amount ){
         return of( x.getAmount().subtract(amount), x.getUnitName());
     }
     
@@ -127,7 +127,7 @@ public class Quantities {
      * @return base biriminde toplam
      * @throws UnitException 
      */
-    public static Quantity subtract( Quantity x, Quantity y ) throws UnitException{
+    public static QuantitativeAmount subtract( QuantitativeAmount x, QuantitativeAmount y ) throws UnitException{
         return subtract( x, y, x.getUnitName());
     }
     
@@ -140,9 +140,9 @@ public class Quantities {
      * @return unitName tipinde toplam
      * @throws UnitException 
      */
-    public static Quantity subtract( Quantity x, Quantity y, UnitName unitName ) throws UnitException{
-        Quantity a = convert(x, unitName);
-        Quantity b = convert(y, unitName);
+    public static QuantitativeAmount subtract( QuantitativeAmount x, QuantitativeAmount y, UnitName unitName ) throws UnitException{
+        QuantitativeAmount a = convert(x, unitName);
+        QuantitativeAmount b = convert(y, unitName);
         return of( a.getAmount().subtract(b.getAmount()), unitName);
     }
     
@@ -154,7 +154,7 @@ public class Quantities {
      * @param amount
      * @return 
      */
-    public static Quantity multiply( Quantity x, BigDecimal amount ){
+    public static QuantitativeAmount multiply( QuantitativeAmount x, BigDecimal amount ){
         return of( x.getAmount().multiply(amount), x.getUnitName());
     }
     
@@ -167,7 +167,7 @@ public class Quantities {
      * @return base biriminde toplam
      * @throws UnitException 
      */
-    public static Quantity multiply( Quantity x, Quantity y ) throws UnitException{
+    public static QuantitativeAmount multiply( QuantitativeAmount x, QuantitativeAmount y ) throws UnitException{
         return multiply( x, y, x.getUnitName());
     }
     
@@ -180,9 +180,9 @@ public class Quantities {
      * @return unitName tipinde toplam
      * @throws UnitException 
      */
-    public static Quantity multiply( Quantity x, Quantity y, UnitName unitName ) throws UnitException{
-        Quantity a = convert(x, unitName);
-        Quantity b = convert(y, unitName);
+    public static QuantitativeAmount multiply( QuantitativeAmount x, QuantitativeAmount y, UnitName unitName ) throws UnitException{
+        QuantitativeAmount a = convert(x, unitName);
+        QuantitativeAmount b = convert(y, unitName);
         return of( a.getAmount().multiply(b.getAmount()), unitName);
     }
     
@@ -193,7 +193,7 @@ public class Quantities {
      * @param amount
      * @return 
      */
-    public static Quantity divide( Quantity base, BigDecimal amount ){
+    public static QuantitativeAmount divide( QuantitativeAmount base, BigDecimal amount ){
         UnitSet us = UnitSetRegistery.getUnitSet(base.getUnitName().getUnitSet());
         return of( base.getAmount().divide(amount, us.getMathContext()), base.getUnitName());
     }
@@ -207,7 +207,7 @@ public class Quantities {
      * @return base biriminde toplam
      * @throws UnitException 
      */
-    public static Quantity divide( Quantity x, Quantity y ) throws UnitException{
+    public static QuantitativeAmount divide( QuantitativeAmount x, QuantitativeAmount y ) throws UnitException{
         return divide( x, y, x.getUnitName());
     }
     
@@ -220,9 +220,9 @@ public class Quantities {
      * @return unitName tipinde toplam
      * @throws UnitException 
      */
-    public static Quantity divide( Quantity x, Quantity y, UnitName unitName ) throws UnitException{
-        Quantity a = convert(x, unitName);
-        Quantity b = convert(y, unitName);
+    public static QuantitativeAmount divide( QuantitativeAmount x, QuantitativeAmount y, UnitName unitName ) throws UnitException{
+        QuantitativeAmount a = convert(x, unitName);
+        QuantitativeAmount b = convert(y, unitName);
         UnitSet us = UnitSetRegistery.getUnitSet(unitName.getUnitSet());
         return of( a.getAmount().divide(b.getAmount(), us.getMathContext()), unitName);
     }

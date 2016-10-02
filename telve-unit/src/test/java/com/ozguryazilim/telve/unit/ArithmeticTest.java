@@ -237,9 +237,9 @@ public class ArithmeticTest {
     @Test
     public void testDividQuantiy(){
         
-        Quantity q = Quantities.of(new BigDecimal(22), MassUnitSet.GRAM);
+        QuantitativeAmount q = Quantities.of(new BigDecimal(22), MassUnitSet.GRAM);
         
-        Quantity r = Quantities.divide(q, new BigDecimal(7));
+        QuantitativeAmount r = Quantities.divide(q, new BigDecimal(7));
         
         System.out.println(r);
         
@@ -249,11 +249,11 @@ public class ArithmeticTest {
     @Test
     public void testDividQuantiy2() throws UnitException{
         
-        Quantity q1 = Quantities.of(new BigDecimal(22), MassUnitSet.GRAM);
-        Quantity q2 = Quantities.of(new BigDecimal(7), MassUnitSet.GRAM);
+        QuantitativeAmount q1 = Quantities.of(new BigDecimal(22), MassUnitSet.GRAM);
+        QuantitativeAmount q2 = Quantities.of(new BigDecimal(7), MassUnitSet.GRAM);
         
-        Quantity r1 = Quantities.divide( q1, q2 );
-        Quantity r2 = Quantities.divide( q1, new BigDecimal(7));
+        QuantitativeAmount r1 = Quantities.divide( q1, q2 );
+        QuantitativeAmount r2 = Quantities.divide( q1, new BigDecimal(7));
         
         System.out.println(r1);
         System.out.println(r2);

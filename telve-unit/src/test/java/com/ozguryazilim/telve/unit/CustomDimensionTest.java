@@ -55,8 +55,8 @@ public class CustomDimensionTest {
         System.out.println(de.getUnitNames());
      
         
-        Quantity q = Quantities.of(new BigDecimal(100), "ZAMAN:ISGUN");
-        Quantity q2 = Quantities.convert(q, UnitName.of("ZAMAN:EGGUN"));
+        QuantitativeAmount q = Quantities.of(new BigDecimal(100), "ZAMAN:ISGUN");
+        QuantitativeAmount q2 = Quantities.convert(q, UnitName.of("ZAMAN:EGGUN"));
         
         System.out.println(q);
         System.out.println(q2);
