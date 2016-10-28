@@ -1,9 +1,9 @@
 <ui:component xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://java.sun.com/jsf/core" 
-                xmlns:composite="http://java.sun.com/jsf/composite">
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:f="http://java.sun.com/jsf/core" 
+              xmlns:composite="http://java.sun.com/jsf/composite">
 
 
     <composite:interface>
@@ -16,6 +16,7 @@
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="columnClass" required="false" default="col-md-6 col-xs-12"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:attribute name="editable" required="false" type="java.lang.Boolean" default="true"/>
         <composite:clientBehavior name="change" event="change" targets="#{cc.id}_inp" />
     </composite:interface>
 
@@ -24,24 +25,29 @@
 
             <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
             <span class="value">
-                <div class="input-group">
+
+                <div class="#{cc.attrs.editable ? 'input-group' : ''}" style="height: 30px;">
                     <p:selectOneMenu id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" 
                                      filter="true" 
                                      filterMatchMode="startsWith" >
                         <f:selectItem itemLabel="#{messages['general.value.Nac']}" 
-                                       itemValue="" />
+                                      itemValue="" />
                         <f:selectItems value="#{suggestionControl.suggestions(cc.attrs.group, cc.attrs.key)}" 
                                        var="item" 
                                        itemLabel="#{item.data}" 
                                        itemValue="#{item.data}" />
                     </p:selectOneMenu>
 
-                    <div class="input-group-btn">
-                        <p:commandButton action="#{suggestionControl.openDialog( cc.attrs.group, cc.attrs.key, cc.attrs.listener )}" partialSubmit="true" process="@this" icon="fa fa-plus" styleClass="ui-icon-only btn btn-default">
-                            <p:ajax event="dialogReturn"  listener="#{suggestionControl.onSelect}" update="#{cc.id}_inp,#{cc.attrs.update}" partialSubmit="true" process="@this" />   
-                        </p:commandButton>
-                    </div>
+                    <ui:fragment rendered="#{cc.attrs.editable}">
+                        <div class="input-group-btn">
+                            <p:commandButton action="#{suggestionControl.openDialog( cc.attrs.group, cc.attrs.key, cc.attrs.listener )}" partialSubmit="true" process="@this" icon="fa fa-plus" styleClass="ui-icon-only btn btn-default">
+                                <p:ajax event="dialogReturn"  listener="#{suggestionControl.onSelect}" update="#{cc.id}_inp,#{cc.attrs.update}" partialSubmit="true" process="@this" />   
+                            </p:commandButton>
+                        </div>
+                    </ui:fragment>
                 </div>
+
+
             </span>
 
             <p:message for="#{cc.id}_inp" display="tooltip" />
