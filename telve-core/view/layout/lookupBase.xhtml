@@ -33,7 +33,8 @@
                 </div>
             </div>
 
-
+            <div id="selected_labels"></div>
+            
             <h:panelGroup id="resultLists" layout="block" styleClass="row" style="height: 320px; overflow: auto;">
                 <div class="col-xs-12">
 
@@ -110,20 +111,28 @@
                             </a>
                         </div>
                         
+                        
+                        
                         <div id="data" ></div>
+                        
                         
                         <script type="text/javascript">
                             
                             function buildTree(){
                                     // inline data 
                                     jQuery("#data")
+                                         .on("check_node.jstree uncheck_node.jstree", function(e, data) {
+                                            alert(data.node.id + ' ' + data.node.text + (data.node.state.checked ? ' CHECKED': ' NOT CHECKED'));
+                                            setMultiSelections(data.node.id, data.node.state.checked);
+                                            setMultiSelectionsLabel(data.node.text, data.node.state.checked);
+                                        })
                                         .on("changed.jstree", function (e, data) {
                                             //alert( data.instance.get_node(data.selected[0]).id );
                                             //selectNode( [ { 'name': 'nodeId', 'value' : data.instance.get_node(data.selected[0]).id }]);
                                         })    
                                         .jstree({
                                             "plugins" : [ "wholerow", "types", "conditionalselect", "sort", "#{ bean.model.getMultiSelect() ? 'checkbox' : '' }" ],
-                                            "checkbox": { "three_state" : false },
+                                            "checkbox": { "three_state" : false #{ bean.model.getMultiSelect() ? ', tie_selection : false' : '' } },
                                             "sort": function(a,b){
                                                 return this.get_text(a).localeCompare(this.get_text(b)) > 0 ? 1 : -1;
                                             },
@@ -153,8 +162,37 @@
                                     buildTree();
                                     
                                     function setSelections(){
+                                        if( #{ bean.model.getMultiSelect() ? 'false' : 'true' } ){
                                             var s = jQuery('#data').jstree().get_selected();
                                             jQuery(PrimeFaces.escapeClientId("lookupForm:selectedNodes")).val(s);
+                                        }
+                                    }
+                                    
+                                    function setMultiSelections( data, add ){
+                                            var s = jQuery(PrimeFaces.escapeClientId("lookupForm:selectedNodes")).val();
+                                            var a = s.split(',');
+                                            if( add ){
+                                                a.push(data);
+                                            } else {
+                                                var i = a.indexOf( data );
+                                                a.splice( i, 1);
+                                            }
+                                            jQuery(PrimeFaces.escapeClientId("lookupForm:selectedNodes")).val(a.join());
+                                            
+                                            //selected_labels
+                                    }
+                                    
+                                    function setMultiSelectionsLabel( data, add ){
+                                            var s = jQuery('#selected_labels').text();
+                                            var a = s.split(',');
+                                            if( add ){
+                                                a.push(data);
+                                            } else {
+                                                var i = a.indexOf( data );
+                                                a.splice( i, 1);
+                                            }
+                                            jQuery('#selected_labels').text(a.join());
+                                            
                                     }
 
                                     
