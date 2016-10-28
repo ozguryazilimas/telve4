@@ -5,15 +5,14 @@
  */
 package com.ozguryazilim.telve.bpm;
 
-import com.google.common.base.Strings;
-import com.ozguryazilim.telve.messagebus.command.CommandSender;
-import com.ozguryazilim.telve.notification.NotificationCommand;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.enterprise.context.Dependent;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+
 import org.camunda.bpm.engine.cdi.BusinessProcessEvent;
 import org.camunda.bpm.engine.delegate.DelegateTask;
 import org.camunda.bpm.engine.delegate.TaskListener;
@@ -21,6 +20,10 @@ import org.camunda.bpm.engine.repository.ProcessDefinition;
 import org.camunda.bpm.engine.task.IdentityLink;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
+import com.ozguryazilim.telve.messagebus.command.CommandSender;
+import com.ozguryazilim.telve.notification.NotificationCommand;
 
 /**
  * BPM Engine içinde gerçekleşen eventleri observ edecek
@@ -49,7 +52,8 @@ public class CamundaEventHandler implements Serializable {
 
         } else if (businessProcessEvent.getType().getTypeName().equals(TaskListener.EVENTNAME_CREATE)) {
             for (IdentityLink il : businessProcessEvent.getTask().getCandidates()) {
-                if( !Strings.isNullOrEmpty( il.getUserId() ) && !il.getUserId().equals( businessProcessEvent.getTask().getAssignee())){
+                Boolean b = (Boolean) businessProcessEvent.getTask().getVariable("CANDIDATE_NOTIFICATION");
+                if( ( b == null || b ) && !Strings.isNullOrEmpty( il.getUserId() ) && !il.getUserId().equals( businessProcessEvent.getTask().getAssignee())){
                     //TODO: Grup atamalarında buranın düzenlenmesi lazım.
                     sendNotification( il.getUserId(), businessProcessEvent.getTask(), businessProcessEvent.getProcessDefinition(), "CandidateAssignment" );
                 }
@@ -69,7 +73,7 @@ public class CamundaEventHandler implements Serializable {
 
         //Öncelikle süreçten gelen herşeyi bir koyalım
         params.putAll( task.getVariables());
-        
+
         params.put("TaskName", task.getName());
         params.put("TaskId", task.getId());
 
@@ -80,11 +84,11 @@ public class CamundaEventHandler implements Serializable {
         params.put("TaskInfo", task.getDescription());
         params.put("TaskProcess", processDefinition.getKey());
         params.put("TaskSubject", task.getVariable("SUBJECT"));
-        
+
         nc.setParams(params);
 
-        
-        
+
+
         commandSender.sendCommand(nc);
     }
 
