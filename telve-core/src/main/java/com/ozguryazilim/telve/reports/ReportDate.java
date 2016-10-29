@@ -7,7 +7,7 @@ package com.ozguryazilim.telve.reports;
 
 import com.ozguryazilim.telve.query.filters.DateValueType;
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.joda.time.LocalDate;
@@ -26,6 +26,8 @@ public class ReportDate implements Serializable {
     private Date date;
     private Date value;
 
+    private static final List<DateValueType> VALUE_TYPES = new ArrayList<>();
+    
     public ReportDate() {
     }
 
@@ -119,7 +121,22 @@ public class ReportDate implements Serializable {
     }
     
     public List<DateValueType> getValueTypes(){
-        return Arrays.asList(DateValueType.values());
+        return new ArrayList(VALUE_TYPES);
     }
 
+    static {
+        VALUE_TYPES.add(DateValueType.Date);
+        VALUE_TYPES.add(DateValueType.Today);
+        VALUE_TYPES.add(DateValueType.Tomorrow);
+        VALUE_TYPES.add(DateValueType.Yesterday);
+        VALUE_TYPES.add(DateValueType.Yesterday);
+        VALUE_TYPES.add(DateValueType.FirstDayOfWeek);
+        VALUE_TYPES.add(DateValueType.LastDayOfWeek);
+        VALUE_TYPES.add(DateValueType.TenDaysBefore);
+        VALUE_TYPES.add(DateValueType.TenDaysAfter);
+        VALUE_TYPES.add(DateValueType.FirstDayOfMonth);
+        VALUE_TYPES.add(DateValueType.LastDayOfMonth);
+        VALUE_TYPES.add(DateValueType.FirstDayOfYear);
+        VALUE_TYPES.add(DateValueType.LastDayOfYear);
+    }
 }

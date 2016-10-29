@@ -38,10 +38,8 @@
 
             <div class="row">
                 <div class="col-xs-12">
-
                     <ui:repeat value="#{reportHome.selectedFolder.reports}" var="item">
-
-                        <div class="col-md-6 col-xs-12">
+                        <div class="col-xs-12">
                             <div class="box box-warning">
                                 <ui:remove>
                                     <span class="info-box-icon bg-yellow">
@@ -56,24 +54,19 @@
                                     </p:commandLink>
                                 </div>
                                 <div class="box-body">
-
                                     <p>
                                         #{messages['report.desc.'.concat( item )]} 
                                     </p>
-
                                     <div class="box-footer">
                                         <p:rating value="#{reportHome.reportRatings[ item ]}" converter="javax.faces.Integer">
                                             <p:ajax event="rate" listener="#{reportHome.onrate}"  update=":rform"/>
                                             <p:ajax event="cancel" listener="#{reportHome.oncancel}" update=":rform"/>
                                         </p:rating>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-
                     </ui:repeat>
-
                 </div>
                 <div class="col-xs-12">
                     <t:accordion label="report.label.Subfolders" icon="fa fa-folder">

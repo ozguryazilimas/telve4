@@ -2,8 +2,8 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:composite="http://java.sun.com/jsf/composite">
-
 
     <composite:interface>
         <composite:attribute name="value" required="true"/>
@@ -18,7 +18,6 @@
 
     <composite:implementation>
         <div id="#{cc.clientId}" style="position: relative" >
-
             <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" style="display: none" />
             <p:autoComplete id="#{cc.id}_inp" value="#{cc.attrs.value}" 
                                 forceSelection="true" 
@@ -33,6 +32,7 @@
                                 placeholder="#{cc.attrs.placeholder}"
                                 dropdown="true">
                     <p:clientValidator />
+                    <f:attribute name="lookupProfile" value="#{cc.attrs.lookupProfile}" />
             </p:autoComplete>
             <p:message for="#{cc.id}_inp" display="tooltip"/>
         </div>

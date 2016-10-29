@@ -18,84 +18,94 @@ import javax.inject.Named;
 
 /**
  * Notify mesajlarını kahve üzerinde saklar.
+ *
  * @author Hakan Uygun
  */
 @Named
 @ApplicationScoped
-public class NotifyStore implements Serializable{
-    
-    @Inject @Default
+public class NotifyStore implements Serializable {
+
+    @Inject
+    @Default
     Kahve kahve;
-    
+
     /**
      * Verilen NotifyMessage'ı kahve üzerinde saklar
-     * @param message 
+     *
+     * @param message
      */
-    public void save( NotifyMessage message){
-        
+    public void save(NotifyMessage message) {
+
         //Herkes'e gidenleri saklayamıyoruz :(
-        if( "*".equals(message.getTo())) return;
-        
+        if ("*".equals(message.getTo())) {
+            return;
+        }
+
         String key = "notify.count." + message.getTo();
-        
-        KahveEntry e = kahve.get(key, 0 );
+
+        KahveEntry e = kahve.get(key, 0);
         Integer ix = e.getAsInteger();
-        
+
         Gson gson = new Gson();
         String data = gson.toJson(message);
-        
+
         //notify.msg.1231-123123-12313.0 gibi bir key
-        kahve.put( "notify.msg." + message.getTo() + "." + ix, data);
+        kahve.put("notify.msg." + message.getTo() + "." + ix, data);
         kahve.put(key, ix + 1);
-    } 
-    
+    }
+
     /**
      * Geriye verilen identity için notify mesaj listesini döndürür.
+     *
      * @param identity
-     * @return 
+     * @return
      */
-    public List<NotifyMessage> getNotifies( String identity ){
+    public List<NotifyMessage> getNotifies(String identity) {
         List<NotifyMessage> ls = new ArrayList<>();
-        
+
         String key = "notify.count." + identity;
         KahveEntry e = kahve.get(key, 0);
-        
+
         Gson gson = new Gson();
-        for( int i = 0; i < e.getAsInteger(); i++ ){
-            KahveEntry ee = kahve.get( "notify.msg." + identity + "." + i, "");
+        for (int i = 0; i < e.getAsInteger(); i++) {
+            KahveEntry ee = kahve.get("notify.msg." + identity + "." + i, "");
             NotifyMessage m = gson.fromJson(ee.getAsString(), NotifyMessage.class);
             //JSON'a çevrilirken "=" escape'leniyor.
-            m.setLink( m.getLink().replaceAll("u003d", "="));
-            ls.add(m);
+            if ( m != null ) {
+                m.setLink(m.getLink().replaceAll("u003d", "="));
+                ls.add(m);
+            }
         }
-        
+
         return ls;
     }
-    
+
     /**
      * Verilen identity için mesaj sayısını döndürür.
+     *
      * @param identity
-     * @return 
+     * @return
      */
-    public Integer getNotifyCount( String identity ){
+    public Integer getNotifyCount(String identity) {
         String key = "notify.count." + identity;
         KahveEntry e = kahve.get(key, 0);
         return e.getAsInteger();
     }
-    
+
     /**
      * Verilen identiye ait notify mesajlarını temizler.
-     * @param identity 
+     *
+     * @param identity
      */
-    public void clear( String identity ){
+    public void clear(String identity) {
         String key = "notify.count." + identity;
         KahveEntry e = kahve.get(key, 0);
-        
+
         Gson gson = new Gson();
-        for( int i = 0; i < e.getAsInteger(); i++ ){
+        for (int i = 0; i < e.getAsInteger(); i++) {
             kahve.remove("notify.msg." + identity + "." + i);
         }
-        
+
         kahve.remove(key);
     }
 }
