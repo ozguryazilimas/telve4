@@ -13,6 +13,9 @@ import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.qualifiers.AfterLiteral;
+import com.ozguryazilim.telve.qualifiers.BeforeLiteral;
+import com.ozguryazilim.telve.qualifiers.EntityQualifierLiteral;
 import com.ozguryazilim.telve.view.PageTitleResolver;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -76,6 +79,9 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     
     @Inject
     private Event<RefreshBrowserEvent> refreshBrowserEvent;
+    
+    @Inject
+    private Event<EntityChangeEvent> entityChangeEvent;
     
     @Inject
     private FacesContext facesContext;
@@ -179,6 +185,13 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             if( !onBeforeSave() ) return null;
 
             String act = entity.getId() == null ? AuditLogCommand.ACT_INSERT : AuditLogCommand.ACT_UPDATE;
+            EntityChangeAction eca = entity.getId() == null ? EntityChangeAction.INSERT : EntityChangeAction.UPDATE;
+
+
+            entityChangeEvent
+                    .select(new EntityQualifierLiteral(getRepository().getEntityClass()))
+                    .select(new BeforeLiteral())
+                    .fire(new EntityChangeEvent(getEntity(), eca ));
             
             entity = getRepository().saveAndFlush(entity);
 
@@ -187,6 +200,15 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             //Save'den sonra elde sakladığımız id'yi değiştirelim ki bir sonraki request için ortalık karışmasın ( bakınız setId )
             this.id = (PK) entity.getId();
         
+            entityChangeEvent
+                    .select(new EntityQualifierLiteral(getRepository().getEntityClass()))
+                    .select(new AfterLiteral())
+                    .fire(new EntityChangeEvent(getEntity(), eca ));
+            
+            if( eca == EntityChangeAction.INSERT ){
+                onAfterCreate();
+            }
+            
             onAfterSave();
         } catch (EntityExistsException e) {
             LOG.error("Hata : Not Unique", e);
@@ -275,6 +297,16 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     }
     
     /**
+     * Entity ilk kez kaydedildikten sonra ( INSERT ) çağrılır sadece.
+     * onAfterSave() çağırılmaya devam eder
+     * @return 
+     */
+    public boolean onAfterCreate() {
+        //Alt sınıflar için 
+        return true;
+    }
+    
+    /**
      * Entity silinmeden hemen önce atl sınıflar birşey yapmak isterlerse bu
      * methodu override edebilirler...
      * @return 
@@ -313,10 +345,20 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         try {
             
             if( !onBeforeDelete() ) return null;
+            
+            entityChangeEvent
+                    .select(new EntityQualifierLiteral(getRepository().getEntityClass()))
+                    .select(new BeforeLiteral())
+                    .fire(new EntityChangeEvent(getEntity(), EntityChangeAction.DELETE ));
 
             auditLog(AuditLogCommand.ACT_DELETE);
             //getRepository().deleteById(entity.getId());
             getRepository().remove(entity);
+            
+            entityChangeEvent
+                    .select(new EntityQualifierLiteral(getRepository().getEntityClass()))
+                    .select(new AfterLiteral())
+                    .fire(new EntityChangeEvent(getEntity(), EntityChangeAction.DELETE ));
             
             onAfterDelete();
         } catch (Exception e) {
