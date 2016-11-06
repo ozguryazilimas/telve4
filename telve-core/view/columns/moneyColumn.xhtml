@@ -1,0 +1,8 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html">
+    <div style="text-align: right">
+        <h:outputText value="#{item[col.name]}" />
+        <i class="#{messages['currency.symbol.'.concat(item[col.getCurrencyName()])]}" title="#{messages['currency.'.concat(item[col.getCurrencyName()])]}"/>
+    </div>
+</ui:composition>
