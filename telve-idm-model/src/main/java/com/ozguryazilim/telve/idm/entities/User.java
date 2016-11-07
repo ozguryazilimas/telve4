@@ -37,7 +37,7 @@ public class User extends EntityBase{
     @Column(name = "ID")
     private Long id;
     
-    @Column(name = "LOGIN_NAME")
+    @Column(name = "LOGIN_NAME", unique = true)
     @BizKey
     private String loginName;
     
