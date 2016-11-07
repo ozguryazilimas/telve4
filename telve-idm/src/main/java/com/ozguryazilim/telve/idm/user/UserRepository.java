@@ -32,7 +32,9 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
+import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.Repository;
+import org.apache.deltaspike.data.api.SingleResultType;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 
 /**
@@ -237,6 +239,9 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
     }
 
     public abstract User findAnyByLoginName(String loginname);
+    
+    @Query(value = "select u from User u where u.loginName = ?1 and u.id != ?2 ", singleResult = SingleResultType.OPTIONAL)
+    public abstract User hasLoginName(String loginname, Long id);
 
     public abstract List<User> findByUserTypeAndActive(String userType, Boolean active);
 

@@ -206,7 +206,7 @@
                     <p:ajax event="onchange" update=":form:extentions" />
                 </ui:remove>
             </t:inputCombobox>
-            <t:inputText label="general.label.LoginName" value="#{userHome.entity.loginName}" required="true" readonly="#{not empty userHome.entity.loginName}"/>
+            <t:inputText label="general.label.LoginName" value="#{userHome.entity.loginName}" required="true" readonly="#{not empty userHome.entity.id}"/>
             <t:inputText label="general.label.FirstName" value="#{userHome.entity.firstName}" required="true" />
             <t:inputText label="general.label.LastName" value="#{userHome.entity.lastName}" required="true" />
             <t:inputText label="general.label.Email" value="#{userHome.entity.email}" required="true" />

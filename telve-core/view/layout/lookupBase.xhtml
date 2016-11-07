@@ -122,7 +122,7 @@
                                     // inline data 
                                     jQuery("#data")
                                          .on("check_node.jstree uncheck_node.jstree", function(e, data) {
-                                            alert(data.node.id + ' ' + data.node.text + (data.node.state.checked ? ' CHECKED': ' NOT CHECKED'));
+                                            //alert(data.node.id + ' ' + data.node.text + (data.node.state.checked ? ' CHECKED': ' NOT CHECKED'));
                                             setMultiSelections(data.node.id, data.node.state.checked);
                                             setMultiSelectionsLabel(data.node.text, data.node.state.checked);
                                         })

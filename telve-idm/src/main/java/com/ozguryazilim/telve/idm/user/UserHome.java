@@ -18,6 +18,7 @@ import com.ozguryazilim.telve.forms.FormEdit;
 import com.ozguryazilim.telve.idm.IdmEvent;
 import com.ozguryazilim.telve.idm.config.IdmPages;
 import com.ozguryazilim.telve.idm.entities.User;
+import com.ozguryazilim.telve.messages.FacesMessages;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.event.Event;
@@ -43,7 +44,7 @@ public class UserHome extends FormBase<User, Long>{
     
     @Inject
     private UserRepository repository;
-
+    
     @Inject 
     private Event<IdmEvent>  event;
     
@@ -82,6 +83,14 @@ public class UserHome extends FormBase<User, Long>{
             getEntity().setPasswordEncodedHash(passwordService.encryptPassword(password));
             changeLogStore.addNewValue("user.caption.Password", "Changed");
         }
+        
+        
+        User ofUser = repository.hasLoginName( getEntity().getLoginName(), getEntity().getId() == null ? 0 : getEntity().getId());
+        if ( ofUser != null ) {
+            FacesMessages.error("Aynı login name ile kayıtlı kullanıcı mevcut. Lütfen Kullanıcı adımı değiştiriniz.");
+            return false;
+        }
+        
         
         changeLogStore.addNewValue("general.label.FirstName", getEntity().getFirstName());
         changeLogStore.addNewValue("general.label.LastName", getEntity().getLastName());
