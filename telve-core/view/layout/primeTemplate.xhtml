@@ -74,9 +74,16 @@
             <div class="wrapper">
 
                 <header class="main-header">
+                	<ui:remove>
                     <p:ajaxStatus onstart="NProgress.start();" onsuccess="NProgress.done();" />
+					</ui:remove>
 
-                    <h:link outcome="/home.xhtml" styleClass="nav-brand logo">
+				<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+				<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+					<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+				</p:dialog>
+
+				<h:link outcome="/home.xhtml" styleClass="nav-brand logo">
                         <span class="logo-mini">
                             #{telveConfigResolver.getProperty('app.title.mini')}
                         </span>
