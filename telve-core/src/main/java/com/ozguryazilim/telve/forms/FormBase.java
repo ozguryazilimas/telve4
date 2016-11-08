@@ -12,6 +12,10 @@ import com.ozguryazilim.telve.audit.AuditLogger;
 import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
+import com.ozguryazilim.telve.feature.Feature;
+import com.ozguryazilim.telve.feature.FeatureHandler;
+import com.ozguryazilim.telve.feature.Page;
+import com.ozguryazilim.telve.feature.PageType;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.qualifiers.AfterLiteral;
 import com.ozguryazilim.telve.qualifiers.BeforeLiteral;
@@ -555,14 +559,34 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         needCreateNew = false;
     }
 
+    public String getPermissionDomain() {
+        Class<? extends FeatureHandler> cls = ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).feature();
+        return cls.getAnnotation(Feature.class).permission();
+        //return this.getClass().getAnnotation(FormEdit.class).browsePage();
+        //return getEntity().getClass().getSimpleName();
+    }
+    
+    protected Class<? extends ViewConfig> findPage(PageType pageType) {
+
+        Page[] pages = ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).feature().getAnnotationsByType(Page.class);
+        for (Page p : pages) {
+            if (p.type() == pageType) {
+                return p.page();
+            }
+        }
+
+        return DefaultErrorView.class;
+    }
+    
     /**
      * Geriye FormEdit annotation'ı ile tanımlanmış BrowsePage'i döndürür.
      *
      * @return
      */
     public Class<? extends ViewConfig> getBrowsePage() {
-        return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).browsePage();
+        //return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).browsePage();
         //return this.getClass().getAnnotation(FormEdit.class).browsePage();
+        return findPage(PageType.BROWSE);
     }
 
     /**
@@ -571,8 +595,9 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public Class<? extends ViewConfig> getEditPage() {
-        return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).editPage();
+        //return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).editPage();
         //return this.getClass().getAnnotation(FormEdit.class).editPage();
+        return findPage(PageType.EDIT);
     }
 
     /**
@@ -581,8 +606,9 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public Class<? extends ViewConfig> getContainerViewPage() {
-        return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).viewContainerPage();
+        //return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).viewContainerPage();
         //return this.getClass().getAnnotation(FormEdit.class).viewContainerPage();
+        return findPage(PageType.VIEW);
     }
 
     /**
@@ -591,8 +617,9 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public Class<? extends ViewConfig> getMasterViewPage() {
-        return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).masterViewPage();
+        //return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).masterViewPage();
         //return this.getClass().getAnnotation(FormEdit.class).masterViewPage();
+        return findPage(PageType.MASTER_VIEW);
     }
 
     public List<String> getSubViewList() {

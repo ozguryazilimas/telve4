@@ -152,6 +152,11 @@ public class TelveIdmUserServiceProvider implements UserServiceProvider, Seriali
     }
 
     @Override
+    public List<String> getUserGroupsMembers( String loginName){
+        return userRepository.findAllGroupMembers(loginName);
+    }
+    
+    @Override
     public Map<String, String> getUserAttibutes(String loginName) {
         Map<String, String> result = new HashMap<>();
 

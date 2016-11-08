@@ -351,4 +351,20 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
         }
     }
 
+    
+    /**
+     * Kullanıcının gruplarına ve alt gruplarına üye kullanıcıların listesini döndürür.
+     * TODO: Native sorgu yerine criteria'ya çevirelim.
+     * @param loginName sorgu için baz alınacak olan kullanıcı
+     * @return 
+     */
+    @Query(value = "select uu.LOGIN_NAME from tekir.TLI_USER uu\n" +
+                    "inner join tekir.TLI_USER_GROUP ugg on uu.ID = ugg.USER_ID\n" +
+                    "inner join tekir.TLI_GROUP gm on gm.ID = ugg.GROUP_ID\n" +
+                    "inner join \n" +
+                    "( SELECT concat( g.PATH , '%' ) as grpPath FROM tekir.TLI_USER u \n" +
+                    "inner join tekir.TLI_USER_GROUP ug on u.ID = ug.USER_ID\n" +
+                    "inner join tekir.TLI_GROUP g on ug.GROUP_ID = g.ID\n" +
+                    "where LOGIN_NAME = ?1 ) gg on gm.PATH like gg.grpPath", isNative = true)
+    public abstract List<String> findAllGroupMembers(String loginName);
 }

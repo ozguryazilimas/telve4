@@ -97,6 +97,14 @@ public interface UserServiceProvider {
      */
     List<String> getUserGroups( String loginName);
     
+    /**
+     * Login name verilen kullanıcının dahil olduğu grup ve alt gruplardaki kullanıcı listesini döndürür.
+     * 
+     * @param loginName
+     * @return 
+     */
+    List<String> getUserGroupsMembers( String loginName);
+    
     
     /**
      * İsmi verilen kullanıcının ek attribute listesini döndürür.

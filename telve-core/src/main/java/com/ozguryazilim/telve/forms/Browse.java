@@ -6,6 +6,7 @@
 
 package com.ozguryazilim.telve.forms;
 
+import com.ozguryazilim.telve.feature.FeatureHandler;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -31,15 +32,17 @@ public @interface Browse {
      * Browse view'in hangisi olduğu
      * @return 
      */
-    Class<? extends ViewConfig> browsePage();
+    Class<? extends ViewConfig> browsePage() default ViewConfig.class;
     /**
      * Edit View'in hangisi olduğu
      * @return 
      */
-    Class<? extends ViewConfig> editPage();
+    Class<? extends ViewConfig> editPage() default ViewConfig.class;
     /**
      * View View'in hangisi olduğu
      * @return 
      */
-    Class<? extends ViewConfig> viewContainerPage();
+    Class<? extends ViewConfig> viewContainerPage() default ViewConfig.class;
+    
+    Class<? extends FeatureHandler> feature() default FeatureHandler.class;
 }

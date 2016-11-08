@@ -6,6 +6,7 @@
 
 package com.ozguryazilim.telve.forms;
 
+import com.ozguryazilim.telve.feature.FeatureHandler;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -49,4 +50,5 @@ public @interface FormEdit {
      */
     Class<? extends ViewConfig> masterViewPage();
     
+    Class<? extends FeatureHandler> feature() default FeatureHandler.class;
 }

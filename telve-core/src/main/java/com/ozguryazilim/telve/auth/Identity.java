@@ -59,7 +59,7 @@ public class Identity {
         return currentUser.isPermitted( permission );
     }
     
-    
+
     /**
      * Kullanıcın gerçek adını döndürür.
      * @return 
@@ -90,6 +90,10 @@ public class Identity {
      */
     public List<String> getGroups(){
         return userService.getUserGroups(getLoginName());
+    }
+    
+    public List<String> getGroupsMembers(){
+        return userService.getUserGroupsMembers(getLoginName());
     }
     
     /**
