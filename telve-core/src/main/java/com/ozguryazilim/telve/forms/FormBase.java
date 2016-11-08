@@ -707,5 +707,32 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     }
     
 
+    /**
+     * Alt sınıflar lowlevel kontrol için override edebilirler.
+     * 
+     * @return 
+     */
+    public Boolean hasInsertPermission(){
+        return identity.hasPermission(getPermissionDomain(), "insert");
+    }
+    
+    
+    /**
+     * Alt sınıflar lowlevel kontrol için override edebilirler.
+     * 
+     * @return 
+     */
+    public Boolean hasUpdatePermission(){
+        return identity.hasPermission(getPermissionDomain(), "update");
+    }
+    
+    /**
+     * Alt sınıflar lowlevel kontrol için override edebilirler.
+     * 
+     * @return 
+     */
+    public Boolean hasDeletePermission(){
+        return identity.hasPermission(getPermissionDomain(), "delete");
+    } 
     
 }

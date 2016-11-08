@@ -40,7 +40,7 @@
                                     <p:commandButton id="save" 
                                                      value="#{messages['general.button.Save']}" 
                                                      action="#{homeBean.save()}"
-                                                     rendered="#{not hideSave and (( not empty entity.id and identity.hasPermission( entityName, 'update')) or ( empty entity.id and identity.hasPermission( entityName, 'insert')))}"
+                                                     rendered="#{not hideSave and (( not empty entity.id and homeBean.hasUpdatePermission()) or ( empty entity.id and homeBean.hasInsertPermission()))}"
                                                      ajax="true"
                                                      process="@form"
                                                      validateClient="true"
@@ -50,7 +50,7 @@
                                     <p:commandButton id="delete" 
                                                      value="#{messages['general.button.Delete']}" 
                                                      action="#{homeBean.delete()}"
-                                                     rendered="#{not hideDelete and not empty entity.id and identity.hasPermission( entityName, 'delete') }"
+                                                     rendered="#{not hideDelete and not empty entity.id and homeBean.hasDeletePermission() }"
                                                      validateClient="true"
                                                      styleClass="btn-danger"
                                                      icon="fa fa-trash">
@@ -76,13 +76,13 @@
     
     <ui:define name="context-menu">
         <li>
-            <p:commandLink title="#{messages['general.button.Save']}" onclick="jQuery('#form\\:save').click();" rendered="#{not hideSave and (( not empty entity.id and identity.hasPermission( entityName, 'update')) or ( empty entity.id and identity.hasPermission( entityName, 'insert')))}">
+            <p:commandLink title="#{messages['general.button.Save']}" onclick="jQuery('#form\\:save').click();" rendered="#{not hideSave and (( not empty entity.id and homeBean.hasUpdatePermission()) or ( empty entity.id and homeBean.hasInsertPermission()))}">
                 <i class="fa fa-save"></i>
                 <h:outputText value=" #{messages['general.button.Save']}" />
             </p:commandLink>
         </li>
         <li>
-            <p:commandLink title="#{messages['general.button.Delete']}" action="#{homeBean.delete()}" rendered="#{not hideDelete and not empty entity.id and identity.hasPermission( entityName, 'delete') }">
+            <p:commandLink title="#{messages['general.button.Delete']}" action="#{homeBean.delete()}" rendered="#{not hideDelete and not empty entity.id and homeBean.hasDeletePermission() }">
                 <i class="fa fa-trash-o"></i>
                 <h:outputText value=" #{messages['general.button.Delete']}" />
             </p:commandLink>

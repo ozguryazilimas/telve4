@@ -23,7 +23,7 @@
                                  process="@this"
                                  ajax="true"
                                  styleClass="btn-warning"
-                                 rendered="#{identity.hasPermission( entityName, 'update') and hideEditBtn ne 'true' }"/>
+                                 rendered="#{bean.hasUpdatePermission() and hideEditBtn ne 'true' }"/>
                 <p:commandButton id="done" 
                                  value="#{messages['general.button.Close']}"
                                  action="#{bean.close()}"
