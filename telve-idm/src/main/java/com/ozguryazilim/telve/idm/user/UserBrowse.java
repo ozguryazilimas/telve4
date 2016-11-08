@@ -9,7 +9,6 @@ import com.ozguryazilim.telve.auth.UserModelRegistery;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.forms.Browse;
 import com.ozguryazilim.telve.forms.BrowseBase;
-import com.ozguryazilim.telve.idm.config.IdmPages;
 import com.ozguryazilim.telve.idm.entities.Group;
 import com.ozguryazilim.telve.idm.entities.Group_;
 import com.ozguryazilim.telve.idm.entities.User;
@@ -38,7 +37,7 @@ import javax.inject.Inject;
  * 
  * @author Hakan Uygun
  */
-@Browse(browsePage = IdmPages.UserBrowse.class, editPage = IdmPages.User.class, viewContainerPage = IdmPages.UserView.class)
+@Browse( feature = UserFeature.class)
 public class UserBrowse extends BrowseBase<User, UserViewModel>{
 
     @Inject

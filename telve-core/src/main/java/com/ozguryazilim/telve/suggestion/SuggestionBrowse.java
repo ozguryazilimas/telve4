@@ -17,9 +17,7 @@ import com.ozguryazilim.telve.query.columns.MessageColumn;
 import com.ozguryazilim.telve.query.filters.StringFilter;
 import com.ozguryazilim.telve.query.filters.StringListFilter;
 import com.ozguryazilim.telve.query.columns.TextColumn;
-import com.ozguryazilim.telve.view.Pages;
 import javax.inject.Inject;
-import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 
 /**
@@ -29,7 +27,7 @@ import org.apache.deltaspike.jpa.api.transaction.Transactional;
  * 
  * @author Hakan Uygun
  */
-@Browse(browsePage = Pages.Admin.SuggestionBrowse.class,editPage = DefaultErrorView.class, viewContainerPage = DefaultErrorView.class )
+@Browse( feature = SuggestionFeature.class )
 public class SuggestionBrowse extends BrowseBase<SuggestionItem, SuggestionItem>{
 
     @Inject

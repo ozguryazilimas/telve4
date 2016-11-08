@@ -14,7 +14,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import javax.enterprise.inject.Stereotype;
 import javax.inject.Named;
-import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 
 /**
@@ -28,21 +27,10 @@ import org.apache.deltaspike.core.api.scope.WindowScoped;
 @Named
 @Documented
 public @interface Browse {
+
     /**
-     * Browse view'in hangisi olduğu
+     * Browse'un hangi feature için olduğu.
      * @return 
      */
-    Class<? extends ViewConfig> browsePage() default ViewConfig.class;
-    /**
-     * Edit View'in hangisi olduğu
-     * @return 
-     */
-    Class<? extends ViewConfig> editPage() default ViewConfig.class;
-    /**
-     * View View'in hangisi olduğu
-     * @return 
-     */
-    Class<? extends ViewConfig> viewContainerPage() default ViewConfig.class;
-    
-    Class<? extends FeatureHandler> feature() default FeatureHandler.class;
+    Class<? extends FeatureHandler> feature();
 }

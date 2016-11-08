@@ -16,18 +16,16 @@ import com.ozguryazilim.telve.query.filters.DateTimeFilter;
 import com.ozguryazilim.telve.query.filters.FilterOperand;
 import com.ozguryazilim.telve.query.filters.StringFilter;
 import com.ozguryazilim.telve.query.filters.StringListFilter;
-import com.ozguryazilim.telve.view.Pages;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 
 /**
  * AuditLog izleme tarama ekranı.
  * 
  * @author Hakan Uygun
  */
-@Browse(browsePage = Pages.Admin.AuditLogBrowse.class,editPage = DefaultErrorView.class, viewContainerPage = DefaultErrorView.class )
+@Browse( feature = AuditLogFeature.class)
 public class AuditLogBrowse extends BrowseBase<AuditLog, AuditLog>{
 
     @Inject
