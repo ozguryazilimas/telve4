@@ -272,7 +272,7 @@ public class PermissionRegistery implements Serializable {
         for (Element a : elements) {
             LOG.debug("element : {} ; action : {}", e, a.attributeValue(ATTR_NAME));
 
-            String ors = e.attributeValue(ATTR_ORDER);
+            String ors = a.attributeValue(ATTR_ORDER);
             Integer or = DEFAULT_ORDER;
 
             //Order değeri alalım

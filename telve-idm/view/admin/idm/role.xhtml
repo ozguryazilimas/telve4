@@ -26,311 +26,246 @@
             </t:inputCheckboxGroup>
         </div>  
 
-        <script type="text/javascript">
-            function toggleChkBoxes(group, act) {
-                jQuery('[id*="' + group + '"]').find('[id$="' + act + '"] div').trigger('click');
-            }
+        <style>
 
-            function toggleRowChkBoxes(group, elm) {
-                row = jQuery(elm).parent().parent().attr('data-ri');
-                jQuery('[id*="' + group + '\\:' + row + '\\:"] div.ui-chkbox-box').trigger('click');
-            }
-        </script>
+        </style>
+
+
+        <div class="nav-tabs-custom" style="padding-top: 16px;">
+            <ul class="nav nav-tabs">
+                <c:forEach id="groups5" items="#{roleHome.permissionGroups}"
+                           var="pg" varStatus="pgs">
+                    <li class="#{pgs.index eq 0 ? 'active' : ''}"> <a href="#t#{pg.name}" data-toggle="tab" >#{messages[ 'permission.label.'.concat( pg.name )]}</a> </li>
+                </c:forEach>
+
+            </ul>
+            <div class="tab-content no-padding">
+                <c:forEach id="groups5" items="#{roleHome.permissionGroups}"
+                           var="pg" varStatus="pgs">
+                    <div id="t#{pg.name}" class="tab-pane #{pgs.index eq 0 ? 'active' : ''}">
+                        <table class="table table-condensed table-hover">
+                            <tr>
+                                <th>
+                                    <ui:remove>
+                                        #{messages['role.label.Domain']}
+                                    </ui:remove>
+                                </th>
+
+                                <c:forEach items="#{pg.actions}"
+                                           var="act" varStatus="acts">
+                                    <th style="width: 36px;">
+                                        <p:commandLink 
+                                            action="#{roleHome.setNextActionValue( pg.name, act.name)}"
+                                            update="@(.#{pg.name})"
+                                            process="@this"
+                                            title="#{messages[ 'permission.action.label.'.concat(act.name)]}">
+                                            <i class="#{messages[ 'permission.action.icon.'.concat(act.name)]}"  ></i>
+
+                                        </p:commandLink>
+                                    </th>
+                                </c:forEach>
+
+                            </tr>
+                            <c:forEach items="#{pg.definitions}"
+                                       var="pd" varStatus="pds">
+                                <tr>
+                                    <td>
+                                        <p:commandLink 
+                                            action="#{roleHome.setNextValue(pd.name)}"
+                                            update="@(.#{pd.name})"
+                                            process="@this"
+                                            title="#{messages[ 'permission.hint.'.concat( pd.name)]}">
+                                            #{messages[ 'permission.label.'.concat( pd.name)]}
+                                        </p:commandLink>
+                                    </td>
+
+                                    <c:forEach items="#{pg.actions}"
+                                               var="act" varStatus="acts">
+                                        <td style="width: 36px;">
+                                            <p:commandLink 
+                                                action="#{roleHome.setNextValue(pd.name, act.name)}"
+                                                update="@this"
+                                                process="@this"
+                                                styleClass="#{pg.name} #{pd.name} btn btn-block #{messages[ 'permission.scope.btn.'.concat( roleHome.permissionValueModel.getValue(pd.name, act.name))]} btn-xs" 
+                                                rendered="#{pd.actions.contains(act)}">
+
+                                                <i class="#{messages[ 'permission.scope.icon.'.concat( roleHome.permissionValueModel.getValue(pd.name, act.name))]}" 
+                                                   title="#{messages[ 'permission.scope.label.'.concat( roleHome.permissionValueModel.getValue(pd.name, act.name))]}"/>
+
+                                            </p:commandLink>
+                                        </td>
+                                    </c:forEach>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
 
         <ui:remove>
+            <p:tabView dynamic="true" cache="true" scrollable="true">
+                <c:forEach id="groups5" items="#{roleHome.permissionGroups}"
+                           var="pg" varStatus="pgs">
+                    <p:tab title="#{messages[ 'permission.label.'.concat( pg.name )]}">
+                        <table class="table table-condensed table-hover">
+                            <tr>
+                                <th>
+                                    <ui:remove>
+                                        #{messages['role.label.Domain']}
+                                    </ui:remove>
+                                </th>
 
-            <c:forEach id="groups" items="#{roleHome.permissions}"
+                                <c:forEach items="#{pg.actions}"
+                                           var="act" varStatus="acts">
+                                    <th style="width: 36px;">
+                                        <p:commandLink 
+                                            action="#{roleHome.setNextActionValue( pg.name, act.name)}"
+                                            update="@(.#{pg.name})"
+                                            process="@this"
+                                            title="#{messages[ 'permission.action.label.'.concat(act.name)]}">
+                                            <i class="#{messages[ 'permission.action.icon.'.concat(act.name)]}"  ></i>
+
+                                        </p:commandLink>
+                                    </th>
+                                </c:forEach>
+
+                            </tr>
+                            <c:forEach items="#{pg.definitions}"
+                                       var="pd" varStatus="pds">
+                                <tr>
+                                    <td>
+                                        <p:commandLink 
+                                            action="#{roleHome.setNextValue(pd.name)}"
+                                            update="@(.#{pd.name})"
+                                            process="@this"
+                                            title="#{messages[ 'permission.hint.'.concat( pd.name)]}">
+                                            #{messages[ 'permission.label.'.concat( pd.name)]}
+                                        </p:commandLink>
+                                    </td>
+
+                                    <c:forEach items="#{pg.actions}"
+                                               var="act" varStatus="acts">
+                                        <td style="width: 36px;">
+                                            <p:commandLink 
+                                                action="#{roleHome.setNextValue(pd.name, act.name)}"
+                                                update="@this"
+                                                process="@this"
+                                                styleClass="#{pg.name} #{pd.name} btn btn-block #{messages[ 'permission.scope.btn.'.concat( roleHome.permissionValueModel.getValue(pd.name, act.name))]} btn-xs" 
+                                                rendered="#{pd.actions.contains(act)}">
+
+                                                <i class="#{messages[ 'permission.scope.icon.'.concat( roleHome.permissionValueModel.getValue(pd.name, act.name))]}" 
+                                                   title="#{messages[ 'permission.scope.label.'.concat( roleHome.permissionValueModel.getValue(pd.name, act.name))]}"/>
+
+                                            </p:commandLink>
+                                        </td>
+                                    </c:forEach>
+                                </tr>
+                            </c:forEach>
+                        </table>
+                    </p:tab>
+                </c:forEach>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+                <p:tab title="ek tab"></p:tab>
+
+            </p:tabView>
+
+
+            <c:forEach id="groups5" items="#{roleHome.permissionGroups}"
                        var="pg" varStatus="pgs">
-                <t:accordion id="#{pg.name}a" label="#{messages[ 'permission.label.'.concat( pg.name )]}" hide="true">
-
-                    <p:dataTable id="#{pg.name}" value="#{pg.permissions}" var="pd" >
-                        <p:column headerText="#{messages['role.label.Domain']}">
-                            <a href="#" onclick="toggleRowChkBoxes('#{pg.name}', this);
-                                    return false;" title="#{messages[ 'permission.hint.'.concat( pd.definition.target)]}">
-                                #{messages[ 'permission.label.'.concat( pd.definition.target)]}
-                            </a>
-                        </p:column>
-                        <p:column style="width: 36px;">
-                            <f:facet name="header">
-                                <i class="fa fa-eye" title="#{messages['role.label.Select']}" onclick="toggleChkBoxes('#{pg.name}', 'select')"></i>
-                            </f:facet>
-                            <p:selectBooleanCheckbox id="select" value="#{pd.select}" rendered="#{pd.definition.hasSelectAction()}"/>  
-                        </p:column>
-                        <p:column style="width: 36px;">
-                            <f:facet name="header">
-                                <i class="fa fa-plus" title="#{messages['role.label.Insert']}" onclick="toggleChkBoxes('#{pg.name}', 'insert')"></i>
-                            </f:facet>
-                            <p:selectBooleanCheckbox id="insert" value="#{pd.insert}" rendered="#{pd.definition.hasInsertAction()}"/> 
-                        </p:column>
-                        <p:column  style="width: 36px;">
-                            <f:facet name="header">
-                                <i class="fa fa-edit" title="#{messages['role.label.Update']}" onclick="toggleChkBoxes('#{pg.name}', 'update')"></i>
-                            </f:facet>
-                            <p:selectBooleanCheckbox id="update" value="#{pd.update}" rendered="#{pd.definition.hasUpdateAction()}"/> 
-                        </p:column>
-                        <p:column style="width: 36px;">
-                            <f:facet name="header">
-                                <i class="fa fa-trash" title="#{messages['role.label.Delete']}" onclick="toggleChkBoxes('#{pg.name}', 'delete')"></i>
-                            </f:facet>
-                            <p:selectBooleanCheckbox id="delete" value="#{pd.delete}" rendered="#{pd.definition.hasDeleteAction()}"/> 
-                        </p:column>
-                        <p:column style="width: 36px;">
-                            <f:facet name="header">
-                                <i class="fa fa-share-square-o" title="#{messages['role.label.Export']}" onclick="toggleChkBoxes('#{pg.name}', 'export')"></i>
-                            </f:facet>
-                            <p:selectBooleanCheckbox id="export" value="#{pd.export}" rendered="#{pd.definition.hasExportAction()}"/> 
-                        </p:column>
-                        <p:column style="width: 36px;">
-                            <f:facet name="header">
-                                <i class="fa fa-gear" title="#{messages['role.label.Exec']}" onclick="toggleChkBoxes('#{pg.name}', 'exec')"> </i>
-                            </f:facet>
-                            <p:selectBooleanCheckbox id="exec" value="#{pd.exec}" rendered="#{pd.definition.hasExecAction()}"/> 
-                        </p:column>
-                    </p:dataTable>
-                </t:accordion>
-            </c:forEach>
-
-            <c:forEach id="groups3" items="#{roleHome.permissions}"
-                       var="pg" varStatus="pgs">
-                <t:accordion id="#{pg.name}a3" label="#{messages[ 'permission.label.'.concat( pg.name )]}" hide="true">
+                <t:accordion  label="#{messages[ 'permission.label.'.concat( pg.name )]}" hide="true">
 
 
-                    <ui:repeat id="#{pg.name}" value="#{pg.permissions}" var="pd" >
-                        <div class="row" >
-                            <div class="col-md-3" style="padding: 8px;">
-
-                                #{messages[ 'permission.label.'.concat( pd.definition.target)]} 
-                            </div>
-                            <div class="col-md-9" style="padding: 8px;">
-                                <div class="btn-group">
-                                    <ui:repeat  value="#{pd.definition.actions}" var="act" >
-
-                                        <button class="btn #{pd.hasPermission(act) ? 'btn-success' : 'btn-default' }  btn-xs" type="button" style="width: 6em;">
-                                            <i class="fa #{pd.hasPermission(act) ? 'fa-check' : 'fa-ban' } pull-left" /> #{act} 
-                                        </button>
-
-                                    </ui:repeat>
-
-                                    <button class="btn btn-warning btn-xs" type="button" style="width: 6em;">
-                                        <i class="fa fa-user pull-left" /> Publish
-                                    </button>
-                                    <button class="btn btn-info btn-xs" type="button" style="width: 6em;">
-                                        <i class="fa fa-users pull-left" /> Close
-                                    </button>
-                                    <button class="btn btn-default btn-xs" type="button" style="width: 6em;" title="Kaydı revise durumuna alma">
-                                        <i class="fa fa-check pull-left" style="color: green"/> Revise
-                                    </button>
-                                </div>
-                            </div> 
-                        </div>
-                    </ui:repeat>
-
-
-                </t:accordion>
-            </c:forEach>
-
-            <c:forEach id="groups4" items="#{roleHome.permissions}"
-                       var="pg" varStatus="pgs">
-                <t:accordion id="#{pg.name}a4" label="#{messages[ 'permission.label.'.concat( pg.name )]}" hide="true">
-
-                    <p:dataTable id="#{pg.name}" value="#{pg.permissions}" var="pd" >
-                        <p:column headerText="#{messages['role.label.Domain']}">
-                            <a href="#" onclick="toggleRowChkBoxes('#{pg.name}', this);
-                                    return false;" title="#{messages[ 'permission.hint.'.concat( pd.definition.target)]}">
-                                #{messages[ 'permission.label.'.concat( pd.definition.target)]}
-                            </a>
-                        </p:column>
-                        <p:column style="width: 48px;">
-                            <f:facet name="header">
-                                <i class="fa fa-eye" title="#{messages['role.label.Select']}" onclick="toggleChkBoxes('#{pg.name}', 'select')"></i>
-                            </f:facet>
-                            <button class="btn btn-block btn-flat btn-warning btn-xs" type="button">
-                                <i class="fa fa-user" />
-                            </button>
-                        </p:column>
-                        <p:column style="width: 48px;">
-                            <f:facet name="header">
-                                <i class="fa fa-plus" title="#{messages['role.label.Insert']}" onclick="toggleChkBoxes('#{pg.name}', 'insert')"></i>
-                            </f:facet>
-                            <ui:fragment rendered="#{pd.definition.hasInsertAction()}">
-                                <button class="btn btn-block btn-flat btn-warning btn-xs" type="button">
-                                    <i class="fa fa-user" />
-                                </button>
-                            </ui:fragment>
-                        </p:column>
-                        <p:column  style="width: 48px;">
-                            <f:facet name="header">
-                                <i class="fa fa-edit" title="#{messages['role.label.Update']}" onclick="toggleChkBoxes('#{pg.name}', 'update')"></i>
-                            </f:facet>
-                            <ui:fragment rendered="#{pd.definition.hasUpdateAction()}">
-                                <button class="btn btn-block btn-flat btn-default btn-xs" type="button">
-                                    <i class="fa fa-ban" />
-                                </button>
-                            </ui:fragment>
-                        </p:column>
-                        <p:column style="width: 48px;">
-                            <f:facet name="header">
-                                <i class="fa fa-trash" title="#{messages['role.label.Delete']}" onclick="toggleChkBoxes('#{pg.name}', 'delete')"></i>
-                            </f:facet>
-                            <ui:fragment rendered="#{pd.definition.hasDeleteAction()}">
-                                <button class="btn btn-block btn-flat btn-success btn-xs" type="button">
-                                    <i class="fa fa-check" />
-                                </button>
-                            </ui:fragment>
-                        </p:column>
-
-                        <p:column style="width: 48px;">
-                            <f:facet name="header">
-                                <i class="fa fa-share-square-o" title="#{messages['role.label.Export']}" onclick="toggleChkBoxes('#{pg.name}', 'export')"></i>
-                            </f:facet>
-                            <ui:fragment rendered="#{pd.definition.hasExportAction()}">
-                                <button class="btn btn-block btn-flat btn-danger btn-xs" type="button">
-                                    <i class="fa fa-users" />
-                                </button>
-                            </ui:fragment>
-                        </p:column>
-                        <p:column style="width: 48px;">
-                            <f:facet name="header">
-                                <i class="fa fa-gear" title="#{messages['role.label.Exec']}" onclick="toggleChkBoxes('#{pg.name}', 'exec')"> </i>
-                            </f:facet>
-                            <button class="btn btn-block btn-flat btn-info btn-xs" type="button">
-                                <i class="fa fa-users" />
-                            </button>
-                        </p:column>
-                        <p:column style="width: 48px;">
-                            <f:facet name="header">
-                                <i class="fa fa-refresh" title="#{messages['role.label.Revise']}" onclick="toggleChkBoxes('#{pg.name}', 'exec')"> </i>
-                            </f:facet>
-                            <button class="btn btn-block btn-flat btn-info btn-xs" type="button">
-                                <i class="fa fa-users" />
-                            </button>
-                        </p:column>
-                        <p:column style="width: 48px;">
-                            <f:facet name="header">
-                                <i class="fa fa-refresh" title="#{messages['role.label.Publish']}" onclick="toggleChkBoxes('#{pg.name}', 'exec')"> </i>
-                            </f:facet>
-                            <button class="btn btn-block btn-flat btn-info btn-xs" type="button">
-                                <i class="fa fa-users" />
-                            </button>
-                        </p:column>
-                        <p:column style="width: 48px;">
-                            <f:facet name="header">
-                                <i class="fa fa-refresh" title="#{messages['role.label.Close']}" onclick="toggleChkBoxes('#{pg.name}', 'exec')"> </i>
-                            </f:facet>
-                            <button class="btn btn-block btn-flat btn-info btn-xs" type="button">
-                                <i class="fa fa-users" />
-                            </button>
-                        </p:column>
-                        <p:column style="width: 48px;">
-                            <f:facet name="header">
-                                <i class="fa fa-refresh" title="#{messages['role.label.Assign']}" onclick="toggleChkBoxes('#{pg.name}', 'exec')"> </i>
-                            </f:facet>
-                            <button class="btn btn-block btn-flat btn-info btn-xs" type="button">
-                                <i class="fa fa-users" />
-                            </button>
-                        </p:column>
-                        <p:column style="width: 48px;">
-                            <f:facet name="header">
-                                <i class="fa fa-refresh" title="#{messages['role.label.Bişi']}" onclick="toggleChkBoxes('#{pg.name}', 'exec')"> </i>
-                            </f:facet>
-                            <button class="btn btn-block btn-flat btn-info btn-xs" type="button">
-                                <i class="fa fa-users" />
-                            </button>
-                        </p:column>
-                        <p:column style="width: 48px;">
-                            <f:facet name="header">
-                                <i class="fa fa-refresh" title="#{messages['role.label.Bişi']}" onclick="toggleChkBoxes('#{pg.name}', 'exec')"> </i>
-                            </f:facet>
-                            <button class="btn btn-block btn-flat btn-info btn-xs" type="button">
-                                <i class="fa fa-users" />
-                            </button>
-                        </p:column>
-                    </p:dataTable>
-                </t:accordion>
-            </c:forEach>
-
-        </ui:remove>
-
-        <c:forEach id="groups5" items="#{roleHome.permissionGroups}"
-                   var="pg" varStatus="pgs">
-            <t:accordion  label="#{messages[ 'permission.label.'.concat( pg.name )]}" hide="true">
-
-
-                <table class="table table-condensed table-hover">
-                    <tr>
-                        <th>
-                            <ui:remove>
-                            #{messages['role.label.Domain']}
-                            </ui:remove>
-                        </th>
-
-                        <c:forEach items="#{pg.actions}"
-                                   var="act" varStatus="acts">
-                            <th style="width: 36px;">
-                                <p:commandLink 
-                                    action="#{roleHome.setNextActionValue( pg.name, act.name)}"
-                                    update="@(.#{pg.name})"
-                                    process="@this"
-                                    title="#{messages[ 'permission.action.label.'.concat(act.name)]}">
-                                    <i class="#{messages[ 'permission.action.icon.'.concat(act.name)]}"  ></i>
-
-                                </p:commandLink>
-                            </th>
-                        </c:forEach>
-
-                    </tr>
-                    <c:forEach items="#{pg.definitions}"
-                               var="pd" varStatus="pds">
+                    <table class="table table-condensed table-hover">
                         <tr>
-                            <td>
-                                <p:commandLink 
-                                    action="#{roleHome.setNextValue(pd.name)}"
-                                    update="@(.#{pd.name})"
-                                    process="@this"
-                                    title="#{messages[ 'permission.hint.'.concat( pd.name)]}">
-                                    #{messages[ 'permission.label.'.concat( pd.name)]}
-                                </p:commandLink>
-                            </td>
+                            <th>
+                                <ui:remove>
+                                    #{messages['role.label.Domain']}
+                                </ui:remove>
+                            </th>
 
                             <c:forEach items="#{pg.actions}"
                                        var="act" varStatus="acts">
-                                <td style="width: 36px;">
+                                <th style="width: 36px;">
                                     <p:commandLink 
-                                        action="#{roleHome.setNextValue(pd.name, act.name)}"
-                                        update="@this"
+                                        action="#{roleHome.setNextActionValue( pg.name, act.name)}"
+                                        update="@(.#{pg.name})"
                                         process="@this"
-                                        styleClass="#{pg.name} #{pd.name} btn btn-block #{messages[ 'permission.scope.btn.'.concat( roleHome.permissionValueModel.getValue(pd.name, act.name))]} btn-xs" 
-                                        rendered="#{pd.actions.contains(act)}">
-
-                                        <i class="#{messages[ 'permission.scope.icon.'.concat( roleHome.permissionValueModel.getValue(pd.name, act.name))]}" 
-                                           title="#{messages[ 'permission.scope.label.'.concat( roleHome.permissionValueModel.getValue(pd.name, act.name))]}"/>
+                                        title="#{messages[ 'permission.action.label.'.concat(act.name)]}">
+                                        <i class="#{messages[ 'permission.action.icon.'.concat(act.name)]}"  ></i>
 
                                     </p:commandLink>
-                                </td>
+                                </th>
                             </c:forEach>
 
-                            <ui:remove>
-                                <c:forEach items="#{pd.actions}"
+                        </tr>
+                        <c:forEach items="#{pg.definitions}"
+                                   var="pd" varStatus="pds">
+                            <tr>
+                                <td>
+                                    <p:commandLink 
+                                        action="#{roleHome.setNextValue(pd.name)}"
+                                        update="@(.#{pd.name})"
+                                        process="@this"
+                                        title="#{messages[ 'permission.hint.'.concat( pd.name)]}">
+                                        #{messages[ 'permission.label.'.concat( pd.name)]}
+                                    </p:commandLink>
+                                </td>
+
+                                <c:forEach items="#{pg.actions}"
                                            var="act" varStatus="acts">
                                     <td style="width: 36px;">
-                                        <ui:remove>
-                                            <p:commandLink styleClass="btn btn-block #{pd.hasPermission(act) ? 'btn-success' : 'btn-default' } btn-xs" >
-                                                <i class="fa #{pd.hasPermission(act) ? 'fa-check' : 'fa-ban' }" />
-                                            </p:commandLink>
-                                        </ui:remove>
+                                        <p:commandLink 
+                                            action="#{roleHome.setNextValue(pd.name, act.name)}"
+                                            update="@this"
+                                            process="@this"
+                                            styleClass="#{pg.name} #{pd.name} btn btn-block #{messages[ 'permission.scope.btn.'.concat( roleHome.permissionValueModel.getValue(pd.name, act.name))]} btn-xs" 
+                                            rendered="#{pd.actions.contains(act)}">
 
-                                        <p:commandLink styleClass="btn btn-block btn-success btn-xs" >
-                                            <i class="fa fa-check" />
+                                            <i class="#{messages[ 'permission.scope.icon.'.concat( roleHome.permissionValueModel.getValue(pd.name, act.name))]}" 
+                                               title="#{messages[ 'permission.scope.label.'.concat( roleHome.permissionValueModel.getValue(pd.name, act.name))]}"/>
+
                                         </p:commandLink>
                                     </td>
                                 </c:forEach>
-                            </ui:remove>
-                        </tr>
-                    </c:forEach>
-                </table>
 
-            </t:accordion>
-        </c:forEach>
+                                <ui:remove>
+                                    <c:forEach items="#{pd.actions}"
+                                               var="act" varStatus="acts">
+                                        <td style="width: 36px;">
+                                            <ui:remove>
+                                                <p:commandLink styleClass="btn btn-block #{pd.hasPermission(act) ? 'btn-success' : 'btn-default' } btn-xs" >
+                                                    <i class="fa #{pd.hasPermission(act) ? 'fa-check' : 'fa-ban' }" />
+                                                </p:commandLink>
+                                            </ui:remove>
 
+                                            <p:commandLink styleClass="btn btn-block btn-success btn-xs" >
+                                                <i class="fa fa-check" />
+                                            </p:commandLink>
+                                        </td>
+                                    </c:forEach>
+                                </ui:remove>
+                            </tr>
+                        </c:forEach>
+                    </table>
+
+                </t:accordion>
+            </c:forEach>
+        </ui:remove>
     </ui:define> 
 </ui:composition>
