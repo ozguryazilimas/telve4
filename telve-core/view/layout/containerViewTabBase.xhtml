@@ -76,7 +76,7 @@
             </li>
         </ui:remove>
         <li>
-            <p:commandLink action="#{bean.create()}" title="#{messages['general.button.Add']}" ajax="false">
+            <p:commandLink action="#{bean.create()}" title="#{messages['general.button.Add']}" ajax="false" rendered="#{bean.hasInsertPermission()}">
                 <i class="fa fa-plus-circle"></i>
                 <h:outputText value=" #{messages['general.button.Add']}" />
             </p:commandLink>

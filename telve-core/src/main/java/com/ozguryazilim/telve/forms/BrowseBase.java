@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.forms;
 
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.query.QueryControllerBase;
 import com.ozguryazilim.telve.entities.ViewModel;
@@ -28,6 +29,9 @@ import org.apache.deltaspike.core.api.config.view.navigation.NavigationParameter
  */
 public abstract class BrowseBase<E extends EntityBase, R extends ViewModel> extends QueryControllerBase<E, R> {
 
+    @Inject
+    private Identity identity;
+    
     @Inject
     private ViewConfigResolver viewConfigResolver;
 
@@ -111,5 +115,9 @@ public abstract class BrowseBase<E extends EntityBase, R extends ViewModel> exte
         if (event.getDomain().equals(getRepository().getEntityClass().getName())) {
             search();
         }
+    }
+    
+    public Boolean hasInsertPermission(){
+        return identity.hasPermission(getPermissionDomain(), "insert");
     }
 }

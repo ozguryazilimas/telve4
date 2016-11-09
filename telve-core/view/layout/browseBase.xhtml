@@ -328,7 +328,7 @@
 
     <ui:define name="context-menu">
         <li>
-            <h:link outcome="#{bean.getEditViewId()}" styleClass="context-command" >
+            <h:link outcome="#{bean.getEditViewId()}" styleClass="context-command" rendered="#{bean.hasInsertPermission()}">
                 <i class="fa fa-plus-circle"></i>
                 <h:outputText value=" #{messages['general.button.Add']}" />
                 <f:param name="eid" value="0"/>
