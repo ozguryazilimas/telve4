@@ -81,6 +81,16 @@
                 <h:outputText value=" #{messages['general.button.Add']}" />
             </p:commandLink>
         </li>
+        <li>
+            <p:commandLink action="#{bean.edit()}" title="#{messages['general.button.Edit']}" ajax="false" rendered="#{bean.hasUpdatePermission()}">
+                <i class="fa fa-pencil"></i>
+                <h:outputText value=" #{messages['general.button.Edit']}" />
+            </p:commandLink>
+        </li>
+        <ui:insert name="context-menu-2" />
+        <ui:insert name="context-menu-3" />
+        <ui:insert name="context-menu-4" />
+        <ui:insert name="context-menu-5" />
     </ui:define>
 
     <ui:define name="context-menu-right">

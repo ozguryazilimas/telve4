@@ -26,7 +26,7 @@
             <ds:windowId />
 
             <!-- pe:ajaxErrorHandler / -->
-            
+
             <h:form>
                 <p:remoteCommand name="updateNotifies" update="notifyCount"  />
             </h:form>
@@ -74,16 +74,16 @@
             <div class="wrapper">
 
                 <header class="main-header">
-                	<ui:remove>
-                    <p:ajaxStatus onstart="NProgress.start();" onsuccess="NProgress.done();" />
-					</ui:remove>
+                    <ui:remove>
+                        <p:ajaxStatus onstart="NProgress.start();" onsuccess="NProgress.done();" />
+                    </ui:remove>
 
-				<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
-				<p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
-					<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-				</p:dialog>
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                    </p:dialog>
 
-				<h:link outcome="/home.xhtml" styleClass="nav-brand logo">
+                    <h:link outcome="/home.xhtml" styleClass="nav-brand logo">
                         <span class="logo-mini">
                             #{telveConfigResolver.getProperty('app.title.mini')}
                         </span>
@@ -145,7 +145,7 @@
                                         </li>
                                         <ui:remove>
                                         <!-- p:cache region="main-menu" key="#{identity.loginName}" -->
-                                            </ui:remove>
+                                        </ui:remove>
                                         <!-- Main Navigations -->
                                         <ui:repeat value="#{nagivationController.mainNavigations}" var="nav" >
                                             <li >
@@ -419,7 +419,7 @@
                 <aside class="main-sidebar">
 
                     <!-- p:cache region="main-sidebar" key="#{identity.loginName}" -->
-                    
+
                     <section class="sidebar" style="height: auto;">
 
 
@@ -587,44 +587,51 @@
                     </ui:remove>
 
 
-                    <section class="context-menu">
-                        <nav class="navbar #{skinSelector.skin.contains('light') ? '' : 'navbar-inverse' }  navbar-static-top">
-                            <div class="container-fluid">
-                                <div class="navbar-header">
+                    <p:outputPanel id="cmb" layout="block">
+                        <section class="context-menu">
 
-                                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                                        <i class="fa fa-bars"></i>
-                                    </button>
-                                </div>
-                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                                    <ul class="nav navbar-nav navbar-right">
-                                        <ui:fragment rendered="#{showListBar}">
-                                            <li class="hidden-xs">
-                                                <a href="#"  class="content-list-toggle" onclick="jQuery('#content-list-col').toggle();
-                                                        jQuery('#content-list-col').toggleClass('col-md-3 col-xs-12 col-md-pull-9');
-                                                        jQuery('#content-data-col').toggleClass('col-md-9 col-md-push-3');" ><i class="fa fa-expand" /></a>
-                                            </li>
-                                        </ui:fragment>
+                            <nav class="navbar #{skinSelector.skin.contains('light') ? '' : 'navbar-inverse' }  navbar-static-top">
+                                <div class="container-fluid">
+                                    <div class="navbar-header">
 
-                                        <ui:insert name="context-menu-right" />
+                                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                            <i class="fa fa-bars"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                        <ul class="nav navbar-nav navbar-right">
+                                            <ui:fragment rendered="#{showListBar}">
+                                                <li class="hidden-xs">
+                                                    <a href="#"  class="content-list-toggle" onclick="jQuery('#content-list-col').toggle();
+                                                            jQuery('#content-list-col').toggleClass('col-md-3 col-xs-12 col-md-pull-9');
+                                                            jQuery('#content-data-col').toggleClass('col-md-9 col-md-push-3');" ><i class="fa fa-expand" /></a>
+                                                </li>
+                                            </ui:fragment>
 
-                                    </ul>
-                                    <h:form id="contextForm">
-                                        <ul class="nav navbar-nav">
+                                            <ui:insert name="context-menu-right" />
 
-                                            <ui:insert name="context-menu" />
-                                            
-                                            <c:forEach items="#{contextMenuResolver.getContextMenuFragments()}" var="entry">
-                                                <ui:include src="#{entry}" />
-                                            </c:forEach>
                                         </ul>
-                                    </h:form>
+                                        <h:form id="contextForm">
+                                            <ul class="nav navbar-nav">
 
+                                                <ui:insert name="context-menu" />
+
+                                                <c:forEach items="#{contextMenuResolver.getContextMenuFragments()}" var="entry">
+                                                    <ui:include src="#{entry}" />
+                                                </c:forEach>
+                                            </ul>
+                                        </h:form>
+
+                                    </div>
                                 </div>
-                            </div>
-                        </nav>
-                    </section>
+                            </nav>
+                        </section>
+                        <section class="content-header">
+                            <p:messages id="messages" autoUpdate="true" closable="true" globalOnly="true" showDetail="true" />
+                        </section>
+                    </p:outputPanel>
 
+                    <p:sticky target="cmb" margin="50"/>
                     <ui:fragment rendered="#{dontShowContentHeader ne true}">
                         <section class="content-header">
                             <ui:fragment rendered="#{viewState ne ''}" >
