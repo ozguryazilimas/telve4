@@ -40,6 +40,8 @@ import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
+import org.apache.deltaspike.core.api.literal.AnyLiteral;
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.apache.deltaspike.core.util.ProxyUtils;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
@@ -560,10 +562,18 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     }
 
     public String getPermissionDomain() {
-        Class<? extends FeatureHandler> cls = ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).feature();
+        Class<? extends FeatureHandler> cls = getFeatureClass();
         return cls.getAnnotation(Feature.class).permission();
         //return this.getClass().getAnnotation(FormEdit.class).browsePage();
         //return getEntity().getClass().getSimpleName();
+    }
+    
+    public Class<? extends FeatureHandler> getFeatureClass(){
+        return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).feature();
+    }
+    
+    public FeatureHandler getFeature(){
+        return BeanProvider.getContextualReference(getFeatureClass(), false, new AnyLiteral());
     }
     
     protected Class<? extends ViewConfig> findPage(PageType pageType) {

@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.feature;
 
+import com.google.common.base.Strings;
 import com.ozguryazilim.telve.entities.ViewModel;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -123,5 +124,20 @@ public class AbstractFeatureHandler implements Serializable, FeatureHandler{
     @Override
     public FeatureLink getFeatureLink(ViewModel entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String getCaption() {
+        return getClass().getAnnotation(Feature.class).caption();
+        
+    }
+
+    @Override
+    public String getName() {
+        String result = getClass().getAnnotation(Feature.class).name();
+        if( Strings.isNullOrEmpty(result)){
+            result = getClass().getSimpleName();
+        }
+        return result;
     }
 }

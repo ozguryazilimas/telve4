@@ -33,4 +33,15 @@ public interface FeatureHandler {
      */
     Boolean hasCapability( FeatureCapability capability );
     
+    /**
+     * Tanımlanmış olan caption Stringi döndürür
+     * @return 
+     */
+    String getCaption();
+    
+    /**
+     * Tanımlanmış olan ismi döndürür.
+     * @return 
+     */
+    String getName();
 }
