@@ -18,6 +18,7 @@
 
             <ui:include src="/layout/templateHeader.xhtml" />
             <ui:insert name="extraHead" />
+            <link type="text/css" rel="stylesheet" href="/tekir/flaticon.css" />
 
         </h:head>
 
@@ -459,9 +460,9 @@
                                             </c:forEach>
                                         </ui:remove>
 
-                                        <h:graphicImage value="/img/ribbon/small#{nav.icon}"  style="margin-right: 4px;" rendered="#{nav.fontIcon}"/>
-                                        <ui:fragment rendered="#{not nav.fontIcon}">
-                                            <i class="#{nav.icon}"></i>
+                                        <h:graphicImage value="/img/ribbon/small#{nav.icon}"  style="margin-right: 4px;" rendered="#{not nav.fontIcon}"/>
+                                        <ui:fragment rendered="#{nav.fontIcon}">
+                                            <i class="#{ nav.bundleKey ? messages[nav.icon] : nav.icon}"></i>
                                         </ui:fragment>
                                         <span style="padding-right: 4px;">#{messages[nav.label]}</span> 
 
@@ -491,9 +492,9 @@
                                                         </c:forEach>
                                                     </ui:remove>
 
-                                                    <h:graphicImage value="/img/ribbon/small#{nav.icon}"  style="margin-right: 4px;" rendered="#{nav.fontIcon}"/>
-                                                    <ui:fragment rendered="#{not nav.fontIcon}">
-                                                        <i class="#{nav.icon}"></i>
+                                                    <h:graphicImage value="/img/ribbon/small#{nav.icon}"  style="margin-right: 4px;" rendered="#{not nav.fontIcon}"/>
+                                                    <ui:fragment rendered="#{nav.fontIcon}">
+                                                        <i class="#{ nav.bundleKey ? messages[nav.icon] : nav.icon}"></i>
                                                     </ui:fragment>
                                                     <span style="padding-right: 4px;">#{messages[nav.label]}</span> 
                                                 </h:link>

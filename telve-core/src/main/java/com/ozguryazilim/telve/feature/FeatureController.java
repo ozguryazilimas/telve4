@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -24,6 +25,10 @@ public class FeatureController implements Serializable {
     //Kısa süreli cachleme. Çünkü üretilen link defalarca isteniyor ve kendisi Immutable
     private Map<FeaturePointer, FeatureLink> linkMap = new HashMap<>();
 
+    
+    @Inject @Named("messages")
+    private Map<String,String> messages;
+    
     /**
      * Verilen bir pointer'ı linke çevirir. Örnek kullanım :
      * <t:outputFeatureLink label="general.label.Source" value="#{featureController.getFeatureLink(contactHome.entity.sourcePointer)}" />
@@ -39,11 +44,13 @@ public class FeatureController implements Serializable {
         FeatureLink fl = linkMap.get(pointer);
         if (fl == null) {
 
+            //FIXME: Burada icon işi ne olacak bir bakalım
             fl = new FeatureLink(pointer.getFeature(),
                     pointer.getPrimaryKey(),
                     FeatureRegistery.getCaption(pointer.getFeature()),
                     pointer.getBusinessKey(),
-                    FeatureRegistery.getIcon(pointer.getFeature()));
+                    messages.get("feature.icon."+pointer.getFeature()));
+                    //FeatureRegistery.getIcon(pointer.getFeature()));
 
             linkMap.put(pointer, fl);
         }

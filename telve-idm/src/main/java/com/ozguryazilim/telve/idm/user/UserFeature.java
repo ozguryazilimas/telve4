@@ -16,7 +16,7 @@ import com.ozguryazilim.telve.idm.entities.User;
  *
  * @author oyas
  */
-@Feature(caption = "module.caption.User", icon = "fa fa-user", permission = "user", forEntity = User.class)
+@Feature(caption = "module.caption.User", permission = "user", forEntity = User.class)
 @Page(type = PageType.BROWSE, page = IdmPages.UserBrowse.class)
 @Page(type = PageType.EDIT, page = IdmPages.User.class)
 @Page(type = PageType.VIEW, page = IdmPages.UserView.class)

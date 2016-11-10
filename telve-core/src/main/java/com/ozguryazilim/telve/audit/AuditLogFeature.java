@@ -16,7 +16,7 @@ import com.ozguryazilim.telve.view.Pages;
  *
  * @author oyas
  */
-@Feature(caption = "module.caption.AuditLog", icon = "", permission = "auditLog", forEntity = AuditLog.class )
+@Feature(caption = "module.caption.AuditLog", permission = "auditLog", forEntity = AuditLog.class )
 @Page(type = PageType.BROWSE, page = Pages.Admin.AuditLogBrowse.class)
 public class AuditLogFeature extends AbstractFeatureHandler{
     

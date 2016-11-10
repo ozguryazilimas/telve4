@@ -16,7 +16,7 @@ import com.ozguryazilim.telve.view.Pages;
  *
  * @author oyas
  */
-@Feature(caption = "module.caption.Suggestion", icon = "", permission = "suggestion", forEntity = SuggestionItem.class)
+@Feature(caption = "module.caption.Suggestion", permission = "suggestion", forEntity = SuggestionItem.class)
 @Page(type = PageType.BROWSE, page = Pages.Admin.SuggestionBrowse.class)
 public class SuggestionFeature extends AbstractFeatureHandler{
     

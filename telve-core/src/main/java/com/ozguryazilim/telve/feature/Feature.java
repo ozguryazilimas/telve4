@@ -32,31 +32,15 @@ import javax.inject.Named;
 public @interface Feature {
 
     /**
-     * Feature ismi
-     * 
-     * Eğer represent verilmiş ise onun ismi verilmemiş ise sınıf ismi
-     * 
-     * @return 
-     */
-    String name() default "";
-    
-    /**
-     * Özellik için kullanılacak olan font icon 
-     * 
-     * Örneğin : fa fa-user
-     * 
-     * @return 
-     */
-    String icon();
-    
-    /**
      * Özellik için kullanılacak genel isim. Message bundle'da aranır 
      * 
      * Örneğin : fetaure.caption.SimpleFeature
      * 
+     * varsayılan olarak fetaure.caption.FatureName döner
+     * 
      * @return 
      */
-    String caption();
+    String caption() default "";
     
     /**
      * Özellik için kullanılcak olan permission domain

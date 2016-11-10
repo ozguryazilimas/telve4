@@ -10,6 +10,7 @@ import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.query.QueryControllerBase;
 import com.ozguryazilim.telve.entities.ViewModel;
 import com.ozguryazilim.telve.feature.Feature;
+import com.ozguryazilim.telve.feature.FeatureHandler;
 import com.ozguryazilim.telve.feature.Page;
 import com.ozguryazilim.telve.feature.PageType;
 import javax.enterprise.event.Observes;
@@ -19,6 +20,8 @@ import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.config.view.navigation.NavigationParameterContext;
+import org.apache.deltaspike.core.api.literal.AnyLiteral;
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 
 /**
  * Browse sınıfları için taban.
@@ -105,6 +108,14 @@ public abstract class BrowseBase<E extends EntityBase, R extends ViewModel> exte
         return findPage(PageType.VIEW);
     }
 
+    public Class<? extends FeatureHandler> getFeatureClass(){
+        return this.getClass().getAnnotation(Browse.class).feature();
+    }
+    
+    public FeatureHandler getFeature(){
+        return BeanProvider.getContextualReference(getFeatureClass(), false, new AnyLiteral());
+    }
+    
     /**
      * RefreshBrowseEvent'i dinlenir ve ilgili domain ise search komutu
      * çalıştırılır.

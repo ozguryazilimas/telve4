@@ -128,16 +128,20 @@ public class AbstractFeatureHandler implements Serializable, FeatureHandler{
 
     @Override
     public String getCaption() {
-        return getClass().getAnnotation(Feature.class).caption();
+        String c = getClass().getAnnotation(Feature.class).caption();
+        if( Strings.isNullOrEmpty(c)){
+            c = "feature.caption." + getName();
+        }
+        return c;
         
     }
-
+    
     @Override
     public String getName() {
-        String result = getClass().getAnnotation(Feature.class).name();
-        if( Strings.isNullOrEmpty(result)){
-            result = getClass().getSimpleName();
-        }
-        return result;
+        //String result = getClass().getAnnotation(Feature.class).name();
+        //if( Strings.isNullOrEmpty(result)){
+        //    result = getClass().getSimpleName();
+        //}
+        return getClass().getSimpleName();
     }
 }

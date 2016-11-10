@@ -22,22 +22,29 @@ public class FeatureRegistery {
    
     public static final Logger LOG = LoggerFactory.getLogger(FeatureRegistery.class);
     
+    /**
+     * İsim üzerinden Feature Annotation'ı map'i İsim aslında sınıf ismi 
+     * Örnek : ContactFeature
+     */
     private static Map<String,Feature> featureNameMap = new HashMap<>();
+    /**
+     * Entity sınıfı üzerinden Feature annotation'ı
+     */ 
     private static Map<Class,Feature> featureClassMap = new HashMap<>();
+    /**
+     * Sınıf ismi üzerinden featureHandler sınıf tanımının kendisi
+     */
     private static Map<String,Class> beanNameMap = new HashMap<>();
+    /**
+     * Entity sınıfı üzerinde featureHandler sınıfı
+     */
     private static Map<Class,Class> beanClassMap = new HashMap<>();
     
     public static void register( Feature a, Class annoatedClass ){
-        
-        String featureName = a.name();
-        if( Strings.isNullOrEmpty( featureName )){
-            //FIXME: Burada Sınıf tipine bakılacak eğer Object ise annotate edilen sınıf ismi kullanılacak
-            if( a.forEntity().equals(Object.class) ){
-                featureName = annoatedClass.getSimpleName();
-            } else {
-                featureName = a.forEntity().getSimpleName();
-            }
-        } 
+        //FIXME: name diye bir kolonumuz olmasın. Gereksiz kafa karıştırıcı olacak. Doğrudan sınıf adını kullanalım
+        //forEntity için de ayrı bir sorgu hazırlayalım. 
+        String featureName = annoatedClass.getSimpleName();
+         
         
         featureNameMap.put(featureName, a);
         beanNameMap.put(featureName, annoatedClass);
@@ -51,35 +58,71 @@ public class FeatureRegistery {
     }
     
     
+    /**
+     * Geriye Sınıf ismi üzerinden FeatureHandler instance'ını döndürür.
+     * Not: Default Qualifier'ı olan sınıfları arar. Dolayısı ile Voucher vb Quailifier ile işaretlenmiş sınıfların Default olarak da işaretlenmişolması gerekir.
+     * @param name
+     * @return 
+     */
     public static FeatureHandler getHandler( String name ){
         //TODO: NPE check
         return (FeatureHandler) BeanProvider.getContextualReference( beanNameMap.get(name), true);
     }
     
+    /**
+     * Geriye Entity Sınıfı üzerinden FeatureHandler instance'ını döndürür.
+     * Not: Default Qualifier'ı olan sınıfları arar. Dolayısı ile Voucher vb Quailifier ile işaretlenmiş sınıfların Default olarak da işaretlenmişolması gerekir.
+     * @param name
+     * @return 
+     */
     public static FeatureHandler getHandler( Class clazz ){
         //TODO: NPE check
         return (FeatureHandler) BeanProvider.getContextualReference( beanClassMap.get(clazz), true);
     }
     
-    //TODO: caption, icon, permission gibi şeyler için getter yazmak lazım
+    /**
+     * Geriye Entity Sınıfı üzerinden FeatureHandler sınıfını döndürür.
+     * 
+     * @param clazz Entity Class
+     * @return 
+     */
+    public static Class<? extends FeatureHandler> getFeatureClass( Class clazz ){
+        //TODO: NPE check
+        return beanClassMap.get(clazz);
+    }
+    
+    /**
+     * Verilen İsim üzerinden caption key bilgisini döndürür.
+     * 
+     * @param name
+     * @return 
+     */
     public static String getCaption( String name ){
         Optional<Feature> fa = Optional.ofNullable(featureNameMap.get(name));
-        return fa.isPresent() ? fa.get().caption() : null;
+        if( fa.isPresent() && !Strings.isNullOrEmpty(fa.get().caption())){
+            return fa.get().caption();
+        } else {
+            //Gelen isim zaten sınıf ismi conventionımız böyle
+            return "feature.caption." + name;
+        }
     }
     
-    public static String getIcon( String name ){
-        Optional<Feature> fa = Optional.ofNullable(featureNameMap.get(name));
-        return fa.isPresent() ? fa.get().icon() : null;
-    }
-    
+        
+    /**
+     * Verilen Entity sınıfı üzerinden caption key bilgisini döndürür.
+     * 
+     * @param name
+     * @return 
+     */
     public static String getCaption( Class clazz ){
         Optional<Feature> fa = Optional.ofNullable(featureClassMap.get(clazz));
-        return fa.isPresent() ? fa.get().caption() : null;
+        if( fa.isPresent() && !Strings.isNullOrEmpty(fa.get().caption())){
+            return fa.get().caption();
+        } else {
+            LOG.warn("Required feature fo Entity {} not found", clazz );
+            return "";
+        }
     }
     
-    public static String getIcon( Class clazz ){
-        Optional<Feature> fa = Optional.ofNullable(featureClassMap.get(clazz));
-        return fa.isPresent() ? fa.get().icon() : null;
-    }
     
 }
