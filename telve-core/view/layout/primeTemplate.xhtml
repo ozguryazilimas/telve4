@@ -86,10 +86,10 @@
 
                     <h:link outcome="/home.xhtml" styleClass="nav-brand logo">
                         <span class="logo-mini">
-                            #{telveConfigResolver.getProperty('app.title.mini')}
+                            <i class="#{telveConfigResolver.getProperty('app.title.mini.icon')}" />#{telveConfigResolver.getProperty('app.title.mini')}
                         </span>
                         <span class="logo-lg">
-                            #{telveConfigResolver.getProperty('app.title')}
+                            <i class="#{telveConfigResolver.getProperty('app.title.icon')}" />#{telveConfigResolver.getProperty('app.title')}
                         </span>
                     </h:link>
                     <nav class="navbar navbar-static-top" role="navigation">
