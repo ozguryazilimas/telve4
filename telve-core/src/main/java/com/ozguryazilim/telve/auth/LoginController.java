@@ -75,6 +75,7 @@ public class LoginController {
         auditLogger.actionLog("Logout", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, currentUser.getPrincipal().toString(), "");
         currentUser.logout();
         facesContext.getExternalContext().invalidateSession();
-        return "/login.xhtml";
+        
+        return "/home.xhtml?faces-redirect=true";
     }
 }

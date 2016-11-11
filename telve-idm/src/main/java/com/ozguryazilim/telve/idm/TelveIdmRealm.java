@@ -190,7 +190,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
                     //Eğer daha önceden grup üyeleri bulunmadıysa onları bir bulalım
                     if( Strings.isNullOrEmpty(groupScope) ){
                         List<String> ls = getUserRepository().findAllGroupMembers( username );
-                        groupScope = Joiner.on(',').join(ls).toString();
+                        groupScope = Joiner.on(',').join(ls);
                     }
                     
                     scopePerms.add(p.replace("$group", groupScope));
@@ -279,7 +279,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
                 throw new UnknownAccountException("No account found for user [" + username + "]");
             }
 
-            info = new SimpleAuthenticationInfo(username, password.toCharArray(), getName());
+            info = new SimpleAuthenticationInfo( new TelveSimplePrinciple(username), password.toCharArray(), getName());
 
             setCredentialsMatcher(idmMatcher);
         }

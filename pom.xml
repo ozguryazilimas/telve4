@@ -242,6 +242,7 @@
         <module>telve-gallery</module>
         <module>telve-idm</module>
         <module>telve-unit</module>
+        <module>telve-keycloak</module>
     </modules>
     
     <distributionManagement>

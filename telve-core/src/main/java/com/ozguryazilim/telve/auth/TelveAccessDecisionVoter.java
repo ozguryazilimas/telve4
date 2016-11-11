@@ -45,7 +45,7 @@ public class TelveAccessDecisionVoter extends AbstractAccessDecisionVoter {
 
         try {
             Subject identity = SecurityUtils.getSubject();
-
+            LOG.debug("TelveAccessDesionVoter executed");
             if (!identity.isAuthenticated()) {
                 set.add(new SecurityViolation() {
                     @Override
