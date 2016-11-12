@@ -710,3 +710,20 @@ textarea.ui-inputfield, .ui-selectonemenu {
 .ui-inputnumber input{
     text-align: right;
 }
+
+.product-info .box-tools {
+    display: none;
+}
+
+.product-info:hover .box-tools {
+    display: inline-block;
+}
+
+
+.post .btn-box-tool {
+    display: none;
+}
+
+.post:hover .btn-box-tool {
+    display: inline-block;
+}

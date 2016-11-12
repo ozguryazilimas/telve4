@@ -6,6 +6,7 @@
 package com.ozguryazilim.telve.note;
 
 import com.ozguryazilim.telve.data.RepositoryBase;
+import com.ozguryazilim.telve.entities.FeaturePointer;
 import com.ozguryazilim.telve.entities.Note;
 import com.ozguryazilim.telve.entities.Note_;
 import java.util.List;
@@ -33,4 +34,30 @@ public abstract class NoteRepository extends RepositoryBase<Note, Note> implemen
         return crit.getResultList();
     }
     
+    
+    /**
+     * Geriye Feature ile ilgili activity'leri döndürür.
+     * @param featurePointer
+     * @return 
+     */
+    public List<Note> findByFeature( FeaturePointer featurePointer ){
+        Criteria<Note,Note> crit = criteria()
+                .eq(Note_.featurePointer, featurePointer)
+                .orderAsc(Note_.createDate);
+                
+        /*
+        switch( filter ){
+            case MINE : crit.eq(Activity_.assignee, identity.getLoginName()); break;
+            case OVERDUE : crit.gt(Activity_.dueDate, new Date()); break;
+            case SCHEDULED : crit.eq( Activity_.status, ActivityStatus.SCHEDULED); break;
+            case SUCCESS : crit.eq( Activity_.status, ActivityStatus.SUCCESS); break;
+            case FAILED : crit.eq( Activity_.status, ActivityStatus.FAILED); break;
+            case FOLLOWUP : break; //TODO:
+        }
+        */
+        
+        //Criteria üzerinde pagein limit yok
+        //return crit.createQuery().setMaxResults(5).getResultList();
+        return crit.getResultList();
+    }
 }
