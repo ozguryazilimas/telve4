@@ -151,7 +151,7 @@
                                         <ui:repeat value="#{nagivationController.mainNavigations}" var="nav" >
                                             <li >
                                                 <h:link  outcome="#{nav.viewId}" title="#{messages[nav.label]}">
-                                                    <i class="#{nav.icon}"></i>
+                                                    <i class="#{messages[nav.icon]}"></i>
                                                 </h:link>
                                             </li>
                                         </ui:repeat>

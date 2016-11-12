@@ -654,9 +654,11 @@ textarea.ui-inputfield, .ui-selectonemenu {
     background-size: cover !important;
 }
 
+/*
 .products-list .product-info {
     margin-left: 30px !important;
 }
+*/
 
 .btn-box-tool {
     color: #97a0b3 ! important;
@@ -726,4 +728,30 @@ textarea.ui-inputfield, .ui-selectonemenu {
 
 .post:hover .btn-box-tool {
     display: inline-block;
+}
+
+.overlay-base{
+    position: absolute;
+    top: 0px;
+    right: -12px; 
+    font-size: 19px;
+    color: #fff;
+}
+
+.overlay-icon{
+    position: absolute;
+    top: -1px;
+    right: -10px;
+}
+
+.overlay-icon2{
+    position: absolute;
+    bottom: -18px;
+    left: 4px;
+    color: #3a87ad;
+}
+
+.fa-border{
+    background-color: inherit;
+    border-color: #fff;
 }
