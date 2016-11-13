@@ -358,13 +358,21 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
      * @param loginName sorgu için baz alınacak olan kullanıcı
      * @return 
      */
-    @Query(value = "select uu.LOGIN_NAME from TLI_USER uu\n" +
-                    "inner join TLI_USER_GROUP ugg on uu.ID = ugg.USER_ID\n" +
-                    "inner join TLI_GROUP gm on gm.ID = ugg.GROUP_ID\n" +
-                    "inner join \n" +
-                    "( SELECT concat( g.PATH , '%' ) as grpPath FROM TLI_USER u \n" +
-                    "inner join TLI_USER_GROUP ug on u.ID = ug.USER_ID\n" +
-                    "inner join TLI_GROUP g on ug.GROUP_ID = g.ID\n" +
-                    "where LOGIN_NAME = ?1 ) gg on gm.PATH like gg.grpPath", isNative = true)
+//  Multi Grup desteği olan durumda tüm grup üyeleri üzerinde arama yapan sorgu
+//    @Query(value = "select uu.LOGIN_NAME from TLI_USER uu\n" +
+//                    "inner join TLI_USER_GROUP ugg on uu.ID = ugg.USER_ID\n" +
+//                    "inner join TLI_GROUP gm on gm.ID = ugg.GROUP_ID\n" +
+//                    "inner join \n" +
+//                    "( SELECT concat( g.PATH , '%' ) as grpPath FROM TLI_USER u \n" +
+//                    "inner join TLI_USER_GROUP ug on u.ID = ug.USER_ID\n" +
+//                    "inner join TLI_GROUP g on ug.GROUP_ID = g.ID\n" +
+//                    "where LOGIN_NAME = ?1 ) gg on gm.PATH like gg.grpPath", isNative = true)
+    //Etki grubu üzerinden kontrol yapmak daha makul
+    @Query(value =  "select u.LOGIN_NAME FROM TLI_USER u \n" +
+                    "INNER JOIN TLI_GROUP g on u.GROUP_ID = g.ID\n" +
+                    "INNER JOIN (\n" +
+                    "SELECT concat( g.PATH , '%' ) as grpPath  FROM TLI_USER u \n" +
+                    "INNER JOIN TLI_GROUP g on u.GROUP_ID = g.ID\n" +
+                    "WHERE u.LOGIN_NAME = ?1 ) gg on g.path like gg.grpPath", isNative = true)
     public abstract List<String> findAllGroupMembers(String loginName);
 }
