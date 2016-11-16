@@ -13,7 +13,7 @@
     <ui:define name="form" >
         <h:form id="imageUploadForm">
             
-            <p:fileUpload fileUploadListener="#{imageLookupController.handleFileUpload}" mode="advanced"
+            <p:fileUpload fileUploadListener="#{imageLookupController.handleFileUpload}" mode="advanced" 
                                   auto="true" sizeLimit="#{cc.attrs.sizeLimit}" allowTypes="/(\.|\/)(jpe?g|png)$/" 
                                   oncomplete="jQuery('#imageUploadForm\\:close').click();"
                                   label="#{messages['general.label.SelectFile']}" uploadLabel="#{messages['general.button.Upload']}" cancelLabel="#{messages['general.button.Cancel']}">

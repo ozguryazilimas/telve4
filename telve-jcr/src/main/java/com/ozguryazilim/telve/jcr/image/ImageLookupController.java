@@ -5,7 +5,6 @@
  */
 package com.ozguryazilim.telve.jcr.image;
 
-import com.google.common.base.Strings;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +12,7 @@ import java.io.Serializable;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -23,12 +23,15 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
+
 import org.modeshape.common.text.UrlEncoder;
 import org.modeshape.jcr.api.JcrTools;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * Image yönetim için özelleşmiş JCR controller.
@@ -117,7 +120,7 @@ public class ImageLookupController implements Serializable {
             try {
                 return "/rest/images/image/" + getImageId(fallbackImage, contextRoot);
             } catch (PathNotFoundException ex) {
-                LOG.debug("Hata var:", ex);    
+                LOG.debug("Hata var:", ex);
             } catch (RepositoryException ex) {
                 LOG.debug("Hata var:", ex);
             }
@@ -128,15 +131,15 @@ public class ImageLookupController implements Serializable {
 
     /**
      * Verilen bilgilere sahip bir imaj var mı bilgisini döndürür.
-     * 
+     *
      * Örnek : imageLookupController.hasImage( "727272-828282", "/deneme/images" );
-     * 
+     *
      * @param keyValue
      * @param contextRoot
-     * @return 
+     * @return
      */
     public Boolean hasImage( String keyValue, String contextRoot ){
-        
+
         try {
             String s = getImageId(keyValue, contextRoot);
             if( !Strings.isNullOrEmpty(s)){
@@ -147,11 +150,11 @@ public class ImageLookupController implements Serializable {
         } catch (RepositoryException ex) {
             LOG.debug("Hata var:", ex);
         }
-        
+
         return false;
     }
-    
-    
+
+
     /**
      * Upload işlemi başlamadan önce gerekli değişkenleri düzenler.
      *
@@ -171,9 +174,12 @@ public class ImageLookupController implements Serializable {
      */
     public void handleFileUpload(FileUploadEvent event) throws RepositoryException {
         LOG.info("Uploaded File : {}", event.getFile().getFileName());
-
+        if(Strings.isNullOrEmpty(keyValue)) {
+            LOG.info("Key valu is empty !");
+            throw new RepositoryException();
+        }
         deleteImage( keyValue, contextRoot );
-        
+
         String fileNamePath = event.getFile().getFileName();
         String fileName = fileNamePath.substring(fileNamePath.lastIndexOf(File.separatorChar) + 1);
 
@@ -261,7 +267,7 @@ public class ImageLookupController implements Serializable {
     protected String buildPath(String tckn) {
 
         return "";
-        /* Eğer performans problemi yaşanırsa kullanmak lazım : 
+        /* Eğer performans problemi yaşanırsa kullanmak lazım :
         StringBuffer sb = new StringBuffer();
         for (char c : tckn.toCharArray()) {
             sb.append(c).append('/');
@@ -270,7 +276,7 @@ public class ImageLookupController implements Serializable {
         return sb.toString();
          */
     }
-    
+
     public void deleteImage(String keyValue, String contextRoot) throws RepositoryException{
         String folderName = contextRoot + "/";
         String path = folderName + buildPath(keyValue) + keyValue;
@@ -280,7 +286,7 @@ public class ImageLookupController implements Serializable {
         String fileName = encoder.encode(path);
 
         LOG.debug("Item Remove Path : {}", fileName);
-        
+
         try {
             //Node node = session.getNode(fileName);
             session.removeItem(fileName);
@@ -291,23 +297,23 @@ public class ImageLookupController implements Serializable {
             //Silinecek dosya bulunaması bir hata olarak fılatılmayacak.
             LOG.debug("File Not found", ex );
         }
-        
+
     }
-    
-    
-    
+
+
+
     public void uploadDialog(String keyValue, String contextRoot){
         prepareToUpload(keyValue, contextRoot);
         Map<String, Object> options = new HashMap<>();
-        
+
         options.put("modal", true);
-        //options.put("draggable", false);  
+        //options.put("draggable", false);
         options.put("resizable", false);
         options.put("contentHeight", 150);
-        
+
         RequestContext.getCurrentInstance().openDialog("/dialogs/imageUploadDialog", options, null);
     }
-    
+
     public void closeDialog(){
         RequestContext.getCurrentInstance().closeDialog(null);
     }
