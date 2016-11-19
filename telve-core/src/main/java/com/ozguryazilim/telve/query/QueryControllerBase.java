@@ -99,7 +99,7 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
     }
 
     protected void decorateFilters( Criteria<E,R> criteria ){
-        for( Filter<E, ?> f : queryDefinition.getFilters() ){
+        for( Filter<E, ?, ?> f : queryDefinition.getFilters() ){
             f.decorateCriteria(criteria);
         }
     }

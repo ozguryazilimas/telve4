@@ -57,7 +57,7 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
 
     @Override
     public List<UserViewModel> browseQuery(QueryDefinition queryDefinition) {
-        List<Filter<User, ?>> filters = queryDefinition.getFilters();
+        List<Filter<User, ?, ?>> filters = queryDefinition.getFilters();
 
         CriteriaBuilder criteriaBuilder = entityManager().getCriteriaBuilder();
         //Geriye PersonViewModel dönecek cq'yu ona göre oluşturuyoruz.
@@ -88,7 +88,7 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
                 List<Predicate> subPredicates = new ArrayList<>();
 
                 //Gelen extra filtre UserGroup bilgisi içermeli
-                Filter<?, ?> f = (Filter<?, ?>) queryDefinition.getExtraFilters().get(0);
+                Filter<?, ?, ?> f = (Filter<?, ?, ?>) queryDefinition.getExtraFilters().get(0);
                 if (f.getAttribute().equals(UserGroup_.group) && f.getValue() != null) {
                     f.decorateCriteriaQuery(subPredicates, criteriaBuilder, fromUserGroup);
                 }
@@ -110,7 +110,7 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
             //Tek bir grup tanımı var o da domainGroup üzerinde dolayısı ile UserGroup tablosuna bakılmayacak.
 
             //Gelen extra filtre UserGroup bilgisi içermeli o yüzden burada path kontrolüne kendimiz ekliyoruz.
-            Filter<?, ?> f = (Filter<?, ?>) queryDefinition.getExtraFilters().get(0);
+            Filter<?, ?, ?> f = (Filter<?, ?, ?>) queryDefinition.getExtraFilters().get(0);
             if (f.getAttribute().equals(UserGroup_.group) && f.getValue() != null) {
                 predicates.add(criteriaBuilder.like(from.get(User_.domainGroup).get(Group_.path), ((TreeNodeEntityBase) f.getValue()).getPath() + "%"));
             }

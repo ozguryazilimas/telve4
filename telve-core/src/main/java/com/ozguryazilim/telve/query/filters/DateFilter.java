@@ -26,7 +26,7 @@ import org.joda.time.LocalDate;
  * @author Hakan Uygun
  * @param <E>
  */
-public class DateFilter<E> extends Filter<E, Date> {
+public class DateFilter<E> extends Filter<E, Date, Date> {
 
     private static List<DateValueType> inTypes;
     private static List<DateValueType> betweenTypes;
@@ -39,6 +39,14 @@ public class DateFilter<E> extends Filter<E, Date> {
 
         setOperands(Operands.getDateOperands());
         setOperand(FilterOperand.Equal);
+    }
+    
+    public DateFilter(SingularAttribute<? super E, Date> attribute, String label, FilterOperand operand, DateValueType valueType) {
+        super(attribute, label);
+
+        setOperands(Operands.getDateOperands());
+        setOperand(operand);
+        this.valueType = valueType;
     }
 
     @Override

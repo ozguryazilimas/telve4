@@ -33,7 +33,7 @@ public abstract class AuditLogRepository extends RepositoryBase<AuditLog, AuditL
     
     @Override
     public List<AuditLog> browseQuery(QueryDefinition queryDefinition) {
-        List<Filter<AuditLog, ?>> filters = queryDefinition.getFilters();
+        List<Filter<AuditLog, ?, ?>> filters = queryDefinition.getFilters();
         
         CriteriaBuilder criteriaBuilder = entityManager().getCriteriaBuilder();
         //Geriye PersonViewModel dönecek cq'yu ona göre oluşturuyoruz.

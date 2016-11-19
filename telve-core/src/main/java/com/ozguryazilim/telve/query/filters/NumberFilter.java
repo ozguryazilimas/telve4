@@ -22,7 +22,7 @@ import org.apache.deltaspike.data.api.criteria.Criteria;
  * @param <E> Entity sınıfı
  * @param <P> Veri tipi : Integer, Double, Foat, BidDecimal v.b.
  */
-public class NumberFilter<E, P extends Number & Comparable> extends Filter<E, P> {
+public class NumberFilter<E, P extends Number & Comparable> extends Filter<E, P, P> {
 
     public NumberFilter(SingularAttribute<? super E, P> attribute, String label) {
         super(attribute, label);

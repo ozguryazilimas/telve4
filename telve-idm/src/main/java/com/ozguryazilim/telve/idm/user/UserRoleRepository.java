@@ -50,7 +50,7 @@ public abstract class UserRoleRepository extends RepositoryBase<UserRole, UserRo
 
     @Override
     public List<UserRoleViewModel> browseQuery(QueryDefinition queryDefinition) {
-        List<Filter<UserRole, ?>> filters = queryDefinition.getFilters();
+        List<Filter<UserRole, ?, ?>> filters = queryDefinition.getFilters();
         
         CriteriaBuilder criteriaBuilder = entityManager().getCriteriaBuilder();
         //Geriye AccidentAnalysisViewModel dönecek cq'yu ona göre oluşturuyoruz.
