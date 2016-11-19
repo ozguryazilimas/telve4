@@ -6,80 +6,109 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
 
+
+    <div class="box-header with-border">
+        <h:outputText value="#{messages[moduleCaption]}" styleClass="box-title"/>
+        <div class="box-tools pull-right">
+            <a title="#{messages['general.button.Filter']}" href="javascript:" class="btn btn-box-tool" onclick="jQuery('#subFilter').toggle();
+                    jQuery('#subFilter').toggleClass('col-md-2 col-xs-12 ');
+                    jQuery('#subResults').toggleClass('col-md-10 ');"
+                                style="#{filterEnabled eq 'true' ? '' : 'display:none;'}">
+                <i class="fa fa-filter"/>
+            </a>
+            <p:commandLink actionListener="#{bean.search()}" styleClass="btn btn-box-tool" update="@([id$=results])" process="@this" title="#{messages['general.button.Refresh']}">
+                <i class="fa fa-refresh"/>
+            </p:commandLink>
+        </div>
+    </div>
     <div class="box-body">
         <ui:insert name="content" />
+        <div class="row">
+            <div id="subFilter" class="" style="display: none;">
 
-        <h:panelGroup layout="block" rendered="#{filterEnabled eq 'true'}">
-            <ui:include src="/layout/browseFilters.xhtml" />
-        </h:panelGroup>
+                <div class="box box-default">
+                    <ui:remove>
+                        <div class="box-header with-border">
+                            <h:outputText value="#{messages['general.button.Filter']}" styleClass="box-title"/>
+                        </div>
+                    </ui:remove>
 
-        <h:form id="browseListForm">
-            <div class="box-header with-border">
-                <h:outputText value="#{messages[moduleCaption]}" />
+                    <h:panelGroup layout="block" rendered="#{filterEnabled eq 'true'}">
+                        <ui:include src="/layout/browseFilters.xhtml" />
+                    </h:panelGroup>
+                </div>
             </div>
-            <p:dataTable id="results" var="item" 
-                         value="#{bean.entityList}" 
-                         paginator="true" rows="#{bean.queryDefinition.rowLimit}" 
-                         paginatorPosition="bottom" 
-                         paginatorAlwaysVisible="false"
-                         selectionMode="single"
-                         selection="#{bean.selectedItem}" 
-                         rowKey="#{item.id}"
-                         emptyMessage="#{messages['general.message.browse.EmptyDesc']}">                      
+            <div id="subResults" class="col-xs-12">
 
-                <ui:remove>
-                    <p:ajax event="rowSelect"  update="#{onSelectUpdate}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');"/>
-                    <p:ajax event="rowUnselect" update="#{onSelectUpdate}" oncomplete="disableRibbonBtn('#{onSelectEnabled}');" />
-                </ui:remove>
+                <div class="box box-success">
+                    <h:form id="browseListForm">
 
-                <c:forEach items="#{bean.queryDefinition.columns}" var="col" varStatus="loop">
-                    <p:column>
-                        <c:set var="ind" value="#{loop.index}" />
-                        <f:facet name="header">
-                            <h:outputText value="#{messages[col.labelKey]}" />
-                        </f:facet>
+                        <p:dataTable id="results" var="item" 
+                                     value="#{bean.entityList}" 
+                                     paginator="true" rows="#{bean.queryDefinition.rowLimit}" 
+                                     paginatorPosition="bottom" 
+                                     paginatorAlwaysVisible="false"
+                                     selectionMode="single"
+                                     selection="#{bean.selectedItem}" 
+                                     rowKey="#{item.id}"
+                                     emptyMessage="#{messages['general.message.browse.EmptyDesc']}">                      
 
-                        <ui:include src="/columns/#{col.template}.xhtml" />
+                            <ui:remove>
+                                <p:ajax event="rowSelect"  update="#{onSelectUpdate}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');"/>
+                                <p:ajax event="rowUnselect" update="#{onSelectUpdate}" oncomplete="disableRibbonBtn('#{onSelectEnabled}');" />
+                            </ui:remove>
 
-                    </p:column>
-                </c:forEach>
-                <p:column rendered="#{showActionColumn eq 'true' }" styleClass="#{actionColumnStyle}">
-                    <ui:insert name="actionColumn" />
-                </p:column>
-                <p:column rendered="#{canInsert eq 'true' }" styleClass="actionColumnDouble">
-                    <f:facet name="header">
-                        <ui:insert name="extraActionHeader" />
-                        <p:commandLink action="#{bean.addItem()}" 
-                                       partialSubmit="true" process="@this" 
-                                       update="#{ItemPopupId}"
-                                       title="#{messages['general.button.Add']}" oncomplete="PF('#{ItemPopupId}').show();">
-                            <i class="fa fa-plus-circle btn-add" ></i>
-                        </p:commandLink>
-                        <p:commandLink action="#{bean.search()}" 
-                                       partialSubmit="true" process="@this" 
-                                       update="@([id$=results])"
-                                       title="#{messages['general.button.Search']}" >
-                            <i class="fa fa-refresh btn-refresh" ></i>
-                        </p:commandLink>
-                    </f:facet>
+                            <c:forEach items="#{bean.queryDefinition.columns}" var="col" varStatus="loop">
+                                <p:column>
+                                    <c:set var="ind" value="#{loop.index}" />
+                                    <f:facet name="header">
+                                        <h:outputText value="#{messages[col.labelKey]}" />
+                                    </f:facet>
 
-                    <ui:insert name="extraActionRow" />
-                    <p:commandLink action="#{bean.editItem( item.id )}" 
-                                   update="#{ItemPopupId}" 
-                                   title="#{messages['general.label.EditLine']}"
-                                   partialSubmit="true" process="@this" oncomplete="PF('#{ItemPopupId}').show();">
-                        <i class="fa fa-edit btn-edit" ></i>
-                    </p:commandLink>
-                    <p:commandLink action="#{bean.removeItem( item.id )}" 
-                                   update="results" 
-                                   title="#{messages['general.label.DeleteLine']}"
-                                   partialSubmit="true" process="@this">
-                        <i class="fa fa-trash-o btn-delete" ></i>
-                        <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
-                    </p:commandLink>
-                </p:column>
-            </p:dataTable>  
-        </h:form>
+                                    <ui:include src="/columns/#{col.template}.xhtml" />
+
+                                </p:column>
+                            </c:forEach>
+                            <p:column rendered="#{showActionColumn eq 'true' }" styleClass="#{actionColumnStyle}">
+                                <ui:insert name="actionColumn" />
+                            </p:column>
+                            <p:column rendered="#{canInsert eq 'true' }" styleClass="actionColumnDouble">
+                                <f:facet name="header">
+                                    <ui:insert name="extraActionHeader" />
+                                    <p:commandLink action="#{bean.addItem()}" 
+                                                   partialSubmit="true" process="@this" 
+                                                   update="#{ItemPopupId}"
+                                                   title="#{messages['general.button.Add']}" oncomplete="PF('#{ItemPopupId}').show();">
+                                        <i class="fa fa-plus-circle btn-add" ></i>
+                                    </p:commandLink>
+                                    <p:commandLink action="#{bean.search()}" 
+                                                   partialSubmit="true" process="@this" 
+                                                   update="@([id$=results])"
+                                                   title="#{messages['general.button.Search']}" >
+                                        <i class="fa fa-refresh btn-refresh" ></i>
+                                    </p:commandLink>
+                                </f:facet>
+
+                                <ui:insert name="extraActionRow" />
+                                <p:commandLink action="#{bean.editItem( item.id )}" 
+                                               update="#{ItemPopupId}" 
+                                               title="#{messages['general.label.EditLine']}"
+                                               partialSubmit="true" process="@this" oncomplete="PF('#{ItemPopupId}').show();">
+                                    <i class="fa fa-edit btn-edit" ></i>
+                                </p:commandLink>
+                                <p:commandLink action="#{bean.removeItem( item.id )}" 
+                                               update="results" 
+                                               title="#{messages['general.label.DeleteLine']}"
+                                               partialSubmit="true" process="@this">
+                                    <i class="fa fa-trash-o btn-delete" ></i>
+                                    <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>  
+                    </h:form>
+                </div>
+            </div>
+        </div>
     </div>
 
 
