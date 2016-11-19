@@ -27,7 +27,7 @@ public abstract class NumberFilter<E, P extends Number & Comparable> extends Fil
         super(attribute, label);
 
         setOperands(Operands.getNumberOperands());
-        setOperand(FilterOperand.Equal);
+        setOperand(FilterOperand.All);
         setValue(defaultValue);
         setValue2(defaultValue);
     }
