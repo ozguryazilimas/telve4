@@ -54,11 +54,15 @@
                             </ui:remove>
                             
 
+                            
                             <c:forEach items="#{bean.model.columns.entrySet()}" var="col" varStatus="loop">
-                                <p:column headerText="#{messages[col.value]}">
+                                <p:column headerText="#{messages[col.value]}" rendered="#{useCustomColumns ne 'true'}">
                                     #{item[col.key]}
                                 </p:column>
                             </c:forEach>
+                            
+                            
+                            <ui:insert name="columns" />
                             
                         </p:dataTable>
                         <script type="text/javascript">
@@ -77,6 +81,7 @@
                     </c:if>
 
                     <c:if test="#{bean.model.modelType eq 'Table' and not bean.model.getMultiSelect()}" >
+                        
                         <p:dataTable id="singleSelectDialog" var="item" value="#{bean.model.dataModel()}" 
                                      selectionMode="single"
                                      selection="#{bean.model.selectedData}" rows="8"  paginator="true" rowKey="#{item.id}"
@@ -86,11 +91,15 @@
                             <p:column selectionMode="single" style="width:36px;" />  
                             </ui:remove>
 
+                            
                             <c:forEach items="#{bean.model.columns.entrySet()}" var="col" varStatus="loop">
-                                <p:column headerText="#{messages[col.value]}">
+                                <p:column headerText="#{messages[col.value]}" rendered="#{useCustomColumns ne 'true'}">
                                     #{item[col.key]}
                                 </p:column>
                             </c:forEach>
+                            
+                            
+                            <ui:insert name="columns" />
                         </p:dataTable>
                         
                         <script type="text/javascript">

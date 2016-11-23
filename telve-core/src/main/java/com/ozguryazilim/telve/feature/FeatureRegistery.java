@@ -91,6 +91,12 @@ public class FeatureRegistery {
         return beanClassMap.get(clazz);
     }
     
+    
+    public static Class<? extends FeatureHandler> getFeatureClass( String featureName ){
+        //TODO: NPE check
+        return beanNameMap.get(featureName);
+    }
+    
     /**
      * Verilen İsim üzerinden caption key bilgisini döndürür.
      * 
