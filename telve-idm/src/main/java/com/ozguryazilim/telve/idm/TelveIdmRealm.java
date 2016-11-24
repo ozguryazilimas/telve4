@@ -166,7 +166,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
             throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
         }
 
-        String username = (String) getAvailablePrincipal(principals);
+        String username = ((TelveSimplePrinciple) getAvailablePrincipal(principals)).getName();
 
         Set<String> roleNames = null;
         Set<String> permissions = null;
