@@ -8,13 +8,13 @@
     <packaging>pom</packaging>
     
     <properties>
-        <deltaspike.version>1.7.0</deltaspike.version>
-        <shiro.version>1.2.5</shiro.version>
+        <deltaspike.version>1.7.2</deltaspike.version>
+        <shiro.version>1.3.2</shiro.version>
         <primeface.version>6.0</primeface.version>
         <primefaces-ext.version>3.2.0</primefaces-ext.version>
         <atmosphere.version>2.4.0-RC3</atmosphere.version>
-        <omnifaces.version>2.3</omnifaces.version>
-        <liquibase.version>3.5.1</liquibase.version>
+        <omnifaces.version>2.5.1</omnifaces.version>
+        <liquibase.version>3.5.3</liquibase.version>
         
         <mysql.version>5.1.26</mysql.version>
         
