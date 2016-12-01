@@ -11,6 +11,7 @@ import com.ozguryazilim.telve.entities.AuditLog_;
 import com.ozguryazilim.telve.query.QueryDefinition;
 import com.ozguryazilim.telve.query.filters.Filter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.persistence.TypedQuery;
@@ -18,6 +19,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+
+import org.apache.deltaspike.data.api.Modifying;
+import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 
@@ -63,4 +67,9 @@ public abstract class AuditLogRepository extends RepositoryBase<AuditLog, AuditL
 
         return resultList;
     }
+    
+    
+    @Modifying
+    @Query("delete AuditLog as al where al.date <= ?1")
+    public abstract void deleteBeforeDate( Date date );
 }

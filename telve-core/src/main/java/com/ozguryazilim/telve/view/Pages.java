@@ -62,6 +62,11 @@ public interface Pages extends ViewConfig {
         @Navigation(icon = "fa fa-history", section = AdminNavigationSection.class)
         class AuditLogBrowse implements Admin {
         };
+        
+        @SecuredPage()
+        @View
+        class AuditLogClearCommand implements Admin {
+        };
 
         @Folder(name = "/admin/reports")
         public interface AdminReportPages extends Pages.Admin {
