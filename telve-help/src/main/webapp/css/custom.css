@@ -92,3 +92,16 @@ table.tableblock {
     text-align: right;
     font-style: italic;
 }
+
+.sidebarblock{
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    margin-top: 4px;
+    padding: 8px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+}
+
+.title{
+    font-weight: bold;
+}
