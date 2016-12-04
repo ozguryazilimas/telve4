@@ -32,7 +32,7 @@
     Map<String, Toc> contents = ServletContextListenerImpl.getTablesOfContents(application);
     List<Map.Entry<String,Toc>> sortedEntries = new ArrayList<Map.Entry<String,Toc>>(contents.entrySet());
     final ServletContext ctx = application;
-    /*
+    
     Collections.sort(sortedEntries, new Comparator<Map.Entry<String, Toc>>() {
         public int compare(Map.Entry<String, Toc> o1, Map.Entry<String, Toc> o2) {
             int i1 = ServletContextListenerImpl.getSequenceOrder(ctx, o1.getKey());
@@ -42,7 +42,7 @@
             }
             return o1.getValue().getLabel().compareTo(o2.getValue().getLabel());
         }
-    });*/
+    });
     for (Map.Entry<String, Toc> bundleEntry : sortedEntries) {
         TocEntry entry = bundleEntry.getValue();
         String bundle = bundleEntry.getKey();
