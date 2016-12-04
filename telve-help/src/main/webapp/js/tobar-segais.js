@@ -62,12 +62,22 @@ var TobairSegais = {
             });
         }
         
+        
         // scroll index
         var nl = $('a').filter(function() {return this.href.endsWith(url)});
         if (nl.length > 0) {
             // XXX better to do this only if not already visible
             $(nl[0]).parents('ul').show();
         }
+        
+       /*
+        // scroll index
+        var nl = $('a').filter(function() {return this.href.endsWith(url)});
+        if (nl.length > 0) {
+            // XXX better to do this only if not already visible
+            nl[0].scrollIntoView();
+        }
+        */
     },
     loadContent:function (url) {
         if (/^https?:\/\//.test(url)) {
@@ -116,7 +126,8 @@ var TobairSegais = {
       
       $('body').css(css);
       
-      $body.height($win.height() - ($top.height() + $bottom.height()) ).parent().css({'padding':0});
+      var bh = $bottom.height() ? $bottom.height() : 0;
+      $body.height($win.height() - ($top.height() + bh) ).parent().css({'padding':0});
       $sbContent.height($win.height() - $sbContent.offset().top).parent().css(css);
       $('.sidebar-nav').first().css({'border-right':'1px solid #ccc', 'border-radius':0});
       
@@ -147,6 +158,6 @@ $(document).ready(function(){
 		collapsed: true,
                 persist: "location"
     });    
-    TobairSegais.scroll(window.location.pathname);
+    //TobairSegais.scroll(window.location.pathname);
 })
 
