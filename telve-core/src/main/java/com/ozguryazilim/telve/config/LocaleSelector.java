@@ -41,6 +41,7 @@ public class LocaleSelector implements Serializable {
     private String language;
     private String country;
     private String variant;
+    //TODO: TimeZone değerleri de burada initiliaze edilebilir / seçilebilir?
 
     @PostConstruct
     public void init() {
