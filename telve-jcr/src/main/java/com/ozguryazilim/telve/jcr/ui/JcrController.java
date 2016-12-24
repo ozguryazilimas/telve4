@@ -328,7 +328,10 @@ public class JcrController {
             session.save();
             
             //View Modele de ekleyelim.
-            files.add(buildFileInfo(n));
+            FileInfo fi = buildFileInfo(n);
+            if( !files.contains(fi) ){
+               files.add(fi);
+            }
 
             LOG.info("Dosya JCR'e kondu : {}", fileName);
 
