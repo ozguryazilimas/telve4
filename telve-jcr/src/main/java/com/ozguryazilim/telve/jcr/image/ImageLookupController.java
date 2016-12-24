@@ -175,9 +175,9 @@ public class ImageLookupController implements Serializable {
         String fileNamePath = event.getFile().getFileName();
         String fileName = fileNamePath.substring(fileNamePath.lastIndexOf(File.separatorChar) + 1);
         
-        if( Strings.isNullOrEmpty(fileName)){
-            //FIXME: UI'a hata vermeli ama nasıl?
-            return;
+        if(Strings.isNullOrEmpty(keyValue)) {
+             LOG.warn("Key value is empty !");
+             throw new RepositoryException();
         }
         
         deleteImage( keyValue, contextRoot );
