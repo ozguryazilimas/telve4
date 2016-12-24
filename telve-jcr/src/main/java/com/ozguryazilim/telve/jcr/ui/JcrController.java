@@ -274,6 +274,12 @@ public class JcrController {
      * @param in
      */
     public void uploadFile(String fileName, InputStream in) {
+        
+        if( Strings.isNullOrEmpty(fileName)){
+            //FIXME: UI'a hata vermeli ama nasıl?
+            return;
+        }
+        
         Session session = getSession();
         try {
             JcrTools jcrTools = new JcrTools();
@@ -305,6 +311,11 @@ public class JcrController {
 
     public void copyFile(String fileName, InputStream in) {
 
+        if( Strings.isNullOrEmpty(fileName)){
+            //FIXME: UI'a hata vermeli ama nasıl?
+            return;
+        }
+        
         Session session = getSession();
 
         try {

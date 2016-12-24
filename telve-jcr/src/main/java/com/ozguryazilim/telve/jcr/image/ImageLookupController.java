@@ -172,10 +172,15 @@ public class ImageLookupController implements Serializable {
     public void handleFileUpload(FileUploadEvent event) throws RepositoryException {
         LOG.info("Uploaded File : {}", event.getFile().getFileName());
 
-        deleteImage( keyValue, contextRoot );
-        
         String fileNamePath = event.getFile().getFileName();
         String fileName = fileNamePath.substring(fileNamePath.lastIndexOf(File.separatorChar) + 1);
+        
+        if( Strings.isNullOrEmpty(fileName)){
+            //FIXME: UI'a hata vermeli ama nasıl?
+            return;
+        }
+        
+        deleteImage( keyValue, contextRoot );
 
         try {
 
