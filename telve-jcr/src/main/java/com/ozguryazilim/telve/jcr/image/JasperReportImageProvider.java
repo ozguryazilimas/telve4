@@ -8,14 +8,17 @@ package com.ozguryazilim.telve.jcr.image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
+import javax.enterprise.context.RequestScoped;
 
 import javax.imageio.ImageIO;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import org.apache.deltaspike.cdise.api.ContextControl;
 
 import org.apache.deltaspike.core.api.provider.BeanProvider;
+import org.apache.deltaspike.core.util.ContextUtils;
 import org.modeshape.common.text.UrlEncoder;
 import org.modeshape.jcr.api.JcrTools;
 import org.slf4j.Logger;
@@ -40,7 +43,7 @@ public class JasperReportImageProvider implements Serializable{
     private static final Logger LOG = LoggerFactory.getLogger(JasperReportImageProvider.class);
 
     private String contextRoot;
-
+    
     public JasperReportImageProvider(String contextRoot) {
         this.contextRoot = contextRoot;
     }
@@ -88,6 +91,8 @@ public class JasperReportImageProvider implements Serializable{
 
     public BufferedImage getImageById( String value ){
         //JCR'den content nodeu bulalım
+        JcrTools jcrTools = new JcrTools();
+        
         Node cn;
         BufferedImage img = null;
         try {
@@ -120,9 +125,18 @@ public class JasperReportImageProvider implements Serializable{
      * @return
      */
     protected Session getSession(){
-        return BeanProvider.getContextualReference(Session.class, true);
-    }
+        
+        //Bazen JasperReports içinde context kayboluyor
+        if( !ContextUtils.isContextActive(RequestScoped.class) ){
+            ContextControl ctxCtrl = BeanProvider.getContextualReference(ContextControl.class);
+            // this will implicitly bind a new RequestContext to your current thread
+            ctxCtrl.startContext(RequestScoped.class);
+        }
+        
 
+        return BeanProvider.getContextualReference(Session.class, false);
+    }
+    
     /**
      * Çok fazla dosya olması durumunu kontrol etmek için.
      *
