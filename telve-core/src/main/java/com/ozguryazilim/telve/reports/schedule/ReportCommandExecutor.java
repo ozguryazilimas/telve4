@@ -78,7 +78,7 @@ public class ReportCommandExecutor extends AbstractCommandExecuter<ReportCommand
         DataHandler dataHandler = new DataHandler(ds);
         
         Map<String,DataHandler> attachments = new HashMap<>();
-        attachments.put(command.getResultName(), dataHandler);
+        attachments.put(command.getResultName() + ".pdf", dataHandler);
         
         
         Map<String,Object> headers = new HashMap<>();
