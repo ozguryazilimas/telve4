@@ -15,7 +15,7 @@
     <description>Telve JCR Package</description>
 
     <properties>
-        <modeshape.version>4.6.0.Final</modeshape.version>
+        <modeshape.version>4.6.2.Final</modeshape.version>
     </properties>
 
     
