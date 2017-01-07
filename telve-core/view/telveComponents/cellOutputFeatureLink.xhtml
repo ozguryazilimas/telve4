@@ -8,6 +8,7 @@
 
     <composite:interface>
         <composite:attribute name="value" required="true"/>
+        <composite:attribute name="label" required="false"/>        
         <composite:attribute name="feature" required="false" default="true"/>
     </composite:interface>
 
@@ -15,7 +16,7 @@
         <ui:fragment rendered="#{cc.attrs.value ne null}">
             <p:commandLink id="#{cc.id}_inp" action="#{featureLinkController.go(cc.attrs.value.featureName, cc.attrs.value.id )}" process="@this" ajax="true" partialSubmit="true">
                 <i class="#{cc.attrs.value.icon}" />
-                #{messages[cc.attrs.value.caption]} - #{cc.attrs.value.businessKey}
+                    #{cc.attrs.label eq null or cc.attrs.label eq '' ? messages[cc.attrs.value.caption].concat(' - ').concat(cc.attrs.value.businessKey) : cc.attrs.label }
             </p:commandLink>
         </ui:fragment>
     </composite:implementation>
