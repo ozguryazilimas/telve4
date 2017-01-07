@@ -11,6 +11,7 @@ import com.ozguryazilim.telve.entities.AuditLog_;
 import com.ozguryazilim.telve.forms.Browse;
 import com.ozguryazilim.telve.forms.BrowseBase;
 import com.ozguryazilim.telve.query.QueryDefinition;
+import com.ozguryazilim.telve.query.columns.DateTimeColumn;
 import com.ozguryazilim.telve.query.columns.TextColumn;
 import com.ozguryazilim.telve.query.filters.DateTimeFilter;
 import com.ozguryazilim.telve.query.filters.FilterOperand;
@@ -62,7 +63,7 @@ public class AuditLogBrowse extends BrowseBase<AuditLog, AuditLog>{
                 .addFilter(new StringFilter<>(AuditLog_.user, "general.label.User"))
                 .addFilter(dtf);
         
-        queryDefinition.addColumn(new TextColumn<>(AuditLog_.date, "general.label.DateTime"),true);
+        queryDefinition.addColumn(new DateTimeColumn<>(AuditLog_.date, "general.label.DateTime"),true);
         queryDefinition.addColumn(new TextColumn<>(AuditLog_.domain, "general.label.Domain"),true);
         queryDefinition.addColumn(new TextColumn<>(AuditLog_.bizPK, "general.label.BizKey"),true);
         queryDefinition.addColumn(new TextColumn<>(AuditLog_.user, "general.label.User"),true);
