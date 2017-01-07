@@ -11,7 +11,7 @@
             <ui:insert name="content" />
         </div>
 
-        <div class="box-footer">
+        <div class="box-footer #{telveConfigResolver.getProperty('telve.framework.showFooterButtons') ne 'true' ? 'hide' : ''}">
 
             <div class="pull-right">
 
