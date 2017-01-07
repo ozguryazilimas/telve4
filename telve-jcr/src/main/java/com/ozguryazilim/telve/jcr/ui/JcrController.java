@@ -52,10 +52,14 @@ public class JcrController {
     private List<Node> folders;
     private List<FileInfo> files;
     private Map<String, String> parentMap = new HashMap<>();
+    private List<String> defaultFolders = new ArrayList<>();
+    private Boolean showContextRoot = Boolean.TRUE;
+    
+    private UrlEncoder encoder;
 
     public JcrController(String contextRoot, String sourceDomain, String sourceCaption, Long sourceId) {
 
-        UrlEncoder encoder = new UrlEncoder();
+        encoder = new UrlEncoder();
         encoder.setSlashEncoded(false);
         contextRoot = encoder.encode(contextRoot);
 
@@ -64,6 +68,34 @@ public class JcrController {
         this.sourceCaption = sourceCaption;
         this.sourceId = sourceId;
         this.selectedPath = contextRoot;
+    }
+
+    public JcrController(String contextRoot, String sourceDomain, String sourceCaption, Long sourceId, List<String> defaultFolders) {
+
+        encoder = new UrlEncoder();
+        encoder.setSlashEncoded(false);
+        contextRoot = encoder.encode(contextRoot);
+
+        this.contextRoot = contextRoot;
+        this.sourceDomain = sourceDomain;
+        this.sourceCaption = sourceCaption;
+        this.sourceId = sourceId;
+        this.selectedPath = contextRoot;
+        this.defaultFolders.addAll(defaultFolders);
+    }
+    
+    public JcrController(String contextRoot, String sourceDomain, String sourceCaption, Long sourceId, List<String> defaultFolders, Boolean showContextRoot ) {
+        encoder = new UrlEncoder();
+        encoder.setSlashEncoded(false);
+        contextRoot = encoder.encode(contextRoot);
+
+        this.contextRoot = contextRoot;
+        this.sourceDomain = sourceDomain;
+        this.sourceCaption = sourceCaption;
+        this.sourceId = sourceId;
+        this.selectedPath = contextRoot;
+        this.defaultFolders.addAll(defaultFolders);
+        this.showContextRoot = showContextRoot;
     }
 
     public String getContextRoot() {
@@ -113,17 +145,38 @@ public class JcrController {
         JcrTools jcrTools = new JcrTools();
         Node node = jcrTools.findOrCreateNode(session, getContextRoot(), "nt:folder");
 
-        popuplateFolderNodes(node);
+        if (!defaultFolders.isEmpty()) {
+            for (String df : defaultFolders) {
+                Node dfnode = jcrTools.findOrCreateNode(session, getContextRoot() + "/" + encoder.encode(df), "nt:folder");
+                LOG.debug("Default Folder Created {}", dfnode.getIdentifier());
+                if( !showContextRoot ){
+                    popuplateFolderNodes(dfnode, true);
+                }
+            }
+            session.save();
+            
+            //Populate sonrası default selection
+            if( !folders.isEmpty()){
+                setSelectedPath(folders.get(0).getPath());
+            } else {
+                setSelectedPath(getContextRoot());
+            }
+        }
+
+        if( showContextRoot ){
+            popuplateFolderNodes(node, true);
+            setSelectedPath(getContextRoot());
+        }
     }
 
-    private void popuplateFolderNodes(Node node) throws RepositoryException {
+    private void popuplateFolderNodes(Node node, boolean isRoot) throws RepositoryException {
         folders.add(node);
-        parentMap.put(node.getIdentifier(), node.getParent().getIdentifier());
+        parentMap.put(node.getIdentifier(), isRoot ? "#" : node.getParent().getIdentifier());
         NodeIterator it = node.getNodes();
         while (it.hasNext()) {
             Node n = it.nextNode();
             if (n.isNodeType("nt:folder")) {
-                popuplateFolderNodes(n);
+                popuplateFolderNodes(n, false);
             }
         }
     }
@@ -227,19 +280,18 @@ public class JcrController {
         Session session = getSession();
 
         JcrTools jcrTools = new JcrTools();
-        Node folder = jcrTools.findOrCreateNode(session, getSelectedPath() + "/" + folderName, "nt:folder");
+        Node folder = jcrTools.findOrCreateNode(session, getSelectedPath() + "/" + encoder.encode(folderName), "nt:folder");
 
         //Bir şekilde parent id yanlış geliyor. Dolayısı ile ilk ekleme sırasında sorun çıkıyor o yüzden kayıt bittikten sonra folderların hepsini yeniden çekiyoruz.
         //folders.add(folder);
         //parentMap.put(folder.getIdentifier(), folder.getParent().getIdentifier());
-
         setSelectedPath(folder.getPath());
         setSelectedId(folder.getIdentifier());
 
         LOG.info("Folder Node: {}", folder);
 
         session.save();
-        
+
         populateFolders();
 
     }
@@ -274,11 +326,15 @@ public class JcrController {
      * @param in
      */
     public void uploadFile(String fileName, InputStream in) {
+
+        if (Strings.isNullOrEmpty(fileName)) {
+            //FIXME: UI'a hata vermeli ama nasıl?
+            return;
+        }
+
         Session session = getSession();
         try {
             JcrTools jcrTools = new JcrTools();
-            UrlEncoder encoder = new UrlEncoder();
-            encoder.setSlashEncoded(false);
             fileName = encoder.encode(fileName);
 
             LOG.debug("Encoded FileName : {}", fileName);
@@ -291,10 +347,10 @@ public class JcrController {
             n.setProperty("tlv:sourceDomain", getSourceDomain());
             n.setProperty("tlv:sourceId", getSourceId());
             session.save();
-            
+
             n.getProperty("jcr:createdBy").setValue(getUserId());
             session.save();
-            
+
             LOG.debug("Dosya JCR'e kondu : {}", fullName);
         } catch (RepositoryException ex) {
             LOG.error("Reporsitory Exception", ex);
@@ -305,13 +361,16 @@ public class JcrController {
 
     public void copyFile(String fileName, InputStream in) {
 
+        if (Strings.isNullOrEmpty(fileName)) {
+            //FIXME: UI'a hata vermeli ama nasıl?
+            return;
+        }
+
         Session session = getSession();
 
         try {
             JcrTools jcrTools = new JcrTools();
 
-            UrlEncoder encoder = new UrlEncoder();
-            encoder.setSlashEncoded(false);
             fileName = encoder.encode(fileName);
 
             Node n = jcrTools.uploadFile(session, fileName, in);
@@ -321,14 +380,17 @@ public class JcrController {
             n.setProperty("tlv:sourceCaption", getSourceCaption());
             n.setProperty("tlv:sourceDomain", getSourceDomain());
             n.setProperty("tlv:sourceId", getSourceId());
-            
+
             session.save();
 
             n.getProperty("jcr:createdBy").setValue(getUserId());
             session.save();
-            
+
             //View Modele de ekleyelim.
-            files.add(buildFileInfo(n));
+            FileInfo fi = buildFileInfo(n);
+            if (!files.contains(fi)) {
+                files.add(fi);
+            }
 
             LOG.info("Dosya JCR'e kondu : {}", fileName);
 
@@ -501,9 +563,10 @@ public class JcrController {
 
     /**
      * Geriye varsa kullanıcı adı döndürür.
-     * @return 
+     *
+     * @return
      */
-    protected String getUserId(){
+    protected String getUserId() {
         //FIXME: Subject ya da ActiveUserLookup bişi düzelmeli öncelikle
 //        ActiveUserLookup aul = BeanProvider.getContextualReference(ActiveUserLookup.class, true);
 //        if( aul != null && aul.getActiveUser() != null ){
@@ -511,4 +574,10 @@ public class JcrController {
 //        }
         return "";
     }
+
+    public UrlEncoder getEncoder() {
+        return encoder;
+    }
+    
+    
 }

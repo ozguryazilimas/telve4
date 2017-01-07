@@ -46,7 +46,7 @@ public class CamundaEventHandler implements Serializable {
             if (!Strings.isNullOrEmpty(businessProcessEvent.getTask().getAssignee())) {
                 Boolean b = (Boolean) businessProcessEvent.getTask().getVariableLocal("NOTIFICATION");
                 if( b == null || b ){
-                    sendNotification( businessProcessEvent.getTask().getAssignee(), businessProcessEvent.getTask(), businessProcessEvent.getProcessDefinition(), "Assignment" );
+                    sendNotification( businessProcessEvent.getTask().getAssignee(), businessProcessEvent.getTask(), businessProcessEvent.getProcessDefinition(), "BPMTaskAssignment" );
                 }
             }
 
@@ -55,7 +55,7 @@ public class CamundaEventHandler implements Serializable {
                 Boolean b = (Boolean) businessProcessEvent.getTask().getVariable("CANDIDATE_NOTIFICATION");
                 if( ( b == null || b ) && !Strings.isNullOrEmpty( il.getUserId() ) && !il.getUserId().equals( businessProcessEvent.getTask().getAssignee())){
                     //TODO: Grup atamalarında buranın düzenlenmesi lazım.
-                    sendNotification( il.getUserId(), businessProcessEvent.getTask(), businessProcessEvent.getProcessDefinition(), "CandidateAssignment" );
+                    sendNotification( il.getUserId(), businessProcessEvent.getTask(), businessProcessEvent.getProcessDefinition(), "BPMTaskCandidateAssignment" );
                 }
             }
         }
@@ -64,11 +64,11 @@ public class CamundaEventHandler implements Serializable {
     protected void sendNotification(String userId, DelegateTask task, ProcessDefinition processDefinition, String template ) {
         NotificationCommand nc = new NotificationCommand();
 
-        nc.setNotificationClass("BPMTaskAssignment");
+        nc.setNotificationClass(template);
         nc.setSender("SYSTEM");
         nc.setSubject("messages.task.Assignment");
         nc.setTarget("cs=user;username=" + userId );
-        nc.setTemplate(template);
+        nc.setTemplate(processDefinition.getKey());
         Map<String, Object> params = new HashMap<>();
 
         //Öncelikle süreçten gelen herşeyi bir koyalım

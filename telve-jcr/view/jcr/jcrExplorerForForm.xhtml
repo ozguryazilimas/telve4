@@ -142,7 +142,7 @@
         <script>
             data = [ 
                         <ui:repeat value = "#{jcrController.folders}" var = "node" >
-                        { "id" : "#{node.identifier}", "parent" : "#{node.path eq jcrController.contextRoot ? '#' : jcrController.getParentIdentifier( node.identifier )}", "text" : "#{fn:escapeXml(node.name)}" },
+                        { "id" : "#{node.identifier}", "parent" : "#{node.path eq jcrController.contextRoot ? '#' : jcrController.getParentIdentifier( node.identifier )}", "text" : "#{fn:escapeXml(jcrController.encoder.decode(node.name))}" },
                         </ui:repeat>
 
                     ];
