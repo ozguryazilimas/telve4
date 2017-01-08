@@ -22,6 +22,7 @@ import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.config.view.navigation.NavigationParameterContext;
 import org.apache.deltaspike.core.api.literal.AnyLiteral;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
+import org.apache.deltaspike.core.util.ProxyUtils;
 
 /**
  * Browse sınıfları için taban.
@@ -109,7 +110,7 @@ public abstract class BrowseBase<E extends EntityBase, R extends ViewModel> exte
     }
 
     public Class<? extends FeatureHandler> getFeatureClass(){
-        return this.getClass().getAnnotation(Browse.class).feature();
+        return ((Browse)ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(Browse.class)).feature();
     }
     
     public FeatureHandler getFeature(){
