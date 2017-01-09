@@ -259,7 +259,10 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
         
         queryDefinition.getColumns().clear();
         for( String s : model.getColumns() ){
-            queryDefinition.getColumns().add( queryDefinition.findColumnByName(s));
+            Column< ? super E > c = queryDefinition.findColumnByName(s);
+            if( c != null ){
+                queryDefinition.getColumns().add( c );
+            }
         }
         
         //Filtre değerlerini setliyoruz
