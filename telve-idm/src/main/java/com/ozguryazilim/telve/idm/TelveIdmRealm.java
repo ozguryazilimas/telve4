@@ -412,4 +412,10 @@ public class TelveIdmRealm extends JndiLdapRealm {
         LOG.debug("User {} is created with role {}", upToken.getUsername(), getDefaultRole());
     }
 
+    @Override
+    protected AuthenticationInfo createAuthenticationInfo(AuthenticationToken token, Object ldapPrincipal, Object ldapCredentials, LdapContext ldapContext) throws NamingException {
+        return new SimpleAuthenticationInfo(new TelveSimplePrinciple(token.getPrincipal().toString()), token.getCredentials(), getName());
+    }
+
+    
 }
