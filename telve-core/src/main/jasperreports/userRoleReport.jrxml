@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="userRoleReport" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="76b5a97f-b408-4bac-aaed-bcb9cdced953">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="26"/>
+	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="title"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.2" value="pageHeader"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="pageFooter"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.4" value="columnHeader"/>
+	<style name="Kolon_basliklar" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1254"/>
+	<style name="Detail" forecolor="#000000" backcolor="#FFFFFF" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" pdfEncoding="Cp1254"/>
+	<style name="Baslik" forecolor="#003366" backcolor="#FFFFFF" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="16" isBold="true" pdfEncoding="Cp1254"/>
+	<style name="Footer_Info" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" isBold="true" pdfEncoding="Cp1254"/>
+	<subDataset name="dsUserRole" uuid="52408730-aded-4cce-b094-43fb2a3fcb23">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="NEW_DATAADAPTER.xml"/>
+		<parameter name="USER_ID" class="java.lang.Long">
+			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select  UR.ID, rd.NAME as ROLE_NAME
+from TLI_USER_ROLE ur
+LEFT OUTER JOIN TLI_ROLE rd on RD.ID = ur.ROLE_ID
+where ur.USER_ID = $P{USER_ID}]]>
+		</queryString>
+		<field name="ID" class="java.lang.Long"/>
+		<field name="ROLE_NAME" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="FIRM_TITLE" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="FIRM_LOGO" class="java.awt.image.BufferedImage" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select * from TLI_USER
+where ISACTIVE=1
+order by LOGIN_NAME]]>
+	</queryString>
+	<field name="ID" class="java.lang.Long"/>
+	<field name="ISACTIVE" class="java.lang.Boolean"/>
+	<field name="ISAUTOCREATED" class="java.lang.Boolean"/>
+	<field name="INFO" class="java.lang.String"/>
+	<field name="LOGIN_NAME" class="java.lang.String"/>
+	<field name="EMAIL" class="java.lang.String"/>
+	<field name="FIRST_NAME" class="java.lang.String"/>
+	<field name="LAST_NAME" class="java.lang.String"/>
+	<field name="PW_HASH" class="java.lang.String"/>
+	<field name="USER_TYPE" class="java.lang.String"/>
+	<field name="GROUP_ID" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="65" splitType="Stretch">
+			<textField>
+				<reportElement style="Baslik" mode="Transparent" x="0" y="0" width="343" height="20" backcolor="#FFFFFF" uuid="ca1172d3-e6ec-4f3c-9447-e08d25c675da"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{UserRoleListReport}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" mode="Opaque" x="694" y="55" width="100" height="10" uuid="68553323-caa4-43e1-b7e2-a8a55bd5e322"/>
+				<textElement textAlignment="Center">
+					<font size="7" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{FIRM_TITLE}]]></textFieldExpression>
+			</textField>
+			<image scaleImage="RetainShape" hAlign="Center">
+				<reportElement mode="Transparent" x="694" y="5" width="100" height="50" uuid="ea9acdae-1244-4b27-8500-e38c4b3766cf"/>
+				<imageExpression><![CDATA[$P{FIRM_LOGO}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="12" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<textField>
+				<reportElement style="Kolon_basliklar" x="3" y="4" width="89" height="12" uuid="778782dc-dc65-454a-9ec8-c6d7d98f1aef"/>
+				<textElement markup="none">
+					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{UserRoleReport.FirstName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Kolon_basliklar" x="199" y="4" width="100" height="12" uuid="7d87185d-dcff-4022-9d5f-56922e7ff5b2"/>
+				<textElement markup="none">
+					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{UserRoleReport.LoginName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Kolon_basliklar" x="92" y="4" width="100" height="12" uuid="7d6118d3-ad1f-44c9-a2e0-a80a5249c9f4"/>
+				<textElement markup="none">
+					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{UserRoleReport.LastName}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="16" width="797" height="1" uuid="5143436a-3459-4e8d-aee7-3ce27266311d"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Kolon_basliklar" x="350" y="4" width="59" height="12" uuid="91d1f2a7-4829-4843-852e-48177f4c4502"/>
+				<textElement markup="none">
+					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{UserRoleReport.EMail}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Kolon_basliklar" x="504" y="4" width="76" height="12" uuid="df4fe709-3efd-420a-8f66-9263b2cd9c3f"/>
+				<textElement markup="none">
+					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{UserRoleReport.UserType}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Kolon_basliklar" x="650" y="4" width="76" height="12" uuid="981751b8-c14d-424e-a4f9-346f0869ff22"/>
+				<textElement markup="none">
+					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{UserRoleReport.Roles}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField>
+				<reportElement style="Detail" x="504" y="0" width="146" height="12" uuid="128b95f6-83ec-49c9-93bc-1ed9f5d2bffb">
+					<property name="net.sf.jasperreports.export.csv.column.name" value="GEN_RESULT"/>
+					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{USER_TYPE}.equals("DOCTOR")?$R{UserRoleReport.Doctor}:
+$F{USER_TYPE}.equals("NURSE")?$R{UserRoleReport.Nurse}:
+$F{USER_TYPE}.equals("SAFETY_WORKER")?$R{UserRoleReport.SafetyWorker}:
+$F{USER_TYPE}.equals("SAFETY_SPECIALIST")?$R{UserRoleReport.Safety_Specialist}:$R{UserRoleReport.Other_Type}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement style="Detail" x="2" y="0" width="90" height="12" uuid="03896942-64fd-4b08-930a-aa1b6f3f5a31">
+					<property name="net.sf.jasperreports.export.csv.column.name" value="$R{ExaminationResult}"/>
+					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FIRST_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="91" y="0" width="101" height="12" uuid="f39361e6-6039-4e0a-aa0d-b99bf6940b9c">
+					<property name="net.sf.jasperreports.export.csv.column.name" value="PERSON_NAME"/>
+					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+				</reportElement>
+				<textElement>
+					<font fontName="DejaVu Sans" size="7" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LAST_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="198" y="0" width="146" height="12" uuid="63ee3972-edf2-4342-b334-56cd9988a9a0">
+					<property name="net.sf.jasperreports.export.csv.column.name" value="COMP_NAME"/>
+					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{LOGIN_NAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="349" y="0" width="153" height="12" uuid="a04431ea-a70d-4316-ad55-fc8eac30048d">
+					<property name="net.sf.jasperreports.export.csv.column.name" value="GEN_RESULT"/>
+					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EMAIL}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement stretchType="RelativeToTallestObject" x="650" y="0" width="152" height="12" uuid="d55d1892-bf31-45db-904d-d6d5bd82c532">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="dsUserRole" uuid="e14aa96b-f2f0-47ed-ae17-87c9397d31fc">
+						<datasetParameter name="USER_ID">
+							<datasetParameterExpression><![CDATA[$F{ID}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="12" width="152">
+						<textField>
+							<reportElement style="Detail" x="5" y="0" width="147" height="12" uuid="53a1eeda-b9e1-4008-b8c1-151072a44a51"/>
+							<textElement>
+								<font size="7"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{ROLE_NAME}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="4" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="19" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement style="Footer_Info" x="80" y="3" width="100" height="15" uuid="d508bdbf-4670-4bd0-8241-a96658cc9044"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Footer_Info" x="740" y="3" width="22" height="15" uuid="c3fe5b14-5873-4da9-af89-aadcfa5425ab"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Footer_Info" x="784" y="3" width="18" height="15" uuid="f6919960-5c9f-43ce-860e-1286a27e20c0"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Footer_Info" x="694" y="3" width="46" height="15" uuid="951cb9fc-9166-4407-b365-f1d88d95c346"/>
+				<textElement markup="none">
+					<font pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{PageNo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Footer_Info" x="768" y="3" width="16" height="15" uuid="9862838f-6cdd-46e6-b093-2e4d8d59ad05"/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="Footer_Info" x="5" y="3" width="70" height="15" uuid="16e7f9f6-2b29-49f0-86c7-eabf10388e60"/>
+				<textElement markup="none">
+					<font pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{ReportTime}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="797" height="1" uuid="1420b240-2e9b-4c1d-a384-cef8fc60244d"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageFooter>
+</jasperReport>

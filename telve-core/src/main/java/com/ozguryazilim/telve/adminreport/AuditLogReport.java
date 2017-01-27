@@ -9,9 +9,9 @@
  *  www.iova.com.tr
  */
 
-package com.ozguryazilim.telve.audit;
+package com.ozguryazilim.telve.adminreport;
 
-import com.ozguryazilim.telve.audit.AuditLogFilter;
+import com.ozguryazilim.telve.adminreport.AuditLogFilter;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;

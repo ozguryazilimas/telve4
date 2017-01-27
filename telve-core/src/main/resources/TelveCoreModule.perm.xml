@@ -18,5 +18,9 @@
             <action name="select" />
             <action name="exec" />
         </permission>
+        <permission target="userRoleReport" >
+            <action name="select" />
+            <action name="exec" />
+        </permission>
     </permissionGroup>
 </permissions>
