@@ -43,10 +43,11 @@
                                     disabled="#{cc.attrs.disabled}"
                                     placeholder="#{messages[cc.attrs.placeholder]}">
                         <p:clientValidator />
-                        <p:ajax event="itemSelect" update="#{cc.attrs.update}" />
+                        <p:ajax event="itemSelect" listener="#{cc.attrs.lookupBean.onSelect}" update="#{cc.id}_inp, #{cc.attrs.update}" partialSubmit="true" process="@this" />
                         <f:attribute name="leafSelect" value="#{cc.attrs.leafSelect}" />
                         <f:attribute name="multiSelect" value="#{cc.attrs.multiSelect}" />
                         <f:attribute name="lookupProfile" value="#{cc.attrs.lookupProfile}" />
+                        <f:attribute name="lookupListener" value="#{cc.attrs.lookupListener}" />
                     </p:autoComplete>
                     <div class="input-group-btn">
                     <p:commandButton action="#{cc.attrs.lookupBean.openDialog( cc.attrs.multiSelect, cc.attrs.leafSelect, cc.attrs.fullPath, cc.attrs.lookupProfile, cc.attrs.lookupListener, cc.attrs.value )}" 
