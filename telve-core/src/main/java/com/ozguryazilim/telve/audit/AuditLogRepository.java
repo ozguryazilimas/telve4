@@ -34,6 +34,8 @@ import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 @Dependent
 public abstract class AuditLogRepository extends RepositoryBase<AuditLog, AuditLog> implements CriteriaSupport<AuditLog> {
     
+    public abstract List<AuditLog> findByDateBetween( Date beginDate, Date endDate);
+    
     
     @Override
     public List<AuditLog> browseQuery(QueryDefinition queryDefinition) {
