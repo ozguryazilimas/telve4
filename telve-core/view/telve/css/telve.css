@@ -122,6 +122,34 @@ h3.accordion{
     right: 10px;
     top: 4px;
 }
+/*Section CSS*/
+.section{
+    /*padding: 4px 4px 4px 16px;*/
+    /*font-size: 14px;
+    color: #447799; 	
+    color: #4582ec;
+    border-bottom:   1px solid #999;
+    padding-bottom: 4px;*/
+}
+
+.section-title{
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+}
+
+.section-header{
+    display: block;
+    padding: 4px;
+    border-bottom: 1px solid #ddd;
+}
+
+.section-header > .section-tools{
+    position: absolute;
+    right: 10px;
+    top: 4px;
+}
 
 /*Primefaces css düzeltmeleri*/
 /*
@@ -394,17 +422,27 @@ textarea.ui-inputfield, .ui-selectonemenu {
     color: #3c8dbc;
 }
 
+.skin-blue .sectionIcon, .skin-blue .sectionIcon2,
+.skin-blue-light .sectionIcon, .skin-blue-light .sectionIcon2{
+    color: #3c8dbc;
+}
+
 .skin-blue .context-menu .navbar{
     background-color: #222d32;
 }
 
-.skin-blue-light .context-menu .navbar{
+.skin-blue-light .context-menu .navbar{accordion
     background-color:  #f9fafc;
     border-color: #d2d6de;
 }
 
 .skin-green .accordionIcon, .skin-green .accordionIcon2,
 .skin-green-light .accordionIcon, .skin-green-light .accordionIcon2{
+    color: #00a65a;
+}
+
+.skin-green .sectionIcon, .skin-green .sectionIcon2,
+.skin-green-light .sectionIcon, .skin-green-light .sectionIcon2{
     color: #00a65a;
 }
 
@@ -421,8 +459,12 @@ textarea.ui-inputfield, .ui-selectonemenu {
 .skin-red .accordionIcon, .skin-red .accordionIcon2,
 .skin-red-light .accordionIcon, .skin-red-light .accordionIcon2{
     color: #d73925;
-} 
+}
 
+.skin-red .sectionIcon, .skin-red .sectionIcon2,
+.skin-red-light .sectionIcon, .skin-red-light .sectionIcon2{
+    color: #d73925;
+}
 
 .skin-red .context-menu .navbar{
     background-color: #222d32;
@@ -435,6 +477,11 @@ textarea.ui-inputfield, .ui-selectonemenu {
 
 .skin-yellow .accordionIcon, .skin-yellow .accordionIcon2,
 .skin-yellow-light .accordionIcon, .skin-yellow-light .accordionIcon2{
+    color: #f39c12;
+}
+
+.skin-yellow .sectionIcon, .skin-yellow .sectionIcon2,
+.skin-yellow-light .sectionIcon, .skin-yellow-light .sectionIcon2{
     color: #f39c12;
 } 
 
@@ -451,8 +498,12 @@ textarea.ui-inputfield, .ui-selectonemenu {
 .skin-black .accordionIcon, .skin-black .accordionIcon2,
 .skin-black-light .accordionIcon, .skin-black-light .accordionIcon2{
     color: black;
-} 
+}
 
+.skin-black .sectionIcon, .skin-black .sectionIcon2,
+.skin-black-light .sectionIcon, .skin-black-light .sectionIcon2{
+    color: black;
+} 
 
 .skin-black .context-menu .navbar{
     background-color: #222d32;
@@ -467,6 +518,11 @@ textarea.ui-inputfield, .ui-selectonemenu {
 .skin-purple-light .accordionIcon, .skin-purple-light .accordionIcon2{
     color: #605ca8;
 } 
+
+.skin-purple .sectionIcon, .skin-purple .sectionIcon2,
+.skin-purple-light .sectionIcon, .skin-purple-light .sectionIcon2{
+    color: #605ca8;
+}
 
 .skin-purple .context-menu .navbar{
     background-color: #222d32;
