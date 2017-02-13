@@ -9,9 +9,10 @@
  *  www.iova.com.tr
  */
 
-package com.ozguryazilim.telve.adminreport;
+package com.ozguryazilim.telve.idm.reports;
 
 import com.ozguryazilim.telve.reports.ReportDate;
+import com.ozguryazilim.telve.idm.entities.Group;
 import java.io.Serializable;
 
 /**
@@ -24,6 +25,7 @@ public class UserRoleFilter implements Serializable {
     
     private ReportDate beginDate;
     private ReportDate endDate;
+    private Group group;
 
     public ReportDate getBeginDate() {
         return beginDate;
@@ -39,6 +41,14 @@ public class UserRoleFilter implements Serializable {
 
     public void setEndDate(ReportDate endDate) {
         this.endDate = endDate;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
     
     

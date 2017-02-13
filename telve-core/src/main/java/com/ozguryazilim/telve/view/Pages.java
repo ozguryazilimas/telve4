@@ -77,11 +77,7 @@ public interface Pages extends ViewConfig {
             class AuditLogReport implements AdminReportPages {
             }
 
-            @SecuredPage
-            @View
-            @PageTitle("report.name.userRoleReport")
-            class UserRoleReport implements AdminReportPages {
-            }
+
         }
 
         class AllOptionsPane implements Admin {

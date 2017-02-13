@@ -9,7 +9,7 @@
  *  www.iova.com.tr
  */
 
-package com.ozguryazilim.telve.adminreport;
+package com.ozguryazilim.telve.idm.reports;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -18,16 +18,15 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 
-import org.joda.time.DateTime;
 
 
 import com.ozguryazilim.telve.config.TelveConfigResolver;
+import com.ozguryazilim.telve.idm.config.IdmReportPages;
 import com.ozguryazilim.telve.messages.TelveResourceBundle;
 import com.ozguryazilim.telve.query.filters.DateValueType;
 import com.ozguryazilim.telve.reports.JasperReportBase;
 import com.ozguryazilim.telve.reports.Report;
 import com.ozguryazilim.telve.reports.ReportDate;
-import com.ozguryazilim.telve.view.Pages;
 import net.sf.jasperreports.engine.JRParameter;
 
 /**
@@ -35,7 +34,7 @@ import net.sf.jasperreports.engine.JRParameter;
  * 
  * @author Aydoğan Sel <aydogan.sel at iova.com.tr>
  */
-@Report( filterPage = Pages.Admin.AdminReportPages.UserRoleReport.class, permission="userRoleReport", path="/admin/audit", template = "userRoleReport", resource = "adminReports")
+@Report( filterPage = IdmReportPages.UserRoleReport.class, permission="userRoleReport", path="/admin/user", template = "userRoleReport", resource = "idmReports")
 public class UserRoleReport extends JasperReportBase{
 
     @Inject
@@ -56,8 +55,6 @@ public class UserRoleReport extends JasperReportBase{
 
     public void buildFilter() {
         filter = new UserRoleFilter();
-
-        DateTime dt = new DateTime();
 
         filter.setEndDate(new ReportDate(DateValueType.Today));
         filter.setBeginDate(new ReportDate(DateValueType.Yesterday));
@@ -80,6 +77,7 @@ public class UserRoleReport extends JasperReportBase{
 	    }
         }
         params.put("FIRM_TITLE", title);
+        params.put("GROUP_ID", getFilter().getGroup() == null ? 0 : getFilter().getGroup().getId());
         
         return true;
     }
@@ -87,7 +85,6 @@ public class UserRoleReport extends JasperReportBase{
     @Override
     protected void decorateI18NParams(Map<String, Object> params) {
         super.decorateI18NParams(params); //To change body of generated methods, choose Tools | Templates.
-        
         params.put(JRParameter.REPORT_RESOURCE_BUNDLE, TelveResourceBundle.getBundle());
 
     }

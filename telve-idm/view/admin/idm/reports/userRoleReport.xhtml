@@ -12,6 +12,7 @@
     
     
     <ui:define name="filter">
+        <t:inputLookupDialog value="#{bean.filter.group}" label="user.label.DomainGroup" caption="name" lookupBean="#{groupLookup}" lookupListener="userRoleReport.filter.group" columnClass="col-xs-12" />
     </ui:define>
 
 </ui:composition>

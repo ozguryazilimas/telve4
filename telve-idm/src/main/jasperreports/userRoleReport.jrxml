@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="userRoleReport" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="76b5a97f-b408-4bac-aaed-bcb9cdced953">
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="26"/>
+	<property name="ireport.zoom" value="1.2100000000000002"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="title"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.2" value="pageHeader"/>
@@ -31,10 +31,15 @@ where ur.USER_ID = $P{USER_ID}]]>
 	</parameter>
 	<parameter name="FIRM_TITLE" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="FIRM_LOGO" class="java.awt.image.BufferedImage" isForPrompting="false"/>
+	<parameter name="GROUP_ID" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select * from TLI_USER
-where ISACTIVE=1
-order by LOGIN_NAME]]>
+		<![CDATA[select tu.*, tg.NAME as GROUP_NAME from TLI_USER tu
+inner join TLI_GROUP tg on tg.ID = tu.GROUP_ID
+where tu.ISACTIVE=1
+and (( $P{GROUP_ID} = 0 ) or ( tg.ID = $P{GROUP_ID} ) )
+order by tu.LOGIN_NAME]]>
 	</queryString>
 	<field name="ID" class="java.lang.Long"/>
 	<field name="ISACTIVE" class="java.lang.Boolean"/>
@@ -47,13 +52,14 @@ order by LOGIN_NAME]]>
 	<field name="PW_HASH" class="java.lang.String"/>
 	<field name="USER_TYPE" class="java.lang.String"/>
 	<field name="GROUP_ID" class="java.lang.Long"/>
+	<field name="GROUP_NAME" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="65" splitType="Stretch">
 			<textField>
-				<reportElement style="Baslik" mode="Transparent" x="0" y="0" width="343" height="20" backcolor="#FFFFFF" uuid="ca1172d3-e6ec-4f3c-9447-e08d25c675da"/>
+				<reportElement style="Baslik" mode="Transparent" x="0" y="0" width="390" height="20" backcolor="#FFFFFF" uuid="ca1172d3-e6ec-4f3c-9447-e08d25c675da"/>
 				<textElement markup="none"/>
 				<textFieldExpression><![CDATA[$R{UserRoleListReport}]]></textFieldExpression>
 			</textField>
@@ -103,32 +109,39 @@ order by LOGIN_NAME]]>
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement style="Kolon_basliklar" x="350" y="4" width="59" height="12" uuid="91d1f2a7-4829-4843-852e-48177f4c4502"/>
+				<reportElement style="Kolon_basliklar" x="324" y="4" width="59" height="12" uuid="91d1f2a7-4829-4843-852e-48177f4c4502"/>
 				<textElement markup="none">
 					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{UserRoleReport.EMail}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Kolon_basliklar" x="504" y="4" width="76" height="12" uuid="df4fe709-3efd-420a-8f66-9263b2cd9c3f"/>
+				<reportElement style="Kolon_basliklar" x="480" y="4" width="76" height="12" uuid="df4fe709-3efd-420a-8f66-9263b2cd9c3f"/>
 				<textElement markup="none">
 					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{UserRoleReport.UserType}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Kolon_basliklar" x="650" y="4" width="76" height="12" uuid="981751b8-c14d-424e-a4f9-346f0869ff22"/>
+				<reportElement style="Kolon_basliklar" x="677" y="4" width="76" height="12" uuid="981751b8-c14d-424e-a4f9-346f0869ff22"/>
 				<textElement markup="none">
 					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{UserRoleReport.Roles}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Kolon_basliklar" x="584" y="4" width="76" height="12" uuid="81f44376-fdca-4f50-af82-d7befc89f5d0"/>
+				<textElement markup="none">
+					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{UserGroup}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="18" splitType="Stretch">
 			<textField>
-				<reportElement style="Detail" x="504" y="0" width="146" height="12" uuid="128b95f6-83ec-49c9-93bc-1ed9f5d2bffb">
+				<reportElement style="Detail" x="480" y="0" width="93" height="12" uuid="128b95f6-83ec-49c9-93bc-1ed9f5d2bffb">
 					<property name="net.sf.jasperreports.export.csv.column.name" value="GEN_RESULT"/>
 					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
 				</reportElement>
@@ -161,7 +174,7 @@ $F{USER_TYPE}.equals("SAFETY_SPECIALIST")?$R{UserRoleReport.Safety_Specialist}:$
 				<textFieldExpression><![CDATA[$F{LAST_NAME}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Detail" x="198" y="0" width="146" height="12" uuid="63ee3972-edf2-4342-b334-56cd9988a9a0">
+				<reportElement style="Detail" x="198" y="0" width="122" height="12" uuid="63ee3972-edf2-4342-b334-56cd9988a9a0">
 					<property name="net.sf.jasperreports.export.csv.column.name" value="COMP_NAME"/>
 					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
 				</reportElement>
@@ -171,7 +184,7 @@ $F{USER_TYPE}.equals("SAFETY_SPECIALIST")?$R{UserRoleReport.Safety_Specialist}:$
 				<textFieldExpression><![CDATA[$F{LOGIN_NAME}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Detail" x="349" y="0" width="153" height="12" uuid="a04431ea-a70d-4316-ad55-fc8eac30048d">
+				<reportElement style="Detail" x="323" y="0" width="153" height="12" uuid="a04431ea-a70d-4316-ad55-fc8eac30048d">
 					<property name="net.sf.jasperreports.export.csv.column.name" value="GEN_RESULT"/>
 					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
 				</reportElement>
@@ -181,7 +194,7 @@ $F{USER_TYPE}.equals("SAFETY_SPECIALIST")?$R{UserRoleReport.Safety_Specialist}:$
 				<textFieldExpression><![CDATA[$F{EMAIL}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement stretchType="RelativeToTallestObject" x="650" y="0" width="152" height="12" uuid="d55d1892-bf31-45db-904d-d6d5bd82c532">
+				<reportElement stretchType="RelativeToTallestObject" x="677" y="0" width="125" height="12" uuid="d55d1892-bf31-45db-904d-d6d5bd82c532">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
 				</reportElement>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
@@ -191,9 +204,9 @@ $F{USER_TYPE}.equals("SAFETY_SPECIALIST")?$R{UserRoleReport.Safety_Specialist}:$
 						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
-					<jr:listContents height="12" width="152">
+					<jr:listContents height="12" width="125">
 						<textField>
-							<reportElement style="Detail" x="5" y="0" width="147" height="12" uuid="53a1eeda-b9e1-4008-b8c1-151072a44a51"/>
+							<reportElement style="Detail" x="0" y="0" width="125" height="12" uuid="53a1eeda-b9e1-4008-b8c1-151072a44a51"/>
 							<textElement>
 								<font size="7"/>
 							</textElement>
@@ -202,10 +215,20 @@ $F{USER_TYPE}.equals("SAFETY_SPECIALIST")?$R{UserRoleReport.Safety_Specialist}:$
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
+			<textField>
+				<reportElement style="Detail" x="573" y="0" width="104" height="12" uuid="128fd732-7f0b-482e-bbcf-f308b0566f05">
+					<property name="net.sf.jasperreports.export.csv.column.name" value="GEN_RESULT"/>
+					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+				</reportElement>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GROUP_NAME}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="4" splitType="Stretch"/>
+		<band height="24" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
 		<band height="19" splitType="Stretch">
