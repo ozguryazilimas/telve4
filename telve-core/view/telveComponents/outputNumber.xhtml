@@ -1,0 +1,28 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:composite="http://java.sun.com/jsf/composite">
+
+
+    <composite:interface>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="label" required="true"/>
+        <composite:attribute name="columnClass" required="false" default="col-md-6 col-xs-12"/>
+        <composite:attribute name="minFraction" required="false" default="0"/>
+        <composite:attribute name="maxFraction" required="false" default="2"/>       
+    </composite:interface>
+
+    <composite:implementation>
+        <div id="#{cc.clientId}" class="disprop #{cc.attrs.columnClass}">
+            <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]} :" styleClass="name" />
+            <span class="value" style="text-align: right">
+                <h:outputText id="#{cc.id}_inp" value="#{cc.attrs.value}">
+               	<f:convertNumber groupingUsed="true" maxFractionDigits="#{cc.attrs.maxFraction}" locale="#{localeSelector.getLocaleString()}" minFractionDigits="#{cc.attrs.minFraction}"/>    
+           		</h:outputText>
+            </span>
+        </div>
+    </composite:implementation>
+
+</ui:component>
