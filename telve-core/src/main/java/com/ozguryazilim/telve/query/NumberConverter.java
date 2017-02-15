@@ -47,11 +47,11 @@ public class NumberConverter implements Converter, Serializable {
 		DecimalFormat df = new DecimalFormat();
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 		
-		Character decimalSeperator = ((String) component.getAttributes().get("decimalSeperator")).charAt(0);
-		Character thousandSeperator= ((String) component.getAttributes().get("thousandSeperator")).charAt(0);
+		Character decimalSeperator = (component.getAttributes().get("decimalSeperator").toString()).charAt(0);
+		Character thousandSeperator= (component.getAttributes().get("thousandSeperator").toString()).charAt(0);
 		
-		Integer maxFraction = Integer.parseInt((String) component.getAttributes().get("maxFraction"));
-		Integer minFraction = Integer.parseInt((String)component.getAttributes().get("minFraction"));
+		Integer maxFraction = Integer.parseInt(component.getAttributes().get("maxFraction").toString());
+		Integer minFraction = Integer.parseInt(component.getAttributes().get("minFraction").toString());
 		
 		symbols.setDecimalSeparator(decimalSeperator);
 		symbols.setGroupingSeparator(thousandSeperator);
