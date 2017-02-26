@@ -17,6 +17,7 @@ public class NavigationLinkModel implements Serializable, Comparable<NavigationL
     private String icon;
     private String label;
     private Boolean fontIcon = false;
+    private Boolean bundleKey = false;
     private Integer order;
 
     public NavigationLinkModel(String viewId, String label, String icon, Integer order ) {
@@ -24,7 +25,8 @@ public class NavigationLinkModel implements Serializable, Comparable<NavigationL
         this.icon = icon;
         this.label = label;
         this.order = order;
-        this.fontIcon = icon.startsWith("/");
+        this.fontIcon = !icon.startsWith("/");
+        this.bundleKey = icon.startsWith("feature.") || icon.startsWith("nav.icon.");
     }
 
     public NavigationLinkModel(String viewId, String label, String icon,  Boolean fontIcon, Integer order) {
@@ -67,6 +69,12 @@ public class NavigationLinkModel implements Serializable, Comparable<NavigationL
         this.fontIcon = fontIcon;
     }
 
+    public Boolean getBundleKey() {
+        return bundleKey;
+    }
+
+    
+    
     @Override
     public String toString() {
         return "NavigationLinkModel{" + "viewId=" + viewId + ", icon=" + icon + ", label=" + label + '}';

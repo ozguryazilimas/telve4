@@ -32,10 +32,10 @@ public class QueryDefinition<E, R> {
      */
     private String searchText;
     
-    private List<Filter<E, ?>> visibleFilters = new ArrayList<>();
-    private List<Filter<E, ?>> filters = new ArrayList<>();
-    private List<Filter<E, ?>> quickFilters = new ArrayList<>();
-    private List<Filter<?, ?>> extraFilters = new ArrayList<>();
+    private List<Filter<E, ?, ?>> visibleFilters = new ArrayList<>();
+    private List<Filter<E, ?, ?>> filters = new ArrayList<>();
+    private List<Filter<E, ?, ?>> quickFilters = new ArrayList<>();
+    private List<Filter<?, ?, ?>> extraFilters = new ArrayList<>();
 
     /**
      * Tüm kolonlar
@@ -65,7 +65,7 @@ public class QueryDefinition<E, R> {
      * @param required
      * @return
      */
-    public QueryDefinition<E, R> addFilter(Filter<E, ?> filter, boolean visible ) {
+    public QueryDefinition<E, R> addFilter(Filter<E, ?, ?> filter, boolean visible ) {
 
         filters.add(filter);
 
@@ -77,17 +77,17 @@ public class QueryDefinition<E, R> {
     }
 
     
-    public QueryDefinition<E, R> addFilter(Filter<E, ?> filter) {
+    public QueryDefinition<E, R> addFilter(Filter<E, ?, ?> filter) {
         return addFilter(filter, true);
     }
     
-    public QueryDefinition<E, R> addQuickFilter(Filter<E, ?> filter) {
+    public QueryDefinition<E, R> addQuickFilter(Filter<E, ?, ?> filter) {
         quickFilters.add(filter);
         addFilter(filter,false);
         return this;
     }
     
-    public QueryDefinition<E, R> addExtraFilter(Filter<?, ?> filter) {
+    public QueryDefinition<E, R> addExtraFilter(Filter<?, ?, ?> filter) {
         extraFilters.add(filter);
         return this;
     }
@@ -113,19 +113,19 @@ public class QueryDefinition<E, R> {
         return addColumn(column, false, true);
     }
 
-    public List<Filter<E, ?>> getVisibleFilters() {
+    public List<Filter<E, ?, ?>> getVisibleFilters() {
         return visibleFilters;
     }
 
-    public List<Filter<E, ?>> getFilters() {
+    public List<Filter<E, ?, ?>> getFilters() {
         return filters;
     }
 
-    public List<Filter<E, ?>> getQuickFilters() {
+    public List<Filter<E, ?, ?>> getQuickFilters() {
         return quickFilters;
     }
     
-    public List<Filter<?, ?>> getExtraFilters() {
+    public List<Filter<?, ?, ?>> getExtraFilters() {
         return extraFilters;
     }
     
@@ -262,8 +262,8 @@ public class QueryDefinition<E, R> {
      * @param name
      * @return 
      */
-    public Filter<E, ?> findFilterByName( String name ){
-        for( Filter<E, ?> c : filters ){
+    public Filter<E, ?, ?> findFilterByName( String name ){
+        for( Filter<E, ?, ?> c : filters ){
             if( c.getAttribute().getName().equals(name) ) return c;
         }
         return null;

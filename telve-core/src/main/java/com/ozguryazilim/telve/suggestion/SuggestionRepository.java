@@ -49,7 +49,7 @@ public abstract class SuggestionRepository extends RepositoryBase<SuggestionItem
     
     @Override
     public List<SuggestionItem> browseQuery(QueryDefinition queryDefinition) {
-        List<Filter<SuggestionItem, ?>> filters = queryDefinition.getFilters();
+        List<Filter<SuggestionItem, ?, ?>> filters = queryDefinition.getFilters();
         
         CriteriaBuilder criteriaBuilder = entityManager().getCriteriaBuilder();
         //Geriye PersonViewModel dönecek cq'yu ona göre oluşturuyoruz.

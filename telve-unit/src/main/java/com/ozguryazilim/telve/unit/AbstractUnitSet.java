@@ -49,12 +49,12 @@ public abstract class AbstractUnitSet implements UnitSet {
     @Override
     public final void addBaseUnit( String unitName ){
         UnitName un = new UnitName(getDimensionName(), unitName);
-        Unit u = new Unit( un, new Quantity(BigDecimal.ONE, un));
+        Unit u = new Unit( un, new QuantitativeAmount(BigDecimal.ONE, un));
         unitMap.put(un, u);
     }
     
     @Override
-    public final void addUnit( String unitName, Quantity base ){
+    public final void addUnit( String unitName, QuantitativeAmount base ){
         UnitName un = new UnitName(getDimensionName(), unitName);
         Unit u = new Unit( un, base);
         unitMap.put(un, u);

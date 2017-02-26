@@ -5,11 +5,8 @@
  */
 package com.ozguryazilim.telve.idm.role;
 
-import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
-import com.ozguryazilim.telve.admin.ui.PermissionGroupUIModel;
-import com.ozguryazilim.telve.admin.ui.PermissionUIModel;
+import com.ozguryazilim.telve.admin.ui.PermissionValueModel;
 import com.ozguryazilim.telve.audit.AuditLogCommand;
 import com.ozguryazilim.telve.audit.ChangeLogStore;
 import com.ozguryazilim.telve.auth.Identity;
@@ -19,11 +16,10 @@ import com.ozguryazilim.telve.forms.ParamEdit;
 import com.ozguryazilim.telve.idm.IdmEvent;
 import com.ozguryazilim.telve.idm.entities.Role;
 import com.ozguryazilim.telve.idm.entities.RolePermission;
-import com.ozguryazilim.telve.permisson.ActionConsts;
+import com.ozguryazilim.telve.permisson.PermissionAction;
 import com.ozguryazilim.telve.permisson.PermissionDefinition;
 import com.ozguryazilim.telve.permisson.PermissionGroup;
 import com.ozguryazilim.telve.permisson.PermissionRegistery;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,92 +48,38 @@ public class RoleHome extends ParamBase<Role, Long>{
     @Inject 
     private Event<IdmEvent>  event;
     
-    private Map<String, PermissionGroupUIModel> permissionGroups = new HashMap<>();
-    private Map<String, PermissionUIModel> permissionModels = new HashMap<>();
-
+    private Map<String, PermissionGroup> permissonMap = new HashMap<>();
+    
     private ChangeLogStore changeLogStore = new ChangeLogStore();
+    
+    private PermissionValueModel permissionValueModel = new PermissionValueModel();
     
     @PostConstruct
     public void init() {
-        buildPermissionModel();
+        permissonMap = PermissionRegistery.instance().getPermMap();
+        
     }
     
-    protected void buildPermissionModel() {
-        permissionGroups.clear();
-        for (PermissionGroup pg : PermissionRegistery.instance().getPermMap().values()) {
-            for (PermissionDefinition pd : pg.getDefinitions()) {
-                addPermissionModel(pg, pd);
-            }
-        }
-    }
-
     protected void buildPermissionModelValues() {
-        clearPermissionValues();
             
+        permissionValueModel.clear();
         changeLogStore.clear();
         
         for( RolePermission rp : getEntity().getPermissions() ){
             //FIXME: Bu kod buradan bir util sınıfa taşınmalı 
             //FIXME: şu anda sadece domain:action,action,action yapısı destekleniyor.
             
-            
+            //TODO:changeLogStore konusunu bir düşünelim.
             List<String> parts = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(rp.getPermission());
             List<String> actions = Splitter.on(',').trimResults().omitEmptyStrings().splitToList(parts.get(1));
             changeLogStore.addOldValue("permission.label." + parts.get(0), parts.get(1));
-            for( String action : actions ){
-                setPermissionValue(parts.get(0), action);
-            }
+            
+            permissionValueModel.setPermissionValues(rp.getPermission());
+            
         }
         
-        
-        
-        /*
-        for (Permission perm : getCurrentPermmissions()) {
-            setPermissionValue((String)perm.getResourceIdentifier(), perm.getOperation());
-            changeLogStore.appendOldValue("permission.label." + (String)perm.getResourceIdentifier(), perm.getOperation());
-        }*/
-        
     }
 
-    private void addPermissionModel(PermissionGroup group, PermissionDefinition pd) {
-        PermissionGroupUIModel pgm = permissionGroups.get(group.getName());
-        if (pgm == null) {
-            pgm = new PermissionGroupUIModel();
-            pgm.setName(group.getName());
-            pgm.setOrder(group.getOrder());
-            permissionGroups.put(group.getName(), pgm);
-        }
-
-        PermissionUIModel pm = new PermissionUIModel();
-        pm.setDefinition(pd);
-        pgm.getPermissions().add(pm);
-
-        //Ayrıca modellerin indeksi
-        permissionModels.put(pm.getDefinition().getTarget(), pm);
-    }
-
-    /**
-     * Daha önce atanmış bütün değerleri siler.
-     */
-    protected void clearPermissionValues() {
-        permissionModels.values().stream().forEach((pd) -> {
-            pd.clearValues();
-        });
-    }
-
-    /**
-     * Verilen target'a verilen değeri atar
-     *
-     * @param target
-     * @param action
-     */
-    protected void setPermissionValue(String target, String action) {
-        PermissionUIModel pd = permissionModels.get(target);
-        if (pd != null) {
-            pd.grantPermission(action);
-        }
-    }
-    
     @Override
     public boolean onBeforeSave() {
         //Role için code ve name aslında aynı değer. ParamBase'i kullanmak için hile yapıyoruz.
@@ -148,43 +90,14 @@ public class RoleHome extends ParamBase<Role, Long>{
         getEntity().getPermissions().clear();
         
         //Şimdi de yeni durumu ekleyelim
-        for (PermissionUIModel pd : permissionModels.values()) {
-            String domain = pd.getDefinition().getTarget();
-            List<String> actions = new ArrayList<>();
+        for (String prs : permissionValueModel.getPermissionValues()) {
             
-            if( pd.hasPermission( ActionConsts.SELECT_ACTION )){
-                actions.add(ActionConsts.SELECT_ACTION);
-            }
-            
-            if( pd.hasPermission( ActionConsts.INSERT_ACTION )){
-                actions.add(ActionConsts.INSERT_ACTION);
-            }
-            
-            if( pd.hasPermission( ActionConsts.UPDATE_ACTION )){
-                actions.add(ActionConsts.UPDATE_ACTION);
-            }
-            
-            if( pd.hasPermission( ActionConsts.DELETE_ACTION )){
-                actions.add(ActionConsts.DELETE_ACTION);
-            }
-            
-            if( pd.hasPermission( ActionConsts.EXEC_ACTION )){
-                actions.add(ActionConsts.EXEC_ACTION);
-            }
-            
-            if( pd.hasPermission( ActionConsts.EXPORT_ACTION )){
-                actions.add(ActionConsts.EXPORT_ACTION);
-            }
-            
-            String acts = Joiner.on(',').join(actions);
-            
-            if( !Strings.isNullOrEmpty(acts)){
                 RolePermission rp = new RolePermission();
                 rp.setRole(getEntity());
-                rp.setPermission(domain + ":" + acts );
+                rp.setPermission( prs );
                 getEntity().getPermissions().add(rp);
-                changeLogStore.addNewValue("permission.label." + domain, acts);
-            }
+                //FIXME: Buna bir çözüm bulunacak
+                //changeLogStore.addNewValue("permission.label." + domain, acts);
         }
         
         
@@ -217,19 +130,6 @@ public class RoleHome extends ParamBase<Role, Long>{
         return super.onAfterDelete();
     }
     
-    public List<PermissionGroupUIModel> getPermissions() {
-        List<PermissionGroupUIModel> ls = new ArrayList(permissionGroups.values());
-        ls.sort((PermissionGroupUIModel t, PermissionGroupUIModel t1) -> {
-            int result = t.getOrder().compareTo(t1.getOrder());
-            if( result == 0 ){
-                result = t.getName().compareTo(t1.getName());
-            }
-            return result;
-        });
-        return ls;
-    }
-    
-    
     @Override
     protected RepositoryBase<Role, ?> getRepository() {
         return  repository;
@@ -240,4 +140,78 @@ public class RoleHome extends ParamBase<Role, Long>{
         getAuditLogger().actionLog(getEntity().getClass().getSimpleName(), getEntity().getId(), getBizKeyValue(), AuditLogCommand.CAT_AUTH,  action, identity.getLoginName(), "", changeLogStore.getChangeValues());
     }
     
+    
+    public List<PermissionGroup> getPermissionGroups(){
+        return PermissionRegistery.instance().getPermissionGroups();
+    }
+
+    public PermissionValueModel getPermissionValueModel() {
+        return permissionValueModel;
+    }
+    
+    /**
+     * Verilen domain:action için scope değerini sıradakine setler
+     * 
+     * @param domain
+     * @param action 
+     */
+    public void setNextValue( String domain, String action ){
+       
+        PermissionDefinition pd = PermissionRegistery.instance().getPermissionMap().get(domain);
+        if( pd != null ){
+            
+            String curVal = permissionValueModel.getValue(domain, action);
+            String nextVal = "NONE";
+            
+            for( PermissionAction a : pd.getActions()){
+                if( a.getName().equals(action)){
+                    int ix = a.getScopes().indexOf(curVal);
+                    if( a.getScopes().size() <= ix + 1){
+                        nextVal = a.getScopes().get(0);
+                    } else {
+                        nextVal = a.getScopes().get(ix + 1);
+                    }
+                }
+            }
+            
+            permissionValueModel.setValue(domain, action, nextVal);
+        }
+        
+    }
+    
+    
+    public void setNextValue( String domain ){
+        PermissionDefinition pd = PermissionRegistery.instance().getPermissionMap().get(domain);
+        if( pd != null ){
+         
+            for( PermissionAction a : pd.getActions()){
+                
+                String curVal = permissionValueModel.getValue(domain, a.getName());
+                String nextVal = "NONE";
+            
+                int ix = a.getScopes().indexOf(curVal);
+                if( a.getScopes().size() <= ix + 1){
+                    nextVal = a.getScopes().get(0);
+                } else {
+                    nextVal = a.getScopes().get(ix + 1);
+                }
+                
+                permissionValueModel.setValue(domain, a.getName(), nextVal);
+            }
+            
+            
+        }
+    }
+    
+    /**
+     * Bir grup içinde bütün permissionların verilen action'nı bir sonraki değere taşır
+     * @param group
+     * @param action 
+     */
+    public void setNextActionValue( String group, String action ){
+        PermissionGroup pg = PermissionRegistery.instance().getPermMap().get(group);
+        for( PermissionDefinition pd : pg.getDefinitions()){
+            setNextValue( pd.getName(), action );
+        }
+    }
 }

@@ -42,6 +42,7 @@ public class UserService {
     private Map<String, String> userNames = new HashMap<>();
     private Map<String, List<String>> userRoles = new HashMap<>();
     private Map<String, List<String>> userGroups = new HashMap<>();
+    private Map<String, List<String>> userGroupsMembers = new HashMap<>();
     private Map<String, List<String>> userUnifiedRoles = new HashMap<>();
     private Map<String, Map<String, String>> userAttrs = new HashMap<>();
     private Map<String, UserInfo> userInfos = new HashMap<>();
@@ -213,6 +214,17 @@ public class UserService {
 
         return ls;
     }
+    
+    public List<String> getUserGroupsMembers( String loginName){
+        List<String> ls = userGroupsMembers.get(loginName);
+
+        if (ls == null) {
+            ls = populateUserGroupsMembers(loginName);
+            userGroupsMembers.put(loginName, ls);
+        }
+
+        return ls;
+    }
 
     /**
      * İsmi verilen kullanıcının varsa ismi verilen attribute'unu döndürür.
@@ -306,6 +318,16 @@ public class UserService {
 
         for (UserServiceProvider usp : userServiceProviders) {
             ls.addAll(usp.getUserGroups(loginName));
+        }
+
+        return ls;
+    }
+    
+    private List<String> populateUserGroupsMembers(String loginName) {
+        List<String> ls = new ArrayList<>();
+
+        for (UserServiceProvider usp : userServiceProviders) {
+            ls.addAll(usp.getUserGroupsMembers(loginName));
         }
 
         return ls;

@@ -8,6 +8,8 @@ package com.ozguryazilim.telve.config;
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.utils.CookieUtils;
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,6 +43,7 @@ public class LocaleSelector implements Serializable {
     private String language;
     private String country;
     private String variant;
+    //TODO: TimeZone değerleri de burada initiliaze edilebilir / seçilebilir?
 
     @PostConstruct
     public void init() {
@@ -134,6 +137,14 @@ public class LocaleSelector implements Serializable {
             }
         }
         return selectItems;
+    }
+    
+    public Character getThousandSeperator(){
+    	return DecimalFormatSymbols.getInstance(getLocale()).getGroupingSeparator();
+    }
+    
+    public Character getDecimalSeperator(){
+    	return DecimalFormatSymbols.getInstance(getLocale()).getDecimalSeparator();
     }
 
     /**

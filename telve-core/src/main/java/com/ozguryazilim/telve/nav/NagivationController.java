@@ -7,6 +7,7 @@ package com.ozguryazilim.telve.nav;
 
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.auth.SecuredPage;
+import com.ozguryazilim.telve.feature.FeatureHandler;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.NavigationHandler;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
@@ -93,10 +95,30 @@ public class NagivationController implements Serializable {
             //Şimdi gerekli modeller build ediliyor
             for (Navigation nav : ls) {
                 
-                //Eğer label boş ise sınıf adını döndürüyoruz
-                String label = Strings.isNullOrEmpty(nav.label()) ? "nav.label." + vi.getConfigClass().getSimpleName() : nav.label();
+                String label;
+                String icon;
                 
-                NavigationLinkModel nlm = new NavigationLinkModel(vi.getViewId(), label, nav.icon(), nav.order());
+                if( Strings.isNullOrEmpty(nav.label()) ){
+                    if( !nav.feature().equals(FeatureHandler.class) ){
+                        label = "feature.plural.caption." + nav.feature().getSimpleName();
+                    } else {
+                        label = "nav.label." + vi.getConfigClass().getSimpleName();
+                    }
+                } else {
+                    label = nav.label();
+                }
+                
+                if( Strings.isNullOrEmpty(nav.icon()) ){
+                    if( !nav.feature().getSimpleName().equals(NavigationHandler.class.getSimpleName()) ){
+                        icon = "feature.icon." + nav.feature().getSimpleName();
+                    } else {
+                        icon = "nav.icon." + vi.getConfigClass().getSimpleName();
+                    }
+                } else {
+                    icon = nav.icon();
+                }
+                
+                NavigationLinkModel nlm = new NavigationLinkModel(vi.getViewId(), label, icon, nav.order());
 
                 if (nav.section() == MainNavigationSection.class) {
                     mainNavigations.add(nlm);

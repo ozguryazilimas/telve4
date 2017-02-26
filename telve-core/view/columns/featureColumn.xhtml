@@ -1,0 +1,10 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    
+    <p:commandLink action="#{featureLinkController.go(item[col.name].feature, item[col.name].primaryKey )}" process="@this" ajax="true" partialSubmit="true">
+                <i class="#{featureController.getFeatureLink(item[col.name]).icon}" />
+                #{messages[featureController.getFeatureLink(item[col.name]).caption]} - #{item[col.name].businessKey}
+            </p:commandLink>
+    
+</ui:composition>

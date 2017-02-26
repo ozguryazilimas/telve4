@@ -20,7 +20,7 @@ public class UnitSetBuilder {
         return builder;
     }
     
-    public UnitSetBuilder addUnit( String unitName, Quantity base ){
+    public UnitSetBuilder addUnit( String unitName, QuantitativeAmount base ){
         unitSet.addUnit(unitName, base);
         return this;
     }

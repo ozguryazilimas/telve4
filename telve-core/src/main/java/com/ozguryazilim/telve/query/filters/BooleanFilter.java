@@ -20,7 +20,7 @@ import org.apache.deltaspike.data.api.criteria.Criteria;
  * Boolean alanlar için filtre
  * @author Hakan Uygun
  */
-public class BooleanFilter<E> extends Filter<E, Boolean>{
+public class BooleanFilter<E> extends Filter<E, Boolean, Boolean>{
 
     private String keyPrefix;
     

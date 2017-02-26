@@ -21,26 +21,34 @@ import java.util.List;
 public class PermissionGroup implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private String name;
+    private final String name;
     private Integer order;
     
-    private List<PermissionDefinition> definitions = new ArrayList<>();
+    private final List<PermissionDefinition> definitions = new ArrayList<>();
+    private final List<PermissionAction> actions = new ArrayList<>();
+
+    public PermissionGroup(String name, Integer order) {
+        this.name = name;
+        this.order = order;
+    }
 
     public List<PermissionDefinition> getDefinitions() {
         return definitions;
     }
 
-    public void setDefinitions(List<PermissionDefinition> definitions) {
-        this.definitions = definitions;
+    /**
+     * Bu grup içerisinde bulunan her action'ın listesi
+     * @return 
+     */
+    public List<PermissionAction> getActions() {
+        return actions;
     }
 
+    
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public Integer getOrder() {
         return order;

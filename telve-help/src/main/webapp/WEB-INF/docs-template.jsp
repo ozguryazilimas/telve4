@@ -79,10 +79,12 @@
     }
 %>
 <ul class="nav nav-tabs">
-    <li class="<%=contentsActive%>"><a href="#contents-nav" data-toggle="tab"><i class="icon-book"></i>Contents</a>
+    <li class="<%=contentsActive%>"><a href="#contents-nav" data-toggle="tab"><i class="icon-book"></i>İçindekiler</a>
     </li>
-    <li class="<%=indexActive%>"><a href="#index-nav" data-toggle="tab"><i class="icon-list"></i>Index</a></li>
-    <li class="<%=searchActive%>"><a href="#search-nav" data-toggle="tab"><i class="icon-search"></i>Search</a></li>
+    <%--
+    <li class="<%=indexActive%>"><a href="#index-nav" data-toggle="tab"><i class="icon-list"></i>İndex</a></li>
+    --%>
+    <li class="<%=searchActive%>"><a href="#search-nav" data-toggle="tab"><i class="icon-search"></i>Arama</a></li>
 </ul>
 
 <div class="tab-content" id="sidebar-content">

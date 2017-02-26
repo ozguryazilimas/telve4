@@ -5,7 +5,9 @@
  */
 package com.ozguryazilim.telve.nav;
 
+import com.ozguryazilim.telve.feature.FeatureHandler;
 import java.lang.annotation.ElementType;
+import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
@@ -23,6 +25,7 @@ import org.apache.deltaspike.core.api.config.view.metadata.ViewMetaData;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @ViewMetaData
+@Repeatable(Navigations.class)
 public @interface Navigation {
    
     /**
@@ -38,9 +41,11 @@ public @interface Navigation {
      * 
      * / ile başlarsa png resim olacak aksi halde fonticon olarak kabul edilecek ve sınıf olarak eklenecek.
      * 
+     * eğer boş ise nav.icon.Sınıf ismi olacak
+     * 
      * @return 
      */
-    String icon();
+    String icon() default "";
     
     /**
      * UI üzerinde hangi grup içerisinde gösterileceği.
@@ -64,4 +69,6 @@ public @interface Navigation {
      * @return 
      */
     int  order() default 50;
+    
+    Class<? extends FeatureHandler> feature() default FeatureHandler.class;
 }

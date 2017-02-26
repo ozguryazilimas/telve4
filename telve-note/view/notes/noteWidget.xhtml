@@ -1,0 +1,112 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:p="http://primefaces.org/ui">
+
+    #{noteWidget.init(featurePointer)}
+
+    <t:accordion icon="fa fa-sticky-note" id="noteW" label="general.label.Notes" columnClass="col-xs-12">
+
+        <f:facet name="toolbar">
+            <p:commandLink action="#{noteWidget.addNewNote()}" styleClass="btn btn-box-tool" update=":noteW">
+                <i class="fa fa-plus" />
+            </p:commandLink>
+        </f:facet>
+
+
+        <p:outputPanel styleClass="box-body" layout="block" rendered="#{noteWidget.editMode}">
+            <h:form id="noteForm">
+                <div class="row">
+                    <t:inputTextarea label="general.label.Note" value="#{noteWidget.note.body}" columnClass="col-xs-12"/>
+                </div>
+                <div class="box-footer">
+                    
+                    <p:commandLink styleClass="btn btn-xs" action="#{noteWidget.togglePriority()}" process="@this" update="@this">
+                        <i class="fa #{noteWidget.note.priority eq 'NORMAL' ? 'fa-square-o' : 'fa-check-square' }"/> #{messages['general.label.Important']}
+                    </p:commandLink>
+                    
+                    <ui:remove>
+                        <p:commandLink styleClass="btn btn-xs">
+                            <i class="fa fa-lock"/> Özel
+                        </p:commandLink>
+                        <div class="btn-group">
+                            <p:commandLink styleClass="btn btn-xs btn-info" type="button">
+                                <i class="fa fa-lock"/> Bilgi
+                            </p:commandLink>
+                            <p:commandLink styleClass="btn btn-xs btn-warning" type="button">
+                                <i class="fa fa-lock"/> Uyarı
+                            </p:commandLink>
+                            <p:commandLink styleClass="btn btn-xs btn-danger" type="button">
+                                <i class="fa fa-lock"/> Önemli
+                            </p:commandLink>
+                        </div>
+                    </ui:remove>
+                    <div class="pull-right text-sm">
+                        <p:commandButton value="#{messages['general.button.Ok']}" icon="fa fa-check" styleClass="btn btn-primary btn-xs" action="#{noteWidget.save()}" update=":noteW"/>
+                        <p:commandButton value="#{messages['general.button.Cancel']}" icon="fa fa-close" styleClass="btn btn-default btn-xs" action="#{noteWidget.cancel()}" update=":noteW"/>
+                    </div>
+                </div>
+            </h:form>
+        </p:outputPanel>
+
+
+        <ui:remove>
+            <div class="box-comments">
+                <ui:repeat value="#{noteWidget.notes}" var="note" >
+                    <div class="box-comment">
+                        <div class="comment-text">
+                            <span class="username text-sm">
+                                #{userLookup.getUserName(note.owner)}
+                                <span class="text-muted pull-right"><t:cellOutputDateTime value="#{note.createDate}" /></span>
+                            </span>
+                            #{note.body}
+                        </div>
+                    </div>
+                </ui:repeat>
+            </div>
+        </ui:remove>
+
+        <ui:remove>
+            <div class="box-body">
+                <ui:repeat value="#{noteWidget.notes}" var="note" >
+                    <div class="attachment-block">
+                        <div class="attachment-heading text-sm">
+
+                            #{userLookup.getUserName(note.owner)}
+                            <span class="text-muted pull-right"><t:cellOutputDateTime value="#{note.createDate}" /></span>
+
+                        </div>
+                        <div class="attachment-text">
+
+                            #{note.body}
+                        </div>
+                    </div>
+                </ui:repeat>
+            </div>
+        </ui:remove>
+
+
+        <ui:repeat value="#{noteWidget.notes}" var="note" >
+            <div class="post" style="padding: 0px;">
+
+                <div class="user-block text-sm" style="padding: 0px;">
+
+                    <p:commandLink action="#{noteWidget.delete(note)}" style="padding: 0px; border: 0px;" styleClass="btn btn-box-tool pull-right" process="@this" update=":noteW" rendered="#{identity.loginName eq note.owner}">
+                        <i class="fa fa-trash"/>
+                    </p:commandLink>
+
+                    <ui:fragment rendered="#{note.priority eq 'IMPORTANT'}" >
+                    <i class="fa fa-exclamation-circle text-red" /> 
+                    </ui:fragment> 
+                    #{userLookup.getUserName(note.owner)} - <t:cellOutputDateTime value="#{note.createDate}" />
+                </div>
+                <p>#{note.body}</p>
+            </div>
+        </ui:repeat>
+
+
+    </t:accordion>
+
+</ui:composition>

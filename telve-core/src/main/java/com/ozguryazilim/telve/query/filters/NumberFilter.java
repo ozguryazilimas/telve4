@@ -6,7 +6,6 @@
 package com.ozguryazilim.telve.query.filters;
 
 import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
 import com.ozguryazilim.telve.query.Operands;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -22,13 +21,15 @@ import org.apache.deltaspike.data.api.criteria.Criteria;
  * @param <E> Entity sınıfı
  * @param <P> Veri tipi : Integer, Double, Foat, BidDecimal v.b.
  */
-public class NumberFilter<E, P extends Number & Comparable> extends Filter<E, P> {
+public abstract class NumberFilter<E, P extends Number & Comparable> extends Filter<E, P, P> {
 
-    public NumberFilter(SingularAttribute<? super E, P> attribute, String label) {
+    public NumberFilter(SingularAttribute<? super E, P> attribute, String label, P defaultValue) {
         super(attribute, label);
 
         setOperands(Operands.getNumberOperands());
-        setOperand(FilterOperand.Equal);
+        setOperand(FilterOperand.All);
+        setValue(defaultValue);
+        setValue2(defaultValue);
     }
 
     @Override
@@ -117,17 +118,9 @@ public class NumberFilter<E, P extends Number & Comparable> extends Filter<E, P>
     public String serialize() {
         return Joiner.on("::")
                 .join(getOperand(), 
-                        getValue() == null ? "null" : getValue().getClass().getCanonicalName(), 
                         getValue() == null ? "null" : getValue());
     }
 
-    @Override
-    public void deserialize(String s) {
-        List<String> ls = Splitter.on("::").trimResults().splitToList(s);
-        setOperand(FilterOperand.valueOf(ls.get(0)));
-        //FIXME: Number bir değeri nasıl deserialize edeceğiz?
-        //Sınıf ismini nasıl kullanırız? Tip kontrolünü nasıl geçeriz?
-        //setValue(((P)Long.parseLong(ls.get(2))));
-    }
+    
     
 }

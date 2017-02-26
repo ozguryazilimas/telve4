@@ -26,7 +26,7 @@ import org.apache.deltaspike.data.api.criteria.Criteria;
  * @param <E> Filtrenin uygulanacağı Entity sınıfı
  * @param <T> Filtre olarak kullanılacak enum sınıfı
  */
-public class EnumFilter<E, T extends Enum<T> > extends Filter<E, T>{
+public class EnumFilter<E, T extends Enum<T> > extends Filter<E, T, T>{
 
     /**
      * Enum dil desteği için kullanılacak olan prefix

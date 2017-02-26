@@ -21,7 +21,7 @@ import org.apache.deltaspike.data.api.criteria.Criteria;
  * @author Hakan Uygun
  * @param <E> Entity Sınıf
  */
-public class StringFilter<E> extends Filter<E, String> {
+public class StringFilter<E> extends Filter<E, String, String> {
 
     public StringFilter(SingularAttribute< ? super E, String> attribute, String label) {
         super(attribute, label);

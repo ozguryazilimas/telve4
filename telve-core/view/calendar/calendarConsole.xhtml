@@ -62,7 +62,7 @@
         <div class="box">
             <div class="box-body no-padding">
                 <h:form>
-                    <p:schedule id="schedule" value="#{calendarHome.model}" widgetVar="telveCalendar" timeZone="GMT+2" rightHeaderTemplate="" tooltip="true" aspectRatio="2" >
+                    <p:schedule id="schedule" value="#{calendarHome.model}" widgetVar="telveCalendar" timeZone="GMT+2" locale="#{localeSelector.getLocaleString()}" rightHeaderTemplate="" tooltip="true" aspectRatio="2" >
                         <p:ajax event="eventSelect" listener="#{calendarHome.onEventSelect}" oncomplete="editEvent();"/>
                         <p:ajax event="viewChange" listener="#{calendarHome.onViewChange}" />
                     </p:schedule>

@@ -26,7 +26,7 @@ import org.apache.deltaspike.data.api.criteria.Criteria;
  * @param <E> Üzerinde sorgu yapılacak Entity sınıfı
  * @param <T> Sorgu için kullanılacak olan değer Entity Sınıfı
  */
-public class EntityFilter<E extends EntityBase, T extends EntityBase> extends Filter<E, T>{
+public class EntityFilter<E extends EntityBase, T extends EntityBase> extends Filter<E, T, T>{
 
     
     private final Class<? extends LookupControllerBase<T,?>> lookupClazz;

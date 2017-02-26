@@ -1,0 +1,29 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:composite="http://java.sun.com/jsf/composite">
+
+
+    <composite:interface>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="minFraction" required="false" default="0"/>
+        <composite:attribute name="maxFraction" required="false" default="2"/>
+        <composite:attribute name="thousandSeperator" required="false" default="#{localeSelector.getThousandSeperator()}"></composite:attribute>       
+        <composite:attribute name="decimalSeperator" required="false" default="#{localeSelector.getDecimalSeperator()}"></composite:attribute>       
+    </composite:interface>
+
+    <composite:implementation>        
+            <span class="value" style="text-align: right">
+                <h:outputText id="#{cc.id}_inp" value="#{cc.attrs.value}">
+               	<f:converter converterId="NumberConverter" />
+                <f:attribute name="decimalSeperator" value="#{cc.attrs.decimalSeperator}" />
+               	<f:attribute name="thousandSeperator" value="#{cc.attrs.thousandSeperator}" />
+               	<f:attribute name="maxFraction" value="#{cc.attrs.maxFraction}" />
+               	<f:attribute name="minFraction" value="#{cc.attrs.minFraction}"/>    
+           		</h:outputText>
+            </span>
+    </composite:implementation>
+
+</ui:component>

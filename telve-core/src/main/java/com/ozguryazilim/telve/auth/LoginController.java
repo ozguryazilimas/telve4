@@ -44,6 +44,9 @@ public class LoginController {
 
     @Inject
     private Event<LoggedInEvent> loggedInEvent;
+    
+    @Inject
+    private Identity identity;
 
     public void login() {
         Boolean result = Boolean.FALSE;
@@ -66,15 +69,16 @@ public class LoginController {
         } 
 
         if (result) {
-            auditLogger.actionLog("Login", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, currentUser.getPrincipal().toString(), "");
+            auditLogger.actionLog("Login", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, identity.getLoginName(), "");
         }
     }
 
     public String logout() {
         Subject currentUser = SecurityUtils.getSubject();
-        auditLogger.actionLog("Logout", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, currentUser.getPrincipal().toString(), "");
+        auditLogger.actionLog("Logout", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, identity.getLoginName(), "");
         currentUser.logout();
         facesContext.getExternalContext().invalidateSession();
-        return "/login.xhtml";
+        
+        return "/home.xhtml?faces-redirect=true";
     }
 }

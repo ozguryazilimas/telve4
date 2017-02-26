@@ -16,7 +16,6 @@ import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.forms.FormBase;
 import com.ozguryazilim.telve.forms.FormEdit;
 import com.ozguryazilim.telve.idm.IdmEvent;
-import com.ozguryazilim.telve.idm.config.IdmPages;
 import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Hakan Uygun
  */
-@FormEdit(browsePage = IdmPages.UserBrowse.class, editPage = IdmPages.User.class, viewContainerPage = IdmPages.UserView.class, masterViewPage = IdmPages.UserMasterView.class)
+@FormEdit( feature = UserFeature.class )
 public class UserHome extends FormBase<User, Long>{
     
     private static final Logger LOG = LoggerFactory.getLogger(UserHome.class);

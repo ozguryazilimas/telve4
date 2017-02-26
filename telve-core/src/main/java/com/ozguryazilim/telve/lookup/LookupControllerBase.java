@@ -5,29 +5,32 @@
  */
 package com.ozguryazilim.telve.lookup;
 
-import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
-import com.ozguryazilim.telve.data.RepositoryBase;
-import com.ozguryazilim.telve.entities.EntityBase;
-import com.ozguryazilim.telve.entities.ViewModel;
-import com.ozguryazilim.telve.utils.ELUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.event.Event;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.Entity;
+
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
+import com.ozguryazilim.telve.data.RepositoryBase;
+import com.ozguryazilim.telve.entities.EntityBase;
+import com.ozguryazilim.telve.entities.ViewModel;
+import com.ozguryazilim.telve.utils.ELUtils;
 
 /**
  * Lookup Controller Sınıfları için taban
@@ -43,13 +46,13 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
     private LookupModel<R, ?> model;
 
     private Map<String,List<LookupSelectListener>> listeners = new HashMap<>();
-    
+
     @Inject
     private ViewConfigResolver viewConfigResolver;
 
-    @Inject @LookupSelect 
+    @Inject @LookupSelect
     private Event<E> lookupSelectEvent;
-    
+
     @PostConstruct
     public void init() {
         initModel();
@@ -119,7 +122,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
 
         parseProfile();
         initProfile();
-        
+
         search();
     }
 
@@ -136,7 +139,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         if( model.getListener().startsWith("event:")){
             triggerListeners(model.getListener(),sl.getValue());
         }
-        
+
         //Bundan emin değilim...
         lookupSelectEvent.fire((E)sl.getValue());
     }
@@ -169,8 +172,8 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
     public void openDialog(Boolean multiSelect, Boolean leafSelect, String profile, String listener) {
         openDialog( multiSelect, leafSelect, true, profile, listener );
     }
-    
-    
+
+
     /**
      * İlgili sınıfa ait dialogu açar
      *
@@ -182,7 +185,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
     public void openDialog(Boolean multiSelect, Boolean leafSelect, Boolean fullPath, String profile, String listener) {
         openDialog( multiSelect, leafSelect, fullPath, profile, listener, null );
     }
-    
+
     /**
      * İlgili sınıfa ait dialogu açar
      *
@@ -191,7 +194,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      * @param fullPath
      * @param profile sorgu profili
      * @param listener sonuçlar nereye gidecek?
-     * @param value mevcut veri. Ağaç tipi sınıflarda seçim için 
+     * @param value mevcut veri. Ağaç tipi sınıflarda seçim için
      */
     public void openDialog(Boolean multiSelect, Boolean leafSelect, Boolean fullPath, String profile, String listener, Object value) {
         model.setMultiSelect(multiSelect);
@@ -200,49 +203,49 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         model.setListener(listener);
 
         model.setFullPathResult(fullPath);
-        
+
         model.clearSelections();
         model.setSearchText("");
         if( value != null && value instanceof EntityBase && model instanceof LookupTreeModel){
             ((LookupTreeModel)model).setSelectedNodes( ((EntityBase)value).getId().toString());
         }
-        
+
         parseProfile();
         initProfile();
-        
+
         Map<String, Object> options = new HashMap<>();
-        
+
         decorateDialog(options);
-        
+
         if( autoSearch() ){
             search();
         }
-        
+
         RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
     }
 
     /**
      * Açılacak olan diolog özellikleri setlenir.
-     * 
+     *
      * Alt sınıflar isterse bu methodu override ederk dialoğ özellikleirni değiştirebilirler.
-     * 
-     * @param options 
+     *
+     * @param options
      */
     protected void decorateDialog(Map<String, Object> options){
         options.put("modal", true);
-        //options.put("draggable", false);  
+        //options.put("draggable", false);
         options.put("resizable", false);
         options.put("contentHeight", 450);
     }
-    
+
     /**
      * Popup açıldığında otomatik arama yapmaması için override edilmeli.
-     * @return 
+     * @return
      */
     protected boolean autoSearch(){
         return true;
     }
-    
+
     /**
      * Ağaç için leafSelect modlu openDialog sürümü.
      *
@@ -253,7 +256,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
     public void openDialog(Boolean multiSelect, Boolean leafSelect, String listener) {
         openDialog(multiSelect, leafSelect, "", listener);
     }
-    
+
     /**
      * Seçim bilgisi ile birlikte dialoğu kapatır.
      *
@@ -280,14 +283,14 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
             RequestContext.getCurrentInstance().closeDialog(null);
             return;
         }
-        
+
         //eğer bir event listener var ise
         if( model.getListener().contains("event:")){
             triggerListeners(model.getListener(),sl.getValue());
         }
         //Buraya listede gelebilir
         //lookupSelectEvent.fire((E)sl.getValue());
-        
+
         RequestContext.getCurrentInstance().closeDialog(sl);
 
     }
@@ -308,7 +311,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
     protected E getEntity(R viewModel) {
         E result;
 
-        //Eğer üzerinde Entity işareti varsa view model olarak da entity kullanılmıştır. 
+        //Eğer üzerinde Entity işareti varsa view model olarak da entity kullanılmıştır.
         //Hiç arama yapmadan aynısını geri döndürüyoruz.
         if (viewModel.getClass().isAnnotationPresent(Entity.class)) {
             result = (E) viewModel;
@@ -324,7 +327,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      * Geriye kullanılacak olan model oluşturulur.
      *
      */
-    protected abstract void initModel(); 
+    protected abstract void initModel();
 
     /**
      * Veri sorgulaması yapılıp model nesnesi doldurulmalıdır.
@@ -353,33 +356,35 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      * @return
      */
     public List<E> suggest(String text) {
-        
+
         FacesContext context = FacesContext.getCurrentInstance();
         String leafSelect = (String) UIComponent.getCurrentComponent(context).getAttributes().get("leafSelect");
         String multiSelect = (String) UIComponent.getCurrentComponent(context).getAttributes().get("multiSelect");
         String lookupProfile = (String) UIComponent.getCurrentComponent(context).getAttributes().get("lookupProfile");
-        
+        String lookupListener = (String) UIComponent.getCurrentComponent(context).getAttributes().get("lookupListener");
+
         model.setLeafSelect("true".equals(leafSelect));
         model.setMultiSelect("true".equals(multiSelect));
-        
+        model.setListener(lookupListener);
+
         model.setProfile(lookupProfile);
         parseProfile();
         initProfile();
-        
+
         List<E> ls = populateSuggestData(text);
         LOG.info("Suggest List : {}", ls);
         return ls;
     }
 
     /**
-     * Alt sınıflardan override edilip sorgu mantığı değiştirilebilmesi için 
+     * Alt sınıflardan override edilip sorgu mantığı değiştirilebilmesi için
      * @param text
-     * @return 
+     * @return
      */
     protected List<E> populateSuggestData(String text){
         return model.getLeafSelect() ? getRepository().suggestionLeaf(text) : getRepository().suggestion(text);
     }
-    
+
     /**
      * Dialoglarda kullanılacak model sınıfı dondürür.
      *
@@ -407,13 +412,29 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      * @param event
      */
     public void onSelect(SelectEvent event) {
+	if(event.getObject() instanceof EntityBase) {
+	    String expression = "";
+	    if( !Strings.isNullOrEmpty(model.getListener()) && !model.getListener().contains(":")){
+		expression = "#{" + model.getListener() + "}";
+	    }
+	    if( Strings.isNullOrEmpty(expression)) {
+		return;
+	    }
+
+	    //EL üzerinden değeri yazacağız
+	    ELUtils.setObject(expression, event.getObject());
+	    return;
+	}
+
         LookupSelectTuple sl = (LookupSelectTuple) event.getObject();
         if (sl == null) {
             return;
         }
-        
-        if( sl.getExpression().isEmpty() ) return;
-        
+
+        if( sl.getExpression().isEmpty() ) {
+	    return;
+	}
+
         //EL üzerinden değeri yazacağız
         ELUtils.setObject(sl.getExpression(), sl.getValue());
 
@@ -457,16 +478,16 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
 
         return sl;
     }
-    
+
     /**
      * Geriye listelerde gösterim için hangi attributun kullanılacağı bilgisini döndürür.
-     * @return 
+     * @return
      */
     public abstract String getCaptionFieldName();
-    
+
     /**
      * Lookup için yeni bir select listener ekler.
-     * @param l 
+     * @param l
      */
     public void registerListener( String event, LookupSelectListener l ){
         List<LookupSelectListener> ls = listeners.get(event);
@@ -476,10 +497,10 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         }
         ls.add(l);
     }
-    
+
     /**
      * Lookupdan daha önce kaydedilmiş bir listener'ı çıkarır.
-     * @param l 
+     * @param l
      */
     public void unregisterListener( String event, LookupSelectListener l ){
         List<LookupSelectListener> ls = listeners.get(event);
@@ -487,10 +508,10 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
             ls.remove(l);
         }
     }
-    
+
     /**
      * Seçim sonrası listener'la mesaj gönderilir.
-     * @param o 
+     * @param o
      */
     protected void triggerListeners( String event, Object o ){
         List<LookupSelectListener> ls = listeners.get(event);
@@ -503,11 +524,11 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
 
     /**
      * Profile stringlerini parse edip properties olarak model sınıflarına koyar.
-     * 
+     *
      * Profile string formatı :
-     * 
+     *
      * key1:value1;key2:value2 şeklinde olur.
-     * 
+     *
      */
     protected void parseProfile(){
         if( model.getProfile() != null ){
@@ -518,11 +539,11 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         }
     }
 
-    
+
     public E findBy( Long pk ){
         return getRepository().findBy(pk);
     }
-    
+
     public void onRowSelect(SelectEvent event) {
         //Sadece UI tetiklesin diye var.
     }

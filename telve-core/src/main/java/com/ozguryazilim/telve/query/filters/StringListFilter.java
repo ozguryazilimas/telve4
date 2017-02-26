@@ -23,7 +23,7 @@ import org.apache.deltaspike.data.api.criteria.Criteria;
  *
  * @author Hakan Uygun
  */
-public class StringListFilter<E> extends Filter<E, String> {
+public class StringListFilter<E> extends Filter<E, String, String> {
 
     private String keyPrefix;
     private List<String> valueList;

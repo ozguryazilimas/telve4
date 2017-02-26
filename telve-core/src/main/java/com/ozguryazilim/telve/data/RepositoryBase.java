@@ -117,9 +117,9 @@ public abstract class RepositoryBase<E extends EntityBase, R extends ViewModel> 
      * @param builder
      * @param from 
      */
-    protected void decorateFilters( List<Filter<E, ?>> filters, List<Predicate> predicates, CriteriaBuilder builder, Root<E> from ){
+    protected void decorateFilters( List<Filter<E, ?,?>> filters, List<Predicate> predicates, CriteriaBuilder builder, Root<E> from ){
         
-        for( Filter<E,?> f : filters ){
+        for( Filter<E,?,?> f : filters ){
             f.decorateCriteriaQuery(predicates, builder, from);
         }
         

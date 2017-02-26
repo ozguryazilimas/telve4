@@ -20,7 +20,7 @@ import org.apache.deltaspike.data.api.criteria.Criteria;
  * @param <E> Entity sınıfı
  * @param <X> Attribute Veri sınıfı
  */
-public abstract class Filter<E, X> {
+public abstract class Filter<E, X, Y> {
    
     /**
      * Model üzerinde hangi alanı ilgilendirdiği
@@ -49,12 +49,12 @@ public abstract class Filter<E, X> {
     /**
      * Seçilen değer
      */
-    private X value;
+    private Y value;
     
     /**
      * Aralık tipi filtreler için ikinci değer
      */
-    private X value2;
+    private Y value2;
 
     public Filter( SingularAttribute<? super E, X> attribute, String label ){
         this.attribute = attribute;
@@ -101,19 +101,19 @@ public abstract class Filter<E, X> {
         this.operand = operand;
     }
 
-    public X getValue() {
+    public Y getValue() {
         return value;
     }
 
-    public void setValue(X value) {
+    public void setValue(Y value) {
         this.value = value;
     }
 
-    public X getValue2() {
+    public Y getValue2() {
         return value2;
     }
 
-    public void setValue2(X value2) {
+    public void setValue2(Y value2) {
         this.value2 = value2;
     }
     

@@ -5,7 +5,9 @@
  */
 package com.ozguryazilim.telve.unit;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,9 +23,16 @@ public class UnitSetRegistery {
         UNITSET_MAP.put(unitSet.getDimensionName(), unitSet);
     }
     
+    public static void clear(){
+        UNITSET_MAP.clear();
+    }
     
     public static UnitSet getUnitSet( String name ){
         return UNITSET_MAP.get(name);
+    }
+    
+    public static List<String> getUnitSets(){
+        return new ArrayList<>(UNITSET_MAP.keySet());
     }
     
 }

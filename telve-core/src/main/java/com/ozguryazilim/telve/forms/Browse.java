@@ -6,6 +6,7 @@
 
 package com.ozguryazilim.telve.forms;
 
+import com.ozguryazilim.telve.feature.FeatureHandler;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -13,7 +14,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import javax.enterprise.inject.Stereotype;
 import javax.inject.Named;
-import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 
 /**
@@ -27,19 +27,10 @@ import org.apache.deltaspike.core.api.scope.WindowScoped;
 @Named
 @Documented
 public @interface Browse {
+
     /**
-     * Browse view'in hangisi olduğu
+     * Browse'un hangi feature için olduğu.
      * @return 
      */
-    Class<? extends ViewConfig> browsePage();
-    /**
-     * Edit View'in hangisi olduğu
-     * @return 
-     */
-    Class<? extends ViewConfig> editPage();
-    /**
-     * View View'in hangisi olduğu
-     * @return 
-     */
-    Class<? extends ViewConfig> viewContainerPage();
+    Class<? extends FeatureHandler> feature();
 }

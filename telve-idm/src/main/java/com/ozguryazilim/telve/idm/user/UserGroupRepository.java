@@ -50,7 +50,7 @@ public abstract class UserGroupRepository extends RepositoryBase<UserGroup, User
 
     @Override
     public List<UserGroupViewModel> browseQuery(QueryDefinition queryDefinition) {
-        List<Filter<UserGroup, ?>> filters = queryDefinition.getFilters();
+        List<Filter<UserGroup, ?, ?>> filters = queryDefinition.getFilters();
         
         CriteriaBuilder criteriaBuilder = entityManager().getCriteriaBuilder();
         //Geriye AccidentAnalysisViewModel dönecek cq'yu ona göre oluşturuyoruz.

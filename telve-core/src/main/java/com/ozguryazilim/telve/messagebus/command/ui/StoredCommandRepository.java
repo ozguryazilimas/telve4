@@ -79,7 +79,7 @@ public abstract class StoredCommandRepository extends RepositoryBase<StoredComma
 
     @Override
     public List<StoredCommand> browseQuery(QueryDefinition queryDefinition) {
-        List<Filter<StoredCommand, ?>> filters = queryDefinition.getFilters();
+        List<Filter<StoredCommand, ?, ?>> filters = queryDefinition.getFilters();
         
         CriteriaBuilder criteriaBuilder = entityManager().getCriteriaBuilder();
         //Geriye PersonViewModel dönecek cq'yu ona göre oluşturuyoruz.

@@ -7,6 +7,7 @@ package com.ozguryazilim.telve.entities;
 
 import java.util.Date;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -62,7 +63,15 @@ public class Note extends EntityBase{
      * Hangi view/belgeye attach edildiği.
      */
     @Column(name = "ATTACHMENT")
+    @Deprecated
     private String attachtment;
+    
+    /**
+     * Hangi feature için bu notun girildiği. 
+     * ATTACHMENT yerine çalışacak. Fakat eski yapının korunması için attachment şimdilik duruyor.
+     */
+    @Embedded
+    private FeaturePointer featurePointer = new FeaturePointer();
     
     /**
      * info, warn, error değerleri alır.
@@ -120,10 +129,12 @@ public class Note extends EntityBase{
         this.createDate = createDate;
     }
 
+    @Deprecated
     public String getAttachtment() {
         return attachtment;
     }
 
+    @Deprecated
     public void setAttachtment(String attachtment) {
         this.attachtment = attachtment;
     }
@@ -134,6 +145,14 @@ public class Note extends EntityBase{
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public FeaturePointer getFeaturePointer() {
+        return featurePointer;
+    }
+
+    public void setFeaturePointer(FeaturePointer featurePointer) {
+        this.featurePointer = featurePointer;
     }
 
     

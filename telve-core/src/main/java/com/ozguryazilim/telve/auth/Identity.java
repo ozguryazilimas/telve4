@@ -42,6 +42,9 @@ public class Identity {
     public String getLoginName(){
         try{
             Subject currentUser = SecurityUtils.getSubject();
+            if( currentUser.getPrincipal() instanceof TelveIdmPrinciple){
+                return ((TelveIdmPrinciple)currentUser.getPrincipal()).getName();
+            }
             return currentUser.getPrincipal().toString();
         } catch ( Exception ex ){
             LOG.debug("Current User not found.", ex);
@@ -59,7 +62,7 @@ public class Identity {
         return currentUser.isPermitted( permission );
     }
     
-    
+
     /**
      * Kullanıcın gerçek adını döndürür.
      * @return 
@@ -90,6 +93,10 @@ public class Identity {
      */
     public List<String> getGroups(){
         return userService.getUserGroups(getLoginName());
+    }
+    
+    public List<String> getGroupsMembers(){
+        return userService.getUserGroupsMembers(getLoginName());
     }
     
     /**

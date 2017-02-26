@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-fragment version="3.1" id="TelveKeyCloakWebFragment" 
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-fragment_3_1.xsd">
+
+    
+    
+    <filter>
+        <filter-name>Keycloak Filter</filter-name>
+        <filter-class>org.keycloak.adapters.servlet.KeycloakOIDCFilter</filter-class>
+        <init-param>
+            <param-name>keycloak.config.skipPattern</param-name>
+            <param-value>^/(javax.faces.resource|primepush).*</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>Keycloak Filter</filter-name>
+        <url-pattern>/keycloak/*</url-pattern>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <ordering>
+        <before>
+            <others/>
+        </before>
+    </ordering> 
+    
+</web-fragment>

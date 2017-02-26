@@ -27,7 +27,7 @@ import org.joda.time.DateTime;
  * @author Hakan Uygun
  * @param <E> Filtrenin uygulanacağı Entity Sınıfı
  */
-public class TimeFilter<E> extends Filter<E, Date> {
+public class TimeFilter<E> extends Filter<E, Date, Date> {
 
     public TimeFilter(SingularAttribute<? super E, Date> attribute, String label) {
         super(attribute, label);

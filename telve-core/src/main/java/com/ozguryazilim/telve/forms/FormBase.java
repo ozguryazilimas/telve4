@@ -12,7 +12,14 @@ import com.ozguryazilim.telve.audit.AuditLogger;
 import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
+import com.ozguryazilim.telve.feature.Feature;
+import com.ozguryazilim.telve.feature.FeatureHandler;
+import com.ozguryazilim.telve.feature.Page;
+import com.ozguryazilim.telve.feature.PageType;
 import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.qualifiers.AfterLiteral;
+import com.ozguryazilim.telve.qualifiers.BeforeLiteral;
+import com.ozguryazilim.telve.qualifiers.EntityQualifierLiteral;
 import com.ozguryazilim.telve.view.PageTitleResolver;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -33,6 +40,8 @@ import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
+import org.apache.deltaspike.core.api.literal.AnyLiteral;
+import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.apache.deltaspike.core.util.ProxyUtils;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
@@ -76,6 +85,9 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     
     @Inject
     private Event<RefreshBrowserEvent> refreshBrowserEvent;
+    
+    @Inject
+    private Event<EntityChangeEvent> entityChangeEvent;
     
     @Inject
     private FacesContext facesContext;
@@ -179,6 +191,13 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             if( !onBeforeSave() ) return null;
 
             String act = entity.getId() == null ? AuditLogCommand.ACT_INSERT : AuditLogCommand.ACT_UPDATE;
+            EntityChangeAction eca = entity.getId() == null ? EntityChangeAction.INSERT : EntityChangeAction.UPDATE;
+
+
+            entityChangeEvent
+                    .select(new EntityQualifierLiteral(getRepository().getEntityClass()))
+                    .select(new BeforeLiteral())
+                    .fire(new EntityChangeEvent(getEntity(), eca ));
             
             entity = getRepository().saveAndFlush(entity);
 
@@ -187,6 +206,15 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             //Save'den sonra elde sakladığımız id'yi değiştirelim ki bir sonraki request için ortalık karışmasın ( bakınız setId )
             this.id = (PK) entity.getId();
         
+            entityChangeEvent
+                    .select(new EntityQualifierLiteral(getRepository().getEntityClass()))
+                    .select(new AfterLiteral())
+                    .fire(new EntityChangeEvent(getEntity(), eca ));
+            
+            if( eca == EntityChangeAction.INSERT ){
+                onAfterCreate();
+            }
+            
             onAfterSave();
         } catch (EntityExistsException e) {
             LOG.error("Hata : Not Unique", e);
@@ -275,6 +303,16 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     }
     
     /**
+     * Entity ilk kez kaydedildikten sonra ( INSERT ) çağrılır sadece.
+     * onAfterSave() çağırılmaya devam eder
+     * @return 
+     */
+    public boolean onAfterCreate() {
+        //Alt sınıflar için 
+        return true;
+    }
+    
+    /**
      * Entity silinmeden hemen önce atl sınıflar birşey yapmak isterlerse bu
      * methodu override edebilirler...
      * @return 
@@ -313,10 +351,20 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         try {
             
             if( !onBeforeDelete() ) return null;
+            
+            entityChangeEvent
+                    .select(new EntityQualifierLiteral(getRepository().getEntityClass()))
+                    .select(new BeforeLiteral())
+                    .fire(new EntityChangeEvent(getEntity(), EntityChangeAction.DELETE ));
 
             auditLog(AuditLogCommand.ACT_DELETE);
             //getRepository().deleteById(entity.getId());
             getRepository().remove(entity);
+            
+            entityChangeEvent
+                    .select(new EntityQualifierLiteral(getRepository().getEntityClass()))
+                    .select(new AfterLiteral())
+                    .fire(new EntityChangeEvent(getEntity(), EntityChangeAction.DELETE ));
             
             onAfterDelete();
         } catch (Exception e) {
@@ -513,14 +561,42 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         needCreateNew = false;
     }
 
+    public String getPermissionDomain() {
+        Class<? extends FeatureHandler> cls = getFeatureClass();
+        return cls.getAnnotation(Feature.class).permission();
+        //return this.getClass().getAnnotation(FormEdit.class).browsePage();
+        //return getEntity().getClass().getSimpleName();
+    }
+    
+    public Class<? extends FeatureHandler> getFeatureClass(){
+        return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).feature();
+    }
+    
+    public FeatureHandler getFeature(){
+        return BeanProvider.getContextualReference(getFeatureClass(), false, new AnyLiteral());
+    }
+    
+    protected Class<? extends ViewConfig> findPage(PageType pageType) {
+
+        Page[] pages = ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).feature().getAnnotationsByType(Page.class);
+        for (Page p : pages) {
+            if (p.type() == pageType) {
+                return p.page();
+            }
+        }
+
+        return DefaultErrorView.class;
+    }
+    
     /**
      * Geriye FormEdit annotation'ı ile tanımlanmış BrowsePage'i döndürür.
      *
      * @return
      */
     public Class<? extends ViewConfig> getBrowsePage() {
-        return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).browsePage();
+        //return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).browsePage();
         //return this.getClass().getAnnotation(FormEdit.class).browsePage();
+        return findPage(PageType.BROWSE);
     }
 
     /**
@@ -529,8 +605,9 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public Class<? extends ViewConfig> getEditPage() {
-        return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).editPage();
+        //return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).editPage();
         //return this.getClass().getAnnotation(FormEdit.class).editPage();
+        return findPage(PageType.EDIT);
     }
 
     /**
@@ -539,8 +616,9 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public Class<? extends ViewConfig> getContainerViewPage() {
-        return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).viewContainerPage();
+        //return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).viewContainerPage();
         //return this.getClass().getAnnotation(FormEdit.class).viewContainerPage();
+        return findPage(PageType.VIEW);
     }
 
     /**
@@ -549,8 +627,9 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public Class<? extends ViewConfig> getMasterViewPage() {
-        return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).masterViewPage();
+        //return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).masterViewPage();
         //return this.getClass().getAnnotation(FormEdit.class).masterViewPage();
+        return findPage(PageType.MASTER_VIEW);
     }
 
     public List<String> getSubViewList() {
@@ -638,5 +717,32 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     }
     
 
+    /**
+     * Alt sınıflar lowlevel kontrol için override edebilirler.
+     * 
+     * @return 
+     */
+    public Boolean hasInsertPermission(){
+        return identity.hasPermission(getPermissionDomain(), "insert");
+    }
+    
+    
+    /**
+     * Alt sınıflar lowlevel kontrol için override edebilirler.
+     * 
+     * @return 
+     */
+    public Boolean hasUpdatePermission(){
+        return identity.hasPermission(getPermissionDomain(), "update");
+    }
+    
+    /**
+     * Alt sınıflar lowlevel kontrol için override edebilirler.
+     * 
+     * @return 
+     */
+    public Boolean hasDeletePermission(){
+        return identity.hasPermission(getPermissionDomain(), "delete");
+    } 
     
 }

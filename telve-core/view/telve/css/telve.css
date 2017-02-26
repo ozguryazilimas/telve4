@@ -654,9 +654,11 @@ textarea.ui-inputfield, .ui-selectonemenu {
     background-size: cover !important;
 }
 
+/*
 .products-list .product-info {
     margin-left: 30px !important;
 }
+*/
 
 .btn-box-tool {
     color: #97a0b3 ! important;
@@ -705,4 +707,89 @@ textarea.ui-inputfield, .ui-selectonemenu {
 
 .content{
     padding-top: 8px ! important;
+}
+
+.ui-inputnumber input{
+    text-align: right;
+}
+
+.product-info .box-tools {
+    display: none;
+}
+
+.product-info:hover .box-tools {
+    display: inline-block;
+}
+
+
+.post .btn-box-tool {
+    display: none;
+}
+
+.post:hover .btn-box-tool {
+    display: inline-block;
+}
+
+.overlay-base{
+    position: absolute;
+    top: 0px;
+    right: -12px; 
+    font-size: 19px;
+    color: #fff;
+}
+
+.overlay-icon{
+    position: absolute;
+    top: -1px;
+    right: -10px;
+}
+
+.overlay-icon2{
+    position: absolute;
+    bottom: -18px;
+    left: 4px;
+    color: #3a87ad;
+}
+
+.fa-border{
+    background-color: inherit;
+    border-color: #fff;
+}
+
+
+.states{
+    /*padding: 8px 15px;
+    margin-bottom: 4px;*/
+    list-style: none;
+    font-size: 12px;
+}
+
+.states > li{
+    margin-left: 8px;
+    padding: 8px 15px;
+    display: block;
+    position: relative;
+    float: left;
+    background-color: #fcf8e3;
+    border-radius: 4px;
+    border : 1px solid #fbeed5;
+    color: #c09853;
+    height: 60px;
+        
+}
+
+.states > li > a.ui-widget{
+    font-size: 12px;
+    color: #555;
+}
+
+/*
+.states > li + li:before{
+    padding: 0 5px;
+    color: #ccc;
+    content: "|\00a0";
+}*/
+
+.states > li.active{
+    font-weight: bold;
 }

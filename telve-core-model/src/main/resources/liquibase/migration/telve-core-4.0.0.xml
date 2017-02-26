@@ -21,11 +21,11 @@
         </insert>
     </changeSet>
     
-   <changeSet author="haky" id="BASE-5" dbms="postgresql,oracle">
+    <changeSet author="haky" id="BASE-5" dbms="postgresql,oracle">
         <createSequence 
-                incrementBy="1"
-                sequenceName="generic_seq"
-                startValue="1"/>
+            incrementBy="1"
+            sequenceName="generic_seq"
+            startValue="1"/>
     </changeSet>
     
     <changeSet author="haky (generated)" id="1438162495087-1">
@@ -139,7 +139,23 @@
             <column name="NVAL" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    
+
+    <changeSet author="haky (generated)" id="1438162495087-20">
+        <addColumn tableName="TLV_NOTE">
+            <column name="FEATURE_BK" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1438162495087-21">
+        <addColumn tableName="TLV_NOTE">
+            <column name="FEATURE" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="haky (generated)" id="1438162495087-22">
+        <addColumn tableName="TLV_NOTE">
+            <column name="FEATURE_PK" type="BIGINT"/>
+        </addColumn>
+    </changeSet>
+            
     <changeSet author="haky (generated)" id="1438162495087-8">
         <addPrimaryKey columnNames="ID" constraintName="TLV_CALENDARPK" tableName="TLV_CALENDAR"/>
     </changeSet>

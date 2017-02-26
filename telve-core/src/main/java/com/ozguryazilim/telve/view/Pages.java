@@ -63,6 +63,11 @@ public interface Pages extends ViewConfig {
         class AuditLogBrowse implements Admin {
         };
 
+        @SecuredPage()
+        @View
+        class AuditLogClearCommand implements Admin {
+        };
+
         @Folder(name = "/admin/reports")
         public interface AdminReportPages extends Pages.Admin {
 
@@ -71,6 +76,8 @@ public interface Pages extends ViewConfig {
             @PageTitle("report.name.auditLogReport")
             class AuditLogReport implements AdminReportPages {
             }
+
+
         }
 
         class AllOptionsPane implements Admin {

@@ -57,7 +57,7 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
 
     @Override
     public List<UserViewModel> browseQuery(QueryDefinition queryDefinition) {
-        List<Filter<User, ?>> filters = queryDefinition.getFilters();
+        List<Filter<User, ?, ?>> filters = queryDefinition.getFilters();
 
         CriteriaBuilder criteriaBuilder = entityManager().getCriteriaBuilder();
         //Geriye PersonViewModel dönecek cq'yu ona göre oluşturuyoruz.
@@ -88,7 +88,7 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
                 List<Predicate> subPredicates = new ArrayList<>();
 
                 //Gelen extra filtre UserGroup bilgisi içermeli
-                Filter<?, ?> f = (Filter<?, ?>) queryDefinition.getExtraFilters().get(0);
+                Filter<?, ?, ?> f = (Filter<?, ?, ?>) queryDefinition.getExtraFilters().get(0);
                 if (f.getAttribute().equals(UserGroup_.group) && f.getValue() != null) {
                     f.decorateCriteriaQuery(subPredicates, criteriaBuilder, fromUserGroup);
                 }
@@ -110,7 +110,7 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
             //Tek bir grup tanımı var o da domainGroup üzerinde dolayısı ile UserGroup tablosuna bakılmayacak.
 
             //Gelen extra filtre UserGroup bilgisi içermeli o yüzden burada path kontrolüne kendimiz ekliyoruz.
-            Filter<?, ?> f = (Filter<?, ?>) queryDefinition.getExtraFilters().get(0);
+            Filter<?, ?, ?> f = (Filter<?, ?, ?>) queryDefinition.getExtraFilters().get(0);
             if (f.getAttribute().equals(UserGroup_.group) && f.getValue() != null) {
                 predicates.add(criteriaBuilder.like(from.get(User_.domainGroup).get(Group_.path), ((TreeNodeEntityBase) f.getValue()).getPath() + "%"));
             }
@@ -351,4 +351,28 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
         }
     }
 
+    
+    /**
+     * Kullanıcının gruplarına ve alt gruplarına üye kullanıcıların listesini döndürür.
+     * TODO: Native sorgu yerine criteria'ya çevirelim.
+     * @param loginName sorgu için baz alınacak olan kullanıcı
+     * @return 
+     */
+//  Multi Grup desteği olan durumda tüm grup üyeleri üzerinde arama yapan sorgu
+//    @Query(value = "select uu.LOGIN_NAME from TLI_USER uu\n" +
+//                    "inner join TLI_USER_GROUP ugg on uu.ID = ugg.USER_ID\n" +
+//                    "inner join TLI_GROUP gm on gm.ID = ugg.GROUP_ID\n" +
+//                    "inner join \n" +
+//                    "( SELECT concat( g.PATH , '%' ) as grpPath FROM TLI_USER u \n" +
+//                    "inner join TLI_USER_GROUP ug on u.ID = ug.USER_ID\n" +
+//                    "inner join TLI_GROUP g on ug.GROUP_ID = g.ID\n" +
+//                    "where LOGIN_NAME = ?1 ) gg on gm.PATH like gg.grpPath", isNative = true)
+    //Etki grubu üzerinden kontrol yapmak daha makul
+    @Query(value =  "select u.LOGIN_NAME FROM TLI_USER u \n" +
+                    "INNER JOIN TLI_GROUP g on u.GROUP_ID = g.ID\n" +
+                    "INNER JOIN (\n" +
+                    "SELECT concat( g.PATH , '%' ) as grpPath  FROM TLI_USER u \n" +
+                    "INNER JOIN TLI_GROUP g on u.GROUP_ID = g.ID\n" +
+                    "WHERE u.LOGIN_NAME = ?1 ) gg on g.path like gg.grpPath", isNative = true)
+    public abstract List<String> findAllGroupMembers(String loginName);
 }

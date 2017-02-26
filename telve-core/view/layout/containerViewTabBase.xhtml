@@ -7,6 +7,7 @@
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 template="/layout/primeTemplate.xhtml">
 
+    <ui:param name="dontShowContentHeader" value="true" />
 
     <f:metadata>
         <f:viewParam name="eid" value="#{bean.id}" />
@@ -17,6 +18,20 @@
             <ui:include src="/general/ajaxLoadingPopup.xhtml" />
         </ui:remove>
         <ui:insert name="includes" />
+    </ui:define>
+
+    <ui:define name="customHeader">
+        <section class="content-header">
+            
+            <ui:fragment rendered="#{viewState ne ''}" >
+                <div class="pull-right">
+                    #{viewState}
+                </div>
+            </ui:fragment>
+            <ui:insert name="state-header" />
+            <i class="fa fa-3x #{messages['feature.icon.'.concat(bean.feature.name)]} pull-left" />
+            <h1> #{ messages[pageTitleResolver.pageTitle] }  <div class="text-muted"><small>#{ viewIdentifier }</small></div></h1> 
+        </section>
     </ui:define>
 
     <ui:define name="body">
@@ -76,11 +91,21 @@
             </li>
         </ui:remove>
         <li>
-            <p:commandLink action="#{bean.create()}" title="#{messages['general.button.Add']}" ajax="false">
+            <p:commandLink action="#{bean.create()}" title="#{messages['general.button.Add']}" ajax="false" rendered="#{bean.hasInsertPermission()}">
                 <i class="fa fa-plus-circle"></i>
                 <h:outputText value=" #{messages['general.button.Add']}" />
             </p:commandLink>
         </li>
+        <li>
+            <p:commandLink action="#{bean.edit()}" title="#{messages['general.button.Edit']}" ajax="false" rendered="#{bean.hasUpdatePermission()}">
+                <i class="fa fa-pencil"></i>
+                <h:outputText value=" #{messages['general.button.Edit']}" />
+            </p:commandLink>
+        </li>
+        <ui:insert name="context-menu-2" />
+        <ui:insert name="context-menu-3" />
+        <ui:insert name="context-menu-4" />
+        <ui:insert name="context-menu-5" />
     </ui:define>
 
     <ui:define name="context-menu-right">

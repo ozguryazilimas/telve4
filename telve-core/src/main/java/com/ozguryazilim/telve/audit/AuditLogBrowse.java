@@ -11,23 +11,22 @@ import com.ozguryazilim.telve.entities.AuditLog_;
 import com.ozguryazilim.telve.forms.Browse;
 import com.ozguryazilim.telve.forms.BrowseBase;
 import com.ozguryazilim.telve.query.QueryDefinition;
+import com.ozguryazilim.telve.query.columns.DateTimeColumn;
 import com.ozguryazilim.telve.query.columns.TextColumn;
 import com.ozguryazilim.telve.query.filters.DateTimeFilter;
 import com.ozguryazilim.telve.query.filters.FilterOperand;
 import com.ozguryazilim.telve.query.filters.StringFilter;
 import com.ozguryazilim.telve.query.filters.StringListFilter;
-import com.ozguryazilim.telve.view.Pages;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
-import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 
 /**
  * AuditLog izleme tarama ekranı.
  * 
  * @author Hakan Uygun
  */
-@Browse(browsePage = Pages.Admin.AuditLogBrowse.class,editPage = DefaultErrorView.class, viewContainerPage = DefaultErrorView.class )
+@Browse( feature = AuditLogFeature.class)
 public class AuditLogBrowse extends BrowseBase<AuditLog, AuditLog>{
 
     @Inject
@@ -64,7 +63,7 @@ public class AuditLogBrowse extends BrowseBase<AuditLog, AuditLog>{
                 .addFilter(new StringFilter<>(AuditLog_.user, "general.label.User"))
                 .addFilter(dtf);
         
-        queryDefinition.addColumn(new TextColumn<>(AuditLog_.date, "general.label.DateTime"),true);
+        queryDefinition.addColumn(new DateTimeColumn<>(AuditLog_.date, "general.label.DateTime"),true);
         queryDefinition.addColumn(new TextColumn<>(AuditLog_.domain, "general.label.Domain"),true);
         queryDefinition.addColumn(new TextColumn<>(AuditLog_.bizPK, "general.label.BizKey"),true);
         queryDefinition.addColumn(new TextColumn<>(AuditLog_.user, "general.label.User"),true);

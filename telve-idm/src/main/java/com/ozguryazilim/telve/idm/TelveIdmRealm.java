@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.idm;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.idm.entities.Role;
 import com.ozguryazilim.telve.idm.entities.RolePermission;
@@ -46,15 +47,14 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Telve IdM için Shiro Realm implementasyonu
- * 
- * 
- * JndiLdap üzerinden LDAP kullanıcı doğrulaması da yapar. 
- * 
- * bu işlemler için şu seçenekler kullanılır : 
- * 
- * LDAP doğrulaması kullanacak mıyız?
- * LDAP kullanıcısı olmaması halinde veri tabanına bakacak mıyız?
- * LDAP kullanıcısını otomatik oluşturacak mıyız?
+ *
+ *
+ * JndiLdap üzerinden LDAP kullanıcı doğrulaması da yapar.
+ *
+ * bu işlemler için şu seçenekler kullanılır :
+ *
+ * LDAP doğrulaması kullanacak mıyız? LDAP kullanıcısı olmaması halinde veri
+ * tabanına bakacak mıyız? LDAP kullanıcısını otomatik oluşturacak mıyız?
  *
  * @author Hakan Uygun
  */
@@ -74,16 +74,16 @@ public class TelveIdmRealm extends JndiLdapRealm {
      * LDAP kullanıcısını otomatik oluşturacak mıyız?
      */
     private Boolean generateUser = Boolean.FALSE;
-    
+
     private String userSearchBase;
     private String userSearchFilter = "(uid={0})";
-    
+
     private String firstNameAttr = "givenName";
     private String lastNameAttr = "sn";
     private String emailAttr = "mail";
-    
+
     private String defaultRole = "";
-    
+
     private CredentialsMatcher ldapMatcher = new AllowAllCredentialsMatcher();
     private CredentialsMatcher idmMatcher = new PasswordMatcher();
 
@@ -158,9 +158,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
     public void setDefaultRole(String defaultRole) {
         this.defaultRole = defaultRole;
     }
-    
-    
-    
+
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         //null usernames are invalid
@@ -168,24 +166,49 @@ public class TelveIdmRealm extends JndiLdapRealm {
             throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
         }
 
-        String username = (String) getAvailablePrincipal(principals);
+        String username = ((TelveSimplePrinciple) getAvailablePrincipal(principals)).getName();
 
         Set<String> roleNames = null;
         Set<String> permissions = null;
 
         User user = getUserRepository().findAnyByLoginName(username);
 
-        if( "SUPERADMIN".equals(user.getUserType())){
+        if ("SUPERADMIN".equals(user.getUserType())) {
             permissions = new HashSet<>();
             permissions.add("*:*:*");
         } else {
             // Retrieve roles and permissions from database
             roleNames = getRoleNamesForUser(user);
             permissions = getPermissions(user);
+            
+
+            //$owner ve $group ile ilgili yetki zenginleştirmesi
+            String groupScope = "";
+            Set<String> scopePerms = new HashSet<>();
+            for( String p : permissions ){
+                if( p.contains("$group")){
+                    //Eğer daha önceden grup üyeleri bulunmadıysa onları bir bulalım
+                    if( Strings.isNullOrEmpty(groupScope) ){
+                        List<String> ls = getUserRepository().findAllGroupMembers( username );
+                        groupScope = Joiner.on(',').join(ls);
+                    }
+                    
+                    scopePerms.add(p.replace("$group", groupScope));
+                    
+                } else if( p.contains("$owner")){
+                    scopePerms.add(p.replace("$owner", username));
+                }
+            }
+            
+            LOG.debug("Scope Permissions {}", scopePerms);
+            if( !scopePerms.isEmpty()){
+                permissions.addAll(scopePerms);
+            }
+            
         }
-        
+
         //Normal kullanıcılar ( LDAP'tan vs gelmeyen ) kendi parolasını değiştirebilmeli.
-        if( !user.getAutoCreated()){
+        if (!user.getAutoCreated()) {
             permissions.add("PasswordEditor:*");
         }
 
@@ -197,7 +220,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 
-        SimpleAuthenticationInfo info= null;
+        SimpleAuthenticationInfo info = null;
         if (useLdap) {
             try {
                 setCredentialsMatcher(ldapMatcher);
@@ -206,7 +229,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
                 String msg = "Unsupported configured authentication mechanism";
                 throw new UnsupportedAuthenticationMechanismException(msg, e);
             } catch (javax.naming.AuthenticationException e) {
-                if( !optionalLdap ){
+                if (!optionalLdap) {
                     throw new AuthenticationException("LDAP authentication failed.", e);
                 }
             } catch (NamingException e) {
@@ -224,17 +247,17 @@ public class TelveIdmRealm extends JndiLdapRealm {
         }
 
         String password = null;
-        
+
         User user = getUserRepository().findAnyByLoginName(username);
         if (user == null) {
-            if( !useLdap || info == null ){
+            if (!useLdap || info == null) {
                 throw new UnknownAccountException("No account found for user [" + username + "]");
             } else {
                 //Eğer otomatik oluşturma istenmiyor ise hata fırlat
-                if( !generateUser ){
+                if (!generateUser) {
                     throw new UnknownAccountException("No account found for user [" + username + "]");
                 }
-                
+
                 try {
                     //FIXME: Burada kullanıcı idm veri tabanında yok ve LDAP bilgileri ile oluşturulacak.
                     createUser(upToken);
@@ -243,20 +266,20 @@ public class TelveIdmRealm extends JndiLdapRealm {
                 }
             }
         }
-        
-        if( user != null && !user.getActive()){
+
+        if (user != null && !user.getActive()) {
             throw new LockedAccountException("Account is lock for user [" + username + "]");
         }
 
         //LDAP kullanılmıyor ya da LDAP kullanıcısı olmasa da idm kullanıcı ise doğrulama yapalım.
-        if( !useLdap || ( optionalLdap && info == null )){
+        if (!useLdap || (optionalLdap && info == null)) {
             password = user.getPasswordEncodedHash();
 
             if (password == null) {
                 throw new UnknownAccountException("No account found for user [" + username + "]");
             }
 
-            info = new SimpleAuthenticationInfo(username, password.toCharArray(), getName());
+            info = new SimpleAuthenticationInfo( new TelveSimplePrinciple(username), password.toCharArray(), getName());
 
             setCredentialsMatcher(idmMatcher);
         }
@@ -333,61 +356,66 @@ public class TelveIdmRealm extends JndiLdapRealm {
     }
 
     /**
-     * LDAP'tan doğrulaması yapıldı. Dolayısı ile böyle bir kullanıcı var. Hadi onu default bir role ile oluşturalım.
-     * 
+     * LDAP'tan doğrulaması yapıldı. Dolayısı ile böyle bir kullanıcı var. Hadi
+     * onu default bir role ile oluşturalım.
+     *
      * FirstName, LastName ve Email bilgileri LDAP'tan alınacak.
-     * 
-     * @param upToken 
+     *
+     * @param upToken
      */
     protected void createUser(UsernamePasswordToken upToken) throws NamingException {
-       
-                
+
         LdapContext ldapContext = getContextFactory().getSystemLdapContext();
-        
-        
+
         SearchControls ctrls = new SearchControls();
         ctrls.setReturningAttributes(new String[]{getFirstNameAttr(), getLastNameAttr(), getEmailAttr()});
         ctrls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-        
+
         Object[] searchArguments = new Object[]{upToken.getUsername()};
-        
+
         NamingEnumeration<SearchResult> answers = ldapContext.search(getUserSearchBase(), getUserSearchFilter(), searchArguments, ctrls);
-        
-        if( !answers.hasMoreElements() ){
+
+        if (!answers.hasMoreElements()) {
             //Kullanıcı LDAP'ta tanımlı değil.
-            
+
         }
-        
+
         SearchResult result = answers.nextElement();
-        String firstName = result.getAttributes().get(getFirstNameAttr()) != null ? (String)result.getAttributes().get(getFirstNameAttr()).get() : null;
-        String lastName =  result.getAttributes().get(getLastNameAttr()) != null ? (String)result.getAttributes().get(getLastNameAttr()).get() : null;
-        String email = result.getAttributes().get(getEmailAttr()) != null ? (String)result.getAttributes().get(getEmailAttr()).get() : null;
-        
+        String firstName = result.getAttributes().get(getFirstNameAttr()) != null ? (String) result.getAttributes().get(getFirstNameAttr()).get() : null;
+        String lastName = result.getAttributes().get(getLastNameAttr()) != null ? (String) result.getAttributes().get(getLastNameAttr()).get() : null;
+        String email = result.getAttributes().get(getEmailAttr()) != null ? (String) result.getAttributes().get(getEmailAttr()).get() : null;
+
         User user = new User();
-        
+
         user.setLoginName(upToken.getUsername());
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
         user.setAutoCreated(Boolean.TRUE);
-        
+
         getUserRepository().save(user);
-        
+
         //Varsayılan bir role varsa onun da atamasını yapalım.
-        if( !Strings.isNullOrEmpty(getDefaultRole()) ){
-            
+        if (!Strings.isNullOrEmpty(getDefaultRole())) {
+
             Role r = getRoleRepository().findAnyByName(getDefaultRole());
-            
-            if( r != null ){
+
+            if (r != null) {
                 UserRole ur = new UserRole();
                 ur.setUser(user);
                 ur.setRole(r);
-                
+
                 getUserRoleRepository().save(ur);
             }
         }
-        
+
         LOG.debug("User {} is created with role {}", upToken.getUsername(), getDefaultRole());
     }
 
+    @Override
+    protected AuthenticationInfo createAuthenticationInfo(AuthenticationToken token, Object ldapPrincipal, Object ldapCredentials, LdapContext ldapContext) throws NamingException {
+        return new SimpleAuthenticationInfo(new TelveSimplePrinciple(token.getPrincipal().toString()), token.getCredentials(), getName());
+    }
+
+    
 }

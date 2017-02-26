@@ -11,6 +11,7 @@ import com.ozguryazilim.telve.entities.AuditLog_;
 import com.ozguryazilim.telve.query.QueryDefinition;
 import com.ozguryazilim.telve.query.filters.Filter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.persistence.TypedQuery;
@@ -18,6 +19,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+
+import org.apache.deltaspike.data.api.Modifying;
+import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 
@@ -30,10 +34,12 @@ import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 @Dependent
 public abstract class AuditLogRepository extends RepositoryBase<AuditLog, AuditLog> implements CriteriaSupport<AuditLog> {
     
+    public abstract List<AuditLog> findByDateBetween( Date beginDate, Date endDate);
+    
     
     @Override
     public List<AuditLog> browseQuery(QueryDefinition queryDefinition) {
-        List<Filter<AuditLog, ?>> filters = queryDefinition.getFilters();
+        List<Filter<AuditLog, ?, ?>> filters = queryDefinition.getFilters();
         
         CriteriaBuilder criteriaBuilder = entityManager().getCriteriaBuilder();
         //Geriye PersonViewModel dönecek cq'yu ona göre oluşturuyoruz.
@@ -63,4 +69,9 @@ public abstract class AuditLogRepository extends RepositoryBase<AuditLog, AuditL
 
         return resultList;
     }
+    
+    
+    @Modifying
+    @Query("delete AuditLog as al where al.date <= ?1")
+    public abstract void deleteBeforeDate( Date date );
 }
