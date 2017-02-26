@@ -43,7 +43,7 @@ public class CalendarHome implements Serializable{
             @Override
             public void loadEvents(Date start, Date end) {
                 for( String s : filterModel.getCalendarSources() ){
-                    CalendarEventController cec = (CalendarEventController) BeanProvider.getContextualReference(s);
+                    CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(s);
                     cec.loadEvents(this, start, end);
                 }
             }
@@ -66,14 +66,14 @@ public class CalendarHome implements Serializable{
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         String eventSource = params.get("eventSource");
         
-        CalendarEventController cec = (CalendarEventController) BeanProvider.getContextualReference(eventSource);
+        CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(eventSource);
         cec.createEvent();
     }
     
     public void editEvent(){
         CalendarEventMetadata ce = (CalendarEventMetadata)selectedEvent.getData();
         
-        CalendarEventController cec = (CalendarEventController) BeanProvider.getContextualReference(ce.getSourceName());
+        CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(ce.getSourceName());
         cec.process( ce );
     }
     
@@ -81,7 +81,7 @@ public class CalendarHome implements Serializable{
         selectedEvent = (ScheduleEvent) selectEvent.getObject();
         CalendarEventMetadata ce = (CalendarEventMetadata)selectedEvent.getData();
         
-        CalendarEventController cec = (CalendarEventController) BeanProvider.getContextualReference(ce.getSourceName());
+        CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(ce.getSourceName());
         cec.process( ce );
     }
     

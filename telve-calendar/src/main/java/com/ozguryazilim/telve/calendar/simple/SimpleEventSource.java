@@ -6,11 +6,11 @@
 package com.ozguryazilim.telve.calendar.simple;
 
 import com.ozguryazilim.telve.auth.Identity;
-import com.ozguryazilim.telve.calendar.AbtsractCalendarEventSource;
-import com.ozguryazilim.telve.calendar.CalendarEventSource;
+import com.ozguryazilim.telve.calendar.AbtsractStorableCalendarEventSource;
+import com.ozguryazilim.telve.calendar.annotations.CalendarEventSource;
+import com.ozguryazilim.telve.calendar.config.CalendarPages;
 import com.ozguryazilim.telve.contact.Contact;
 import com.ozguryazilim.telve.entities.CalendarEvent;
-import com.ozguryazilim.telve.view.Pages;
 import java.io.Serializable;
 import javax.inject.Inject;
 import org.joda.time.DateTime;
@@ -20,8 +20,8 @@ import org.joda.time.DateTime;
  * 
  * @author Hakan Uygun
  */
-@CalendarEventSource( hasDialog = true, creatable = true, dialogPage = Pages.Calendar.SimpleEventDialog.class, styleClass = "tlv-yellow" )
-public class SimpleEventSource extends AbtsractCalendarEventSource<SimpleEvent> implements Serializable{
+@CalendarEventSource( hasDialog = true, creatable = true, dialogPage = CalendarPages.SimpleEventDialog.class, styleClass = "tlv-yellow" )
+public class SimpleEventSource extends AbtsractStorableCalendarEventSource<SimpleEvent> implements Serializable{
 
     @Inject
     private Identity identity;

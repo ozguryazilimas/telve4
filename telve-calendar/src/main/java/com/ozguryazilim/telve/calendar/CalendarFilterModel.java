@@ -140,6 +140,6 @@ public class CalendarFilterModel implements Serializable {
     }
     
     public Boolean getIsSourceSelected( String name ){
-        return calendarSources.contains(name);
+        return getCalendarSources().contains(name);
     }
 }

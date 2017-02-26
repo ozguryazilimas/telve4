@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.calendar;
 
+import com.ozguryazilim.telve.calendar.annotations.CalendarEventSource;
 import com.google.common.base.CaseFormat;
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.spi.Extension;

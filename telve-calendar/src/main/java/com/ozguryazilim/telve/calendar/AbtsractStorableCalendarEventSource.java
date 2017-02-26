@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.calendar;
 
+import com.ozguryazilim.telve.calendar.annotations.CalendarEventSource;
 import com.google.gson.Gson;
 import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.entities.CalendarEvent;
@@ -33,7 +34,7 @@ import org.primefaces.model.ScheduleEvent;
  * @author Hakan Uygun
  * @param <E> EventData model sınıf
  */
-public abstract class AbtsractCalendarEventSource<E> implements CalendarEventController, Serializable{
+public abstract class AbtsractStorableCalendarEventSource<E> implements com.ozguryazilim.telve.calendar.CalendarEventSource, Serializable{
 
     @Inject
     private ViewConfigResolver viewConfigResolver;

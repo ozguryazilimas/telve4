@@ -15,6 +15,7 @@
         </ui:remove>
         <ui:insert name="includes" />
 
+        
         <p:dialog id="calendarFilterPopup"  header="#{messages['module.caption.CalendarFilterPopup']}" widgetVar="calendarFilterPopup" modal="true" width="420" height="300">
 
             <h:form id="filterPopup">
@@ -46,12 +47,10 @@
                 </div>
             </h:form>
         </p:dialog>
+            
     </ui:define>
 
-    <h:form id="actionForm">
-        <p:remoteCommand name="newEvent"  actionListener="#{calendarHome.newEvent}" />
-        <p:remoteCommand name="editEvent" actionListener="#{calendarHome.editEvent}" />
-    </h:form>
+    
 
 
     <ui:define name="body">
@@ -59,21 +58,30 @@
 
         <ui:include src="/layout/messages.xhtml"/>
 
+        <h:form id="actionForm">
+            <p:remoteCommand name="newEvent"  actionListener="#{calendarHome.newEvent}" />
+            <p:remoteCommand name="editEvent" actionListener="#{calendarHome.editEvent}" />
+        </h:form>
+        
         <div class="box">
             <div class="box-body no-padding">
+                
                 <h:form>
-                    <p:schedule id="schedule" value="#{calendarHome.model}" widgetVar="telveCalendar" timeZone="GMT+2" locale="#{localeSelector.getLocaleString()}" rightHeaderTemplate="" tooltip="true" aspectRatio="2" >
+                    <p:schedule id="schedule" value="#{calendarHome.model}" widgetVar="telveCalendar" timeZone="GMT+3" locale="#{localeSelector.getLocaleString()}" rightHeaderTemplate="" tooltip="true" aspectRatio="2" >
                         <p:ajax event="eventSelect" listener="#{calendarHome.onEventSelect}" oncomplete="editEvent();"/>
                         <p:ajax event="viewChange" listener="#{calendarHome.onViewChange}" />
                     </p:schedule>
                 </h:form>
 
             </div>
+            
+            
         </div>
 
     </ui:define>
 
     <ui:define name="context-menu">
+        <ui:remove>
         <li>
             <p:commandLink id="newEvent"  action="#{calendarHome.newEvent}" >
                 <f:param name="eventSource" value="simpleEventSource" />
@@ -81,6 +89,7 @@
                 <span>#{messages['calendar.button.SimpleEvent']}</span>
             </p:commandLink>
         </li>
+            </ui:remove>
         <li>
             <a href="#" onclick="PF('telveCalendar').jqc.fullCalendar('changeView', 'month');" >
                 <h:graphicImage value="/img/ribbon/small/calendar_month.png" />

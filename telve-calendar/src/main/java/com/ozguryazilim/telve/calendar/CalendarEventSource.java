@@ -15,7 +15,7 @@ import org.primefaces.model.ScheduleEvent;
  * 
  * @author Hakan Uygun
  */
-public interface CalendarEventController {
+public interface CalendarEventSource {
     
     /**
      * Yeni event oluşturmak için çağrılır.

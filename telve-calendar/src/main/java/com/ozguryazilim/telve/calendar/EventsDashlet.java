@@ -98,13 +98,13 @@ public class EventsDashlet extends AbstractDashlet{
     
     protected void populateEvents( List<ScheduleEvent> list, Date start, Date end ){
         for( String s : filterModel.getCalendarSources() ){
-            CalendarEventController cec = (CalendarEventController) BeanProvider.getContextualReference(s);
+            CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(s);
             list.addAll( cec.getEvents(start, end));
         }
     }
 
     public void onEventSelect(CalendarEventMetadata metadata) {
-        CalendarEventController cec = (CalendarEventController) BeanProvider.getContextualReference(metadata.getSourceName());
+        CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(metadata.getSourceName());
         cec.process( metadata );
     }
 }

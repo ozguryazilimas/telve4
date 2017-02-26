@@ -6,12 +6,10 @@
 package com.ozguryazilim.telve.bpm.calendar;
 
 import com.ozguryazilim.telve.auth.Identity;
-import com.ozguryazilim.telve.calendar.CalendarEventController;
+import com.ozguryazilim.telve.calendar.AbstractCalendarEventSource;
 import com.ozguryazilim.telve.calendar.CalendarEventMetadata;
-import com.ozguryazilim.telve.calendar.CalendarEventSource;
 import com.ozguryazilim.telve.calendar.CalendarFilterModel;
-import com.ozguryazilim.telve.view.Pages;
-import java.io.Serializable;
+import com.ozguryazilim.telve.calendar.annotations.CalendarEventSource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +19,6 @@ import javax.inject.Inject;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Task;
 import org.primefaces.model.DefaultScheduleEvent;
-import org.primefaces.model.LazyScheduleModel;
 import org.primefaces.model.ScheduleEvent;
 
 /**
@@ -29,10 +26,11 @@ import org.primefaces.model.ScheduleEvent;
  * 
  * Üzerinde tarih bulunan human task'ları takvimde göstermek için.
  * 
+ * 
  * @author Hakan Uygun
  */
-@CalendarEventSource( hasDialog = false, creatable = false, dialogPage = Pages.Calendar.SimpleEventDialog.class, styleClass = "tlv-yellow" )
-public class TaskEventSource implements CalendarEventController, Serializable{
+@CalendarEventSource( hasDialog = false, creatable = false )
+public class TaskEventSource extends AbstractCalendarEventSource{
 
     @Inject
     private Identity identity;
@@ -44,25 +42,12 @@ public class TaskEventSource implements CalendarEventController, Serializable{
     private CalendarFilterModel filterModel;
     
     @Override
-    public void createEvent() {
-        throw new UnsupportedOperationException("Not supported."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void process(CalendarEventMetadata event) {
         FacesContext fc = FacesContext.getCurrentInstance();
         NavigationHandler nh = fc.getApplication().getNavigationHandler();
         nh.handleNavigation(fc, null, "/bpm/taskConsole.xhtml" + "?faces-redirect=true&task=" + event.getSourceKey());
     }
 
-    @Override
-    public void loadEvents(LazyScheduleModel model, Date start, Date end) {
-        List<ScheduleEvent> events = getEvents( start, end );
-        
-        for( ScheduleEvent e : events ){
-            model.addEvent(e);
-        }
-    }
 
     @Override
     public List<ScheduleEvent> getEvents(Date start, Date end) {
@@ -73,7 +58,7 @@ public class TaskEventSource implements CalendarEventController, Serializable{
                     .dueAfter(start)
                     .orderByTaskPriority().asc()
                     .orderByDueDate().asc()
-                    .listPage(0, 10);
+                    .listPage(0, 50);
         
         List<ScheduleEvent> ls = new ArrayList<>();
         for( Task t : tasks ){
@@ -109,4 +94,5 @@ public class TaskEventSource implements CalendarEventController, Serializable{
         
         return e;
     }
+    
 }
