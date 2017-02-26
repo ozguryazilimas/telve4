@@ -5,6 +5,10 @@
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.1" value="title"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.2" value="pageHeader"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="pageFooter"/>
+	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.4" value="columnHeader"/>
 	<style name="Kolon_basliklar" hAlign="Left" vAlign="Middle" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1254"/>
 	<style name="Detail" vAlign="Middle" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" pdfEncoding="Cp1254"/>
 	<style name="Baslik" forecolor="#000066" backcolor="#FFFFFF" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="16" isBold="true" pdfEncoding="Cp1254"/>
@@ -27,12 +31,28 @@
 			<rightPen lineWidth="0.5"/>
 		</box>
 	</style>
+	<subDataset name="detailDataset" uuid="64d4fcdf-0550-4a55-8097-a8e36e87fd1d">
+		<parameter name="LID" class="java.lang.Long"/>
+		<queryString>
+			<![CDATA[SELECT
+	audet.LID,
+	audet.ATTR,
+	audet.OVAL,
+	audet.NVAL
+from 	TLV_AUDIT_LOG_DET audet
+where	audet.LID=$P{LID}]]>
+		</queryString>
+		<field name="LID" class="java.lang.Long"/>
+		<field name="ATTR" class="java.lang.String"/>
+		<field name="OVAL" class="java.lang.String"/>
+		<field name="NVAL" class="java.lang.String"/>
+	</subDataset>
 	<parameter name="BEGIN_DATE" class="java.util.Date"/>
 	<parameter name="END_DATE" class="java.util.Date"/>
 	<parameter name="FIRM_LOGO" class="java.awt.image.BufferedImage" isForPrompting="false"/>
 	<parameter name="FIRM_TITLE" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["D:\\git\\telve4\\telve-admin\\src\\main\\jasperreports\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
 	</parameter>
 	<queryString>
 		<![CDATA[select
@@ -85,88 +105,156 @@ where	au.TS between $P{BEGIN_DATE} AND $P{END_DATE}]]>
 	<columnHeader>
 		<band height="12" splitType="Stretch">
 			<textField>
-				<reportElement style="Kolon_basliklar" x="0" y="0" width="110" height="12" uuid="d82047aa-c90f-4481-bf68-f5afa90fad10"/>
+				<reportElement style="Kolon_basliklar" x="0" y="0" width="76" height="12" uuid="d82047aa-c90f-4481-bf68-f5afa90fad10"/>
 				<textElement markup="none">
-					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+					<font size="6" isBold="true" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{AuditLogReport.TS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Kolon_basliklar" x="115" y="0" width="140" height="12" uuid="7c8f394c-ff45-4c67-a89e-b53497fda7fa"/>
+				<reportElement style="Kolon_basliklar" x="130" y="0" width="65" height="12" uuid="7c8f394c-ff45-4c67-a89e-b53497fda7fa"/>
 				<textElement markup="none">
-					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+					<font size="6" isBold="true" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{AuditLogReport.DNAME}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Kolon_basliklar" x="260" y="0" width="89" height="12" uuid="f11efbad-a0a8-49f0-8766-d94de7062c09"/>
+				<reportElement style="Kolon_basliklar" x="195" y="0" width="57" height="12" uuid="f11efbad-a0a8-49f0-8766-d94de7062c09"/>
 				<textElement markup="none">
-					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+					<font size="6" isBold="true" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{AuditLogReport.DBK}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Kolon_basliklar" x="355" y="0" width="83" height="12" uuid="672546c3-996b-4ecb-8f0e-4a6bfe1bdc49"/>
+				<reportElement style="Kolon_basliklar" x="252" y="0" width="57" height="12" uuid="672546c3-996b-4ecb-8f0e-4a6bfe1bdc49"/>
 				<textElement markup="none">
-					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+					<font size="6" isBold="true" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{AuditLogReport.ACT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Kolon_basliklar" x="445" y="0" width="255" height="12" uuid="500839ab-09de-404a-9687-410d719a0e9a"/>
+				<reportElement style="Kolon_basliklar" x="309" y="0" width="146" height="12" uuid="500839ab-09de-404a-9687-410d719a0e9a"/>
 				<textElement markup="none">
-					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+					<font size="6" isBold="true" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{AuditLogReport.MSG}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Kolon_basliklar" x="704" y="0" width="91" height="12" uuid="1b1fd021-cc20-4302-b942-4429f501cae0"/>
+				<reportElement style="Kolon_basliklar" x="76" y="0" width="54" height="12" uuid="1b1fd021-cc20-4302-b942-4429f501cae0"/>
 				<textElement markup="none">
-					<font size="8" isBold="true" pdfEncoding="Cp1254"/>
+					<font size="6" isBold="true" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{AuditLogReport.UID}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="12" splitType="Stretch">
+		<band height="14" splitType="Stretch">
+			<componentElement>
+				<reportElement style="Detail" positionType="Float" stretchType="RelativeToTallestObject" x="409" y="0" width="393" height="13" uuid="3938034c-115a-43ae-86e6-c018abb1a3ca">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+				</reportElement>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Horizontal">
+					<datasetRun subDataset="detailDataset" uuid="2656d353-ee01-485c-b996-7fbb192c352f">
+						<datasetParameter name="LID">
+							<datasetParameterExpression><![CDATA[$F{ID}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:listContents height="13" width="393">
+						<textField>
+							<reportElement style="Detail" x="0" y="0" width="142" height="12" uuid="e3498c54-9288-4969-9cb0-03163f479796">
+								<property name="net.sf.jasperreports.export.csv.column.name" value="FIELD"/>
+								<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+							</reportElement>
+							<textElement>
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression><![CDATA[msg( str($F{ATTR}),null)]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Detail" x="142" y="1" width="118" height="12" uuid="41d2d8eb-c58c-4ae6-8f41-568b9cbcec8b">
+								<property name="net.sf.jasperreports.export.csv.column.name" value="OLD VALUE"/>
+								<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+							</reportElement>
+							<textElement>
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{OVAL}]]></textFieldExpression>
+						</textField>
+						<textField>
+							<reportElement style="Detail" x="260" y="1" width="133" height="12" uuid="872f3c0d-eab1-42c8-bb08-5f827f860eb9">
+								<property name="net.sf.jasperreports.export.csv.column.name" value="NEW VALUE"/>
+								<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+							</reportElement>
+							<textElement>
+								<font size="6"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{NVAL}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
 			<textField>
-				<reportElement style="Detail" x="0" y="0" width="110" height="12" uuid="7490219a-46be-4894-8913-0591ffb95929"/>
+				<reportElement style="Detail" x="0" y="0" width="76" height="12" uuid="7490219a-46be-4894-8913-0591ffb95929">
+					<property name="net.sf.jasperreports.export.csv.column.name" value="ZAMAN"/>
+					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+				</reportElement>
+				<textElement>
+					<font size="6"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{TS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Detail" x="115" y="0" width="140" height="12" uuid="80b19666-d99b-4e09-98b9-e5f577935f40"/>
+				<reportElement style="Detail" x="130" y="0" width="65" height="12" uuid="80b19666-d99b-4e09-98b9-e5f577935f40">
+					<property name="net.sf.jasperreports.export.csv.column.name" value="SINIF"/>
+					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+				</reportElement>
+				<textElement>
+					<font size="6"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{DNAME}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Detail" x="260" y="0" width="89" height="12" uuid="bf71575c-375e-4e34-8bd9-3128f1362862"/>
+				<reportElement style="Detail" x="195" y="0" width="57" height="12" uuid="bf71575c-375e-4e34-8bd9-3128f1362862">
+					<property name="net.sf.jasperreports.export.csv.column.name" value="KEY"/>
+					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+				</reportElement>
+				<textElement>
+					<font size="6"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{DBK}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Detail" x="355" y="0" width="83" height="12" uuid="741890f5-2888-4a4a-af35-48e3492d2120"/>
+				<reportElement style="Detail" x="252" y="0" width="57" height="12" uuid="741890f5-2888-4a4a-af35-48e3492d2120">
+					<property name="net.sf.jasperreports.export.csv.column.name" value="ACTION"/>
+					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+				</reportElement>
+				<textElement>
+					<font size="6"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{ACT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Detail" x="445" y="0" width="255" height="12" uuid="68306b4e-3ac6-498b-9791-c6d7c4603c8f"/>
+				<reportElement style="Detail" x="309" y="0" width="146" height="12" uuid="68306b4e-3ac6-498b-9791-c6d7c4603c8f">
+					<property name="net.sf.jasperreports.export.csv.column.name" value="MESSAGE"/>
+					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+				</reportElement>
+				<textElement>
+					<font size="6"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{MSG}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Detail" x="704" y="0" width="91" height="12" uuid="1b49cfd4-20b5-4a6e-a166-0e28831227f1"/>
+				<reportElement style="Detail" x="76" y="0" width="54" height="12" uuid="1b49cfd4-20b5-4a6e-a166-0e28831227f1">
+					<property name="net.sf.jasperreports.export.csv.column.name" value="USER"/>
+					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+				</reportElement>
+				<textElement>
+					<font size="6"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{UID}]]></textFieldExpression>
 			</textField>
-		</band>
-		<band height="5">
-			<subreport>
-				<reportElement style="Detail" positionType="Float" mode="Transparent" x="0" y="0" width="795" height="5" uuid="17282581-2cf8-40be-8556-72c12708673e"/>
-				<subreportParameter name="LID">
-					<subreportParameterExpression><![CDATA[$F{ID}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
-					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
-				</subreportParameter>
-				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "auditLogReportDetail.jasper"]]></subreportExpression>
-			</subreport>
 		</band>
 	</detail>
 </jasperReport>

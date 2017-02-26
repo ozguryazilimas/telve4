@@ -370,9 +370,9 @@ public class JcrController {
 
         try {
             JcrTools jcrTools = new JcrTools();
-
-            fileName = encoder.encode(fileName);
-
+            
+            fileName = encoder.decode( fileName );
+            fileName = encoder.encode( fileName );
             Node n = jcrTools.uploadFile(session, fileName, in);
 
             n.addMixin("tlv:ref");
