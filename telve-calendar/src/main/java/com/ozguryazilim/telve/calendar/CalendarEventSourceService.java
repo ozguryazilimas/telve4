@@ -68,9 +68,9 @@ public class CalendarEventSourceService {
             }
             
             if( se.getEditable() ){
-                sb.append("\"editable\":\"true\"");
+                sb.append("\"editable\": true");
             } else {
-                sb.append("\"editable\":\"false\"");
+                sb.append("\"editable\": false");
             }
             sb.append("}");
             rs.add(sb.toString());
