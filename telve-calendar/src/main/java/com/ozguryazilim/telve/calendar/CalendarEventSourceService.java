@@ -5,6 +5,11 @@
  */
 package com.ozguryazilim.telve.calendar;
 
+import biweekly.Biweekly;
+import biweekly.ICalendar;
+import biweekly.component.VEvent;
+import biweekly.property.Summary;
+import biweekly.util.Duration;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import java.util.ArrayList;
@@ -89,10 +94,85 @@ public class CalendarEventSourceService {
         LOG.debug("EventSource : {}, Type: {}", id, "jCal");
         LOG.debug("Request Filter: {} {}", startStr, endStr);
 
+        
+        
         //CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(id);
         //cec.loadEvents(this, start, end);
         //İçeriği yollayalım.
         return Response.ok("jCal formated", "application/json").build();
+
+    }
+    
+    
+    @GET
+    @Path("/events/{id}.ics")
+    public Response getiCalEvents(
+            @PathParam("id") String id,
+            @QueryParam("start") String startStr,
+            @QueryParam("end") String endStr) {
+
+        LOG.debug("EventSource : {}, Type: {}", id, "iCal");
+        LOG.debug("Request Filter: {} {}", startStr, endStr);
+
+        List<CalendarEventModel> ls = getEvents( id, startStr, endStr );
+        
+        
+        ICalendar ical = new ICalendar();
+        for( CalendarEventModel ce : ls ){
+            VEvent event = new VEvent();
+            Summary summary = event.setSummary(ce.getTitle());
+            summary.setLanguage("en-us");
+            event.setDescription(ce.getDescription());
+
+            event.setDateStart(ce.getStart());
+
+            Duration duration = new Duration.Builder().hours(1).build();
+            event.setDuration(duration);
+
+            ical.addEvent(event);
+        }
+
+        String result = Biweekly.write(ical).go();
+        
+        //İçeriği yollayalım.
+        return Response.ok(result, "application/ical").build();
+
+    }
+    
+    @GET
+    @Path("/events/{year}/{id}.ics")
+    public Response getiCalEvents(
+            @PathParam("id") String id,
+            @PathParam("year") Integer year ) {
+
+        LOG.debug("EventSource : {}, Type: {}", id, "iCal");
+        
+        
+        Date sdt = new Date(year - 1 - 1900, 11, 31);
+        Date edt = new Date(year + 1 - 1900, 0, 1);
+        
+        List<CalendarEventModel> ls = getEvents( id, sdt, edt );
+        
+        
+        ICalendar ical = new ICalendar();
+        for( CalendarEventModel ce : ls ){
+            VEvent event = new VEvent();
+            Summary summary = event.setSummary(ce.getTitle());
+            summary.setLanguage("en-us");
+            event.setDescription(ce.getDescription());
+
+            event.setDateStart(ce.getStart());
+
+            Duration duration = new Duration.Builder().hours(1).build();
+            event.setDuration(duration);
+
+            ical.addEvent(event);
+        }
+
+        String result = Biweekly.write(ical).go();
+        
+        //İçeriği yollayalım.
+        return Response.ok(result, "application/ical").build();
 
     }
 
@@ -100,23 +180,32 @@ public class CalendarEventSourceService {
         LOG.debug("EventSource : {}, Type: {}", id, "FC");
         LOG.debug("Request Filter: {} {}", startStr, endStr);
 
+        Date sdt;
+        Date edt;
+        if( Strings.isNullOrEmpty(startStr) || Strings.isNullOrEmpty(endStr) ){
+            int year = DateTime.now().year().get();
+            sdt = new Date(year - 1 - 1900, 11, 31);
+            edt = new Date(year + 1 - 1900, 0, 1);
+        } else {
+            DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd");
+            sdt = df.parseDateTime(startStr).toDate();
+            edt = df.parseDateTime(endStr).toDate();
+        }
+        
+        return getEvents(id, sdt, edt );
+
+    }
+    
+    protected List<CalendarEventModel> getEvents(String id, Date start, Date end) {
         if( !hasPermission( id) ){
             LOG.debug("User has not permission for : {}", id );
             return Collections.emptyList();
         }
         
-        DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd");
-        Date sdt = df.parseDateTime(startStr).toDate();
-        Date edt = df.parseDateTime(endStr).toDate();
-        
-        //FIXME: burada yetki kontrolü gerek
-        
-        
-
         try {
             CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(id);
             if (cec != null) {
-                return cec.getEvents(sdt, edt);
+                return cec.getEvents(start, end);
             } else {
                 return Collections.emptyList();
             }
@@ -124,7 +213,6 @@ public class CalendarEventSourceService {
             LOG.warn("Error getting events", e);
             return Collections.emptyList();
         }
-
     }
     
     protected boolean hasPermission( String id ){
