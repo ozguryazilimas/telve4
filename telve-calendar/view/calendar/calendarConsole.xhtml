@@ -76,13 +76,7 @@
                         },
                         eventClick: function(calEvent, jsEvent, view) {
 
-                            alert('Event: ' + calEvent.title);
-                            alert('Event: ' + calEvent.source.id);
-                            alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-                            alert('View: ' + view.name);
-                            
-                            editEvent();
-                            
+                            processEvent( [{name: 'source', value: calEvent.source.id}, {name: 'id', value: calEvent.id}]);
 
                         }
 		});
@@ -153,8 +147,7 @@
         <ui:include src="/layout/messages.xhtml"/>
 
         <h:form id="actionForm">
-            <p:remoteCommand name="newEvent"  actionListener="#{calendarHome.newEvent}" />
-            <p:remoteCommand name="editEvent" actionListener="#{calendarHome.editEvent}" />
+            <p:remoteCommand name="processEvent"  actionListener="#{calendarHome.processEvent}" />
         </h:form>
 
         <div class="box box-primary">

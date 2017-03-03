@@ -27,7 +27,7 @@ import org.camunda.bpm.engine.task.Task;
  * 
  * @author Hakan Uygun
  */
-@CalendarEventSource( hasDialog = false, creatable = false )
+@CalendarEventSource( hasDialog = false, creatable = false, permission = "NEED_LOGIN" )
 public class TaskEventSource extends AbstractCalendarEventSource{
 
     @Inject
@@ -40,10 +40,10 @@ public class TaskEventSource extends AbstractCalendarEventSource{
     private CalendarFilterModel filterModel;
     
     @Override
-    public void process(CalendarEventModel event) {
+    public void process(String eventId) {
         FacesContext fc = FacesContext.getCurrentInstance();
         NavigationHandler nh = fc.getApplication().getNavigationHandler();
-        //nh.handleNavigation(fc, null, "/bpm/taskConsole.xhtml" + "?faces-redirect=true&task=" + event.getSourceKey());
+        nh.handleNavigation(fc, null, "/bpm/taskConsole.xhtml" + "?faces-redirect=true&task=" + eventId);
     }
 
 
@@ -75,6 +75,7 @@ public class TaskEventSource extends AbstractCalendarEventSource{
         
         String subject = (String) taskService.getVariable(task.getId(), "SUBJECT");
         
+        e.setId(task.getId());
         e.setTitle( subject );
         e.setDescription(task.getDescription());
         e.setAllDay(true);

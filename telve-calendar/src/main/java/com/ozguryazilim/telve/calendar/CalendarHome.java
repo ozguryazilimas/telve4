@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
-import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,35 +27,18 @@ public class CalendarHome implements Serializable{
     @Inject
     private CalendarFilterModel filterModel;
     
-    /**
-     * GUI'den gelen newEvent komutunu 
-     */
-    public void newEvent(){
+    public void processEvent(){
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        String eventSource = params.get("eventSource");
+        String eventSource = params.get("source");
+        String eventId = params.get("id");
         
-        CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(eventSource);
-        cec.createEvent();
-    }
-    
-    public void editEvent(){
-        //CalendarEventMetadata ce = (CalendarEventMetadata)selectedEvent.getData();
+        try{
+            CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(eventSource);
+            cec.process(eventId);
+        } catch ( Exception e ){
+            LOG.warn("EventSource not found : {}", eventSource);
+        }
         
-        //CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(ce.getSourceName());
-        //cec.process( ce );
-    }
-    
-    public void onEventSelect(SelectEvent selectEvent) {
-        //selectedEvent = (ScheduleEvent) selectEvent.getObject();
-        //CalendarEventMetadata ce = (CalendarEventMetadata)selectedEvent.getData();
-        
-        //CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(ce.getSourceName());
-        //cec.process( ce );
-    }
-    
-    public void onViewChange(SelectEvent selectEvent) {
-        String s  = (String) selectEvent.getObject();
-        System.out.println(s);
     }
     
 }

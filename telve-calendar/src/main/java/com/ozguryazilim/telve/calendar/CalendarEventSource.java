@@ -27,7 +27,7 @@ public interface CalendarEventSource {
      * Duruma göre dialog açmak ya da redirect etmek için çalışır.
      * @param event 
      */
-    void process( CalendarEventModel event );
+    void process( String eventId );
     
     List<CalendarEventModel> getEvents( Date start, Date end );
 }

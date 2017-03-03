@@ -25,11 +25,4 @@ public interface CalendarPages extends Pages{
     class CalendarConsole implements CalendarPages {
     };
 
-    @SecuredPage
-    class CalendarReminderCommand implements CalendarPages {
-    };
-
-    @SecuredPage
-    class SimpleEventDialog implements CalendarPages {
-    };
 }
