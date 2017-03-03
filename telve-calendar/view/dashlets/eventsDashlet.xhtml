@@ -58,8 +58,8 @@
                                     <i class="fa fa-chevron-circle-right" /> 
                                 </p:commandLink>
                             </div>
-                            <span class="info-box-number">#{eventsDashlet.dateTime.dayOfWeek().getAsText(locale)}</span>
-                            <span class="info-box-more">#{eventsDashlet.dateTime.monthOfYear().getAsText(locale)} #{eventsDashlet.dateTime.year}</span>
+                            <span class="info-box-number">#{eventsDashlet.dateTime.dayOfWeek().getAsText(localeSelector.locale)}</span>
+                            <span class="info-box-more">#{eventsDashlet.dateTime.monthOfYear().getAsText(localeSelector.locale)} #{eventsDashlet.dateTime.year}</span>
                         </div>
                     </div>
                 </div>
@@ -68,13 +68,13 @@
                 <t:accordion label="general.label.Today">
                     <div class="list-group no-margin">
                         <ui:repeat value="#{eventsDashlet.todayEvents}" var="event">
-                            <p:commandLink action="#{eventsDashlet.onEventSelect(event.data)}"  styleClass="list-group-item" process="@this">
+                            <p:commandLink action="#{eventsDashlet.onEventSelect(event.source, event.id)}"  styleClass="list-group-item" process="@this">
                                 <p class="list-group-item-text">#{event.title}</p>
-                                <h:outputText value="#{event.startDate}" styleClass="text-sm text-muted">
+                                <h:outputText value="#{event.start}" styleClass="text-sm text-muted">
                                     <f:convertDateTime pattern="#{messages['general.format.Time']}" />
                                 </h:outputText>
                                 <span class="text-sm text-muted pull-right ">
-                                    #{messages[ 'calendar.source.name.'.concat( event.data.sourceName ) ]}
+                                    #{messages[ 'calendar.source.name.'.concat( event.source) ]}
                                 </span>
                             </p:commandLink>
                         </ui:repeat>
@@ -83,13 +83,13 @@
                 <t:accordion label="general.label.Tomorrow">
                     <div class="list-group no-margin">
                         <ui:repeat value="#{eventsDashlet.tomorrowEvents}" var="event">
-                            <p:commandLink action="#{eventsDashlet.onEventSelect(event.data)}"  styleClass="list-group-item" process="@this">
+                            <p:commandLink action="#{eventsDashlet.onEventSelect(event.source, event.id)}"  styleClass="list-group-item" process="@this">
                                 <p class="list-group-item-text">#{event.title}</p>
-                                <h:outputText value="#{event.startDate}" styleClass="text-sm text-muted">
+                                <h:outputText value="#{event.start}" styleClass="text-sm text-muted">
                                     <f:convertDateTime pattern="#{messages['general.format.Time']}" />
                                 </h:outputText>
                                 <span class="text-sm text-muted pull-right ">
-                                    #{messages[ 'calendar.source.name.'.concat( event.data.sourceName ) ]}
+                                    #{messages[ 'calendar.source.name.'.concat( event.source) ]}
                                 </span>
                             </p:commandLink>
                         </ui:repeat>
@@ -98,13 +98,13 @@
                 <t:accordion label="general.label.Soon">
                     <div class="list-group no-margin">
                         <ui:repeat value="#{eventsDashlet.soonEvents}" var="event">
-                            <p:commandLink action="#{eventsDashlet.onEventSelect(event.data)}"  styleClass="list-group-item" process="@this">
+                            <p:commandLink action="#{eventsDashlet.onEventSelect(event.source, event.id)}"  styleClass="list-group-item" process="@this">
                                 <p class="list-group-item-text">#{event.title}</p>
-                                <h:outputText value="#{event.startDate}" styleClass="text-sm text-muted">
+                                <h:outputText value="#{event.start}" styleClass="text-sm text-muted">
                                     <f:convertDateTime pattern="#{messages['general.format.DateTime']}" />
                                 </h:outputText>
                                 <span class="text-sm text-muted pull-right ">
-                                    #{messages[ 'calendar.source.name.'.concat( event.data.sourceName ) ]}
+                                    #{messages[ 'calendar.source.name.'.concat( event.source ) ]}
                                 </span>
                             </p:commandLink>
                         </ui:repeat>

@@ -22,7 +22,8 @@ public class CalendarEventModel {
     private Boolean editable;
     private Date start;
     private Date end;
-
+    private String source;
+    
     public CalendarEventModel() {
         this.id = UUID.randomUUID().toString();
         this.editable = Boolean.FALSE;
@@ -140,16 +141,25 @@ public class CalendarEventModel {
         this.end = end;
     }
 
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 83 * hash + Objects.hashCode(this.id);
-        hash = 83 * hash + Objects.hashCode(this.title);
-        hash = 83 * hash + Objects.hashCode(this.description);
-        hash = 83 * hash + Objects.hashCode(this.allDay);
-        hash = 83 * hash + Objects.hashCode(this.editable);
-        hash = 83 * hash + Objects.hashCode(this.start);
-        hash = 83 * hash + Objects.hashCode(this.end);
+        int hash = 3;
+        hash = 41 * hash + Objects.hashCode(this.id);
+        hash = 41 * hash + Objects.hashCode(this.title);
+        hash = 41 * hash + Objects.hashCode(this.description);
+        hash = 41 * hash + Objects.hashCode(this.allDay);
+        hash = 41 * hash + Objects.hashCode(this.editable);
+        hash = 41 * hash + Objects.hashCode(this.start);
+        hash = 41 * hash + Objects.hashCode(this.end);
+        hash = 41 * hash + Objects.hashCode(this.source);
         return hash;
     }
 
@@ -174,6 +184,9 @@ public class CalendarEventModel {
         if (!Objects.equals(this.description, other.description)) {
             return false;
         }
+        if (!Objects.equals(this.source, other.source)) {
+            return false;
+        }
         if (!Objects.equals(this.allDay, other.allDay)) {
             return false;
         }
@@ -189,6 +202,9 @@ public class CalendarEventModel {
         return true;
     }
     
+    
+
+        
     
     
 }
