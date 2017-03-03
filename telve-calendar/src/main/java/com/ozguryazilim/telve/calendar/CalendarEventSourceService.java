@@ -6,6 +6,7 @@
 package com.ozguryazilim.telve.calendar;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -17,6 +18,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -97,9 +100,18 @@ public class CalendarEventSourceService {
         LOG.debug("EventSource : {}, Type: {}", id, "FC");
         LOG.debug("Request Filter: {} {}", startStr, endStr);
 
+        if( !hasPermission( id) ){
+            LOG.debug("User has not permission for : {}", id );
+            return Collections.emptyList();
+        }
+        
         DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd");
         Date sdt = df.parseDateTime(startStr).toDate();
         Date edt = df.parseDateTime(endStr).toDate();
+        
+        //FIXME: burada yetki kontrolü gerek
+        
+        
 
         try {
             CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(id);
@@ -113,6 +125,23 @@ public class CalendarEventSourceService {
             return Collections.emptyList();
         }
 
+    }
+    
+    protected boolean hasPermission( String id ){
+        //Böyle bir eventSource var mı?
+        com.ozguryazilim.telve.calendar.annotations.CalendarEventSource esm = CalendarEventSourceRegistery.getMetadata(id);
+        if( esm == null ) return false;
+        
+        //Puplic mi?
+        if( Strings.isNullOrEmpty(esm.permission())) return true;
+        
+        Subject currentUser = SecurityUtils.getSubject();
+        
+        //Login olması zorunlu mu?
+        if( "NEED_LOGIN".equals(esm.permission()) && currentUser == null ) return false;
+        
+        //Yetki var mı?
+        return currentUser.isPermitted( esm.permission() + ":select"  );
     }
     
     protected String getFormatedDateTime( Date date ){

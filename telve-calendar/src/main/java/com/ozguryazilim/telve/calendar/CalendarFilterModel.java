@@ -11,6 +11,7 @@ import com.google.common.base.Strings;
 import com.ozguryazilim.mutfak.kahve.Kahve;
 import com.ozguryazilim.mutfak.kahve.KahveEntry;
 import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
+import com.ozguryazilim.telve.auth.Identity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +37,9 @@ public class CalendarFilterModel implements Serializable {
     @UserAware
     private Kahve kahve;
 
+    @Inject
+    private Identity identity;
+    
     private List<String> calendarSources;
     private Boolean showPersonalEvents;
     private Boolean showClosedEvents;
@@ -116,8 +120,25 @@ public class CalendarFilterModel implements Serializable {
      * @return
      */
     public List<String> getRegisteredEventSources() {
+        
         //FIXME: Burada yetki kontrolünden bir geçirmemiz lazım.
-        return CalendarEventSourceRegistery.getRegisteredEventSources();
+        List<String> result = new ArrayList<>();
+        
+        List<String> all = CalendarEventSourceRegistery.getRegisteredEventSources();
+        
+        for( String s : all ){
+            com.ozguryazilim.telve.calendar.annotations.CalendarEventSource esm = CalendarEventSourceRegistery.getMetadata(s);
+            String perm = esm.permission();
+            if( Strings.isNullOrEmpty(perm) || "NEED_LOGIN".equals(perm)){
+                result.add(s);
+            } else {
+                if( identity.hasPermission(perm, "select") ){
+                    result.add(s);
+                }
+            }
+        }
+        
+        return result;
     }
     
     public String getSourceStyle( String name ){
