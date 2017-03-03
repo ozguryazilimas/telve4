@@ -20,7 +20,7 @@ import org.joda.time.DateTime;
  * 
  * @author Hakan Uygun
  */
-@CalendarEventSource( hasDialog = true, creatable = true, dialogPage = CalendarPages.SimpleEventDialog.class, styleClass = "tlv-yellow" )
+@CalendarEventSource( hasDialog = true, creatable = true, dialogPage = CalendarPages.SimpleEventDialog.class )
 public class SimpleEventSource extends AbtsractStorableCalendarEventSource<SimpleEvent> implements Serializable{
 
     @Inject

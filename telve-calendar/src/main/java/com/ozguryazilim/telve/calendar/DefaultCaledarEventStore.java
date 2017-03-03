@@ -80,7 +80,7 @@ public class DefaultCaledarEventStore implements CalendarEventStore, Serializabl
         e.setStartDate(event.getStartDate());
         e.setEndDate(event.getEndDate());
         
-        e.setStyleClass(CalendarEventSourceRegistery.getMetadata(event.getSourceName()).styleClass());
+        //e.setStyleClass(CalendarEventSourceRegistery.getMetadata(event.getSourceName()).styleClass());
         e.setData(event);
         
         return e;

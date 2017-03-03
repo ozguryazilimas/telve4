@@ -60,11 +60,11 @@ public @interface CalendarEventSource {
     Class<? extends ViewConfig> dialogPage() default ViewConfig.class;
     
     /**
-     * Bu kaynağın eventlerinin nasıl sunulacağını tanımlar.
+     * Bu kaynağı görmesi için hangi yetki domainin kullanılacağı.
      * 
-     * Varsayılan hali boştur. tlv-yellow, tlv-green gibi hazır değerler olabilir.
+     * Eğer boş ise public açık anlamına gelecektir.
      * 
      * @return 
      */
-    String styleClass() default "";
+    String permission() default "";
 }
