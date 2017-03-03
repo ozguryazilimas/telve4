@@ -49,7 +49,14 @@ public class CalendarFilterModel implements Serializable {
             KahveEntry o = kahve.get("calendar.filter.sources");
             //Kullanıcı için önceden tanımlanmış bir liste var mı?
             if( o != null){
-                calendarSources.addAll( Splitter.on(',').omitEmptyStrings().trimResults().splitToList(o.getAsString()));
+                List<String> ls = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(o.getAsString());
+                List<String> all = getRegisteredEventSources();
+                for( String s : ls ){
+                    if( all.contains(s) ){
+                        //FIXME: Burada yetki kontrolü de yapılacak. Aslında all kısmında yetki filtresinden geçmişleri almak lazım.
+                        calendarSources.add( s );
+                    }
+                }
             }
             
             //TODO: Yoksa ya da boşsa sistemdekilerin hepsi gelse mi?
@@ -109,6 +116,7 @@ public class CalendarFilterModel implements Serializable {
      * @return
      */
     public List<String> getRegisteredEventSources() {
+        //FIXME: Burada yetki kontrolünden bir geçirmemiz lazım.
         return CalendarEventSourceRegistery.getRegisteredEventSources();
     }
     
@@ -116,7 +124,7 @@ public class CalendarFilterModel implements Serializable {
         
         String style = calendarSourceStyles.get(name);
         if( Strings.isNullOrEmpty(style)){
-            KahveEntry o = kahve.get("calendar.style." + name, "bg-yellow");
+            KahveEntry o = kahve.get("calendar.style." + name, "#3c8dbc");
             style = o.getAsString();
             calendarSourceStyles.put(name, style);
         }

@@ -6,18 +6,13 @@
 package com.ozguryazilim.telve.calendar;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.primefaces.event.SelectEvent;
-import org.primefaces.model.LazyScheduleModel;
-import org.primefaces.model.ScheduleEvent;
-import org.primefaces.model.ScheduleModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,32 +28,6 @@ public class CalendarHome implements Serializable{
     @Inject
     private CalendarFilterModel filterModel;
     
-    private ScheduleModel model;
-    private ScheduleEvent selectedEvent;
-
-    @PostConstruct
-    public void init(){
-        model = new LazyScheduleModel(){
-
-            @Override
-            public void loadEvents(Date start, Date end) {
-                for( String s : filterModel.getCalendarSources() ){
-                    CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(s);
-                    cec.loadEvents(this, start, end);
-                }
-            }
-            
-        };
-    }
-
-    public ScheduleModel getModel() {
-        return model;
-    }
-
-    public void setModel(ScheduleModel model) {
-        this.model = model;
-    }
-
     /**
      * GUI'den gelen newEvent komutunu 
      */
@@ -71,18 +40,18 @@ public class CalendarHome implements Serializable{
     }
     
     public void editEvent(){
-        CalendarEventMetadata ce = (CalendarEventMetadata)selectedEvent.getData();
+        //CalendarEventMetadata ce = (CalendarEventMetadata)selectedEvent.getData();
         
-        CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(ce.getSourceName());
-        cec.process( ce );
+        //CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(ce.getSourceName());
+        //cec.process( ce );
     }
     
     public void onEventSelect(SelectEvent selectEvent) {
-        selectedEvent = (ScheduleEvent) selectEvent.getObject();
-        CalendarEventMetadata ce = (CalendarEventMetadata)selectedEvent.getData();
+        //selectedEvent = (ScheduleEvent) selectEvent.getObject();
+        //CalendarEventMetadata ce = (CalendarEventMetadata)selectedEvent.getData();
         
-        CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(ce.getSourceName());
-        cec.process( ce );
+        //CalendarEventSource cec = (CalendarEventSource) BeanProvider.getContextualReference(ce.getSourceName());
+        //cec.process( ce );
     }
     
     public void onViewChange(SelectEvent selectEvent) {

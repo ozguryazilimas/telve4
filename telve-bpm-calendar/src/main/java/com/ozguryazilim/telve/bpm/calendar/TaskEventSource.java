@@ -7,7 +7,7 @@ package com.ozguryazilim.telve.bpm.calendar;
 
 import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.calendar.AbstractCalendarEventSource;
-import com.ozguryazilim.telve.calendar.CalendarEventMetadata;
+import com.ozguryazilim.telve.calendar.CalendarEventModel;
 import com.ozguryazilim.telve.calendar.CalendarFilterModel;
 import com.ozguryazilim.telve.calendar.annotations.CalendarEventSource;
 import java.util.ArrayList;
@@ -18,8 +18,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Task;
-import org.primefaces.model.DefaultScheduleEvent;
-import org.primefaces.model.ScheduleEvent;
 
 /**
  * BPM HumanTask Calendar Event Source Controller.
@@ -42,15 +40,15 @@ public class TaskEventSource extends AbstractCalendarEventSource{
     private CalendarFilterModel filterModel;
     
     @Override
-    public void process(CalendarEventMetadata event) {
+    public void process(CalendarEventModel event) {
         FacesContext fc = FacesContext.getCurrentInstance();
         NavigationHandler nh = fc.getApplication().getNavigationHandler();
-        nh.handleNavigation(fc, null, "/bpm/taskConsole.xhtml" + "?faces-redirect=true&task=" + event.getSourceKey());
+        //nh.handleNavigation(fc, null, "/bpm/taskConsole.xhtml" + "?faces-redirect=true&task=" + event.getSourceKey());
     }
 
 
     @Override
-    public List<ScheduleEvent> getEvents(Date start, Date end) {
+    public List<CalendarEventModel> getEvents(Date start, Date end) {
         List<Task> tasks = taskService.createTaskQuery()
                     .active()
                     .taskAssignee(identity.getLoginName())
@@ -60,9 +58,9 @@ public class TaskEventSource extends AbstractCalendarEventSource{
                     .orderByDueDate().asc()
                     .listPage(0, 50);
         
-        List<ScheduleEvent> ls = new ArrayList<>();
+        List<CalendarEventModel> ls = new ArrayList<>();
         for( Task t : tasks ){
-            ls.add(getScheduleEvent(t));
+            ls.add(getCalendarEventModel(t));
         }
         return ls;
     }
@@ -72,8 +70,8 @@ public class TaskEventSource extends AbstractCalendarEventSource{
      * @param event
      * @return 
      */
-    protected DefaultScheduleEvent getScheduleEvent( Task task ){
-        DefaultScheduleEvent e = new DefaultScheduleEvent();
+    protected CalendarEventModel getCalendarEventModel( Task task ){
+        CalendarEventModel e = new CalendarEventModel();
         
         String subject = (String) taskService.getVariable(task.getId(), "SUBJECT");
         
@@ -82,15 +80,8 @@ public class TaskEventSource extends AbstractCalendarEventSource{
         e.setAllDay(true);
         e.setEditable(false);
         //e.setStartDate(task.getFollowUpDate());
-        e.setStartDate(task.getDueDate());
-        e.setEndDate(task.getDueDate());
-        
-        e.setStyleClass( filterModel.getSourceStyle("taskEventSource"));
-        CalendarEventMetadata meta = new CalendarEventMetadata();
-        meta.setSourceKey(task.getId());
-        meta.setSourceName("taskEventSource");
-        e.setData(meta);
-        
+        e.setStart(task.getDueDate());
+        e.setEnd(task.getDueDate());
         
         return e;
     }

@@ -6,14 +6,10 @@
 package com.ozguryazilim.telve.calendar;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.util.ProxyUtils;
-import org.primefaces.model.LazyScheduleModel;
-import org.primefaces.model.ScheduleEvent;
 
 /**
  *
@@ -46,15 +42,6 @@ public abstract class AbstractCalendarEventSource implements com.ozguryazilim.te
     @Override
     public void createEvent() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void loadEvents(LazyScheduleModel model, Date start, Date end) {
-        List<ScheduleEvent> events = getEvents( start, end );
-        
-        for( ScheduleEvent e : events ){
-            model.addEvent(e);
-        }
     }
 
     

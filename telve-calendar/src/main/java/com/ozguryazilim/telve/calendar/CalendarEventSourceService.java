@@ -20,7 +20,6 @@ import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.primefaces.model.ScheduleEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,27 +39,27 @@ public class CalendarEventSourceService {
             @QueryParam("start") String startStr,
             @QueryParam("end") String endStr) {
 
-        List<ScheduleEvent> ls = getEvents( id, startStr, endStr );
+        List<CalendarEventModel> ls = getEvents( id, startStr, endStr );
 
         
         
         List<String> rs = new ArrayList<>();
         
-        for( ScheduleEvent se : ls ){
+        for( CalendarEventModel se : ls ){
             StringBuilder sb = new StringBuilder();
             sb.append("{");
             sb.append("\"id\":\"").append(se.getId()).append("\",");
             sb.append("\"title\":\"").append(se.getTitle()).append("\",");
             sb.append("\"description\":\"").append(se.getDescription()).append("\",");
             
-            if( se.isAllDay() ){
-               sb.append("\"start\":\"").append(getFormatedDate(se.getStartDate())).append("\",");
+            if( se.getAllDay() ){
+               sb.append("\"start\":\"").append(getFormatedDate(se.getStart())).append("\",");
             } else {
-               sb.append("\"start\":\"").append(getFormatedDateTime(se.getStartDate())).append("\",");
-               sb.append("\"end\":\"").append(getFormatedDateTime(se.getEndDate())).append("\",");
+               sb.append("\"start\":\"").append(getFormatedDateTime(se.getStart())).append("\",");
+               sb.append("\"end\":\"").append(getFormatedDateTime(se.getEnd())).append("\",");
             }
             
-            if( se.isEditable() ){
+            if( se.getEditable() ){
                 sb.append("\"editable\":\"true\"");
             } else {
                 sb.append("\"editable\":\"false\"");
@@ -94,7 +93,7 @@ public class CalendarEventSourceService {
 
     }
 
-    protected List<ScheduleEvent> getEvents(String id, String startStr, String endStr) {
+    protected List<CalendarEventModel> getEvents(String id, String startStr, String endStr) {
         LOG.debug("EventSource : {}, Type: {}", id, "FC");
         LOG.debug("Request Filter: {} {}", startStr, endStr);
 
