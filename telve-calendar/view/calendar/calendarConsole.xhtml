@@ -143,7 +143,6 @@
 
     <ui:define name="body">
 
-
         <ui:include src="/layout/messages.xhtml"/>
 
         <h:form id="actionForm">
@@ -152,25 +151,9 @@
 
         <div class="box box-primary">
             <div class="box-body no-padding">
-
                 <div id="calendar"/>
-                
-                <ui:remove>
-                <h:form>
-                    <p:schedule id="schedule" value="#{calendarHome.model}" widgetVar="telveCalendar" timeZone="GMT+3" locale="#{localeSelector.getLocaleString()}" rightHeaderTemplate="" tooltip="true" aspectRatio="2" >
-                        <p:ajax event="eventSelect" listener="#{calendarHome.onEventSelect}" oncomplete="editEvent();"/>
-                        <p:ajax event="viewChange" listener="#{calendarHome.onViewChange}" />
-                    </p:schedule>
-                </h:form>
-                </ui:remove>
-
             </div>
-
-
         </div>
-
-
-
 
     </ui:define>
 
@@ -209,15 +192,6 @@
             </a>
         </li>
 
-        <ui:remove>
-            <li>
-                <a href="#" onclick="PF('calendarFilterPopup').show();" >
-                    <h:graphicImage value="/img/ribbon/small/calendar_group.png" />
-                    <span >#{messages['calendar.button.Filter']}</span> 
-                </a>
-            </li>
-        </ui:remove>
-
         <li>
             <p:commandLink id="calb1" action="#{calendarFilterModel.toggleShowClosedEvent()}" update="calb1" process="@this" oncomplete="refetchEvents();">
                 <i class="fa #{calendarFilterModel.showClosedEvents ? 'fa-check-square' : 'fa-square' } " />
@@ -253,11 +227,6 @@
 
                         </button>
 
-                        <ui:remove>
-                            <a href="#" class="dropdown-toggle #{calendarFilterModel.getSourceStyle(es)}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="caret"></span>
-                            </a>
-                        </ui:remove>
                         <ul class="dropdown-menu" >
                             <li><p:commandLink action="#{calendarFilterModel.setSourceStyle(es, '#0073b7')}"  process="@this" update="cbtn" oncomplete="changeColor( '#{es}', '#0073b7' );">
                                     <i class="fa fa-square text-blue"></i> #{messages['color.name.Blue']}
