@@ -49,7 +49,7 @@
 			},
                         locale: '#{localeSelector.language}',
                         aspectRatio: 2,
-                        timezone: 'UTC',
+                        //timezone: 'UTC',
 			//defaultDate: '2017-02-12',
 			navLinks: true, // can click day/week names to navigate views
                         navLinkDayClick:'agendaDay',
@@ -62,14 +62,14 @@
                          eventRender: function(event, element) {
                             jQuery(element).popover({
                                 title: function () {
-                                    return "<B>" + event.title + "</B>";
+                                    return "<b>" + event.title + "</b>";
                                 },
                                 placement:'auto',
                                 html:true,
                                 trigger : 'hover',
                                 animation : 'false',
                                 content: function () {
-                                    return "<h1>" + event.description ? event.description : "" + "</h1>";
+                                    return event.description ? event.description : "";
                                 },
                                 container:'body'
                             }).popover('show');
