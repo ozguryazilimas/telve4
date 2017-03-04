@@ -129,4 +129,8 @@ public class UserGroupSubView extends SubViewQueryBase<UserGroup, UserGroupViewM
 
         return ls;
     }
+    
+    public Boolean canInsert(){
+        return userHome.canChangeCriticalData();
+    }
 }
