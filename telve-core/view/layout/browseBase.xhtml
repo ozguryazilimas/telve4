@@ -202,6 +202,8 @@
                                 <p:commandLink actionListener="#{bean.search()}" styleClass="btn btn-box-tool" update="@([id$=results])" process="@this" title="#{messages['general.button.Refresh']}">
                                     <i class="fa fa-refresh"/>
                                 </p:commandLink>
+                                <ui:remove>
+                                    FIXME: PF exportlarında hata var kontrol edilecek
                                 <ui:fragment rendered="#{identity.hasPermission( permission, 'export')}">
                                     <div class="doropdown" style="display: inline-block;" title="#{messages['general.button.Export']}">
                                         <a href="javascript:" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -237,6 +239,7 @@
                                         </ul>
                                     </div>
                                 </ui:fragment>
+                                </ui:remove>
                                 <i class="margin-r-5" />
                                 <a title="#{messages['general.button.Filter']}" href="javascript:" class="btn btn-box-tool" onclick="jQuery('#content-list-col').toggle();
                                         jQuery('#content-list-col').toggleClass('col-md-3 col-xs-12 col-md-pull-9');
