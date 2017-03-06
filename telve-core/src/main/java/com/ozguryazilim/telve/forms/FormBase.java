@@ -201,8 +201,6 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             
             entity = getRepository().saveAndFlush(entity);
 
-            auditLog(act);
-            
             //Save'den sonra elde sakladığımız id'yi değiştirelim ki bir sonraki request için ortalık karışmasın ( bakınız setId )
             this.id = (PK) entity.getId();
         
@@ -216,15 +214,17 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             }
             
             onAfterSave();
+            
+            auditLog(act);
         } catch (EntityExistsException e) {
             LOG.error("Hata : Not Unique", e);
-            FacesMessages.warn("#{messages['general.message.record.NotUnique']}");
-            return null;
+            FacesMessages.error("general.message.record.NotUnique", e.getLocalizedMessage());
+            throw new RuntimeException();
         } catch ( Exception e ){
             //FIXME: Asıl detay hatanın bulunması lazım.
             LOG.error("Hata : Constraint Violation", e);
-            FacesMessages.warn("#{messages['general.message.record.ConstraintViolation']}");
-            return null;
+            FacesMessages.error("general.message.record.ConstraintViolation", e.getLocalizedMessage());
+            throw new RuntimeException();
         }
 
         LOG.debug("Entity Saved : {0} ", entity);
@@ -357,7 +357,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
                     .select(new BeforeLiteral())
                     .fire(new EntityChangeEvent(getEntity(), EntityChangeAction.DELETE ));
 
-            auditLog(AuditLogCommand.ACT_DELETE);
+            
             //getRepository().deleteById(entity.getId());
             getRepository().remove(entity);
             
@@ -367,10 +367,12 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
                     .fire(new EntityChangeEvent(getEntity(), EntityChangeAction.DELETE ));
             
             onAfterDelete();
+            
+            auditLog(AuditLogCommand.ACT_DELETE);
         } catch (Exception e) {
             LOG.debug("Hata : {}", e);
-            FacesMessages.error("#{messages['general.message.record.DeleteFaild']}");
-            return null;
+            FacesMessages.error("general.message.record.DeleteFaild", e.getLocalizedMessage());
+            throw new RuntimeException();
         }
 
         LOG.debug("Entity Removed : {0} ", entity);

@@ -76,7 +76,7 @@
     
     <ui:define name="context-menu">
         <li>
-            <p:commandLink title="#{messages['general.button.Save']}" onclick="jQuery('#form\\:save').click();" rendered="#{not hideSave and (( not empty entity.id and homeBean.hasUpdatePermission()) or ( empty entity.id and homeBean.hasInsertPermission()))}">
+            <p:commandLink title="#{messages['general.button.Save']}" onclick="jQuery('#form\\:save').click();return false;" rendered="#{not hideSave and (( not empty entity.id and homeBean.hasUpdatePermission()) or ( empty entity.id and homeBean.hasInsertPermission()))}">
                 <i class="fa fa-save"></i>
                 <h:outputText value=" #{messages['general.button.Save']}" />
             </p:commandLink>
