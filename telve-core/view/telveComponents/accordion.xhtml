@@ -10,6 +10,7 @@
         <composite:attribute name="hide" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="icon" required="false" default=""/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:attribute name="interact"  type="java.lang.Boolean" default="true"/>
         <composite:attribute name="columnClass" required="false" default="col-xs-12"/>
     </composite:interface>
 
@@ -19,15 +20,17 @@
             <h:outputScript library="telveComponents" name="accordion.js" target="head"/>
         </ui:remove>
 
-        <div id="#{cc.clientId}" class="#{ cc.attrs.columnClass} " >
+        <div id="#{cc.clientId}" class="accordion #{ cc.attrs.columnClass} #{ cc.attrs.interact ? '' : 'inited'}" >
 
             <div class="accordion-header" >
                 <div class="accordion-tools">
                     <composite:renderFacet name="toolbar" />
                 </div>
                 
-                <div class="accordion #{cc.attrs.hide eq 'true' ? 'hided' : ''} accordion-title">
+                <div class="#{cc.attrs.hide eq 'true' ? 'hided' : ''} accordion-title">
+                    <ui:fragment rendered="#{ cc.attrs.interact }">
                     <span class="accordionIcon fa #{cc.attrs.hide eq 'true' ? 'fa-caret-right' : 'fa-caret-down'} "> </span>
+                    </ui:fragment>
                     <ui:fragment rendered="#{cc.attrs.icon ne ''}">
                         <span class="accordionIcon2 #{cc.attrs.icon}"></span>
                     </ui:fragment>
