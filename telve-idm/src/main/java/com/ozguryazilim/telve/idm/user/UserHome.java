@@ -151,7 +151,26 @@ public class UserHome extends FormBase<User, Long>{
      * @return
      */
     public List<String> getUserTypes() {
+        
+        //Eğer kullanıcı SUPERADMIN değil ise başka bir kullanıcıyı SUPERADMIN yapamaz
+        List<String> result = UserModelRegistery.getUserTypes();
+        if( !UserModelRegistery.SUPER_ADMIN_TYPE.equals(identity.getUserInfo().getUserType())){
+            result.remove(UserModelRegistery.SUPER_ADMIN_TYPE);
+        }
+        
         return UserModelRegistery.getUserTypes();
+    }
+    
+    /**
+     * Eğer kullanıcı SUPERADMIN değil ise kendi bilgilerinden kritik olan yerleri değiştiremez.
+     * 
+     * Örneğin UserType, DomainGroup v.b.
+     * @return 
+     */
+    public Boolean canChangeCriticalData(){
+        if( !identity.getLoginName().equals( getEntity().getLoginName())) return true;
+        if( UserModelRegistery.SUPER_ADMIN_TYPE.equals(identity.getUserInfo().getUserType())) return true;
+        return false;
     }
     
     public String getPassword() {
