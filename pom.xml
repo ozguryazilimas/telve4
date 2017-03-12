@@ -244,6 +244,8 @@
         <module>telve-unit</module>
         <module>telve-keycloak</module>
         <module>telve-note</module>
+        <module>telve-calendar</module>
+        <module>telve-bpm-calendar</module>
     </modules>
     
     <distributionManagement>

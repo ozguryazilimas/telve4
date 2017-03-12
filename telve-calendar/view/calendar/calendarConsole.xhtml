@@ -1,0 +1,292 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/primeTemplate.xhtml">
+
+    <ui:param name="showListBar" value="true" />
+
+    <ui:define name="extraHead">
+        
+        <h:outputStylesheet library="fc" name="css/fullcalendar.css" />
+        <ui:remove>
+        <h:outputStylesheet library="fc" name="css/fullcalendar.print.css" />
+        </ui:remove>
+        
+        <h:outputScript library="fc" name="js/jquery.min.js" />
+        <script type="text/javascript">
+            var jQuery2 = $.noConflict(true);
+        </script>
+        <h:outputScript library="fc" name="js/moment.min.js" />
+        <h:outputScript library="fc" name="js/jquery-ui.min.js" />
+        <h:outputScript library="fc" name="js/fullcalendar.js" />
+        <h:outputScript library="fc" name="js/locale-all.js" />
+        
+        <script>
+
+        var eventSources = [
+            <ui:repeat value="#{calendarFilterModel.calendarSources}" var="cs">
+            {
+                id: '#{cs}',
+                url: '#{request.contextPath}/rest/calendar/events/#{cs}.fc', 
+                color: '#{calendarFilterModel.getSourceStyle(cs)}'
+            },
+            </ui:repeat>
+        ]
+
+
+
+	jQuery2(document).ready(function() {
+		
+		jQuery2('#calendar').fullCalendar({
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: ''
+			},
+                        locale: '#{localeSelector.language}',
+                        aspectRatio: 2,
+                        //timezone: 'UTC',
+			//defaultDate: '2017-02-12',
+			navLinks: true, // can click day/week names to navigate views
+                        navLinkDayClick:'agendaDay',
+                        navLinkWeekClick:'agendaWeek',
+                        weekNumbers: true,
+			editable: false,
+			eventLimit: true, // allow "more" link when too many events
+                        eventSources: eventSources,
+			
+                         eventRender: function(event, element) {
+                            jQuery(element).popover({
+                                title: function () {
+                                    return "<b>" + event.title + "</b>";
+                                },
+                                placement:'auto',
+                                html:true,
+                                trigger : 'hover',
+                                animation : 'false',
+                                content: function () {
+                                    return event.description ? event.description : "";
+                                },
+                                container:'body'
+                            }).popover('show');
+                        },
+                        eventClick: function(calEvent, jsEvent, view) {
+
+                            processEvent( [{name: 'source', value: calEvent.source.id}, {name: 'id', value: calEvent.id}]);
+
+                        }
+		});
+		
+	});
+
+
+        function monthView(){
+            jQuery2('#calendar').fullCalendar('changeView', 'month');
+        }
+        
+        function weekView(){
+            jQuery2('#calendar').fullCalendar('changeView', 'agendaWeek');
+        }
+        
+        function dayView(){
+            jQuery2('#calendar').fullCalendar('changeView', 'agendaDay');
+        }
+        
+        function listView(){
+            jQuery2('#calendar').fullCalendar('changeView', 'listMonth');
+        }
+        
+        function refetchEvents(){
+            jQuery2('#calendar').fullCalendar( 'refetchEvents' );
+        }
+        
+        function refetchEventSource( sourceId ){
+            jQuery2('#calendar').fullCalendar( 'refetchEventSources', sourceId );
+        }
+        
+        function toggleEventSource( sourceId, color ){
+            var s = jQuery2('#calendar').fullCalendar( 'getEventSourceById', sourceId );
+            if( s == null ){
+                addEventSource( sourceId, color );
+            } else {
+                removeEventSource( sourceId );
+            }
+        }
+        
+        function addEventSource( sourceId, color ){
+            var source = { id: sourceId, url: '#{request.contextPath}/rest/calendar/events/' + sourceId + '.fc', color: color }
+            jQuery2('#calendar').fullCalendar( 'addEventSource', source );
+            refetchEventSource( sourceId );
+        }
+        
+        function removeEventSource( sourceId ){
+            jQuery2('#calendar').fullCalendar( 'removeEventSource', sourceId );
+            refetchEventSource( sourceId );
+        }
+        
+        function changeColor( sourceId, color ){
+            var s = jQuery2('#calendar').fullCalendar( 'getEventSourceById', sourceId );
+            if( s != null ){
+                s.color = color;
+                refetchEventSource( sourceId );
+            }
+        }
+            
+
+</script>
+        
+    </ui:define>
+
+    <ui:define name="body">
+
+        <ui:include src="/layout/messages.xhtml"/>
+
+        <h:form id="actionForm">
+            <p:remoteCommand name="processEvent"  actionListener="#{calendarHome.processEvent}" />
+        </h:form>
+
+        <div class="box box-primary">
+            <div class="box-body no-padding">
+                <div id="calendar"/>
+            </div>
+        </div>
+
+    </ui:define>
+
+    <ui:define name="context-menu">
+        <ui:remove>
+            <li>
+                <p:commandLink id="newEvent"  action="#{calendarHome.newEvent}" >
+                    <f:param name="eventSource" value="simpleEventSource" />
+                    <h:graphicImage value="/img/ribbon/small/calendar.png" />
+                    <span>#{messages['calendar.button.SimpleEvent']}</span>
+                </p:commandLink>
+            </li>
+        </ui:remove>
+        <li>
+            <a href="#" onclick="monthView();" >
+                <h:graphicImage value="/img/ribbon/small/calendar_month.png" />
+                <span >#{messages['calendar.button.Month']}</span> 
+            </a>
+        </li>
+        <li>
+            <a href="#" onclick="weekView();" >
+                <h:graphicImage value="/img/ribbon/small/calendar_week.png" />
+                <span >#{messages['calendar.button.Week']}</span> 
+            </a>
+        </li>
+        <li>
+            <a href="#" onclick="dayView();" >
+                <h:graphicImage value="/img/ribbon/small/calendar_day.png" />
+                <span >#{messages['calendar.button.Day']}</span> 
+            </a>
+        </li>
+        <li>
+            <a href="#" onclick="listView();" >
+                <h:graphicImage value="/img/ribbon/small/calendar_list.png" />
+                <span >#{messages['calendar.button.List']}</span> 
+            </a>
+        </li>
+
+        <li>
+            <p:commandLink id="calb1" action="#{calendarFilterModel.toggleShowClosedEvent()}" update="calb1" process="@this" oncomplete="refetchEvents();">
+                <i class="fa #{calendarFilterModel.showClosedEvents ? 'fa-check-square' : 'fa-square' } " />
+                #{messages['calendar.button.ShowClosed']}
+                
+            </p:commandLink>
+        </li>
+
+        <li>
+            <p:commandLink id="calb2" action="#{calendarFilterModel.toggleShowPersonalEvents()}" update="calb2" process="@this" oncomplete="refetchEvents();" >
+                <i class="fa #{calendarFilterModel.showPersonalEvents ? 'fa-check-square' : 'fa-square' } " />
+                #{messages['calendar.button.ShowPOT']}
+            </p:commandLink>
+        </li>
+    </ui:define>
+
+    <ui:define name="content-list">
+        <div class="box-header">
+            <h4 class="box-title">#{messages['calendar.label.EventSources']}</h4>
+        </div>
+
+        <ul class="list-group">
+            
+            <ui:repeat value="#{calendarFilterModel.getRegisteredEventSources()}" var="es" >
+                <li class="list-group-item"> 
+                    <p:commandLink action="#{calendarFilterModel.toggleSelectSource(es)}" process="@this" update="@this" oncomplete="toggleEventSource('#{es}', '#{calendarFilterModel.getSourceStyle(es)}' );">
+                        <i class="fa #{calendarFilterModel.getIsSourceSelected(es) ? 'fa-check-square-o' : 'fa-square-o'}" />
+                    </p:commandLink>
+
+                    <h:panelGroup id="cbtn" layout="span">
+
+                        <button class="btn btn-sm dropdown-toggle" style="width: 14px; height: 16px; background-color: #{calendarFilterModel.getSourceStyle(es)};" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+
+                        </button>
+
+                        <ul class="dropdown-menu" >
+                            <li><p:commandLink action="#{calendarFilterModel.setSourceStyle(es, '#0073b7')}"  process="@this" update="cbtn" oncomplete="changeColor( '#{es}', '#0073b7' );">
+                                    <i class="fa fa-square text-blue"></i> #{messages['color.name.Blue']}
+                                </p:commandLink></li>
+                            <li><p:commandLink action="#{calendarFilterModel.setSourceStyle(es, '#f39c12')}"  process="@this" update="cbtn" oncomplete="changeColor( '#{es}', '#f39c12' );">
+                                    <i class="fa fa-square text-yellow"></i> #{messages['color.name.Yellow']}
+
+                                </p:commandLink></li>
+                            <li><p:commandLink action="#{calendarFilterModel.setSourceStyle(es, '#dd4b39')}" process="@this" update="cbtn" oncomplete="changeColor( '#{es}', '#dd4b39' );">
+                                    <i class="fa fa-square text-red"></i> #{messages['color.name.Red']}
+
+                                </p:commandLink></li>
+                            <li>
+                                <p:commandLink action="#{calendarFilterModel.setSourceStyle(es, '#d81b60')}" process="@this" update="cbtn" oncomplete="changeColor( '#{es}', '#d81b60' );">
+                                    <i class="fa fa-square text-maroon"></i> #{messages['color.name.Maroon']}
+
+                                </p:commandLink>
+                            </li>
+                            <li>
+                                <p:commandLink action="#{calendarFilterModel.setSourceStyle(es, '#00c0ef')}" process="@this" update="cbtn" oncomplete="changeColor( '#{es}', '#00c0ef' );">
+                                    <i class="fa fa-square text-aqua"></i> #{messages['color.name.Aqua']}
+
+                                </p:commandLink>
+                            </li>
+                            <li>
+                                <p:commandLink action="#{calendarFilterModel.setSourceStyle(es, '#00a65a')}" process="@this" update="cbtn" oncomplete="changeColor( '#{es}', '#00a65a' );">
+                                    <i class="fa fa-square text-green"></i> #{messages['color.name.Green']}
+
+                                </p:commandLink>
+                            </li>
+                            <li>
+                                <p:commandLink action="#{calendarFilterModel.setSourceStyle(es, '#3c8dbc')}" process="@this" update="cbtn" oncomplete="changeColor( '#{es}', '#3c8dbc' );">
+                                    <i class="fa fa-square text-light-blue"></i> #{messages['color.name.LightBlue']}
+
+                                </p:commandLink>
+                            </li>
+                            <li>
+                                <p:commandLink action="#{calendarFilterModel.setSourceStyle(es, '#ff851b')}" process="@this" update="cbtn" oncomplete="changeColor( '#{es}', '#ff851b' );">
+                                    <i class="fa fa-square text-orange"></i> #{messages['color.name.Orange']}
+
+                                </p:commandLink>
+                            </li>
+                            <li>
+                                <p:commandLink action="#{calendarFilterModel.setSourceStyle(es, '#3d9970')}" process="@this" update="cbtn" oncomplete="changeColor( '#{es}', '#3d9970' );">
+                                    <i class="fa fa-square text-olive"></i> #{messages['color.name.Olive']}
+
+                                </p:commandLink>
+                            </li>
+                            <li>
+                                <p:commandLink action="#{calendarFilterModel.setSourceStyle(es, '#605ca8')}" process="@this" update="cbtn" oncomplete="changeColor( '#{es}', '#605ca8' );">
+                                    <i class="fa fa-square text-purple"></i> #{messages['color.name.Purple']}
+
+                                </p:commandLink>
+                            </li>
+                        </ul>
+                    </h:panelGroup>
+                    #{messages[ 'calendar.source.name.'.concat( es ) ]} 
+
+                </li>
+            </ui:repeat>
+        </ul>
+    </ui:define>
+</ui:composition>
