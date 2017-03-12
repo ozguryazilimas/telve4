@@ -129,5 +129,7 @@ public class UserRoleSubView extends SubViewQueryBase<UserRole, UserRoleViewMode
         return ls;
     }
 
-    
+    public Boolean canInsert(){
+        return userHome.canChangeCriticalData();
+    }
 }

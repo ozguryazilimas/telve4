@@ -24,7 +24,9 @@ public class UserModelRegistery {
     
     private static final Map< String, UserModel> userModels = new HashMap<>();
     
-    private static final String DEFAULT_USER_TYPE = "STANDART";
+    public static final String DEFAULT_USER_TYPE = "STANDART";
+    public static final String SUPER_ADMIN_TYPE = "SUPERADMIN";
+    
     private static final List<String> userTypes = new ArrayList<>();
 
     /**

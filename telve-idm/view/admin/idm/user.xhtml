@@ -31,7 +31,7 @@
                     <div class="box-body">
                         <ui:fragment rendered="#{userHome.getUserTypes().size() gt 1}">
                             <div class="row">
-                                <t:inputCombobox label="user.label.UserType" value="#{userHome.userType}" required="true" last="true">
+                                <t:inputCombobox label="user.label.UserType" value="#{userHome.userType}" required="true" last="true" >
                                     <f:selectItems value="#{userHome.getUserTypes()}" var="ut" itemLabel="#{messages[ 'userType.label.'.concat(ut) ]}" itemValue="#{ut}" />
                                     <ui:remove>
                                         <p:ajax event="onchange" update=":form:extentions" />
@@ -200,7 +200,7 @@
 
     <ui:define name="form">
         <div class="row">
-            <t:inputCombobox label="user.label.UserType" value="#{userHome.entity.userType}" required="false" last="true">
+            <t:inputCombobox label="user.label.UserType" value="#{userHome.entity.userType}" required="false" last="true" disabled="#{not userHome.canChangeCriticalData()}">
                 <f:selectItems value="#{userHome.getUserTypes()}" var="ut" itemLabel="#{messages[ 'userType.label.'.concat(ut) ]}" itemValue="#{ut}" />
                 <ui:remove>
                     <p:ajax event="onchange" update=":form:extentions" />
@@ -212,7 +212,7 @@
             <t:inputText label="general.label.Email" value="#{userHome.entity.email}" required="true" />
             <t:inputLookupDialog value="#{userHome.entity.domainGroup}" label="user.label.DomainGroup"  
                              lookupBean="#{groupLookup}" lookupListener="userHome.entity.domainGroup" 
-                             leafSelect="false" required="#{userHome.domainGroupRequired}" />
+                             leafSelect="false" required="#{userHome.domainGroupRequired}" disabled="#{not userHome.canChangeCriticalData()}"/>
         </div>            
 
         <div id="extentions" class="row">
