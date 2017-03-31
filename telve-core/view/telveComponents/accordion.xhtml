@@ -20,14 +20,14 @@
             <h:outputScript library="telveComponents" name="accordion.js" target="head"/>
         </ui:remove>
 
-        <div id="#{cc.clientId}" class="accordion #{ cc.attrs.columnClass} #{ cc.attrs.interact ? '' : 'inited'}" >
+        <div id="#{cc.clientId}" class="accordion #{ cc.attrs.columnClass} #{ cc.attrs.interact ? '' : 'inited'} #{cc.attrs.hide eq 'true' ? 'hided' : ''}" >
 
             <div class="accordion-header" >
                 <div class="accordion-tools">
                     <composite:renderFacet name="toolbar" />
                 </div>
                 
-                <div class="#{cc.attrs.hide eq 'true' ? 'hided' : ''} accordion-title">
+                <div class="accordion-title">
                     <ui:fragment rendered="#{ cc.attrs.interact }">
                     <span class="accordionIcon fa #{cc.attrs.hide eq 'true' ? 'fa-caret-right' : 'fa-caret-down'} "> </span>
                     </ui:fragment>

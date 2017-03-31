@@ -1,7 +1,7 @@
 function initAcordionTabs(ccid) {
     var cid = PrimeFaces.escapeClientId(ccid);
 
-    jQuery( cid + " .accordion.hided").parent().next().hide();
+    jQuery( cid + ".accordion.hided .accordioncontent").hide();
 
     //toggle the componenet with class msg_body
     jQuery( cid + ".accordion:not(.inited) .accordionLabel, " + cid + ".accordion:not(.inited) .accordionIcon, " + cid + ".accordion:not(.inited) .accordionIcon2").click(function()
