@@ -36,6 +36,10 @@
     <h:outputScript library="telve" name="js/nprogress.js" />
     <h:outputScript library="telve" name="js/locale_tr.js" />
     <h:outputScript library="telveComponents" name="accordion.js" target="head"/>
+    
+    <script>
+        $.AdminLTE.options.sidebarSlimScroll = #{skinSelector.slimScroll ? 'true' : 'false'};
+    </script>
     <o:onloadScript>bindEnters();adminLTEActivate();</o:onloadScript>
     
 </ui:composition>

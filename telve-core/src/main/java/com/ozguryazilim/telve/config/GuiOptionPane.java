@@ -120,6 +120,14 @@ public class GuiOptionPane extends AbstractOptionPane{
         return skinSelector.getSidebarMini();
     }
     
+    public void setSlimScroll( Boolean slimScroll  ){
+        skinSelector.setSlimScroll(slimScroll);
+    }
+    
+    public Boolean getSlimScroll(){
+        return skinSelector.getSlimScroll();
+    }
+    
     public String getLocale() {
         return locale;
     }

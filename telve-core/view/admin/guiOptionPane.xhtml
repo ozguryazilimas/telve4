@@ -32,7 +32,14 @@
                     </p:selectOneMenu>
                 </span>
             </div>
+            <t:inputCheckboxGroup label="Sidebar">
+                <p:selectBooleanCheckbox value="#{guiOptionPane.sidebar}" itemLabel="#{messages['Mini Sidebar']}" /> 
+                <p:selectBooleanCheckbox value="#{guiOptionPane.slimScroll}" itemLabel="#{messages['Slim Scroll']}" /> 
+            </t:inputCheckboxGroup>
+            <ui:remove>
             <t:inputCheckbox label="Sidebar" value="#{guiOptionPane.sidebar}" itemLabel="Mini Sidebar" />
+            <t:inputCheckbox label="SlimScroll" value="#{guiOptionPane.slimScroll}" itemLabel="Slim Scroll" />
+            </ui:remove>
             <ui:remove>
             <div class="col-md-6 col-xs-12">
                 <div style="width: 200px;">

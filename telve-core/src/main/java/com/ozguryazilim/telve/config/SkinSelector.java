@@ -22,10 +22,12 @@ public class SkinSelector implements Serializable{
     
     private static final String SKIN_COOKIE = "telve.skin";
     private static final String SIDEBAR_COOKIE = "telve.sm";
+    private static final String SLIMSCROLL_COOKIE = "telve.ss";
     private static final String SIDEBAR_COLLAPSE_COOKIE = "telve.sc";
     
     private String skin;
     private Boolean sidebarMini;
+    private Boolean slimScroll;
     private Boolean sidebarCollapse;
     
     public String getSkin(){
@@ -66,6 +68,26 @@ public class SkinSelector implements Serializable{
     public void setSidebarMini( Boolean sidebarMini ){
         this.sidebarMini = sidebarMini;
         CookieUtils.setCookie(SIDEBAR_COOKIE, sidebarMini ? "true" : "false", -1);
+    }
+    
+    public Boolean getSlimScroll(){
+        if (slimScroll == null) {
+
+            //Önce Cookie var mı diye bakalım.
+            Cookie c = CookieUtils.getCookie(SLIMSCROLL_COOKIE);
+            if (c != null) {
+                slimScroll = "true".equals( c.getValue() );
+            } else {
+                String t = ConfigResolver.getPropertyValue("theme.slimScroll", "true");
+                setSlimScroll( "true".equals(t) );
+            }
+        }
+        return slimScroll;
+    }
+    
+    public void setSlimScroll( Boolean slimScroll ){
+        this.slimScroll = slimScroll;
+        CookieUtils.setCookie(SLIMSCROLL_COOKIE, slimScroll ? "true" : "false", -1);
     }
     
     

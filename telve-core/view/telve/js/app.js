@@ -48,7 +48,7 @@ $.AdminLTE.options = {
   //Activate sidebar push menu
   sidebarPushMenu: true,
   //Activate sidebar slimscroll if the fixed layout is set (requires SlimScroll Plugin)
-  sidebarSlimScroll: true,
+  sidebarSlimScroll: false,
   //Enable sidebar expand on hover effect for sidebar mini
   //This option is forced to true if both the fixed layout and sidebar mini
   //are used together
@@ -293,10 +293,14 @@ function _init() {
           //Add slimscroll
           $(".sidebar").slimscroll({
             height: ($(window).height() - $(".main-header").height()) + "px",
-            color: "rgba(0,0,0,0.2)",
+            color: "rgba(0,0,0,0.1)",
             size: "3px"
           });
         }
+      } else {
+          $(".sidebar").css("overflow", "auto");
+          $(".sidebar").css("height", "100%");
+          $(".main-sidebar").css("height", "100%");
       }
     }
   };
