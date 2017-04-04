@@ -1,0 +1,42 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:p="http://primefaces.org/ui"
+                 >
+
+    <p:notificationBar id="notifyBar" position="top" effect="slide" styleClass="top alert-info" style="z-index: 3000; margin: 0;" widgetVar="notifyBar" >
+        <i id="notifyIcon" class=""/>
+        <span id="notifySubject" style="font-size:36px;"></span>
+        <br/>
+        <span id="notifyDetail" style="font-size:22px;"></span>
+    </p:notificationBar>
+
+    <p:socket onMessage="handleMessage" channel="/notify/#{identity.loginName}" />
+
+    <script type="text/javascript">
+
+        jQuery("#notifyBar").bind("click", function () {
+            PF('notifyBar').hide();
+        });
+        function hideBar() {
+            PF('notifyBar').hide();
+        }
+
+        function handleMessage(notify) {
+            //facesmessage.severity = 'info';
+            //alert(facesmessage.summary);
+            jQuery("#notifyBar").removeClass().addClass("ui-notificationbar ui-widget ui-widget-content top alert-" + notify.severity);
+            jQuery("#notifyIcon").removeClass().addClass("fa fa-3x " + notify.icon);
+            jQuery("#notifySubject").html(notify.subject);
+            jQuery("#notifyDetail").html(notify.body);
+            PF('notifyBar').show();
+            setTimeout(function () {
+                PF('notifyBar').hide();
+            }, 15000);
+            updateNotifies();
+        }
+    </script>
+
+
+</ui:composition>

@@ -1,0 +1,113 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:c="http://java.sun.com/jsp/jstl/core"
+                 xmlns:o="http://omnifaces.org/ui"
+                 xmlns:of="http://omnifaces.org/functions">
+
+
+    <aside class="main-sidebar">
+
+        <ui:remove>
+                    <!-- p:cache region="main-sidebar" key="#{identity.loginName}" -->
+        </ui:remove>
+
+        <section class="sidebar" style="height: auto;">
+
+
+            <h:panelGroup styleClass="user-panel" layout="block" rendered="#{telveConfigResolver.getProperty('brand.company') eq 'TRUE'}">
+                <div class="pull-left image">
+                    <h:graphicImage library="brand" name="img/#{telveConfigResolver.getProperty('brand.company.logo')}" styleClass="img-responsive img-thumbnail"/>
+                </div>
+                <div class="pull-left info">
+                    <p>#{telveConfigResolver.getProperty('brand.company.name')}</p>
+                    <p class="text-sm">#{telveConfigResolver.getProperty('brand.company.info')}</p>
+                </div>
+            </h:panelGroup>
+
+            <ui:remove>
+                <h:form id="globalSearch">
+                    <div class="input-group" style="padding: 10px;">
+                        <p:inputText value="#{quickLauncher.key}" required="false"  placeholder="#{messages['general.label.SearchText']}"/>
+                        <p:commandButton action="#{quickLauncher.redirect()}" icon="fa fa-search" partialSubmit="false" />
+                    </div>
+                </h:form>
+            </ui:remove>
+
+
+            <ul class="sidebar-menu">
+
+                <ui:remove>
+                    <li class="header">#{messages["Main Menu"]}</li>
+                </ui:remove>
+                
+                <ui:remove><!-- Side Main Navigations --></ui:remove>
+                <ui:repeat value="#{nagivationController.sideNavigations}" var="nav" >
+
+                    <li>
+                        <h:link  outcome="#{nav.viewId}" >
+                            <ui:remove>
+                                <c:forEach items="#{action.action.params}" var="entry">
+                                    <f:param name="#{entry.key}" value="#{entry.value}"/>
+                                </c:forEach>
+                            </ui:remove>
+
+                            <h:graphicImage value="/img/ribbon/small#{nav.icon}"  style="margin-right: 4px;" rendered="#{not nav.fontIcon}"/>
+                            <ui:fragment rendered="#{nav.fontIcon}">
+                                <i class="#{ nav.bundleKey ? messages[nav.icon] : nav.icon}"></i>
+                            </ui:fragment>
+                            <span style="padding-right: 4px;">#{messages[nav.label]}</span> 
+
+                        </h:link>
+                    </li>
+
+                </ui:repeat>
+
+                <li class="header">#{messages["general.label.Navigation"]}</li>
+                <ui:repeat value="#{nagivationController.navigationSections}" var="section" >
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-caret-right"></i>
+                            <span>#{messages[section.label]}</span>
+
+                            <ui:remove>
+                                <span class="label label-primary pull-right">4</span>
+                            </ui:remove>
+                        </a>
+                        <ul class="treeview-menu">
+                            <ui:repeat value="#{nagivationController.getSectionLinks(section.label)}" var="nav" >
+                                <li>
+                                    <h:link  outcome="#{ nav.viewId }" >
+                                        <ui:remove>
+                                            <c:forEach items="#{action.action.params}" var="entry">
+                                                <f:param name="#{entry.key}" value="#{entry.value}"/>
+                                            </c:forEach>
+                                        </ui:remove>
+
+                                        <h:graphicImage value="/img/ribbon/small#{nav.icon}"  style="margin-right: 4px;" rendered="#{not nav.fontIcon}"/>
+                                        <ui:fragment rendered="#{nav.fontIcon}">
+                                            <i class="#{ nav.bundleKey ? messages[nav.icon] : nav.icon}"></i>
+                                        </ui:fragment>
+                                        <span style="padding-right: 4px;">#{messages[nav.label]}</span> 
+                                    </h:link>
+                                </li>
+                            </ui:repeat>
+                        </ul>
+                    </li>
+                </ui:repeat>
+            </ul>
+            <ui:remove>
+                <div>
+                    <p>Günün İp Uçusu gibi bişiler buraya doğru gelebilir belki...</p>
+                </div>
+            </ui:remove>
+        </section>
+        <ui:remove>
+            <!-- /p:cache -->
+        </ui:remove>
+    </aside>
+
+
+</ui:composition>

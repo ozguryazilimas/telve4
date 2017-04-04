@@ -1,0 +1,16 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+    <footer class="main-footer">
+
+        <div class="pull-right hidden-xs">
+            #{telveConfigResolver.getProperty('app.version')}
+        </div>
+
+        <strong>#{telveConfigResolver.getProperty('app.footer')}</strong> 
+        #{telveConfigResolver.getProperty('brand.company.footer')}
+
+    </footer>
+
+</ui:composition>
