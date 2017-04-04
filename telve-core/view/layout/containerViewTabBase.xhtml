@@ -9,9 +9,6 @@
 
     <ui:param name="dontShowContentHeader" value="true" />
 
-    <f:metadata>
-        <f:viewParam name="eid" value="#{bean.id}" />
-    </f:metadata>
 
     <ui:define name="outerspace">
         <ui:remove>
@@ -22,7 +19,7 @@
 
     <ui:define name="customHeader">
         <section class="content-header">
-            
+
             <ui:fragment rendered="#{viewState ne ''}" >
                 <div class="pull-right">
                     #{viewState}
