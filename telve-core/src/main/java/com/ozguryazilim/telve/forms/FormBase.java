@@ -533,6 +533,9 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         }
         
         if ( id == null || id == 0 || id == -1 || ( getNeedCreateNew() && id <= 0 )) {
+            //Eğer entity daha önceden hazırlanmış ise ( buraya gelmeden önce create edilmiş olabilir ) yeni oluşturmuyoruz.
+            if( entity != null && entity.getId() == null ) return;
+            //Yeni oluşturalım
             createNew();
         } else {
             entity = getRepository().findBy(id);
