@@ -39,6 +39,9 @@ public interface Pages extends ViewConfig {
     @SecuredPage
     class Options implements Pages {
     };
+    
+    @SecuredPage
+    class FeatureLookup implements Pages {};
 
     @SecuredPage
     interface Admin extends Pages {

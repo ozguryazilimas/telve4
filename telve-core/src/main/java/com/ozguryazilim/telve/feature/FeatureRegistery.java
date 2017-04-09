@@ -6,7 +6,11 @@
 package com.ozguryazilim.telve.feature;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.feature.search.AbstractFeatureSearchHandler;
+import com.ozguryazilim.telve.feature.search.Search;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
@@ -40,6 +44,11 @@ public class FeatureRegistery {
      */
     private static Map<Class,Class> beanClassMap = new HashMap<>();
     
+    /**
+     * Feature İsmi ile SearchHandler mappingi
+     */
+    private static Map<String,Class<? extends AbstractFeatureSearchHandler>> featureSearchMap = new HashMap<>();
+    
     public static void register( Feature a, Class annoatedClass ){
         //FIXME: name diye bir kolonumuz olmasın. Gereksiz kafa karıştırıcı olacak. Doğrudan sınıf adını kullanalım
         //forEntity için de ayrı bir sorgu hazırlayalım. 
@@ -53,6 +62,12 @@ public class FeatureRegistery {
             featureClassMap.put(a.forEntity(), a);
             beanClassMap.put(a.forEntity(), annoatedClass);
         }
+        
+        Search sa = (Search) annoatedClass.getAnnotation(Search.class);
+        if( sa != null ){
+            featureSearchMap.put(featureName, sa.handler());
+        }
+        
         
         LOG.info("Featue {} is registered for class {}", featureName, a.forEntity().getClass().getSimpleName());
     }
@@ -130,5 +145,25 @@ public class FeatureRegistery {
         }
     }
     
+    /**
+     * Geriye sistemde tanımlı featureların isim listesini döndürür.
+     * @return 
+     */
+    public static List<String> getFeatureNames(){
+        return new ArrayList<>(featureNameMap.keySet());
+    }
+    
+    /**
+     * Geriye sistemde tanımlı searchable featureların isim listesini döndürür.
+     * @return 
+     */
+    public static List<String> getSearchableFeatureNames(){
+        return new ArrayList<>(featureSearchMap.keySet());
+    }
+
+    public static AbstractFeatureSearchHandler getSearchHandler( String name ){
+        //TODO: NPE check
+        return (AbstractFeatureSearchHandler) BeanProvider.getContextualReference( featureSearchMap.get(name), true);
+    }
     
 }
