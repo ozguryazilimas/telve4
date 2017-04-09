@@ -15,8 +15,7 @@
     <composite:implementation>
         <ui:fragment rendered="#{cc.attrs.value ne null}">
             <p:commandLink id="#{cc.id}_inp" action="#{featureLinkController.go(cc.attrs.value.featureName, cc.attrs.value.id )}" process="@this" ajax="true" partialSubmit="true">
-                <i class="#{cc.attrs.value.icon}" />
-                    #{cc.attrs.label eq null or cc.attrs.label eq '' ? messages[cc.attrs.value.caption].concat(' - ').concat(cc.attrs.value.businessKey) : cc.attrs.label }
+                <i class="#{cc.attrs.value.icon} margin-r-5" /><h:outputText value="#{cc.attrs.label eq null or cc.attrs.label eq '' ? messages[cc.attrs.value.caption].concat(' - ').concat(cc.attrs.value.businessKey) : cc.attrs.label }" />
             </p:commandLink>
         </ui:fragment>
     </composite:implementation>

@@ -39,6 +39,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
+import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigDescriptor;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.literal.AnyLiteral;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
@@ -674,8 +675,22 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             //TODO: Burada aslında BrowsePage'in ismine bakmak daha makul sanırım.
             //Ya da edit/view page'ler dışında mı diye de bakılabilir.
 
-            String editView = viewConfigResolver.getViewConfigDescriptor(getEditPage()).getViewId();
-            String containerView = viewConfigResolver.getViewConfigDescriptor(getContainerViewPage()).getViewId();
+            String editView = "";
+            String containerView = "";
+            
+            if( getEditPage() != null ){
+                ViewConfigDescriptor vc = viewConfigResolver.getViewConfigDescriptor(getEditPage());
+                if( vc != null ){
+                    editView = viewConfigResolver.getViewConfigDescriptor(getEditPage()).getViewId();
+                }
+            }
+            
+            if( getContainerViewPage() != null ){
+                ViewConfigDescriptor vc = viewConfigResolver.getViewConfigDescriptor(getContainerViewPage());
+                if( vc != null ){
+                    containerView = vc.getViewId();
+                }
+            }
 
             editView = editView.replace(".xhtml", ".jsf");
             containerView = containerView.replace(".xhtml", ".jsf");
