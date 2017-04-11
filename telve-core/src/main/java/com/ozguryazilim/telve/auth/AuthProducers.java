@@ -37,6 +37,10 @@ public class AuthProducers {
     @Produces @CurrentUser
     public String currentUser() {
         Subject s = SecurityUtils.getSubject();
+        if( s.getPrincipal() instanceof TelveIdmPrinciple ){
+            return ((TelveIdmPrinciple)s.getPrincipal()).getName();
+        }
+        
         return s.getPrincipal().toString();
     }
     
