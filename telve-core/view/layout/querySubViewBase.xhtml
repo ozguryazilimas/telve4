@@ -58,6 +58,8 @@
                                 <p:ajax event="rowUnselect" update="#{onSelectUpdate}" oncomplete="disableRibbonBtn('#{onSelectEnabled}');" />
                             </ui:remove>
 
+                            <ui:insert name="beforeColumns" />
+                            
                             <c:forEach items="#{bean.queryDefinition.columns}" var="col" varStatus="loop">
                                 <p:column>
                                     <c:set var="ind" value="#{loop.index}" />
@@ -69,6 +71,9 @@
 
                                 </p:column>
                             </c:forEach>
+                            
+                            <ui:insert name="afterColumns" />
+                            
                             <p:column rendered="#{showActionColumn eq 'true' }" styleClass="#{actionColumnStyle}">
                                 <ui:insert name="actionColumn" />
                             </p:column>
