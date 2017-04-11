@@ -42,6 +42,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.ldap.UnsupportedAuthenticationMechanismException;
 import org.apache.shiro.realm.ldap.JndiLdapRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -265,10 +266,18 @@ public class TelveIdmRealm extends JndiLdapRealm {
                     throw new UnknownAccountException("No account created for user [" + username + "]");
                 }
             }
-        }
-
-        if (user != null && !user.getActive()) {
-            throw new LockedAccountException("Account is lock for user [" + username + "]");
+        } else {
+            if (!user.getActive()) {
+                throw new LockedAccountException("Account is lock for user [" + username + "]");
+            }
+            
+            //Login sırasında girilen veri yerine veri tabanındaki loginName kullanılsın
+            upToken.setUsername(user.getLoginName());
+            username = user.getLoginName();
+            
+            if( info != null ){
+                info.setPrincipals(new SimplePrincipalCollection(new TelveSimplePrinciple(username), getName()));
+            }
         }
 
         //LDAP kullanılmıyor ya da LDAP kullanıcısı olmasa da idm kullanıcı ise doğrulama yapalım.
