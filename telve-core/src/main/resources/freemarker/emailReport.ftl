@@ -1,3 +1,4 @@
+<#ftl encoding="UTF-8">
 ${request.setHeader("subject", "Zamanlanmış Rapor Hazırlandı")}
 ${headers.messages["report.name." + headers.reportName]} : ${headers.info}
 
