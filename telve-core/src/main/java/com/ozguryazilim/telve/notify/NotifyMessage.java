@@ -6,6 +6,8 @@
 package com.ozguryazilim.telve.notify;
 
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Notification sistemei için mesaj model sınıfı.
@@ -14,6 +16,7 @@ import java.io.Serializable;
  */
 public class NotifyMessage implements Serializable{
    
+    private String id;
     private String to = "*";
     private String subject;
     private String body;
@@ -22,22 +25,25 @@ public class NotifyMessage implements Serializable{
     private String link;
 
     public NotifyMessage() {
-        
+        this.id = UUID.randomUUID().toString();
     }
 
     
     public NotifyMessage(String to, String subject, String body) {
+        this.id = UUID.randomUUID().toString();
         this.to = to;
         this.subject = subject;
         this.body = body;
     }
 
     public NotifyMessage(String subject, String body) {
+        this.id = UUID.randomUUID().toString();
         this.subject = subject;
         this.body = body;
     }
 
     public NotifyMessage(String to, String subject, String body, String link, String icon, String severity) {
+        this.id = UUID.randomUUID().toString();
         this.subject = subject;
         this.body = body;
         this.link = link;
@@ -94,8 +100,39 @@ public class NotifyMessage implements Serializable{
         this.link = link;
     }
 
-    
-    
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 13 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final NotifyMessage other = (NotifyMessage) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public String toString() {
         return "NotifyMessage{" + "to=" + to + ", subject=" + subject + ", body=" + body + ", icon=" + icon + ", severity=" + severity + '}';

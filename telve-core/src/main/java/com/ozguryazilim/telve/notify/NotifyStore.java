@@ -49,7 +49,7 @@ public class NotifyStore implements Serializable {
         Gson gson = new Gson();
         String data = gson.toJson(message);
 
-        //notify.msg.1231-123123-12313.0 gibi bir key
+        //notify.msg.telve.0 gibi bir key
         kahve.put("notify.msg." + message.getTo() + "." + ix, data);
         kahve.put(key, ix + 1);
     }

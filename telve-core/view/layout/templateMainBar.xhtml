@@ -167,52 +167,8 @@
                                     </ul>
                                 </div>
 
-                                <p:outputPanel autoUpdate="true" styleClass="navbar-custom-menu">
-                                    <ul class="nav navbar-nav">
-
-                                        <!-- Notifications: style can be found in dropdown.less -->
-                                        <li class="dropdown messages-menu">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="#{messages['nav.label.Notifications']}">
-                                                <i class="fa fa-bell-o"></i>
-                                                <h:panelGroup id="notifyCount" styleClass="#{notifyStore.getNotifyCount(identity.loginName) gt 0 ? 'label label-warning' : ''}">
-                                                    <h:outputText value="#{notifyStore.getNotifyCount(identity.loginName)}" styleClass="" rendered="#{notifyStore.getNotifyCount(identity.loginName) gt 0}"/>
-                                                </h:panelGroup>
-                                            </a>
-
-
-                                            <ul class="dropdown-menu">
-                                                <li class="header">You have #{notifyStore.getNotifyCount(identity.loginName)} notifications</li>
-                                                <li>
-                                                    <!-- inner menu: contains the actual data -->
-                                                    <ul class="menu">
-                                                        <ui:repeat value="#{notifyStore.getNotifies(identity.loginName)}" var="notify">
-                                                            <li>
-                                                                <a href="#{request.contextPath}#{notify.link}" >
-                                                                    <div class="pull-left">
-                                                                        <i class="fa fa-2x #{notify.icon}" /> 
-                                                                    </div>
-                                                                    <h4>#{notify.subject}</h4>
-                                                                    <p>#{notify.body}</p>
-                                                                </a>
-                                                            </li>
-                                                        </ui:repeat>
-                                                    </ul>
-                                                </li>
-                                                <li class="footer">
-
-                                                    <p:commandLink action="#{notifyStore.clear(identity.loginName)}" ajax="true" 
-                                                                   partialSubmit="true" process="@this" update=":notifyCount" 
-                                                                   styleClass="pull-right">
-                                                        <i class="fa fa-trash"></i>
-                                                        #{messages['general.button.Delete']}
-                                                    </p:commandLink>
-                                                </li>
-                                            </ul>
-
-                                        </li>
-
-                                    </ul>
-                                </p:outputPanel>
+                                <ui:include src="/fragments/notiftyPopupFragment.xhtml" />
+                                
 
 
                             </div>
