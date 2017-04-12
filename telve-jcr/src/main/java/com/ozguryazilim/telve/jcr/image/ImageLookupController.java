@@ -48,6 +48,7 @@ public class ImageLookupController implements Serializable {
 
     private String keyValue;
     private String contextRoot;
+    private Integer sizeLimit = 0;
 
     /**
      * Verilen bilgiler ile imaj içeriğinin id'sini döndürür.
@@ -301,7 +302,8 @@ public class ImageLookupController implements Serializable {
     
     
     
-    public void uploadDialog(String keyValue, String contextRoot){
+    public void uploadDialog(String keyValue, String contextRoot, Integer sizeLimit ){
+        this.sizeLimit = sizeLimit;
         prepareToUpload(keyValue, contextRoot);
         Map<String, Object> options = new HashMap<>();
         
@@ -316,4 +318,14 @@ public class ImageLookupController implements Serializable {
     public void closeDialog(){
         RequestContext.getCurrentInstance().closeDialog(null);
     }
+
+    public Integer getSizeLimit() {
+        return sizeLimit;
+    }
+
+    public void setSizeLimit(Integer sizeLimit) {
+        this.sizeLimit = sizeLimit;
+    }
+    
+    
 }
