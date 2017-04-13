@@ -793,3 +793,11 @@ textarea.ui-inputfield, .ui-selectonemenu {
 .states > li.active{
     font-weight: bold;
 }
+
+.ui-outputlabel.ui-state-error {
+	color: red !important;
+}
+
+.ui-state-error {
+	border-color: red !important;
+}
