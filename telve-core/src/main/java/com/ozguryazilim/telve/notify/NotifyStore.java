@@ -5,16 +5,21 @@
  */
 package com.ozguryazilim.telve.notify;
 
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.ozguryazilim.mutfak.kahve.Kahve;
 import com.ozguryazilim.mutfak.kahve.KahveEntry;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Default;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Notify mesajlarını kahve üzerinde saklar.
@@ -25,6 +30,8 @@ import javax.inject.Named;
 @ApplicationScoped
 public class NotifyStore implements Serializable {
 
+    private static final Logger LOG = LoggerFactory.getLogger(NotifyStore.class);
+    
     @Inject
     @Default
     Kahve kahve;
@@ -107,5 +114,56 @@ public class NotifyStore implements Serializable {
         }
 
         kahve.remove(key);
+    }
+    
+    /**
+     * Tıklanılan mesajı önce listeden siler sonra eğer üzerinde link varsa ona gider.
+     * @param identity
+     * @param msgId 
+     */
+    public void go( String identity, String msgId ){
+        List<NotifyMessage> ls = getNotifies(identity);
+        NotifyMessage rs = null;
+                
+        for( NotifyMessage nm : ls ){
+            if( nm.getId().equals(msgId)){
+                rs = nm;
+                break;
+            }
+        }
+
+        if( rs == null ) return;
+        
+        //Önce seçileni aradan bir çıkartalım.
+        ls.remove(rs);
+        
+        //Listenin hepsini yeniden yazalım.
+        clear(identity);
+        save(identity, ls);
+        
+        //Şimdi de linki varsa gidelim.
+        if( !Strings.isNullOrEmpty(rs.getLink())){
+            FacesContext fc = FacesContext.getCurrentInstance();
+            try {
+                String root = fc.getExternalContext().getApplicationContextPath();
+                fc.getExternalContext().redirect( root + rs.getLink());
+            } catch (IOException ex) {
+                LOG.error("Notify Redirect Error",ex);
+            }
+        }
+    }
+    
+    public void save(String identity, List<NotifyMessage> messages) {
+        int ix = 0;
+        for( NotifyMessage message : messages ){
+            Gson gson = new Gson();
+            String data = gson.toJson(message);
+        
+            //notify.msg.telve.0 gibi bir key
+            kahve.put("notify.msg." + message.getTo() + "." + ix, data);
+            ix++;
+        }
+        String key = "notify.count." + identity;
+        kahve.put(key, ix);
     }
 }

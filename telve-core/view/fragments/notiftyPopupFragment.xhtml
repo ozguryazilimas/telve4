@@ -29,14 +29,13 @@
                             <ul class="menu">
                                 <ui:repeat value="#{notifyStore.getNotifies(identity.loginName)}" var="notify">
                                     <li>
-                                        <a href="#{request.contextPath}#{notify.link}" >
+                                        <p:commandLink action="#{notifyStore.go(identity.loginName, notify.id )}" >
                                             <div class="pull-left">
                                                 <i class="fa fa-2x #{notify.icon}" /> 
                                             </div>
                                             <h4>#{notify.subject}</h4>
-                                            <p>#{notify.id}</p>
                                             <p style="white-space: normal;">#{notify.body}</p>
-                                        </a>
+                                        </p:commandLink>
                                     </li>
                                 </ui:repeat>
                             </ul>
