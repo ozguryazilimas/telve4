@@ -202,44 +202,11 @@
                                 <p:commandLink actionListener="#{bean.search()}" styleClass="btn btn-box-tool" update="@([id$=results])" process="@this" title="#{messages['general.button.Refresh']}">
                                     <i class="fa fa-refresh"/>
                                 </p:commandLink>
-                                <ui:remove>
-                                    FIXME: PF exportlarında hata var kontrol edilecek
-                                <ui:fragment rendered="#{identity.hasPermission( permission, 'export')}">
-                                    <div class="doropdown" style="display: inline-block;" title="#{messages['general.button.Export']}">
-                                        <a href="javascript:" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-download"/>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <ui:remove>
-                                                <li>
-                                                    <p:commandLink ajax="false">
-                                                        <i class="fa fa-file-pdf-o" /> PDF
-                                                        <p:dataExporter type="pdf" target=":browseListForm:results" fileName="results" /> 
-                                                    </p:commandLink>
-                                                </li>
-                                            </ui:remove>
-                                            <li>
-                                                <p:commandLink ajax="false">
-                                                    <i class="fa fa-file-text-o" /> CSV
-                                                    <p:dataExporter type="csv" target=":browseListForm:results" fileName="results" /> 
-                                                </p:commandLink>
-                                            </li>
-                                            <li>
-                                                <p:commandLink ajax="false">
-                                                    <i class="fa fa-file-excel-o" /> XLS
-                                                    <p:dataExporter type="xls" target=":browseListForm:results" fileName="results" /> 
-                                                </p:commandLink>
-                                            </li>
-                                            <li>
-                                                <p:commandLink ajax="false">
-                                                    <i class="fa fa-file-code-o" /> XML
-                                                    <p:dataExporter type="xml" target=":browseListForm:results" fileName="results" /> 
-                                                </p:commandLink>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </ui:fragment>
-                                </ui:remove>
+                               
+                                <p:commandLink actionListener="#{bean.export()}" styleClass="btn btn-box-tool" ajax="false" process="@this" title="#{messages['general.button.Export']}" rendered="#{identity.hasPermission( permission, 'export')}">
+                                    <i class="fa fa-download"/>
+                                </p:commandLink>
+                                
                                 <i class="margin-r-5" />
                                 <a title="#{messages['general.button.Filter']}" href="javascript:" class="btn btn-box-tool" onclick="jQuery('#content-list-col').toggle();
                                         jQuery('#content-list-col').toggleClass('col-md-3 col-xs-12 col-md-pull-9');
