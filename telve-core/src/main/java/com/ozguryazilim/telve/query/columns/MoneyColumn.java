@@ -5,8 +5,13 @@
  */
 package com.ozguryazilim.telve.query.columns;
 
+import com.google.common.base.Strings;
+import java.io.IOException;
+import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Currency;
 import javax.persistence.metamodel.Attribute;
+import org.apache.commons.beanutils.BeanUtils;
 
 /**
  *
@@ -37,6 +42,17 @@ public class MoneyColumn<E> extends Column<E>{
     public String getCurrencyName(){
         return currencyColumn.getName();
     }
+
+    @Override
+    public void export(E e, Writer doc) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
+        //doc.write("\"");
+        String val = BeanUtils.getProperty(e, getName());
+        if( !Strings.isNullOrEmpty(val)){
+            doc.write( val );
+        }
+        //doc.write("\"");
+    }
+    
     
     
 }

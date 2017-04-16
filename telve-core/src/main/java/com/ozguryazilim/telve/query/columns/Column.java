@@ -1,7 +1,12 @@
 package com.ozguryazilim.telve.query.columns;
 
+import com.google.common.base.Strings;
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
 import javax.persistence.metamodel.Attribute;
+import org.apache.commons.beanutils.BeanUtils;
 
 /**
  *
@@ -82,6 +87,15 @@ public abstract class Column<E> implements Serializable {
 
     public void setSortAsc(Boolean sortAsc) {
         this.sortAsc = sortAsc;
+    }
+    
+    public void export( E e, Writer doc ) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException{
+        doc.write("\"");
+        String val = BeanUtils.getProperty(e, getName());
+        if( !Strings.isNullOrEmpty(val)){
+            doc.write( val );
+        }
+        doc.write("\"");
     }
     
     

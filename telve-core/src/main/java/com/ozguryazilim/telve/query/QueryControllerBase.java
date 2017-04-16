@@ -18,13 +18,21 @@ import com.ozguryazilim.telve.query.filters.Filter;
 import com.ozguryazilim.telve.entities.ViewModel;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
+import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.messages.MessagesUtils;
 import com.ozguryazilim.telve.query.columns.Column;
+import com.ozguryazilim.telve.utils.DateUtils;
+import com.ozguryazilim.telve.utils.StringUtils;
 import com.ozguryazilim.telve.view.PageTitleResolver;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Serializable;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,8 +42,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.deltaspike.data.api.criteria.Criteria;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +62,9 @@ import org.slf4j.LoggerFactory;
 public abstract class QueryControllerBase<E extends EntityBase,R extends ViewModel> implements Serializable{
 
     private static final Logger LOG = LoggerFactory.getLogger(QueryControllerBase.class);
+
+    private static final String CSV = ".csv";
+    private static final String CSV_MIME = "application/csv";
     
     /**
      * Sorgu bilgilerini tutan sınıf
@@ -76,6 +90,9 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
     
     @Inject
     PageTitleResolver pageTitleResolver;
+
+    @Inject
+    private FacesContext facesContext;
     
     /**
      * GUI için sorgu özellikleri tanımlanır.
@@ -473,6 +490,106 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
     
     public Boolean getIsSystemQuery(){
         return getIsSystemQuery( queryName );
+    }
+    
+    /**
+     * Query Sonucunu CVS olarak export eder.
+     */
+    public void export() throws IOException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+        
+        //Önce sorguyu bir daha çalıştıralım.
+        search();
+        
+        StringWriter doc = new StringWriter();
+        
+        //Önce başlığı bir yazalım.
+        exportHeader( doc );
+        
+        for( R e : entityList ){
+            exportRow( e, doc );
+        }
+        
+        LOG.debug(doc.toString());
+        
+        sendExport(doc.toString().getBytes("UTF-8"));
+    }
+    
+    protected void sendExport( byte[] data ){
+        HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+        response.reset();
+        response.setContentType(CSV_MIME);
+        
+        //TODO: FileName nasıl olsun?
+        String fileName = getExportFileName() + CSV;
+        
+        response.setHeader("Content-disposition", "attachment;filename=" + fileName );
+        response.setContentLength(data.length);
+
+        try {
+
+            try (OutputStream out = response.getOutputStream()) {
+                out.write(data);
+
+                out.flush();
+            }
+
+            facesContext.responseComplete();
+        } catch (IOException ex) {
+            FacesMessages.error("Error while downloading the file: " + fileName );
+        }
+
+    }
+
+    protected String getExportFileName(){
+        String f = pageTitleResolver.getPageTitle();
+        String qn = getQueryName();
+        //Eğer sorgu ismi yoksa default aynı değer
+        boolean addqn = !f.equals(qn);
+            
+        String result = MessagesUtils.getMessage(f);
+        
+        if( addqn ) {
+            result = result + "-" + qn;
+        }
+        
+        result = result + "-" + DateUtils.getDateTimeFormatter().print(new DateTime());
+        
+        //TODO: isimdeli türkçe karakter, boşluk v.s temizlenmeli.
+        result = result.replaceAll(" ", "_");
+        
+        result = StringUtils.escapeTurkish(result);
+        
+        return result;
+    }
+    
+    protected void exportHeader( Writer doc) throws IOException{
+        boolean firstColumn = true;
+        
+        for( Column c : queryDefinition.getColumns()){
+            if( !firstColumn ){
+                doc.write(",");
+            } else {
+                firstColumn = false;
+            }
+            doc.write(MessagesUtils.getMessage(c.getLabelKey()));
+        }
+        doc.write("\n");
+    }
+    
+    protected void exportRow( R row, Writer doc) throws IOException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+        boolean firstColumn = true;
+        
+        for( Column c : queryDefinition.getColumns()){
+            if( !firstColumn ){
+                doc.write(",");
+            } else {
+                firstColumn = false;
+            }
+            
+            c.export(row, doc);
+            
+        }
+        doc.write("\n");
     }
     
 }
