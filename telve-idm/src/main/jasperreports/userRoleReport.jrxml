@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.2.final using JasperReports Library version 6.2.2  -->
+<!-- 2017-04-17T14:24:58 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="userRoleReport" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="76b5a97f-b408-4bac-aaed-bcb9cdced953">
 	<property name="ireport.zoom" value="1.2100000000000002"/>
 	<property name="ireport.x" value="0"/>
@@ -7,6 +9,8 @@
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.2" value="pageHeader"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.4" value="columnHeader"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Tekir"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<style name="Kolon_basliklar" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1254"/>
 	<style name="Detail" forecolor="#000000" backcolor="#FFFFFF" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" pdfEncoding="Cp1254"/>
 	<style name="Baslik" forecolor="#003366" backcolor="#FFFFFF" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="16" isBold="true" pdfEncoding="Cp1254"/>
@@ -18,9 +22,9 @@
 			<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 		</parameter>
 		<queryString>
-			<![CDATA[select  UR.ID, rd.NAME as ROLE_NAME
+			<![CDATA[select ur.ID, rd.NAME as ROLE_NAME
 from TLI_USER_ROLE ur
-LEFT OUTER JOIN TLI_ROLE rd on RD.ID = ur.ROLE_ID
+LEFT OUTER JOIN TLI_ROLE rd on rd.ID = ur.ROLE_ID
 where ur.USER_ID = $P{USER_ID}]]>
 		</queryString>
 		<field name="ID" class="java.lang.Long"/>

@@ -89,10 +89,8 @@ public class AuditLogReport extends JasperReportBase{
 
     @Override
     protected void decorateI18NParams(Map<String, Object> params) {
-        super.decorateI18NParams(params); //To change body of generated methods, choose Tools | Templates.
-        
         params.put(JRParameter.REPORT_RESOURCE_BUNDLE, TelveResourceBundle.getBundle());
-
+        super.decorateI18NParams(params); //To change body of generated methods, choose Tools | Templates.           
     }
     
 
