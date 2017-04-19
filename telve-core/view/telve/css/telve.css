@@ -801,3 +801,7 @@ textarea.ui-inputfield, .ui-selectonemenu {
 .ui-state-error {
 	border-color: red !important;
 }
+
+td.ui-cell-editing {
+	padding: 4px 10px !important;
+}
