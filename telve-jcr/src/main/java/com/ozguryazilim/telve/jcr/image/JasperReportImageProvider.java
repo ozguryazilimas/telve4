@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.jcr.image;
 
+import com.google.common.base.Strings;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
@@ -25,37 +26,42 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Image storage'daki imajların jasper ropert içerisinden erişilebilmesi için yardımcı sınıf.
+ * Image storage'daki imajların jasper ropert içerisinden erişilebilmesi için
+ * yardımcı sınıf.
  *
  * Bu sınıf init edilip Jasper Report'a parametre olarak pass edilmeli.
  *
  * <parameter name="IMG_PROVIDER" class="com.ozguryazilim.telve.jcr.image.JasperReportImageProvider" isForPrompting="false"/>
  *
  * <image>
- *	<reportElement x="343" y="20" width="67" height="77" uuid="df00029a-3ad7-48e1-bf31-a9d8f5c28dcf"/>
- *      <imageExpression><![CDATA[$P{IMG_PROVIDER}.getImage($F{PHOTO_ID})]]></imageExpression>
+ * <reportElement x="343" y="20" width="67" height="77" uuid="df00029a-3ad7-48e1-bf31-a9d8f5c28dcf"/>
+ * <imageExpression><![CDATA[$P{IMG_PROVIDER}.getImage($F{PHOTO_ID})]]></imageExpression>
  * </image>
  *
  * @author Hakan Uygun
  */
-public class JasperReportImageProvider implements Serializable{
+public class JasperReportImageProvider implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(JasperReportImageProvider.class);
 
     private String contextRoot;
-    
+
     public JasperReportImageProvider(String contextRoot) {
         this.contextRoot = contextRoot;
     }
 
     /**
      * Verilen bilgiler ile imaj içeriğinin id'sini döndürür.
+     *
      * @param keyValue
      * @param contextRoot
      * @return
      * @throws RepositoryException
      */
-    public String getImageId( String keyValue ) throws RepositoryException{
+    public String getImageId(String keyValue) throws RepositoryException {
+        if (Strings.isNullOrEmpty(keyValue)) {
+            return null;
+        }
 
         String folderName = contextRoot + "/";
         String path = folderName + buildPath(keyValue) + keyValue;
@@ -71,12 +77,15 @@ public class JasperReportImageProvider implements Serializable{
         return node.getIdentifier();
     }
 
-    public BufferedImage getImage( String value ){
+    public BufferedImage getImage(String value) {
+        if (Strings.isNullOrEmpty(value)) {
+            return null;
+        }
         //JCR'den content nodeu bulalım
         Node cn;
         BufferedImage img = null;
         try {
-            cn = getImageContent( getImageId( value));
+            cn = getImageContent(getImageId(value));
             img = ImageIO.read(cn.getProperty("jcr:data").getBinary().getStream());
         } catch (IOException ex) {
             LOG.error("IO Error", ex);
@@ -85,14 +94,17 @@ public class JasperReportImageProvider implements Serializable{
         }
 
         //TODO: Default image işine girmek lazım mı?
-
         return img;
     }
 
-    public BufferedImage getImageById( String value ){
+    public BufferedImage getImageById(String value) {
+        if (Strings.isNullOrEmpty(value)) {
+            return null;
+        }
+
         //JCR'den content nodeu bulalım
         JcrTools jcrTools = new JcrTools();
-        
+
         Node cn;
         BufferedImage img = null;
         try {
@@ -105,13 +117,13 @@ public class JasperReportImageProvider implements Serializable{
         }
 
         //TODO: Default image işine girmek lazım mı?
-
         return img;
     }
 
-    public Node getImageContent(String id ) throws RepositoryException {
+    public Node getImageContent(String id) throws RepositoryException {
+
         try {
-            Node node = getSession().getNodeByIdentifier( id );
+            Node node = getSession().getNodeByIdentifier(id);
             Node content = node.getNode("jcr:content");
             return content;
         } catch (PathNotFoundException e) {
@@ -122,21 +134,21 @@ public class JasperReportImageProvider implements Serializable{
 
     /**
      * Geriye JCR instance'ını döndürür.
+     *
      * @return
      */
-    protected Session getSession(){
-        
+    protected Session getSession() {
+
         //Bazen JasperReports içinde context kayboluyor
-        if( !ContextUtils.isContextActive(RequestScoped.class) ){
+        if (!ContextUtils.isContextActive(RequestScoped.class)) {
             ContextControl ctxCtrl = BeanProvider.getContextualReference(ContextControl.class);
             // this will implicitly bind a new RequestContext to your current thread
             ctxCtrl.startContext(RequestScoped.class);
         }
-        
 
         return BeanProvider.getContextualReference(Session.class, false);
     }
-    
+
     /**
      * Çok fazla dosya olması durumunu kontrol etmek için.
      *
@@ -155,6 +167,6 @@ public class JasperReportImageProvider implements Serializable{
         }
 
         return sb.toString();
-        */
+         */
     }
 }
