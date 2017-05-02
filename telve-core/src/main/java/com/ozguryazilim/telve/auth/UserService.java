@@ -159,7 +159,7 @@ public class UserService {
                     break;
                 }
             }
-            return loginName;
+            return s;
         }
 
         return s;
