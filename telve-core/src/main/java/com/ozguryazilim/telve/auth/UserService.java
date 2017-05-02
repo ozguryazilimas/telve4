@@ -159,7 +159,10 @@ public class UserService {
                     break;
                 }
             }
-            return loginName;
+            if ( Strings.isNullOrEmpty(s)) {
+                return loginName;
+            } 
+            return s;
         }
 
         return s;
