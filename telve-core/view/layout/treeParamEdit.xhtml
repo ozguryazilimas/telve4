@@ -8,6 +8,7 @@
                 xmlns:ut="http://utech.com/jsf/comps" template="/layout/primeTemplate.xhtml">
 
     <ui:param name="showListBar" value="true" />
+    <ui:param name="showNodeControls" value="#{showNodeControls == null ? true : showNodeControls}"/> 
     
     <ui:define name="outerspace">
         <ui:remove>
@@ -17,109 +18,68 @@
     </ui:define>
 
     <ui:define name="body">
-
         <ui:include src="/layout/messages.xhtml" />
-
-        
         <div class="box box-primary">
-            
-        <h:form id="form">
+			<h:form id="form">
+				<p:remoteCommand name="selectTreeNode" update="paramTree,nodeEditor, :contextForm,#{onSelectUpdate}" action="#{homeBean.selectNode}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');#{onSelectEvent}"
+					partialSubmit="true" process="@this" />
+				<p:remoteCommand name="search" update="treePanel" action="#{homeBean.search()}" partialSubmit="true" process="@this" />
+				<p:remoteCommand name="newParameter" update=":form:nodeEditor" action="#{homeBean.createNewChild()}" partialSubmit="true" process="@this" />
 
-            <p:remoteCommand name="selectNode" update="paramTree,nodeEditor,:contextForm,#{onSelectUpdate}" action="#{homeBean.selectNode}" oncomplete="enableRibbonBtn('#{onSelectEnabled}');#{onSelectEvent}" partialSubmit="true" process="@this" />
-            <p:remoteCommand name="search" update="treePanel" action="#{homeBean.search()}" partialSubmit="true" process="@this" />
-            <p:remoteCommand name="newParameter" update=":form:nodeEditor" action="#{homeBean.createNewChild()}"  partialSubmit="true" process="@this" />
+				<script>
+                	function onSelect() {
+                    	selectTreeNode();
+                	}
+            	</script>
 
-            <script>
-                function onSelect() {
-                    selectNode();
-                }
-            </script>
-
-            
-                    
-                        <h:panelGroup id="nodeEditor" layout="block">
-                            <div class="box-body">
-                                <div class="text-sm">
-                                    <div class="fa fa-sitemap" style="display: inline-block;vertical-align: middle"></div>
-                                    <h:outputText value="#{telveConfigResolver.getProperty('ui.tree.Path') eq 'code' ? homeBean.getNodeCodePath() : homeBean.getNodeNamePath()}" />
-                                </div>
-
-                                <h:panelGroup id="contentArea" layout="block">
-                                    <ui:insert name="form"></ui:insert>
-                                </h:panelGroup>
-                            </div>
-                            
-                            <div class="box-footer">
-                                <div class="pull-right">
-                                    <p:commandButton id="saveAndNew"
-                                                     value="#{messages['general.button.SaveAndNew']}"
-                                                     action="#{homeBean.saveAndNew()}"
-                                                     rendered="#{identity.hasPermission( entityName, 'update') and identity.hasPermission( entityName, 'insert') }"
-                                                     ajax="true"
-                                                     partialSubmit="false"
-                                                     process="@form"
-                                                     update=":form, :treePanel"
-                                                     validateClient="true"
-                                                     styleClass="btn-primary"
-                                                     icon="fa fa-save"/>
-
-                                    <p:commandButton id="save"
-                                                     value="#{messages['general.button.Save']}"
-                                                     action="#{homeBean.save()}"
-                                                     rendered="#{( empty homeBean.entity.id and identity.hasPermission( entityName, 'insert')) or ( not empty homeBean.entity.id and identity.hasPermission( entityName, 'update'))}"
-                                                     ajax="true"
-                                                     partialSubmit="false"
-                                                     process="@form"
-                                                     update=":form, :treePanel"
-                                                     validateClient="true"
-                                                     styleClass="btn-success"
-                                                     icon="fa fa-save"/>
-
-
-                                    <p:commandButton id="delete" value="#{messages['general.button.Delete']}"
-                                                     action="#{homeBean.delete()}"
-                                                     rendered="#{not empty homeBean.entity.id and identity.hasPermission(entityName, 'delete')}"
-                                                     ajax="true"
-                                                     partialSubmit="false"
-                                                     process="@form"
-                                                     update=":form, :treePanel"
-                                                     validateClient="true"
-                                                     styleClass="btn-danger"
-                                                     icon="fa fa-trash">
-                                        <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
-                                    </p:commandButton>
-                                    <p:commandButton id="close" 
-                                                     value="#{messages['general.button.Close']}" 
-                                                     action="#{homeBean.close()}"
-                                                     ajax="true"
-                                                     partialSubmit="true"
-                                                     process="@this"
-                                                     icon="ui-icon-close"/>
-
-                                </div>
-                            
-                            </div>
-                        </h:panelGroup>
-
-                </h:form>
-            </div>
-        
+				<h:panelGroup id="nodeEditor" layout="block">
+					<div class="box-body">
+						<ui:fragment rendered="#{showNodeControls}">
+							<div class="text-sm">
+								<div class="fa fa-sitemap" style="display: inline-block; vertical-align: middle"></div>
+								<h:outputText value="#{telveConfigResolver.getProperty('ui.tree.Path') eq 'code' ? homeBean.getNodeCodePath() : homeBean.getNodeNamePath()}" />
+							</div>
+						</ui:fragment>
+						<h:panelGroup id="contentArea" layout="block">
+							<ui:insert name="form"></ui:insert>
+						</h:panelGroup>
+					</div>
+					<ui:fragment rendered="#{showNodeControls}">
+						<div class="box-footer">
+							<div class="pull-right">
+								<p:commandButton id="saveAndNew" value="#{messages['general.button.SaveAndNew']}" action="#{homeBean.saveAndNew()}"
+									rendered="#{identity.hasPermission( entityName, 'update') and identity.hasPermission( entityName, 'insert') }" ajax="true" partialSubmit="false" process="@form" update=":form, :treePanel"
+									validateClient="true" styleClass="btn-primary" icon="fa fa-save" />
+								<p:commandButton id="save" value="#{messages['general.button.Save']}" action="#{homeBean.save()}"
+									rendered="#{( empty homeBean.entity.id and identity.hasPermission( entityName, 'insert')) or ( not empty homeBean.entity.id and identity.hasPermission( entityName, 'update'))}" ajax="true"
+									partialSubmit="false" process="@form" update=":form, :treePanel" validateClient="true" styleClass="btn-success" icon="fa fa-save" />
+								<p:commandButton id="delete" value="#{messages['general.button.Delete']}" action="#{homeBean.delete()}"
+									rendered="#{not empty homeBean.entity.id and identity.hasPermission(entityName, 'delete')}" ajax="true" partialSubmit="false" process="@form" update=":form, :treePanel" validateClient="true"
+									styleClass="btn-danger" icon="fa fa-trash">
+									<p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
+								</p:commandButton>
+								<p:commandButton id="close" value="#{messages['general.button.Close']}" action="#{homeBean.close()}" ajax="true" partialSubmit="true" process="@this" icon="ui-icon-close" />
+							</div>
+						</div>
+					</ui:fragment>
+				</h:panelGroup>
+			</h:form>
+			<ui:insert name="form-content-extra"></ui:insert>
+		</div>
     </ui:define>
     
     <ui:define name="content-list">
-
-        
-        <div>
-            <h:form id="search">
-                            <div class="input-group">
-                                <p:inputText value="#{homeBean.filter}" required="false"  placeholder="#{messages['general.label.SearchText']}"/>
-                                <div class="input-group-btn">
-                                <p:commandButton icon="fa fa-search" update="treePanel" action="#{homeBean.search()}" partialSubmit="false" styleClass="btn btn-default"/>
-                                </div>
-                            </div>
-                </h:form>
-        </div>            
-                    <h:panelGroup id="treePanel" layout="block">
+		<div>
+			<h:form id="search">
+				<div class="input-group">
+					<p:inputText value="#{homeBean.filter}" required="false" placeholder="#{messages['general.label.SearchText']}" />
+					<div class="input-group-btn">
+						<p:commandButton icon="fa fa-search" update="treePanel" action="#{homeBean.search()}" partialSubmit="false" styleClass="btn btn-default" />
+					</div>
+				</div>
+			</h:form>
+		</div>
+		<h:panelGroup id="treePanel" layout="block">
 
                         <ui:insert name="customFilter" />
                         
@@ -141,7 +101,7 @@
                                     jQuery("#data")
                                         .on("changed.jstree", function (e, data) {
                                             //alert( data.instance.get_node(data.selected[0]).id );
-                                            selectNode( [ { 'name': 'nodeId', 'value' : data.instance.get_node(data.selected[0]).id }]);
+                                            selectTreeNode( [ { 'name': 'nodeId', 'value' : data.instance.get_node(data.selected[0]).id }]);
                                         })    
                                         .on('after_open.jstree', function (e, data) {
                                             $.AdminLTE.layout.fix();

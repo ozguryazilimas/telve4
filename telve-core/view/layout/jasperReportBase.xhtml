@@ -14,10 +14,14 @@
                 <p:commandButton id="execCheduler" value="#{messages['general.button.Schedule']}" icon="fa fa-history" action="#{bean.execScheduler()}" ajax="true" styleClass="btn-warning pull-left" rendered="#{identity.hasPermission(bean.permission,'exec')}"/>
                 <p:commandButton id="execPDF" value="#{messages['general.button.PDF']}" icon="fa fa-file-pdf-o" action="#{bean.execPDF()}" ajax="false" styleClass="btn-primary"/>
                 <p:commandButton id="execCSV" value="#{messages['general.button.CSV']}" icon="fa fa-file-excel-o" action="#{bean.execCSV()}" ajax="false" styleClass="btn-default" rendered="#{supportCSV}"/>
+                <p:commandButton id="execXLS" value="#{messages['general.label.XLS']}" icon="fa fa-file-excel-o" action="#{bean.execXLS()}" ajax="false" styleClass="btn-default" rendered="#{supportXLS}"/>
                 <ui:remove>
                     TODO: Doğru düzgün bir PDF.js ile olur bu iş sanırım.
                     <p:commandButton id="runPDF" value="#{messages['general.button.ExecPDF']}" icon="ui-icon-check" action="#{bean.closeDialog()}" />
                 </ui:remove>
+                
+                <ui:insert name="extraButtons"/>
+                
                 <p:commandButton id="close" value="#{messages['general.button.Close']}" icon="ui-icon-close" action="#{bean.cancelDialog()}" />
             </div>
         </h:form>

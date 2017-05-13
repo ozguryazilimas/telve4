@@ -51,6 +51,7 @@
                                      selectionMode="single"
                                      selection="#{bean.selectedItem}" 
                                      rowKey="#{item.id}"
+                                     rowExpandMode="#{rowExpandMode}"
                                      emptyMessage="#{messages['general.message.browse.EmptyDesc']}">                      
 
                             <ui:remove>
@@ -101,7 +102,7 @@
                                                partialSubmit="true" process="@this" oncomplete="PF('#{ItemPopupId}').show();">
                                     <i class="fa fa-edit btn-edit" ></i>
                                 </p:commandLink>
-                                <p:commandLink action="#{bean.removeItem( item.id )}" 
+                                <p:commandLink action="#{bean.removeItem( item.id )}" rendered="#{canDelete}"
                                                update="results" 
                                                title="#{messages['general.label.DeleteLine']}"
                                                partialSubmit="true" process="@this">
