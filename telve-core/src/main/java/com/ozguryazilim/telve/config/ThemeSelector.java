@@ -51,7 +51,7 @@ public class ThemeSelector implements Serializable {
     public void setTheme(String theme) {
         this.theme = theme;
 
-        CookieUtils.setCookie("telve.theme", theme, -1);
+        CookieUtils.setCookie("telve.theme", theme, CookieUtils.EXPIRE_IN_TEN_YEAR);
 
     }
 

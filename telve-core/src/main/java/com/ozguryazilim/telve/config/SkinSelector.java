@@ -47,7 +47,7 @@ public class SkinSelector implements Serializable{
     
     public void setSkin( String skin ){
         this.skin = skin;
-        CookieUtils.setCookie(SKIN_COOKIE, skin, -1);
+        CookieUtils.setCookie(SKIN_COOKIE, skin, CookieUtils.EXPIRE_IN_TEN_YEAR);
     }
     
     public Boolean getSidebarMini(){
@@ -67,7 +67,7 @@ public class SkinSelector implements Serializable{
     
     public void setSidebarMini( Boolean sidebarMini ){
         this.sidebarMini = sidebarMini;
-        CookieUtils.setCookie(SIDEBAR_COOKIE, sidebarMini ? "true" : "false", -1);
+        CookieUtils.setCookie(SIDEBAR_COOKIE, sidebarMini ? "true" : "false", CookieUtils.EXPIRE_IN_TEN_YEAR);
     }
     
     public Boolean getSlimScroll(){
@@ -87,7 +87,7 @@ public class SkinSelector implements Serializable{
     
     public void setSlimScroll( Boolean slimScroll ){
         this.slimScroll = slimScroll;
-        CookieUtils.setCookie(SLIMSCROLL_COOKIE, slimScroll ? "true" : "false", -1);
+        CookieUtils.setCookie(SLIMSCROLL_COOKIE, slimScroll ? "true" : "false", CookieUtils.EXPIRE_IN_TEN_YEAR);
     }
     
     

@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class CookieUtils {
 
+    public static final int EXPIRE_IN_TEN_YEAR = 60 * 60 * 24 * 365 * 10;
+    
     public static void setCookie(String name, String value, int expiry) {
 
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -45,6 +47,7 @@ public class CookieUtils {
         }
 
         cookie.setMaxAge(expiry);
+        //cookie.setHttpOnly(true);
 
         HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
         response.addCookie(cookie);

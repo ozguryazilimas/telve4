@@ -8,7 +8,6 @@ package com.ozguryazilim.telve.config;
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.utils.CookieUtils;
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -90,7 +89,7 @@ public class LocaleSelector implements Serializable {
         this.locale = locale;
         if( FacesContext.getCurrentInstance() == null ) return;
         FacesContext.getCurrentInstance().getViewRoot().setLocale(locale);
-        CookieUtils.setCookie(LOCALE_COOKIE, locale.toString(), -1);
+        CookieUtils.setCookie(LOCALE_COOKIE, locale.toString(),  CookieUtils.EXPIRE_IN_TEN_YEAR );
     }
 
     public String getLanguage() {
