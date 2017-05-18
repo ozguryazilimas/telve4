@@ -13,6 +13,7 @@ import com.ozguryazilim.telve.query.filters.Filter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.enterprise.context.Dependent;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -74,4 +75,11 @@ public abstract class AuditLogRepository extends RepositoryBase<AuditLog, AuditL
     @Modifying
     @Query("delete AuditLog as al where al.date <= ?1")
     public abstract void deleteBeforeDate( Date date );
+    
+    @Query("select DISTINCT(al.category) from AuditLog al")
+    public abstract List<String> findDistinctCategories();
+    
+    @Query("select DISTINCT(al.action) from AuditLog al")
+    public abstract List<String> findDistinctActions();
+    
 }

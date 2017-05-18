@@ -17,7 +17,6 @@ import com.ozguryazilim.telve.query.filters.DateTimeFilter;
 import com.ozguryazilim.telve.query.filters.FilterOperand;
 import com.ozguryazilim.telve.query.filters.StringFilter;
 import com.ozguryazilim.telve.query.filters.StringListFilter;
-import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -39,22 +38,8 @@ public class AuditLogBrowse extends BrowseBase<AuditLog, AuditLog>{
         
         dtf.setOperand(FilterOperand.All);
         
-        
-        List<String> catValues = new ArrayList<>();
-        
-        catValues.add(AuditLogCommand.CAT_AUTH);
-        catValues.add(AuditLogCommand.CAT_ENTITY);
-        catValues.add(AuditLogCommand.CAT_PARAM);
-        //catValues.add(AuditLogCommand.CAT_DEBUG);
-        catValues.add(AuditLogCommand.CAT_SYSTEM);
-        
-        List<String> actValues = new ArrayList<>();
-        
-        actValues.add(AuditLogCommand.ACT_AUTH);
-        actValues.add(AuditLogCommand.ACT_DELETE);
-        actValues.add(AuditLogCommand.ACT_INSERT);
-        //actValues.add(AuditLogCommand.ACT_SELECT);
-        actValues.add(AuditLogCommand.ACT_UPDATE);
+        List<String> catValues = repository.findDistinctCategories();
+        List<String> actValues = repository.findDistinctActions();
         
         queryDefinition.addFilter(new StringFilter<>(AuditLog_.bizPK, "general.label.Key"))
                 .addFilter(new StringFilter<>(AuditLog_.domain, "general.label.Domain"))
