@@ -33,7 +33,7 @@ public class DurationConverter implements Converter {
 			minutes = Long.valueOf(times[1]);
 			duration = hours * 60 + minutes;
 		} catch (Exception e) {
-			FacesMessages.error("Invalid duration format!");
+			FacesMessages.error(MessagesUtils.getMessage("general.message.InvalidDuration"));
 			throw new ConverterException();
 		}
 
