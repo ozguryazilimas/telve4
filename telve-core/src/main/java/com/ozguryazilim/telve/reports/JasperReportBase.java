@@ -10,6 +10,8 @@ import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.messages.TelveResourceBundle;
 import com.ozguryazilim.telve.reports.schedule.ReportCommand;
 import com.ozguryazilim.telve.reports.schedule.ReportScheduleDialog;
+import com.ozguryazilim.telve.view.DialogBase;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Locale;
@@ -30,7 +32,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Hakan Uygun
  */
-public abstract class JasperReportBase implements ReportController, Serializable {
+public abstract class JasperReportBase extends DialogBase implements ReportController, Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(JasperReportBase.class);
 
@@ -51,45 +53,23 @@ public abstract class JasperReportBase implements ReportController, Serializable
 
     @Override
     public void execute() {
+    	openDialog();
+    }
 
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        //options.put("draggable", false);  
+    @Override
+    public void decorateDialog(Map<String, Object> options){
+    	options.put("modal", true);
         options.put("resizable", false);
         options.put("contentHeight", 450);
-
-        RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
     }
-
-    /**
-     * Geriye açılacak olan popup için view adı döndürür.
-     *
-     * Bu view dialogBase sınıfından türetilmiş olmalıdır.
-     *
-     *
-     * @return
-     */
-    public String getDialogName() {
-        String viewId = getDialogPageViewId();
-        return viewId.substring(0, viewId.indexOf(".xhtml"));
-    }
-
-    /**
-     * Dialog için sınıf annotationı üzerinden aldığı Page ID'sini döndürür.
-     *
-     * @return
-     */
-    public String getDialogPageViewId() {
-        return viewConfigResolver.getViewConfigDescriptor(getDialogPage()).getViewId();
-    }
-
-    /**
-     * Sınıf işaretçisinden @Lookup page bilgisini alır
-     *
-     * @return
-     */
-    public Class<? extends ViewConfig> getDialogPage() {
-        return this.getClass().getAnnotation(Report.class).filterPage();
+    
+	public Class<? extends ViewConfig> getPage(){
+		return this.getClass().getAnnotation(Report.class).filterPage();
+	}
+    
+    @Override
+    public void closeDialog(){
+    	
     }
 
     /**
