@@ -6,12 +6,14 @@
 package com.ozguryazilim.telve.jcr.image;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.jcr.JcrPages;
+import com.ozguryazilim.telve.view.DialogBase;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -23,9 +25,10 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
+
+import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.modeshape.common.text.UrlEncoder;
 import org.modeshape.jcr.api.JcrTools;
-import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +42,7 @@ import org.slf4j.LoggerFactory;
  */
 @SessionScoped
 @Named
-public class ImageLookupController implements Serializable {
+public class ImageLookupController extends DialogBase implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(ImageLookupController.class);
 
@@ -305,19 +308,27 @@ public class ImageLookupController implements Serializable {
     public void uploadDialog(String keyValue, String contextRoot, Integer sizeLimit ){
         this.sizeLimit = sizeLimit;
         prepareToUpload(keyValue, contextRoot);
-        Map<String, Object> options = new HashMap<>();
         
-        options.put("modal", true);
+        openDialog();
+    }
+    
+    @Override
+    protected void decorateDialog(Map<String, Object> options) {
+    	options.put("modal", true);
         //options.put("draggable", false);  
         options.put("resizable", false);
         options.put("contentHeight", 150);
-        
-        RequestContext.getCurrentInstance().openDialog("/dialogs/imageUploadDialog", options, null);
     }
     
+    @Override
     public void closeDialog(){
-        RequestContext.getCurrentInstance().closeDialog(null);
+    	closeDialogWindow();
     }
+    
+	@Override
+	public Class<? extends ViewConfig> getDialogViewConfig() {
+		return JcrPages.Dialogs.ImageUploadDialog.class;
+	}
 
     public Integer getSizeLimit() {
         return sizeLimit;
