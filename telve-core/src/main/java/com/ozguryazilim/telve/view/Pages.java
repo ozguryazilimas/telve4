@@ -105,6 +105,13 @@ public interface Pages extends ViewConfig {
         }
     }
 
-    
+    @Folder
+    interface Layout extends Pages {
+    	
+    	@View
+    	class AboutPopup implements Layout {
+    	}
+    	
+    }
     
 }

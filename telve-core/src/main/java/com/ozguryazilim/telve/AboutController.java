@@ -6,11 +6,14 @@
 package com.ozguryazilim.telve;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import org.primefaces.context.RequestContext;
+
+import org.apache.deltaspike.core.api.config.view.ViewConfig;
+
+import com.ozguryazilim.telve.view.DialogBase;
+import com.ozguryazilim.telve.view.Pages;
 
 /**
  * About Dialogu için UI controller.
@@ -19,21 +22,24 @@ import org.primefaces.context.RequestContext;
  */
 @SessionScoped
 @Named
-public class AboutController implements Serializable{
-    
-    public void openDialog(){
-            
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        //options.put("draggable", false);  
-        options.put("resizable", false);
-        options.put("contentHeight", 450);
-        
-        RequestContext.getCurrentInstance().openDialog("/layout/aboutPopup", options, null);
-    }
-    
-    public void closeDialog() {
-        RequestContext.getCurrentInstance().closeDialog(null);
-    }
-    
+public class AboutController extends DialogBase implements Serializable {
+
+	@Override
+	public void decorateDialog(Map<String, Object> options) {
+		options.put("modal", true);
+		// options.put("draggable", false);
+		options.put("resizable", false);
+		options.put("contentHeight", 450);
+	}
+
+	@Override
+	public void closeDialog() {
+		closeDialogWindow();
+	}
+
+	@Override
+	public Class<? extends ViewConfig> getDialogViewConfig() {
+		return Pages.Layout.AboutPopup.class;
+	}
+
 }
