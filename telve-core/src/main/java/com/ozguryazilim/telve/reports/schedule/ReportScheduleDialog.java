@@ -5,19 +5,24 @@
  */
 package com.ozguryazilim.telve.reports.schedule;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Map;
+import java.util.UUID;
+
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.apache.deltaspike.core.api.config.view.ViewConfig;
+import org.primefaces.context.RequestContext;
+
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.messagebus.command.CommandScheduler;
 import com.ozguryazilim.telve.messagebus.command.ScheduledCommand;
 import com.ozguryazilim.telve.utils.ScheduleModel;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import org.primefaces.context.RequestContext;
+import com.ozguryazilim.telve.view.DialogBase;
+import com.ozguryazilim.telve.view.Pages;
 
 /**
  * Rapor Zamanlama dialoğu
@@ -25,7 +30,7 @@ import org.primefaces.context.RequestContext;
  */
 @Named
 @SessionScoped
-public class ReportScheduleDialog implements Serializable{
+public class ReportScheduleDialog extends DialogBase implements Serializable{
     
     private ReportCommand command;
     
@@ -38,18 +43,28 @@ public class ReportScheduleDialog implements Serializable{
     @Inject
     private CommandScheduler scheduler;
     
-    public void openDialog( ReportCommand command ){
-        this.command = command;
-        scheduleType = "O";
-        
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        //options.put("draggable", false);  
-        options.put("resizable", false);
-        options.put("contentHeight", 450);
+	@Override
+	public void beforeOpenDialog() {
+		scheduleType = "O";
+	}
 
-        RequestContext.getCurrentInstance().openDialog("/reports/scheduleReportDialog", options, null);
-    }
+	@Override
+	public void closeDialog() {
+		schedule();
+		closeDialogWindow();
+	}
+
+	@Override
+	public Class<? extends ViewConfig> getPage() {
+		return Pages.Reports.ScheduleReportDialog.class;
+	}
+
+	@Override
+	protected void decorateDialog(Map<String, Object> options) {
+		options.put("modal", true);
+		options.put("resizable", false);
+		options.put("contentHeight", 450);
+	}
 
     public void schedule(){
      

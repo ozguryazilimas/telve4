@@ -146,8 +146,8 @@ public abstract class JasperReportBase implements ReportController, Serializable
             command.setReportParams(params);
             command.setUser(identity.getPrincipal().toString());
             
-            
-            scheduleDialog.openDialog(command);
+            scheduleDialog.setCommand(command);
+            scheduleDialog.openDialog();
         }
     }
 

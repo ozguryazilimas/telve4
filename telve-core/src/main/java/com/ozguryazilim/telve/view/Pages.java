@@ -100,6 +100,9 @@ public interface Pages extends ViewConfig {
         //Navigasyon yok. ReportConsole contextine gidecek
         class ScheduledReportConsole implements Reports {
         };
+        
+        class ScheduleReportDialog implements Reports{
+        }
     }
 
     
