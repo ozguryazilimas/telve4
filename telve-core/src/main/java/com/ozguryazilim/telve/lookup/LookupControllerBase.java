@@ -31,6 +31,7 @@ import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.entities.ViewModel;
 import com.ozguryazilim.telve.utils.ELUtils;
+import com.ozguryazilim.telve.view.DialogBase;
 
 /**
  * Lookup Controller Sınıfları için taban
@@ -39,7 +40,7 @@ import com.ozguryazilim.telve.utils.ELUtils;
  * @param <E> İşlem yapılacak entity sınıfı
  * @param <R> Gösterimde kullanılacak ViewModel sınıfı
  */
-public abstract class LookupControllerBase<E extends EntityBase, R extends ViewModel> implements Serializable{
+public abstract class LookupControllerBase<E extends EntityBase, R extends ViewModel> extends DialogBase implements Serializable{
 
     private static final Logger LOG = LoggerFactory.getLogger(LookupControllerBase.class);
 
@@ -87,6 +88,11 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      */
     public Class<? extends ViewConfig> getDialogPage() {
         return this.getClass().getAnnotation(Lookup.class).dialogPage();
+    }
+    
+    @Override
+    public Class<?extends ViewConfig> getDialogViewConfig(){
+    	return getDialogPage();
     }
 
     /**
@@ -213,15 +219,11 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         parseProfile();
         initProfile();
 
-        Map<String, Object> options = new HashMap<>();
-
-        decorateDialog(options);
-
         if( autoSearch() ){
             search();
         }
 
-        RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
+        openDialog();
     }
 
     /**
@@ -231,6 +233,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      *
      * @param options
      */
+    @Override
     protected void decorateDialog(Map<String, Object> options){
         options.put("modal", true);
         //options.put("draggable", false);
@@ -274,6 +277,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      *
      *
      */
+    @Override
     public void closeDialog() {
 
         LookupSelectTuple sl = getLookupSelectTuple();
@@ -293,13 +297,6 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
 
         RequestContext.getCurrentInstance().closeDialog(sl);
 
-    }
-
-    /**
-     * Dialogu hiç bir şey seçmeden kapatır.
-     */
-    public void cancelDialog() {
-        RequestContext.getCurrentInstance().closeDialog(null);
     }
 
     /**
