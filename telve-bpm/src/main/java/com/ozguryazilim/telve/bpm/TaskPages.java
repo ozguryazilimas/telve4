@@ -30,4 +30,7 @@ public interface TaskPages extends Pages{
     
     @SecuredPage @View
     class StartProcessPopup implements TaskPages {};
+    
+    @SecuredPage @View
+    class Diagram implements TaskPages {};
 }

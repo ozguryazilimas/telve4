@@ -6,18 +6,20 @@
 package com.ozguryazilim.telve.bpm.ui;
 
 import com.ozguryazilim.telve.bpm.TaskInfo;
+import com.ozguryazilim.telve.bpm.TaskPages;
+import com.ozguryazilim.telve.view.DialogBase;
+
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.commons.io.IOUtils;
+import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.history.HistoricTaskInstance;
 import org.camunda.bpm.engine.task.Task;
-import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,12 +32,10 @@ import org.slf4j.LoggerFactory;
  */
 @Named
 @SessionScoped
-public class DiagramPopup implements Serializable{
+public class DiagramPopup extends DialogBase implements Serializable{
 
     
     private static final Logger LOG = LoggerFactory.getLogger(DiagramPopup.class);
-    
-    private static final String dialogName = "/bpm/diagram";
     
     @Inject
     private RepositoryService repositoryService;
@@ -69,12 +69,6 @@ public class DiagramPopup implements Serializable{
         this.subject = subject;
         this.taskDefinitionKey = taskDefinitionKey;
         
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        //options.put("draggable", false);  
-        options.put("resizable", true);
-        options.put("contentHeight", 500);
-        options.put("contentWidth", 800);
 
         //İlgili task için dagram xml'ini okuyalım.
         diagramXML = "";    
@@ -84,9 +78,28 @@ public class DiagramPopup implements Serializable{
             LOG.error("Process Diagram connat read", ex ); 
         }
         
-        RequestContext.getCurrentInstance().openDialog( dialogName, options, null);
+        openDialog();
     }
-
+    
+    @Override
+    protected void decorateDialog(Map<String, Object> options) {
+    	options.put("modal", true);
+        //options.put("draggable", false);  
+        options.put("resizable", true);
+        options.put("contentHeight", 500);
+        options.put("contentWidth", 800);
+    }
+    
+    @Override
+    public Class<? extends ViewConfig> getDialogViewConfig() {
+    	return TaskPages.Diagram.class;
+    }
+    
+    @Override
+    public void closeDialog() {
+    	
+    }
+    
     public String getDiagramXML() {
         return diagramXML;
     }
