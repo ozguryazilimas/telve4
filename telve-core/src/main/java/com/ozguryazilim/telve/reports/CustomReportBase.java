@@ -6,10 +6,11 @@
 package com.ozguryazilim.telve.reports;
 
 import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.view.DialogBase;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -30,7 +31,7 @@ import org.primefaces.context.RequestContext;
  * 
  * @author Hakan Uygun
  */
-public abstract class CustomReportBase implements ReportController, Serializable{
+public abstract class CustomReportBase extends DialogBase implements ReportController, Serializable{
 
     @Inject
     private ViewConfigResolver viewConfigResolver;
@@ -40,13 +41,15 @@ public abstract class CustomReportBase implements ReportController, Serializable
     
     @Override
     public void execute() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
+        openDialog();
+    }
+    
+    @Override
+    protected void decorateDialog(Map<String, Object> options) {
+    	options.put("modal", true);
         //options.put("draggable", false);  
         options.put("resizable", false);
         options.put("contentHeight", 450);
-
-        RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
     }
     
     /**
@@ -80,12 +83,18 @@ public abstract class CustomReportBase implements ReportController, Serializable
         return this.getClass().getAnnotation(Report.class).filterPage();
     }
     
+    @Override
+    public Class<? extends ViewConfig> getDialogViewConfig() {
+    	return getDialogPage();
+    }
+    
     
     public abstract void execReport();
 
     /**
      * Dialogu hiç bir şey seçmeden kapatır.
      */
+    @Override
     public void cancelDialog() {
         RequestContext.getCurrentInstance().closeDialog("Rapordan İptalle Çıkıldı");
     }
