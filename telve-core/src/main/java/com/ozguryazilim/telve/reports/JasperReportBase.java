@@ -61,6 +61,10 @@ public abstract class JasperReportBase extends DialogBase implements ReportContr
         options.put("resizable", false);
         options.put("contentHeight", 450);
     }
+    
+    @Override
+    public void closeDialog() {
+    }
 
     /**
      * Geriye açılacak olan popup için view adı döndürür.
