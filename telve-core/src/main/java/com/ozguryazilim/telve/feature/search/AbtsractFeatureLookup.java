@@ -13,6 +13,8 @@ import com.ozguryazilim.telve.feature.FeatureRegistery;
 import com.ozguryazilim.telve.lookup.Lookup;
 import com.ozguryazilim.telve.lookup.LookupSelectTuple;
 import com.ozguryazilim.telve.utils.ELUtils;
+import com.ozguryazilim.telve.view.DialogBase;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +35,7 @@ import org.primefaces.event.SelectEvent;
  * 
  * @author Hakan Uygun
  */
-public abstract class AbtsractFeatureLookup implements Serializable{
+public abstract class AbtsractFeatureLookup extends DialogBase implements Serializable{
     
     @Inject
     private ViewConfigResolver viewConfigResolver;
@@ -85,6 +87,10 @@ public abstract class AbtsractFeatureLookup implements Serializable{
         return this.getClass().getAnnotation(Lookup.class).dialogPage();
     }
     
+    @Override
+    public Class<? extends ViewConfig> getDialogViewConfig(){
+    	return getDialogPage();
+    }
     
     /**
      * Gelen profile stringine göre bir şey yapılacaksa alt sınıflar tarafından override edilir.
@@ -116,15 +122,12 @@ public abstract class AbtsractFeatureLookup implements Serializable{
         parseProfile();
         initProfile();
 
-        Map<String, Object> options = new HashMap<>();
-
-        decorateDialog(options);
 
         if( autoSearch() ){
             search();
         }
 
-        RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
+        openDialog();
     }
 
     /**
@@ -134,6 +137,7 @@ public abstract class AbtsractFeatureLookup implements Serializable{
      *
      * @param options
      */
+    @Override
     protected void decorateDialog(Map<String, Object> options){
         options.put("modal", true);
         //options.put("draggable", false);
@@ -167,6 +171,7 @@ public abstract class AbtsractFeatureLookup implements Serializable{
      *
      *
      */
+    @Override
     public void closeDialog() {
         
         LookupSelectTuple sl = getLookupSelectTuple();
@@ -269,14 +274,6 @@ public abstract class AbtsractFeatureLookup implements Serializable{
             }
         }
         */
-    }
-
-    
-    /**
-     * Dialogu hiç bir şey seçmeden kapatır.
-     */
-    public void cancelDialog() {
-        RequestContext.getCurrentInstance().closeDialog(null);
     }
 
 
