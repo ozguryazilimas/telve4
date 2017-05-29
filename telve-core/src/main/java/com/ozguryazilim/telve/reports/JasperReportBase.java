@@ -156,8 +156,7 @@ public abstract class JasperReportBase extends DialogBase implements ReportContr
             command.setReportParams(params);
             command.setUser(identity.getPrincipal().toString());
             
-            scheduleDialog.setCommand(command);
-            scheduleDialog.openDialog();
+            scheduleDialog.openDialog(command);
         }
     }
 

@@ -43,9 +43,10 @@ public class ReportScheduleDialog extends DialogBase implements Serializable{
     @Inject
     private CommandScheduler scheduler;
     
-	@Override
-	public void beforeOpenDialog() {
+	public void openDialog( ReportCommand command ) {
+		this.command=command;
 		scheduleType = "O";
+		openDialog();
 	}
 
 	@Override
