@@ -27,4 +27,7 @@ public interface TaskPages extends Pages{
     
     @SecuredPage("processBrowse") @View @Navigation( icon = "fa fa-tasks", section = AdminNavigationSection.class)
     class ProcessBrowse implements TaskPages {};
+    
+    @SecuredPage @View
+    class StartProcessPopup implements TaskPages {};
 }

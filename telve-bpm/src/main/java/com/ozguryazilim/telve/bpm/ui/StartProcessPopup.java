@@ -5,14 +5,17 @@
  */
 package com.ozguryazilim.telve.bpm.ui;
 
+import com.ozguryazilim.telve.bpm.TaskPages;
 import com.ozguryazilim.telve.bpm.handlers.ProcessHandlerRegistery;
+import com.ozguryazilim.telve.view.DialogBase;
+
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import org.primefaces.context.RequestContext;
+
+import org.apache.deltaspike.core.api.config.view.ViewConfig;
 
 /**
  * Process Başlatma popup kontrol sınıfı.
@@ -20,25 +23,24 @@ import org.primefaces.context.RequestContext;
  */
 @Named
 @SessionScoped
-public class StartProcessPopup implements Serializable{
+public class StartProcessPopup extends DialogBase implements Serializable{
     
-    //Kullanılacak dialog viewId
-    private static final String dialogName = "/bpm/startProcessPopup";
-    
-    public void openDialog() {
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        //options.put("draggable", false);  
+    @Override
+    protected void decorateDialog(Map<String, Object> options) {
+    	options.put("modal", true);
         options.put("resizable", false);
         options.put("contentHeight", 450);
-
-        RequestContext.getCurrentInstance().openDialog( dialogName, options, null);
     }
     
+    @Override
     public void closeDialog() {
-        //RequestContext.getCurrentInstance().closeDialog(null);
-        //openDialog();
+
     }
+    
+	@Override
+	public Class<? extends ViewConfig> getPage() {
+		return TaskPages.StartProcessPopup.class;
+	}
 
     /**
      * Sistemde tanımlı UI üzerinden başlatılabilecek process handler listesini döndürür.
