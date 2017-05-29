@@ -10,6 +10,8 @@ import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.messages.TelveResourceBundle;
 import com.ozguryazilim.telve.reports.schedule.ReportCommand;
 import com.ozguryazilim.telve.reports.schedule.ReportScheduleDialog;
+import com.ozguryazilim.telve.view.DialogBase;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Locale;
@@ -21,7 +23,6 @@ import net.sf.jasperreports.engine.JRParameter;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.shiro.subject.Subject;
-import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Hakan Uygun
  */
-public abstract class JasperReportBase implements ReportController, Serializable {
+public abstract class JasperReportBase extends DialogBase implements ReportController, Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(JasperReportBase.class);
 
@@ -51,14 +52,14 @@ public abstract class JasperReportBase implements ReportController, Serializable
 
     @Override
     public void execute() {
-
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        //options.put("draggable", false);  
+    	openDialog();
+    }
+    
+    @Override
+    protected void decorateDialog(Map<String, Object> options){
+    	options.put("modal", true);
         options.put("resizable", false);
         options.put("contentHeight", 450);
-
-        RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
     }
 
     /**
@@ -90,6 +91,11 @@ public abstract class JasperReportBase implements ReportController, Serializable
      */
     public Class<? extends ViewConfig> getDialogPage() {
         return this.getClass().getAnnotation(Report.class).filterPage();
+    }
+    
+    @Override
+    public Class<? extends ViewConfig> getDialogViewConfig(){
+    	return getDialogPage();
     }
 
     /**
@@ -177,14 +183,6 @@ public abstract class JasperReportBase implements ReportController, Serializable
             LOG.error("JasperReport Error", ex);
             FacesMessages.error(ex.getMessage());
         }
-    }
-
-    /**
-     * Dialogu hiç bir şey seçmeden kapatır.
-     */
-    public void cancelDialog() {
-        //RequestContext.getCurrentInstance().closeDialog("Rapordan İptalle Çıkıldı");
-        RequestContext.getCurrentInstance().closeDialog(null);
     }
 
     protected String getTemplateName() {
