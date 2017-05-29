@@ -9,11 +9,18 @@ import com.google.common.base.Strings;
 import com.ozguryazilim.telve.entities.SuggestionItem;
 import com.ozguryazilim.telve.lookup.LookupSelectTuple;
 import com.ozguryazilim.telve.utils.ELUtils;
+import com.ozguryazilim.telve.view.DialogBase;
+import com.ozguryazilim.telve.view.Pages;
+
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
@@ -27,7 +34,7 @@ import org.primefaces.event.SelectEvent;
  */
 @Named
 @SessionScoped
-public class SuggestionControl implements Serializable {
+public class SuggestionControl extends DialogBase implements Serializable {
 
     @Inject
     private SuggestionRepository repository;
@@ -73,9 +80,19 @@ public class SuggestionControl implements Serializable {
         this.data = "";
         this.info = "";
 
-        RequestContext.getCurrentInstance().openDialog("/admin/suggestionPopup");
+        openDialog();
     }
+    
+    @Override
+    protected void decorateDialog(Map<String, Object> options) {
+    }
+    
+	@Override
+	public Class<? extends ViewConfig> getDialogViewConfig() {
+		return Pages.Admin.SuggestionPopup.class;
+	}
 
+    @Override
     public void closeDialog() {
         //TODO burayı biraz daha adam etmek lazım.
 
@@ -94,13 +111,6 @@ public class SuggestionControl implements Serializable {
 
         RequestContext.getCurrentInstance().closeDialog(sl);
 
-    }
-
-    /**
-     * Dialogu hiç bir şey seçmeden kapatır.
-     */
-    public void cancelDialog() {
-        RequestContext.getCurrentInstance().closeDialog(null);
     }
 
     public void onSelect(SelectEvent event) {
