@@ -7,6 +7,9 @@ package com.ozguryazilim.telve.bpm.todo;
 
 import java.util.Date;
 
+import org.apache.deltaspike.core.api.config.view.ViewConfig;
+
+import com.ozguryazilim.telve.bpm.TaskPages;
 import com.ozguryazilim.telve.bpm.handlers.AbstractHumanTaskHandler;
 import com.ozguryazilim.telve.bpm.handlers.HumanTaskHandler;
 
@@ -39,6 +42,11 @@ public class TodoTask extends AbstractHumanTaskHandler{
 	startDate = (Date)getTask().getVariables().get("START_DATE");
 	endDate = (Date)getTask().getVariables().get("END_DATE");
     }
+    
+	@Override
+	public Class<? extends ViewConfig> getDialogViewConfig() {
+		return TaskPages.TodoTaskPopup.class;
+	}
     
     public String getSubject() {
         return subject;

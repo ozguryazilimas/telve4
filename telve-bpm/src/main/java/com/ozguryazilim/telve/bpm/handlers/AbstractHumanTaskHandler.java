@@ -12,6 +12,8 @@ import com.ozguryazilim.telve.bpm.TaskInfo;
 import com.ozguryazilim.telve.bpm.TaskRepository;
 import com.ozguryazilim.telve.bpm.ui.TaskConsole;
 import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.view.DialogBase;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +37,7 @@ import org.primefaces.context.RequestContext;
  *
  * @author Hakan Uygun
  */
-public abstract class AbstractHumanTaskHandler implements Serializable {
+public abstract class AbstractHumanTaskHandler extends DialogBase implements Serializable {
 
     @Inject
     private TaskService taskService;
@@ -64,12 +66,6 @@ public abstract class AbstractHumanTaskHandler implements Serializable {
         this.task = task;
         this.comment = "";
 
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        //options.put("draggable", false);  
-        options.put("resizable", false);
-        options.put("contentHeight", 450);
-
         popVariables();
 
         resultCommands.clear();
@@ -77,7 +73,19 @@ public abstract class AbstractHumanTaskHandler implements Serializable {
 
         comments = taskService.getTaskComments(task.getId());
 
-        RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
+        openDialog();
+    }
+    
+    @Override
+    protected void decorateDialog(Map<String, Object> options) {
+    	options.put("modal", true);
+        //options.put("draggable", false);  
+        options.put("resizable", false);
+        options.put("contentHeight", 450);
+    }
+    
+    @Override
+    public void closeDialog() {
     }
 
     /**
