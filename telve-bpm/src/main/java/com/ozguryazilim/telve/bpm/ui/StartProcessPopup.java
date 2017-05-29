@@ -38,7 +38,7 @@ public class StartProcessPopup extends DialogBase implements Serializable{
     }
     
 	@Override
-	public Class<? extends ViewConfig> getPage() {
+	public Class<? extends ViewConfig> getDialogViewConfig() {
 		return TaskPages.StartProcessPopup.class;
 	}
 

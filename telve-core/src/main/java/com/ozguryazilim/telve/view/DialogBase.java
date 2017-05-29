@@ -75,7 +75,7 @@ public abstract class DialogBase {
 	 * @return
 	 */
 	public String getDialogName() {
-		String viewId = viewConfigResolver.getViewConfigDescriptor(getPage()).getViewId();
+		String viewId = viewConfigResolver.getViewConfigDescriptor(getDialogViewConfig()).getViewId();
 		return viewId.substring(0, viewId.indexOf(".xhtml"));
 	}
 
@@ -83,5 +83,5 @@ public abstract class DialogBase {
 	 * Dialog içerisinde açılacak olan sayfayı döndürür.
 	 * @return
 	 */
-	public abstract Class<? extends ViewConfig> getPage();
+	public abstract Class<? extends ViewConfig> getDialogViewConfig();
 }

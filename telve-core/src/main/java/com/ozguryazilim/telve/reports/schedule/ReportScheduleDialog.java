@@ -55,7 +55,7 @@ public class ReportScheduleDialog extends DialogBase implements Serializable{
 	}
 
 	@Override
-	public Class<? extends ViewConfig> getPage() {
+	public Class<? extends ViewConfig> getDialogViewConfig() {
 		return Pages.Reports.ScheduleReportDialog.class;
 	}
 
