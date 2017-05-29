@@ -13,15 +13,15 @@ import com.ozguryazilim.telve.feature.FeatureRegistery;
 import com.ozguryazilim.telve.lookup.Lookup;
 import com.ozguryazilim.telve.lookup.LookupSelectTuple;
 import com.ozguryazilim.telve.utils.ELUtils;
-import com.ozguryazilim.telve.view.DialogBase;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
+import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
@@ -33,8 +33,12 @@ import org.primefaces.event.SelectEvent;
  * 
  * @author Hakan Uygun
  */
-public abstract class AbtsractFeatureLookup extends DialogBase implements Serializable{
+public abstract class AbtsractFeatureLookup implements Serializable{
     
+    @Inject
+    private ViewConfigResolver viewConfigResolver;
+    
+
     private String featureName;
     private String searchText;
     private String profile;
@@ -49,9 +53,35 @@ public abstract class AbtsractFeatureLookup extends DialogBase implements Serial
     public void init() {
         
     }
+    
+    /**
+     * Geriye açılacak olan popup için view adı döndürür.
+     *
+     * Bu view dialogBase sınıfından türetilmiş olmalıdır.
+     *
+     *
+     * @return
+     */
+    public String getDialogName() {
+        String viewId = getDialogPageViewId();
+        return viewId.substring(0, viewId.indexOf(".xhtml"));
+    }
 
-    @Override
-    public Class<? extends ViewConfig> getPage() {
+    /**
+     * Dialog için sınıf annotationı üzerinden aldığı Page ID'sini döndürür.
+     *
+     * @return
+     */
+    public String getDialogPageViewId() {
+        return viewConfigResolver.getViewConfigDescriptor(getDialogPage()).getViewId();
+    }
+
+    /**
+     * Sınıf işaretçisinden @Lookup page bilgisini alır
+     *
+     * @return
+     */
+    public Class<? extends ViewConfig> getDialogPage() {
         return this.getClass().getAnnotation(Lookup.class).dialogPage();
     }
     
@@ -86,15 +116,24 @@ public abstract class AbtsractFeatureLookup extends DialogBase implements Serial
         parseProfile();
         initProfile();
 
+        Map<String, Object> options = new HashMap<>();
+
+        decorateDialog(options);
 
         if( autoSearch() ){
             search();
         }
 
-        openDialog();
+        RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
     }
 
-    @Override
+    /**
+     * Açılacak olan diolog özellikleri setlenir.
+     *
+     * Alt sınıflar isterse bu methodu override ederk dialoğ özellikleirni değiştirebilirler.
+     *
+     * @param options
+     */
     protected void decorateDialog(Map<String, Object> options){
         options.put("modal", true);
         //options.put("draggable", false);
@@ -128,7 +167,6 @@ public abstract class AbtsractFeatureLookup extends DialogBase implements Serial
      *
      *
      */
-    @Override
     public void closeDialog() {
         
         LookupSelectTuple sl = getLookupSelectTuple();
@@ -231,6 +269,14 @@ public abstract class AbtsractFeatureLookup extends DialogBase implements Serial
             }
         }
         */
+    }
+
+    
+    /**
+     * Dialogu hiç bir şey seçmeden kapatır.
+     */
+    public void cancelDialog() {
+        RequestContext.getCurrentInstance().closeDialog(null);
     }
 
 
