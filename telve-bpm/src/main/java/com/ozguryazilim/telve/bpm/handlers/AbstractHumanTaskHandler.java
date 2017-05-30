@@ -25,7 +25,6 @@ import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.TaskAlreadyClaimedException;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Comment;
-import org.primefaces.context.RequestContext;
 
 /**
  * Sistemde tanımlı Human Task handlerlar için taban sınıf.
@@ -224,10 +223,6 @@ public abstract class AbstractHumanTaskHandler extends DialogBase implements Ser
      */
     protected void onAfterSave() {
 
-    }
-
-    public void cancelDialog() {
-        RequestContext.getCurrentInstance().closeDialog(null);
     }
 
     public List<TaskResultCommand> getResultCommands() {
