@@ -51,19 +51,6 @@ public abstract class CustomReportBase extends DialogBase implements ReportContr
         options.put("resizable", false);
         options.put("contentHeight", 450);
     }
-    
-    /**
-     * Geriye açılacak olan popup için view adı döndürür.
-     *
-     * Bu view dialogBase sınıfından türetilmiş olmalıdır.
-     *
-     *
-     * @return
-     */
-    public String getDialogName() {
-        String viewId = getDialogPageViewId();
-        return viewId.substring(0, viewId.indexOf(".xhtml"));
-    }
 
     /**
      * Dialog için sınıf annotationı üzerinden aldığı Page ID'sini döndürür.
