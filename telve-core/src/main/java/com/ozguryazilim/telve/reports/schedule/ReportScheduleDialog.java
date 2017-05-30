@@ -15,7 +15,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
-import org.primefaces.context.RequestContext;
 
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.messagebus.command.CommandScheduler;
@@ -83,7 +82,7 @@ public class ReportScheduleDialog extends DialogBase implements Serializable{
         ScheduledCommand sc = new ScheduledCommand(UUID.randomUUID().toString(), s, command.getUser(), command);
         scheduler.addToSceduler(sc);
         
-        RequestContext.getCurrentInstance().closeDialog(null);
+        closeDialogWindow();
     }
     
     
