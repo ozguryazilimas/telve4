@@ -103,11 +103,6 @@ public class ReportScheduleDialog extends DialogBase implements Serializable{
         return "";
     }
     
-    
-    public void cancelDialog(){
-        RequestContext.getCurrentInstance().closeDialog(null);
-    }
-    
     public ReportCommand getCommand() {
         return command;
     }
