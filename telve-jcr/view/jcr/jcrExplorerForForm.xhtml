@@ -90,7 +90,8 @@
                                                     </p:commandLink>
 
 
-                                                    <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update="@([id$=filesPanel])"  style="width: auto;">
+                                                    <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update="@([id$=filesPanel])"  style="width: auto;"
+                                                    	rendered="#{empty permissionDomain or identity.hasPermission( permissionDomain, 'delete')}">
                                                         <i class="fa fa-trash" />
                                                         <h:outputText value=" #{messages['jcr.label.Delete']}" />
                                                         <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocument']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
@@ -119,7 +120,8 @@
                                                     </p:commandLink>
 
 
-                                                    <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update="@([id$=filesPanel])"  style="width: auto;">
+                                                    <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update="@([id$=filesPanel])"  style="width: auto;"
+                                                    	rendered="#{empty permissionDomain or identity.hasPermission( permissionDomain, 'delete')}">
                                                         <i class="fa fa-trash" />
                                                         <h:outputText value=" #{messages['jcr.label.Delete']}" />
                                                         <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocument']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />

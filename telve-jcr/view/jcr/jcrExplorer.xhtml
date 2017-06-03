@@ -171,7 +171,7 @@
                             <p:commandLink title="#{messages['jcr.hint.DeleteFolder']}" action="#{jcrController.deleteFolder()}" 
                                            update="@([id$=folderTree]),@([id$=data]),@([id$=filesPanel])" 
                                            oncomplete="buildTree();"
-                                           rendered="#{ permissionDom eq '' or identity.hasPermission( permissonDomain, 'delete')}">
+                                           rendered="#{empty permissionDomain or identity.hasPermission( permissionDomain, 'delete')}">
                                 <i class="fa fa-minus-circle" />
                                 <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocumentFolder']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
                             </p:commandLink>
@@ -241,7 +241,7 @@
 
 
                                                     <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update="@([id$=filesPanel])"  style="width: auto;"
-                                                                   rendered="#{permissonDomain eq '' or identity.hasPermission( permissonDomain, 'delete')}">
+                                                                   rendered="#{empty permissionDomain or identity.hasPermission( permissionDomain, 'delete')}">
                                                         <i class="fa fa-trash" />
                                                         <h:outputText value=" #{messages['jcr.label.Delete']}" />
                                                         <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocument']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
@@ -271,7 +271,7 @@
 
 
                                                     <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update="@([id$=filesPanel])"  style="width: auto;"
-                                                                   rendered="#{permissonDomain eq '' or identity.hasPermission( permissonDomain, 'delete')}">
+                                                                   rendered="#{empty permissionDomain or identity.hasPermission( permissionDomain, 'delete')}">
                                                         <i class="fa fa-trash" />
                                                         <h:outputText value=" #{messages['jcr.label.Delete']} #{permission}" />
                                                         <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocument']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
