@@ -14,12 +14,12 @@
                     <div class="tools pull-right">
                         
                             
-                            <p:commandLink title="#{messages['jcr.hint.NewFolder']}" update="@([id$=folderDialog])" oncomplete="PF('dlg').show();"  >
+                            <p:commandLink title="#{messages['jcr.hint.NewFolder']}" update="@([id$=#{idPrefix}folderDialog])" oncomplete="PF('dlg').show();"  >
                                 <i class="fa fa-plus-circle" />
                             </p:commandLink>
                             
                             <p:commandLink title="#{messages['jcr.hint.DeleteFolder']}" action="#{jcrController.deleteFolder()}" 
-                                           update="@([id$=folderTree]),@([id$=data]),@([id$=filesPanel])" 
+                                           update="@([id$=#{idPrefix}folderTree]),@([id$=#{idPrefix}data]),@([id$=#{idPrefix}filesPanel])" 
                                            oncomplete="buildTree();"
                                            >
                                 <i class="fa fa-minus-circle" />
@@ -32,7 +32,7 @@
                     <h:outputText value=" #{messages['jcr.label.Folders']}" />
                 </div>
                 <div class="box-body">
-                    <h:panelGroup layout="block" id="data" ></h:panelGroup>
+                    <h:panelGroup layout="block" id="#{idPrefix}data" ></h:panelGroup>
                 </div>
             </div>
         </div>
@@ -42,17 +42,17 @@
                 <div class="box-header">
                     <div class="tools pull-right">
                         
-                            <p:remoteCommand name="selectNode" action="#{jcrController.selectNode}" update="@([id$=filesPanel])" partialSubmit="true" process="@this" />
+                            <p:remoteCommand name="selectNode" action="#{jcrController.selectNode}" update="@([id$=#{idPrefix}filesPanel])" partialSubmit="true" process="@this" />
 
-                            <p:commandLink title="#{messages['jcr.hint.UploadFile']}" onclick="PF('fdlg').show();" process="@this">
+                            <p:commandLink title="#{messages['jcr.hint.UploadFile']}" onclick="PF('#{idPrefix}fdlg').show();" process="@this">
                                 <i class="fa fa-upload" />
                             </p:commandLink>
                             
-                            <p:commandLink title="#{messages['jcr.hint.WidgetMode']}" action="#{jcrController.setViewMode('widget')}" update="@([id$=filesPanel])" process="@this">
+                            <p:commandLink title="#{messages['jcr.hint.WidgetMode']}" action="#{jcrController.setViewMode('widget')}" update="@([id$=#{idPrefix}filesPanel])" process="@this">
                                 <i class="fa fa-table" />
                             </p:commandLink>
                             
-                            <p:commandLink title="#{messages['jcr.hint.TableMode']}" action="#{jcrController.setViewMode('table')}" update="@([id$=filesPanel])" process="@this">
+                            <p:commandLink title="#{messages['jcr.hint.TableMode']}" action="#{jcrController.setViewMode('table')}" update="@([id$=#{idPrefix}filesPanel])" process="@this">
                                 <i class="fa fa-th" />
                             </p:commandLink>
                         
@@ -60,7 +60,7 @@
                     <h:outputText value=" #{messages['jcr.label.Files']}" />
                 </div>
                 <div class="box-body">
-                    <p:outputPanel id="filesPanel" layout="block">
+                    <p:outputPanel id="#{idPrefix}filesPanel" layout="block">
                         <ui:fragment rendered="#{not jcrController.isViewModeWidget}">
                     <ui:repeat value="#{jcrController.files}" var="file">
 
@@ -90,7 +90,7 @@
                                                     </p:commandLink>
 
 
-                                                    <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update="@([id$=filesPanel])"  style="width: auto;"
+                                                    <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update="@([id$=#{idPrefix}filesPanel])"  style="width: auto;"
                                                     	rendered="#{empty permissionDomain or identity.hasPermission( permissionDomain, 'delete')}">
                                                         <i class="fa fa-trash" />
                                                         <h:outputText value=" #{messages['jcr.label.Delete']}" />
@@ -120,7 +120,7 @@
                                                     </p:commandLink>
 
 
-                                                    <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update="@([id$=filesPanel])"  style="width: auto;"
+                                                    <p:commandLink title="#{messages['jcr.hint.Delete']}" action="#{jcrController.deleteFile(file.id)}" ajax="true" update="@([id$=#{idPrefix}filesPanel])"  style="width: auto;"
                                                     	rendered="#{empty permissionDomain or identity.hasPermission( permissionDomain, 'delete')}">
                                                         <i class="fa fa-trash" />
                                                         <h:outputText value=" #{messages['jcr.label.Delete']}" />
@@ -139,7 +139,7 @@
         </div>
     </div>
 
-    <p:outputPanel id="folderTree" >
+    <p:outputPanel id="#{idPrefix}folderTree" >
         
         <script>
             data = [ 
@@ -157,13 +157,13 @@
                             
                         function buildTree(){
                                 // inline data 
-                                jQuery("#data")
+                                jQuery("##{idPrefix}data")
                                     .on("changed.jstree", function (e, data) {
                                         //alert( data.instance.get_node(data.selected[0]).id );
                                         selectNode( [ { 'name': 'nodeId', 'value' : data.instance.get_node(data.selected[0]).id }]);
                                     })  
                                     .on('loaded.jstree', function() {
-                                        jQuery('#data').jstree('open_all');
+                                        jQuery('##{idPrefix}data').jstree('open_all');
                                         setNodeSelections();
                                      })
                                     .jstree({
@@ -182,13 +182,13 @@
                                 
                                    
                                 function setNodeSelections(){
-                                    if( jQuery('#data').length > 0 ){
-                                        jQuery('#data').jstree().select_node(selectedNode);
+                                    if( jQuery('##{idPrefix}data').length > 0 ){
+                                        jQuery('##{idPrefix}data').jstree().select_node(selectedNode);
                                     }
                                 }
 
                                 function setSelections(){
-                                        var s = jQuery('#data').jstree().get_selected();
+                                        var s = jQuery('##{idPrefix}data').jstree().get_selected();
                                         jQuery(PrimeFaces.escapeClientId("lookupForm:selectedNodes")).val(s);
                                 }
                                 
@@ -198,7 +198,7 @@
         
         
     
-        <p:dialog id="uploaddialog" header="#{messages['jcr.caption.UploadFileDialog']}" widgetVar="fdlg" showEffect="clip" hideEffect="clip">
+        <p:dialog id="#{idPrefix}uploaddialog" header="#{messages['jcr.caption.UploadFileDialog']}" widgetVar="#{idPrefix}fdlg" showEffect="clip" hideEffect="clip">
             <p:fileUpload fileUploadListener="#{jcrController.handleFileUpload}" mode="advanced" dragDropSupport="true"
                           update="@([id$=filesPanel])" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|.*)$/" sequential="true" 
                           label="#{messages['general.label.SelectFile']}" uploadLabel="#{messages['general.button.Upload']}" cancelLabel="#{messages['general.button.Cancel']}"/>
@@ -206,7 +206,7 @@
     
 
     
-        <p:dialog id="folderDialog" header="#{messages['jcr.caption.NewFolderDialog']}" widgetVar="dlg" >
+        <p:dialog id="#{idPrefix}folderDialog" header="#{messages['jcr.caption.NewFolderDialog']}" widgetVar="#{idPrefix}dlg" >
             
             <h:panelGrid columns="2" cellpadding="5">
                 <h:outputLabel for="name" value="#{messages['jcr.label.FolderName']}:" />
@@ -214,8 +214,8 @@
             </h:panelGrid>
             <f:facet name="footer">
                 <p:commandButton value="#{messages['general.button.Ok']}" action="#{jcrController.newFolder()}"
-                                 update="@([id$=folderTree]),@([id$=data])"
-                                 oncomplete="buildTree();setNodeSelections();PF('dlg').hide();" />
+                                 update="@([id$=#{idPrefix}folderTree]),@([id$=data])"
+                                 oncomplete="buildTree();setNodeSelections();PF('#{idPrefix}dlg').hide();" />
             </f:facet>
         </p:dialog>
     
