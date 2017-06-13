@@ -47,8 +47,9 @@ public class MoneyColumn<E> extends Column<E>{
     public void export(E e, Writer doc) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException {
         //doc.write("\"");
         String val = BeanUtils.getProperty(e, getName());
-        if( !Strings.isNullOrEmpty(val)){
-            doc.write( val );
+        String cur = BeanUtils.getProperty(e, getCurrencyName());
+        if( !Strings.isNullOrEmpty(val) && !Strings.isNullOrEmpty(cur)){
+            doc.write( val + " " + cur );
         }
         //doc.write("\"");
     }
