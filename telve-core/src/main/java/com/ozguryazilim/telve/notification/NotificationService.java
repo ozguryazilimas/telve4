@@ -6,6 +6,7 @@
 package com.ozguryazilim.telve.notification;
 
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.ozguryazilim.telve.channel.ChannelRegistery;
 import com.ozguryazilim.telve.messagebus.command.CommandSender;
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Notification gönderileri için temel servis sınıfı.
@@ -24,6 +27,7 @@ import org.apache.deltaspike.core.api.config.ConfigResolver;
 @Named
 public class NotificationService {
     
+    private static final Logger LOG = LoggerFactory.getLogger(NotificationService.class); 
     
     @Inject
     private CommandSender commandSender;
@@ -37,17 +41,27 @@ public class NotificationService {
      */
     public List<String> getNotificationChannelList( String notificationClass ){
         
-        //FIXME: UI yapamalı mı?
-        String ls = ConfigResolver.getPropertyAwarePropertyValue("notification.channels",  notificationClass, "email,web");
+        //TODO: UI yapamalı mı?
+        
+        //Once sınıf için bak
+        String ls = ConfigResolver.getPropertyValue("notification.channels." +  notificationClass);
+        if( Strings.isNullOrEmpty(ls)){
+            //Bulamazsan genel olan değeri al
+            ls = ConfigResolver.getPropertyValue("notification.channels", "email,web");
+        }
         
         List<String> ts = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(ls);
         List<String> results = new ArrayList<>();
         
-        for( String a : ts ){
-            results.add( ChannelRegistery.getChannelByAlias(a));
-        }
+        ts.forEach((a) -> {
+            String s = ChannelRegistery.getChannelByAlias(a);
+            if( !Strings.isNullOrEmpty(s)){
+                results.add( s );
+            } else {
+                LOG.warn("Channel {} not registered", a );
+            }
+        });
         
-        //TODO: Eğer bu bahsi geçen kanallar register edilmemiş ise ne olacak?
         return results;
     }
 }

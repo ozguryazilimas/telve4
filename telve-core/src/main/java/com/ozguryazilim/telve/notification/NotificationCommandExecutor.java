@@ -47,13 +47,14 @@ public class NotificationCommandExecutor extends AbstractCommandExecuter<Notific
         //Gönderi türüne bakarak hangi kanalları kullanabileceğimize bakacağız ve bunların detay bilgilerini öğreneceğiz
         List<String> channels = notificationService.getNotificationChannelList(command.getNotificationClass());
         
+        LOG.debug("Notification send for channels : {}", channels);
+        
         
         //Şimdi her kanal'a ilgili kişi ile birlikte ihtiyaç duyduğu detay bilgileri gönderiyoruz.
         for( Contact t : targets ){
             //Hatırlatma yapılacak kişinin üzerinde bulunan kurallara bakıyoruz hangi kanalları kullanabiliriz.
             //FIXME: Kişiye ait geçerli kanallar alınacak. Bu channell + messageClass + target şeklinde olmalı
             
-            //Contact türüne göre farklı bir template ihtiyaç var. Bunu nasıl çözelim?
             for( String channelName : channels ){
                 Channel channel = (Channel) BeanProvider.getContextualReference(channelName);
                 
@@ -63,6 +64,8 @@ public class NotificationCommandExecutor extends AbstractCommandExecuter<Notific
                     command.getParams().put("template", command.getTemplate());
                     command.getParams().put("sender", command.getSender());
                     channel.sendMessage( t, command.getSubject(), "", command.getParams());
+                } else {
+                    LOG.debug("Channel {} not support for this contact {}", channelName, t);
                 }
             }
         }
