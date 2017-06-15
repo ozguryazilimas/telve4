@@ -50,6 +50,9 @@ public class User extends EntityBase{
     @Column(name = "EMAIL")
     private String email;
     
+    @Column(name = "MOBILE")
+    private String mobile;
+    
     @Column(name = "PW_HASH")
     private String passwordEncodedHash;
     
@@ -111,6 +114,15 @@ public class User extends EntityBase{
         this.email = email;
     }
 
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    
     public String getPasswordEncodedHash() {
         return passwordEncodedHash;
     }

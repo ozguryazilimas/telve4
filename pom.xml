@@ -246,6 +246,8 @@
         <module>telve-note</module>
         <module>telve-calendar</module>
         <module>telve-bpm-calendar</module>
+        <module>telve-sms</module>
+        <module>telve-sms-mobildev</module>
     </modules>
     
     <distributionManagement>

@@ -31,6 +31,7 @@ public class UserInfo implements Serializable{
     private String lastName;
     private String userType;
     private String email;
+    private String mobile;
     private Long   domainGroupId;
     private String domainGroupName;
     private String domainGroupPath;
@@ -89,6 +90,14 @@ public class UserInfo implements Serializable{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public Long getDomainGroupId() {

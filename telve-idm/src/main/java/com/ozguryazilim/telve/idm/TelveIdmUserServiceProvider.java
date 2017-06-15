@@ -187,6 +187,7 @@ public class TelveIdmUserServiceProvider implements UserServiceProvider, Seriali
         ui.setFirstName(u.getFirstName());
         ui.setLastName(u.getLastName());
         ui.setEmail(u.getEmail());
+        ui.setMobile(u.getMobile());
         ui.setUserType(u.getUserType());
         if (u.getDomainGroup() != null) {
             ui.setDomainGroupId(u.getDomainGroup().getId());

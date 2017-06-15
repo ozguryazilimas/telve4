@@ -104,7 +104,11 @@
         </insert>
     </changeSet>
 
-
+    <changeSet author="hakan.uygun" id="1467025451677-40">
+        <addColumn tableName="TLI_USER">
+            <column name="MOBILE" type="VARCHAR(255)"/>
+        </addColumn>
+    </changeSet>         
     
     <changeSet author="oyas (generated)" id="1467025451677-11">
         <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="TLI_USER_GROUP" constraintName="FK_cwoua04a5pyfbd082up2tfmx6" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="TLI_USER"/>
