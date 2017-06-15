@@ -34,6 +34,11 @@ public class FormatedMessage {
         return formatter.format(o);
     }
     
+    public String getFormatedMessage( String key, Object... o ){
+        String pattern = messages.get(key);
+        return getMessage( pattern, o );
+    }
+    
     public String getMessageFromData( String data ){
         
         List<String> ls = Splitter.on("$%&").trimResults().omitEmptyStrings().splitToList(data);

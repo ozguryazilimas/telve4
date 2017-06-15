@@ -37,14 +37,20 @@ public class NotificationService {
      * Geriye verilen notfication sınıfı için kullanılabilir channel listesini döndürür.
      * 
      * @param notificationClass
+     * @param template
      * @return 
      */
-    public List<String> getNotificationChannelList( String notificationClass ){
+    public List<String> getNotificationChannelList( String notificationClass, String template ){
         
         //TODO: UI yapamalı mı?
         
-        //Once sınıf için bak
-        String ls = ConfigResolver.getPropertyValue("notification.channels." +  notificationClass);
+        //Once sınıf + template için bak
+        String ls = ConfigResolver.getPropertyValue("notification.channels." +  notificationClass + "." + template);
+        if( Strings.isNullOrEmpty(ls)){
+            //Bulamazsan sadece sınıf için bak
+            ls = ConfigResolver.getPropertyValue("notification.channels." +  notificationClass );
+        }
+        
         if( Strings.isNullOrEmpty(ls)){
             //Bulamazsan genel olan değeri al
             ls = ConfigResolver.getPropertyValue("notification.channels", "email,web");

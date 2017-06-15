@@ -45,7 +45,7 @@ public class NotificationCommandExecutor extends AbstractCommandExecuter<Notific
         targets.addAll(contactResolver.resolveContacts(command.getTarget()));
         
         //Gönderi türüne bakarak hangi kanalları kullanabileceğimize bakacağız ve bunların detay bilgilerini öğreneceğiz
-        List<String> channels = notificationService.getNotificationChannelList(command.getNotificationClass());
+        List<String> channels = notificationService.getNotificationChannelList(command.getNotificationClass(), command.getTemplate());
         
         LOG.debug("Notification send for channels : {}", channels);
         

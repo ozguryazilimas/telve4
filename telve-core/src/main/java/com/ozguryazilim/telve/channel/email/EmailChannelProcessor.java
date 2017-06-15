@@ -58,6 +58,7 @@ public class EmailChannelProcessor implements Processor{
         
         exchange.getIn().setHeader("templateName", templateName);
         exchange.getIn().setHeader("messages", getMessages());
+        exchange.getIn().setHeader("linkDomain", ConfigResolver.getPropertyValue("app.linkDomain"));
     }
     
     /**

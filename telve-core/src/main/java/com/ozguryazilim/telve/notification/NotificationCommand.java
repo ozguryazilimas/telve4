@@ -57,7 +57,6 @@ public class NotificationCommand extends AbstractCommand{
      */
     private String target;
     
-    
     /**
      * Gönderi şablonu değiştirmek için ara anahtar.
      * 
