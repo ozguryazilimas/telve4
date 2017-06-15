@@ -49,13 +49,16 @@ public class UserContactSource extends AbstractContactSource {
             Contact c = new Contact();
             //TODO: UserType ( doktor, nurse v.s. ) gelse peşine iyi olur
             UserInfo ui = userService.getUserInfo(p);
-            c.setSource(getClass().getSimpleName());
-            c.setType("User");
-            c.setId(ui.getLoginName());
-            c.setFirstname(ui.getFirstName());
-            c.setLastname(ui.getLastName());
-            c.setEmail(ui.getEmail());
-            result.add(c);
+            if( ui != null ){
+                c.setSource(getClass().getSimpleName());
+                c.setType("User");
+                c.setId(ui.getLoginName());
+                c.setFirstname(ui.getFirstName());
+                c.setLastname(ui.getLastName());
+                c.setEmail(ui.getEmail());
+                c.setMobile(ui.getMobile());
+                result.add(c);
+            }
         }
     }
 

@@ -44,6 +44,7 @@
                             <t:inputText label="user.label.UserName" value="#{userHome.current.loginName}" required="true" readonly="#{not empty userHome.entity.loginName}"/>
                             <t:inputText label="user.label.FirstName" value="#{userHome.current.firstName}" required="true" />
                             <t:inputText label="user.label.Email" value="#{userHome.current.email}" required="true" />
+                            <t:inputText label="user.label.Mobile" value="#{userHome.current.mobile}" required="false" />
                             <t:inputText label="user.label.LastName" value="#{userHome.current.lastName}" required="true" />
                             <t:inputCheckbox label="global.label.Status" itemLabel="global.label.Active" value="#{userHome.current.enabled}" required="true" />
                         </div>  
@@ -213,6 +214,7 @@
             <t:inputLookupDialog value="#{userHome.entity.domainGroup}" label="user.label.DomainGroup"  
                              lookupBean="#{groupLookup}" lookupListener="userHome.entity.domainGroup" 
                              leafSelect="false" required="#{userHome.domainGroupRequired}" disabled="#{not userHome.canChangeCriticalData()}"/>
+            <t:inputText label="general.label.Mobile" value="#{userHome.entity.mobile}" required="false" />
         </div>            
 
         <div id="extentions" class="row">

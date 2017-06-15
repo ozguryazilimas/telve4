@@ -71,7 +71,8 @@ public class UserBrowse extends BrowseBase<User, UserViewModel>{
                 .addColumn(new TextColumn<>(User_.lastName, "general.label.LastName"), true)
                 .addColumn(new MessageColumn<>(User_.userType, "user.label.UserType", "userType.label."), true)
                 .addColumn(new SubTextColumn<>(User_.domainGroup, Group_.name, "user.label.DomainGroup"), true)
-                .addColumn(new TextColumn<>(User_.email, "general.label.Email"), true);
+                .addColumn(new TextColumn<>(User_.email, "general.label.Email"), true)
+                .addColumn(new TextColumn<>(User_.mobile, "general.label.Mobile"), true);
         
         queryDefinition.addExtraFilter(groupFilter);
     }

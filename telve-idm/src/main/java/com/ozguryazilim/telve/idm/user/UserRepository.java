@@ -259,6 +259,7 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
                 from.get(User_.firstName),
                 from.get(User_.lastName),
                 from.get(User_.email),
+                from.get(User_.mobile),
                 from.get(User_.active),
                 from.get(User_.userType),
                 from.get(User_.info),
