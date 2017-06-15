@@ -7,8 +7,6 @@ package com.ozguryazilim.telve.sms.mobildev;
 
 import com.ozguryazilim.telve.channel.sms.SmsService;
 import java.io.IOException;
-import javax.enterprise.context.Dependent;
-import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -24,8 +22,6 @@ import org.slf4j.LoggerFactory;
  * 
  * @author Hakan Uygun
  */
-@Dependent
-@Named
 public class MobildevSmsService implements SmsService{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MobildevSmsService.class);

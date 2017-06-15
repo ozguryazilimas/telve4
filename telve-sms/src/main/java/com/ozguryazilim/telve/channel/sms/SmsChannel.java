@@ -74,10 +74,10 @@ public class SmsChannel implements Channel, Serializable{
             headers.put(e.getKey(), e.getValue());
         }
         
-        //Kullanıcı user id'sine gidecek
-        headers.put("target", contact.getId());
+        //Kullanıcı user telefon nosuna gidecek
+        headers.put("target", contact.getMobile());
         
-        smsProducer.sendBodyAndHeaders(message, headers);
+        smsProducer.sendBodyAndHeaders(subject, headers);
     }
 
     @Override
