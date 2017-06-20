@@ -6,7 +6,6 @@
 package com.ozguryazilim.telve.forms;
 
 import com.google.common.base.Strings;
-import com.ozguryazilim.telve.annotations.BizKey;
 import com.ozguryazilim.telve.audit.AuditLogCommand;
 import com.ozguryazilim.telve.audit.AuditLogger;
 import com.ozguryazilim.telve.auth.Identity;
@@ -20,9 +19,9 @@ import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.qualifiers.AfterLiteral;
 import com.ozguryazilim.telve.qualifiers.BeforeLiteral;
 import com.ozguryazilim.telve.qualifiers.EntityQualifierLiteral;
+import com.ozguryazilim.telve.utils.EntityUtils;
 import com.ozguryazilim.telve.view.PageTitleResolver;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +34,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityExistsException;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
@@ -252,25 +250,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return 
      */
     protected String getBizKeyValue(){
-        
-        String result = "";
-
-        Field[] fields = FieldUtils.getFieldsWithAnnotation(entity.getClass(), BizKey.class);
-        
-        for( Field f : fields ){
-            if( f.isAnnotationPresent(BizKey.class) ){
-                try {
-                    f.setAccessible(true);
-                    result += f.get(entity).toString();
-                } catch (IllegalArgumentException ex) {
-                    LOG.debug("BizKey not found", ex);
-                } catch (IllegalAccessException ex) {
-                    LOG.debug("BizKey not found", ex);
-                }
-            }
-        }
-        
-        return result;
+        return EntityUtils.getBizKeyValue(entity);
     }
     
     /**
