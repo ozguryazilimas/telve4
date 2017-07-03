@@ -21,6 +21,7 @@
 
 
         <h:form id="taskForm">
+        	<p:remoteCommand name="saveComment" partialSubmit="true" process=":taskForm" />
             <div class="box-body">
                 <ui:insert name="taskForm" />
 
@@ -56,7 +57,7 @@
                     <ui:insert name="actionButtons" />
 
                     <ui:repeat value="#{bean.resultCommands}" var="cmd">
-                        <p:button value="#{messages['general.button.'.concat( cmd.result )]}" onclick="PF('#{cmd.widgetId}').show();return false;" icon="#{cmd.icon}" styleClass="#{cmd.style}" rendered="#{cmd.isPopup}"/>
+                        <p:button value="#{messages['general.button.'.concat( cmd.result )]}" onclick="saveComment();PF('#{cmd.widgetId}').show();return false;" icon="#{cmd.icon}" styleClass="#{cmd.style}" rendered="#{cmd.isPopup}" />
                         <p:commandButton value="#{messages['general.button.'.concat( cmd.result )]}" icon="#{cmd.icon}" action="#{bean.closeTask(cmd.result)}" styleClass="#{cmd.style}" rendered="#{not cmd.isPopup}" update="console,taskView">
                             <p:confirm icon="ui-icon-alert" header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.AreYouSure']}" rendered="#{cmd.needConfirmation}" />
                         </p:commandButton>
