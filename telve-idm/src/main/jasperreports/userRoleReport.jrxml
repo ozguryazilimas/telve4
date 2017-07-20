@@ -24,7 +24,7 @@
 		<queryString>
 			<![CDATA[select ur.ID, rd.NAME as ROLE_NAME
 from TLI_USER_ROLE ur
-LEFT OUTER JOIN TLI_ROLE rd on rd.ID = ur.ROLE_ID
+LEFT OUTER JOIN  TLI_ROLE rd on rd.ID = ur.ROLE_ID
 where ur.USER_ID = $P{USER_ID}]]>
 		</queryString>
 		<field name="ID" class="java.lang.Long"/>
