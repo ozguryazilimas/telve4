@@ -138,11 +138,11 @@ public class LocaleSelector implements Serializable {
         return selectItems;
     }
     
-    public Character getThousandSeperator(){
+    public Character getThousandSeparator(){
     	return DecimalFormatSymbols.getInstance(getLocale()).getGroupingSeparator();
     }
     
-    public Character getDecimalSeperator(){
+    public Character getDecimalSeparator(){
     	return DecimalFormatSymbols.getInstance(getLocale()).getDecimalSeparator();
     }
 

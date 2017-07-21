@@ -47,14 +47,14 @@ public class NumberConverter implements Converter, Serializable {
 		DecimalFormat df = new DecimalFormat();
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 		
-		Character decimalSeperator = (component.getAttributes().get("decimalSeperator").toString()).charAt(0);
-		Character thousandSeperator= (component.getAttributes().get("thousandSeperator").toString()).charAt(0);
+		Character decimalSeparator = (component.getAttributes().get("decimalSeparator").toString()).charAt(0);
+		Character thousandSeparator= (component.getAttributes().get("thousandSeparator").toString()).charAt(0);
 		
 		Integer maxFraction = Integer.parseInt(component.getAttributes().get("maxFraction").toString());
 		Integer minFraction = Integer.parseInt(component.getAttributes().get("minFraction").toString());
 		
-		symbols.setDecimalSeparator(decimalSeperator);
-		symbols.setGroupingSeparator(thousandSeperator);
+		symbols.setDecimalSeparator(decimalSeparator);
+		symbols.setGroupingSeparator(thousandSeparator);
 		df.setMaximumFractionDigits(maxFraction);
 		df.setMinimumFractionDigits(minFraction);
 		

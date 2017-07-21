@@ -12,8 +12,8 @@
         <composite:attribute name="symbolPosition" required="false" default="p"/>
         <composite:attribute name="emptyValue" required="false" default="empty"/>
         <composite:attribute name="decimalPlaces" required="false" default="2"/>
-        <composite:attribute name="decimalSeparator" required="false" default=","/>
-        <composite:attribute name="thousandSeparator" required="false" default="."/>
+        <composite:attribute name="decimalSeparator" required="false" default="#{localeSelector.getDecimalSeparator()}"/>
+        <composite:attribute name="thousandSeparator" required="false" default="#{localeSelector.getThousandSeparator()}"/>
         <composite:attribute name="maxValue" required="false" default="999999999.99"/>
         <composite:attribute name="minValue" required="false" default="0.00"/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
