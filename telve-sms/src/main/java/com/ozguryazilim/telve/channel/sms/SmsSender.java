@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.channel.sms;
 
+import com.ozguryazilim.telve.audit.AuditLogger;
 import java.io.Serializable;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -24,10 +25,14 @@ public class SmsSender implements Serializable {
     private static final Logger LOGGER = LoggerFactory.getLogger(SmsSender.class);
 
     @Inject
-    SmsService smsService;
+    private SmsService smsService;
+    
+    @Inject
+    private AuditLogger auditLogger;
     
     public void send(String to, String body) throws MessagingException {
         smsService.send(to, body);
+        auditLogger.actionLog("NOTIFICATION", 0l, to, "SMS", "SEND", "SYSTEM", body);
     }
     
     

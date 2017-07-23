@@ -5,10 +5,12 @@
  */
 package com.ozguryazilim.telve.channel.email;
 
+import com.ozguryazilim.telve.audit.AuditLogger;
 import java.util.Map;
 import javax.activation.DataHandler;
 import javax.annotation.Resource;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.mail.Address;
 import javax.mail.BodyPart;
@@ -38,6 +40,9 @@ public class EmailSender {
     @Resource(mappedName = "java:/TelveMail")
     private Session mailSession;
 
+    @Inject
+    private AuditLogger auditLogger;
+    
     /**
      * Verilen bilgilerle sunucu üzerine tanımlanmış ayarlar ile e-posta atar.
      *
@@ -55,6 +60,8 @@ public class EmailSender {
         message.setSubject(subject);
         message.setContent(body, "text/plain; charset=UTF-8");
         Transport.send(message);
+        
+        auditLogger.actionLog("NOTIFICATION", 0l, to, "EMAIL", "SEND", "SYSTEM", subject);
     }
 
     /**
@@ -95,6 +102,8 @@ public class EmailSender {
         message.setContent(multipart);
         
         Transport.send(message);
+        
+        auditLogger.actionLog("NOTIFICATION", 0l, to, "EMAIL", "SEND", "SYSTEM", subject);
     }
 
     /**
