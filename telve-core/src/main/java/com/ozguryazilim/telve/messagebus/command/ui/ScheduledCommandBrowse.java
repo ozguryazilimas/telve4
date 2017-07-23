@@ -6,6 +6,8 @@
 package com.ozguryazilim.telve.messagebus.command.ui;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.audit.AuditLogger;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.entities.StoredCommand;
 import com.ozguryazilim.telve.forms.RefreshBrowserEvent;
 import com.ozguryazilim.telve.messagebus.command.CommandScheduler;
@@ -52,6 +54,12 @@ public class ScheduledCommandBrowse implements Serializable{
     
     @Inject
     private CommandSender commandSender;
+    
+    @Inject
+    private AuditLogger auditLogger;
+    
+    @Inject
+    private Identity identity;
 
     private StoredCommand entity;
     private CommandEditorBase currentEditor;
@@ -309,6 +317,9 @@ public class ScheduledCommandBrowse implements Serializable{
     }
     
     public void run(){
+        
+        auditLogger.actionLog("ScheduledCommand", 0l, selectedItem.getCommand().getName(), "ScheduledCommand", "EXEC", identity.getLoginName(), "");
+        
         commandSender.sendCommand(selectedItem.getCommand());
     }
 

@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.messagebus.command;
 
+import com.ozguryazilim.telve.audit.AuditLogger;
 import com.ozguryazilim.telve.utils.ScheduleModel;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,6 +41,9 @@ public class CommandScheduler {
 
     @Inject
     private CommandSender commandSender;
+    
+    @Inject
+    private AuditLogger auditLogger;
     
     @PostConstruct
     public void initTimer() {
@@ -116,6 +120,9 @@ public class CommandScheduler {
         if (timer.getInfo() instanceof ScheduledCommand) {
             ScheduledCommand command = (ScheduledCommand) timer.getInfo();
             LOG.info("Command {} scheduled as {} by {} now executing", new Object[]{command.getCommand(), command.getSchedule(), command.getCreateBy()});
+            
+            auditLogger.actionLog("ScheduledCommand", 0l, command.getCommand().getName(), "ScheduledCommand", "EXEC", "SYSTEM", command.getCommand().toString());
+            
             //Aslında doğrudan çalıştırmak yerine çalışmak üzere tekrar yola çıkarıyoruz.
             commandSender.sendCommand(command.getCommand());
         } else {
