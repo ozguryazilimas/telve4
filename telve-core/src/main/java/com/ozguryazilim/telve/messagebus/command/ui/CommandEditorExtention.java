@@ -25,9 +25,10 @@ public class CommandEditorExtention implements Extension{
 
         CommandEditor a = pat.getAnnotatedType().getAnnotation(CommandEditor.class);
         String name = pat.getAnnotatedType().getJavaClass().getSimpleName();
+        String category =pat.getAnnotatedType().getAnnotation(CommandEditor.class).category();
         
         //name.to
-        CommandEditorRegistery.register( name, a);
+        CommandEditorRegistery.register( name, a , category);
     }
     
 }

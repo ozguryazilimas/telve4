@@ -174,15 +174,19 @@
                     <i class="fa fa-caret-down" />
                 </a>
                 <ul class="dropdown-menu">
-                    <ui:repeat value="#{scheduledCommandBrowse.editorNames}" var="item" varStatus="loop2">
-                        <li>
-                            <p:commandLink value="#{messages['command.editor.'.concat( item )]}" 
-                                           action="#{scheduledCommandBrowse.createNew(item)}" 
-                                           ajax="true" partialSubmit="true" process="@this" 
-                                           update=":editorPopup"
-                                           oncomplete="PF('editorPopup').show();">
-                            </p:commandLink>
-                        </li>
+                    <ui:repeat value="#{scheduledCommandBrowse.editorCategories}" var="itemCategory" varStatus="loop2">
+                    	<li>
+		                    <ui:repeat value="#{scheduledCommandBrowse.getEditorNamesByCategory(itemCategory)}" var="item" varStatus="loop3">
+		                        <li>
+		                            <p:commandLink value="#{messages['command.editor.'.concat( item )]}" 
+		                                           action="#{scheduledCommandBrowse.createNew(item)}" 
+		                                           ajax="true" partialSubmit="true" process="@this" 
+		                                           update=":editorPopup"
+		                                           oncomplete="PF('editorPopup').show();">
+		                            </p:commandLink>
+		                        </li>
+		                    </ui:repeat>
+	                    </li>           
                     </ui:repeat>
                 </ul>
             </li>

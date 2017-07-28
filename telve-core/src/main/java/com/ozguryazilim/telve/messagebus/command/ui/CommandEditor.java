@@ -11,6 +11,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Stereotype;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
@@ -49,4 +51,13 @@ public @interface CommandEditor {
      * @return 
      */
     String permission() default "";
+    
+    /**
+     * Editor için kategori tanımlanması
+     * 
+     * @return 
+     */
+	String category() default "Default";
+    
+    
 }
