@@ -20,13 +20,37 @@ import java.io.Serializable;
  *
  */
 public class AuditLogFilter implements Serializable {
+	
+	public enum CategoryEnum {
+		AUTH,
+		PARAM,
+		ENTITY,
+		STATE_CHANGE
+	}
+	
+	public enum ActionEnum {
+		AUTH,
+		INSERT,
+		UPDATE,
+		CREATE,
+		DELETE,
+		won,
+		approved
+	}
 
     
     private ReportDate beginDate;
     
-    
     private ReportDate endDate;
 
+    private String user;
+    
+    private String domain;
+    
+    private CategoryEnum categoryEnum;
+    
+    private ActionEnum actionEnum;
+    
     public ReportDate getBeginDate() {
         return beginDate;
     }
@@ -42,8 +66,37 @@ public class AuditLogFilter implements Serializable {
     public void setEndDate(ReportDate endDate) {
         this.endDate = endDate;
     }
-    
-    
-    
-    
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public String getDomain() {
+		return domain;
+	}
+
+	public void setDomain(String domain) {
+		this.domain = domain;
+	}
+
+	public CategoryEnum getCategoryEnum() {
+		return categoryEnum;
+	}
+
+	public void setCategoryEnum(CategoryEnum categoryEnum) {
+		this.categoryEnum = categoryEnum;
+	}
+
+	public ActionEnum getActionEnum() {
+		return actionEnum;
+	}
+
+	public void setActionEnum(ActionEnum actionEnum) {
+		this.actionEnum = actionEnum;
+	}
+  
 }

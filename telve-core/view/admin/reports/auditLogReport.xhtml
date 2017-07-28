@@ -15,7 +15,11 @@
         <div class="row" >
         	<t:inputReportDate value="#{bean.filter.beginDate}" label="general.label.BeginDate" columnClass="col-xs-6" />
         	<t:inputReportDate value="#{bean.filter.endDate}" label="general.label.EndDate" columnClass="col-xs-6" />
-        </div>
+        	<t:inputText value="#{bean.filter.user}" label="general.label.User" columnClass="col-xs-6" />
+        	<t:inputText value="#{bean.filter.domain}" label="general.label.Domain" columnClass="col-xs-6" />
+   			<t:inputEnum value="#{bean.filter.categoryEnum}" label="Category" itemLabel="" columnClass="col-xs-6"/>
+   			<t:inputEnum value="#{bean.filter.actionEnum}" label="Action" itemLabel="" columnClass="col-xs-6"/>
+       	</div>
     </ui:define>
 
 </ui:composition>

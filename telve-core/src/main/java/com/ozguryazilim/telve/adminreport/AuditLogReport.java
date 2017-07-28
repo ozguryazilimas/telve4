@@ -62,13 +62,21 @@ public class AuditLogReport extends JasperReportBase{
 
         filter.setEndDate(new ReportDate(DateValueType.Today));
         filter.setBeginDate(new ReportDate(DateValueType.Yesterday));
+        filter.setUser(null);
+        filter.setDomain(null);
+        filter.setCategoryEnum(null);
+        filter.setActionEnum(null);
     }
 
     @Override
     protected boolean buildParam(Map<String, Object> params) {
-	params.put("BEGIN_DATE", getFilter().getBeginDate());
+    	params.put("BEGIN_DATE", getFilter().getBeginDate());
         params.put("END_DATE", getFilter().getEndDate());
-        
+        params.put("USER", getFilter().getUser());
+        params.put("DOMAIN", getFilter().getDomain());
+        params.put("CATEGORY", getFilter().getCategoryEnum());
+        params.put("ACTION", getFilter().getActionEnum());
+        System.out.println("user :" + params.get("USER").toString() + "category:" + params.get("CATEGORY").toString());
         String logo = telveConfigResolver.getProperty("brand.company.reportLogo");
         String title = telveConfigResolver.getProperty("brand.company.reportTitle");
 
