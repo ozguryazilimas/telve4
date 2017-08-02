@@ -199,7 +199,7 @@
                                 <h:outputText value="#{messages['general.label.Results']}" />
                             </h3>
                             <div class="box-tools pull-right">
-                                <p:commandLink actionListener="#{bean.search()}" styleClass="btn btn-box-tool" update="@([id$=results])" process="@this" title="#{messages['general.button.Refresh']}">
+                                <p:commandLink actionListener="#{bean.search()}" styleClass="btn btn-box-tool" update="@([id$=results]) :contextForm, :browseListForm:detailPanel" process="@this" title="#{messages['general.button.Refresh']}">
                                     <i class="fa fa-refresh"/>
                                 </p:commandLink>
                                
