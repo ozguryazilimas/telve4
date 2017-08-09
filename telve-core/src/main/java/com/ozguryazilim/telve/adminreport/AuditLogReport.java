@@ -76,9 +76,8 @@ public class AuditLogReport extends JasperReportBase{
         params.put("END_DATE", getFilter().getEndDate());
         params.put("USER", getFilter().getUser());
         params.put("DOMAIN", getFilter().getDomain());
-        params.put("CATEGORY", (((getFilter().getCategoryEnum())==null) ? "" : getFilter().getCategoryEnum()));
-        params.put("ACTION", (((getFilter().getActionEnum())==null) ? "" : getFilter().getActionEnum()));
-        System.out.println("user :" + params.get("USER").toString() + "category:" + params.get("CATEGORY").toString());
+        params.put("CATEGORY", (((getFilter().getCategoryEnum()) == null) ? "" : getFilter().getCategoryEnum()));
+        params.put("ACTION", (((getFilter().getActionEnum()) == null) ? "" : getFilter().getActionEnum()));
         String logo = telveConfigResolver.getProperty("brand.company.reportLogo");
         String title = telveConfigResolver.getProperty("brand.company.reportTitle");
 
