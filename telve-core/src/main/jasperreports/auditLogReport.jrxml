@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="auditLogReport" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1a2287fe-3247-448a-a475-61c7b0f3542c">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="OpenOHS9"/>
+<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="auditLogReport" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Key" uuid="1a2287fe-3247-448a-a475-61c7b0f3542c">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="mysql"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
@@ -9,11 +10,11 @@
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.2" value="pageHeader"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.4" value="columnHeader"/>
-	<style name="Kolon_basliklar" hAlign="Left" vAlign="Middle" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1254"/>
-	<style name="Detail" vAlign="Middle" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" pdfEncoding="Cp1254"/>
+	<style name="Kolon_basliklar" hTextAlign="Left" hImageAlign="Left" vTextAlign="Middle" vImageAlign="Middle" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1254"/>
+	<style name="Detail" vTextAlign="Middle" vImageAlign="Middle" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" pdfEncoding="Cp1254"/>
 	<style name="Baslik" forecolor="#000066" backcolor="#FFFFFF" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="16" isBold="true" pdfEncoding="Cp1254"/>
 	<style name="Footer_Info" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" isBold="true" pdfEncoding="Cp1254"/>
-	<style name="Kolon_basliklar_border" vAlign="Middle" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1254">
+	<style name="Kolon_basliklar_border" vTextAlign="Middle" vImageAlign="Middle" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1254">
 		<box leftPadding="2">
 			<pen lineWidth="0.5"/>
 			<topPen lineWidth="0.5"/>
@@ -22,7 +23,7 @@
 			<rightPen lineWidth="0.5"/>
 		</box>
 	</style>
-	<style name="Detail_border" vAlign="Middle" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" pdfEncoding="Cp1254">
+	<style name="Detail_border" vTextAlign="Middle" vImageAlign="Middle" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" pdfEncoding="Cp1254">
 		<box leftPadding="2">
 			<pen lineWidth="0.5"/>
 			<topPen lineWidth="0.5"/>
@@ -49,6 +50,10 @@ where	audet.LID=$P{LID}]]>
 	</subDataset>
 	<parameter name="BEGIN_DATE" class="java.util.Date"/>
 	<parameter name="END_DATE" class="java.util.Date"/>
+	<parameter name="USER" class="java.lang.String"/>
+	<parameter name="DOMAIN" class="java.lang.String"/>
+	<parameter name="CATEGORY" class="java.lang.String"/>
+	<parameter name="ACTION" class="java.lang.String"/>
 	<parameter name="FIRM_LOGO" class="java.awt.image.BufferedImage" isForPrompting="false"/>
 	<parameter name="FIRM_TITLE" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
@@ -66,7 +71,11 @@ where	audet.LID=$P{LID}]]>
 	au.CAT,
 	au.UID
 from	TLV_AUDIT_LOG au
-where	au.TS between $P{BEGIN_DATE} AND $P{END_DATE}]]>
+where	(au.TS between $P{BEGIN_DATE} AND $P{END_DATE})
+AND (au.ACT = COALESCE(NULLIF($P{ACTION}, ''), au.ACT))
+AND (au.CAT = COALESCE(NULLIF($P{CATEGORY}, ''), au.CAT))
+AND (au.DNAME = COALESCE(NULLIF($P{DOMAIN}, ''), au.DNAME))
+AND (au.UID = COALESCE(NULLIF($P{USER}, ''), au.UID))]]>
 	</queryString>
 	<field name="ID" class="java.lang.Long"/>
 	<field name="TS" class="java.sql.Timestamp"/>

@@ -12,6 +12,8 @@
 package com.ozguryazilim.telve.adminreport;
 
 import com.ozguryazilim.telve.adminreport.AuditLogFilter;
+import com.ozguryazilim.telve.adminreport.AuditLogFilter.ActionEnum;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
@@ -62,10 +64,10 @@ public class AuditLogReport extends JasperReportBase{
 
         filter.setEndDate(new ReportDate(DateValueType.Today));
         filter.setBeginDate(new ReportDate(DateValueType.Yesterday));
-        filter.setUser(null);
-        filter.setDomain(null);
-        filter.setCategoryEnum(null);
+        filter.setUser("");
+        filter.setDomain("");
         filter.setActionEnum(null);
+        filter.setCategoryEnum(null);
     }
 
     @Override
@@ -74,8 +76,8 @@ public class AuditLogReport extends JasperReportBase{
         params.put("END_DATE", getFilter().getEndDate());
         params.put("USER", getFilter().getUser());
         params.put("DOMAIN", getFilter().getDomain());
-        params.put("CATEGORY", getFilter().getCategoryEnum());
-        params.put("ACTION", getFilter().getActionEnum());
+        params.put("CATEGORY", (((getFilter().getCategoryEnum())==null) ? "" : getFilter().getCategoryEnum()));
+        params.put("ACTION", (((getFilter().getActionEnum())==null) ? "" : getFilter().getActionEnum()));
         System.out.println("user :" + params.get("USER").toString() + "category:" + params.get("CATEGORY").toString());
         String logo = telveConfigResolver.getProperty("brand.company.reportLogo");
         String title = telveConfigResolver.getProperty("brand.company.reportTitle");
