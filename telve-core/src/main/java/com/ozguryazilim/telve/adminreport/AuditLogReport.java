@@ -12,15 +12,18 @@
 package com.ozguryazilim.telve.adminreport;
 
 import com.ozguryazilim.telve.adminreport.AuditLogFilter;
-import com.ozguryazilim.telve.adminreport.AuditLogFilter.ActionEnum;
+import com.ozguryazilim.telve.audit.AuditLogRepository;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
+import javax.persistence.criteria.CriteriaBuilder;
 
+import org.apache.deltaspike.data.api.Query;
 import org.joda.time.DateTime;
 
 
@@ -44,6 +47,9 @@ public class AuditLogReport extends JasperReportBase{
     @Inject
     private TelveConfigResolver telveConfigResolver;
     
+    @Inject
+    private AuditLogRepository repository;
+    
     private AuditLogFilter filter;
     
     public AuditLogFilter getFilter() {
@@ -66,8 +72,8 @@ public class AuditLogReport extends JasperReportBase{
         filter.setBeginDate(new ReportDate(DateValueType.Yesterday));
         filter.setUser("");
         filter.setDomain("");
-        filter.setActionEnum(null);
-        filter.setCategoryEnum(null);
+        filter.setAction("");
+        filter.setCategory("");
     }
 
     @Override
@@ -76,11 +82,11 @@ public class AuditLogReport extends JasperReportBase{
         params.put("END_DATE", getFilter().getEndDate());
         params.put("USER", getFilter().getUser());
         params.put("DOMAIN", getFilter().getDomain());
-        params.put("CATEGORY", (((getFilter().getCategoryEnum()) == null) ? "" : getFilter().getCategoryEnum()));
-        params.put("ACTION", (((getFilter().getActionEnum()) == null) ? "" : getFilter().getActionEnum()));
+        params.put("CATEGORY", getFilter().getCategory());
+        params.put("ACTION", getFilter().getAction());
         String logo = telveConfigResolver.getProperty("brand.company.reportLogo");
         String title = telveConfigResolver.getProperty("brand.company.reportTitle");
-
+        
         if (logo != null) {
             BufferedImage image;
 	    try {
@@ -102,6 +108,21 @@ public class AuditLogReport extends JasperReportBase{
         super.decorateI18NParams(params); //To change body of generated methods, choose Tools | Templates.           
     }
     
+    
+    public List<String> getDomains() {
+    	List<String> domains = repository.findDistinctDomains();
+    	return domains;
+    }
+    
+    public List<String> getActions() {
+    	List<String> actions = repository.findDistinctActions();
+    	return actions;
+    }
+    
+    public List<String> getCategories() {
+    	List<String> categories = repository.findDistinctCategories();
+    	return categories;
+    }
 
     
 }

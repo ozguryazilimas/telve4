@@ -82,4 +82,7 @@ public abstract class AuditLogRepository extends RepositoryBase<AuditLog, AuditL
     @Query("select DISTINCT(al.action) from AuditLog al")
     public abstract List<String> findDistinctActions();
     
+    @Query("select DISTINCT(al.domain) from AuditLog al")
+    public abstract List<String> findDistinctDomains();
+    
 }

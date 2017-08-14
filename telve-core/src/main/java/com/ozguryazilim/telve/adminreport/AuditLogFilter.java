@@ -21,24 +21,7 @@ import java.io.Serializable;
  */
 public class AuditLogFilter implements Serializable {
 	
-	public enum CategoryEnum {
-		AUTH,
-		PARAM,
-		ENTITY,
-		STATE_CHANGE
-	}
-	
-	public enum ActionEnum {
-		AUTH,
-		INSERT,
-		UPDATE,
-		CREATE,
-		DELETE,
-		won,
-		approved
-	}
-
-    
+  
     private ReportDate beginDate;
     
     private ReportDate endDate;
@@ -47,9 +30,9 @@ public class AuditLogFilter implements Serializable {
     
     private String domain;
     
-    private CategoryEnum categoryEnum;
+    private String category;
     
-    private ActionEnum actionEnum;
+    private String action;
     
     public ReportDate getBeginDate() {
         return beginDate;
@@ -83,20 +66,20 @@ public class AuditLogFilter implements Serializable {
 		this.domain = domain;
 	}
 
-	public CategoryEnum getCategoryEnum() {
-		return categoryEnum;
+	public String getCategory() {
+		return category;
 	}
 
-	public void setCategoryEnum(CategoryEnum categoryEnum) {
-		this.categoryEnum = categoryEnum;
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
-	public ActionEnum getActionEnum() {
-		return actionEnum;
+	public String getAction() {
+		return action;
 	}
 
-	public void setActionEnum(ActionEnum actionEnum) {
-		this.actionEnum = actionEnum;
+	public void setAction(String action) {
+		this.action = action;
 	}
   
 }

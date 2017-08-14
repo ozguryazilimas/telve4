@@ -11,15 +11,23 @@
     <ui:param name="supportCSV" value="true" />
     
     
-    <ui:define name="filter">
-        <div class="row" >
+    <ui:define name="filter" >
+        <div class="row">
         	<t:inputReportDate value="#{bean.filter.beginDate}" label="general.label.BeginDate" columnClass="col-xs-6" />
         	<t:inputReportDate value="#{bean.filter.endDate}" label="general.label.EndDate" columnClass="col-xs-6" />
-        	<t:inputText value="#{bean.filter.user}" label="general.label.User" columnClass="col-xs-6" />
-        	<t:inputText value="#{bean.filter.domain}" label="general.label.Domain" columnClass="col-xs-6" />
-   			<t:inputEnum value="#{bean.filter.categoryEnum}" label="Category" itemLabel="" columnClass="col-xs-6"/>
-   			<t:inputEnum value="#{bean.filter.actionEnum}" label="Action" itemLabel="" columnClass="col-xs-6"/>
+        	<t:inputUser value="#{bean.filter.user}" label="general.label.User" columnClass="col-xs-6"/>
+        	<t:inputCombobox label="general.label.Domain" value="#{bean.filter.domain}" >
+        		<f:selectItem itemLabel="Seçim Yapılmadı" itemValue="" />
+        	 	<f:selectItems value="#{bean.getDomains()}" var="dm" itemLabel="#{dm}" itemValue="#{dm}" />
+            </t:inputCombobox>
+            <t:inputCombobox label="general.label.Category" value="#{bean.filter.category}" >
+        	 	<f:selectItem itemLabel="Seçim Yapılmadı" itemValue="" />
+        	 	<f:selectItems value="#{bean.getCategories()}" var="ct" itemLabel="#{ct}" itemValue="#{ct}" />
+            </t:inputCombobox>
+            <t:inputCombobox label="general.label.Action" value="#{bean.filter.action}" >
+        	 	<f:selectItem itemLabel="Seçim Yapılmadı" itemValue="" />
+        	 	<f:selectItems value="#{bean.getActions()}" var="ac" itemLabel="#{ac}" itemValue="#{ac}" />
+            </t:inputCombobox>
        	</div>
     </ui:define>
-
 </ui:composition>

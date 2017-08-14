@@ -40,9 +40,10 @@ public class AuditLogBrowse extends BrowseBase<AuditLog, AuditLog>{
         
         List<String> catValues = repository.findDistinctCategories();
         List<String> actValues = repository.findDistinctActions();
+        List<String> domValues = repository.findDistinctDomains();
         
         queryDefinition.addFilter(new StringFilter<>(AuditLog_.bizPK, "general.label.Key"))
-                .addFilter(new StringFilter<>(AuditLog_.domain, "general.label.Domain"))
+                .addFilter(new StringListFilter<>(AuditLog_.domain, domValues, "general.label.Domain",""))
                 .addFilter(new StringListFilter<>(AuditLog_.category, catValues, "general.label.Category", ""))
                 .addFilter(new StringListFilter<>(AuditLog_.action, actValues, "general.label.Action", ""))
                 .addFilter(new StringFilter<>(AuditLog_.user, "general.label.User"))

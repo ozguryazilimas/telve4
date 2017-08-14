@@ -142,7 +142,7 @@ AND (au.UID = COALESCE(NULLIF($P{USER}, ''), au.UID))]]>
 				<textFieldExpression><![CDATA[$R{AuditLogReport.ACT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Kolon_basliklar" x="309" y="0" width="146" height="12" uuid="500839ab-09de-404a-9687-410d719a0e9a"/>
+				<reportElement style="Kolon_basliklar" x="363" y="0" width="146" height="12" uuid="500839ab-09de-404a-9687-410d719a0e9a"/>
 				<textElement markup="none">
 					<font size="6" isBold="true" pdfEncoding="Cp1254"/>
 				</textElement>
@@ -154,6 +154,13 @@ AND (au.UID = COALESCE(NULLIF($P{USER}, ''), au.UID))]]>
 					<font size="6" isBold="true" pdfEncoding="Cp1254"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{AuditLogReport.UID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Kolon_basliklar" x="309" y="0" width="54" height="12" uuid="05f73e40-8c92-4147-992b-07e1f4da2165"/>
+				<textElement markup="none">
+					<font size="6" isBold="true" pdfEncoding="Cp1254"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{AuditLogReport.CAT}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -245,7 +252,7 @@ AND (au.UID = COALESCE(NULLIF($P{USER}, ''), au.UID))]]>
 				<textFieldExpression><![CDATA[$F{ACT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Detail" x="309" y="0" width="146" height="12" uuid="68306b4e-3ac6-498b-9791-c6d7c4603c8f">
+				<reportElement style="Detail" x="363" y="0" width="146" height="12" uuid="68306b4e-3ac6-498b-9791-c6d7c4603c8f">
 					<property name="net.sf.jasperreports.export.csv.column.name" value="MESSAGE"/>
 					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
 				</reportElement>
@@ -263,6 +270,16 @@ AND (au.UID = COALESCE(NULLIF($P{USER}, ''), au.UID))]]>
 					<font size="6"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{UID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="309" y="0" width="54" height="12" uuid="36b3d3b8-32e8-42d7-9fc1-77f92b0447e1">
+					<property name="net.sf.jasperreports.export.csv.column.name" value="CATEGORY"/>
+					<property name="net.sf.jasperreports.export.csv.repeat.value" value="true"/>
+				</reportElement>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CAT}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
