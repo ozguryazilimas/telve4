@@ -10,10 +10,10 @@
     <properties>
         <deltaspike.version>1.7.2</deltaspike.version>
         <shiro.version>1.3.2</shiro.version>
-        <primeface.version>6.0</primeface.version>
-        <primefaces-ext.version>3.2.0</primefaces-ext.version>
+        <primeface.version>6.1</primeface.version>
+        <primefaces-ext.version>6.1.0</primefaces-ext.version>
         <atmosphere.version>2.4.0-RC3</atmosphere.version>
-        <omnifaces.version>2.5.1</omnifaces.version>
+        <omnifaces.version>2.6.4</omnifaces.version>
         <liquibase.version>3.5.3</liquibase.version>
         
         <mysql.version>5.1.26</mysql.version>
