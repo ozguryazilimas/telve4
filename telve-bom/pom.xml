@@ -12,7 +12,7 @@
         <shiro.version>1.3.2</shiro.version>
         <primeface.version>6.1</primeface.version>
         <primefaces-ext.version>6.1.0</primefaces-ext.version>
-        <atmosphere.version>2.4.0-RC3</atmosphere.version>
+        <atmosphere.version>2.4.6</atmosphere.version>
         <omnifaces.version>2.6.4</omnifaces.version>
         <liquibase.version>3.5.3</liquibase.version>
         
