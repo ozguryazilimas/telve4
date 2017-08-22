@@ -40,11 +40,6 @@
             <version>0.4.8</version>
         </dependency>
         -->
-        <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>jaxrs-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
 </project>
