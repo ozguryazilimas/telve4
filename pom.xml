@@ -78,11 +78,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.jboss.spec.javax.batch</groupId>
-            <artifactId>jboss-batch-api_1.0_spec</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>org.jboss.spec.javax.ws.rs</groupId>
             <artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
             <scope>provided</scope>
@@ -253,6 +248,7 @@
         <module>telve-bpm-calendar</module>
         <module>telve-sms</module>
         <module>telve-sms-mobildev</module>
+        <module>telve-batch</module>
     </modules>
     
     <distributionManagement>

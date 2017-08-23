@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ozguryazilim.telve.messagebus.command;
+package com.ozguryazilim.telve.batch;
 
+import com.ozguryazilim.telve.messagebus.command.AbstractCommandExecuter;
+import com.ozguryazilim.telve.messagebus.command.CommandExecutor;
 import javax.batch.runtime.BatchRuntime;
 import javax.ejb.Stateful;
 import org.slf4j.Logger;

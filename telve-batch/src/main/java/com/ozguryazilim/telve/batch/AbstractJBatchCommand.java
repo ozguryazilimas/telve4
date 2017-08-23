@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.ozguryazilim.telve.messagebus.command;
+package com.ozguryazilim.telve.batch;
 
+import com.ozguryazilim.telve.messagebus.command.AbstractStorableCommand;
 import java.util.Properties;
 
 /**
