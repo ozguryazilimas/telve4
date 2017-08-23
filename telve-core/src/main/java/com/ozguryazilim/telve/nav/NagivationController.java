@@ -148,9 +148,9 @@ public class NagivationController implements Serializable {
         }
         
 
-        LOG.info("Main Nav : {}", mainNavigations);
-        LOG.info("Side Nav : {}", sideNavigations);
-        LOG.info("Other Nav : {}", navigations);
+        LOG.debug("Main Nav : {}", mainNavigations);
+        LOG.debug("Side Nav : {}", sideNavigations);
+        LOG.debug("Other Nav : {}", navigations);
     }
 
     /**

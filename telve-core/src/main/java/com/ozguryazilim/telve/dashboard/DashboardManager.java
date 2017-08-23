@@ -138,8 +138,7 @@ public class DashboardManager implements Serializable {
      */
     public DashboardModel getDashboardModel() {
         checkDashboard();
-        LOG.info("Current : {}", currentBoard);
-        LOG.info("Board : {}", board);
+        LOG.debug("Current : {}, Board : {}", currentBoard, board);
         return model;
     }
 
