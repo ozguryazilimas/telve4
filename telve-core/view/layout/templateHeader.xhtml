@@ -39,6 +39,9 @@
     
     <script>
         $.AdminLTE.options.sidebarSlimScroll = #{skinSelector.slimScroll ? 'true' : 'false'};
+        
+        //PF 6.1 InputNumber ClientSideValidation hatasını düzeltmek için.
+        PrimeFaces.converter['javax.faces.BigDecimal'].regex = /^\d.*$/;
     </script>
     <o:onloadScript>bindEnters();adminLTEActivate();</o:onloadScript>
     
