@@ -33,6 +33,8 @@ public class ThemeManager implements Serializable{
     
     
     private String homeTemplate;
+    private String loginTemplate;
+    
     private String theme;
     private String skin;
 
@@ -50,8 +52,10 @@ public class ThemeManager implements Serializable{
         templateMainBar = templateCheckOrFallback( layoutName , "templateMainBar.xhtml" );
         templateSideBar = templateCheckOrFallback( layoutName , "templateSideBar.xhtml" );
         
+        loginTemplate = templateCheckOrFallback( layoutName , "loginTemplate.xhtml" );
         
         homeTemplate = ConfigResolver.getPropertyValue("themeManager.home", "/dashboard.xhtml");
+        
     }
     
     private String templateCheckOrFallback( String name, String template ){
@@ -120,6 +124,14 @@ public class ThemeManager implements Serializable{
 
     public void setTemplateSideBar(String templateSideBar) {
         this.templateSideBar = templateSideBar;
+    }
+
+    public String getLoginTemplate() {
+        return loginTemplate;
+    }
+
+    public void setLoginTemplate(String loginTemplate) {
+        this.loginTemplate = loginTemplate;
     }
     
     

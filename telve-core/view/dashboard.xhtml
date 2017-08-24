@@ -4,21 +4,26 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="#{themeManager.layoutTemplate}">
 
+    <ui:param name="dontShowContentHeader" value="true" />
 
-    <ui:include src="/layout/messages.xhtml" />
-    <div class="row">
-        <p:dashboard model="#{dashboardManager.getDashboardModel()}">
-            <p:ajax event="reorder" listener="#{dashboardManager.handleReorder}" /> 
+    <ui:define name="body">
+        <ui:include src="/layout/messages.xhtml" />
 
-            <c:forEach items="#{dashboardManager.getDashlets()}" var="dashlet" varStatus="loop" >
-                <ui:include src="/dashlets/#{dashlet}.xhtml" />
+        <div class="row">
+            <p:dashboard model="#{dashboardManager.getDashboardModel()}">
+                <p:ajax event="reorder" listener="#{dashboardManager.handleReorder}" /> 
 
-                <ui:include src="/dashlets/empty.xhtml" />
-            </c:forEach>
-        </p:dashboard>
-    </div>
+                <c:forEach items="#{dashboardManager.getDashlets()}" var="dashlet" varStatus="loop" >
+                    <ui:include src="/dashlets/#{dashlet}.xhtml" />
+
+                    <ui:include src="/dashlets/empty.xhtml" />
+                </c:forEach>
+            </p:dashboard>
+        </div>
+    </ui:define>
 
 
     <ui:define name="context-menu">
