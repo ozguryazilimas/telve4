@@ -32,6 +32,11 @@
             <artifactId>telve-core</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>telve-dashboard</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!-- Camunda -->
         <dependency>
             <groupId>org.camunda.bpm</groupId>

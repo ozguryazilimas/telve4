@@ -54,7 +54,7 @@ public class ThemeManager implements Serializable{
         
         loginTemplate = templateCheckOrFallback( layoutName , "loginTemplate.xhtml" );
         
-        homeTemplate = ConfigResolver.getPropertyValue("themeManager.home", "/dashboard.xhtml");
+        homeTemplate = ConfigResolver.getPropertyValue("themeManager.home", "/simpleHome.xhtml");
         
     }
     

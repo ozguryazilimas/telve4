@@ -250,6 +250,7 @@
         <module>telve-sms-mobildev</module>
         <module>telve-batch</module>
         <module>telve-layout</module>
+        <module>telve-dashboard</module>
     </modules>
     
     <distributionManagement>
