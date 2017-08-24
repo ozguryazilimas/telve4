@@ -146,6 +146,12 @@
         
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>telve-layout</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>telve-theme</artifactId>
             <version>${project.version}</version>
         </dependency>

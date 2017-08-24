@@ -9,7 +9,7 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>#{telveConfigResolver.getProperty('app.title')}</title>
-        <ui:include src="/layout/templateHeader.xhtml" />
+        <ui:include src="#{themeManager.templateHeader}" />
         <h:outputScript library="telve" name="js/jquery.backstretch.min.js" />
         
         <script type="text/javascript">

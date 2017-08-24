@@ -28,6 +28,13 @@
             </h:panelGroup>
 
             <ui:remove>
+            <h:form class="sidebar-form">
+                <input type="text" class="form-control input-sm" placeholder="#{messages['general.label.SearchText']}"/>
+            </h:form>
+                </ui:remove>
+
+
+            <ui:remove>
                 <h:form id="globalSearch">
                     <div class="input-group" style="padding: 10px;">
                         <p:inputText value="#{quickLauncher.key}" required="false"  placeholder="#{messages['general.label.SearchText']}"/>
@@ -36,13 +43,13 @@
                 </h:form>
             </ui:remove>
 
-
             <ul class="sidebar-menu">
+
 
                 <ui:remove>
                     <li class="header">#{messages["Main Menu"]}</li>
                 </ui:remove>
-                
+
                 <ui:remove><!-- Side Main Navigations --></ui:remove>
                 <ui:repeat value="#{nagivationController.sideNavigations}" var="nav" >
 

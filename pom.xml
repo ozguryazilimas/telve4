@@ -249,6 +249,7 @@
         <module>telve-sms</module>
         <module>telve-sms-mobildev</module>
         <module>telve-batch</module>
+        <module>telve-layout</module>
     </modules>
     
     <distributionManagement>

@@ -4,16 +4,23 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
-                template="#{themeManager.layoutTemplate}">
-    
-    <ui:param name="dontShowContentHeader" value="true" />
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
 
-    <ui:define name="body">
-        <ui:include src="#{themeManager.homeTemplate}" />
-    </ui:define> 
 
-    <ui:remove>
+    <ui:include src="/layout/messages.xhtml" />
+    <div class="row">
+        <p:dashboard model="#{dashboardManager.getDashboardModel()}">
+            <p:ajax event="reorder" listener="#{dashboardManager.handleReorder}" /> 
+
+            <c:forEach items="#{dashboardManager.getDashlets()}" var="dashlet" varStatus="loop" >
+                <ui:include src="/dashlets/#{dashlet}.xhtml" />
+
+                <ui:include src="/dashlets/empty.xhtml" />
+            </c:forEach>
+        </p:dashboard>
+    </div>
+
+
     <ui:define name="context-menu">
 
         <c:forEach items="#{dashboardManager.dashboards}" var="dashboard" varStatus="loop">
@@ -26,14 +33,13 @@
             </li>
         </c:forEach>
 
-        
+
         <li class="pull-right">
-                <h:link outcome="/dashboardEditor.xhtml" id="dashboradeditor" >
-                    <i class="fa fa-edit"/>
-                    <span>#{messages['module.caption.DashboardEditor']}</span> 
-                </h:link>
-            </li>
+            <h:link outcome="/dashboardEditor.xhtml" id="dashboradeditor" >
+                <i class="fa fa-edit"/>
+                <span>#{messages['module.caption.DashboardEditor']}</span> 
+            </h:link>
+        </li>
     </ui:define>
-        </ui:remove>
 
 </ui:composition>

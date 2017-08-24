@@ -5,7 +5,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions"
-                xmlns:ut="http://utech.com/jsf/comps" template="/layout/primeTemplate.xhtml">
+                xmlns:ut="http://utech.com/jsf/comps" template="#{themeManager.layoutTemplate}">
 
     <ui:param name="showListBar" value="true" />
     <ui:param name="showNodeControls" value="#{showNodeControls == null ? true : showNodeControls}"/> 
