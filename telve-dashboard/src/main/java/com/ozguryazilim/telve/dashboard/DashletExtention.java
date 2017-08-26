@@ -33,8 +33,9 @@ public class DashletExtention implements Extension{
         Dashlet a = pat.getAnnotatedType().getAnnotation(Dashlet.class);
         
         //Dashlet deactive edilmemişse register ediliyor.
-        String s = pat.getAnnotatedType().getJavaClass().getName() + ".deactive";
-        String c = ConfigResolver.getProjectStageAwarePropertyValue( s, "false");
+        //NOT: Bu değerlerin apache-deltaspike.properties dosyasında tanımlanması lazım. Extention taramasında sadece o aktif.
+        String s = pat.getAnnotatedType().getJavaClass().getName() + ".inactive";
+        String c = ConfigResolver.getPropertyValue( s, "false");
         
         if( !"true".equals(c)){
             String name = pat.getAnnotatedType().getJavaClass().getSimpleName();

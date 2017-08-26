@@ -14,22 +14,6 @@
         </f:metadata>
     </ui:define>
 
-    <ui:define name="ribbon-actions">
-        <ui:remove>
-            <!--
-            <div class="ribbon-section">
-                <h:form id="tabForm1" style="float: right">
-                    <h:selectOneMenu id="o_id7adf562702a81" value="#{dashboardEditor.tabIndex}" >
-                        <f:selectItems value="#{dashboardEditor.tabMenu}" />
-                        <a:ajax execute="@this" event="change" render="form, tabForm" status="fieldAjaxStatus" />
-                    </h:selectOneMenu>
-                </h:form>
-            </div>
-            -->
-        </ui:remove>
-    </ui:define>
-
-
     <ui:define name="outerspace">
         <h:outputStylesheet library="telve" name="css/layout-sprites.css" />
 
@@ -167,7 +151,7 @@
                         <div class="col-md-4">
                             <h:panelGroup id="palet" layout="block" styleClass="box box-solid box-primary">
                                 <div class="box-header">#{messages['general.label.Palet']}</div>
-                                <div class="box-body">
+                                <div class="box-body" style="overflow-y: scroll; height: 300px;">
                                     <div id="palet" class="db-palet ui-sortable">
                                         <c:forEach items="#{dashboardManager.paletDashlets}" var="dashlet" varStatus="loop">
                                             <h:panelGroup id="#{dashlet}" layout="block" styleClass="box box-warning">
@@ -186,7 +170,7 @@
                                 <div class="box-header">
                                     #{messages['general.label.Dashboard']}
                                 </div>
-                                <div class="box-body">
+                                <div class="box-body" style="overflow-y: scroll; height: 300px;">
 
                                     <div id="column1" class="#{dashboardManager.getEditorColumn1Style()}">
                                         <div class="db-column ui-sortable">

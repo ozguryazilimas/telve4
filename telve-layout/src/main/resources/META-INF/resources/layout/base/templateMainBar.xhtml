@@ -94,6 +94,8 @@
 
                                 <div class="navbar-custom-menu">
                                     <ul class="nav navbar-nav">
+                                        <ui:remove>
+                                            //FIXME: Dashbord Paketi yoksa boomarkDashlet'i de yok. Dolayısı ile bu parça dağılıyor.
                                         <li>
                                             <ui:remove>
                                                 <!-- 
@@ -106,6 +108,7 @@
                                                 <i class="fa fa-bookmark" />
                                             </p:commandLink>
                                         </li>
+                                        </ui:remove>
                                         <li class="">
                                             <a href="#{helpResolver.helpPath}" target="HelpWinId" onclick="openHelp();" title="#{messages['nav.label.Help']}">
                                                 <i class="fa fa-question-circle"></i>
