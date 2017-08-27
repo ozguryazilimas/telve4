@@ -5,7 +5,6 @@
  */
 package com.ozguryazilim.telve.messages;
 
-import java.util.Locale;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
@@ -36,21 +35,6 @@ public class FormatedMessageTest {
     
     @After
     public void tearDown() {
-    }
-
-    /**
-     * Test of getMessage method, of class FormatedMessage.
-     */
-    @Test
-    public void testGetMessageTest() {
-        System.out.println("getMessage");
-        String pattern = "Merhaba {0}";
-        Object o = "Hakan!";
-        FormatedMessage instance = new FormatedMessage();
-        String expResult = "Merhaba Hakan!";
-        String result = instance.getMessage(pattern, new Object[]{ o });
-        assertEquals(expResult, result);
-        
     }
 
     
@@ -117,19 +101,6 @@ public class FormatedMessageTest {
         
     }
     
-    /**
-     * Test of getLocale method, of class FormatedMessage.
-     */
-    @Test
-    public void testGetLocale() {
-        System.out.println("getLocale");
-        FormatedMessage instance = new FormatedMessage();
-        Locale expResult = new Locale("tr");
-        Locale result = instance.getLocale();
-        assertEquals(expResult, result);
-        
-    }
-
     
     
 }
