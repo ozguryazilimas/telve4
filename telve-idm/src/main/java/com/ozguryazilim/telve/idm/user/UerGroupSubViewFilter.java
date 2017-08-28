@@ -8,7 +8,7 @@ package com.ozguryazilim.telve.idm.user;
 import com.ozguryazilim.telve.forms.SubViewFilter;
 import com.ozguryazilim.telve.idm.config.IdmPages;
 import java.util.List;
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
@@ -19,7 +19,7 @@ import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
  *
  * @author Hakan Uygun
  */
-@Dependent
+@ApplicationScoped
 public class UerGroupSubViewFilter implements SubViewFilter {
 
     @Inject
