@@ -31,6 +31,7 @@ import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.entities.ViewModel;
 import com.ozguryazilim.telve.utils.ELUtils;
+import org.apache.deltaspike.core.util.ProxyUtils;
 
 /**
  * Lookup Controller Sınıfları için taban
@@ -86,7 +87,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      * @return
      */
     public Class<? extends ViewConfig> getDialogPage() {
-        return this.getClass().getAnnotation(Lookup.class).dialogPage();
+        return ((Lookup)ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(Lookup.class)).dialogPage();
     }
 
     /**

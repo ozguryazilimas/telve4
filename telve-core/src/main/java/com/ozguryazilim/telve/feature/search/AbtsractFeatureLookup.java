@@ -22,6 +22,7 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
+import org.apache.deltaspike.core.util.ProxyUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
@@ -82,7 +83,7 @@ public abstract class AbtsractFeatureLookup implements Serializable{
      * @return
      */
     public Class<? extends ViewConfig> getDialogPage() {
-        return this.getClass().getAnnotation(Lookup.class).dialogPage();
+        return ((Lookup)ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(Lookup.class)).dialogPage();
     }
     
     
