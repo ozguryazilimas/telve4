@@ -91,16 +91,19 @@
         <ui:repeat value="#{noteWidget.notes}" var="note" >
             <div class="post" style="padding: 0px;">
 
-                <div class="user-block text-sm" style="padding: 0px;">
+                <div class="text-sm" style="padding-bottom: 8px;color:silver">
 
                     <p:commandLink action="#{noteWidget.delete(note)}" style="padding: 0px; border: 0px;" styleClass="btn btn-box-tool pull-right" process="@this" update=":noteW" rendered="#{identity.loginName eq note.owner}">
                         <i class="fa fa-trash"/>
                     </p:commandLink>
 
                     <ui:fragment rendered="#{note.priority eq 'IMPORTANT'}" >
-                    <i class="fa fa-exclamation-circle text-red" /> 
+                    <i class="fa fa-exclamation-circle text-danger" /> 
                     </ui:fragment> 
-                    #{userLookup.getUserName(note.owner)} - <t:cellOutputDateTime value="#{note.createDate}" />
+                    
+                    <i class="fa fa-user margin-r-5"/>#{userLookup.getUserName(note.owner)}
+                    <i class="fa  fa-clock-o margin-r-5"/><t:cellOutputPrettyTime value="#{note.createDate}" />
+                    
                 </div>
                 <p>#{note.body}</p>
             </div>
