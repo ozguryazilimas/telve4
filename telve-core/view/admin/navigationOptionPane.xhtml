@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="/layout/optionPaneBase.xhtml">
+
+    <ui:param name="bean" value="#{navigationOptionPane}" />
+    <ui:define name="content">
+
+        <ui:remove>
+            <h:inputHidden id="selectedNodes" value="#{bean.model.selectedNodes}" />
+        </ui:remove>
+
+        <pe:remoteCommand id="applyDataCommand" name="applyData" process="@this" update="sorter" actionListener="#{navigationOptionPane.updateFavMenu}">  
+            <pe:methodSignature parameters="java.lang.String" />  
+            <pe:methodParam name="menu"/>  
+        </pe:remoteCommand> 
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="ui-orderlist-caption" style="padding: 4px; text-align: center">
+                 <div class="pull-right">
+                     <a href="#" onclick="pushSelections();">
+                        <i class="fa fa-check-square" style="color: #555"/>
+                    </a>
+                    <a href="#" onclick="jQuery('#data').jstree('close_all');">
+                        <i class="fa fa-minus-square" style="color: #555"/>
+                    </a>
+                    <a href="#" onclick="jQuery('#data').jstree('open_all');">
+                        <i class="fa fa-plus-square" style="color: #555"/>
+                    </a>
+                </div>
+                #{messages['general.label.Navigations']}
+                </div>
+                <div class="ui-orderlist-list" style="height: 200px; overflow-y: scroll;">
+                <div id="data" >
+
+                    <ul>
+                        <ui:repeat value="#{nagivationController.navigationSections}" var="section" >
+                            <li data-jstree='{}'>
+                                <i class="fa fa-caret-right"></i>
+                                <span>#{messages[section.label]}</span>
+                                <ul>
+                                    <ui:repeat value="#{nagivationController.getSectionLinks(section.label)}" var="nav" >
+                                        <li id="#{nav.label}" data-jstree='{"selected": #{navigationOptionPane.menus.contains(nav.label)}, "type":"leaf"}' >
+                                            <span>
+                                                <h:graphicImage value="/img/ribbon/small#{nav.icon}"  style="margin-right: 4px;" rendered="#{not nav.fontIcon}"/>
+                                                <ui:fragment rendered="#{nav.fontIcon}">
+                                                    <i class="#{ nav.bundleKey ? messages[nav.icon] : nav.icon}"></i>
+                                                </ui:fragment>
+                                                #{messages[nav.label]} #{navigationOptionPane.menus.contains(nav.label) ? "true" : "false"}
+                                            </span>
+                                        </li>
+                                    </ui:repeat>
+                                </ul>
+                            </li>
+                        </ui:repeat>
+                    </ul>
+
+                </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <p:orderList id="sorter" value="#{navigationOptionPane.menus}" var="menu" controlsLocation="left" itemLabel="#{messages[menu]}" itemValue="#{menu}" responsive="true">
+                     <p:ajax event="reorder"/>
+                     <f:facet name="caption">#{messages['general.label.Favorites']}</f:facet>
+                </p:orderList>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            /* "types", */
+            function buildTree() {
+                // HTML data 
+                jQuery("#data")
+                    .jstree({
+                    "plugins": ["wholerow", "checkbox", "conditionalselect", "types"],
+                    "checkbox": {"three_state": true, "tie_selection": true},
+                    "conditionalselect" : function (node) {
+                        return !(node.children.length);
+                    },                                       
+                    "types": {
+                        "default": {
+                            "icon": "fa fa-folder"
+                        },
+                        "leaf": {
+                            "icon": "fa fa-link"
+                        },
+                    }
+                });
+            }
+            buildTree();
+            
+            function pushSelections(){
+                var s = jQuery('#data').jstree().get_selected();
+                applyData(s);
+            }
+        </script>
+
+    </ui:define>
+
+
+
+
+
+</ui:composition>

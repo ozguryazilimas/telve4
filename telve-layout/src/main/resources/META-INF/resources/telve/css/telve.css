@@ -814,3 +814,37 @@ pre{
     background-color: inherit;
     border: 0px;
 }
+
+.navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a, 
+.navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a, 
+.navbar-nav > .tasks-menu > .dropdown-menu > li .menu > li > a{
+    white-space: normal !important;
+}
+
+.ui-orderlist-caption{
+    border: 1px solid #d2d6de !important;
+    background-color: #eeeeee;
+    border-radius: 0px;
+}
+
+.ui-orderlist-list{
+    border-left: 1px solid #d2d6de !important;
+    border-right: 1px solid #d2d6de !important;
+    border-bottom: 1px solid #d2d6de !important;
+    border-radius: 0px;
+}
+
+.ui-orderlist-item{
+    border-radius: 0px;
+}
+
+.ui-orderlist-item.ui-state-highlight{
+    background-color: #eeeeee;
+}
+
+.ui-orderlist-button-move-up, 
+.ui-orderlist-button-move-top, 
+.ui-orderlist-button-move-down, 
+.ui-orderlist-button-move-bottom{
+    height: 32px !important;
+}

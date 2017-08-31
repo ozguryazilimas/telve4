@@ -88,6 +88,9 @@ public interface Pages extends ViewConfig {
 
         class GuiOptionPane implements Admin {
         };
+        
+        class NavigationOptionPane implements Admin {
+        };
     }
 
     @SecuredPage

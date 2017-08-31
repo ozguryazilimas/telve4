@@ -22,9 +22,11 @@ import org.primefaces.context.RequestContext;
 /**
  * Kullanıcı için Tema ve Dil seçimlerini ayarlar.
  * 
+ * Tüm kullanıcılar, yetkiye ihyiaç olmadan erişebilir.
+ * 
  * @author Hakan Uygun
  */
-@OptionPane(optionPage = Pages.Admin.GuiOptionPane.class)
+@OptionPane( permission = "PUBLIC", optionPage = Pages.Admin.GuiOptionPane.class)
 public class GuiOptionPane extends AbstractOptionPane{
     
     private Map<String, String> themes;

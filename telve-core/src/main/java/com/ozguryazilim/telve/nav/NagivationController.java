@@ -6,6 +6,9 @@
 package com.ozguryazilim.telve.nav;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.mutfak.kahve.Kahve;
+import com.ozguryazilim.mutfak.kahve.KahveEntry;
+import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
 import com.ozguryazilim.telve.auth.SecuredPage;
 import com.ozguryazilim.telve.feature.FeatureHandler;
 import java.io.Serializable;
@@ -45,9 +48,13 @@ public class NagivationController implements Serializable {
 
     @Inject
     private ViewConfigResolver viewConfigResolver;
+    
+    @Inject @UserAware
+    private Kahve kahve;
 
     private List<NavigationLinkModel> mainNavigations = new ArrayList<>();
     private List<NavigationLinkModel> sideNavigations = new ArrayList<>();
+    private List<NavigationLinkModel> favNavigations = new ArrayList<>();
     private List<NavigationSection> navigationSections = new ArrayList<>();
     private Map<String, List<NavigationLinkModel>> navigations = new HashMap<>();
 
@@ -57,6 +64,12 @@ public class NagivationController implements Serializable {
     @PostConstruct
     public void init() {
         try {
+            //NavigationOptionPane save sırasında init'i yeniden çapırıp cache temizliyor.
+            mainNavigations.clear();
+            sideNavigations.clear();
+            favNavigations.clear();
+            navigationSections.clear();
+            navigations.clear();
             buildNav();
         } catch (InstantiationException | IllegalAccessException ex) {
             LOG.error("NavigationError", ex);
@@ -66,6 +79,9 @@ public class NagivationController implements Serializable {
     protected void buildNav() throws InstantiationException, IllegalAccessException {
         Subject identity = SecurityUtils.getSubject();
         
+        //Favori listesini bir alalım
+        List<String> favMenus = loadFavNav();
+            
         for (ViewConfigDescriptor vi : viewConfigResolver.getViewConfigDescriptors()) {
 
             //Yetki kontrolü yapıyoruz. Eğer erişim yetkisi yoksa bahsi geçen View için nav oluşturulmayacak.
@@ -92,6 +108,8 @@ public class NagivationController implements Serializable {
                 ls.addAll(Arrays.asList(nvs.value()));
             }
 
+            
+            
             //Şimdi gerekli modeller build ediliyor
             for (Navigation nav : ls) {
                 
@@ -118,8 +136,10 @@ public class NagivationController implements Serializable {
                     icon = nav.icon();
                 }
                 
+                //Link Model oluştu
                 NavigationLinkModel nlm = new NavigationLinkModel(vi.getViewId(), label, icon, nav.order());
 
+                //Şimdi yerine koyalım
                 if (nav.section() == MainNavigationSection.class) {
                     mainNavigations.add(nlm);
                 } else if (nav.section() == SideNavigationSection.class) {
@@ -133,6 +153,14 @@ public class NagivationController implements Serializable {
                     }
                     navs.add(nlm);
                 }
+                
+                //Favorilerde ise favoriye de ekleyelim
+                if( favMenus.contains(label)){
+                    //Eğer ki daha önce eklenmemiş ise. Navlar sectionlarda bir kaç kere tanımlana biliyor.
+                    if( !favNavigations.contains(nlm)){
+                        favNavigations.add(nlm);
+                    }
+                }
 
             }
         }
@@ -142,17 +170,42 @@ public class NagivationController implements Serializable {
         Collections.sort(sideNavigations);
         Collections.sort(navigationSections);
         
-        //Map içindeki listeleri sıralıyoruz.
-        for( Map.Entry<String, List<NavigationLinkModel>> e : navigations.entrySet()){
-            Collections.sort(e.getValue());
-        }
+        //Favorileri zaten kullanıcı sıraladı. Onun kurallarına uyalım
+        Collections.sort(favNavigations, (NavigationLinkModel t, NavigationLinkModel t1) -> {
+            Integer ix1 = favMenus.indexOf(t.getLabel());
+            Integer ix2 = favMenus.indexOf(t1.getLabel());
+            return ix1.compareTo(ix2);
+        });
         
-
+        //Map içindeki listeleri sıralıyoruz.
+        navigations.entrySet().forEach((e) -> {
+            Collections.sort(e.getValue());
+        });
+    
         LOG.debug("Main Nav : {}", mainNavigations);
         LOG.debug("Side Nav : {}", sideNavigations);
         LOG.debug("Other Nav : {}", navigations);
     }
 
+    /**
+     * Favori olarka seçilen menüleri oluşturur.
+     * @return Favori menulerin label listesi
+     */
+    protected List<String> loadFavNav(){
+        
+        List<String> menus = new ArrayList<>();
+        
+        //Önce Kahveden değerleri okuyalım
+        KahveEntry ke = kahve.get("favmenu.count", 0);
+        int count = ke.getAsInteger();
+        for( int i = 0; i < count; i++ ){
+            ke = kahve.get("favmenu.item." + i, "");
+            menus.add(ke.getAsString());
+        }
+        
+        return menus;
+    }
+    
     /**
      * Lİsteye bakıp navigation section bulur. 
      * 
@@ -215,4 +268,9 @@ public class NagivationController implements Serializable {
         return navigations.get(section);
     }
 
+    public List<NavigationLinkModel> getFavNavigations() {
+        return favNavigations;
+    }
+
+    
 }

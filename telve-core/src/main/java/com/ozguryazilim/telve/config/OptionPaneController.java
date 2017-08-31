@@ -54,7 +54,7 @@ public class OptionPaneController implements Serializable{
             }
             
             //Herkes kendi arayüzünü değiştirebilir.
-            if( p.contains("GuiOptionPane") || identity.isPermitted(p + ":select")){
+            if( p.equals("PUBLIC") || identity.isPermitted(p + ":select")){
                 optionPanes.add(e.getKey());
                 
                 String viewId = getOptiponPageViewId(e.getValue().optionPage());

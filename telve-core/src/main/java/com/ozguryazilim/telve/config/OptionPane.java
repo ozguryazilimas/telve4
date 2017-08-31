@@ -38,6 +38,7 @@ public @interface OptionPane {
     
     /**
      * Eğer verilmezse sınıf adını kullanır.
+     * PUBLIC verilir ise login olan her hangi bir kullanıcı özel yetkiye ihtiyaç duymadan erişebilir.
      * @return 
      */
     String permission() default "";

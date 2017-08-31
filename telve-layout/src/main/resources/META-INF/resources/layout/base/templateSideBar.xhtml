@@ -72,6 +72,28 @@
 
                 </ui:repeat>
 
+                <ui:remove><!-- Fav Navigations --></ui:remove>
+                <ui:repeat value="#{nagivationController.favNavigations}" var="nav" >
+
+                    <li>
+                        <h:link  outcome="#{nav.viewId}" >
+                            <ui:remove>
+                                <c:forEach items="#{action.action.params}" var="entry">
+                                    <f:param name="#{entry.key}" value="#{entry.value}"/>
+                                </c:forEach>
+                            </ui:remove>
+
+                            <h:graphicImage value="/img/ribbon/small#{nav.icon}"  style="margin-right: 4px;" rendered="#{not nav.fontIcon}"/>
+                            <ui:fragment rendered="#{nav.fontIcon}">
+                                <i class="#{ nav.bundleKey ? messages[nav.icon] : nav.icon}"></i>
+                            </ui:fragment>
+                            <span style="padding-right: 4px;">#{messages[nav.label]}</span> 
+
+                        </h:link>
+                    </li>
+
+                </ui:repeat>
+                
                 <li class="header">#{messages["general.label.Navigation"]}</li>
                 <ui:repeat value="#{nagivationController.navigationSections}" var="section" >
                     <li class="treeview">
