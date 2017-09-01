@@ -251,6 +251,11 @@
         <module>telve-batch</module>
         <module>telve-layout</module>
         <module>telve-dashboard</module>
+        <module>telve-attachment</module>
+        <module>telve-attachment-jpa</module>
+        <module>telve-attachment-jpa-model</module>
+        <module>telve-attachment-modeshape</module>
+        <module>telve-attachment-ui</module>
     </modules>
     
     <distributionManagement>
