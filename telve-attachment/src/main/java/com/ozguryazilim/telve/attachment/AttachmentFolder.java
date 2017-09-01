@@ -6,9 +6,7 @@
 package com.ozguryazilim.telve.attachment;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Bu model sınıf virtual folder'lar için de kullanılabilir mi?
@@ -22,10 +20,7 @@ public class AttachmentFolder implements Serializable{
     private String createBy;
     private Date createDate;
     
-    //Üst folder
-    private AttachmentFolder parent;
-    //Alt folder ağacı.
-    private List<AttachmentFolder> children = new ArrayList<>();
+    private String parentId;
 
     public String getId() {
         return id;
@@ -67,21 +62,12 @@ public class AttachmentFolder implements Serializable{
         this.createDate = createDate;
     }
 
-    public AttachmentFolder getParent() {
-        return parent;
+    public String getParentId() {
+        return parentId;
     }
 
-    public void setParent(AttachmentFolder parent) {
-        this.parent = parent;
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
     }
 
-    public List<AttachmentFolder> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<AttachmentFolder> children) {
-        this.children = children;
-    }
-    
-    
 }

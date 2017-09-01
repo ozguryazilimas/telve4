@@ -32,13 +32,13 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Embeded ModeShape ile AttachmentStore implementasyonu
- * 
+ *
  * @author Hakan Uygun
  */
 public class AttachmentModeShapeStore implements AttachmentStore {
 
     private static final Logger LOG = LoggerFactory.getLogger(AttachmentModeShapeStore.class);
-    
+
     private UrlEncoder encoder;
 
     @Override
@@ -126,20 +126,26 @@ public class AttachmentModeShapeStore implements AttachmentStore {
             JcrTools jcrTools = new JcrTools();
             Node node = jcrTools.findOrCreateNode(session, fullPath, "nt:folder");
 
-            NodeIterator it = node.getNodes();
-            while (it.hasNext()) {
-                Node n = it.nextNode();
-                if (n.isNodeType("nt:folder")) {
-                    AttachmentFolder folder = nodeToFolder(n);
-                    result.add(folder);
-                }
-            }
+            populateFolders(node, result);
 
             session.logout();
 
             return result;
         } catch (RepositoryException ex) {
             throw new AttachmentException();
+        }
+    }
+
+    protected void populateFolders(Node node, List<AttachmentFolder> list) throws RepositoryException {
+        NodeIterator it = node.getNodes();
+        while (it.hasNext()) {
+            Node n = it.nextNode();
+            if (n.isNodeType("nt:folder")) {
+                AttachmentFolder folder = nodeToFolder(n);
+                list.add(folder);
+                //Şimdi alt folderlar.
+                populateFolders(n, list);
+            }
         }
     }
 
@@ -190,7 +196,7 @@ public class AttachmentModeShapeStore implements AttachmentStore {
 
     @Override
     public List<AttachmentDocument> getDocuments(AttachmentContext context, AttachmentFolder folder) throws AttachmentNotFoundException, AttachmentException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return getDocuments(context, getFolderPath(context, folder));
     }
 
     @Override
@@ -206,7 +212,7 @@ public class AttachmentModeShapeStore implements AttachmentStore {
             Node node = jcrTools.findOrCreateNode(session, folderPath, "nt:folder");
 
             LOG.debug("Documents For Folder : {}", node.getPath());
-            
+
             NodeIterator it = node.getNodes();
             while (it.hasNext()) {
                 Node n = it.nextNode();
@@ -256,7 +262,7 @@ public class AttachmentModeShapeStore implements AttachmentStore {
             Node node = session.getNodeByIdentifier(id);
 
             LOG.debug("Document Content Requested: {}", node.getPath());
-            
+
             Node content = node.getNode("jcr:content");
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -286,7 +292,7 @@ public class AttachmentModeShapeStore implements AttachmentStore {
             JcrTools jcrTools = new JcrTools();
 
             //Burada sadece path'mi yoksa isim de mi işe girecek?
-            String fullPath = getEncodedPath(getFullPath(context, document.getName()));
+            String fullPath = getEncodedPath(getFullPath(context, getFolderPath(context, folder) + "/" + document.getName()));
 
             Node n = jcrTools.uploadFile(session, fullPath, content);
 
@@ -303,7 +309,7 @@ public class AttachmentModeShapeStore implements AttachmentStore {
             session.save();
 
             LOG.debug("Document Added : {}", n.getPath());
-            
+
             AttachmentDocument result = result = nodeToDocument(n);
 
             session.logout();
@@ -330,13 +336,13 @@ public class AttachmentModeShapeStore implements AttachmentStore {
             Node node = session.getNodeByIdentifier(id);
 
             LOG.debug("Document delete : {}", node.getPath());
-            
+
             node.remove();
 
             session.save();
             session.logout();
 
-        } catch (RepositoryException ex ) {
+        } catch (RepositoryException ex) {
             throw new AttachmentException();
         }
     }
@@ -357,7 +363,7 @@ public class AttachmentModeShapeStore implements AttachmentStore {
             Node node = jcrTools.findOrCreateNode(session, fullPath, "nt:folder");
 
             LOG.debug("Folder added : {}", node.getPath());
-            
+
             session.save();
 
             AttachmentFolder result = nodeToFolder(node);
@@ -369,7 +375,7 @@ public class AttachmentModeShapeStore implements AttachmentStore {
             throw new AttachmentException();
         }
     }
-    
+
     @Override
     public void deleteFolder(AttachmentContext context, String path) throws AttachmentException {
         try {
@@ -377,17 +383,16 @@ public class AttachmentModeShapeStore implements AttachmentStore {
 
             Node node = session.getNode(getEncodedPath(getFullPath(context, path)));
             LOG.debug("Folder delete : {}", node.getPath());
-            
+
             node.remove();
 
             session.save();
             session.logout();
 
-        } catch (RepositoryException ex ) {
+        } catch (RepositoryException ex) {
             throw new AttachmentException();
         }
     }
-
 
     //////////////////////////////////////////
     //Util Functions
@@ -421,20 +426,38 @@ public class AttachmentModeShapeStore implements AttachmentStore {
     protected String getFullPath(AttachmentContext context, String path) {
         //FIXME: burada boşluk fazla slah v.s. kontrol edilecek.
         String s = context.getRoot() + "/" + path;
-        
+
         //Önce parse edip bir parçalıyoruz
         List<String> ss = Splitter.on('/').trimResults().omitEmptyStrings().splitToList(s);
         //Şimdi de geri birleştiriyoruz
         s = Joiner.on('/').join(ss);
-        
+
         return s;
+    }
+
+    /**
+     * Folder Path içinde contextRoot varsa çıkarır.
+     * @param context
+     * @param folder
+     * @return 
+     */
+    protected String getFolderPath( AttachmentContext context, AttachmentFolder folder ){
+        //Context root sonunda içinde fazladan slash olabiliyor.
+        String con = context.getRoot();
+        if( con.endsWith("/") ){
+            con = con.substring(0, con.length() - 1 );
+        }
+        
+        //folder path içinden context root kısmını attık.
+        return folder.getPath().replace(con, "");
     }
 
     protected AttachmentFolder nodeToFolder(Node node) throws RepositoryException {
         AttachmentFolder result = new AttachmentFolder();
         result.setId(node.getIdentifier());
         result.setPath(getDecodedPath(node.getPath()));
-        result.setName(node.getName());
+        result.setName(getDecodedPath(node.getName()));
+        result.setParentId(node.getParent().getIdentifier());
         return result;
     }
 
