@@ -38,9 +38,9 @@ import org.slf4j.LoggerFactory;
  */
 @Named
 @GroupedConversationScoped
-public class AttachmentWidget implements Serializable {
+public class SimpleAttachmentWidget implements Serializable {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AttachmentWidget.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SimpleAttachmentWidget.class);
 
     @Inject
     private Identity identity;

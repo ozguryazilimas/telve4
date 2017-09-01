@@ -5,7 +5,7 @@
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 xmlns:p="http://primefaces.org/ui">
 
-    #{attachmentWidget.init(featurePointer)}
+    #{simpleAttachmentWidget.init(featurePointer)}
 
     <t:accordion icon="fa fa-paperclip" id="attW" label="general.label.Attachments" columnClass="#{columnClass}">
 
@@ -19,10 +19,10 @@
 
         <p:outputPanel deferred="true" >
             <h:form id="attWF">
-                <p:dataTable id="fileAttachs" value="#{attachmentWidget.documents}" var="doc">
+                <p:dataTable id="fileAttachs" value="#{simpleAttachmentWidget.documents}" var="doc">
                     <p:column headerText="#{messages['general.label.Documents']}">
-                        <p:commandLink title="#{messages['attachment.hint.Download']}" action="#{attachmentWidget.downloadDocument(doc.id)}" ajax="false">
-                            <i class="fa #{attachmentWidget.getIcon(doc.mimeType)} margin-r-5" />#{doc.name}
+                        <p:commandLink title="#{messages['attachment.hint.Download']}" action="#{simpleAttachmentWidget.downloadDocument(doc.id)}" ajax="false">
+                            <i class="fa #{simpleAttachmentWidget.getIcon(doc.mimeType)} margin-r-5" />#{doc.name}
                         </p:commandLink>
                     </p:column>
                     <p:column styleClass="actionColumn" >
@@ -32,7 +32,7 @@
                             </p:commandLink>
                         </f:facet>
                         <p:commandLink title="#{messages['attachment.hint.Delete']}" 
-                                       action="#{attachmentWidget.deleteDocument(doc.id)}" ajax="true" 
+                                       action="#{simpleAttachmentWidget.deleteDocument(doc.id)}" ajax="true" 
                                        update="@([id$=fileAttachs])"  
                                        styleClass="btn-delete"
                                        rendered="#{empty permissionDomain or identity.hasPermission( permissionDomain, 'delete')}">
@@ -48,7 +48,7 @@
 
     <h:form id="uploaddialog" enctype="multipart/form-data">
         <p:dialog header="#{messages['attachment.caption.UploadFileDialog']}" widgetVar="fdlg" showEffect="clip" hideEffect="clip">
-            <p:fileUpload fileUploadListener="#{attachmentWidget.handleFileUpload}" mode="advanced" dragDropSupport="true"
+            <p:fileUpload fileUploadListener="#{simpleAttachmentWidget.handleFileUpload}" mode="advanced" dragDropSupport="true"
                           update="@([id$=fileAttachs])" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|.*)$/"  sequential="true"
                           label="#{messages['general.label.SelectFile']}" uploadLabel="#{messages['general.button.Upload']}" cancelLabel="#{messages['general.button.Cancel']}"/>
         </p:dialog>
