@@ -115,6 +115,7 @@ h3.accordion{
     font-size: 14px;
     font-weight: bold;
     color: #555;
+    cursor: pointer;
 }
 
 .accordion-header > .accordion-tools{
