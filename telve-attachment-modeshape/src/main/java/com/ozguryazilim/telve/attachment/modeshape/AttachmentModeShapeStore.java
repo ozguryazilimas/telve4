@@ -5,6 +5,8 @@
  */
 package com.ozguryazilim.telve.attachment.modeshape;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.ozguryazilim.telve.attachment.AttachmentContext;
 import com.ozguryazilim.telve.attachment.AttachmentDocument;
 import com.ozguryazilim.telve.attachment.AttachmentException;
@@ -418,7 +420,14 @@ public class AttachmentModeShapeStore implements AttachmentStore {
      */
     protected String getFullPath(AttachmentContext context, String path) {
         //FIXME: burada boşluk fazla slah v.s. kontrol edilecek.
-        return context.getRoot() + "/" + path;
+        String s = context.getRoot() + "/" + path;
+        
+        //Önce parse edip bir parçalıyoruz
+        List<String> ss = Splitter.on('/').trimResults().omitEmptyStrings().splitToList(s);
+        //Şimdi de geri birleştiriyoruz
+        s = Joiner.on('/').join(ss);
+        
+        return s;
     }
 
     protected AttachmentFolder nodeToFolder(Node node) throws RepositoryException {

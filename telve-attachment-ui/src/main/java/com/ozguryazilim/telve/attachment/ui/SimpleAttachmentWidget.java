@@ -6,12 +6,13 @@
 package com.ozguryazilim.telve.attachment.ui;
 
 import com.ozguryazilim.telve.attachment.AttachmentContext;
-import com.ozguryazilim.telve.attachment.AttachmentContextRootBuilder;
+import com.ozguryazilim.telve.attachment.AttachmentContextProvider;
 import com.ozguryazilim.telve.attachment.AttachmentDocument;
 import com.ozguryazilim.telve.attachment.AttachmentException;
 import com.ozguryazilim.telve.attachment.AttachmentFolder;
 import com.ozguryazilim.telve.attachment.AttachmentNotFoundException;
 import com.ozguryazilim.telve.attachment.AttachmentStore;
+import com.ozguryazilim.telve.attachment.AttacmentContextProviderSelector;
 import com.ozguryazilim.telve.attachment.qualifiers.FileStore;
 import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.entities.FeaturePointer;
@@ -50,30 +51,31 @@ public class SimpleAttachmentWidget implements Serializable {
     private AttachmentStore store;
 
     @Inject
-    @FileStore
-    private AttachmentContextRootBuilder rootBuilder;
+    private AttacmentContextProviderSelector providerSelector;
 
     private FeaturePointer featurePointer;
-
+    
     private AttachmentContext context;
     private AttachmentFolder folder;
     private List<AttachmentDocument> documents;
+    private Object payload;
 
-    public void init(FeaturePointer featurePointer) throws AttachmentNotFoundException, AttachmentException {
+    public void init(FeaturePointer featurePointer, Object payload, AttachmentContext context ) throws AttachmentNotFoundException, AttachmentException {
         this.featurePointer = featurePointer;
-
-        context = new AttachmentContext();
-
-        context.setFeaturePointer(featurePointer);
-        context.setRoot(rootBuilder.getRoot(featurePointer));
-        context.setUsername(identity.getUserName());
-
-        folder = store.getFolder(context, "");
+        this.payload = payload;
+                
+        if( context != null ){
+            //Verilmiş ise providerdan al
+            this.context = context;
+        } else {
+            //Verilmemiş kendimiz oluşturalım
+            AttachmentContextProvider provider = providerSelector.getAttachmentContextProvider(featurePointer, payload );
+            
+            this.context = provider.getContext(featurePointer,payload);
+        }
+        
+        folder = store.getFolder(this.context, "");
         clearChache();
-    }
-
-    public List<String> getStores() {
-        return null;
     }
 
     public List<AttachmentDocument> getDocuments() {
