@@ -7,7 +7,7 @@
 
     #{noteWidget.init(featurePointer)}
 
-    <t:accordion icon="fa fa-sticky-note" id="noteW" label="general.label.Notes" columnClass="#{columnClass}">
+    <t:accordion icon="fa fa-sticky-note" id="noteW" label="general.label.Notes" columnClass="#{columnClass}" contentClass="">
 
         <f:facet name="toolbar">
             <p:commandLink action="#{noteWidget.addNewNote()}" styleClass="btn btn-box-tool" update=":noteW">

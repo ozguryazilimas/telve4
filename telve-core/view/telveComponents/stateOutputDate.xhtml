@@ -1,0 +1,29 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://xmlns.jcp.org/jsf/core"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:composite="http://java.sun.com/jsf/composite">
+
+
+    <composite:interface>
+        <composite:attribute name="label" required="false"/>        
+        <composite:attribute name="value" required="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+
+        <ui:fragment rendered="#{cc.attrs.value ne null and not empty cc.attrs.value}">
+            <li>
+                <div class="text-sm text-muted">#{messages[cc.attrs.label]}</div>
+                <div>
+                    <h:outputText id="#{cc.id}_inp" value="#{cc.attrs.value}" >
+                        <f:convertDateTime pattern="#{messages['general.format.Date']}" />
+                    </h:outputText>
+                </div>
+            </li>
+        </ui:fragment>
+
+    </composite:implementation>
+
+</ui:component>

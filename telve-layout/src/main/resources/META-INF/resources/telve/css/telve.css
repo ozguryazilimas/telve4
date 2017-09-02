@@ -847,3 +847,23 @@ pre{
 .ui-orderlist-button-move-bottom{
     height: 32px !important;
 }
+
+
+.caption-states{
+    padding-left: 0;
+    margin-left: -5px;
+    list-style: none;
+}
+
+.caption-states li{
+    display: inline-block;
+    padding-right: 16px;
+    padding-left: 16px;
+    border-left: 1px solid #ddd;
+}
+
+.caption-states li:first-child{
+    border-left: 0px;
+    padding-left: 5px;
+}
+
