@@ -119,9 +119,7 @@ h3.accordion{
 }
 
 .accordion-header > .accordion-tools{
-    position: absolute;
-    right: 10px;
-    top: 4px;
+    float: right;
 }
 
 /*Primefaces css düzeltmeleri*/
@@ -848,50 +846,4 @@ pre{
 .ui-orderlist-button-move-down, 
 .ui-orderlist-button-move-bottom{
     height: 32px !important;
-}
-
-
-.tiles {
-  display: flex;
-  flex-flow: row wrap;
-  background: #eee;
-}
-.tiles .tile {
-  
-  margin: 10px;
-  height: 100px;
-  width: calc( (100% / 3) - 20px );
-  /*padding: 10px;*/
-}
-.tiles .feature {
-  width: calc( ( ( 100% / 3 ) * 2) - 20px );
-}
-
-.tiles .tile .tile-img{
-    float: left;
-}
-
-.tiles .tile .tile-info{
-    margin-left: 60px;
-}
-
-.tiles .tile .tile-title{
-    font-weight: bold;
-    display: block;
-}
-
-.tiles .tile .tile-desc{
-    display: block;
-}
-
-
-@media (max-width: 1280px) {
-  .tiles .tile {
-    width: calc( (100% / 2) - 20px );
-  }
-}
-@media (max-width: 680px) {
-  .tiles .tile {
-    width: 100%;
-  }
 }
