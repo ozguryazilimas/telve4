@@ -6,7 +6,8 @@
                  xmlns:of="http://omnifaces.org/functions">
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+        
     <link rel="icon" href="../favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
 
@@ -39,7 +40,7 @@
     
     <script>
         $.AdminLTE.options.sidebarSlimScroll = #{skinSelector.slimScroll ? 'true' : 'false'};
-        
+        PrimeFaces.settings.locale = "tr";
         //PF 6.1 InputNumber ClientSideValidation hatasını düzeltmek için.
         PrimeFaces.converter['javax.faces.BigDecimal'].regex = /^\d.*$/;
     </script>

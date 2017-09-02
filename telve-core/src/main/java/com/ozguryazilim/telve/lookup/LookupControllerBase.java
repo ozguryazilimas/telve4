@@ -237,6 +237,8 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         //options.put("draggable", false);
         options.put("resizable", false);
         options.put("contentHeight", 450);
+        options.put("responsive",   true);
+        options.put("fitViewport", true );
     }
 
     /**
