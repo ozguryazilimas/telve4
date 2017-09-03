@@ -28,13 +28,13 @@
                     <nav class="navbar navbar-static-top" role="navigation">
                         <div class="container-fluid">
                             <div class="navbar-header">
-                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                                <button id="sideBarToggle" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
                                     <i class="fa fa-bars"></i>
                                 </button>
                             </div>
 
                             <ui:remove>
-                                <!-- Sidebar toggle button-->
+                                <!-- Sidebar toggle button--> collapse
                                 <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                                     <span class="sr-only">Toggle navigation</span>
                                 </a>
@@ -59,7 +59,23 @@
                                                 jQuery("body").addClass('sidebar-open');
                                             }
                                         }
+                                        
+                                        //Remember SideBarState
+                                        if (jQuery("body").hasClass('sidebar-collapse')) {
+                                            localStorage.setItem('sidebar-collapse', 'true');
+                                        } else {
+                                            localStorage.removeItem('sidebar-collapse');
+                                        }
+                                        
                                     });
+                                    
+                                    /* Titreme etkisinden uzak durmak için body'nin altına alındı.
+                                    var st = localStorage.getItem('sidebar-collapse');
+                                    if( st == 'true'){
+                                        jQuery("body").addClass('sidebar-collapse');
+                                    }
+                                    */
+                                    
                                     jQuery('listToggle').click(function (e) {
                                         e.preventDefault();
                                         jQuery("#content-list-bar").toggle();

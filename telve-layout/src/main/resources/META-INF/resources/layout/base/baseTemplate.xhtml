@@ -23,8 +23,17 @@
 
         </h:head>
 
-        <h:body styleClass="#{skinSelector.skin} #{skinSelector.sidebarCSS} fixed">
-
+        <h:body styleClass="#{skinSelector.skin}  sidebar-mini fixed">
+            
+            <script>
+                (function () {
+                    if (localStorage.getItem('sidebar-collapse') == 'true') {
+                        var body = document.getElementsByTagName('body')[0];
+                        body.className = body.className + ' sidebar-collapse';
+                    }
+                })();
+            </script>
+            
             <ds:windowId />
 
             <!-- pe:ajaxErrorHandler / -->

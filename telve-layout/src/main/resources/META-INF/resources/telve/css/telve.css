@@ -867,3 +867,6 @@ pre{
     padding-left: 5px;
 }
 
+.context-menu .navbar{
+    margin-bottom: 0px !important;
+}
