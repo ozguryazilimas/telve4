@@ -42,6 +42,12 @@ public class QuickRecordManager implements Serializable{
         Subject identity = SecurityUtils.getSubject();
         
         for( Map.Entry<String, QuickRecord> e : QuickRecordRegistery.getQuickRecordMap().entrySet()){
+            
+            //Eğer menüde görünmeyecek ise başka şeye bakmaya gerek yok.
+            if( !e.getValue().showonMenu() ){
+                continue;
+            }
+            
             String perm = e.getValue().permission();
             if( Strings.isNullOrEmpty(perm)){
                 perm = e.getKey();

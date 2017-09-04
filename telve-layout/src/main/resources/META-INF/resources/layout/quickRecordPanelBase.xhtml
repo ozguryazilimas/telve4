@@ -11,7 +11,7 @@
     <h:form id="quickPanelForm" >
 
         <div class="panelHeader">
-            
+
             <div class="box-tools pull-right">
                 <a id="panelExpander" href="#" data-toggle="collapse" data-target="#panelContent" class="btn btn-box-tool">
                     <i class="fa fa-compress"/>
@@ -21,10 +21,12 @@
                     <i class="fa fa-close"></i>
                 </p:commandLink>
             </div>
-            
-            <i class="fa #{messages['quickRecord.icon.'.concat(quickRecordController.name)]}" /> #{messages['quickRecord.header.'.concat(quickRecordController.name)]}
-            <div class="text-sm text-muted"><ui:insert name="header-info" /></div>
-            
+
+            <ui:fragment rendered="#{showDefaultHeader ne 'false'}">
+                <i class="fa #{messages['quickRecord.icon.'.concat(quickRecordController.name)]}" /> #{messages['quickRecord.header.'.concat(quickRecordController.name)]}
+                <div class="text-sm text-muted"><ui:insert name="header-info" /></div>
+            </ui:fragment>
+            <ui:insert name="custom-header" />
         </div>
 
         <div id="panelContent" class="panelContent collapse in" >
@@ -32,21 +34,24 @@
 
 
             <div class="panelButtons pull-right" >
-                <p:commandLink action="#{bean.save()}" ajax="true" process="@form" 
-                               oncomplete="if (!args.validationFailed){quickPanelToogle();}" update="quickPanelContent"
-                               validateClient="true" styleClass="btn btn-primary">
-                    <i class="fa fa-save"></i> #{messages['general.button.Save']}
-                </p:commandLink>
+                <ui:fragment rendered="#{showDefaultActions ne 'false'}">
+                    <p:commandLink action="#{bean.save()}" ajax="true" process="@form" 
+                                   oncomplete="if (!args.validationFailed){quickPanelToogle();}" update="quickPanelContent"
+                                   validateClient="true" styleClass="btn btn-primary">
+                        <i class="fa fa-save"></i> #{messages['general.button.Save']}
+                    </p:commandLink>
 
-                <p:commandLink action="#{bean.cancel()}" ajax="true" process="@this" 
-                               oncomplete="quickPanelToogle();" update="quickPanelContent" styleClass="btn btn-default">
-                    <i class="fa fa-close"></i> #{messages['general.button.Cancel']}
-                </p:commandLink>
+                    <p:commandLink action="#{bean.cancel()}" ajax="true" process="@this" 
+                                   oncomplete="quickPanelToogle();" update="quickPanelContent" styleClass="btn btn-default">
+                        <i class="fa fa-close"></i> #{messages['general.button.Cancel']}
+                    </p:commandLink>
+                </ui:fragment>
+                <ui:insert name="custom-actions" />
             </div>
         </div>
 
     </h:form>
-    
+
     <script>
         $('#panelContent').on('shown.bs.collapse', function () {
             $("#panelExpander i").removeClass("fa-expand").addClass("fa-compress");

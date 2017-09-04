@@ -47,4 +47,6 @@ public @interface QuickRecord {
      * @return 
      */
     int order() default 10;
+    
+    boolean showonMenu() default true;
 }

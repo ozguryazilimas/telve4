@@ -930,7 +930,8 @@ pre{
     padding-top: 10px;
 }
 
-.panelButtons .btn-primary {
+.panelButtons .btn-primary, 
+.panelButtons .btn-success{
     color: #fff;
 }
 
