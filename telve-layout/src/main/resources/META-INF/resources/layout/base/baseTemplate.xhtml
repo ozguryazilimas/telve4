@@ -96,6 +96,11 @@
                         </div>
                     </ui:remove>
 
+                    <div id="quickpanel" class="quickPanel">
+                        <p:outputPanel id="quickPanelContent">
+                            <ui:include src="#{quickRecordController.dialogViewId}" />
+                        </p:outputPanel>
+                    </div>
 
                     <p:outputPanel id="cmb" layout="block">
                         <section class="context-menu">

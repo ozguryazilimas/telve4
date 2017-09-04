@@ -104,7 +104,5 @@ public interface Pages extends ViewConfig {
         class ScheduledReportConsole implements Reports {
         };
     }
-
-    
     
 }

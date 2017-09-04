@@ -110,3 +110,52 @@ function bindEnters(){
     
 }
 
+//Source : http://jsfiddle.net/333gu11u/
+$.event.special.widthChanged = {
+        remove: function() {
+            $(this).children('iframe.width-changed').remove();
+        },
+        add: function () {
+            var elm = $(this);
+            var iframe = elm.children('iframe.width-changed');
+            if (!iframe.length) {
+                iframe = $('<iframe/>').addClass('width-changed').prependTo(this);
+            }
+            var oldWidth = elm.width();
+            function elmResized() {
+                var width = elm.width();
+                if (oldWidth != width) {
+                    elm.trigger('widthChanged', [width, oldWidth]);
+                    oldWidth = width;
+                }
+            }
+
+            var timer = 0;
+            var ielm = iframe[0];
+            (ielm.contentWindow || ielm).onresize = function() {
+                clearTimeout(timer);
+                timer = setTimeout(elmResized, 20);
+            };
+        }
+    }
+
+function quickPanelActivate(){
+    $(".content-wrapper").on('widthChanged',function(){
+        quickPanelResize();
+    });
+}
+
+function quickPanelResize(){
+    var panelWidth = $(".content-wrapper").width();
+
+    $('#quickpanel').css({'width':panelWidth});
+}
+
+function quickPanelToogle(){
+    
+    
+    //Get the screen height and width
+    quickPanelResize()
+    
+    jQuery('#quickpanel').toggle();
+}

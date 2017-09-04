@@ -43,6 +43,24 @@
         PrimeFaces.settings.locale = "tr";
         //PF 6.1 InputNumber ClientSideValidation hatasını düzeltmek için.
         PrimeFaces.converter['javax.faces.BigDecimal'].regex = /^\d.*$/;
+        
+        //Quick Panel ve Maskı için arkadan gelen bir resize eventi.
+        /*
+        $(window).resize(function() {
+            if(this.resizeTO) clearTimeout(this.resizeTO);
+            this.resizeTO = setTimeout(function() {
+                $(this).trigger('resizeEnd');
+            }, 100);
+        });
+        
+        $( window ).bind('resizeEnd', function() {
+            quickPanelResize();
+        });
+        */
+       $(document).ready(function() {
+           quickPanelActivate();
+       });
+       
     </script>
     <o:onloadScript>bindEnters();adminLTEActivate();</o:onloadScript>
     

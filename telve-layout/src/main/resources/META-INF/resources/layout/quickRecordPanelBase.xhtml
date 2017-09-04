@@ -1,0 +1,61 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:p="http://primefaces.org/ui"
+                 xmlns:o="http://omnifaces.org/ui"
+                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                 xmlns:of="http://omnifaces.org/functions"
+                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:form id="quickPanelForm" >
+
+        <div class="panelHeader">
+            
+            <div class="box-tools pull-right">
+                <a id="panelExpander" href="#" data-toggle="collapse" data-target="#panelContent" class="btn btn-box-tool">
+                    <i class="fa fa-compress"/>
+                </a>
+                <p:commandLink action="#{bean.cancel()}" ajax="true" process="@this" 
+                               oncomplete="quickPanelToogle();" update="quickPanelContent" styleClass="btn btn-box-tool">
+                    <i class="fa fa-close"></i>
+                </p:commandLink>
+            </div>
+            
+            <i class="fa #{messages['quickRecord.icon.'.concat(quickRecordController.name)]}" /> #{messages['quickRecord.header.'.concat(quickRecordController.name)]}
+            <div class="text-sm text-muted"><ui:insert name="header-info" /></div>
+            
+        </div>
+
+        <div id="panelContent" class="panelContent collapse in" >
+            <ui:insert name="content" />
+
+
+            <div class="panelButtons pull-right" >
+                <p:commandLink action="#{bean.save()}" ajax="true" process="@form" 
+                               oncomplete="if (!args.validationFailed){quickPanelToogle();}" update="quickPanelContent"
+                               validateClient="true" styleClass="btn btn-primary">
+                    <i class="fa fa-save"></i> #{messages['general.button.Save']}
+                </p:commandLink>
+
+                <p:commandLink action="#{bean.cancel()}" ajax="true" process="@this" 
+                               oncomplete="quickPanelToogle();" update="quickPanelContent" styleClass="btn btn-default">
+                    <i class="fa fa-close"></i> #{messages['general.button.Cancel']}
+                </p:commandLink>
+            </div>
+        </div>
+
+    </h:form>
+    
+    <script>
+        $('#panelContent').on('shown.bs.collapse', function () {
+            $("#panelExpander i").removeClass("fa-expand").addClass("fa-compress");
+        });
+
+        //The reverse of the above on hidden event:
+
+        $('#panelContent').on('hidden.bs.collapse', function () {
+            $("#panelExpander i").removeClass("fa-compress").addClass("fa-expand");
+        });
+    </script>
+</ui:composition>

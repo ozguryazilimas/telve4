@@ -890,6 +890,7 @@ pre{
 
 .ui-messages-error, .ui-messages-fatal, .ui-messages-info, .ui-messages-warn{
     margin-top: 0px !important;
+    margin-bottom: 0px !important;
     border-left: 0px !important;
     border-right: 0px !important;
     border-radius: 0px !important;
@@ -898,4 +899,51 @@ pre{
 
 .navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a > h4{
     font-size: 13px !important;
+}
+
+.quickPanel{
+    z-index: 1001;
+    position: absolute;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: none;
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.2);
+}
+
+.panelHeader{
+    border-bottom: 1px solid #ddd;
+    font-size: 20px;
+    padding-right: 10px;
+    margin-left: -10px;
+    margin-right: -10px;
+    padding-left: 20px;
+}
+
+
+.panelContent{
+    padding: 10px;
+}
+
+.panelButtons{
+    padding-top: 10px;
+}
+
+.panelButtons .btn-primary {
+    color: #fff;
+}
+
+.panelButtons .btn{
+    margin-left: 8px;
+}
+
+
+/* Used for elem widthChange event. See telve.js */
+iframe.width-changed {
+    width: 100%;
+    display: block;
+    border: 0;
+    height: 0;
+    margin: 0;
 }
