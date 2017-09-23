@@ -42,4 +42,12 @@ public @interface OptionPane {
      * @return 
      */
     String permission() default "";
+    
+    /**
+     * Sistem seçeneği mi yoksa kullanıcı seçeneği mi olduğunu belirler.
+     * 
+     * Kullanıcı ve Sistem seçeneklerinin erişim yöntemi farklı olacak.
+     * @return 
+     */
+    OptionPaneType type() default OptionPaneType.User;
 }

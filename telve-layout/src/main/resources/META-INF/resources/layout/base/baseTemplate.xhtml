@@ -103,6 +103,7 @@
                     </div>
 
                     <p:outputPanel id="cmb" layout="block">
+                        <ui:fragment rendered="#{showContextMenu ne 'false'}">
                         <section class="context-menu">
 
                             <nav class="navbar #{skinSelector.skin.contains('light') ? '' : 'navbar-inverse' }  navbar-static-top">
@@ -141,6 +142,7 @@
                                 </div>
                             </nav>
                         </section>
+                            </ui:fragment>
                         <section class="content-header">
                             <p:messages id="messages" autoUpdate="true" closable="true" globalOnly="true" showDetail="true" />
                         </section>

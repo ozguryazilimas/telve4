@@ -91,6 +91,12 @@ public interface Pages extends ViewConfig {
         
         class NavigationOptionPane implements Admin {
         };
+        
+        @SecuredPage("SystemOptions")
+        @View
+        @Navigation(icon = "fa fa-gears", section = AdminNavigationSection.class)
+        class SystemOptions implements Admin {
+        };
     }
 
     @SecuredPage
