@@ -13,7 +13,11 @@
     <ui:param name="itemCaption" value="code" />
     <ui:param name="renderActive" value="true" />
 
-
+    <ui:define name="extraHead">
+        <h:outputStylesheet library="telve" name="css/jquery.scrolling-tabs.css" />
+        <h:outputScript library="telve" name="js/jquery.scrollign-tabs.js" />
+    </ui:define>
+    
     <ui:define name="form">
         <div class="row">
             <t:inputText label="general.label.Name" value="#{roleHome.entity.code}" required="true" />
@@ -26,9 +30,17 @@
             </t:inputCheckboxGroup>
         </div>  
 
-        <style>
-
-        </style>
+        
+        <script>
+            jQuery(document).ready(function(){
+                 jQuery('.nav-tabs')
+                    .scrollingTabs()
+                    .on('ready.scrtabs', function() {
+                        jQuery('.tab-content').show();
+                 });
+            })
+        </script>
+        
 
 
         <div class="nav-tabs-custom" style="padding-top: 16px;">
