@@ -32,10 +32,10 @@ public class RepositoryProvider {
     
 
     public static Repository getRepository(String configFile) {
-        if( engine == null ){
-            engine = new ModeShapeEngine();
+        if( getEngine() == null ){
+            setEngine(new ModeShapeEngine());
         }
-        engine.start();
+        getEngine().start();
         // Load the configuration for a repository via the classloader (can also use path to a file)...
         Repository repository;
         String repositoryName;
@@ -57,7 +57,7 @@ public class RepositoryProvider {
             
             
             // Deploy the repository ...
-            repository = engine.deploy(config);
+            repository = getEngine().deploy(config);
             repositoryName = config.getName();
             return repository;
         } catch (ParsingException | FileNotFoundException | ConfigurationException | RepositoryException e) {
@@ -69,11 +69,19 @@ public class RepositoryProvider {
 
     public static void shutdown(){
         try {
-            engine.shutdown().get();
-            engine = null;
+            getEngine().shutdown().get();
+            setEngine(null);
         } catch (InterruptedException | ExecutionException ex) {
             LOGGER.error("Connot shutdown jcr engine", ex);
         }
+    }
+
+    public static ModeShapeEngine getEngine() {
+	return engine;
+    }
+
+    public static void setEngine(ModeShapeEngine engine) {
+	RepositoryProvider.engine = engine;
     }
     
 }
