@@ -7,10 +7,11 @@ package com.ozguryazilim.telve.messagebus.command.ui;
 
 import com.google.common.base.CaseFormat;
 import com.ozguryazilim.telve.messagebus.command.StorableCommand;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +75,11 @@ public class CommandEditorRegistery {
      * @return 
      */
     public static List<String> getEditorNames(){
-        return new ArrayList( editors.keySet() );
+        //Config'den exclude edilmemişleri döndürür.
+        return editors.keySet().stream()
+                .filter(p-> "true".equals(ConfigResolver.getPropertyValue( "permission.exclude." + p, "false")))
+                .collect(Collectors.toList());
+        
     }
     
 }
