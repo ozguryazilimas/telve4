@@ -37,6 +37,15 @@
         <param-value>org.primefaces.cache.JCacheProvider</param-value>
     </context-param>
     
+    
+    <!-- Weld-Probe ile CDI içeriği izleniyor ama çoğu annotaion arama proxyler nedeniyle hata alıyor 
+    <context-param>
+        <param-name>org.jboss.weld.development</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    -->
+    
+    
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
         <filter-class>org.omnifaces.filter.CharacterEncodingFilter</filter-class>
