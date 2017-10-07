@@ -9,6 +9,7 @@ import com.google.common.base.Splitter;
 import com.ozguryazilim.telve.config.LocaleSelector;
 import java.text.MessageFormat;
 import java.util.AbstractMap;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -62,10 +63,10 @@ public class Messages {
 
             @Override
             public Set<Map.Entry<String, String>> entrySet() {
-                //Dil dosyalarının bütün sonuçlarının loga felan yazılması can yakıyor. Başka bir yerden hata alınmaz ise böyle bırakacağım
-                Set<Map.Entry<String, String>> entrySet = new HashSet<Map.Entry<String, String>>();
+                //Bu method özellikle serializable yapan yerler ( caml mesela ) için gerekiyor
+                Set<Map.Entry<String, String>> entrySet = new HashSet<>();
                 
-                /*
+                
                 Enumeration<String> keys = bundle.getKeys();
 
                 while (keys.hasMoreElements()) {
@@ -86,7 +87,7 @@ public class Messages {
                         }
                     });
                 }
-                */
+                
                 return entrySet;
                 
             }
