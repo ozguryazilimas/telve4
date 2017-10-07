@@ -42,7 +42,7 @@
                 <div class="box-header">
                     <div class="tools pull-right">
                         
-                            <p:remoteCommand name="selectNode" action="#{jcrController.selectNode}" update="@([id$=#{idPrefix}filesPanel])" partialSubmit="true" process="@this" />
+                            <p:remoteCommand name="selectNode" action="#{jcrController.selectNode}" update="@([id$=#{idPrefix}filesPanel]),#{idPrefix}uploaddialog" partialSubmit="true" process="@this" />
 
                             <p:commandLink title="#{messages['jcr.hint.UploadFile']}" onclick="PF('#{idPrefix}fdlg').show();" process="@this">
                                 <i class="fa fa-upload" />
