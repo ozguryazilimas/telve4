@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>    
 
         <title>#{messages[title]}</title>
@@ -21,6 +22,12 @@
                bindEnters(); 
             });
         </script>
+        <ui:fragment rendered="#{ajaxStatus eq 'true'}">
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+            </p:dialog>
+        </ui:fragment>
         <div class="container-fluid">
             <ui:insert name="form" />
         </div>
