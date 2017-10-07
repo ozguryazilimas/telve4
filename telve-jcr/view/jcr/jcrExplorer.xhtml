@@ -44,6 +44,7 @@
                     <div class="tools pull-right">
                         <h:form style="display: inline">
                             <p:remoteCommand name="selectNode" action="#{jcrController.selectNode}" update="@([id$=filesPanel]),@([id$=uploaddialog])" partialSubmit="true" process="@this" />
+                            <p:remoteCommand name="updateFileDialog" update="@([id$=uploaddialog])" partialSubmit="true" process="@this" />
 
                             <p:commandLink title="#{messages['jcr.hint.UploadFile']}" onclick="PF('fdlg').show();" process="@this">
                                 <i class="fa fa-upload" />
@@ -194,7 +195,9 @@
                                 }
                                 
                                 setNodeSelections();
-              
+                                setTimeout(function(){
+                                    updateFileDialog();
+                                },1000);
         </script>
         
         
