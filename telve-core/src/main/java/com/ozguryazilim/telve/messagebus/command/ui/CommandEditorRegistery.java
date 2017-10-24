@@ -77,7 +77,7 @@ public class CommandEditorRegistery {
     public static List<String> getEditorNames(){
         //Config'den exclude edilmemişleri döndürür.
         return editors.keySet().stream()
-                .filter(p-> "true".equals(ConfigResolver.getPropertyValue( "permission.exclude." + p, "false")))
+                .filter( p-> !"true".equals(ConfigResolver.getPropertyValue( "permission.exclude." + p)))
                 .collect(Collectors.toList());
         
     }

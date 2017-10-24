@@ -13,6 +13,8 @@
         <composite:attribute name="lookupListener" required="false"/>
         <composite:attribute name="lookupProfile" required="false" default=""/>
         <composite:attribute name="placeholder" required="false"/>
+        <composite:attribute name="queryDelay" required="false" default="1000"/>
+        <composite:attribute name="minQueryLength" required="false" default="3"/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="columnClass" required="false" default="col-md-6 col-xs-12"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
@@ -30,7 +32,8 @@
                                 var="item"
                                 itemLabel="#{item[cc.attrs.lookupBean.captionFieldName]}"
                                 itemValue="#{item}"
-                                queryDelay="500"
+                                queryDelay="#{cc.attrs.queryDelay}"
+                                minQueryLength="#{cc.attrs.minQueryLength}"                                
                                 converter="entityConverter"
                                 required="#{cc.attrs.required}"
                                 disabled="#{cc.attrs.disabled}"
