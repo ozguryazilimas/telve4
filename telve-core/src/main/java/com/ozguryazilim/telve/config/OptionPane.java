@@ -38,7 +38,16 @@ public @interface OptionPane {
     
     /**
      * Eğer verilmezse sınıf adını kullanır.
+     * PUBLIC verilir ise login olan her hangi bir kullanıcı özel yetkiye ihtiyaç duymadan erişebilir.
      * @return 
      */
     String permission() default "";
+    
+    /**
+     * Sistem seçeneği mi yoksa kullanıcı seçeneği mi olduğunu belirler.
+     * 
+     * Kullanıcı ve Sistem seçeneklerinin erişim yöntemi farklı olacak.
+     * @return 
+     */
+    OptionPaneType type() default OptionPaneType.User;
 }

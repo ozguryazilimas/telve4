@@ -61,7 +61,7 @@ public class TelveCamelThreadPoolFactory extends DefaultThreadPoolFactory{
                 pattern = "#name#-#counter#";
                 name = (String) FieldUtils.readField(passedInFactory, "threadNamePrefix", true);
             }*/
-            LOG.info("Creating naming factory pattern {} name {}", pattern, name);
+            LOG.debug("Creating naming factory pattern {} name {}", pattern, name);
             return new TelveManagedThreadFactory(managedThreadFactory, pattern, name);
         } catch (IllegalAccessException e) {
             LOG.warn("Could not determine fatory name {}", e.toString());

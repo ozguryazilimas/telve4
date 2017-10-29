@@ -1,0 +1,522 @@
+<?xml version="1.0"?>
+<!DOCTYPE html> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ds="http://deltaspike.apache.org/jsf"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:view >
+        <ui:insert name="metadata" />
+
+        <h:head>    
+
+
+            <title>#{telveConfigResolver.getProperty('app.title')} - #{ messages[pageTitleResolver.pageTitle] }</title>
+
+            <ui:include src="#{themeManager.templateHeader}" />
+            <ui:insert name="extraHead" />
+            
+            <ui:include src="/branding/applicationExtentions.xhtml" />
+
+        </h:head>
+
+        <h:body styleClass="#{skinSelector.skin}  sidebar-mini fixed">
+            
+            <script>
+                (function () {
+                    if (localStorage.getItem('sidebar-collapse') == 'true') {
+                        var body = document.getElementsByTagName('body')[0];
+                        body.className = body.className + ' sidebar-collapse';
+                    }
+                })();
+            </script>
+            
+            <ds:windowId />
+
+            <!-- pe:ajaxErrorHandler / -->
+
+            <h:form>
+                <p:remoteCommand name="updateNotifies" update="notifyCount"  />
+            </h:form>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                <p:commandButton value="#{messages['general.button.No']}" type="button" styleClass="ui-confirmdialog-no pull-right" icon="ui-icon-close" />
+                <p:commandButton value="#{messages['general.button.Yes']}" type="button" styleClass="ui-confirmdialog-yes pull-right" icon="ui-icon-check" />
+            </p:confirmDialog>
+
+            <ui:include src="/layout/notificationBar.xhtml" />
+            
+            <ui:insert name="outerspace"></ui:insert>
+
+            <div class="wrapper">
+
+                <ui:include src="#{themeManager.templateMainBar}" />
+                <ui:include src="#{themeManager.templateSideBar}" />
+
+                <div class="content-wrapper">
+
+                    <ui:remove>
+                        <div id="content-list-bar" class="content-list">
+
+                            <ui:fragment rendered="#{showListBar}">
+
+                                <div class="content-list" >
+                                    <ui:remove>
+                                        <section class="main-header" >
+                                            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                                                <span class="sr-only">Toggle navigation</span>
+                                            </a>
+
+                                            <nav class="navbar navbar-static-top" role="navigation">
+
+                                            </nav>
+                                        </section>
+                                    </ui:remove>
+
+                                    <section class="content-list-content" >
+                                        <ui:insert name="content-list" />
+                                    </section>
+
+                                </div>
+
+
+                                <script type="text/javascript">
+
+                                    hideListBar = '${hideListBar}';
+                                    if (hideListBar == 'true') {
+                                        jQuery("#content-list-bar").toggle();
+                                    }
+
+                                </script>
+
+                            </ui:fragment>
+                        </div>
+                    </ui:remove>
+
+                    <div id="quickpanel" class="quickPanel">
+                        <p:outputPanel id="quickPanelContent">
+                            <ui:include src="#{quickRecordController.dialogViewId}" />
+                        </p:outputPanel>
+                    </div>
+
+                    <p:outputPanel id="cmb" layout="block">
+                        <ui:fragment rendered="#{showContextMenu ne 'false'}">
+                        <section class="context-menu">
+
+                            <nav class="navbar #{skinSelector.skin.contains('light') ? '' : 'navbar-inverse' }  navbar-static-top">
+                                <div class="container-fluid">
+                                    <div class="navbar-header">
+
+                                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                            <i class="fa fa-bars"></i>
+                                        </button>
+                                    </div>
+                                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                        <ul class="nav navbar-nav navbar-right">
+                                            <ui:fragment rendered="#{showListBar}">
+                                                <li class="hidden-xs">
+                                                    <a href="#"  class="content-list-toggle" onclick="jQuery('#content-list-col').toggle();
+                                                            jQuery('#content-list-col').toggleClass('col-md-3 col-xs-12 col-md-pull-9');
+                                                            jQuery('#content-data-col').toggleClass('col-md-9 col-md-push-3');" ><i class="fa fa-expand" /></a>
+                                                </li>
+                                            </ui:fragment>
+
+                                            <ui:insert name="context-menu-right" />
+
+                                        </ul>
+                                        <h:form id="contextForm">
+                                            <ul class="nav navbar-nav">
+
+                                                <ui:insert name="context-menu" />
+
+                                                <c:forEach items="#{contextMenuResolver.getContextMenuFragments()}" var="entry">
+                                                    <ui:include src="#{entry}" />
+                                                </c:forEach>
+                                            </ul>
+                                        </h:form>
+
+                                    </div>
+                                </div>
+                            </nav>
+                        </section>
+                            </ui:fragment>
+                        <section class="content-header">
+                            <p:messages id="messages" autoUpdate="true" closable="true" globalOnly="true" showDetail="true" />
+                        </section>
+                    </p:outputPanel>
+
+                    <p:sticky target="cmb" margin="50"/>
+                    <ui:fragment rendered="#{dontShowContentHeader ne true}">
+                        <section class="content-header">
+                            <ui:fragment rendered="#{viewState ne ''}" >
+                                <div class="pull-right">
+                                    #{viewState}
+                                </div>
+                            </ui:fragment>
+                            <h1>#{ messages[pageTitleResolver.pageTitle] }  <small>#{ viewIdentifier }</small></h1> 
+                        </section>
+                    </ui:fragment>
+                    <ui:insert name="customHeader" />
+
+                    <section class="content">
+
+                        <div class="row">
+                            <div id="content-data-col" class="#{showListBar ? 'col-md-9 col-xs-12 col-md-push-3' : 'col-xs-12' }">
+                                <section >
+                                    <ui:insert name="body"/>
+                                </section>
+                            </div>
+                            <ui:fragment rendered="#{showListBar}">
+                                <div id="content-list-col" class="col-md-3 col-xs-12 col-md-pull-9">
+                                    <section id="content-list-bar">
+                                        <div class="box">
+                                            <div class="box-body">
+                                                <ui:insert name="content-list" />
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </ui:fragment>
+
+                        </div>
+
+                    </section>
+
+                    <script type="text/javascript">
+                        hideListBar = '${hideListBar}';
+                        if (hideListBar == 'true') {
+                            jQuery('#content-list-col').toggle();
+                            jQuery('#content-list-col').toggleClass('col-md-3 col-xs-12 col-md-pull-9');
+                            jQuery('#content-data-col').toggleClass('col-md-9 col-md-push-3');
+                        }
+                    </script>
+
+                </div>
+
+                <div id="bottom-pos" style="position: fixed; bottom: 0; right: 0;"></div>
+
+                <ui:include src="#{themeManager.templateFooter}" />
+                
+                <ui:remove>
+                <aside class="control-sidebar control-sidebar-dark" style="overflow: hidden;">
+                    <div class="tools ">
+                        <a href="javascript:void(0);" onclick="jQuery('body').toggleClass('control-sidebar-open');return false;" >
+                            <i class="fa fa-dot-circle-o" />
+                        </a>
+
+                        <a href="javascript:void(0);" data-toggle="control-sidebar" class="pull-right">
+                            <i class="fa fa-close" />
+                        </a>
+                    </div>
+                    <!-- Create the tabs -->
+                    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                        <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+                        <ui:fragment rendered="#{noteController.canAddNote()}">
+                            <li><a href="#control-sidebar-notes-tab" data-toggle="tab"><i class="fa fa-comments"></i></a></li>
+                        </ui:fragment>
+                        <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+
+                    </ul>
+                    <div class="tab-content">
+                        <!-- Home tab content -->
+                        <div class="tab-pane active" id="control-sidebar-home-tab">
+                            <b>Version</b> #{telveConfigResolver.getProperty('app.version')}
+                            #{telveConfigResolver.getProperty('app.footer')}
+
+                            <ui:remove>
+
+
+                                <!-- DIRECT CHAT -->
+                                <div class="box box-warning direct-chat direct-chat-warning">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">Direct Chat</h3>
+                                        <div class="box-tools pull-right">
+                                            <span data-toggle="tooltip" title="3 New Messages" class="badge bg-yellow">3</span>
+                                            <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                            <button class="btn btn-box-tool" data-toggle="tooltip" title="Contacts" data-widget="chat-pane-toggle"><i class="fa fa-comments"></i></button>
+                                            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                                        </div>
+                                    </div><!-- /.box-header -->
+                                    <div class="box-body">
+                                        <!-- Conversations are loaded here -->
+                                        <div class="direct-chat-messages">
+                                            <!-- Message. Default to the left -->
+                                            <div class="direct-chat-msg">
+                                                <div class="direct-chat-info clearfix">
+                                                    <span class="direct-chat-name pull-left">Alexander Pierce</span>
+                                                    <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
+                                                </div><!-- /.direct-chat-info -->
+                                                <img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image" /><!-- /.direct-chat-img -->
+                                                <div class="direct-chat-text">
+                                                    Is this template really for free? That's unbelievable!
+                                                </div><!-- /.direct-chat-text -->
+                                            </div><!-- /.direct-chat-msg -->
+
+                                            <!-- Message to the right -->
+                                            <div class="direct-chat-msg right">
+                                                <div class="direct-chat-info clearfix">
+                                                    <span class="direct-chat-name pull-right">Sarah Bullock</span>
+                                                    <span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
+                                                </div><!-- /.direct-chat-info -->
+                                                <img class="direct-chat-img" src="dist/img/user3-128x128.jpg" alt="message user image" /><!-- /.direct-chat-img -->
+                                                <div class="direct-chat-text">
+                                                    You better believe it!
+                                                </div><!-- /.direct-chat-text -->
+                                            </div><!-- /.direct-chat-msg -->
+
+                                            <!-- Message. Default to the left -->
+                                            <div class="direct-chat-msg">
+                                                <div class="direct-chat-info clearfix">
+                                                    <span class="direct-chat-name pull-left">Alexander Pierce</span>
+                                                    <span class="direct-chat-timestamp pull-right">23 Jan 5:37 pm</span>
+                                                </div><!-- /.direct-chat-info -->
+                                                <img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image" /><!-- /.direct-chat-img -->
+                                                <div class="direct-chat-text">
+                                                    Working with AdminLTE on a great new app! Wanna join?
+                                                </div><!-- /.direct-chat-text -->
+                                            </div><!-- /.direct-chat-msg -->
+
+                                            <!-- Message to the right -->
+                                            <div class="direct-chat-msg right">
+                                                <div class="direct-chat-info clearfix">
+                                                    <span class="direct-chat-name pull-right">Sarah Bullock</span>
+                                                    <span class="direct-chat-timestamp pull-left">23 Jan 6:10 pm</span>
+                                                </div><!-- /.direct-chat-info -->
+                                                <img class="direct-chat-img" src="dist/img/user3-128x128.jpg" alt="message user image" /><!-- /.direct-chat-img -->
+                                                <div class="direct-chat-text">
+                                                    I would love to.
+                                                </div><!-- /.direct-chat-text -->
+                                            </div><!-- /.direct-chat-msg -->
+
+                                        </div><!--/.direct-chat-messages-->
+
+                                        <!-- Contacts are loaded here -->
+                                        <div class="direct-chat-contacts">
+                                            <ul class="contacts-list">
+                                                <li>
+                                                    <a href="#">
+                                                        <img class="contacts-list-img" src="dist/img/user1-128x128.jpg" />
+                                                        <div class="contacts-list-info">
+                                                            <span class="contacts-list-name">
+                                                                Count Dracula
+                                                                <small class="contacts-list-date pull-right">2/28/2015</small>
+                                                            </span>
+                                                            <span class="contacts-list-msg">How have you been? I was...</span>
+                                                        </div><!-- /.contacts-list-info -->
+                                                    </a>
+                                                </li><!-- End Contact Item -->
+                                                <li>
+                                                    <a href="#">
+                                                        <img class="contacts-list-img" src="dist/img/user7-128x128.jpg" />
+                                                        <div class="contacts-list-info">
+                                                            <span class="contacts-list-name">
+                                                                Sarah Doe
+                                                                <small class="contacts-list-date pull-right">2/23/2015</small>
+                                                            </span>
+                                                            <span class="contacts-list-msg">I will be waiting for...</span>
+                                                        </div><!-- /.contacts-list-info -->
+                                                    </a>
+                                                </li><!-- End Contact Item -->
+                                                <li>
+                                                    <a href="#">
+                                                        <img class="contacts-list-img" src="dist/img/user3-128x128.jpg" />
+                                                        <div class="contacts-list-info">
+                                                            <span class="contacts-list-name">
+                                                                Nadia Jolie
+                                                                <small class="contacts-list-date pull-right">2/20/2015</small>
+                                                            </span>
+                                                            <span class="contacts-list-msg">I'll call you back at...</span>
+                                                        </div><!-- /.contacts-list-info -->
+                                                    </a>
+                                                </li><!-- End Contact Item -->
+                                                <li>
+                                                    <a href="#">
+                                                        <img class="contacts-list-img" src="dist/img/user5-128x128.jpg" />
+                                                        <div class="contacts-list-info">
+                                                            <span class="contacts-list-name">
+                                                                Nora S. Vans
+                                                                <small class="contacts-list-date pull-right">2/10/2015</small>
+                                                            </span>
+                                                            <span class="contacts-list-msg">Where is your new...</span>
+                                                        </div><!-- /.contacts-list-info -->
+                                                    </a>
+                                                </li><!-- End Contact Item -->
+                                                <li>
+                                                    <a href="#">
+                                                        <img class="contacts-list-img" src="dist/img/user6-128x128.jpg" />
+                                                        <div class="contacts-list-info">
+                                                            <span class="contacts-list-name">
+                                                                John K.
+                                                                <small class="contacts-list-date pull-right">1/27/2015</small>
+                                                            </span>
+                                                            <span class="contacts-list-msg">Can I take a look at...</span>
+                                                        </div><!-- /.contacts-list-info -->
+                                                    </a>
+                                                </li><!-- End Contact Item -->
+                                                <li>
+                                                    <a href="#">
+                                                        <img class="contacts-list-img" src="dist/img/user8-128x128.jpg" />
+                                                        <div class="contacts-list-info">
+                                                            <span class="contacts-list-name">
+                                                                Kenneth M.
+                                                                <small class="contacts-list-date pull-right">1/4/2015</small>
+                                                            </span>
+                                                            <span class="contacts-list-msg">Never mind I found...</span>
+                                                        </div><!-- /.contacts-list-info -->
+                                                    </a>
+                                                </li><!-- End Contact Item -->
+                                            </ul><!-- /.contatcts-list -->
+                                        </div><!-- /.direct-chat-pane -->
+                                    </div><!-- /.box-body -->
+                                    <div class="box-footer">
+                                        <form action="#" method="post">
+                                            <div class="input-group">
+                                                <input name="message" placeholder="Type Message ..." class="form-control" type="text" />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-warning btn-flat">Send</button>
+                                                </span>
+                                            </div>
+                                        </form>
+                                    </div><!-- /.box-footer-->
+                                </div><!--/.direct-chat -->
+
+
+
+                                <h3 class="control-sidebar-heading">Recent Activity</h3>
+
+                                <ul class="control-sidebar-menu">
+                                    <li>
+                                        <a href="javascript::;">
+                                            <i class="menu-icon fa fa-birthday-cake bg-red"></i>
+                                            <div class="menu-info">
+                                                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+                                                <p>Will be 23 on April 24th</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript::;">
+                                            <i class="menu-icon fa fa-user bg-yellow"></i>
+                                            <div class="menu-info">
+                                                <h4 class="control-sidebar-subheading">Frodo Updated His Profile</h4>
+                                                <p>New phone +1(800)555-1234</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript::;">
+                                            <i class="menu-icon fa fa-envelope-o bg-light-blue"></i>
+                                            <div class="menu-info">
+                                                <h4 class="control-sidebar-subheading">Nora Joined Mailing List</h4>
+                                                <p>nora@example.com</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript::;">
+                                            <i class="menu-icon fa fa-file-code-o bg-green"></i>
+                                            <div class="menu-info">
+                                                <h4 class="control-sidebar-subheading">Cron Job 254 Executed</h4>
+                                                <p>Execution time 5 seconds</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul><!-- /.control-sidebar-menu -->
+
+                            </ui:remove>
+                        </div>
+
+                        <ui:remove>
+                        <!-- ui:fragment rendered="#{noteController.canAddNote()}" rendered="#{noteController.newNote}"-->
+                        </ui:remove>
+
+                        <div class="tab-pane" id="control-sidebar-notes-tab">
+                            <h3 class="control-sidebar-heading">Notes <small class="tools text-sm" style="background-color: transparent;">
+                                    <p:commandLink action="#{noteController.createNewNote(request.getHeader('Referer'))}" 
+                                                   ajax="true" partialSubmit="true" process="@this" update="noteFormPanel" styleClass="pull-right">
+                                        <i class="fa fa-sticky-note"/>
+                                        #{messages['general.button.New']}
+                                    </p:commandLink></small></h3>
+
+                            <h:panelGroup id="noteFormPanel">
+
+                                <h:form id="notesForm" rendered="#{noteController.newNote}">
+                                    <div class="box box-warning text-sm">
+                                        <div class="box-body">
+                                            <p:inputText value="#{noteController.note.subject}" placeholder="#{messages['general.label.Subject']}" />
+                                            <p:inputTextarea value="#{noteController.note.body}" placeholder="#{messages['general.label.Message']}" style="margin-top: 4px;"/>
+                                            <span class="text-sm">
+                                                <p:selectOneButton value="#{noteController.note.permission}" styleClass="btn-xs">
+                                                    <f:selectItem itemLabel="#{messages['notes.permission.OWNER']}" itemValue="OWNER" />
+                                                    <f:selectItem itemLabel="#{messages['notes.permission.EVERYBODY']}" itemValue="EVERYBODY" />
+                                                </p:selectOneButton>
+                                            </span>
+                                            <span class="text-sm">
+                                                <p:selectOneButton value="#{noteController.note.priority}" >
+                                                    <f:selectItem itemLabel="#{messages['notes.priority.Info']}" itemValue="info" />
+                                                    <f:selectItem itemLabel="#{messages['notes.priority.Warning']}" itemValue="warn" />
+                                                    <f:selectItem itemLabel="#{messages['notes.priority.Danger']}" itemValue="error" />
+                                                </p:selectOneButton>
+                                            </span>
+                                        </div>
+
+                                        <div class="box-footer text-sm text-center">
+                                            <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="fa fa-check" action="#{noteController.save()}" styleClass="btn-primary" update="noteFormPanel,notesBar"/>
+                                            <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="fa fa-close" action="#{noteController.cancel()}" update="noteFormPanel"/>
+                                        </div>
+                                    </div>
+                                </h:form>
+
+                            </h:panelGroup>
+
+                            <p:outputPanel id="notesBar">
+                                <ui:repeat value="#{noteController.notes}" var="note" >
+                                    <div class="alert #{note.priority eq 'info' ? 'alert-info' : note.priority eq 'error' ? 'alert-danger' : 'alert-warning'}">
+                                        <p:commandLink styleClass="close" action="#{noteController.delete(note)}" update=":notesBar" class="pull-right" rendered="#{noteController.canDelete(note)}">
+                                            <i class="fa fa-close"/>
+                                        </p:commandLink>
+
+                                        <div class="icon">
+                                            <i class="fa #{note.permission eq 'OWNER' ? 'fa-lock' : 'fa-unlock-alt' }"/>
+                                        </div>
+
+                                        <h4>#{note.subject}</h4>
+                                        <p>#{note.body}</p>
+                                        <div class="alert-footer">
+                                            <ul class="list-inline ">
+                                                <li>
+                                                    <i class="fa fa-clock-o margin-r-5"/> 
+                                                    <h:outputText value="#{note.createDate}">
+                                                        <f:convertDateTime pattern="#{messages['general.format.DateTime']}" />
+                                                    </h:outputText>
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-user margin-r-4"/> 
+                                                    <h:outputText value="#{userLookup.getUserName( note.owner)}"/>
+                                                </li>
+                                                <ui:remove>
+                                                    <li class="pull-right">
+                                                        <i class="fa #{note.permission eq 'OWNER' ? 'fa-lock' : 'fa-unlock-alt' }"/>
+                                                    </li>
+                                                </ui:remove>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </ui:repeat>
+                            </p:outputPanel>
+                        </div>
+                        <ui:remove>
+                            <!-- /ui:fragment -->
+                        </ui:remove>
+                    </div>
+                </aside>
+                    </ui:remove>
+                <div class="control-sidebar-bg"></div>
+            </div>
+        </h:body>
+
+    </f:view>
+</html>

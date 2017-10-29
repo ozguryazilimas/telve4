@@ -8,7 +8,7 @@ package com.ozguryazilim.telve.auth;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * @author Hakan Uygun
  */
 @Named
-@Dependent
+@RequestScoped
 public class UserLookup implements Serializable{
     
     

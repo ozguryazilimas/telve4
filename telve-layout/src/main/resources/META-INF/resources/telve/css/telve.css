@@ -1,0 +1,955 @@
+/*
+Telve  CSS
+*/
+
+body, h4{
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
+
+.prop .name {
+    display: block;
+    vertical-align: top;
+    font-weight: bold;
+    color: #555;
+    /*width: 115px;*/
+    float: left;
+    /*padding: 3px 4px 2px 0px; */
+    margin-top: 2px;
+    margin-bottom:  0;
+    clear: left;
+}
+
+.prop .value {
+    float: left;
+    /*padding: 0px 5px 2px 5px;*/
+    clear: left;
+    width: 100%;
+    /*width:210px;*/
+    position: relative;
+}
+
+/*
+.disprop .name{
+    display: inline;
+    vertical-align: top;
+    font-weight: bold;
+    color: #555;
+    width: 115px;
+    float: none;
+    padding: 3px 4px 2px 5px;
+    margin-top: 3px;
+    clear: left;
+}
+
+.disprop .value {
+    float: none;
+    color: #555;
+    padding: 0px 5px 2px 5px;
+    clear: left;
+}
+*/
+
+.disprop .name{
+    display: block;
+    vertical-align: top;
+    font-weight: bold;
+    color: #555;
+    /*width: 115px;*/
+    float: left;
+    /*padding: 3px 4px 2px 0px; */
+    margin-top: 8px;
+    margin-bottom:  0;
+    clear: left;
+}
+
+
+.disprop .value {
+    content: " ";
+    float: left;
+    color: #555;
+    /*padding: 0px 5px 2px 5px;*/
+    clear: left;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+}
+.actionButtons {
+    width: 100%;
+    margin-top: 10px;
+    text-align: right;
+
+}
+
+/*Accordion CSS*/
+.accordion{
+    /*padding: 4px 4px 4px 16px;*/
+    /*font-size: 14px;
+    color: #447799; 	
+    color: #4582ec;
+    border-bottom:   1px solid #999;
+    padding-bottom: 4px;*/
+}
+
+
+.accordion.hided{
+}
+.accordion .ui-icon{
+    float: left;
+}
+.accordioncontent{
+    padding: 4px 8px;
+    margin-bottom: 20px;
+}
+h3.accordion{
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.accordion-header{
+    display: block;
+    padding: 4px;
+    border-bottom: 1px solid #ddd;
+}
+
+.accordion-title{
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    cursor: pointer;
+}
+
+.accordion-header > .accordion-tools{
+    float: right;
+}
+
+/*Primefaces css düzeltmeleri*/
+/*
+.ui-widget {
+    font-size: inherit !important;
+}
+
+.ui-column-title {
+    font-size: 0.8em;
+}
+
+.ui-datatable-data {
+    font-size: 0.8em;
+}
+
+.ui-panel {
+    padding: 0px !important;
+}
+
+.ui-panel-titlebar {
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+
+.ui-inputfield:not(textarea), .ui-autocomplete, .ui-spinner{
+    width: 100% !important;
+    height: 28px !important;
+}
+
+textarea.ui-inputfield, .ui-selectonemenu {
+    width: 100% !important;
+}
+*/
+/*
+.ui-input-group .ui-button, .ui-datepicker-trigger, .ui-complete .ui-autocomplete-dropdown, .ui-autocomplete-dropdown{
+    /border-left: 0px !important;/
+    border-bottom-left-radius: 0px !important;
+    border-top-left-radius: 0px !important;
+    vertical-align: top;
+    height: 28px !important;
+    position: absolute !important;
+    right: 10px !important;
+    width: 28px !important;
+}
+
+.ui-dialog > .ui-selectonemenu {
+    height: 1.9em !important;
+}
+
+.ui-cell-editor-input .ui-datepicker-trigger{
+    right: -1px !important;
+}
+
+.ui-autocomplete-dropdown{
+    right: -2px !important;
+}
+
+.ui-selectonemenu-trigger{
+    border-bottom-left-radius: 0px !important;
+    border-top-left-radius: 0px !important;
+}
+
+.ui-input-group .ui-selectonemenu-trigger{
+    border-bottom-right-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+}
+
+.ui-input-group .ui-button-text, .ui-datepicker-trigger{
+    padding: .2em !important;
+}
+
+
+.ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
+    margin-top: 5px !important;
+}
+
+.ui-selectonemenu-trigger{
+    width: 28px !important;
+}
+
+.ui-selectonemenu-label{
+    height: 26px !important;
+}
+
+.ui-input-group .ui-selectonemenu-label{
+    height: 26px !important;
+    width: 100% !important;
+}
+
+.ui-input-group .ui-selectonemenu-trigger{
+    right: 24px !important;
+}
+
+.ui-dashboard{
+    overflow: auto;
+}
+
+.ui-dashboard-column{
+    padding-bottom: 10px !important;
+}
+
+.ui-dashboard-column .ui-panel{
+    margin: 0.5em;
+}
+
+.ui-datatable > th {
+    font-size: 1em !important;
+}
+
+.ui-chkbox .ui-chkbox-label{
+    margin-right: 4px !important;
+}
+
+.ui-datalist-content.ui-widget-content {
+    border: none !important;
+}
+*/
+
+/*Bootstrap PrimeFaces uyumu için override*/
+/*.btn-primary {
+    background-image: linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5) !important;
+    color: #fff !important;
+    text-shadow: none !important;
+    background-color: #1d9ce5 !important;
+}
+
+.btn-success {
+  background-image: linear-gradient(#88c149, #73a839 60%, #699934) !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  background-color: #699934 !important;
+}
+.btn-info {
+  background-image: linear-gradient(#04519b, #033c73 60%, #02325f) !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  background-color: #02325f !important;
+}
+
+.btn-warning {
+  background-image: linear-gradient(#ff6707, #dd5600 60%, #c94e00) !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  background-color: #c94e00 !important;
+}
+.btn-danger {
+  background-image: linear-gradient(#e12b31, #c71c22 60%, #b5191f) !important;
+  color: #fff !important;
+  text-shadow: none !important;
+  background-color: #b5191f !important;
+}
+
+.fa{
+    line-height: inherit !important;
+}
+
+.ui-button .fa{
+    line-height: 1 !important;
+}
+*/
+
+/*content-list ve content body ilişkileri*/
+
+.skin-green .context-menu .navbar {
+    border-radius: 0;
+    border: 0;
+}
+
+/* Sadece firefox'da bişiler çalıştırmak için
+@-moz-document url-prefix() { 
+  .context-menu{
+     margin-top: -15px;
+  }
+}
+*/
+
+/*
+.context-menu{
+    top: 50px;
+    position: fixed;
+    width: 100%;
+}
+
+.fixed .content-wrapper{
+    padding-top: 100px !important;
+    padding-bottom: 50px;
+}
+*/
+/*
+.content-list{
+    display: table-cell;
+    height: 100%;
+}
+
+.content-list-content{
+    width: 350px;
+}
+
+.content-body{
+    width: 100%;
+    display: table-cell;
+    vertical-align: top;
+}
+
+.content-list-toggle{
+    position: absolute;
+    clear: both;
+}
+*/
+/*Dashboard CSS*/
+.treeOne{ width: 30%; }
+.treeTwo{ width: 70%; }
+.half{ width: 50%; }
+.one{ width: 100%; }
+
+.dashlet-edit{
+    background-color: #F4F4F4; 
+    margin-top: -0.5em; 
+    margin-bottom: 0.5em; 
+    margin-left: -1em; 
+    margin-right: -1em; 
+    padding: 0.2em;
+    display: none;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+/*Table ActionColumns*/
+.actionColumn{
+    text-align: center;
+    width:36px;
+}
+
+.actionColumnDouble{
+    text-align: center;
+    width:64px;
+}
+
+.actionColumnTriple{
+    text-align: center;
+    width:48px;
+}
+
+.btn-add{
+    color:  #699934 !important;
+}
+
+.btn-refresh{
+    color:  #04519b !important;
+}
+
+.btn-edit{
+    color:  #c94e00 !important;
+}
+
+.btn-delete{
+    color:  #b5191f !important;
+}
+
+.btn-link{
+    color:  #4582ec !important;
+}
+
+
+
+/*Skin Extentions*/
+
+.skin-blue .accordionIcon, .skin-blue .accordionIcon2,
+.skin-blue-light .accordionIcon, .skin-blue-light .accordionIcon2{
+    color: #3c8dbc;
+}
+
+.skin-blue .context-menu .navbar{
+    background-color: #222d32;
+}
+
+.skin-blue-light .context-menu .navbar{
+    background-color:  #f9fafc;
+    border-color: #d2d6de;
+}
+
+.skin-green .accordionIcon, .skin-green .accordionIcon2,
+.skin-green-light .accordionIcon, .skin-green-light .accordionIcon2{
+    color: #00a65a;
+}
+
+.skin-green .context-menu .navbar{
+    background-color: #222d32;
+}
+
+.skin-green-light .context-menu .navbar{
+    background-color:  #f9fafc;
+    border-color: #d2d6de;
+}
+
+
+.skin-red .accordionIcon, .skin-red .accordionIcon2,
+.skin-red-light .accordionIcon, .skin-red-light .accordionIcon2{
+    color: #d73925;
+} 
+
+
+.skin-red .context-menu .navbar{
+    background-color: #222d32;
+}
+
+.skin-red-light .context-menu .navbar{
+    background-color:  #f9fafc;
+    border-color: #d2d6de;
+}
+
+.skin-yellow .accordionIcon, .skin-yellow .accordionIcon2,
+.skin-yellow-light .accordionIcon, .skin-yellow-light .accordionIcon2{
+    color: #f39c12;
+} 
+
+
+.skin-yellow .context-menu .navbar{
+    background-color: #222d32;
+}
+
+.skin-yellow-light .context-menu .navbar{
+    background-color:  #f9fafc;
+    border-color: #d2d6de;
+}
+
+.skin-black .accordionIcon, .skin-black .accordionIcon2,
+.skin-black-light .accordionIcon, .skin-black-light .accordionIcon2{
+    color: black;
+} 
+
+
+.skin-black .context-menu .navbar{
+    background-color: #222d32;
+}
+
+.skin-black-light .context-menu .navbar{
+    background-color:  #f9fafc;
+    border-color: #d2d6de;
+}
+
+.skin-purple .accordionIcon, .skin-purple .accordionIcon2,
+.skin-purple-light .accordionIcon, .skin-purple-light .accordionIcon2{
+    color: #605ca8;
+} 
+
+.skin-purple .context-menu .navbar{
+    background-color: #222d32;
+}
+
+.skin-purple-light .context-menu .navbar{
+    background-color:  #f9fafc;
+    border-color: #d2d6de;
+}
+
+/*controlsidebar içinde note'lar için kullanılıyor.'*/
+.alert-footer{
+    background: rgba(0, 0, 0, 0.1) none repeat scroll 0% 0%;
+    margin-left: -15px;
+    margin-right: -15px;
+    margin-bottom: -15px;
+    padding: 4px;
+    margin-top: 4px;
+    font-size: 0.8em;
+}
+
+.control-sidebar .tools{
+    background: #1C2529 none repeat scroll 0% 0%;
+    display: block;
+    height: 24px;
+    padding: 4px;
+}
+
+.control-sidebar .tools > a{
+    color: #B8C7CE;
+}
+
+.control-sidebar .tools > a:hover{
+    color: #FFF;
+}
+
+
+.panel-primary {
+    border-color: #4582ec;
+}
+
+.panel-primary > .ui-panel-titlebar {
+    color: #ffffff;
+    background-color: #4582ec;
+    border-color: #4582ec;
+}
+
+.panel-primary > .ui-panel-content {
+    border: 1px solid #4582ec !important;
+}
+
+.panel-primary > .ui-widget-header .ui-state-default {
+    color: #fff !important;
+    background-color: #4582ec !important;
+    border-color: #4582ec !important;
+    background-image: none;/*linear-gradient(#54b4eb, #2fa4e7 60%, #1d9ce5) !important;*/
+    width: 16px;
+    height: 16px;
+}
+
+.panel-success {
+    border-color: #88c149;
+}
+.panel-success > .ui-panel-titlebar {
+    color: #ffffff;
+    background-color: #88c149;
+    border-color: #88c149;
+}
+
+.panel-info {
+    border-color: #5bc0de;
+}
+.panel-info > .ui-panel-titlebar {
+    color: #ffffff;
+    background-color: #5bc0de;
+    border-color: #5bc0de;
+}
+
+.panel-info > .ui-panel-content {
+    border: 1px solid #5bc0de !important;
+}
+
+.panel-warning {
+    border-color: #f0ad4e;
+}
+.panel-warning > .ui-panel-titlebar {
+    color: #ffffff;
+    background-color: #f0ad4e;
+    border-color: #f0ad4e;
+}
+
+.panel-danger {
+    border-color: #d9534f;
+}
+.panel-danger > .ui-panel-titlebar {
+    color: #ffffff;
+    background-color: #d9534f;
+    border-color: #d9534f;
+}
+
+
+.dropdown-menu > li > span {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.42857;
+    color: #333;
+    white-space: nowrap;
+}
+
+.dropdown-menu > li > span > .fa {
+    margin-right: 10px;
+}
+
+/*
+.content-header{
+    padding-top: 0px !important;
+}
+*/
+
+.navbar-inverse .navbar-nav > li > span {
+    color: #9D9D9D;
+}
+.navbar-nav > li > span {
+    padding: 15px;
+}
+
+.nav > li > span {
+    position: relative;
+    display: block;
+}
+
+.nav .fa{
+    line-height: 14px !important;
+}
+
+.nav .menu .fa{
+    line-height: inherit !important;
+}
+
+/*TODO: Buradan aşağıdakiler aslında tema paketine gitmeli*/
+
+.pe-inputNumber{
+    text-align: right;
+}
+
+
+.ui-growl{
+    top: 120px !important;
+}
+.ui-growl-item{
+    background-color: #fbeed5;
+    border-color: #fcf8e3;
+    color: #c09853;
+
+}
+
+.ui-growl-image{
+    display:inline-block;
+    font:normal normal normal 14px/1 FontAwesome;
+    font-size:inherit;
+    text-rendering:auto;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    transform:translate(0, 0);
+    text-indent: 0px!important;
+    font-size:2em;
+    background: none !important;
+}
+
+.ui-growl-image-info{
+    color: #3a87ad;
+}
+
+.ui-growl-image-error{
+    color: #b94a48;
+}
+
+.ui-growl-image-info::before{
+    content:"\f129";
+}
+
+.ui-growl-image-error::before{
+    content:"\f05e";
+}
+
+.ui-growl-image-warn::before{
+    content:"\f071";
+}
+
+.login-page{
+    background-image: url("#{resource[telveConfigResolver.getProperty('app.login.image')]}") !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+/*
+.products-list .product-info {
+    margin-left: 30px !important;
+}
+*/
+
+.btn-box-tool {
+    color: #97a0b3 ! important;
+}
+
+.btn-box-tool:hover{
+    color: #606c84 ! important;
+}
+
+.btn-box-tool {
+    font-size: 12px !important;
+}
+
+.products-list .product-title{
+    color: #777;
+
+}
+
+.view-tabs{
+    padding: 8px 15px;
+    margin-bottom: 4px;
+    list-style: none;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.view-tabs > li{
+    display: inline-block;
+}
+
+.view-tabs > li > a.ui-widget{
+    font-size: 12px;
+    color: #555;
+}
+
+.view-tabs > li + li:before{
+    padding: 0 5px;
+    color: #ccc;
+    content: "|\00a0";
+}
+
+.view-tabs > li.active{
+    font-weight: bold;
+}
+
+.content{
+    padding-top: 8px ! important;
+}
+
+.ui-inputnumber input{
+    text-align: right;
+}
+
+.product-info .box-tools {
+    display: none;
+}
+
+.product-info:hover .box-tools {
+    display: inline-block;
+}
+
+
+.post .btn-box-tool {
+    display: none;
+}
+
+.post:hover .btn-box-tool {
+    display: inline-block;
+}
+
+.overlay-base{
+    position: absolute;
+    top: 0px;
+    right: -12px; 
+    font-size: 19px;
+    color: #fff;
+}
+
+.overlay-icon{
+    position: absolute;
+    top: -1px;
+    right: -10px;
+}
+
+.overlay-icon2{
+    position: absolute;
+    bottom: -18px;
+    left: 4px;
+    color: #3a87ad;
+}
+
+.fa-border{
+    background-color: inherit;
+    border-color: #fff;
+}
+
+
+.states{
+    /*padding: 8px 15px;
+    margin-bottom: 4px;*/
+    list-style: none;
+    font-size: 12px;
+}
+
+.states > li{
+    /*margin-left: 8px;*/
+    padding: 8px 15px;
+    display: block;
+    position: relative;
+    float: left;
+    /*background-color: #fcf8e3;
+    border-radius: 4px;
+    border : 1px solid #fbeed5;
+    color: #c09853;
+    height: 60px;
+    */
+    /*height: 50px;
+    border-left : 1px solid #f39c12;*/
+        
+}
+
+.states > li > a.ui-widget{
+    font-size: 12px;
+    color: #555;
+}
+
+/*
+.states > li + li:before{
+    padding: 0 5px;
+    color: #ccc;
+    content: "|\00a0";
+}*/
+
+.states > li.active{
+    font-weight: bold;
+}
+
+.ui-outputlabel.ui-state-error {
+	color: red !important;
+}
+
+.ui-state-error {
+	border-color: red !important;
+}
+
+td.ui-cell-editing {
+	padding: 4px 10px !important;
+}
+
+pre{
+    color: inherit;
+    background-color: inherit;
+    border: 0px;
+}
+
+.navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a, 
+.navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a, 
+.navbar-nav > .tasks-menu > .dropdown-menu > li .menu > li > a{
+    white-space: normal !important;
+}
+
+.ui-orderlist-caption{
+    border: 1px solid #d2d6de !important;
+    background-color: #eeeeee;
+    border-radius: 0px;
+}
+
+.ui-orderlist-list{
+    border-left: 1px solid #d2d6de !important;
+    border-right: 1px solid #d2d6de !important;
+    border-bottom: 1px solid #d2d6de !important;
+    border-radius: 0px;
+}
+
+.ui-orderlist-item{
+    border-radius: 0px;
+}
+
+.ui-orderlist-item.ui-state-highlight{
+    background-color: #eeeeee;
+}
+
+.ui-orderlist-button-move-up, 
+.ui-orderlist-button-move-top, 
+.ui-orderlist-button-move-down, 
+.ui-orderlist-button-move-bottom{
+    height: 32px !important;
+}
+
+
+.caption-states{
+    padding-left: 0;
+    margin-left: -5px;
+    list-style: none;
+}
+
+.caption-states li{
+    display: inline-block;
+    padding-right: 16px;
+    padding-left: 16px;
+    border-left: 1px solid #ddd;
+}
+
+.caption-states li:first-child{
+    border-left: 0px;
+    padding-left: 5px;
+}
+
+.context-menu .navbar{
+    margin-bottom: 0px !important;
+}
+
+
+.ui-messages {
+    margin-top: -15px;
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.ui-messages-error, .ui-messages-fatal, .ui-messages-info, .ui-messages-warn{
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    border-left: 0px !important;
+    border-right: 0px !important;
+    border-radius: 0px !important;
+    padding-left: 20px !important;
+}
+
+.navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a > h4{
+    font-size: 13px !important;
+}
+
+.quickPanel{
+    z-index: 1001;
+    position: absolute;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: none;
+    box-shadow: 0px 5px 10px rgba(0,0,0,0.2);
+}
+
+.panelHeader{
+    border-bottom: 1px solid #ddd;
+    font-size: 20px;
+    padding-right: 10px;
+    margin-left: -10px;
+    margin-right: -10px;
+    padding-left: 20px;
+}
+
+
+.panelContent{
+    padding: 10px;
+}
+
+.panelButtons{
+    padding-top: 10px;
+}
+
+.panelButtons .btn-primary, 
+.panelButtons .btn-success{
+    color: #fff;
+}
+
+.panelButtons .btn{
+    margin-left: 8px;
+}
+
+
+/* Used for elem widthChange event. See telve.js */
+iframe.width-changed {
+    width: 100%;
+    display: block;
+    border: 0;
+    height: 0;
+    margin: 0;
+}
+
+
+    .ui-fileupload-buttonbar .ui-button .ui-button-text {
+        display: block !important;
+    }

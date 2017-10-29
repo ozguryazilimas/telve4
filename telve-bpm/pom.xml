@@ -4,7 +4,7 @@
     <parent>
         <artifactId>telve-parent</artifactId>
         <groupId>com.ozguryazilim.mutfak</groupId>
-        <version>4.0.0.Beta4</version>
+        <version>4.0.0.Beta5</version>
     </parent>
 
     <groupId>com.ozguryazilim.mutfak</groupId>
@@ -30,6 +30,11 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>telve-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>telve-dashboard</artifactId>
             <version>${project.version}</version>
         </dependency>
         <!-- Camunda -->

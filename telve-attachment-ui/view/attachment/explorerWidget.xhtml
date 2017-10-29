@@ -1,0 +1,156 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:p="http://primefaces.org/ui">
+
+    #{explorerWidget.init(featurePointer, payload, context)}
+
+
+    
+    <div class="row">
+            <div class="col-md-4">
+                <div class="">
+                    <div class="ui-orderlist-caption" style="padding: 4px; text-align: center">#{messages['general.label.Folders']}</div>
+                    <div class="ui-orderlist-list" style="height: 480px; overflow-y: auto;">
+                        <h:panelGroup layout="block" id="data" ></h:panelGroup>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="">
+                    <div class="ui-orderlist-caption" style="padding: 4px; text-align: center">
+                        <div class="pull-right">
+                            <p:commandLink title="#{messages['attachment.hint.UploadFile']}" onclick="PF('fdlg').show();" process="@this" styleClass="btn-add margin-r-5">
+                                <i class="fa fa-plus" />
+                            </p:commandLink>
+                        </div>
+
+                        #{messages['general.label.Documents']}
+
+
+                    </div>
+                    <div class="ui-orderlist-list">
+                        <h:form id="fileAttachs" style="height: 480px; overflow-y: auto;">
+                            <p:remoteCommand name="selectNode" action="#{explorerWidget.selectFolder}" update="@([id$=fileAttachs])" partialSubmit="true" process="@this" />
+                            
+                            <p:repeat value="#{explorerWidget.documents}" var="doc">
+
+                                <div class="info-box" style="margin: 0px; border-bottom: 1px solid #ddd; border-radius: 0; box-shadow: none;">
+                                    <div class="info-box-icon " style="border-radius: 0px; background: bottom">
+                                        <i class="fa #{explorerWidget.getIcon(doc.mimeType)}" />
+                                    </div>
+                                    <div class="info-box-content">
+                                        
+                                        <div class="box-tools dropdown pull-right">
+                                            <p:commandLink title="#{messages['attachment.hint.Delete']}" 
+                                                           action="#{explorerWidget.deleteDocument(doc.id)}" ajax="true" 
+                                                           update="@([id$=fileAttachs])"  
+                                                           styleClass="btn-delete"
+                                                           rendered="#{empty permissionDomain or identity.hasPermission( permissionDomain, 'delete')}">
+                                                <i class="fa fa-trash" />
+                                                <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocument']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
+                                            </p:commandLink>
+                                        </div>
+                                        
+                                        <div class="">
+                                            <p:commandLink title="#{messages['attachment.hint.Download']}" action="#{explorerWidget.downloadDocument(doc.id)}" ajax="false">
+                                                #{doc.name}
+                                            </p:commandLink>
+                                        </div>
+                                        <div class="text-sm">
+                                            <h:outputText value="#{doc.info}" />
+                                        </div>
+                                        
+                                        <div class="text-sm">
+                                            <ul class="list-inline text-sm text-muted">
+                                                <ui:remove>
+                                                <li><i class="fa fa-tag" />Tag 1</li>
+                                                <li><i class="fa fa-tag" />Tag 2</li>
+                                                <li><i class="fa fa-tag" />Tag 3</li>
+                                                </ui:remove>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="text-sm" style="color:silver">
+                                            <i class="fa fa-user margin-r-5"/>#{userLookup.getUserName(doc.createBy)} 
+                                            <i class="fa  fa-clock-o margin-r-5"/><t:cellOutputPrettyTime value="#{doc.createDate}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p:repeat>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+
+
+
+    <p:outputPanel id="folderTree" >
+        <script>
+            data = [
+                <p:repeat value="#{explorerWidget.folders}" var="node" >
+                { "id" : "#{node.id}", "parent" : "#{explorerWidget.getParentIdentifier( node.parentId )}", "text" : "#{fn:escapeXml(node.name)}" },
+                </p:repeat>
+
+            ];
+            
+            selectedNode = '#{explorerWidget.selectedFolder.id}';
+            
+            </script>
+
+   </p:outputPanel>
+
+   <script type="text/javascript">
+
+                function buildTree() {
+                    // inline data 
+                    jQuery("#data")
+                            .on("changed.jstree", function (e, data) {
+                                //alert( data.instance.get_node(data.selected[0]).id );
+                                selectNode([{'name': 'nodeId', 'value': data.instance.get_node(data.selected[0]).id}]);
+                            })
+                            .on('loaded.jstree', function () {
+                                jQuery('#data').jstree('open_all');
+                                setNodeSelections();
+                            })
+                            .jstree({
+                                "plugins": ["wholerow", "types", "sort"],
+                                "types": {
+                                    "default": {
+                                        "icon": "fa fa-folder"
+                                    }
+                                },
+                                'core': {
+                                    'data': data}
+                            });
+
+                }
+                buildTree();
+
+                
+                 function setNodeSelections() {
+                    if (jQuery('#data').length > 0) {
+                        jQuery('#data').jstree().select_node(selectedNode);
+                    }
+                 }
+        
+                 setNodeSelections();
+                 
+        </script>
+
+
+
+ <h:form id="uploaddialog" enctype="multipart/form-data">
+                <p:dialog header="#{messages['attachment.caption.UploadFileDialog']}" widgetVar="fdlg" showEffect="clip" hideEffect="clip">
+            <p:fileUpload fileUploadListener="#{explorerWidget.handleFileUpload}" mode="advanced" dragDropSupport="true"
+                          update="@([id$=fileAttachs])" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|.*)$/"  sequential="true"
+                          label="#{messages['general.label.SelectFile']}" uploadLabel="#{messages['general.button.Upload']}" cancelLabel="#{messages['general.button.Cancel']}"/>
+        </p:dialog>
+    </h:form>
+
+</ui:composition>

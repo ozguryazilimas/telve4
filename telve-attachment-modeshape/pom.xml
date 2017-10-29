@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>telve-parent</artifactId>
+        <groupId>com.ozguryazilim.mutfak</groupId>
+        <version>4.0.0.Beta5</version>
+    </parent>
+
+    <groupId>com.ozguryazilim.mutfak</groupId>
+    <artifactId>telve-attachment-modeshape</artifactId>
+    <packaging>ejb</packaging>
+
+    <name>telve-attachment-modeshape</name>
+    <description>Telve Attachment Embeded Modeshape Implementaion Package</description>
+
+    <properties>
+        <modeshape.version>5.4.0.Final</modeshape.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.modeshape.bom</groupId>
+                <artifactId>modeshape-bom-embedded</artifactId>
+                <version>${modeshape.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>telve-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>telve-attachment</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.modeshape</groupId>
+            <artifactId>modeshape-jcr</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

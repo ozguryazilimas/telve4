@@ -4,7 +4,7 @@
     <parent>
         <artifactId>telve-parent</artifactId>
         <groupId>com.ozguryazilim.mutfak</groupId>
-        <version>4.0.0.Beta4</version>
+        <version>4.0.0.Beta5</version>
     </parent>
 
     <groupId>com.ozguryazilim.mutfak</groupId>
@@ -43,9 +43,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>jaxrs-api</artifactId>
-            <scope>provided</scope>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>telve-dashboard</artifactId>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>net.sf.biweekly</groupId>

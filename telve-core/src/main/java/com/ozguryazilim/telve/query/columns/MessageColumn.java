@@ -7,7 +7,7 @@
 package com.ozguryazilim.telve.query.columns;
 
 import com.google.common.base.Strings;
-import com.ozguryazilim.telve.messages.MessagesUtils;
+import com.ozguryazilim.telve.messages.Messages;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
@@ -38,7 +38,7 @@ public class MessageColumn<E> extends Column<E>{
         doc.write("\"");
         String val = BeanUtils.getProperty(e, getName());
         if( !Strings.isNullOrEmpty(val)){
-            doc.write( MessagesUtils.getMessage( getKeyPrefix() + val ));
+            doc.write( Messages.getMessage( getKeyPrefix() + val ));
         }
         doc.write("\"");
     }

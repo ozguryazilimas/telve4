@@ -11,3 +11,4 @@ com.ozguryazilim.telve.messagebus.command.ui.CommandEditorExtention
 com.ozguryazilim.telve.calendar.CalendarEventSourceExtention
 com.ozguryazilim.telve.contact.ContactSourceExtention
 com.ozguryazilim.telve.feature.FeatureExtention
+com.ozguryazilim.telve.quick.QuickRecordExtention

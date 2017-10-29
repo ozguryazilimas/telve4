@@ -1,0 +1,31 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:composite="http://java.sun.com/jsf/composite">
+
+
+    <composite:interface>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="label" required="false"/>        
+        <composite:attribute name="feature" required="false" default="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <ui:fragment rendered="#{cc.attrs.value ne null}">
+            
+            <li>
+                <div class="text-sm text-muted">#{messages[cc.attrs.label]}</div>
+                <div>
+                    <p:commandLink id="#{cc.id}_inp" action="#{featureLinkController.go(cc.attrs.value.featureName, cc.attrs.value.id )}" 
+                           title="#{messages[cc.attrs.value.caption]}"
+                           process="@this" ajax="true" partialSubmit="true">
+                        <i class="#{cc.attrs.value.icon} margin-r-5" /><h:outputText value="#{cc.attrs.value.businessKey}" />
+                    </p:commandLink>
+                </div>
+            </li>
+        </ui:fragment>
+    </composite:implementation>
+
+</ui:component>

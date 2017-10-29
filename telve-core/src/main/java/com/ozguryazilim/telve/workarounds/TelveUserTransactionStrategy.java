@@ -47,14 +47,14 @@ public class TelveUserTransactionStrategy extends BeanManagedUserTransactionStra
                     .lookup("java:comp/UserTransaction");
             return returnUserTransaction;
         } catch (NamingException ne) {
-            LOG.info(ne.getExplanation());
+            LOG.debug(ne.getExplanation());
             try {
                 javax.transaction.UserTransaction ut = (javax.transaction.UserTransaction) context
                         .lookup("UserTransaction");
                 ut.getStatus();
                 return ut;
             } catch (NamingException ne2) {
-                LOG.info(ne2.getExplanation());
+                LOG.debug(ne2.getExplanation());
                 try {
                     // // Try the other JBoss location
                     return (UserTransaction) context.lookup("java:jboss/UserTransaction");
@@ -62,7 +62,7 @@ public class TelveUserTransactionStrategy extends BeanManagedUserTransactionStra
                     LOG.error("JBoss da olmadı", ex);
                 }
             } catch (Exception e) {
-                LOG.info(e.getLocalizedMessage());
+                LOG.error(e.getLocalizedMessage());
                 // throw ne;
             }
         }

@@ -19,7 +19,7 @@ import com.ozguryazilim.telve.entities.ViewModel;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.messages.FacesMessages;
-import com.ozguryazilim.telve.messages.MessagesUtils;
+import com.ozguryazilim.telve.messages.Messages;
 import com.ozguryazilim.telve.query.columns.Column;
 import com.ozguryazilim.telve.utils.DateUtils;
 import com.ozguryazilim.telve.utils.StringUtils;
@@ -546,7 +546,7 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
         //Eğer sorgu ismi yoksa default aynı değer
         boolean addqn = !f.equals(qn);
             
-        String result = MessagesUtils.getMessage(f);
+        String result = Messages.getMessage(f);
         
         if( addqn ) {
             result = result + "-" + qn;
@@ -571,7 +571,7 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
             } else {
                 firstColumn = false;
             }
-            doc.write(MessagesUtils.getMessage(c.getLabelKey()));
+            doc.write(Messages.getMessage(c.getLabelKey()));
         }
         doc.write("\n");
     }

@@ -19,7 +19,7 @@ import javax.faces.context.FacesContext;
  *
  * @author Hakan Uygun
  */
-@RequestScoped
+@ApplicationScoped
 public class DefaultResourceProducer {
 
     @Produces @Default

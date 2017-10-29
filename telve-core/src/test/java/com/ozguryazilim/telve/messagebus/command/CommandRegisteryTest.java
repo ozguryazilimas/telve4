@@ -30,7 +30,7 @@ public class CommandRegisteryTest {
         String endpoint = "bean:Test";
         CommandRegistery.register(name, endpoint, endpoint);
         
-        CommandRegistery.register(AbstractJBatchCommand.class.getName(), "seda:JBatchCommandExecutor", "bean:JBatchCommandExecutor");
+        //CommandRegistery.register(AbstractJBatchCommand.class.getName(), "seda:JBatchCommandExecutor", "bean:JBatchCommandExecutor");
     }
     
     @Before

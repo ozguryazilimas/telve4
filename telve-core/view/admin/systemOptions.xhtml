@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:s="http://jboss.org/schema/seam/taglib"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="#{themeManager.layoutTemplate}">
+
+    <ui:param name="showListBar" value="true" />
+    <ui:param name="showContextMenu" value="false" />
+
+    <ui:define name="body">
+
+        <ui:include src="/layout/messages.xhtml" />
+        <h:panelGroup id="pane" layout="block">
+            <ui:fragment rendered="#{not empty systemOptionPaneController.selectedPane}">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        #{messages[ 'optionPane.caption.'.concat( systemOptionPaneController.selectedPane )]}
+                    </div>
+                    <div class="box-body">
+                        <ui:include src="#{systemOptionPaneController.getSelectedPaneViewId()}">
+                            <ui:param name="pane" value="#{systemOptionPaneController.selectedPane}" />
+                        </ui:include>
+                    </div>
+                </div>
+            </ui:fragment>
+            <h:outputText value="#{messages['options.message.NotSelected']}" rendered="#{empty systemOptionPaneController.selectedPane}" />
+        </h:panelGroup>
+    </ui:define> 
+
+    <ui:define name="content-list">
+        <h:form id="menuForm">
+            <div class="list-group">
+                <p:repeat value="#{systemOptionPaneController.optionPanes}" var="pane">
+                    <p:commandLink value="#{messages[ 'optionPane.caption.'.concat( pane )]}" 
+                                   update=":pane" 
+                                   action="#{systemOptionPaneController.setSelectedPane(pane)}" 
+                                   partialSubmit="true" process="@this" 
+                                   styleClass="list-group-item"/>
+                </p:repeat>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

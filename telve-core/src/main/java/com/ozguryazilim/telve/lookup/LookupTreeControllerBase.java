@@ -12,6 +12,7 @@ import com.ozguryazilim.telve.forms.RefreshBrowserEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.event.Observes;
+import javax.enterprise.event.Reception;
 
 /**
  * Ağaç tipi veriler için Lookup Temel sınıfı.
@@ -85,7 +86,7 @@ public abstract class LookupTreeControllerBase<E extends TreeNodeEntityBase, F e
      * RefreshBrowseEvent'i dinlenir ve ilgili domain ise search komutu çalıştırılır.
      * @param event 
      */
-    public void refreshListener( @Observes RefreshBrowserEvent event ){
+    public void refreshListener( @Observes(notifyObserver = Reception.IF_EXISTS) RefreshBrowserEvent event ){
         if( event.getDomain().equals( getRepository().getEntityClass().getName()) ){
             if( !getModel().isDataEmpty() ){
                 getModel().clearData();

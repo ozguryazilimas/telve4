@@ -1,0 +1,67 @@
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:ui="http://java.sun.com/jsf/facelets"
+                 xmlns:h="http://java.sun.com/jsf/html"
+                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:o="http://omnifaces.org/ui"
+                 xmlns:of="http://omnifaces.org/functions">
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
+        
+    <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+
+    <h:outputScript library="primefaces" name="jquery/jquery.js" />
+    <h:outputStylesheet library="telve" name="css/jquery.toolbar.css" />
+    
+    <h:outputStylesheet library="telve" name="css/bootstrap.css" />
+    <ui:remove>
+    <h:outputStylesheet library="telve" name="css/bootstrap-theme.css" />
+    </ui:remove>
+    
+    
+    <h:outputStylesheet library="telve" name="css/telve.css" />
+    
+    <h:outputStylesheet library="telve" name="css/AdminLTE.css" />
+    <h:outputStylesheet library="telve" name="css/_all-skins.css" />
+    <h:outputStylesheet library="telve" name="css/jstree.css" />
+    
+    <h:outputScript library="telve" name="js/bootstrap.js" />
+    <h:outputScript library="telve" name="js/telve.js" />
+    <h:outputScript library="telve" name="js/jstree.js" />
+    <h:outputScript library="telve" name="js/jquery.slimscroll.js" />
+    
+    <h:outputScript library="telve" name="js/app.js" />
+    <h:outputScript library="telve" name="js/jquery.toolbar.js" />
+    <h:outputStylesheet library="telve" name="css/nprogress.css" />
+    <h:outputScript library="telve" name="js/nprogress.js" />
+    <h:outputScript library="telve" name="js/locale_tr.js" />
+    <h:outputScript library="telveComponents" name="accordion.js" target="head"/>
+    
+    <script>
+        $.AdminLTE.options.sidebarSlimScroll = #{skinSelector.slimScroll ? 'true' : 'false'};
+        PrimeFaces.settings.locale = "tr";
+        //PF 6.1 InputNumber ClientSideValidation hatasını düzeltmek için.
+        PrimeFaces.converter['javax.faces.BigDecimal'].regex = /^\d.*$/;
+        
+        //Quick Panel ve Maskı için arkadan gelen bir resize eventi.
+        /*
+        $(window).resize(function() {
+            if(this.resizeTO) clearTimeout(this.resizeTO);
+            this.resizeTO = setTimeout(function() {
+                $(this).trigger('resizeEnd');
+            }, 100);
+        });
+        
+        $( window ).bind('resizeEnd', function() {
+            quickPanelResize();
+        });
+        */
+       $(document).ready(function() {
+           quickPanelActivate();
+       });
+       
+    </script>
+    <o:onloadScript>bindEnters();adminLTEActivate();</o:onloadScript>
+    
+</ui:composition>

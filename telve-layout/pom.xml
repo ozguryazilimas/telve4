@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.ozguryazilim.mutfak</groupId>
+    <artifactId>telve-layout</artifactId>
+    <version>4.0.0.Beta5</version> 
+    <name>Telve Base Layout Templates</name>
+    <packaging>jar</packaging>
+	
+
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <name>Özgür Yazılım A.Ş. Nexus Reporsiyory</name>
+            <url>http://nexus.ozguryazilim.com.tr/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus</id>
+            <name>Özgür Yazılım A.Ş. Nexus Snapshots Reporsiyory</name>
+            <url>http://nexus.ozguryazilim.com.tr/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>    
+	
+</project> 

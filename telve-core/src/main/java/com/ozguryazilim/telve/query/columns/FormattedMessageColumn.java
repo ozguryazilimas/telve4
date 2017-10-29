@@ -7,9 +7,7 @@
 package com.ozguryazilim.telve.query.columns;
 
 import com.google.common.base.Strings;
-import com.ozguryazilim.telve.auth.UserService;
 import com.ozguryazilim.telve.messages.FormatedMessage;
-import com.ozguryazilim.telve.messages.MessagesUtils;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
@@ -25,8 +23,7 @@ import org.apache.deltaspike.core.api.provider.BeanProvider;
  */
 public class FormattedMessageColumn<E> extends Column<E>{
 	
-	
-	private FormatedMessage formattedMessage;
+    private FormatedMessage formattedMessage;
 
     public FormattedMessageColumn(SingularAttribute<? super E, ?> attribute, String labelKey) {
         super(attribute, labelKey);

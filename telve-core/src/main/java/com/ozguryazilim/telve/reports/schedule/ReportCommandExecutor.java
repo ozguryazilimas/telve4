@@ -60,7 +60,7 @@ public class ReportCommandExecutor extends AbstractCommandExecuter<ReportCommand
             //Sonra resource bundle'ı bağlayalım,
             Locale locale = new Locale(command.getLocale());
             if( "TelveResourceBundle".equals(command.getBundleName())){
-                params.put(JRParameter.REPORT_RESOURCE_BUNDLE, TelveResourceBundle.getBundle());
+                params.put(JRParameter.REPORT_RESOURCE_BUNDLE, TelveResourceBundle.getBundle( locale ));
             } else {
                 params.put(JRParameter.REPORT_RESOURCE_BUNDLE, ResourceBundle.getBundle(command.getBundleName(), locale));
             }

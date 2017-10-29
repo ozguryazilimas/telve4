@@ -6,9 +6,10 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
-                template="/layout/primeTemplate.xhtml">
+                template="#{themeManager.layoutTemplate}">
 
     <ui:param name="showListBar" value="true" />
+    <ui:param name="showContextMenu" value="false" />
 
     <ui:define name="body">
 
@@ -28,9 +29,6 @@
     </ui:define> 
 
     <ui:define name="content-list">
-        <div class="box-header with-border">
-        #{messages['general.caption.Options']}
-        </div>
         <h:form id="menuForm">
             <div class="list-group">
             <c:forEach items="#{optionPaneController.optionPanes}" var="pane">

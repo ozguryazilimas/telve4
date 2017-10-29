@@ -1,0 +1,27 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:composite="http://java.sun.com/jsf/composite">
+
+
+    <composite:interface>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="label" required="true"/>
+        <composite:attribute name="itemLabel" required="true"/>
+        <composite:attribute name="columnClass" required="false" default="col-xs-6"/>
+        <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <ui:fragment rendered="#{cc.attrs.value ne null and not empty cc.attrs.value}">
+            <li>
+                <div class="text-sm text-muted">#{messages[cc.attrs.label]}</div>
+                <div>
+                    <h:outputText id="#{cc.id}_inp" value="#{messages[ ''.concat( cc.attrs.itemLabel ).concat( cc.attrs.value)]}" />
+                </div>
+            </li>
+        </ui:fragment>
+    </composite:implementation>
+
+</ui:component>

@@ -66,6 +66,6 @@ public class EmailChannelProcessor implements Processor{
      * @return 
      */
     private Map<String,String> getMessages(){
-        return (new Messages()).getMessages();
+        return Messages.getMessages();
     }
 }

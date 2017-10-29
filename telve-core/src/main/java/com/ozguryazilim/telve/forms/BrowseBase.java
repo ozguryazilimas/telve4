@@ -80,7 +80,7 @@ public abstract class BrowseBase<E extends EntityBase, R extends ViewModel> exte
 
     protected Class<? extends ViewConfig> findPage(PageType pageType) {
 
-        Page[] pages = this.getClass().getAnnotation(Browse.class).feature().getAnnotationsByType(Page.class);
+        Page[] pages = getFeatureClass().getAnnotationsByType(Page.class);
         for (Page p : pages) {
             if (p.type() == pageType) {
                 return p.page();

@@ -11,7 +11,8 @@
         <composite:attribute name="icon" required="false" default=""/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="interact"  type="java.lang.Boolean" default="true"/>
-        <composite:attribute name="columnClass" required="false" default="col-xs-12"/>
+        <composite:attribute name="columnClass" required="false" default="col-md-12"/>
+        <composite:attribute name="contentClass" required="false" default="row"/>
     </composite:interface>
 
     <composite:implementation>
@@ -39,7 +40,7 @@
 
             </div>
 
-            <h:panelGroup layout="block" styleClass="accordioncontent">
+            <h:panelGroup layout="block" styleClass="accordioncontent #{ cc.attrs.contentClass}">
 
                 <composite:insertChildren />
 

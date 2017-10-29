@@ -154,7 +154,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
 
     public Class<? extends ViewConfig> close() {
         
-        Class<? extends ViewConfig> result = getBrowsePage();
+        Class<? extends ViewConfig> result = getCloseReturnPage();
         conversation.close();
 
         //FIXME: Eger edit formunda ise view'a mı dönse ama o zaman da conversation kapatılmamalı.
@@ -231,7 +231,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
 
         raiseRefreshBrowserEvent( getEntity().getId());
 
-        return getContainerViewPage();
+        return getReturnPage();
     }
 
     /**
@@ -593,6 +593,27 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         return findPage(PageType.EDIT);
     }
 
+    /**
+     * Save'den sonra hangi sayfaya döneceği.
+     * 
+     * Varsayılan hali containerViewPage'e dönmek.
+     * 
+     * Ama alt sınıflar bu methodu override ederek istedikleri yere yönlendirebilirler.
+     * 
+     * @return 
+     */
+    public Class<? extends ViewConfig> getReturnPage(){
+        return getContainerViewPage();
+    }
+    
+    /**
+     * Close ile kapandığında nereye gidecek
+     * @return 
+     */
+    public Class<? extends ViewConfig> getCloseReturnPage(){
+        return getBrowsePage();
+    }
+    
     /**
      * Geriye FormEdit annotation'ı ile tanımlanmış EditPage'i döndürür.
      *

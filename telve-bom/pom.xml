@@ -3,26 +3,34 @@
     <modelVersion>4.0.0</modelVersion>
         
     <groupId>com.ozguryazilim.mutfak</groupId>
-    <version>4.0.0.Beta4</version>
+    <version>4.0.0.Beta5</version>
     <artifactId>telve-bom</artifactId>
     <packaging>pom</packaging>
     
     <properties>
-        <deltaspike.version>1.7.2</deltaspike.version>
+        <deltaspike.version>1.8.0</deltaspike.version>
         <shiro.version>1.3.2</shiro.version>
-        <primeface.version>6.0</primeface.version>
-        <primefaces-ext.version>3.2.0</primefaces-ext.version>
-        <atmosphere.version>2.4.0-RC3</atmosphere.version>
-        <omnifaces.version>2.5.1</omnifaces.version>
+        <primeface.version>6.1-OYAS1</primeface.version>
+        <primefaces-ext.version>6.1.0</primefaces-ext.version>
+        <atmosphere.version>2.4.6</atmosphere.version>
+        <omnifaces.version>2.6.4</omnifaces.version>
         <liquibase.version>3.5.3</liquibase.version>
+        <prettytime.version>4.0.0.Final</prettytime.version>
         
         <mysql.version>5.1.26</mysql.version>
         
-        <camel.version>2.14.0</camel.version>
+        <camel.version>2.19.2</camel.version>
+        <jasperreports.version>6.4.1</jasperreports.version>
         <camunda.version>7.7.0</camunda.version>
-        <jasperreports.version>6.2.0</jasperreports.version>
         <jasperreports-fonts.version>6.0.0</jasperreports-fonts.version>
         <infinispan.version>8.1.0.Final</infinispan.version>
+        
+        <jodatime.version>2.9.9</jodatime.version>
+        
+        <arquillian.universe.version>1.1.13.7</arquillian.universe.version>
+        <junit.version>4.12</junit.version>
+        
+        
         <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
     </properties>
     
@@ -31,11 +39,12 @@
             <dependency>
                 <groupId>org.jboss.spec</groupId>
                 <artifactId>jboss-javaee-7.0</artifactId>
-                <version>1.0.1.Final</version>
+                <version>1.1.0.Final</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency> 
             
+            <!--
             <dependency>
                 <groupId>org.jboss.arquillian</groupId>
                 <artifactId>arquillian-bom</artifactId>
@@ -49,6 +58,15 @@
                 <artifactId>shrinkwrap-resolver-depchain</artifactId>
                 <version>2.1.1</version>
                 <scope>test</scope>
+                <type>pom</type>
+            </dependency>
+            -->
+            
+            <dependency>
+                <groupId>org.arquillian</groupId>
+                <artifactId>arquillian-universe</artifactId>
+                <version>${arquillian.universe.version}</version>
+                <scope>import</scope>
                 <type>pom</type>
             </dependency>
         
@@ -236,12 +254,13 @@
                 <artifactId>camel-cdi</artifactId>
                 <version>${camel.version}</version>
             </dependency>
-            
+            <!--
             <dependency>
                 <groupId>io.astefanutti.camel.cdi</groupId>
                 <artifactId>camel-cdi</artifactId>
                 <version>1.1.0</version>
             </dependency>
+            -->
             
             <dependency>
                 <groupId>org.apache.camel</groupId>
@@ -287,7 +306,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.6.4</version>
+                <version>1.7.25</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -297,12 +316,12 @@
             <dependency>
                     <groupId>com.google.code.gson</groupId>
                     <artifactId>gson</artifactId>
-                    <version>2.6.2</version>
+                    <version>2.8.1</version>
             </dependency>
             <dependency>
                     <groupId>org.apache.commons</groupId>
                     <artifactId>commons-lang3</artifactId>
-                    <version>3.4</version>
+                    <version>3.6</version>
             </dependency>
 
             <dependency>
@@ -321,7 +340,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.11</version>
+                <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
             
@@ -407,7 +426,7 @@
             <dependency>
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
-                <version>2.5</version>
+                <version>${jodatime.version}</version>
             </dependency>
 
             <dependency>
@@ -426,6 +445,18 @@
                 <groupId>com.mattbertolini</groupId>
                 <artifactId>liquibase-slf4j</artifactId>
                 <version>1.2.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ocpsoft.prettytime</groupId>
+                <artifactId>prettytime</artifactId>
+                <version>${prettytime.version}</version>
+            </dependency>
+        
+            <dependency>
+                <groupId>org.ocpsoft.prettytime</groupId>
+                <artifactId>prettytime-integration-jsf</artifactId>
+                <version>${prettytime.version}</version>
             </dependency>
 
         </dependencies>

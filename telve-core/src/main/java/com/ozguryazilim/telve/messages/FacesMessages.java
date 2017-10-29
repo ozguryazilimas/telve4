@@ -9,7 +9,6 @@ package com.ozguryazilim.telve.messages;
 import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import org.apache.deltaspike.core.api.provider.BeanProvider;
 
 /**
  * FacesMessages sistemi için Utility sınıf.
@@ -115,7 +114,8 @@ public class FacesMessages {
      * @return 
      */
     private static Map<String,String> getMessages(){
-        return (Map<String, String>) BeanProvider.getContextualReference("messages", true );
+        //Zaten bir session olduğu için kullanıcı locale'ini kullanmakta bir sakınca yok.
+        return Messages.getMessages();
     }
     
 }

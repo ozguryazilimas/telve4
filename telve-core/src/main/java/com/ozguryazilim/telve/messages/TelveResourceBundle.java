@@ -6,7 +6,6 @@
 package com.ozguryazilim.telve.messages;
 
 import com.ozguryazilim.telve.api.module.TelveModuleRegistery;
-import com.ozguryazilim.telve.config.LocaleSelector;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,8 +16,6 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.enterprise.context.ContextNotActiveException;
-import org.apache.deltaspike.core.api.config.ConfigResolver;
 
 /**
  * Seam 2 SeamResourceBundle'dan alındı.
@@ -30,6 +27,10 @@ public class TelveResourceBundle extends java.util.ResourceBundle {
     
     private static final String TELVE_RESOUCE_ORDINAL_KEY = "telve_ordinal";
     private static final Integer TELVE_RESOUCE_DEFAULT_ORDINAL = 100;
+
+    private static final Map<Locale,TelveResourceBundle> trb = new ConcurrentHashMap<>();
+    
+    private Locale currentLocale = Locale.getDefault();
     
     private Map<String, Map<Locale, List<ResourceBundle>>> bundleCache = new ConcurrentHashMap<>();
 
@@ -49,20 +50,21 @@ public class TelveResourceBundle extends java.util.ResourceBundle {
      *
      * @return a SeamResourceBundle
      */
-    public static java.util.ResourceBundle getBundle() {
-        //FIXME: Current Locale alınmalı
-        return java.util.ResourceBundle.getBundle(TelveResourceBundle.class.getName(),
-                Locale.US);
-        //org.jboss.seam.core.Locale.instance()); //note: it does not really matter what we pass here
+    public static ResourceBundle getBundle() {
+        return getBundle(Messages.getCurrentLocale());
     }
 
-    public static java.util.ResourceBundle getBundleNamed(String bundleName) {
-        //FIXME: Current Locale alınmalı
-        return java.util.ResourceBundle.getBundle(bundleName,
-                Locale.US);
-        //org.jboss.seam.core.Locale.instance());
+    public static ResourceBundle getBundle(Locale locale) {
+        
+        TelveResourceBundle result = trb.get(locale);
+        if( result == null ){
+            result = new TelveResourceBundle();
+            result.setCurrentLocale(locale);
+            trb.put(locale, result);
+        }
+        return result;
     }
-
+    
     private List<java.util.ResourceBundle> getBundlesForCurrentLocale() {
         //FIXME: Current Locale alınmalı
         //Locale instance = org.jboss.seam.core.Locale.instance();
@@ -222,14 +224,12 @@ public class TelveResourceBundle extends java.util.ResourceBundle {
 
     @Override
     public Locale getLocale() {
-        Locale l = null;
-        try{
-            l = LocaleSelector.instance().getLocale();
-        } catch ( ContextNotActiveException e ){
-            //Session'a sahip olmayan bir yerden çağrılırsa eğer uygulama'nın değerini al.
-            //Mesela camel şeysilerinden.
-            l = new Locale(ConfigResolver.getPropertyValue("application.locale", "tr"));
-        }
-        return l != null ? l : Locale.getDefault();
+        return this.currentLocale;
     }
+
+    public void setCurrentLocale(Locale currentLocale) {
+        this.currentLocale = currentLocale;
+    }
+    
+    
 }

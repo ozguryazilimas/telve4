@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import javax.ejb.NoMoreTimeoutsException;
 import javax.ejb.Timer;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
@@ -94,10 +95,16 @@ public class ScheduledCommandBrowse implements Serializable{
             
             m.setScheduledCommand((ScheduledCommand)t.getInfo());
             m.setId( m.getScheduledCommand().getId());
+            try{
             m.setNextTimeout(t.getNextTimeout());
             m.setTimeRemaining(t.getTimeRemaining());
             //İnsan için kalan zaman :)
             m.setTimeRemainingStr( prettyTime.format(new Date(System.currentTimeMillis() + m.getTimeRemaining())));
+            } catch ( NoMoreTimeoutsException e ){
+                //FIXME: Eğer geriye tektiklemelik bir şey kalmamış ise geliyor. Ne yapalım?
+                // Aslında başlangıç ve bitiş tarihleri arasında yapılacak herşey yapılmış. Timer silinebilir. Hatta komutun kendisi silininebilir.
+                LOG.warn("No more time out for : {}", m.getScheduledCommand().getCommand().getName());
+            }
             m.setScheduleStr(ScheduleModel.convertForHuman(m.getScheduledCommand().getSchedule()));
             try{
                 m.setSchedule(t.getSchedule());

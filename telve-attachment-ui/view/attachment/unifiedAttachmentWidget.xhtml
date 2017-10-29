@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:p="http://primefaces.org/ui">
+
+    #{unifiedAttachmentWidget.init(featurePointer, payload, context)}
+
+    <t:accordion icon="fa fa-paperclip" id="attW" label="general.label.Attachments" columnClass="#{columnClass}">
+
+        <ui:remove>
+            <f:facet name="toolbar">
+                <p:commandLink action="#{noteWidget.addNewNote()}" styleClass="btn btn-box-tool" update=":noteW">
+                    <i class="fa fa-plus" />
+                </p:commandLink>
+            </f:facet>
+        </ui:remove>
+
+        <p:outputPanel deferred="true" >
+            <h:form id="attWF">
+                
+                <p:dataTable id="fileAttachs" value="#{unifiedAttachmentWidget.documents}" var="doc">
+                    <p:column headerText="#{messages['general.label.Documents']}">
+                        <p:commandLink title="#{messages['attachment.hint.Download']}" action="#{unifiedAttachmentWidget.downloadDocument(doc.id)}" ajax="false">
+                            <i class="fa #{unifiedAttachmentWidget.getIcon(doc.mimeType)} margin-r-5" />#{doc.name}
+                        </p:commandLink>
+                    </p:column>
+                    <p:column styleClass="actionColumn" >
+                        <f:facet name="header">
+                            <p:commandLink title="#{messages['attachment.hint.UploadFile']}" onclick="PF('fdlg').show();" process="@this">
+                                <i class="fa fa-plus" />
+                            </p:commandLink>
+                        </f:facet>
+                        <p:commandLink title="#{messages['attachment.hint.Delete']}" 
+                                       action="#{unifiedAttachmentWidget.deleteDocument(doc.id)}" ajax="true" 
+                                       update="@([id$=fileAttachs])"  
+                                       styleClass="btn-delete"
+                                       rendered="#{empty permissionDomain or identity.hasPermission( permissionDomain, 'delete')}">
+                            <i class="fa fa-trash" />
+                            <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.DeleteDocument']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
+                        </p:commandLink>
+
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </p:outputPanel>
+    </t:accordion>
+
+    <h:form id="uploaddialog" enctype="multipart/form-data">
+        <p:dialog header="#{messages['attachment.caption.UploadFileDialog']}" widgetVar="fdlg" showEffect="clip" hideEffect="clip">
+            <p:fileUpload fileUploadListener="#{unifiedAttachmentWidget.handleFileUpload}" mode="advanced" dragDropSupport="true"
+                          update="@([id$=fileAttachs])" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|.*)$/"  sequential="true"
+                          label="#{messages['general.label.SelectFile']}" uploadLabel="#{messages['general.button.Upload']}" cancelLabel="#{messages['general.button.Cancel']}"/>
+        </p:dialog>
+    </h:form>
+
+</ui:composition>

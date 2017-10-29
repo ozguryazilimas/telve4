@@ -1,0 +1,325 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                template="#{themeManager.layoutTemplate}"
+                >
+
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="board" value="#{dashboardManager.board}" />
+        </f:metadata>
+    </ui:define>
+
+    <ui:define name="outerspace">
+        <h:outputStylesheet library="telve" name="css/layout-sprites.css" />
+
+        <style>
+
+            .db-palet{
+                width: 220px;
+                min-height: 5em;
+                overflow: hidden;
+            }
+
+            .db-column{
+                background-color: #D2D6DE;
+                float: left;
+                margin: 4px;
+                min-height: 5em;
+                width: 100%;
+                padding: 4px;
+            }
+
+            .db-palet .box{
+                margin: 0.2em;
+                overflow: hidden;
+            }
+
+            .db-one{
+                width: 91%;
+            }
+
+            .db-oneTwo {
+                width: 28%;
+            }
+
+            .db-twoOne{
+                width: 68%;
+            }
+
+            .db-half{
+                width: 45%;
+            }
+
+            .db-hide{
+                display: hide;
+            }
+
+            .placeholder {
+                background-color: seashell;
+                border: 1px dashed #666;
+                height: 38px;
+                margin-bottom: 5px;
+            }
+
+            .ui-radiobutton {
+                width: 32px !important;
+            }
+
+            .ui-radiobutton-box, .ui-radiobutton-box:hover{
+                width: 32px !important;
+                height: 32px !important;
+                background-image: url("#{resource['telve:img/layout-sprites.png']}") !important;
+                border-radius: 0px !important;
+                background-repeat: no-repeat !important;
+            }
+
+            .ly-radio .ui-state-active .ui-icon-bullet{
+                background-image: none !important;
+            }
+
+            .ly-radio .ui-state-active .ui-icon{
+                background-image: none !important;
+            }
+
+            .ly-radio .ui-state-hover{
+                background-position: inherit !important;
+            }
+
+            .ly-radio .ui-state-default{
+                background-position: inherit !important;
+            }
+
+        </style>
+
+
+
+        <p:dialog id="layoutEditor" header="#{messages['general.caption.LayoutEditor']}" modal="true" widgetVar="layoutEditor" width="980">
+
+            <h:form id="editForm">
+
+                <ui:fragment rendered="#{dashboardManager.selectedBoard ne null}" >
+
+                    <div class="box"> 
+                        <div class="box-header">
+                            <h:outputText value="#{messages['general.label.Layouts']}" styleClass="box-title" /> 
+                        </div>
+
+                        <div class="box-body" >
+                            <div class="row">
+                                <t:inputText label="general.label.Name" value="#{dashboardManager.selectedBoard.name}" required="true" />
+
+
+                                <t:inputAny label="general.label.Layout" >
+
+                                    <p:selectOneRadio id="customRadio" value="#{dashboardManager.selectedBoard.layout}" layout="custom" >  
+                                        <f:selectItem itemLabel="0" itemValue="0" />  
+                                        <f:selectItem itemLabel="1" itemValue="1" />  
+                                        <f:selectItem itemLabel="2" itemValue="2" />  
+                                        <f:selectItem itemLabel="3" itemValue="3" />  
+                                        <f:selectItem itemLabel="4" itemValue="4" />  
+                                        <f:selectItem itemLabel="5" itemValue="5" />  
+                                        <f:selectItem itemLabel="6" itemValue="6" />  
+                                        <f:selectItem itemLabel="7" itemValue="7" />  
+
+                                        <p:ajax update=":editForm:layoutArea" oncomplete="initSortables();"/>
+                                    </p:selectOneRadio>  
+
+
+
+                                    <h:panelGrid columns="4">  
+                                        <p:radioButton id="opt0" for="customRadio" itemIndex="0" styleClass="ly-radio ly-icon-layout0"/>  
+                                        <p:radioButton id="opt1" for="customRadio" itemIndex="1" styleClass="ly-radio ly-icon-layout1"/>  
+                                        <p:radioButton id="opt2" for="customRadio" itemIndex="2" styleClass="ly-radio ly-icon-layout2"/>  
+                                        <p:radioButton id="opt3" for="customRadio" itemIndex="3" styleClass="ly-radio ly-icon-layout3"/>  
+                                        <p:radioButton id="opt4" for="customRadio" itemIndex="4" styleClass="ly-radio ly-icon-layout4"/>  
+                                        <p:radioButton id="opt5" for="customRadio" itemIndex="5" styleClass="ly-radio ly-icon-layout5"/>  
+                                        <p:radioButton id="opt6" for="customRadio" itemIndex="6" styleClass="ly-radio ly-icon-layout6"/>  
+                                        <p:radioButton id="opt7" for="customRadio" itemIndex="7" styleClass="ly-radio ly-icon-layout7"/>  
+                                    </h:panelGrid>  
+                                </t:inputAny>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h:inputHidden id="layoutMap" value="#{dashboardManager.layoutMap}" />
+                    <h:panelGroup layout="block" id="layoutArea" styleClass="row">
+                        <div class="col-md-4">
+                            <h:panelGroup id="palet" layout="block" styleClass="box box-solid box-primary">
+                                <div class="box-header">#{messages['general.label.Palet']}</div>
+                                <div class="box-body" style="overflow-y: scroll; height: 300px;">
+                                    <div id="palet" class="db-palet ui-sortable">
+                                        <c:forEach items="#{dashboardManager.paletDashlets}" var="dashlet" varStatus="loop">
+                                            <h:panelGroup id="#{dashlet}" layout="block" styleClass="box box-warning">
+                                                <div class="box-body">
+                                                    <h:outputText value="#{messages['dashlet.caption.'.concat(  dashlet )]}"/>
+                                                </div>
+                                            </h:panelGroup>
+                                        </c:forEach>
+                                    </div>
+                                </div>
+                            </h:panelGroup>
+                        </div>
+                        <div class="col-md-8">
+
+                            <div class="box box-solid box-default">
+                                <div class="box-header">
+                                    #{messages['general.label.Dashboard']}
+                                </div>
+                                <div class="box-body" style="overflow-y: scroll; height: 300px;">
+
+                                    <div id="column1" class="#{dashboardManager.getEditorColumn1Style()}">
+                                        <div class="db-column ui-sortable">
+                                            <c:forEach items="#{dashboardManager.selectedBoard.column1}" var="dashlet" varStatus="loop">
+                                                <p:panel id="#{dashlet}" >
+                                                    <h:outputText value="#{messages['dashlet.caption.'.concat( dashlet )]}"/>
+                                                </p:panel>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+
+                                    <div id="column2" class="#{dashboardManager.getEditorColumn2Style()}">
+                                        <div class="db-column ui-sortable">
+                                            <c:forEach items="#{dashboardManager.selectedBoard.column2}" var="dashlet" varStatus="loop">
+                                                <p:panel id="#{dashlet}" >
+                                                    <h:outputText value="#{messages['dashlet.caption.'.concat( dashlet )]}"/>
+                                                </p:panel>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+
+                                    <div id="column3" class="#{dashboardManager.getEditorColumn3Style()}">
+                                        <div class="db-column ui-sortable">
+                                            <c:forEach items="#{dashboardManager.selectedBoard.column3}" var="dashlet" varStatus="loop">
+                                                <p:panel id="#{dashlet}" >
+                                                    <h:outputText value="#{messages['dashlet.caption.'.concat( dashlet )]}"/>
+                                                </p:panel>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </h:panelGroup>
+
+                    <div class="box-footer">
+                        <div class="actionButtons">
+
+                            <p:commandButton id="save" 
+                                             action="#{dashboardManager.saveDashboard()}"
+                                             value="#{messages['general.button.Save']}" 
+                                             ajax="true"
+                                             update=":editor"
+                                             oncomplete="PF('layoutEditor').hide();"
+                                             icon="fa fa-save" 
+                                             styleClass="btn-primary"/>  
+
+
+
+                            <p:commandButton id="cancel" 
+                                             action="#{dashboardManager.cancelDashboard()}"
+                                             value="#{messages['general.button.Cancel']}" 
+                                             ajax="true"
+                                             update=":editor"
+                                             oncomplete="PF('layoutEditor').hide();"
+                                             icon="fa fa-close"/>
+                        </div>
+                    </div>
+                </ui:fragment>   
+            </h:form>
+        </p:dialog>
+    </ui:define>
+
+    <ui:define name="body">
+
+        <script type="text/javascript">
+
+            function getLayoutMap() {
+                var columns = [];
+                $('.db-column').each(function () {
+                    columns.push($(this).sortable('toArray').join(','));
+                });
+
+                return columns.join(';');
+            }
+
+            function initSortables() {
+                $('.ui-sortable').sortable({
+                    connectWith: '.ui-sortable',
+                    placeholder: 'placeholder',
+                    update: function () {
+                        $("#editForm\\:layoutMap").val(getLayoutMap());
+                    }
+                });
+            }
+        </script>
+
+        <div class="box box-primary">
+            <div class="box-body">
+                <h:form id="editor">
+
+                    <p:dataTable  id="dashboardList" value="#{dashboardManager.dashboards}" var="dashboard" >
+                        <ui:remove>
+                            <f:facet name="header">
+                                <h:outputText value="#{messages['general.label.Dashboards']}" />
+                            </f:facet>
+                        </ui:remove>
+                        <p:column headerText="#{messages['general.label.Dashboard']}">
+                            <h:outputText value="#{dashboard.name}" />
+                        </p:column>
+                        <p:column headerText="#{messages['general.label.Layout']}" >
+                            <i class="ly-icon-layout#{dashboard.layout}" />
+                        </p:column>
+                        <p:column headerText="#{messages['general.label.Dashlets']}" >
+                            <ul>
+                                <ui:repeat value="#{dashboard.column1}" var="dash">
+                                    <li>#{messages['dashlet.caption.'.concat(  dash )]}</li>
+                                </ui:repeat>
+                            </ul>
+                        </p:column>
+                        <p:column headerText="#{messages['general.label.Dashlets']}" >
+                            <ul>
+                                <ui:repeat value="#{dashboard.column2}" var="dash">
+                                    <li>#{messages['dashlet.caption.'.concat(  dash )]}</li>
+                                </ui:repeat>
+                            </ul>
+                        </p:column>
+                        <p:column headerText="#{messages['general.label.Dashlets']}" >
+                            <ul>
+                                <ui:repeat value="#{dashboard.column3}" var="dash">
+                                    <li>#{messages['dashlet.caption.'.concat(  dash )]}</li>
+                                </ui:repeat>
+                            </ul>
+                        </p:column>
+                        <p:column style="width: 36px;">
+                            <f:facet name="header">
+                                <p:commandLink id="newDashboard" action="#{dashboardManager.newDashboard()}" styleClass="fa fa-plus-circle btn-add" update=":editForm" oncomplete="initSortables();PF('layoutEditor').show();" partialSubmit="true" process="@this"/>
+                            </f:facet>
+                            <p:commandLink id="editDashboard" styleClass="fa fa-pencil btn-edit" action="#{dashboardManager.editDashboard(dashboard)}" update=":editForm" oncomplete="initSortables();PF('layoutEditor').show();" partialSubmit="true" process="@this"/>
+                            <p:commandLink id="deleteDashboard" styleClass="fa fa-trash btn-delete" action="#{dashboardManager.deleteDashboard(dashboard)}" update="dashboardList" partialSubmit="true" process="@this"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </div>
+        </div>
+    </ui:define>
+
+    <ui:define name="context-menu">
+        <li>
+            <p:commandLink id="newDashboard" action="#{dashboardManager.newDashboard()}" update=":editForm" oncomplete="initSortables();PF('layoutEditor').show();" partialSubmit="true" process="@this">
+                <i class="fa fa-plus-circle"></i>
+                <h:outputText value=" #{messages['general.button.Add']}" />
+            </p:commandLink>
+        </li>
+        <li>
+            <h:link outcome="home" >
+                <i class="fa fa-close"></i>
+                <h:outputText value=" #{messages['general.button.Close']}" />
+            </h:link>
+        </li>
+    </ui:define>
+</ui:composition>

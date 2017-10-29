@@ -1,0 +1,25 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:f="http://java.sun.com/jsf/core"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:composite="http://java.sun.com/jsf/composite">
+
+
+    <composite:interface>
+        <composite:attribute name="label" required="false"/>        
+    </composite:interface>
+
+    <composite:implementation>
+        <ui:fragment rendered="#{cc.attrs.rendered}">
+            
+            <li>
+                <div class="text-sm text-muted">#{messages[cc.attrs.label]}</div>
+                <div>
+                    <composite:insertChildren />
+                </div>
+            </li>
+        </ui:fragment>
+    </composite:implementation>
+
+</ui:component>
