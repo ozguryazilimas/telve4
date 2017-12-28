@@ -121,5 +121,10 @@ public class EmailChannel implements Channel, Serializable{
         return !Strings.isNullOrEmpty( contact.getEmail());
     }
 
+    @Override
+    public void sendMessage(Contact contact, String subject, String message, Map<String, Object> params, Map<String, DataHandler> attachments) {
+        sendMessageWithAttachments( contact.getEmail(), subject, message, attachments, params ); 
+    }
+
     
 }
