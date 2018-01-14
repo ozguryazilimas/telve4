@@ -5,7 +5,9 @@
  */
 package com.ozguryazilim.telve.channel.email;
 
+import com.google.common.base.Splitter;
 import com.ozguryazilim.telve.audit.AuditLogger;
+import java.util.List;
 import java.util.Map;
 import javax.activation.DataHandler;
 import javax.annotation.Resource;
@@ -106,6 +108,91 @@ public class EmailSender {
         auditLogger.actionLog("NOTIFICATION", 0l, to, "EMAIL", "SEND", "SYSTEM", subject);
     }
 
+    
+    
+    /**
+     * Attachment'ları ekleyerek multipart e-posta atar.
+     * 
+     * @param from
+     * @param to Ad Soyad <adres@domain.com>, ... formatında
+     * @param cc
+     * @param bcc
+     * @param subject
+     * @param body
+     * @param attachments
+     * @throws MessagingException 
+     */
+    public void send(String from, String to, String cc, String bcc, String subject, String body, Map<String, DataHandler> attachments) throws MessagingException {
+        Message message = new MimeMessage(mailSession);
+        message.setFrom(new InternetAddress(from));
+        
+        //To addresses
+        List<String> toAddrs = Splitter.on(',').trimResults().trimResults().splitToList(to);
+        for( String a : toAddrs ){
+            Address toAddress = new InternetAddress(a);
+            message.addRecipient(Message.RecipientType.TO, toAddress);
+        }
+        
+        //CC addresses
+        List<String> ccAddrs = Splitter.on(',').trimResults().trimResults().splitToList(cc);
+        for( String cca : ccAddrs ){
+            Address ccAddress = new InternetAddress(cca);
+            message.addRecipient(Message.RecipientType.CC, ccAddress);
+        }
+        
+        //BCC addresses
+        List<String> bccAddrs = Splitter.on(',').trimResults().trimResults().splitToList(bcc);
+        for( String bcca : ccAddrs ){
+            Address bccAddress = new InternetAddress(bcca);
+            message.addRecipient(Message.RecipientType.BCC, bccAddress);
+        }
+               
+        
+        message.setSubject(subject);
+
+        // Create the message part
+        BodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setText(body);
+
+        // Create a multipar message
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(messageBodyPart);
+
+        // Attachments
+        if( attachments !=  null ){
+            for (Map.Entry<String, DataHandler> attachment : attachments.entrySet()) {
+
+                messageBodyPart = new MimeBodyPart();
+
+                messageBodyPart.setDataHandler(attachment.getValue());
+                messageBodyPart.setFileName(attachment.getKey());
+                multipart.addBodyPart(messageBodyPart);
+            }
+        }
+
+        message.setContent(multipart);
+        
+        Transport.send(message);
+        
+        auditLogger.actionLog("NOTIFICATION", 0l, to, "EMAIL", "SEND", "SYSTEM", subject);
+    }
+    
+    /**
+     * From bilgisini ayarlardan okur.
+     * 
+     * @param to
+     * @param cc
+     * @param bcc
+     * @param subject
+     * @param body
+     * @param attachments
+     * @throws MessagingException 
+     */
+    public void send(String to, String cc, String bcc, String subject, String body, Map<String, DataHandler> attachments) throws MessagingException {
+        String from = ConfigResolver.getProjectStageAwarePropertyValue("app.email.from");
+        send(from, to, cc, bcc, subject, body, attachments);
+    }
+    
     /**
      * From bilgisini ayarlardan okuyarak e-posta atar.
      *
