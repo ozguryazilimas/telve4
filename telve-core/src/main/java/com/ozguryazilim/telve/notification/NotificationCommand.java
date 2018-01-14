@@ -8,6 +8,7 @@ package com.ozguryazilim.telve.notification;
 import com.ozguryazilim.telve.messagebus.command.AbstractCommand;
 import java.util.HashMap;
 import java.util.Map;
+import javax.activation.DataHandler;
 
 /**
  * Notification gönderimi için komut.
@@ -78,6 +79,15 @@ public class NotificationCommand extends AbstractCommand{
      * 
      */
     private Map<String,Object> params = new HashMap<>();
+    
+    /**
+     * Mesajlara ek attachment listesi.
+     * 
+     * Özellikle e-posta içerisine eklenecek olan dosyalar v.s. için kullanılır.
+     * 
+     * İlgilenmeyen channellar bu bilgiyi pass geçer.
+     */
+    private Map<String,DataHandler> attachments = new HashMap<>();
 
     public String getNotificationClass() {
         return notificationClass;
@@ -125,6 +135,14 @@ public class NotificationCommand extends AbstractCommand{
 
     public void setParams(Map<String, Object> params) {
         this.params = params;
+    }
+
+    public Map<String, DataHandler> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(Map<String, DataHandler> attachments) {
+        this.attachments = attachments;
     }
     
     

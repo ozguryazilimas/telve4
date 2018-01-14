@@ -63,7 +63,7 @@ public class NotificationCommandExecutor extends AbstractCommandExecuter<Notific
                     command.getParams().put("messageClass", command.getNotificationClass());
                     command.getParams().put("template", command.getTemplate());
                     command.getParams().put("sender", command.getSender());
-                    channel.sendMessage( t, command.getSubject(), "", command.getParams());
+                    channel.sendMessage( t, command.getSubject(), "", command.getParams(), command.getAttachments());
                 } else {
                     LOG.debug("Channel {} not support for this contact {}", channelName, t);
                 }

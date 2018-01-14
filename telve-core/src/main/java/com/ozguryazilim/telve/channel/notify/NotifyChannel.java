@@ -10,6 +10,7 @@ import com.ozguryazilim.telve.contact.Contact;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import javax.activation.DataHandler;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -89,5 +90,19 @@ public class NotifyChannel implements Channel, Serializable{
         headers.put("target", contact.getId());
         
         notifyProducer.sendBodyAndHeaders(message, headers);
+    }
+
+    /**
+     * Web Notify'de attachment kullanılmıyor.
+     * 
+     * @param contact
+     * @param subject
+     * @param message
+     * @param params
+     * @param attachments 
+     */
+    @Override
+    public void sendMessage(Contact contact, String subject, String message, Map<String, Object> params, Map<String, DataHandler> attachments) {
+        sendMessage(contact, subject, message, params);
     }
 }
