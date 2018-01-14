@@ -13,6 +13,12 @@
     
     <ui:define name="filter">
         <t:inputLookupDialog value="#{bean.filter.group}" label="user.label.DomainGroup" caption="name" lookupBean="#{groupLookup}" lookupListener="userRoleReport.filter.group" columnClass="col-xs-12" />
+        <t:inputAny label="general.label.Active" columnClass="col-xs-6">
+        	<p:selectBooleanCheckbox value="#{bean.filter.includeActives}" itemLabel="#{messages['general.label.yes']}"/>
+        </t:inputAny>
+        <t:inputAny label="general.hint.Passive" columnClass="col-xs-6">
+        	<p:selectBooleanCheckbox value="#{bean.filter.includePassives}" itemLabel="#{messages['general.label.yes']}"/>
+        </t:inputAny>
     </ui:define>
 
 </ui:composition>
