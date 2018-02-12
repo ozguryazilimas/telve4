@@ -36,5 +36,4 @@ public class Group extends TreeNodeEntityBase<Group>{
         this.id = id;
     }
 
-    
 }

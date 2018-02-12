@@ -9,3 +9,5 @@ faces-config.NavData
 .classpath
 /telve-unit/nbproject/
 /telve-idm/nbproject/
+.idea
+*.iml

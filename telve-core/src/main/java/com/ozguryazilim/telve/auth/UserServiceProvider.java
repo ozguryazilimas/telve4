@@ -113,4 +113,12 @@ public interface UserServiceProvider {
      * @return 
      */
     Map<String,String> getUserAttibutes( String loginName );
+
+    /**
+     * Verilen email adresi için kullanıcı bilgilerini döndürür.
+     * Bulamazsa <code>null</code> döndürür
+     * @param email E-Mail adresi
+     * @return Kullanıcı bilgileri
+     */
+    UserInfo getUserByEmail(String email);
 }

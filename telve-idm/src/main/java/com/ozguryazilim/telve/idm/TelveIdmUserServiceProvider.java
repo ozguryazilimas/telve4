@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ozguryazilim.telve.idm;
 
 import com.ozguryazilim.telve.auth.UserInfo;
@@ -15,6 +10,7 @@ import com.ozguryazilim.telve.idm.user.UserGroupRepository;
 import com.ozguryazilim.telve.idm.user.UserRepository;
 import com.ozguryazilim.telve.idm.user.UserRoleRepository;
 import com.ozguryazilim.telve.idm.user.UserViewModel;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -70,7 +66,7 @@ public class TelveIdmUserServiceProvider implements UserServiceProvider, Seriali
     @Override
     public List<String> getUsersByGroup(String group) {
         List<String> result = new ArrayList<>();
-        
+
         List<UserViewModel> ls = userRepository.lookupQuery(null, null, group);
 
         for (UserViewModel u : ls) {
@@ -79,11 +75,11 @@ public class TelveIdmUserServiceProvider implements UserServiceProvider, Seriali
 
         return result;
     }
-    
+
     @Override
     public List<String> getUsersByTypeAndGroup(String type, String group) {
         List<String> result = new ArrayList<>();
-        
+
         List<UserViewModel> ls = userRepository.lookupQuery(null, type, group);
 
         for (UserViewModel u : ls) {
@@ -92,11 +88,11 @@ public class TelveIdmUserServiceProvider implements UserServiceProvider, Seriali
 
         return result;
     }
-    
+
     @Override
-    public List<String> getUsersByTextAndTypeAndGroup( String searchText, String type, String group) {
+    public List<String> getUsersByTextAndTypeAndGroup(String searchText, String type, String group) {
         List<String> result = new ArrayList<>();
-        
+
         List<UserViewModel> ls = userRepository.lookupQuery(searchText, type, group);
 
         for (UserViewModel u : ls) {
@@ -152,10 +148,10 @@ public class TelveIdmUserServiceProvider implements UserServiceProvider, Seriali
     }
 
     @Override
-    public List<String> getUserGroupsMembers( String loginName){
+    public List<String> getUserGroupsMembers(String loginName) {
         return userRepository.findAllGroupMembers(loginName);
     }
-    
+
     @Override
     public Map<String, String> getUserAttibutes(String loginName) {
         Map<String, String> result = new HashMap<>();
@@ -174,12 +170,23 @@ public class TelveIdmUserServiceProvider implements UserServiceProvider, Seriali
 
     @Override
     public UserInfo getUserInfo(String loginName) {
-
         User u = userRepository.findAnyByLoginName(loginName);
         if (u == null) {
             return null;
         }
+        return createUserInfo(u);
+    }
 
+    @Override
+    public UserInfo getUserByEmail(String email) {
+        User u = userRepository.findByEmail(email);
+        if (u == null) {
+            return null;
+        }
+        return createUserInfo(u);
+    }
+
+    private UserInfo createUserInfo(User u) {
         UserInfo ui = new UserInfo();
 
         ui.setId(u.getId().toString());
@@ -197,5 +204,4 @@ public class TelveIdmUserServiceProvider implements UserServiceProvider, Seriali
 
         return ui;
     }
-
 }
