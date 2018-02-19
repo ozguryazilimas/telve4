@@ -6,6 +6,7 @@
 package com.ozguryazilim.telve.auth;
 
 import com.google.common.base.Strings;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,13 +17,14 @@ import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.inject.Named;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
 /**
  * Telve alt yapısında kullanılan providerlaraın sağladığı bilgiler için temel
  * API sağlar.
- *
+ * <p>
  * Aynı zamanda topladığı bilgileri cache içerisinde tutar.
  *
  * @author Hakan Uygun
@@ -64,8 +66,9 @@ public class UserService {
 
     /**
      * Eğer aktif bir kullanıcı var ise o kullanıcının yetkili ( domainGroup ) olduğu kullanıcıların listesini döndürür.
-     *
+     * <p>
      * Eğer aktif kullanıcı yoksa bütün kullanıcı listesini döndürür.
+     *
      * @return
      */
     public List<String> getLoginNames() {
@@ -80,9 +83,9 @@ public class UserService {
 
     /**
      * Kullanıcı tipine göre kullanıcı ( loginName ) listesi döndürür.
-     *
+     * <p>
      * Bahsi geçen tipler UserModelExtention ile verilebilmektedir
-     * 
+     * <p>
      * Kullanıcı tipleri virgüller ile ayrılmış olarak gelebilir. Böylece bir den fazla tipte kullanıcı çekilebilir.
      *
      * @param type
@@ -100,7 +103,7 @@ public class UserService {
 
     /**
      * Verilen Grup üyesi kullanıcı listesini döndürür.
-     *
+     * <p>
      * Grup yapısı ağaç ise o ağacın alt dallarında olan kullanıcıları da
      * döndürür. Eğer ağaç bir yapı ise parametre olarak Path verilmelidir.
      *
@@ -117,8 +120,8 @@ public class UserService {
 
         return result;
     }
-    
-    
+
+
     public List<String> getUsersByTypeAndGroup(String type, String group) {
 
         List<String> result = new ArrayList<>();
@@ -129,13 +132,13 @@ public class UserService {
 
         return result;
     }
-    
-    
-    public List<String> getUsersByTextAndTypeAndGroup( String searchText, String type, String group) {
+
+
+    public List<String> getUsersByTextAndTypeAndGroup(String searchText, String type, String group) {
         List<String> result = new ArrayList<>();
 
         for (UserServiceProvider usp : userServiceProviders) {
-            result.addAll(usp.getUsersByTextAndTypeAndGroup( searchText, type, group));
+            result.addAll(usp.getUsersByTextAndTypeAndGroup(searchText, type, group));
         }
 
         return result;
@@ -143,7 +146,6 @@ public class UserService {
 
     /**
      * LoginName'i kullanıcı adına çevirir.
-     *
      *
      * @param loginName
      * @return
@@ -159,13 +161,31 @@ public class UserService {
                     break;
                 }
             }
-            if ( Strings.isNullOrEmpty(s)) {
+            if (Strings.isNullOrEmpty(s)) {
                 return loginName;
-            } 
+            }
             return s;
         }
 
         return s;
+    }
+
+    public String getUserByEmail(String email) {
+        for (String userName : userInfos.keySet()) {
+            UserInfo info = userInfos.get(userName);
+            if (info.getEmail() == email) {
+                return userName;
+            }
+        }
+        for (UserServiceProvider usp : userServiceProviders) {
+            UserInfo info = usp.getUserByEmail(email);
+            if (info != null) {
+                userInfos.put(info.getUserName(), info);
+                return info.getUserName();
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -218,8 +238,8 @@ public class UserService {
 
         return ls;
     }
-    
-    public List<String> getUserGroupsMembers( String loginName){
+
+    public List<String> getUserGroupsMembers(String loginName) {
         List<String> ls = userGroupsMembers.get(loginName);
 
         if (ls == null) {
@@ -326,7 +346,7 @@ public class UserService {
 
         return ls;
     }
-    
+
     private List<String> populateUserGroupsMembers(String loginName) {
         List<String> ls = new ArrayList<>();
 
@@ -358,13 +378,12 @@ public class UserService {
     /**
      * Kullanıcıya ait role, user id, group id, ve uygulamalardan gelebilecek
      * örneğin organizasyon bilgilerini bir araya toparlar.
-     *
+     * <p>
      * Farklı türler için birer harf kullanır :
-     *
+     * <p>
      * Reservd olanlar : U: User id L: Login name T: User Type R: Role G: Group
-     *
+     * <p>
      * Örnek : U:telve R:superuser G:Admins
-     *
      */
     private List<String> populateUserUnifiedRoles(String loginName) {
         List<String> result = new ArrayList<>();
@@ -376,8 +395,8 @@ public class UserService {
 
         return result;
     }
-    
-    public void clearCache( @Observes UserDataChangeEvent event){
+
+    public void clearCache(@Observes UserDataChangeEvent event) {
         userNames.remove(event.username);
         userRoles.remove(event.username);
         userGroups.remove(event.username);

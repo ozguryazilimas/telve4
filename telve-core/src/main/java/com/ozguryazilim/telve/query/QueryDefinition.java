@@ -18,7 +18,7 @@ import org.primefaces.model.DualListModel;
  *
  *
  * @author Hakan Uygun
- * @param <E> Sorgu yapılacka olan Entity
+ * @param <E> Sorgu yapılacak olan Entity
  * @param <R> Geri dönecek olan Model
  */
 public class QueryDefinition<E, R> {
@@ -190,6 +190,7 @@ public class QueryDefinition<E, R> {
     }
 
     public void setAvailColumns(List<Column<? super E>> allColumns) {
+        //TODO
     }
 
     /**
