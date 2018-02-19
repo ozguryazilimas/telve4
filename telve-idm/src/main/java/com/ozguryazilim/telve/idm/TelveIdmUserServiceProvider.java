@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 
 /**
  * Telve UserServiceProvider implementasyonu.
@@ -179,7 +180,12 @@ public class TelveIdmUserServiceProvider implements UserServiceProvider, Seriali
 
     @Override
     public UserInfo getUserByEmail(String email) {
-        User u = userRepository.findByEmail(email);
+        User u;
+        try {
+            u = userRepository.findByEmail(email);
+        } catch (NoResultException e) {
+            return null;
+        }
         if (u == null) {
             return null;
         }
