@@ -57,45 +57,6 @@
                 <ui:include src="#{themeManager.templateSideBar}" />
 
                 <div class="content-wrapper">
-
-                    <ui:remove>
-                        <div id="content-list-bar" class="content-list">
-
-                            <ui:fragment rendered="#{showListBar}">
-
-                                <div class="content-list" >
-                                    <ui:remove>
-                                        <section class="main-header" >
-                                            <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-                                                <span class="sr-only">Toggle navigation</span>
-                                            </a>
-
-                                            <nav class="navbar navbar-static-top" role="navigation">
-
-                                            </nav>
-                                        </section>
-                                    </ui:remove>
-
-                                    <section class="content-list-content" >
-                                        <ui:insert name="content-list" />
-                                    </section>
-
-                                </div>
-
-
-                                <script type="text/javascript">
-
-                                    hideListBar = '${hideListBar}';
-                                    if (hideListBar == 'true') {
-                                        jQuery("#content-list-bar").toggle();
-                                    }
-
-                                </script>
-
-                            </ui:fragment>
-                        </div>
-                    </ui:remove>
-
                     <div id="quickpanel" class="quickPanel">
                         <p:outputPanel id="quickPanelContent">
                             <ui:include src="#{quickRecordController.dialogViewId}" />
@@ -110,11 +71,23 @@
                                 <div class="container-fluid">
                                     <div class="navbar-header">
 
-                                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
                                             <i class="fa fa-bars"></i>
                                         </button>
                                     </div>
-                                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                    <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
+                                        
+                                        <h:form id="contextForm">
+                                            <ul class="nav navbar-nav">
+
+                                                <ui:insert name="context-menu" />
+
+                                                <c:forEach items="#{contextMenuResolver.getContextMenuFragments()}" var="entry">
+                                                    <ui:include src="#{entry}" />
+                                                </c:forEach>
+                                            </ul>
+                                        </h:form>
+
                                         <ul class="nav navbar-nav navbar-right">
                                             <ui:fragment rendered="#{showListBar}">
                                                 <li class="hidden-xs">
@@ -127,17 +100,6 @@
                                             <ui:insert name="context-menu-right" />
 
                                         </ul>
-                                        <h:form id="contextForm">
-                                            <ul class="nav navbar-nav">
-
-                                                <ui:insert name="context-menu" />
-
-                                                <c:forEach items="#{contextMenuResolver.getContextMenuFragments()}" var="entry">
-                                                    <ui:include src="#{entry}" />
-                                                </c:forEach>
-                                            </ul>
-                                        </h:form>
-
                                     </div>
                                 </div>
                             </nav>
