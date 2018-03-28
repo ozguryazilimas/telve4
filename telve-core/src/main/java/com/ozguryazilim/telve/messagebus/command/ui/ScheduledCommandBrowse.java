@@ -43,6 +43,7 @@ import org.slf4j.LoggerFactory;
  */
 @WindowScoped
 @Named
+@Transactional
 public class ScheduledCommandBrowse implements Serializable{
     
     private static final Logger LOG = LoggerFactory.getLogger(ScheduledCommandBrowse.class); 
@@ -237,7 +238,6 @@ public class ScheduledCommandBrowse implements Serializable{
         }
     }
     
-    @Transactional
     public void delete() throws ClassNotFoundException{
         //Önce timer'a bir bakalım. Varsa onu bir silelim...
         if( selectedItem.getScheduledCommand() != null ){
