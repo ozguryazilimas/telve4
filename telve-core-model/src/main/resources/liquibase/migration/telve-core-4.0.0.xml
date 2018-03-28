@@ -157,4 +157,10 @@
     <changeSet author="haky (generated)" id="1438162495087-13">
         <addPrimaryKey columnNames="ID" constraintName="TLV_SUGGESTION_ITEMPK" tableName="TLV_SUGGESTION_ITEM"/>
     </changeSet>
+    <changeSet author="ercan" id="1522245215081-1" dbms="postgresql,oracle">
+        <alterSequence 
+            incrementBy="50"
+            sequenceName="generic_seq"
+            startValue="1"/>
+    </changeSet>
 </databaseChangeLog>
