@@ -4,7 +4,7 @@
     <parent>
         <groupId>com.ozguryazilim.mutfak</groupId>
         <artifactId>telve-parent</artifactId>
-        <version>4.0.0.Beta5</version>
+        <version>4.0.0.Beta5.1</version>
     </parent>
     <artifactId>telve-idm-model</artifactId>
     <packaging>jar</packaging>
