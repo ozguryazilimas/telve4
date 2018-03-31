@@ -7,6 +7,7 @@ package com.ozguryazilim.telve.reports;
 
 import com.ozguryazilim.telve.config.LocaleSelector;
 import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.messages.TelveResourceBundle;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +17,6 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -380,11 +380,11 @@ public class JasperReportHandler {
         if (params == null) {
             return;
         }
-        //Eğer resource tanımlanmamış ise template ismi ile rapor dil desteği ekleyelim..
+        //Eğer resource tanımlanmamış ise TelveResourceBundle verelim.
         if (params.get(JRParameter.REPORT_RESOURCE_BUNDLE) == null) {
 
             Locale locale = LocaleSelector.instance().getLocale();
-            params.put(JRParameter.REPORT_RESOURCE_BUNDLE, ResourceBundle.getBundle(name, locale));
+            params.put(JRParameter.REPORT_RESOURCE_BUNDLE, TelveResourceBundle.getBundle(locale));
 
             //Şimdide Locele bilgisini bağlayaalım...
             params.put(JRParameter.REPORT_LOCALE, locale);
