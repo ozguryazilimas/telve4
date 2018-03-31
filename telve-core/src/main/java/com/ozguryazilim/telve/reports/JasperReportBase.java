@@ -213,10 +213,15 @@ public abstract class JasperReportBase implements ReportController, Serializable
     protected void decorateI18NParams(Map<String, Object> params) {
 
         String s = getBundleName();
-
-        //Sonra resource bundle'ı bağlayalım,
         Locale locale = LocaleSelector.instance().getLocale();
-        params.put(JRParameter.REPORT_RESOURCE_BUNDLE, ResourceBundle.getBundle(s, locale));
+        
+        if( s.isEmpty() ){
+            //Eğer bundle name verilmemiş ise TelveResourceBundle bağlıyoruz.
+            params.put(JRParameter.REPORT_RESOURCE_BUNDLE, TelveResourceBundle.getBundle(locale));
+        } else {
+            //Sonra resource bundle'ı bağlayalım,
+            params.put(JRParameter.REPORT_RESOURCE_BUNDLE, ResourceBundle.getBundle(s, locale));
+        }
 
         //Şimdide Locele bilgisini bağlayaalım...
         params.put(JRParameter.REPORT_LOCALE, locale);
@@ -226,11 +231,6 @@ public abstract class JasperReportBase implements ReportController, Serializable
     protected String getBundleName(){
         //Önce Resource Bundle adını öğrenelim
         String s = this.getClass().getAnnotation(Report.class).resource();
-        if (s.isEmpty()) {
-            //Eğer Resorce tanımlanmamışsa template ile aynı ismi kullanıyoruz.
-            s = getTemplateName();
-        }
-        
         return s;
     }
     
