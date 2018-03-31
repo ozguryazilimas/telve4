@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
-import org.infinispan.schematic.document.ParsingException;
+import org.modeshape.schematic.document.ParsingException;
 import org.modeshape.common.collection.Problems;
 import org.modeshape.jcr.ConfigurationException;
 import org.modeshape.jcr.ModeShapeEngine;
