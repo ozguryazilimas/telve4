@@ -9,7 +9,7 @@
     
     <properties>
         <deltaspike.version>1.8.1</deltaspike.version>
-        <shiro.version>1.3.2</shiro.version>
+        <shiro.version>1.4.0</shiro.version>
         <primeface.version>6.2</primeface.version>
         <primefaces-ext.version>6.2</primefaces-ext.version>
         <atmosphere.version>2.4.6</atmosphere.version>
