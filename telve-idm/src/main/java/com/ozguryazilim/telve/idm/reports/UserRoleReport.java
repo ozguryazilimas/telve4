@@ -21,20 +21,17 @@ import javax.inject.Named;
 
 import com.ozguryazilim.telve.config.TelveConfigResolver;
 import com.ozguryazilim.telve.idm.config.IdmReportPages;
-import com.ozguryazilim.telve.messages.TelveResourceBundle;
 import com.ozguryazilim.telve.query.filters.DateValueType;
 import com.ozguryazilim.telve.reports.JasperReportBase;
 import com.ozguryazilim.telve.reports.Report;
 import com.ozguryazilim.telve.reports.ReportDate;
-
-import net.sf.jasperreports.engine.JRParameter;
 
 /**
  * AuditLog'lar için standart rapor
  *
  * @author Aydoğan Sel <aydogan.sel at iova.com.tr>
  */
-@Report( filterPage = IdmReportPages.UserRoleReport.class, permission="userRoleReport", path="/admin/user", template = "userRoleReport", resource = "idmReports")
+@Report( filterPage = IdmReportPages.UserRoleReport.class, permission="userRoleReport", path="/admin/user", template = "userRoleReport")
 public class UserRoleReport extends JasperReportBase{
 
     @Inject
@@ -88,13 +85,4 @@ public class UserRoleReport extends JasperReportBase{
 
         return true;
     }
-
-    @Override
-    protected void decorateI18NParams(Map<String, Object> params) {
-        params.put(JRParameter.REPORT_RESOURCE_BUNDLE, TelveResourceBundle.getBundle());
-        super.decorateI18NParams(params); //To change body of generated methods, choose Tools | Templates.
-    }
-
-
-
 }
