@@ -5,9 +5,6 @@
  */
 package com.ozguryazilim.telve.reports;
 
-import com.ozguryazilim.telve.config.LocaleSelector;
-import com.ozguryazilim.telve.messages.FacesMessages;
-import com.ozguryazilim.telve.messages.TelveResourceBundle;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,11 +14,22 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
+
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.deltaspike.core.api.config.ConfigResolver;
+import org.hibernate.engine.spi.SessionImplementor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.ozguryazilim.telve.config.LocaleSelector;
+import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.messages.TelveResourceBundle;
+
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRParameter;
@@ -38,10 +46,6 @@ import net.sf.jasperreports.export.SimpleCsvMetadataExporterConfiguration;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimpleWriterExporterOutput;
-import org.apache.deltaspike.core.api.config.ConfigResolver;
-import org.hibernate.engine.spi.SessionImplementor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Jasper Report ile rpor üretimi ile ilgili işler bu sınıftadır.
@@ -85,6 +89,7 @@ public class JasperReportHandler {
         LOG.info("Jasper Rapor Exec : {} {}", name, params);
 
         decorateParams(params);
+        decorateI18NParams("", params);
 
         InputStream is = getReportSource(name);
         if (is == null) {
@@ -123,7 +128,7 @@ public class JasperReportHandler {
 
         return data;
     }
-    
+
     public byte[] reportToPDFBytes(String name, String fileName, Map params, Collection data) throws JRException {
 
         LOG.info("Jasper Rapor Exec : {} {}", name, params);
@@ -140,14 +145,14 @@ public class JasperReportHandler {
         byte[] result = null;
 
         //LOG.info("Bağlantı : {}", dataSource);
-            
+
         JasperReport report = (JasperReport) JRLoader.loadObject(is);
 
         JRDataSource ds = new JRBeanCollectionDataSource(data);
         result = JasperRunManager.runReportToPdf(report, params, ds);
         LOG.debug("Report is ready");
 
-        
+
 
         return result;
     }
@@ -167,15 +172,15 @@ public class JasperReportHandler {
         //Üretilen rapor sonuç olarak gönderiliyor
         sendResponse(fileName, PDF, data);
     }
-    
+
     /**
      * Hazır bir verinin Jasper'a gönderilmesi durumunda kullanılır.
-     * 
+     *
      * @param name
      * @param fileName
      * @param params
      * @param data Örneğin ArrayList içerisinde veriler gönderilir.
-     * @throws JRException 
+     * @throws JRException
      */
     public void reportToPDF(String name, String fileName, Map params, Collection data ) throws JRException {
 
@@ -237,7 +242,7 @@ public class JasperReportHandler {
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(is, params, conn);
 
-            JRXlsMetadataExporter exporter = new JRXlsMetadataExporter(); 
+            JRXlsMetadataExporter exporter = new JRXlsMetadataExporter();
 
             exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
             //exporter.setConfiguration(new SimpleXlsExporterConfiguration());
@@ -285,7 +290,7 @@ public class JasperReportHandler {
             JRCsvMetadataExporter exporter = new JRCsvMetadataExporter(); //getJasperExporter(outputFormat);
 
             SimpleCsvMetadataExporterConfiguration conf = new SimpleCsvMetadataExporterConfiguration();
-            
+
             exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
             //exporter.setConfiguration( conf );
             exporter.setExporterOutput(new SimpleWriterExporterOutput(os));
@@ -364,10 +369,10 @@ public class JasperReportHandler {
     protected void decorateParams(Map<String,Object> params) {
         if (params != null) {
             params.put("SUBREPORT_DIR", "jasper/");
-            
+
             //MAcro durumdaki dateleri date'e çevirelim.
             for( Map.Entry<String,Object> ent : params.entrySet()){
-                
+
                 if( ent.getValue() instanceof ReportDate ){
                     ent.setValue(((ReportDate)ent.getValue()).getCalculatedValue());
                 }
@@ -382,12 +387,13 @@ public class JasperReportHandler {
         }
         //Eğer resource tanımlanmamış ise TelveResourceBundle verelim.
         if (params.get(JRParameter.REPORT_RESOURCE_BUNDLE) == null) {
-
-            Locale locale = LocaleSelector.instance().getLocale();
+            Locale locale = (Locale) params.get(JRParameter.REPORT_LOCALE);
+            if(locale==null) {
+        	locale = LocaleSelector.instance().getLocale();
+        	//Şimdide Locele bilgisini bağlayaalım...
+                params.put(JRParameter.REPORT_LOCALE, locale);
+            }
             params.put(JRParameter.REPORT_RESOURCE_BUNDLE, TelveResourceBundle.getBundle(locale));
-
-            //Şimdide Locele bilgisini bağlayaalım...
-            params.put(JRParameter.REPORT_LOCALE, locale);
         }
     }
 
