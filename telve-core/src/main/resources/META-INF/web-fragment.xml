@@ -49,6 +49,7 @@
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
         <filter-class>org.omnifaces.filter.CharacterEncodingFilter</filter-class>
+        <async-supported>true</async-supported>
     </filter>
     <filter-mapping>
         <filter-name>characterEncodingFilter</filter-name>
