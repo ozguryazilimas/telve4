@@ -369,7 +369,7 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
         if( e != null ){
             loadQuery(e.getAsString());
         } else {
-            queryName = "";
+            loadQuery(getDefaultQueryKey());
         }
     }
 
