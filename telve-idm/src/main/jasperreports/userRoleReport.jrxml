@@ -48,7 +48,7 @@ where ur.USER_ID = $P{USER_ID}]]>
 from TLI_USER tu
 left  outer join TLI_GROUP tg on tg.ID = tu.GROUP_ID
 where(( $P{GROUP_ID} = 0 ) or ( tg.ID = $P{GROUP_ID} ) )
-and ($P{ISACTIVE}=2 or (tu.ISACTIVE=1 and  $P{ISACTIVE}=1) or (tu.ISACTIVE=0 and  $P{ISACTIVE}=0))
+and ($P{ISACTIVE}=2 or (tu.ISACTIVE=true and  $P{ISACTIVE}=1) or (tu.ISACTIVE=false and  $P{ISACTIVE}=0))
 order by tu.LOGIN_NAME]]>
 	</queryString>
 	<field name="ID" class="java.lang.Long"/>
