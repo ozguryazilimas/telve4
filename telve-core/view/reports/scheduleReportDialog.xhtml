@@ -33,7 +33,7 @@
                 </t:inputCombobox>
             </div>
             <div class="row">
-                <p:outputPanel id="schinputs" autoUpdate="false">
+                <p:outputPanel id="schinputs" >
                     <t:inputDateTime id="bd" label="general.label.BeginDate" value="#{reportScheduleDialog.startDate}" />
                     <t:inputDateTime id="ed" label="general.label.EndDate" value="#{reportScheduleDialog.endDate}" rendered="#{reportScheduleDialog.scheduleType ne 'O'}"/>
 

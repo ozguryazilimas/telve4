@@ -13,8 +13,9 @@
         </h:form>
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="#{messages['nav.label.Notifications']}" onclick="rc();">
             <i class="fa fa-bell-o"></i>
-            <p:outputPanel id="notifyCount" autoUpdate="true" styleClass="#{notifyStore.getNotifyCount(identity.loginName) gt 0 ? 'label label-warning' : ''}">
+            <p:outputPanel id="notifyCount" styleClass="#{notifyStore.getNotifyCount(identity.loginName) gt 0 ? 'label label-warning' : ''}">
                 <h:outputText value="#{notifyStore.getNotifyCount(identity.loginName)}" styleClass="" rendered="#{notifyStore.getNotifyCount(identity.loginName) gt 0}"/>
+                <p:autoUpdate />
             </p:outputPanel>
         </a>
 

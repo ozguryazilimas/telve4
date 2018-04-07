@@ -32,7 +32,7 @@
             </div>
         </h:form>
         
-        <p:outputPanel id="logPanel" autoUpdate="false">
+        <p:outputPanel id="logPanel" >
             <ui:repeat value="#{logViewer.logLines}" var="line">
                 #{line}<br/>
             </ui:repeat>

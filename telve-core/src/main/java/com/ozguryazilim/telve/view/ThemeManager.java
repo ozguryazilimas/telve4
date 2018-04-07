@@ -60,7 +60,7 @@ public class ThemeManager implements Serializable{
     
     private String templateCheckOrFallback( String name, String template ){
         String templatePath = "/layout/" + name + "/" + template;
-        InputStream is = this.getClass().getResourceAsStream(templatePath);
+        InputStream is = this.getClass().getResourceAsStream("/META-INF/resources" + templatePath);
         if( is == null ){
             templatePath = "/layout/base/"+ template;
             LOG.debug("Fallback Base Template : {}", templatePath);
