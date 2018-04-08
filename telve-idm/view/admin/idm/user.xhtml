@@ -11,6 +11,13 @@
     <ui:param name="entityName" value="user" />
     <ui:param name="entity" value="#{userHome.entity}" />
     
+    <ui:define name="metadata">
+        <f:metadata>
+            <f:viewParam name="eid" value="#{userHome.id}" />
+            <f:viewAction action="#{userHome.initData()}" />
+        </f:metadata>
+    </ui:define>
+    
     <ui:remove>
         <ui:define name="body">
 
