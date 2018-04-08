@@ -39,6 +39,7 @@ import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigDescriptor;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
+import org.apache.deltaspike.core.api.config.view.navigation.NavigationParameterContext;
 import org.apache.deltaspike.core.api.literal.AnyLiteral;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
@@ -69,6 +70,9 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
 
     @Inject
     private ViewConfigResolver viewConfigResolver;
+    
+    @Inject
+    private NavigationParameterContext navigationParameterContext;
 
     @Inject
     private Identity identity;
@@ -162,9 +166,8 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     }
     
     public void refresh(){
-        PK eid = this.id;
         entity = null;
-        setId(eid);
+        initData();
     }
 
     /**
@@ -175,7 +178,8 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return 
      */
     public Class<? extends ViewConfig> create() {
-        createNew();
+        //createNew(); Burada entity'i newlemeye gerek yok çünkü redirect sonrası eid 0 olduğu için otomatik new olacak.
+        navigationParameterContext.addPageParameter("eid", 0);
         return getEditPage();
     }
     
@@ -425,26 +429,6 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         return null;
     }
 
-    
-    /**
-     * Verilen kaynak id'li olan veriden bir kopya çıkartır.
-     *
-     * @param sid
-     */
-    /* FIXME: Clonlama becerisine bir bakalım...
-     @SuppressWarnings("unchecked")
-     public void setSid(Long sid) {
-     //Yani eid 0 verilmiş ve yeni entity oluşturulmuş demek.
-     if (sid != null && sid != 0 && (entity == null || entityId() == null || entityId() == 0)) {
-
-     E src = entityManager.find(getEntityClass(), sid);
-     //Şimdide üzerine kopya alalım
-     entity = (E) EntityCloner.cloneEntity(src);
-     postClone();
-     }
-     this.sid = sid;
-     }
-     */
     public String getSelectedSubView() {
         return selectedSubView;
     }
@@ -513,20 +497,26 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     public PK getId() {
         return id;
     }
-
+    
     public void setId(PK id) {
-        if (entity != null && id != -1 && id.equals(this.id) && !getNeedCreateNew()) {
-            
-            if( isRequestNeedRefresh()){
-                refresh();
-            }
-            
-            return;
-        } //Zaten bu conv için entitymiz var elimizde...
+        this.id = id;
+    }
+
+    public void initData() {
 
         LOG.debug("ID ile setleniyor. ID : {} ", id);
 
+        //FIXME: Burada needRefresh kısmına ihtiyaç olacak mı? Şu anda sadece GET komutu ile çağrıldığında çalışıyor çünkü.
+
+        //Eğer zaten elimizde var olan bir entity'den bahsediyor isek tekrar yüklemeyelim. 
+        if( entity != null && entity.getId() != null && id != null && !getNeedCreateNew() && id.equals(entity.getId()) && !isRequestNeedRefresh()){
+            return;
+        }
+        
         if ( id == null || id == 0 || id == -1 || ( getNeedCreateNew() && id <= 0 )) {
+            //Eğer entity daha önceden hazırlanmış ise ( buraya gelmeden önce create edilmiş olabilir ) yeni oluşturmuyoruz.
+            if( entity != null && entity.getId() == null ) return;
+            //Yeni oluşturalım
             createNew();
         } else {
             entity = getRepository().findBy(id);
@@ -547,8 +537,6 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     public String getPermissionDomain() {
         Class<? extends FeatureHandler> cls = getFeatureClass();
         return cls.getAnnotation(Feature.class).permission();
-        //return this.getClass().getAnnotation(FormEdit.class).browsePage();
-        //return getEntity().getClass().getSimpleName();
     }
     
     public Class<? extends FeatureHandler> getFeatureClass(){
@@ -577,8 +565,6 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public Class<? extends ViewConfig> getBrowsePage() {
-        //return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).browsePage();
-        //return this.getClass().getAnnotation(FormEdit.class).browsePage();
         return findPage(PageType.BROWSE);
     }
 
@@ -588,8 +574,6 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public Class<? extends ViewConfig> getEditPage() {
-        //return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).editPage();
-        //return this.getClass().getAnnotation(FormEdit.class).editPage();
         return findPage(PageType.EDIT);
     }
 
@@ -620,8 +604,6 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public Class<? extends ViewConfig> getContainerViewPage() {
-        //return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).viewContainerPage();
-        //return this.getClass().getAnnotation(FormEdit.class).viewContainerPage();
         return findPage(PageType.VIEW);
     }
 
@@ -631,8 +613,6 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
      * @return
      */
     public Class<? extends ViewConfig> getMasterViewPage() {
-        //return ((FormEdit)(ProxyUtils.getUnproxiedClass(this.getClass()).getAnnotation(FormEdit.class))).masterViewPage();
-        //return this.getClass().getAnnotation(FormEdit.class).masterViewPage();
         return findPage(PageType.MASTER_VIEW);
     }
 
