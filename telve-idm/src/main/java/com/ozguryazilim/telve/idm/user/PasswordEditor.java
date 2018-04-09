@@ -13,6 +13,9 @@ import com.ozguryazilim.telve.config.OptionPane;
 import com.ozguryazilim.telve.idm.config.IdmPages;
 import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.messages.FacesMessages;
+
+import freemarker.template.utility.StringUtil;
+
 import javax.inject.Inject;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.apache.shiro.authc.credential.DefaultPasswordService;
@@ -43,21 +46,31 @@ public class PasswordEditor extends AbstractOptionPane{
         
         User user = userRepository.findAnyByLoginName(identity.getLoginName());
         
-        //FIXME: Eski parolayı da doğrulamak lazım.
-        
         if( user == null ){
             FacesMessages.error("passwordEditor.message.PasswordError");
             return;
         }
-
-
+        
+        // Eski parola var mı kontrol edelim.
+        if (Strings.isNullOrEmpty(oldPassword)) {
+            FacesMessages.error("passwordEditor.message.OldPasswordError");
+            return;
+        }
+        
+        DefaultPasswordService passwordService = new DefaultPasswordService();
+        
+        // Eski parolayı doğrulayalım.
+        if (!passwordService.passwordsMatch(oldPassword, user.getPasswordEncodedHash())) {
+        	FacesMessages.error("passwordEditor.message.OldPasswordError");
+            return;
+        }
+        
         //Yeni parola var mı bir kontrol edelim.
         if( Strings.isNullOrEmpty(newPassword)){
             FacesMessages.error("passwordEditor.message.PasswordError");
             return;
         }
 
-        DefaultPasswordService passwordService = new DefaultPasswordService();
         user.setPasswordEncodedHash(passwordService.encryptPassword(newPassword));
         
         
