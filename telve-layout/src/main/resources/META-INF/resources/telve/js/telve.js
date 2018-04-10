@@ -169,7 +169,7 @@ function maximazeDialog() {
         jQuery('.ui-dialog', parent.document).each(function () {
             wd = jQuery(this);
             var wv = wd.attr('data-widgetvar');
-            alert(wv);
+
             if (wv != undefined) {
                 //parent.PF(wv).toggleMaximize();
                 w = jQuery(parent.window).width();
