@@ -15,8 +15,10 @@ import com.ozguryazilim.telve.idm.role.RoleRepository;
 import com.ozguryazilim.telve.idm.user.UserRepository;
 import com.ozguryazilim.telve.idm.user.UserRoleRepository;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.naming.AuthenticationNotSupportedException;
 import javax.naming.NamingEnumeration;
@@ -41,6 +43,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.ldap.UnsupportedAuthenticationMechanismException;
 import org.apache.shiro.realm.ldap.JndiLdapRealm;
+import org.apache.shiro.realm.ldap.LdapContextFactory;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.slf4j.Logger;
@@ -67,6 +70,12 @@ public class TelveIdmRealm extends JndiLdapRealm {
      * LDAP doğrulaması kullanacak mıyız?
      */
     private Boolean useLdap = Boolean.FALSE;
+    
+    /**
+     * Multi LDAP doğrulaması kullanacak mıyız?
+     */
+    private Boolean useMultiLdap = Boolean.FALSE;
+    
     /**
      * LDAP kullanıcısı olmaması halinde veri tabanına bakacak mıyız?
      */
@@ -88,6 +97,11 @@ public class TelveIdmRealm extends JndiLdapRealm {
     private CredentialsMatcher ldapMatcher = new AllowAllCredentialsMatcher();
     private CredentialsMatcher idmMatcher = new PasswordMatcher();
 
+    /**
+     * Birden fazla LDAP bağlantısı kullanılabilmesi için domain=ldapcontext bilgisi
+     */
+    private Map<String,TelveLdapContext> ldapContexts = new HashMap<>();
+    
     public Boolean getUseLdap() {
         return useLdap;
     }
@@ -96,6 +110,15 @@ public class TelveIdmRealm extends JndiLdapRealm {
         this.useLdap = useLdap;
     }
 
+    public Boolean getUseMultiLdap() {
+        return useMultiLdap;
+    }
+
+    public void setUseMultiLdap(Boolean useMultiLdap) {
+        this.useMultiLdap = useMultiLdap;
+    }
+
+    
     public Boolean getOptionalLdap() {
         return optionalLdap;
     }
@@ -160,6 +183,16 @@ public class TelveIdmRealm extends JndiLdapRealm {
         this.defaultRole = defaultRole;
     }
 
+    public Map<String, TelveLdapContext> getLdapContexts() {
+        return ldapContexts;
+    }
+
+    public void setLdapContexts(Map<String, TelveLdapContext> ldapContexts) {
+        this.ldapContexts = ldapContexts;
+    }
+
+    
+    
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         //null usernames are invalid
@@ -221,11 +254,23 @@ public class TelveIdmRealm extends JndiLdapRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 
+        UsernamePasswordToken upToken = (UsernamePasswordToken) token;
+        String username = upToken.getUsername();
+        
+        //Kullanıcı adında MultiLDAP için domain kısmı varsa ayıklıyoruz. Domain adını da host ismi olarak yazıyoruz.
+        if( username.contains("\\")){
+            //RegEx + Java escape nedeniyle aslında sadece tek bir \ arıyoruz :)
+            String[] us = username.split("\\\\");
+            upToken.setUsername(us[1]);
+            upToken.setHost(us[0]);
+            username = us[1];
+        }
+        
         SimpleAuthenticationInfo info = null;
         if (useLdap) {
             try {
                 setCredentialsMatcher(ldapMatcher);
-                info = (SimpleAuthenticationInfo) queryForAuthenticationInfo(token, getContextFactory());
+                info = (SimpleAuthenticationInfo) queryForAuthenticationInfo(upToken, getContextFactory(upToken));
             } catch (AuthenticationNotSupportedException e) {
                 String msg = "Unsupported configured authentication mechanism";
                 throw new UnsupportedAuthenticationMechanismException(msg, e);
@@ -233,14 +278,13 @@ public class TelveIdmRealm extends JndiLdapRealm {
                 if (!optionalLdap) {
                     throw new AuthenticationException("LDAP authentication failed.", e);
                 }
-            } catch (NamingException e) {
+            } catch (NamingException e ) {
                 String msg = "LDAP naming error while attempting to authenticate user.";
                 throw new AuthenticationException(msg, e);
-            }
+            } catch ( Exception e ) {
+                throw new AuthenticationException("LDAP naming error while attempting to authenticate user.", e);
+            } 
         }
-
-        UsernamePasswordToken upToken = (UsernamePasswordToken) token;
-        String username = upToken.getUsername();
 
         // Null username is invalid
         if (username == null) {
@@ -425,6 +469,51 @@ public class TelveIdmRealm extends JndiLdapRealm {
     protected AuthenticationInfo createAuthenticationInfo(AuthenticationToken token, Object ldapPrincipal, Object ldapCredentials, LdapContext ldapContext) throws NamingException {
         return new SimpleAuthenticationInfo(new TelveSimplePrinciple(token.getPrincipal().toString()), token.getCredentials(), getName());
     }
+
+    /**
+     * MultiLDAP için context factory bulma yolunu değiştiriyoruz.
+     * @return 
+     */
+    public LdapContextFactory getContextFactory( UsernamePasswordToken token ) throws AuthenticationException{
+        //Eğer domain tanımlı değil ise varsayılan LDAP Context dönecek
+        if( !useMultiLdap || Strings.isNullOrEmpty(token.getHost()) ){
+            return super.getContextFactory();
+        } else {
+            TelveLdapContext cf = ldapContexts.get(token.getHost());
+            if( cf == null ){
+                throw new AuthenticationException("LDAP naming error while attempting to authenticate user.");
+            }
+            return cf.getContextFactory();
+        }
+        
+    }
+
+    /**
+     * MultiLDAP için LDAPPrincipal düzenlemesi
+     * @param token
+     * @return 
+     */
+    @Override
+    protected Object getLdapPrincipal(AuthenticationToken token) {
+        
+        //eğer multi LDAP ise 
+        if( useMultiLdap && token instanceof UsernamePasswordToken){
+            UsernamePasswordToken upToken = (UsernamePasswordToken)token;
+            if( !Strings.isNullOrEmpty(upToken.getHost())){
+                TelveLdapContext cf = ldapContexts.get(upToken.getHost());
+                if( cf == null ){
+                    throw new AuthenticationException("LDAP naming error while attempting to authenticate user.");
+                }
+                //Girilmiş olan template'de {0} olan parça değiştiriliyor.
+                return cf.getUserDnTemplate().replaceAll("{0}", upToken.getUsername());
+            } 
+        }
+        
+        //Aksi halde orjinal kullanılıyor.
+        return super.getLdapPrincipal(token); 
+    }
+
+    
 
     
 }
