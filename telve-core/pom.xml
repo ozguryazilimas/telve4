@@ -162,15 +162,7 @@
             <version>${project.version}</version>
         </dependency>
         
-        <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports</artifactId>
-        </dependency>
         
-        <dependency>
-            <groupId>net.sf.jasperreports</groupId>
-            <artifactId>jasperreports-fonts</artifactId>
-        </dependency>
 
             <dependency>
                 <groupId>org.infinispan</groupId>
@@ -346,10 +338,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>com.alexnederlof</groupId>
-                <artifactId>jasperreports-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

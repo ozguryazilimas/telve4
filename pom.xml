@@ -232,7 +232,6 @@
         <module>telve-doc</module>
         <!-- module>telve-help</module -->
         <module>telve-web</module>
-        <!-- module>telve-admin</module -->
         <module>telve-idm-model</module>
         <module>kahve</module>
         <module>telve-bpm</module>
@@ -256,6 +255,10 @@
         <module>telve-attachment-jpa-model</module>
         <module>telve-attachment-modeshape</module>
         <module>telve-attachment-ui</module>
+        <module>telve-jasperreports</module>
+        <module>telve-reports</module>
+        <module>telve-admin-reports</module>
+        <module>telve-idm-reports</module>
     </modules>
     
     <distributionManagement>

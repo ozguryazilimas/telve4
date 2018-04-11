@@ -8,11 +8,11 @@
     </parent>
 
     <groupId>com.ozguryazilim.mutfak</groupId>
-    <artifactId>telve-idm</artifactId>
+    <artifactId>telve-admin-reports</artifactId>
     <packaging>ejb</packaging>
 
-    <name>telve-idm</name>
-    <description>Telve User and Role Management UI Package</description>
+    <name>telve-admin-reports</name>
+    <description>Telve Admin Tools and Pages</description>
 
     <build>
         <resources>
@@ -24,13 +24,15 @@
                 <directory>src/main/resources</directory>
             </resource>
         </resources>
+        <plugins>
+            <plugin>
+                <groupId>com.alexnederlof</groupId>
+                <artifactId>jasperreports-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>dom4j</groupId>
-            <artifactId>dom4j</artifactId>
-        </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>telve-core</artifactId>
@@ -38,12 +40,8 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>telve-idm-model</artifactId>
+            <artifactId>telve-jasperreports</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-core</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
