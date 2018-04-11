@@ -259,6 +259,7 @@
         <module>telve-reports</module>
         <module>telve-admin-reports</module>
         <module>telve-idm-reports</module>
+        <module>telve-dynamicreports</module>
     </modules>
     
     <distributionManagement>

@@ -8,7 +8,6 @@ package com.ozguryazilim.telve.reports;
 import com.ozguryazilim.telve.config.LocaleSelector;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.messages.TelveResourceBundle;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -16,10 +15,7 @@ import java.util.ResourceBundle;
 import javax.inject.Inject;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRParameter;
-import org.apache.deltaspike.core.api.config.view.ViewConfig;
-import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.shiro.subject.Subject;
-import org.primefaces.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,12 +24,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author Hakan Uygun
  */
-public abstract class JasperReportBase implements ReportController, Serializable {
+public abstract class JasperReportBase extends AbstractReportBase{
 
     private static final Logger LOG = LoggerFactory.getLogger(JasperReportBase.class);
-
-    @Inject
-    private ViewConfigResolver viewConfigResolver;
 
     @Inject
     private JasperReportHandler jasperReportHandler;
@@ -46,49 +39,6 @@ public abstract class JasperReportBase implements ReportController, Serializable
     
     @Inject
     private Subject identity;
-
-    @Override
-    public void execute() {
-
-        Map<String, Object> options = new HashMap<>();
-        options.put("modal", true);
-        //options.put("draggable", false);  
-        options.put("resizable", false);
-        options.put("contentHeight", 450);
-
-        RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
-    }
-
-    /**
-     * Geriye açılacak olan popup için view adı döndürür.
-     *
-     * Bu view dialogBase sınıfından türetilmiş olmalıdır.
-     *
-     *
-     * @return
-     */
-    public String getDialogName() {
-        String viewId = getDialogPageViewId();
-        return viewId.substring(0, viewId.indexOf(".xhtml"));
-    }
-
-    /**
-     * Dialog için sınıf annotationı üzerinden aldığı Page ID'sini döndürür.
-     *
-     * @return
-     */
-    public String getDialogPageViewId() {
-        return viewConfigResolver.getViewConfigDescriptor(getDialogPage()).getViewId();
-    }
-
-    /**
-     * Sınıf işaretçisinden @Lookup page bilgisini alır
-     *
-     * @return
-     */
-    public Class<? extends ViewConfig> getDialogPage() {
-        return this.getClass().getAnnotation(Report.class).filterPage();
-    }
 
     /**
      * JasperReport'a gönderilecek parametreler setlenir. Eğer bir sorun varsa
@@ -178,22 +128,6 @@ public abstract class JasperReportBase implements ReportController, Serializable
     }
 
     /**
-     * Dialogu hiç bir şey seçmeden kapatır.
-     */
-    public void cancelDialog() {
-        //RequestContext.getCurrentInstance().closeDialog("Rapordan İptalle Çıkıldı");
-        RequestContext.getCurrentInstance().closeDialog(null);
-    }
-
-    protected String getTemplateName() {
-        String s = this.getClass().getAnnotation(Report.class).template();
-        if (s.isEmpty()) {
-            s = this.getClass().getSimpleName();
-        }
-        return s;
-    }
-
-    /**
      * Jasper rapor parametrelerini sistem tarafından gelen değerlerle
      * zenginleştirir.
      *
@@ -225,23 +159,4 @@ public abstract class JasperReportBase implements ReportController, Serializable
         params.put(JRParameter.REPORT_LOCALE, locale);
 
     }
-    
-    protected String getBundleName(){
-        //Önce Resource Bundle adını öğrenelim
-        String s = this.getClass().getAnnotation(Report.class).resource();
-        return s;
-    }
-    
-    /**
-     * Raporun yetki domainini döndürür.
-     * @return 
-     */
-    public String getPermission(){
-        String s = this.getClass().getAnnotation(Report.class).permission();
-        if (s.isEmpty()) {
-            s = this.getClass().getSimpleName();
-        }
-        return s;
-    }
-
 }
