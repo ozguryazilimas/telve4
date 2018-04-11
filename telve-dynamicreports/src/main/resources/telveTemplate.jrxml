@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="tekir_template" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="64ccd999-b792-4334-8b02-52fe38a9e4c6">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="tekir_template" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="64ccd999-b792-4334-8b02-52fe38a9e4c6">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<template><![CDATA["telve.jrtx"]]></template>
 	<subDataset name="Dataset1" uuid="95109dbe-7947-4cb0-8b2d-866c3916dbdc">
@@ -37,7 +37,7 @@
 				<reportElement x="440" y="10" width="105" height="70" uuid="fcc9a576-ff14-4e11-86e4-413e75cbf413"/>
 				<imageExpression><![CDATA[$P{FIRM_LOGO}]]></imageExpression>
 			</image>
-			<textField>
+			<textField isStretchWithOverflow="true">
 				<reportElement style="Base" x="0" y="47" width="430" height="23" uuid="1c9dbae9-dcc3-494d-bcd2-5faeba5ccc27"/>
 				<textFieldExpression><![CDATA[$P{REPORT_SUBTITLE}]]></textFieldExpression>
 			</textField>

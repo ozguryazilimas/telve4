@@ -24,6 +24,8 @@ import javax.imageio.ImageIO;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
+import net.sf.dynamicreports.jasper.builder.export.JasperCsvExporterBuilder;
+import net.sf.dynamicreports.jasper.builder.export.JasperXlsxExporterBuilder;
 import net.sf.dynamicreports.report.builder.style.TemplateStylesBuilder;
 import net.sf.dynamicreports.report.exception.DRException;
 import net.sf.jasperreports.engine.JRDataSource;
@@ -72,7 +74,7 @@ public abstract class DynamicReportBase<F> extends AbstractReportBase{
      * Rapor detayları bu method içerisinde hazırlanacak
      * @param report 
      */
-    protected abstract void buildReport( JasperReportBuilder report );
+    protected abstract void buildReport( JasperReportBuilder report, Boolean forExport );
     
     /**
      * Rapor parametrelerinin alt sınıflar tarafından değiştirilebilmesini sağlar.
@@ -182,22 +184,33 @@ public abstract class DynamicReportBase<F> extends AbstractReportBase{
             .setParameters(params)
             .setSubtotalStyle(stl.templateStyle("Subtotal"));
                 
-        buildReport( rb );
+        buildReport( rb, Boolean.FALSE );
+        
+        return rb;
+    }
+    
+    protected JasperReportBuilder initReportForExport() throws DRException{
+        Map<String,Object> params = new HashMap<>();
+        
+        decorateI18NParams(params);
+        decorateParams(params);
+        
+        JasperReportBuilder rb = report()
+            .ignorePageWidth()
+	    .ignorePagination()
+            .setParameters(params);
+                
+        buildReport( rb, Boolean.TRUE );
         
         return rb;
     }
     
     public void execPDF() {
         
-        //System ayarlarından raporlar icin tanimlanan on eki alir.
-        String repPrefix = ConfigResolver.getProjectStageAwarePropertyValue("report.prefix");
-        repPrefix = repPrefix == null ? "" : repPrefix + "_";
-        
         HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
         response.reset();
         response.setContentType("application/pdf");
-        
-        response.setHeader("Content-disposition", "attachment;filename=" + repPrefix + getResultFileName() );
+        response.setHeader("Content-disposition", "attachment;filename=" + getResultFileName() + ".pdf");
 
         try {
 
@@ -213,6 +226,82 @@ public abstract class DynamicReportBase<F> extends AbstractReportBase{
 
             facesContext.responseComplete();
         } catch (IOException ex) {
+            LOG.error("Report generation exception", ex);
+            FacesMessages.error("Error while downloading the file: " + getResultFileName() );
+        }
+        
+    }
+    
+    
+    public void execCSV() {
+        
+        HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+        response.reset();
+        response.setContentType("text/csv");
+        response.setHeader("Content-disposition", "attachment;filename=" + getResultFileName() + ".csv");
+
+        try {
+
+            
+            
+            try (OutputStream out = response.getOutputStream()) {
+                
+                JasperCsvExporterBuilder exb = export.csvExporter(out)
+                        .setFieldDelimiter(","); //TODO: Burda değeri kullanıcı ayarlarından alalım. Yeni exceller ; kullanıyor
+                        
+                        
+                initReportForExport()
+                    .setDataSource(getReportDataSource())
+                    .toCsv(exb);
+
+                out.flush();
+            } catch (DRException ex) {
+                LOG.error("Report cannot generated", ex);
+            }
+
+            facesContext.responseComplete();
+        } catch (IOException ex) {
+            LOG.error("Report generation exception", ex);
+            FacesMessages.error("Error while downloading the file: " + getResultFileName() );
+        }
+        
+    }
+    
+    public void execXLS() {
+        
+        HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+        response.reset();
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-disposition", "attachment;filename=" + getResultFileName() + ".xlsx");
+
+        try {
+
+            try (OutputStream out = response.getOutputStream()) {
+                
+                JasperXlsxExporterBuilder exb = export.xlsxExporter(out)
+                        .setIgnoreAnchors(Boolean.TRUE)
+                        .setIgnoreCellBackground(Boolean.TRUE)
+                        .setIgnoreCellBorder(Boolean.TRUE)
+                        .setIgnoreGraphics(Boolean.TRUE)
+                        .setIgnoreHyperLink(Boolean.TRUE)
+                        .setIgnorePageMargins(Boolean.TRUE)
+                        .setWhitePageBackground(Boolean.FALSE)
+                        .setRemoveEmptySpaceBetweenColumns(Boolean.TRUE)
+                        .setRemoveEmptySpaceBetweenRows(Boolean.TRUE)
+                        .setDetectCellType(Boolean.TRUE);
+                        
+                initReportForExport()
+                    .setDataSource(getReportDataSource())
+                    .toXlsx(exb);
+
+                out.flush();
+            } catch (DRException ex) {
+                LOG.error("Report cannot generated", ex);
+            }
+
+            facesContext.responseComplete();
+        } catch (IOException ex) {
+            LOG.error("Report generation exception", ex);
             FacesMessages.error("Error while downloading the file: " + getResultFileName() );
         }
         
