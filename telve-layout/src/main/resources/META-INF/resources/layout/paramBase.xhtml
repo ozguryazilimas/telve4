@@ -120,7 +120,7 @@
         <li>
             <p:commandLink action="#{homeBean.createNew()}" 
                            styleClass="context-command" 
-                           update=":form"
+                           update=":form" resetValues="true"
                            partialSubmit="true" process="@this">
                 <i class="fa fa-plus-circle"></i>
                 <h:outputText value=" #{messages['general.button.New']}" />
