@@ -6,6 +6,7 @@
 package com.ozguryazilim.telve.utils;
 
 import com.google.common.base.Splitter;
+import com.ozguryazilim.telve.messages.Messages;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.ScheduleExpression;
@@ -227,4 +228,20 @@ public class DateUtils {
     public static DateTimeFormatter getDateTimeFormatter(){
         return formatter;
     }
+
+    /**
+     * i18n dosyalarında tanımlanmış formata göre Date To String çevrimi yapar.
+     * aynı anahtarı UI tarafında da kullanıyoruz.
+     * 
+     * TODO: Daha performanslı bir hale getirebiliriz sanırım.
+     * 
+     * @param date
+     * @return 
+     */
+    public static String dateToStr( Date date){
+        String pattern = Messages.getMessage("general.format.Date");
+        DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
+        return formatter.print(new DateTime(date));
+    }
+    
 }

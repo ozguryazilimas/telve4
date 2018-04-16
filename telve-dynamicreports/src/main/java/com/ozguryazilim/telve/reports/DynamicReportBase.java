@@ -157,6 +157,14 @@ public abstract class DynamicReportBase<F> extends AbstractReportBase{
     }
     
     /**
+     * Raporun yatay mı yoksa dikey mi olacağı?
+     * @return 
+     */
+    protected Boolean isReportPotrait(){
+        return Boolean.TRUE;
+    }
+    
+    /**
      * Rapor için taban şablon ve gereklilikler tanımlanıyor.
      * @throws DRException 
      */
@@ -170,7 +178,13 @@ public abstract class DynamicReportBase<F> extends AbstractReportBase{
         decorateParams(params);
         
         //Template'lerin isimleri configden alınıyor. Bu sayede uygulamalar override edebilir. Varsayılan değerler bu proje içerisinde.
-        InputStream ist = getClass().getResourceAsStream("/" + ConfigResolver.getPropertyValue("dynamicreports.template", "telveTemplate.jrxml"));
+        InputStream ist = null;
+        if( isReportPotrait() ){
+            ist = getClass().getResourceAsStream("/" + ConfigResolver.getPropertyValue("dynamicreports.template.potrait", "telveTemplatePotrait.jrxml"));
+        } else {
+            ist = getClass().getResourceAsStream("/" + ConfigResolver.getPropertyValue("dynamicreports.template.landscape", "telveTemplateLandscape.jrxml"));
+        }
+         
         InputStream iss = getClass().getResourceAsStream("/" + ConfigResolver.getPropertyValue("dynamicreports.styles", "telve.jrtx"));
         
         TemplateStylesBuilder tsb = stl.loadStyles(iss);
