@@ -16,7 +16,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
-import javax.enterprise.context.ContextNotActiveException;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
@@ -113,7 +112,7 @@ public class Messages {
         try{
             //Oturum varsa kullanıcı dil seçimini al
             l = LocaleSelector.instance().getLocale();
-        } catch ( ContextNotActiveException e ){
+        } catch ( Exception e ){
             //Session'a sahip olmayan bir yerden çağrılırsa eğer uygulama'nın değerini al.
             //Mesela camel şeysilerinden.
             l = new Locale(ConfigResolver.getPropertyValue("application.locale", "tr"));

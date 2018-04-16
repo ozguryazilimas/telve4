@@ -28,13 +28,13 @@
 				<textFieldExpression><![CDATA[$P{REPORT_TITLE}]]></textFieldExpression>
 			</textField>
 			<frame>
-				<reportElement style="Base" x="0" y="4" width="430" height="37" uuid="787fa1da-c552-42dd-bc4c-c812741aa6fd"/>
+				<reportElement style="Base" x="0" y="4" width="440" height="37" uuid="787fa1da-c552-42dd-bc4c-c812741aa6fd"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
 			</frame>
 			<image hAlign="Center" vAlign="Middle">
-				<reportElement x="440" y="10" width="105" height="70" uuid="fcc9a576-ff14-4e11-86e4-413e75cbf413"/>
+				<reportElement x="450" y="0" width="105" height="70" uuid="fcc9a576-ff14-4e11-86e4-413e75cbf413"/>
 				<imageExpression><![CDATA[$P{FIRM_LOGO}]]></imageExpression>
 			</image>
 			<textField isStretchWithOverflow="true">
@@ -54,17 +54,18 @@
 	</columnFooter>
 	<pageFooter>
 		<band height="48" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
 			<textField pattern="dd.MM.yyy hh:mm">
-				<reportElement x="0" y="5" width="100" height="30" uuid="089f5673-bb58-462f-8275-3d842790dc67"/>
+				<reportElement x="0" y="0" width="185" height="48" uuid="089f5673-bb58-462f-8275-3d842790dc67"/>
 				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="240" y="5" width="80" height="30" uuid="75c1862a-32e7-45d4-92b5-bda775650a0d"/>
+				<reportElement x="185" y="0" width="185" height="48" uuid="75c1862a-32e7-45d4-92b5-bda775650a0d"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + "/" + $V{PAGE_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement style="Base" x="450" y="5" width="100" height="30" uuid="d8c79b5e-c75d-41af-b128-06b7d9b21336"/>
+				<reportElement style="Base" x="370" y="0" width="185" height="48" uuid="d8c79b5e-c75d-41af-b128-06b7d9b21336"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$P{FIRM_TITLE}]]></textFieldExpression>
 			</textField>

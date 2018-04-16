@@ -160,18 +160,18 @@ public abstract class DynamicReportBase<F> extends AbstractReportBase{
      * Rapor için taban şablon ve gereklilikler tanımlanıyor.
      * @throws DRException 
      */
-    protected JasperReportBuilder initReport() throws DRException{
+    public JasperReportBuilder initReport() throws DRException{
         Map<String,Object> params = new HashMap<>();
         params.put("REPORT_TITLE",  Messages.getMessage(getReportTitle()));
         params.put("REPORT_SUBTITLE", Messages.getMessage(getReportSubTitle()));
     
-        decorateI18NParams(params);
+        //decorateI18NParams(params);
         decorateBrand(params);
         decorateParams(params);
         
         //Template'lerin isimleri configden alınıyor. Bu sayede uygulamalar override edebilir. Varsayılan değerler bu proje içerisinde.
-        InputStream ist = getClass().getResourceAsStream("/" + ConfigResolver.getPropertyValue("dynamicreports.template"));
-        InputStream iss = getClass().getResourceAsStream("/" + ConfigResolver.getPropertyValue("dynamicreports.styles"));
+        InputStream ist = getClass().getResourceAsStream("/" + ConfigResolver.getPropertyValue("dynamicreports.template", "telveTemplate.jrxml"));
+        InputStream iss = getClass().getResourceAsStream("/" + ConfigResolver.getPropertyValue("dynamicreports.styles", "telve.jrtx"));
         
         TemplateStylesBuilder tsb = stl.loadStyles(iss);
         
@@ -305,5 +305,9 @@ public abstract class DynamicReportBase<F> extends AbstractReportBase{
             FacesMessages.error("Error while downloading the file: " + getResultFileName() );
         }
         
+    }
+    
+    protected String msg( String key ){
+        return Messages.getMessage(key);
     }
 }
