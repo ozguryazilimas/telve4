@@ -239,7 +239,11 @@ public class JcrController {
 
         Node cn = node.getNode("jcr:content");
 
-        fm.setMimeType(cn.getProperty("jcr:mimeType").getString());
+        try{
+            fm.setMimeType(cn.getProperty("jcr:mimeType").getString());
+        } catch( Exception ex ){
+            LOG.warn("MimeType not found", ex);
+        }
 
         return fm;
     }
@@ -432,7 +436,11 @@ public class JcrController {
 
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
 
+        try{
         response.setContentType(content.getProperty("jcr:mimeType").getString());
+        } catch ( Exception ex ){
+            LOG.warn("MimeType not found", ex);
+        }
 
         response.setHeader("Content-disposition", "attachment;filename=" + node.getName());
         response.setContentLength((int) content.getProperty("jcr:data").getBinary().getSize());
