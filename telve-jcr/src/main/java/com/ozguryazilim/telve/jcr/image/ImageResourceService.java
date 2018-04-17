@@ -42,10 +42,10 @@ public class ImageResourceService {
         Node cn = getImageContent( id );
         
         //MimeType Mapping
-        String mt = cn.getProperty("jcr:mimeType").getString();//new MimetypesFileTypeMap().getContentType(cn.getProperty("jcr:mimeType").getString());
+        //String mt = cn.getProperty("jcr:mimeType").getString();//new MimetypesFileTypeMap().getContentType(cn.getProperty("jcr:mimeType").getString());
         
         //İçeriği yollayalım.
-        return Response.ok(cn.getProperty("jcr:data").getBinary().getStream(), mt).build();
+        return Response.ok(cn.getProperty("jcr:data").getBinary().getStream()).build();
         
     }
     
