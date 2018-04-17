@@ -1,9 +1,9 @@
 <ui:component xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:composite="http://java.sun.com/jsf/composite"
-                xmlns:f="http://xmlns.jcp.org/jsf/core">
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:composite="http://java.sun.com/jsf/composite"
+              xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 
     <composite:interface>
@@ -14,6 +14,9 @@
         <composite:attribute name="multiSelect" required="false" default="false"/>
         <composite:attribute name="leafSelect" required="false" default="false"/>
         <composite:attribute name="fullPath" required="false" default="true"/>
+        <composite:attribute name="queryDelay" required="false" default="1000"/>
+        <composite:attribute name="minQueryLength" required="false" default="3"/>
+        <composite:attribute name="maxResults" required="false" default="20"/>
         <composite:attribute name="lookupBean" required="true"/>
         <composite:attribute name="lookupListener" required="true"/>
         <composite:attribute name="lookupProfile" required="false" default=""/>
@@ -37,7 +40,9 @@
                                     var="item"
                                     itemLabel="#{item[ empty cc.attrs.caption ? cc.attrs.lookupBean.captionFieldName : cc.attrs.caption]}"
                                     itemValue="#{item}"
-                                    queryDelay="500"
+                                    queryDelay="#{cc.attrs.queryDelay}"
+                                    minQueryLength="#{cc.attrs.minQueryLength}"
+                                    maxResults="#{cc.attrs.maxResults}"
                                     converter="entityConverter"
                                     required="#{cc.attrs.required}"
                                     disabled="#{cc.attrs.disabled}"
@@ -50,11 +55,11 @@
                         <f:attribute name="lookupListener" value="#{cc.attrs.lookupListener}" />
                     </p:autoComplete>
                     <div class="input-group-btn">
-                    <p:commandButton action="#{cc.attrs.lookupBean.openDialog( cc.attrs.multiSelect, cc.attrs.leafSelect, cc.attrs.fullPath, cc.attrs.lookupProfile, cc.attrs.lookupListener, cc.attrs.value )}" 
-                                     partialSubmit="true" process="@this" icon="fa fa-search" styleClass="btn btn-default" disabled="#{cc.attrs.disabled}">
-                        <p:ajax event="dialogReturn"  listener="#{cc.attrs.lookupBean.onSelect}" update="#{cc.id}_inp,#{cc.attrs.update}" partialSubmit="true" process="@this" />   
-                    </p:commandButton>
-                        </div>
+                        <p:commandButton action="#{cc.attrs.lookupBean.openDialog( cc.attrs.multiSelect, cc.attrs.leafSelect, cc.attrs.fullPath, cc.attrs.lookupProfile, cc.attrs.lookupListener, cc.attrs.value )}" 
+                                         partialSubmit="true" process="@this" icon="fa fa-search" styleClass="btn btn-default" disabled="#{cc.attrs.disabled}">
+                            <p:ajax event="dialogReturn"  listener="#{cc.attrs.lookupBean.onSelect}" update="#{cc.id}_inp,#{cc.attrs.update}" partialSubmit="true" process="@this" />   
+                        </p:commandButton>
+                    </div>
                 </div>
             </span>
             <p:message for="#{cc.id}_inp" display="tooltip"/>
