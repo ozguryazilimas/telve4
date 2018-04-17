@@ -1,9 +1,9 @@
 <ui:component xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:composite="http://java.sun.com/jsf/composite"
-                xmlns:f="http://xmlns.jcp.org/jsf/core">
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:composite="http://java.sun.com/jsf/composite"
+              xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 
     <composite:interface>
@@ -15,6 +15,7 @@
         <composite:attribute name="placeholder" required="false"/>
         <composite:attribute name="queryDelay" required="false" default="1000"/>
         <composite:attribute name="minQueryLength" required="false" default="3"/>
+        <composite:attribute name="maxResults" required="false" default="20"/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="columnClass" required="false" default="col-md-6 col-xs-12"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
@@ -34,6 +35,7 @@
                                 itemValue="#{item}"
                                 queryDelay="#{cc.attrs.queryDelay}"
                                 minQueryLength="#{cc.attrs.minQueryLength}"                                
+                                maxResults="#{cc.attrs.maxResults}"
                                 converter="entityConverter"
                                 required="#{cc.attrs.required}"
                                 disabled="#{cc.attrs.disabled}"

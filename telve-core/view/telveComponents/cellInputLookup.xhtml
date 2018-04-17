@@ -14,6 +14,7 @@
         <composite:attribute name="placeholder" required="false"/>
         <composite:attribute name="queryDelay" required="false" default="1000"/>
         <composite:attribute name="minQueryLength" required="false" default="3"/>
+        <composite:attribute name="maxResults" required="false" default="20"/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:clientBehavior name="change" event="itemSelect" targets="#{cc.id}_inp" />
     </composite:interface>
@@ -29,6 +30,7 @@
                                 itemValue="#{item}"
                                 queryDelay="#{cc.attrs.queryDelay}"
                                 minQueryLength="#{cc.attrs.minQueryLength}"
+                                maxResults="#{cc.attrs.maxResults}"
                                 converter="entityConverter"
                                 required="#{cc.attrs.required}"
                                 disabled="#{cc.attrs.disabled}"
