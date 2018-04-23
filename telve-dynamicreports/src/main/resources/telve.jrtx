@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio -->
+<jasperTemplate xmlns="http://jasperreports.sourceforge.net/jasperreports/template" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/template http://jasperreports.sourceforge.net/xsd/jaspertemplate.xsd">
+	<style name="Base" isDefault="true" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="10" pdfFontName="DejaVu Sans" pdfEncoding="CP1254 (Turkish)" isPdfEmbedded="true">
+		<box padding="2"/>
+	</style>
+	<style name="Bold" style="Base" isBold="true" isPdfEmbedded="true"/>
+	<style name="Date" style="Base" pattern="dd." isPdfEmbedded="true"/>
+	<style name="Header" style="Bold" forecolor="#190C91" hTextAlign="Left" fontSize="16"/>
+	<style name="ColumnTitle" style="Bold" hTextAlign="Center" isBold="true" isPdfEmbedded="true">
+		<box>
+			<pen lineColor="#706E6E"/>
+			<bottomPen lineWidth="1.0"/>
+		</box>
+	</style>
+	<style name="Subtotal" style="Bold" isBold="true" isPdfEmbedded="true">
+		<box>
+			<pen lineColor="#706E6E"/>
+			<topPen lineWidth="1.0" lineColor="#706E6E"/>
+		</box>
+	</style>
+</jasperTemplate>

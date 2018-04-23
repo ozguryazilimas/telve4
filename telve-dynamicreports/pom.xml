@@ -8,11 +8,11 @@
     </parent>
 
     <groupId>com.ozguryazilim.mutfak</groupId>
-    <artifactId>telve-idm</artifactId>
+    <artifactId>telve-dynamicreports</artifactId>
     <packaging>ejb</packaging>
 
-    <name>telve-idm</name>
-    <description>Telve User and Role Management UI Package</description>
+    <name>telve-dynamicreports</name>
+    <description>Telve DynamicReports Module</description>
 
     <build>
         <resources>
@@ -28,22 +28,39 @@
 
     <dependencies>
         <dependency>
-            <groupId>dom4j</groupId>
-            <artifactId>dom4j</artifactId>
-        </dependency>
-        <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>telve-core</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>telve-idm-model</artifactId>
+            <artifactId>telve-reports</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-core</artifactId>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-fonts</artifactId>
+        </dependency>
+        
+        <dependency>
+	  <groupId>net.sourceforge.dynamicreports</groupId>
+	  <artifactId>dynamicreports-core</artifactId>
+	  <version>5.1.0</version>
+	</dependency>
+	<dependency>
+	  <groupId>net.sourceforge.dynamicreports</groupId>
+	  <artifactId>dynamicreports-adhoc</artifactId>
+	  <version>5.1.0</version>
+	</dependency>   
+        
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

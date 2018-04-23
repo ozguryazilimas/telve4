@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="tekir_template" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="64ccd999-b792-4334-8b02-52fe38a9e4c6">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<template><![CDATA["telve.jrtx"]]></template>
+	<subDataset name="Dataset1" uuid="95109dbe-7947-4cb0-8b2d-866c3916dbdc">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<parameter name="REPORT_TITLE" class="java.lang.String"/>
+	<parameter name="FIRM_LOGO" class="java.awt.image.BufferedImage" isForPrompting="false"/>
+	<parameter name="FIRM_TITLE" class="java.lang.String"/>
+	<parameter name="REPORT_SUBTITLE" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="83" splitType="Stretch">
+			<textField>
+				<reportElement key="" style="Header" x="0" y="10" width="289" height="37" forecolor="#0B159E" uuid="b3adb41a-5197-43db-89d3-b8fa47a2e507"/>
+				<textElement>
+					<font fontName="DejaVu Sans" size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{REPORT_TITLE}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement style="Base" x="0" y="4" width="440" height="37" uuid="787fa1da-c552-42dd-bc4c-c812741aa6fd"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+			</frame>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="450" y="0" width="105" height="70" uuid="fcc9a576-ff14-4e11-86e4-413e75cbf413"/>
+				<imageExpression><![CDATA[$P{FIRM_LOGO}]]></imageExpression>
+			</image>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="Base" x="0" y="47" width="430" height="23" uuid="1c9dbae9-dcc3-494d-bcd2-5faeba5ccc27"/>
+				<textFieldExpression><![CDATA[$P{REPORT_SUBTITLE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="48" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<textField pattern="dd.MM.yyy hh:mm">
+				<reportElement x="0" y="0" width="185" height="48" uuid="089f5673-bb58-462f-8275-3d842790dc67"/>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="185" y="0" width="185" height="48" uuid="75c1862a-32e7-45d4-92b5-bda775650a0d"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER} + "/" + $V{PAGE_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Base" x="370" y="0" width="185" height="48" uuid="d8c79b5e-c75d-41af-b128-06b7d9b21336"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$P{FIRM_TITLE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
