@@ -514,6 +514,10 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         }
         
         if ( id == null || id == 0 || id == -1 || ( getNeedCreateNew() )) {
+            
+            //Eğer daha önce home tarafında hazırlanmışsa çıkalım.
+            if( entity != null && entity.getId() == null && !getNeedCreateNew()) return;
+            
             //Yeni oluşturalım
             createNew();
         } else {
