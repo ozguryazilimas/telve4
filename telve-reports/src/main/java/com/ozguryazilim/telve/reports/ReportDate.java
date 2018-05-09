@@ -129,7 +129,6 @@ public class ReportDate implements Serializable {
         VALUE_TYPES.add(DateValueType.Today);
         VALUE_TYPES.add(DateValueType.Tomorrow);
         VALUE_TYPES.add(DateValueType.Yesterday);
-        VALUE_TYPES.add(DateValueType.Yesterday);
         VALUE_TYPES.add(DateValueType.FirstDayOfWeek);
         VALUE_TYPES.add(DateValueType.LastDayOfWeek);
         VALUE_TYPES.add(DateValueType.TenDaysBefore);
