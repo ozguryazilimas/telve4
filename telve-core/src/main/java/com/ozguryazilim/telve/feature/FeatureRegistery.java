@@ -8,14 +8,16 @@ package com.ozguryazilim.telve.feature;
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.feature.search.AbstractFeatureSearchHandler;
 import com.ozguryazilim.telve.feature.search.Search;
+
+import org.apache.deltaspike.core.api.provider.BeanProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.apache.deltaspike.core.api.provider.BeanProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Sistemde tanımlı feature'ların listesini tutar.
@@ -48,6 +50,11 @@ public class FeatureRegistery {
      * Feature İsmi ile SearchHandler mappingi
      */
     private static Map<String,Class<? extends AbstractFeatureSearchHandler>> featureSearchMap = new HashMap<>();
+
+    /**
+     * Feature kategorisi ile Feature ismi mappingi
+     */
+    private static Map<FeatureCategory, ArrayList<String>> featureCategorySearchMap = new HashMap<>();
     
     public static void register( Feature a, Class annoatedClass ){
         //FIXME: name diye bir kolonumuz olmasın. Gereksiz kafa karıştırıcı olacak. Doğrudan sınıf adını kullanalım
@@ -64,12 +71,17 @@ public class FeatureRegistery {
         }
         
         Search sa = (Search) annoatedClass.getAnnotation(Search.class);
+        FeatureCategory[] featureCategory = a.category();
         if( sa != null ){
             featureSearchMap.put(featureName, sa.handler());
+
+            for (FeatureCategory fc : featureCategory) {
+                mapFeatureNameToCategory(fc, featureName);
+            }
         }
         
         
-        LOG.info("Featue {} is registered for class {}", featureName, a.forEntity().getClass().getSimpleName());
+        LOG.info("Feature {} is registered for class {}", featureName, a.forEntity().getClass().getSimpleName());
     }
     
     
@@ -161,9 +173,31 @@ public class FeatureRegistery {
         return new ArrayList<>(featureSearchMap.keySet());
     }
 
+    /**
+     * Verilen kategoriye göre searchable featureların isim listesini döndürür.
+     * @param category
+     * @return
+     */
+    public static List<String> getSearchableFeatureNamesByCategory(FeatureCategory category) {
+        ArrayList<String> featureList = featureCategorySearchMap.get(category);
+        return featureList == null ? new ArrayList<>() : featureList;
+    }
+
     public static AbstractFeatureSearchHandler getSearchHandler( String name ){
         //TODO: NPE check
         return (AbstractFeatureSearchHandler) BeanProvider.getContextualReference( featureSearchMap.get(name), true);
+    }
+
+    private static synchronized void mapFeatureNameToCategory(FeatureCategory fc,
+                                                              String featureName) {
+        ArrayList<String> featureNameList =  featureCategorySearchMap.get(fc);
+        if(featureNameList == null) {
+            featureNameList = new ArrayList<>();
+            featureNameList.add(featureName);
+        } else {
+            featureNameList.add(featureName);
+        }
+        featureCategorySearchMap.put(fc, featureNameList);
     }
     
 }

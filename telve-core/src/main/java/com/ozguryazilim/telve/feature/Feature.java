@@ -10,6 +10,9 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Stereotype;
 import javax.inject.Named;
@@ -57,4 +60,16 @@ public @interface Feature {
      * @return 
      */
     Class<?> forEntity() default Object.class;
+
+    /**
+     * Özelliğin ait olduğu kategoriler. FeatureCategory'den alınır.
+     *
+     * Örneğin: ACCOUNTABLE, NON_ACCOUNTABLE
+     *
+     * varsayılan olarak yalnızca NON_ACCOUNTABLE içeren bir array döner.
+     *
+     * @return
+     */
+
+    FeatureCategory[] category() default {FeatureCategory.NON_ACCOUNTABLE};
 }

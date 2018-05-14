@@ -8,6 +8,7 @@ package com.ozguryazilim.telve.feature.search;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.entities.FeaturePointer;
+import com.ozguryazilim.telve.feature.FeatureCategory;
 import com.ozguryazilim.telve.feature.FeatureLink;
 import com.ozguryazilim.telve.feature.FeatureRegistery;
 import com.ozguryazilim.telve.lookup.Lookup;
@@ -340,6 +341,10 @@ public abstract class AbtsractFeatureLookup implements Serializable{
     public List<String> getSearchableFeatures(){
         //FIXME: Burada aranılabilir ve Profile'da istenelinler geriye döndürülecek sadece.
         return FeatureRegistery.getSearchableFeatureNames();
+    }
+
+    public List<String> getSearchableFeaturesByCategory(FeatureCategory category) {
+        return FeatureRegistery.getSearchableFeatureNamesByCategory(category);
     }
 
     public String getSearchText() {
