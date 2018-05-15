@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ozguryazilim.telve.forms;
 
 import com.google.common.base.Strings;
@@ -16,6 +11,7 @@ import com.ozguryazilim.telve.feature.FeatureHandler;
 import com.ozguryazilim.telve.feature.Page;
 import com.ozguryazilim.telve.feature.PageType;
 import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.messages.Messages;
 import com.ozguryazilim.telve.qualifiers.AfterLiteral;
 import com.ozguryazilim.telve.qualifiers.BeforeLiteral;
 import com.ozguryazilim.telve.qualifiers.EntityQualifierLiteral;
@@ -45,6 +41,7 @@ import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.apache.deltaspike.core.util.ProxyUtils;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
+import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -220,14 +217,31 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             
             auditLog(act);
         } catch (EntityExistsException e) {
-            LOG.error("Hata : Not Unique", e);
-            FacesMessages.error("general.message.record.NotUnique", e.getLocalizedMessage());
+            LOG.error("Error : Not Unique ", e);
+            FacesMessages.error("general.message.record.NotUnique", "general.message.record.NotUniqueDetail");
             throw new RuntimeException();
         } catch ( Exception e ){
             //FIXME: Asıl detay hatanın bulunması lazım.
-            LOG.error("Hata : Constraint Violation", e);
-            FacesMessages.error("general.message.record.ConstraintViolation", e.getLocalizedMessage());
-            throw new RuntimeException();
+            if (e.getCause() instanceof ConstraintViolationException) {
+                LOG.error("Error : Constraint Violation ", e);
+                ConstraintViolationException cause = (ConstraintViolationException) e.getCause();
+
+                String fieldName = Messages
+                    .getMessage("constraintName." + cause.getConstraintName());
+                String errorMsg = Messages.getMessageFromData(Messages.getCurrentLocale(),
+                    "general.message.exception.ConstraintViolationException$%&" + fieldName);
+                FacesMessages
+                    .error(errorMsg,
+                        "general.message.exception.ConstraintViolationExceptionDetail");
+
+                throw new RuntimeException();
+            } else {
+                LOG.error("Error : other error ", e);
+                FacesMessages
+                    .error("general.message.exception.OtherException", "general.message.exception.OtherExceptionDetail");
+                throw new RuntimeException();
+
+            }
         }
 
         LOG.debug("Entity Saved : {0} ", entity);
