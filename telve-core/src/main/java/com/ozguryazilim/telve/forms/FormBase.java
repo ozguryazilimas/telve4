@@ -199,7 +199,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
                     .select(new BeforeLiteral())
                     .fire(new EntityChangeEvent(getEntity(), eca ));
             
-            entity = getRepository().saveAndFlush(entity);
+            entity = getRepository().merge(entity);
 
             //Save'den sonra elde sakladığımız id'yi değiştirelim ki bir sonraki request için ortalık karışmasın ( bakınız setId )
             this.id = (PK) entity.getId();

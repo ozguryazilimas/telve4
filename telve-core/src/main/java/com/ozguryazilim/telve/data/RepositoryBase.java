@@ -151,6 +151,13 @@ public abstract class RepositoryBase<E extends EntityBase, R extends ViewModel> 
         em.remove(entity);
         em.flush();
     }
+
+    public E merge(E entity) {
+        EntityManager em = entityManager();
+        entity = em.merge(entity);
+        em.flush();
+        return entity;
+    }
     
     public abstract void deleteById( Long id );
     

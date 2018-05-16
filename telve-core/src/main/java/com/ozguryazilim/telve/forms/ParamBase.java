@@ -126,7 +126,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
             String act =
                 entity.isPersisted() ? AuditLogCommand.ACT_UPDATE : AuditLogCommand.ACT_INSERT;
 
-            entity = getRepository().saveAndFlush(entity);
+            entity = getRepository().merge(entity);
 
             auditLog(act);
 
