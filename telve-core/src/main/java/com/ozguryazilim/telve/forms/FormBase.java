@@ -238,7 +238,8 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             } else {
                 LOG.error("Error : other error ", e);
                 FacesMessages
-                    .error("general.message.exception.OtherException", "general.message.exception.OtherExceptionDetail");
+                    .error("general.message.exception.OtherException",
+                        "general.message.exception.OtherExceptionDetail");
                 throw new RuntimeException();
 
             }

@@ -14,6 +14,7 @@ import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.entities.ParamEntityBase;
 import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.messages.Messages;
 import com.ozguryazilim.telve.view.Pages;
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -23,6 +24,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
+import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -116,39 +118,52 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
             return Pages.Home.class;
         }
 
-        if (!onBeforeSave()) {
-            return null;
-        }
+        try {
+            if (!onBeforeSave()) {
+                return null;
+            }
 
-        String act = entity.isPersisted() ? AuditLogCommand.ACT_UPDATE : AuditLogCommand.ACT_INSERT;
-        
-        if (!entity.isPersisted()) {
-            //Eğer ParamEntityBase'den gelen bir entity ise Unique Code olup olmadığını bir kontrol edelim...
-            if (getRepository() instanceof ParamRepositoryBase
-                    && entity instanceof ParamEntityBase) {
-                ParamEntityBase pe = (ParamEntityBase) entity;
-                List<E> ls = ((ParamRepositoryBase) getRepository()).findByCode(pe.getCode());
-                if (!ls.isEmpty()) {
-                    FacesMessages.error("general.message.record.CodeNotUnique");
-                    return null;
-                }
+            String act =
+                entity.isPersisted() ? AuditLogCommand.ACT_UPDATE : AuditLogCommand.ACT_INSERT;
+
+            entity = getRepository().saveAndFlush(entity);
+
+            auditLog(act);
+
+            //Eğer elimizdeki listede yoksa ekleyelim
+            if (!getEntityList().contains(entity)) {
+                getEntityList().add(entity);
+            } else {
+                //Varsa replace edelim. Çünkü veri tabanından yeni nesne geldi.
+                int ix = getEntityList().indexOf(entity);
+                getEntityList().set(ix, entity);
+            }
+
+            onAfterSave();
+        } catch (Exception e) {
+            //FIXME: Asıl detay hatanın bulunması lazım.
+            if (e.getCause() instanceof ConstraintViolationException) {
+                LOG.error("Error : Constraint Violation ", e);
+                ConstraintViolationException cause = (ConstraintViolationException) e.getCause();
+
+                String fieldName = Messages
+                    .getMessage("constraintName." + cause.getConstraintName());
+                String errorMsg = Messages.getMessageFromData(Messages.getCurrentLocale(),
+                    "general.message.exception.ConstraintViolationException$%&" + fieldName);
+                FacesMessages
+                    .error(errorMsg,
+                        "general.message.exception.ConstraintViolationExceptionDetail");
+
+                throw new RuntimeException();
+            } else {
+                LOG.error("Error : other error ", e);
+                FacesMessages
+                    .error("general.message.exception.OtherException",
+                        "general.message.exception.OtherExceptionDetail");
+                throw new RuntimeException();
+
             }
         }
-
-        entity = getRepository().saveAndFlush(entity);
-        
-        auditLog( act );
-        
-        //Eğer elimizdeki listede yoksa ekleyelim
-        if (!getEntityList().contains(entity)) {
-            getEntityList().add(entity);
-        } else {
-            //Varsa replace edelim. Çünkü veri tabanından yeni nesne geldi.
-            int ix = getEntityList().indexOf(entity);
-            getEntityList().set( ix, entity );
-        }
-
-        onAfterSave();
 
         LOG.debug("Entity Saved : {} ", entity);
 
