@@ -60,7 +60,11 @@ public abstract class Filter<E, X, Y> {
         this.attribute = attribute;
         this.labelKey = label;
     }
-    
+
+    public Filter(String label) {
+        this.labelKey = label;
+    }
+
     public SingularAttribute<? super E, X> getAttribute() {
         return attribute;
     }
