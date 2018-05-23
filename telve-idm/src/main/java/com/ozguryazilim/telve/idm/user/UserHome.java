@@ -18,10 +18,12 @@ import com.ozguryazilim.telve.forms.FormEdit;
 import com.ozguryazilim.telve.idm.IdmEvent;
 import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.messages.FacesMessages;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.shiro.authc.credential.DefaultPasswordService;
@@ -195,6 +197,38 @@ public class UserHome extends FormBase<User, Long>{
     protected void auditLog(String action) {
         getAuditLogger().actionLog(getEntity().getClass().getSimpleName(), getEntity().getId(), getBizKeyValue(), AuditLogCommand.CAT_AUTH,  action, identity.getLoginName(), "", changeLogStore.getChangeValues());
     }
-    
-    
+
+    private String generatePassword() {
+        String upperCaseLetters = "ABCDEFGHJKMNPQRSTUVWXYZ";
+        String lowerCaseLetters = "abcdefghjkmnpqrstuvwxyz";
+        String numbers = "23456789";
+        String symbols = "@#$%";
+        String possibleCharacters = upperCaseLetters + lowerCaseLetters + numbers + symbols;
+
+        String initialPassword = RandomStringUtils
+            .random(12, 0, possibleCharacters.toCharArray().length - 1, false, false,
+                possibleCharacters.toCharArray(), new SecureRandom());
+        String upperCaseLetter = RandomStringUtils
+            .random(1, 0, upperCaseLetters.toCharArray().length - 1, false, false,
+                upperCaseLetters.toCharArray(), new SecureRandom());
+        String lowerCaseLetter = RandomStringUtils
+            .random(1, 0, lowerCaseLetters.toCharArray().length - 1, false, false,
+                lowerCaseLetters.toCharArray(), new SecureRandom());
+        String number = RandomStringUtils
+            .random(1, 0, numbers.toCharArray().length - 1, false, false,
+                numbers.toCharArray(), new SecureRandom());
+        String symbol = RandomStringUtils
+            .random(1, 0, symbols.toCharArray().length - 1, false, false,
+                symbols.toCharArray(), new SecureRandom());
+
+        StringBuilder randomPassword = new StringBuilder();
+
+        return randomPassword
+            .append(initialPassword)
+            .insert(new SecureRandom().nextInt(randomPassword.length()), upperCaseLetter)
+            .insert(new SecureRandom().nextInt(randomPassword.length()), lowerCaseLetter)
+            .insert(new SecureRandom().nextInt(randomPassword.length()), number)
+            .insert(new SecureRandom().nextInt(randomPassword.length()), symbol)
+            .toString();
+    }
 }
