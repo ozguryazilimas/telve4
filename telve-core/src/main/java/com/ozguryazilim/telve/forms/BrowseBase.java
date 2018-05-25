@@ -5,6 +5,8 @@
  */
 package com.ozguryazilim.telve.forms;
 
+import com.ozguryazilim.telve.audit.AuditLogCommand;
+import com.ozguryazilim.telve.audit.AuditLogger;
 import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.query.QueryControllerBase;
@@ -41,6 +43,9 @@ public abstract class BrowseBase<E extends EntityBase, R extends ViewModel> exte
 
     @Inject
     private NavigationParameterContext navigationParameterContext;
+    
+    @Inject
+    private AuditLogger auditLogger;
 
     public Class<? extends ViewConfig> edit(Long id) {
         navigationParameterContext.addPageParameter("eid", id);
@@ -131,5 +136,43 @@ public abstract class BrowseBase<E extends EntityBase, R extends ViewModel> exte
     
     public Boolean hasInsertPermission(){
         return identity.hasPermission(getPermissionDomain(), "insert");
+    }
+
+    @Override
+    public void search() {
+        super.search(); 
+        auditLog();
+    }
+    
+    
+    
+    /**
+     * Kayıt işlemlerin eilişkin auditLog gönderir.
+     */
+    protected void auditLog(){
+        auditLogger.actionLog(this.getClass().getSimpleName(), -1l, getBizKeyValue(), getAuditLogCategory(), AuditLogCommand.ACT_SELECT, identity.getLoginName(), "" );
+    }
+    
+    /**
+     * Entity üzerinde @BizKey annotation'ını bulunana field değerini döner.
+     * 
+     * İstenilir ise form için override edilebilir.
+     * 
+     * @return 
+     */
+    protected String getBizKeyValue(){
+        //Burada kullanılan sorgu ismi belki yazılabilir ama sonuç biraz anlamsız olur.
+        return "";//getQueryName();
+    }
+    
+    /**
+     * Geriye AuditLog kategorisini döndürür.
+     * 
+     * Default : AuditLogCommand.CAT_ENTITY;
+     * @return 
+     */
+    protected String getAuditLogCategory(){
+        //TODO: Buna bir const versek mi?
+        return "BROWSE";
     }
 }
