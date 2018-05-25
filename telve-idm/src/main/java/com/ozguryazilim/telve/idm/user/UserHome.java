@@ -12,16 +12,22 @@ import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.auth.UserDataChangeEvent;
 import com.ozguryazilim.telve.auth.UserModel;
 import com.ozguryazilim.telve.auth.UserModelRegistery;
+import com.ozguryazilim.telve.channel.email.EmailChannel;
+import com.ozguryazilim.telve.config.TelveConfigResolver;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.forms.FormBase;
 import com.ozguryazilim.telve.forms.FormEdit;
 import com.ozguryazilim.telve.idm.IdmEvent;
 import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.messages.FacesMessages;
+import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.shiro.authc.credential.DefaultPasswordService;
@@ -38,6 +44,8 @@ public class UserHome extends FormBase<User, Long>{
     
     private static final Logger LOG = LoggerFactory.getLogger(UserHome.class);
 
+    public static final String ACT_GENERATEPASSWORD = "PASSWORD";
+    
     @Inject
     private ViewConfigResolver viewConfigResolver;
     
@@ -53,7 +61,15 @@ public class UserHome extends FormBase<User, Long>{
     @Inject
     private Identity identity;
 
+    @Inject
+    private EmailChannel emailChannel;
+
+    @Inject
+    private TelveConfigResolver telveConfigResolver;
+
     private String password;
+
+    private Boolean createPasswordAndSend;
     
     private List<String> fragments;
     
@@ -76,6 +92,12 @@ public class UserHome extends FormBase<User, Long>{
     
     @Override
     public boolean onBeforeSave() {
+
+        if (createPasswordAndSend.equals(true)) {
+            password = generatePassword();
+            sendEmailWithLoginInformation();
+            getAuditLogger().actionLog(getEntity().getClass().getSimpleName(), getEntity().getId(), getBizKeyValue(), AuditLogCommand.CAT_AUTH, ACT_GENERATEPASSWORD, identity.getLoginName(), "");
+        }
         
         if( !Strings.isNullOrEmpty(password)){
             DefaultPasswordService passwordService = new DefaultPasswordService();
@@ -105,6 +127,7 @@ public class UserHome extends FormBase<User, Long>{
     public boolean onAfterSave() {
         event.fire(new IdmEvent(IdmEvent.FROM_USER, IdmEvent.CREATE, getEntity().getLoginName()));
         userEvent.fire(new UserDataChangeEvent(getEntity().getLoginName()));
+        createPasswordAndSend = false;
         return super.onAfterSave(); 
     }
     
@@ -181,6 +204,14 @@ public class UserHome extends FormBase<User, Long>{
         this.password = password;
     }
 
+    public Boolean getCreatePasswordAndSend() {
+        return createPasswordAndSend;
+    }
+
+    public void setCreatePasswordAndSend(Boolean createPasswordAndSend) {
+        this.createPasswordAndSend = createPasswordAndSend;
+    }
+
     public Boolean getDomainGroupRequired(){
         return "true".equals(ConfigResolver.getPropertyValue("security.domainGroup.control", "false"));
     }
@@ -190,11 +221,56 @@ public class UserHome extends FormBase<User, Long>{
         return repository;
     }    
 
+    public boolean canEditPassword(){
+        return "true".equals(ConfigResolver.getPropertyValue("userHome.CanEditPassword", "true"));
+    }
     
     @Override
     protected void auditLog(String action) {
         getAuditLogger().actionLog(getEntity().getClass().getSimpleName(), getEntity().getId(), getBizKeyValue(), AuditLogCommand.CAT_AUTH,  action, identity.getLoginName(), "", changeLogStore.getChangeValues());
     }
-    
-    
+
+    private String generatePassword() {
+        String upperCaseLetters = "ABCDEFGHJKMNPQRSTUVWXYZ";
+        String lowerCaseLetters = "abcdefghjkmnpqrstuvwxyz";
+        String numbers = "23456789";
+        String symbols = "@#$%";
+        String possibleCharacters = upperCaseLetters + lowerCaseLetters + numbers + symbols;
+
+        String initialPassword = RandomStringUtils
+            .random(12, 0, possibleCharacters.toCharArray().length - 1, false, false,
+                possibleCharacters.toCharArray(), new SecureRandom());
+        String upperCaseLetter = RandomStringUtils
+            .random(1, 0, upperCaseLetters.toCharArray().length - 1, false, false,
+                upperCaseLetters.toCharArray(), new SecureRandom());
+        String lowerCaseLetter = RandomStringUtils
+            .random(1, 0, lowerCaseLetters.toCharArray().length - 1, false, false,
+                lowerCaseLetters.toCharArray(), new SecureRandom());
+        String number = RandomStringUtils
+            .random(1, 0, numbers.toCharArray().length - 1, false, false,
+                numbers.toCharArray(), new SecureRandom());
+        String symbol = RandomStringUtils
+            .random(1, 0, symbols.toCharArray().length - 1, false, false,
+                symbols.toCharArray(), new SecureRandom());
+
+        StringBuilder randomPassword = new StringBuilder();
+
+        return randomPassword
+            .append(initialPassword)
+            .insert(new SecureRandom().nextInt(randomPassword.length()), upperCaseLetter)
+            .insert(new SecureRandom().nextInt(randomPassword.length()), lowerCaseLetter)
+            .insert(new SecureRandom().nextInt(randomPassword.length()), number)
+            .insert(new SecureRandom().nextInt(randomPassword.length()), symbol)
+            .toString();
+    }
+
+    private void sendEmailWithLoginInformation() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("messageClass", "USERINFO");
+        params.put("telveConfigResolver", telveConfigResolver);
+        params.put("entity", getEntity());
+        params.put("password", password);
+
+        emailChannel.sendMessage(getEntity().getEmail(), "", "", params);
+    }
 }

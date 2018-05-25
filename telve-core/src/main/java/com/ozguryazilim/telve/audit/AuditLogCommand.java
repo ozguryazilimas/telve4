@@ -29,6 +29,7 @@ public class AuditLogCommand extends AbstractCommand{
     public static final String ACT_DELETE = "DELETE";
     public static final String ACT_SELECT = "SELECT";
     
+    
     private String domain;
     private Long pk;
     private String bizKey;
