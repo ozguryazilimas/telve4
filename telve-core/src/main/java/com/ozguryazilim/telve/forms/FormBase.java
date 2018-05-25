@@ -529,6 +529,8 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
             } else {
                 //Entity başarıyla yüklendi. Alt sınıflar bu aşamada birşey yapmak isterlerse postLoad() methodunu override edebilirler...
                 onAfterLoad();
+                //Okuma sonrası okundu bilgisi logu
+                auditLog(AuditLogCommand.ACT_SELECT);
             }
         }
         this.id = ( id == -1 ? (PK)new Long(0) : id );
