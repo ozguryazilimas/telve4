@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.4.0.final using JasperReports Library version 6.4.1  -->
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="userRoleReport" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="76b5a97f-b408-4bac-aaed-bcb9cdced953">
 	<property name="ireport.zoom" value="1.2100000000000002"/>
 	<property name="ireport.x" value="0"/>
@@ -9,7 +9,7 @@
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.3" value="pageFooter"/>
 	<property name="net.sf.jasperreports.export.csv.exclude.origin.band.4" value="columnHeader"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQL Server"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
 	<style name="Kolon_basliklar" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1254"/>
 	<style name="Detail" forecolor="#000000" backcolor="#FFFFFF" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="8" pdfEncoding="Cp1254"/>
 	<style name="Baslik" forecolor="#003366" backcolor="#FFFFFF" isBlankWhenNull="true" fontName="DejaVu Sans" fontSize="16" isBold="true" pdfEncoding="Cp1254"/>
@@ -48,22 +48,48 @@ where ur.USER_ID = $P{USER_ID}]]>
 from TLI_USER tu
 left  outer join TLI_GROUP tg on tg.ID = tu.GROUP_ID
 where(( $P{GROUP_ID} = 0 ) or ( tg.ID = $P{GROUP_ID} ) )
-and ($P{ISACTIVE}=2 or (tu.ISACTIVE=true and  $P{ISACTIVE}=1) or (tu.ISACTIVE=false and  $P{ISACTIVE}=0))
+and ($P{ISACTIVE}=2 or (tu.ISACTIVE=1 and  $P{ISACTIVE}=1) or (tu.ISACTIVE=0 and  $P{ISACTIVE}=0))
 order by tu.LOGIN_NAME]]>
 	</queryString>
-	<field name="ID" class="java.lang.Long"/>
-	<field name="ISACTIVE" class="java.lang.Boolean"/>
-	<field name="ISAUTOCREATED" class="java.lang.Boolean"/>
-	<field name="INFO" class="java.lang.String"/>
-	<field name="LOGIN_NAME" class="java.lang.String"/>
-	<field name="EMAIL" class="java.lang.String"/>
-	<field name="FIRST_NAME" class="java.lang.String"/>
-	<field name="LAST_NAME" class="java.lang.String"/>
-	<field name="PW_HASH" class="java.lang.String"/>
-	<field name="USER_TYPE" class="java.lang.String"/>
-	<field name="GROUP_ID" class="java.lang.Long"/>
-	<field name="MOBILE" class="java.lang.String"/>
-	<field name="GROUP_NAME" class="java.lang.String"/>
+	<field name="ID" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="ID"/>
+	</field>
+	<field name="ISACTIVE" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="ISACTIVE"/>
+	</field>
+	<field name="ISAUTOCREATED" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.label" value="ISAUTOCREATED"/>
+	</field>
+	<field name="INFO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="INFO"/>
+	</field>
+	<field name="LOGIN_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="LOGIN_NAME"/>
+	</field>
+	<field name="EMAIL" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="EMAIL"/>
+	</field>
+	<field name="FIRST_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="FIRST_NAME"/>
+	</field>
+	<field name="LAST_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="LAST_NAME"/>
+	</field>
+	<field name="PW_HASH" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="PW_HASH"/>
+	</field>
+	<field name="USER_TYPE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="USER_TYPE"/>
+	</field>
+	<field name="GROUP_ID" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="GROUP_ID"/>
+	</field>
+	<field name="MOBILE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="MOBILE"/>
+	</field>
+	<field name="GROUP_NAME" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="GROUP_NAME"/>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
