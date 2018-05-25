@@ -12,6 +12,8 @@ import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.auth.UserDataChangeEvent;
 import com.ozguryazilim.telve.auth.UserModel;
 import com.ozguryazilim.telve.auth.UserModelRegistery;
+import com.ozguryazilim.telve.channel.email.EmailChannel;
+import com.ozguryazilim.telve.config.TelveConfigResolver;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.forms.FormBase;
 import com.ozguryazilim.telve.forms.FormEdit;
@@ -20,7 +22,9 @@ import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -54,6 +58,12 @@ public class UserHome extends FormBase<User, Long>{
     
     @Inject
     private Identity identity;
+
+    @Inject
+    private EmailChannel emailChannel;
+
+    @Inject
+    private TelveConfigResolver telveConfigResolver;
 
     private String password;
     
@@ -230,5 +240,15 @@ public class UserHome extends FormBase<User, Long>{
             .insert(new SecureRandom().nextInt(randomPassword.length()), number)
             .insert(new SecureRandom().nextInt(randomPassword.length()), symbol)
             .toString();
+    }
+
+    private void sendEmailWithLoginInformation() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("messageClass", "USERINFO");
+        params.put("telveConfigResolver", telveConfigResolver);
+        params.put("entity", getEntity());
+        params.put("password", password);
+
+        emailChannel.sendMessage(getEntity().getEmail(), "", "", params);
     }
 }
