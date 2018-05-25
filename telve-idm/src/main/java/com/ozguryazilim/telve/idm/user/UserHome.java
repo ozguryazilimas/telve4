@@ -221,6 +221,9 @@ public class UserHome extends FormBase<User, Long>{
         return repository;
     }    
 
+    public boolean canEditPassword(){
+        return "true".equals(ConfigResolver.getPropertyValue("userHome.CanEditPassword", "true"));
+    }
     
     @Override
     protected void auditLog(String action) {
