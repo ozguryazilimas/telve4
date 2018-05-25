@@ -94,6 +94,7 @@ public class UserHome extends FormBase<User, Long>{
         if (createPasswordAndSend.equals(true)) {
             password = generatePassword();
             sendEmailWithLoginInformation();
+            getAuditLogger().actionLog(getEntity().getClass().getSimpleName(), getEntity().getId(), getBizKeyValue(), AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_GENERATEPASSWORD, identity.getLoginName(), "");
         }
         
         if( !Strings.isNullOrEmpty(password)){
