@@ -44,6 +44,8 @@ public class UserHome extends FormBase<User, Long>{
     
     private static final Logger LOG = LoggerFactory.getLogger(UserHome.class);
 
+    public static final String ACT_GENERATEPASSWORD = "PASSWORD";
+    
     @Inject
     private ViewConfigResolver viewConfigResolver;
     
@@ -94,7 +96,7 @@ public class UserHome extends FormBase<User, Long>{
         if (createPasswordAndSend.equals(true)) {
             password = generatePassword();
             sendEmailWithLoginInformation();
-            getAuditLogger().actionLog(getEntity().getClass().getSimpleName(), getEntity().getId(), getBizKeyValue(), AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_GENERATEPASSWORD, identity.getLoginName(), "");
+            getAuditLogger().actionLog(getEntity().getClass().getSimpleName(), getEntity().getId(), getBizKeyValue(), AuditLogCommand.CAT_AUTH, ACT_GENERATEPASSWORD, identity.getLoginName(), "");
         }
         
         if( !Strings.isNullOrEmpty(password)){
