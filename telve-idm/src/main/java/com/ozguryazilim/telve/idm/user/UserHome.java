@@ -66,6 +66,8 @@ public class UserHome extends FormBase<User, Long>{
     private TelveConfigResolver telveConfigResolver;
 
     private String password;
+
+    private Boolean createPasswordAndSend;
     
     private List<String> fragments;
     
@@ -88,6 +90,11 @@ public class UserHome extends FormBase<User, Long>{
     
     @Override
     public boolean onBeforeSave() {
+
+        if (createPasswordAndSend.equals(true)) {
+            password = generatePassword();
+            sendEmailWithLoginInformation();
+        }
         
         if( !Strings.isNullOrEmpty(password)){
             DefaultPasswordService passwordService = new DefaultPasswordService();
@@ -117,6 +124,7 @@ public class UserHome extends FormBase<User, Long>{
     public boolean onAfterSave() {
         event.fire(new IdmEvent(IdmEvent.FROM_USER, IdmEvent.CREATE, getEntity().getLoginName()));
         userEvent.fire(new UserDataChangeEvent(getEntity().getLoginName()));
+        createPasswordAndSend = false;
         return super.onAfterSave(); 
     }
     
@@ -191,6 +199,14 @@ public class UserHome extends FormBase<User, Long>{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getCreatePasswordAndSend() {
+        return createPasswordAndSend;
+    }
+
+    public void setCreatePasswordAndSend(Boolean createPasswordAndSend) {
+        this.createPasswordAndSend = createPasswordAndSend;
     }
 
     public Boolean getDomainGroupRequired(){
