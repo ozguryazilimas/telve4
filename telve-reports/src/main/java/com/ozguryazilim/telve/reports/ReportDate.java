@@ -116,10 +116,28 @@ public class ReportDate implements Serializable {
             case TenDaysAfter:
                 setValue(dt.plusDays(10).toDate());
                 break;
+            case OneWeekBefore:
+                setDate(dt.minusDays(7).toDate());
+                break;
+            case OneWeekAfter:
+                setDate(dt.plusDays(7).toDate());
+                break;
+            case OneMonthBefore:
+                setDate(dt.minusMonths(1).toDate());
+                break;
+            case OneMonthAfter:
+                setDate(dt.plusMonths(1).toDate());
+                break;
+            case OneYearBefore:
+                setDate(dt.minusYears(1).toDate());
+                break;
+            case OneYearAfter:
+                setDate(dt.plusYears(1).toDate());
+                break;
         }
 
     }
-    
+
     public List<DateValueType> getValueTypes(){
         return new ArrayList(VALUE_TYPES);
     }
@@ -137,5 +155,11 @@ public class ReportDate implements Serializable {
         VALUE_TYPES.add(DateValueType.LastDayOfMonth);
         VALUE_TYPES.add(DateValueType.FirstDayOfYear);
         VALUE_TYPES.add(DateValueType.LastDayOfYear);
+        VALUE_TYPES.add(DateValueType.OneWeekBefore);
+        VALUE_TYPES.add(DateValueType.OneWeekAfter);
+        VALUE_TYPES.add(DateValueType.OneMonthBefore);
+        VALUE_TYPES.add(DateValueType.OneMonthAfter);
+        VALUE_TYPES.add(DateValueType.OneYearBefore);
+        VALUE_TYPES.add(DateValueType.OneYearAfter);
     }
 }
