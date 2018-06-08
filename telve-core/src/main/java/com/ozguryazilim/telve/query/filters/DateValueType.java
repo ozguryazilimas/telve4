@@ -67,5 +67,29 @@ public enum DateValueType {
 	TenDaysBefore,
 	TenDaysAfter,
 	LastOneYear,
-	NextOneYear
+    NextOneYear,
+    /**
+     * Tarih - Bir Hafta Once
+     */
+    OneWeekBefore,
+    /**
+     * Tarih - Bir Hafta Sonra
+     */
+    OneWeekAfter,
+    /**
+     * Tarih - Bir Ay Once
+     */
+    OneMonthBefore,
+    /**
+     * Tarih - Bir Ay Sonra
+     */
+    OneMonthAfter,
+    /**
+     * Tarih - Bir Yil Once
+     */
+    OneYearBefore,
+    /**
+     * Tarih - Bir Yil Sonra
+     */
+    OneYearAfter
 }
