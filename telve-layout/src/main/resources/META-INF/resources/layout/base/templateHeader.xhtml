@@ -36,11 +36,16 @@
     <h:outputStylesheet library="telve" name="css/nprogress.css" />
     <h:outputScript library="telve" name="js/nprogress.js" />
     <h:outputScript library="telve" name="js/locale_tr.js" />
+    <h:outputScript library="telve" name="js/locale_en.js" />
     <h:outputScript library="telveComponents" name="accordion.js" target="head"/>
     
     <script>
         $.AdminLTE.options.sidebarSlimScroll = #{skinSelector.slimScroll ? 'true' : 'false'};
-        PrimeFaces.settings.locale = "tr";
+        PrimeFaces.settings.locale = "#{localeSelector.language}";
+        
+        
+        
+        
         //PF 6.1 InputNumber ClientSideValidation hatasını düzeltmek için.
         PrimeFaces.converter['javax.faces.BigDecimal'].regex = /^\d.*$/;
         

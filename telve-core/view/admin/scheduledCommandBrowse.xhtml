@@ -34,7 +34,8 @@
                             <p:dataTable value="#{scheduledCommandBrowse.filteredItems}" var="item"
                                          selectionMode="single"
                                          selection="#{scheduledCommandBrowse.selectedItem}" 
-                                         rowKey="#{item.id}" >
+                                         rowKey="#{item.id}"
+                                         emptyMessage="#{messages['general.message.browse.EmptyDesc']}">
 
 
                                 <p:ajax event="rowSelect" listener="#{scheduledCommandBrowse.onRowSelect}" />

@@ -24,7 +24,8 @@
         <div class="box box-primary">
             <div class="box-body">
                 <p:dataTable id="commandList" value="#{scheduledReportsControl.commands}" var="item"
-                             rowKey="#{item.id}" >
+                             rowKey="#{item.id}" 
+                             emptyMessage="#{messages['general.message.browse.EmptyDesc']}">
                     <p:column headerText="#{messages['general.label.Name']}">
                         #{messages['report.name.'.concat( item.command.command.name) ]}
                     </p:column>
