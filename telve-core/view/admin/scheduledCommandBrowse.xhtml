@@ -37,8 +37,8 @@
                                          rowKey="#{item.id}" >
 
 
-                                <p:ajax event="rowSelect" listener="#{scheduledCommandBrowse.onRowSelect}" />
-
+                                <p:ajax event="rowSelect" listener="#{scheduledCommandBrowse.onRowSelect}" update=":contextForm" />
+              
 
                                 <p:column headerText="#{messages['general.label.Type']}">
                                     #{messages['command.name.'.concat( item.command.class.simpleName) ]}
@@ -190,7 +190,7 @@
 
         <ui:fragment rendered="#{identity.hasPermission( 'scheduledCommand', 'update')}">
             <li>
-                <p:commandLink  action="#{scheduledCommandBrowse.edit()}" update=":editorPopup"
+                <p:commandLink  action="#{scheduledCommandBrowse.edit()}" update=":editorPopup" rendered="#{scheduledCommandBrowse.selectedItem!=null}"
                                 oncomplete="PF('editorPopup').show();" ajax="true" partialSubmit="true" process="@this" >
                     <i class="fa fa-pencil"/>
                     <span>#{messages['general.button.Edit']}</span>
@@ -200,7 +200,7 @@
 
         <ui:fragment rendered="#{identity.hasPermission( 'scheduledCommand', 'delete')}">
             <li>
-                <p:commandLink  action="#{scheduledCommandBrowse.delete()}" update=":commands" ajax="true" partialSubmit="true" process="@this" >
+                <p:commandLink  action="#{scheduledCommandBrowse.delete()}" update=":commands contextForm" ajax="true" partialSubmit="true" process="@this" >
                     <i class="fa fa-trash"/>
                     <span>#{messages['general.button.Delete']}</span>
                 </p:commandLink>

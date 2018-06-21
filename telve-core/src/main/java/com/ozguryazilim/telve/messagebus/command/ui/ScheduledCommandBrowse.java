@@ -245,6 +245,7 @@ public class ScheduledCommandBrowse implements Serializable{
         }
         entity = selectedItem.getStoredCommand();
         repository.remove(entity);
+        selectedItem=null;
         search();
     }
 
@@ -350,7 +351,7 @@ public class ScheduledCommandBrowse implements Serializable{
     public void onRowSelect(SelectEvent event) {
         selectedItem = (ScheduledCommandUIModel) event.getObject();
     }
-
+    
     /**
      * Komut için zamanlama betiğini döndürür.
      * 
