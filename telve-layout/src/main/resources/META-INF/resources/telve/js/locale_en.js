@@ -1,5 +1,5 @@
 PrimeFaces.locales['en'] = {
-    closeText: '',
+    closeText: 'kapat',
     prevText: '',
     nextText: '',
     currentText: 'today',
