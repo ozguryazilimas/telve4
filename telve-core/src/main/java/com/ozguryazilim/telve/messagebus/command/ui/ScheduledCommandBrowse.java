@@ -218,9 +218,12 @@ public class ScheduledCommandBrowse implements Serializable{
     }
     
     public void edit(){
-        //Eğer stored command değilse çık
-        if( selectedItem.getStoredCommand() == null ) return;
-        
+        //Eğer seçili item yoksa çıkalım.
+        if( selectedItem == null ){
+            FacesMessages.warn("Lütfen bir görev seçiniz.");
+            return;
+        }
+               
         entity = selectedItem.getStoredCommand();
         CommandEditorBase ce = CommandEditorRegistery.getEditorByCommand(entity.getType());
         if( ce == null ){
@@ -239,6 +242,11 @@ public class ScheduledCommandBrowse implements Serializable{
     }
     
     public void delete() throws ClassNotFoundException{
+        //Eğer seçili item yoksa çıkalım.
+        if( selectedItem == null ){
+            FacesMessages.warn("Lütfen bir görev seçiniz.");
+            return;
+        }
         //Önce timer'a bir bakalım. Varsa onu bir silelim...
         if( selectedItem.getScheduledCommand() != null ){
             scheduler.removeFromScedular(selectedItem.getScheduledCommand());
@@ -246,6 +254,7 @@ public class ScheduledCommandBrowse implements Serializable{
         entity = selectedItem.getStoredCommand();
         repository.remove(entity);
         search();
+        selectedItem = null;
     }
 
     /**
@@ -262,6 +271,11 @@ public class ScheduledCommandBrowse implements Serializable{
      * UI tarafından schedule popup öncesi çağrılır.
      */
     public void startSchedule(){
+        //Eğer seçili item yoksa çıkalım.
+        if( selectedItem == null ){
+            FacesMessages.warn("Lütfen bir görev seçiniz.");
+            return;
+        }
         startDate = null;
         endDate = null;
         scheduleType = "O";
@@ -272,8 +286,11 @@ public class ScheduledCommandBrowse implements Serializable{
      * Seçili olan item'ı timer'dan kaldırır.
      */
     public void stopSchedule() throws ClassNotFoundException{
-        //Eğer seçili item yoksa çıkalım.
-        if( selectedItem == null ) return;
+         //Eğer seçili item yoksa çıkalım.
+        if( selectedItem == null ){
+            FacesMessages.warn("Lütfen bir görev seçiniz.");
+            return;
+        }
         //Eğer komut hali hazırda zamanlanmış durumda ise önce onu siler.
         if( selectedItem.getScheduledCommand() != null ){
             scheduler.removeFromScedular(selectedItem.getScheduledCommand());
@@ -286,7 +303,10 @@ public class ScheduledCommandBrowse implements Serializable{
      */
     public void schedule() throws ClassNotFoundException{
         //Eğer seçili item yoksa çıkalım.
-        if( selectedItem == null ) return;
+        if( selectedItem == null ){
+            FacesMessages.error("Lütfen bir görev seçiniz.");
+            return;
+        }
         
         
         String s = buildScheduleExpression();
@@ -324,6 +344,12 @@ public class ScheduledCommandBrowse implements Serializable{
     }
     
     public void run(){
+        
+         //Eğer seçili item yoksa çıkalım.
+        if( selectedItem == null ){
+            FacesMessages.warn("Lütfen bir görev seçiniz.");
+            return;
+        }
         
         auditLogger.actionLog("ScheduledCommand", 0l, selectedItem.getCommand().getName(), "ScheduledCommand", "EXEC", identity.getLoginName(), "");
         
