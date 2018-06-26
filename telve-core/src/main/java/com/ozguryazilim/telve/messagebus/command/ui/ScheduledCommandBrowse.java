@@ -220,7 +220,7 @@ public class ScheduledCommandBrowse implements Serializable{
     public void edit(){
         //Eğer seçili item yoksa çıkalım.
         if( selectedItem == null ){
-            FacesMessages.warn("Lütfen bir görev seçiniz.");
+            FacesMessages.warn("options.message.NotSelected");
             return;
         }
                
@@ -244,7 +244,7 @@ public class ScheduledCommandBrowse implements Serializable{
     public void delete() throws ClassNotFoundException{
         //Eğer seçili item yoksa çıkalım.
         if( selectedItem == null ){
-            FacesMessages.warn("Lütfen bir görev seçiniz.");
+            FacesMessages.warn("options.message.NotSelected");
             return;
         }
         //Önce timer'a bir bakalım. Varsa onu bir silelim...
@@ -273,7 +273,7 @@ public class ScheduledCommandBrowse implements Serializable{
     public void startSchedule(){
         //Eğer seçili item yoksa çıkalım.
         if( selectedItem == null ){
-            FacesMessages.warn("Lütfen bir görev seçiniz.");
+            FacesMessages.warn("options.message.NotSelected");
             return;
         }
         startDate = null;
@@ -288,7 +288,7 @@ public class ScheduledCommandBrowse implements Serializable{
     public void stopSchedule() throws ClassNotFoundException{
          //Eğer seçili item yoksa çıkalım.
         if( selectedItem == null ){
-            FacesMessages.warn("Lütfen bir görev seçiniz.");
+            FacesMessages.warn("options.message.NotSelected");
             return;
         }
         //Eğer komut hali hazırda zamanlanmış durumda ise önce onu siler.
@@ -304,7 +304,7 @@ public class ScheduledCommandBrowse implements Serializable{
     public void schedule() throws ClassNotFoundException{
         //Eğer seçili item yoksa çıkalım.
         if( selectedItem == null ){
-            FacesMessages.error("Lütfen bir görev seçiniz.");
+            FacesMessages.warn("options.message.NotSelected");
             return;
         }
         
@@ -347,7 +347,7 @@ public class ScheduledCommandBrowse implements Serializable{
         
          //Eğer seçili item yoksa çıkalım.
         if( selectedItem == null ){
-            FacesMessages.warn("Lütfen bir görev seçiniz.");
+            FacesMessages.warn("options.message.NotSelected");
             return;
         }
         
