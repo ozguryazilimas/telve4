@@ -131,7 +131,7 @@ public class GuiOptionPane extends AbstractOptionPane{
     }
     
     public String getLocale() {
-        return locale;
+        return localeSelector.getLanguage();
     }
 
     public void setLocale(String locale) {
