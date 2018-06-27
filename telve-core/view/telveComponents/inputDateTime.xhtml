@@ -25,7 +25,7 @@
                 <span class="value">
                     <p:calendar id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}"
                                 placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.DateTime']}" showOn="#{cc.attrs.readonly ? 'none' : 'button'}"
-                                navigator="true" mask="true" readonlyInput="#{cc.attrs.readonlyInput}" showButtonPanel="true">
+                                navigator="true" mask="true" readonlyInput="#{cc.attrs.readonlyInput}" showButtonPanel="true" locale="#{localeSelector.language}">
                         <f:convertDateTime pattern="#{messages['general.format.DateTime']}" />
                         <p:clientValidator />
                     </p:calendar>

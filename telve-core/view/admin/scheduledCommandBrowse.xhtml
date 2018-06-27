@@ -34,7 +34,8 @@
                             <p:dataTable value="#{scheduledCommandBrowse.filteredItems}" var="item"
                                          selectionMode="single"
                                          selection="#{scheduledCommandBrowse.selectedItem}" 
-                                         rowKey="#{item.id}" >
+                                         rowKey="#{item.id}"
+                                         emptyMessage="#{messages['general.message.browse.EmptyDesc']}">
 
 
                                 <p:ajax event="rowSelect" listener="#{scheduledCommandBrowse.onRowSelect}" update=":contextForm" />
@@ -84,7 +85,8 @@
 
                 <div class="row">
                     <div class="col-xs-12" >
-                        <strong>#{messages['command.name.'.concat( scheduledCommandBrowse.selectedItem.command.class.simpleName )]}</strong>
+                        <!--null olma durumu için kontrol edildi-->
+                        <strong>#{scheduledCommandBrowse.selectedItem.command.class.simpleName ne null ? messages['command.name.'.concat( scheduledCommandBrowse.selectedItem.command.class.simpleName )] : ''}</strong>
                     </div> 
                     <div class="col-xs-12" >
                         <strong>#{scheduledCommandBrowse.selectedItem.name}</strong>
