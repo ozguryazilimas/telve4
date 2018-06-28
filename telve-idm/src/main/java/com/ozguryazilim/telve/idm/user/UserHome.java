@@ -20,6 +20,7 @@ import com.ozguryazilim.telve.forms.FormEdit;
 import com.ozguryazilim.telve.idm.IdmEvent;
 import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.messages.Messages;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,7 +109,7 @@ public class UserHome extends FormBase<User, Long>{
         
         User ofUser = repository.hasLoginName( getEntity().getLoginName(), getEntity().getId() == null ? 0 : getEntity().getId());
         if ( ofUser != null ) {
-            FacesMessages.error("Aynı login name ile kayıtlı kullanıcı mevcut. Lütfen Kullanıcı adımı değiştiriniz.");
+            FacesMessages.error(Messages.getMessage("user.message.SameUser"),Messages.getMessage("user.message.SameUser.Details"));
             return false;
         }
         
