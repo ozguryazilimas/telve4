@@ -37,8 +37,6 @@ public class AuditLogClearCommandExecutor extends AbstractCommandExecuter<AuditL
         LOG.info("Audit logs with following properties wil be deleted: {}",
                 dt, domain, category, action);
 
-        System.out.println(dt + domain + category + action);
-
         auditLogRepository.deleteByScheculedCommandParameters(dt, domain, category, action);
     }
 }
