@@ -95,8 +95,6 @@ public abstract class AuditLogRepository extends RepositoryBase<AuditLog, AuditL
 
         delete.where(predicates.toArray(new Predicate[]{}));
 
-        int deleteCount = entityManager().createQuery(delete).executeUpdate();
-
-        System.out.println(deleteCount);
+        entityManager().createQuery(delete).executeUpdate();
     }
 }
