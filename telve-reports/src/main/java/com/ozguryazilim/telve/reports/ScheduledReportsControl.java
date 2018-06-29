@@ -5,6 +5,7 @@
  */
 package com.ozguryazilim.telve.reports;
 
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.messagebus.command.CommandScheduler;
 import com.ozguryazilim.telve.messagebus.command.ScheduledCommand;
 import com.ozguryazilim.telve.messagebus.command.ui.ScheduledCommandUIModel;
@@ -36,6 +37,9 @@ public class ScheduledReportsControl implements Serializable {
 
     @Inject
     private Subject identity;
+    
+    @Inject
+    private Identity userIdentity;
 
     private List<ScheduledCommandUIModel> commands = new ArrayList<>();
 
@@ -46,7 +50,7 @@ public class ScheduledReportsControl implements Serializable {
 
     private void populateScheduledReports() {
 
-        String user = identity.getPrincipal().toString();
+        String user = userIdentity.getUserInfo().getId();
         //FIXME: Kullanıcının tercih etiği locale alınmalı
         PrettyTime prettyTime = new PrettyTime(new Locale("tr"));
 
