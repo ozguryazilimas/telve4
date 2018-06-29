@@ -6,10 +6,24 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
 
-    
     <div class="row">
-        <t:inputText label="command.label.interval" value="#{auditLogClearCommandEditor.command.interval}" required="true" placeholder="command.placeholder.AuditLogClearCommand" />
+        <t:inputText label="command.label.interval" 
+                     value="#{auditLogClearCommandEditor.command.interval}" 
+                     required="true" 
+                     placeholder="command.placeholder.AuditLogClearCommand"/>
+        <t:inputText label="general.label.Domain"
+                     value="#{auditLogClearCommandEditor.command.domain}"/>
+        <t:inputAny label="general.label.Category">
+            <p:selectOneMenu value="#{auditLogClearCommandEditor.command.category}">
+                <f:selectItem itemValue="#{null}" itemLabel="#{messages['general.value.NotSelected']}" noSelectionOption="true"/>
+                <f:selectItems value="#{auditLogClearCommandEditor.categories}"/>
+            </p:selectOneMenu>
+        </t:inputAny>
+        <t:inputAny label="general.label.Action">
+            <p:selectOneMenu value="#{auditLogClearCommandEditor.command.action}">
+                <f:selectItem itemValue="#{null}" itemLabel="#{messages['general.value.NotSelected']}" noSelectionOption="true"/>
+                <f:selectItems value="#{auditLogClearCommandEditor.actions}"/>
+            </p:selectOneMenu>
+        </t:inputAny>
     </div>
-    
-    
 </ui:composition>
