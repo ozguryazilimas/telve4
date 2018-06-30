@@ -9,8 +9,8 @@
             "lastName": "Contains::",
             "loginName": "Contains::",
             "userType": "All::",
-            "active": "All::F",
-            "autoCreated": "All::T"
+            "active": "All",
+            "autoCreated": "All"
         },
         "sorters": [],
         "sorterValues": {}
@@ -26,8 +26,8 @@
             "lastName": "Contains::",
             "loginName": "Contains::",
             "userType": "All::",
-            "active": "Equal::T",
-            "autoCreated": "All::T"
+            "active": "True",
+            "autoCreated": "All"
         },
         "sorters": [],
         "sorterValues": {}
@@ -43,8 +43,8 @@
             "lastName": "Contains::",
             "loginName": "Contains::",
             "userType": "All::",
-            "active": "Equal::F",
-            "autoCreated": "All::T"
+            "active": "False",
+            "autoCreated": "All"
         },
         "sorters": [],
         "sorterValues": {}
@@ -60,8 +60,8 @@
             "lastName": "Contains::",
             "loginName": "Contains::",
             "userType": "All::",
-            "active": "All::F",
-            "autoCreated": "Equal::T"
+            "active": "All",
+            "autoCreated": "True"
         },
         "sorters": [],
         "sorterValues": {}
@@ -76,9 +76,9 @@
             "firstName": "Contains::",
             "lastName": "Contains::",
             "loginName": "Contains::",
-            "active": "All::F",
+            "active": "All",
             "userType": "Equal::SUPERADMIN",
-            "autoCreated": "All::T"
+            "autoCreated": "All"
         },
         "sorters": [],
         "sorterValues": {}
