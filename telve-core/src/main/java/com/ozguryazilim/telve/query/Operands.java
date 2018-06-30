@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ozguryazilim.telve.query;
 
 import com.ozguryazilim.telve.query.filters.FilterOperand;
@@ -24,6 +19,7 @@ public class Operands {
     private static List<FilterOperand> numberOperands;
     private static List<FilterOperand> equalOperands;
     private static List<FilterOperand> treeEntityOperands;
+    private static List<FilterOperand> booleanOperands;
 
     /**
      * Public contructor gizleniyor
@@ -103,7 +99,7 @@ public class Operands {
         }
         return entityOperands;
     }
-    
+
     public static List<FilterOperand> getTreeEntityOperands() {
         if (treeEntityOperands == null) {
             treeEntityOperands = new ArrayList<FilterOperand>();
@@ -131,5 +127,15 @@ public class Operands {
             equalOperands.add(FilterOperand.Equal);
         }
         return equalOperands;
+    }
+
+    public static List<FilterOperand> getBooleanOperands() {
+        if (booleanOperands == null) {
+            booleanOperands = new ArrayList<FilterOperand>();
+            booleanOperands.add(FilterOperand.All);
+            booleanOperands.add(FilterOperand.True);
+            booleanOperands.add(FilterOperand.False);
+        }
+        return booleanOperands;
     }
 }

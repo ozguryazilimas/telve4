@@ -1,13 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.ozguryazilim.telve.query.filters;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Splitter;
 import com.ozguryazilim.telve.query.Operands;
 import java.util.List;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -18,50 +10,46 @@ import org.apache.deltaspike.data.api.criteria.Criteria;
 
 /**
  * Boolean alanlar için filtre
+ *
  * @author Hakan Uygun
  */
-public class BooleanFilter<E> extends Filter<E, Boolean, Boolean>{
+public class BooleanFilter<E> extends Filter<E, Boolean, Boolean> {
 
     private String keyPrefix;
-    
+
     public BooleanFilter(SingularAttribute<? super E, Boolean> attribute, String label, String itemLabel) {
         super(attribute, label);
-        
+
         keyPrefix = itemLabel;
-        setOperands(Operands.getEnumOperands());
-        setOperand(FilterOperand.Equal);
-        setValue(Boolean.TRUE);
+        setOperands(Operands.getBooleanOperands());
+        setOperand(FilterOperand.All);
     }
 
     @Override
     public void decorateCriteria(Criteria<E, ?> criteria) {
-        if (getValue() != null) {
-            switch (getOperand()) {
-                case Equal:
-                    criteria.eq(getAttribute(), getValue());
-                    break;
-                case NotEqual:
-                    criteria.notEq(getAttribute(), getValue());
-                    break;
-                default:
-                    break;
-            }
+        switch (getOperand()) {
+            case True:
+                criteria.eq(getAttribute(), Boolean.TRUE);
+                break;
+            case False:
+                criteria.notEq(getAttribute(), Boolean.FALSE);
+                break;
+            default:
+                break;
         }
     }
-    
+
     @Override
     public void decorateCriteriaQuery(List<Predicate> predicates, CriteriaBuilder builder, Root<E> from) {
-        if (getValue() != null) {
-            switch (getOperand()) {
-                case Equal:
-                    predicates.add(builder.equal(from.get(getAttribute()), getValue()));
-                    break;
-                case NotEqual:
-                    predicates.add(builder.notEqual(from.get(getAttribute()), getValue()));
-                    break;
-                default:
-                    break;
-            }
+        switch (getOperand()) {
+            case True:
+                predicates.add(builder.isTrue(from.get(getAttribute())));
+                break;
+            case False:
+                predicates.add(builder.isFalse(from.get(getAttribute())));
+                break;
+            default:
+                break;
         }
     }
 
@@ -80,16 +68,12 @@ public class BooleanFilter<E> extends Filter<E, Boolean, Boolean>{
 
     @Override
     public String serialize() {
-        return Joiner.on("::").join(getOperand(), getValue() ? "T" : "F");
+        return getOperand().toString();
     }
 
     @Override
     public void deserialize(String s) {
-        List<String> ls = Splitter.on("::").trimResults().splitToList(s);
-        setOperand(FilterOperand.valueOf(ls.get(0)));
-        
-        setValue("T".equals( ls.get(1)));
+        setOperand(FilterOperand.valueOf(s));
     }
-    
-    
+
 }
