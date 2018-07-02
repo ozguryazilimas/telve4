@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ozguryazilim.telve.view;
 
 import java.io.InputStream;
@@ -34,6 +29,7 @@ public class ThemeManager implements Serializable{
     
     private String homeTemplate;
     private String loginTemplate;
+    private String forgotPasswordTemplate;
     
     private String theme;
     private String skin;
@@ -53,6 +49,7 @@ public class ThemeManager implements Serializable{
         templateSideBar = templateCheckOrFallback( layoutName , "templateSideBar.xhtml" );
         
         loginTemplate = templateCheckOrFallback( layoutName , "loginTemplate.xhtml" );
+        forgotPasswordTemplate = templateCheckOrFallback(layoutName, "forgotPasswordTemplate.xhtml");
         
         homeTemplate = ConfigResolver.getPropertyValue("themeManager.home", "/simpleHome.xhtml");
         
@@ -133,8 +130,12 @@ public class ThemeManager implements Serializable{
     public void setLoginTemplate(String loginTemplate) {
         this.loginTemplate = loginTemplate;
     }
-    
-    
-    
-    
+
+    public String getForgotPasswordTemplate() {
+        return forgotPasswordTemplate;
+    }
+
+    public void setForgotPasswordTemplate(String forgotPasswordTemplate) {
+        this.forgotPasswordTemplate = forgotPasswordTemplate;
+    }
 }

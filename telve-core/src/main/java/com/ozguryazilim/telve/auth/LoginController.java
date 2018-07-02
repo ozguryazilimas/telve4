@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ozguryazilim.telve.auth;
 
 import com.ozguryazilim.telve.audit.AuditLogCommand;
@@ -44,7 +39,7 @@ public class LoginController {
 
     @Inject
     private Event<LoggedInEvent> loggedInEvent;
-    
+
     @Inject
     private Identity identity;
 
@@ -66,7 +61,7 @@ public class LoginController {
         } catch (LockedAccountException | ExcessiveAttemptsException lae) {
             result = false;
             FacesMessages.error("general.message.AccountLocked");
-        } 
+        }
 
         if (result) {
             auditLogger.actionLog("Login", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, identity.getLoginName(), "");
@@ -78,7 +73,11 @@ public class LoginController {
         auditLogger.actionLog("Logout", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, identity.getLoginName(), "");
         currentUser.logout();
         facesContext.getExternalContext().invalidateSession();
-        
+
         return "/home.xhtml?faces-redirect=true";
+    }
+
+    public String forgotPassword() {
+        return "/forgotPassword.xhtml?faces-redirect=true";
     }
 }
