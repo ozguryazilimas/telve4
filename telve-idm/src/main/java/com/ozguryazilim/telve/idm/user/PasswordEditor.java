@@ -7,12 +7,16 @@ package com.ozguryazilim.telve.idm.user;
 
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.mutfak.kahve.Kahve;
+import com.ozguryazilim.mutfak.kahve.KahveEntry;
 import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.config.AbstractOptionPane;
 import com.ozguryazilim.telve.config.OptionPane;
 import com.ozguryazilim.telve.idm.config.IdmPages;
 import com.ozguryazilim.telve.idm.entities.User;
+import com.ozguryazilim.telve.idm.passwordDefinitions.PasswordDefinitionsControl;
 import com.ozguryazilim.telve.messages.FacesMessages;
+import javax.annotation.PostConstruct;
 
 import javax.inject.Inject;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
@@ -38,10 +42,14 @@ public class PasswordEditor extends AbstractOptionPane{
     @Inject
     private Identity identity;
 
+    @Inject
+    private Kahve kahve;
+    
+    @Inject
+    private PasswordDefinitionsControl passwordDefinitionsControl;
     
     @Override @Transactional
     public void save() {
-        
         User user = userRepository.findAnyByLoginName(identity.getLoginName());
         
         if( user == null ){
@@ -68,7 +76,11 @@ public class PasswordEditor extends AbstractOptionPane{
             FacesMessages.error("passwordEditor.message.PasswordError");
             return;
         }
-
+        
+        //Parola tanımlara uygun mu kontol edelim.
+        if(passwordDefinitionsControl.passwordControl(newPassword))
+            return;
+        
         user.setPasswordEncodedHash(passwordService.encryptPassword(newPassword));
         
         
@@ -93,6 +105,5 @@ public class PasswordEditor extends AbstractOptionPane{
     public void setOldPassword(String oldPassword) {
         this.oldPassword = oldPassword;
     }
-    
-    
+
 }
