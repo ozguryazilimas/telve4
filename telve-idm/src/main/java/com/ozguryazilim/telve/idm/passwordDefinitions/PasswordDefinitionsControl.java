@@ -25,13 +25,14 @@ public class PasswordDefinitionsControl implements Serializable {
     private int upperCase;
     private int number;
     private int length;
-    private int special;
+    private boolean special;
     
     private int lowerCaseCount = 0;
     private int upperCaseCount = 0;
     private int numberCount = 0;
     private int specialCount = 0;
     private boolean definitionsControl = false;
+    
 
     @Inject
     private Kahve kahve;
@@ -42,7 +43,7 @@ public class PasswordDefinitionsControl implements Serializable {
         lowerCase = kahve.get("password.lowercase").getAsInteger();
         upperCase = kahve.get("password.uppercase").getAsInteger();
         length = kahve.get("password.length").getAsInteger();
-        special = kahve.get("password.special").getAsInteger();
+        special = kahve.get("password.special").getAsBoolean();
         number = kahve.get("password.number").getAsInteger();
     }
     
@@ -72,8 +73,12 @@ public class PasswordDefinitionsControl implements Serializable {
             FacesMessages.error(Integer.toString(number-numberCount),"passwordDefinitions.error.number");
             definitionsControl = true;
         } 
-        if (specialCount < special) {
-            FacesMessages.error(Integer.toString(special-specialCount),"passwordDefinitions.error.special");
+        if (special==true && specialCount==0) {
+            FacesMessages.error("!","passwordDefinitions.error.special");
+            definitionsControl = true;
+        }
+        if (password.length()<length) {
+            FacesMessages.error(Integer.toString(length),"passwordDefinitions.error.length");
             definitionsControl = true;
         }
 
@@ -97,7 +102,7 @@ public class PasswordDefinitionsControl implements Serializable {
         return length;
     }
 
-    public int getSpecial() {
+    public boolean getSpecial() {
         return special;
     }
     

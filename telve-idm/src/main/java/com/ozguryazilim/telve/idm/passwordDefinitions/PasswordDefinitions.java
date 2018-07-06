@@ -12,6 +12,7 @@ import com.ozguryazilim.telve.config.AbstractOptionPane;
 import com.ozguryazilim.telve.config.OptionPane;
 import com.ozguryazilim.telve.config.OptionPaneType;
 import com.ozguryazilim.telve.idm.config.IdmPages;
+import com.ozguryazilim.telve.messages.FacesMessages;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
@@ -42,8 +43,8 @@ public class PasswordDefinitions extends AbstractOptionPane {
         lowerCase = kahve.get(PASSWORD_LOWERCASE, "0");
         upperCase = kahve.get(PASSWORD_UPPERCASE, "0");
         length = kahve.get(PASSWORD_LENGTH, "8");
-        special = kahve.get(PASSWORD_SPECIAL, "0");
-        number = kahve.get(PASSWORD_NUMBER, "8");
+        special = kahve.get(PASSWORD_SPECIAL, Boolean.FALSE);
+        number = kahve.get(PASSWORD_NUMBER, "0");
 
     }
 
@@ -55,10 +56,7 @@ public class PasswordDefinitions extends AbstractOptionPane {
         kahve.put(PASSWORD_SPECIAL, special);
         kahve.put(PASSWORD_LENGTH, length);
     }
-
-    public void handleKeyEvent() {
-        length.setAsString(Integer.toString(lowerCase.getAsInteger() + upperCase.getAsInteger() + special.getAsInteger() + number.getAsInteger()));
-    }
+    
 
     public KahveEntry getLowerCase() {
         return lowerCase;

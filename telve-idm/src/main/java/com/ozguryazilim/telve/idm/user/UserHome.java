@@ -245,7 +245,7 @@ public class UserHome extends FormBase<User, Long>{
         String possibleCharacters = upperCaseLetters + lowerCaseLetters + numbers + symbols;
 
         String initialPassword = RandomStringUtils
-            .random(12, 0, possibleCharacters.toCharArray().length - 1, false, false,
+            .random(passwordDefinitionsControl.getLength(), 0, possibleCharacters.toCharArray().length - 1, false, false,
                 possibleCharacters.toCharArray(), new SecureRandom());
         String upperCaseLetter = RandomStringUtils
             .random(passwordDefinitionsControl.getUpperCase(), 0, upperCaseLetters.toCharArray().length - 1, false, false,
@@ -256,9 +256,14 @@ public class UserHome extends FormBase<User, Long>{
         String number = RandomStringUtils
             .random(passwordDefinitionsControl.getNumber(), 0, numbers.toCharArray().length - 1, false, false,
                 numbers.toCharArray(), new SecureRandom());
-        String symbol = RandomStringUtils
-            .random(passwordDefinitionsControl.getSpecial(), 0, symbols.toCharArray().length - 1, false, false,
-                symbols.toCharArray(), new SecureRandom());
+        
+        String symbol = "";
+        if (passwordDefinitionsControl.getSpecial()) {
+            symbol = RandomStringUtils
+                    .random(1, 0, symbols.toCharArray().length - 1, false, false,
+                            symbols.toCharArray(), new SecureRandom());
+        }
+
 
         StringBuilder randomPassword = new StringBuilder();
 
