@@ -74,7 +74,7 @@ public class PasswordDefinitionsControl implements Serializable {
             definitionsControl = true;
         } 
         if (special==true && specialCount==0) {
-            FacesMessages.error("passwordDefinitions.error.special$%&"+special);
+            FacesMessages.error("passwordDefinitions.error.special"+special);
             definitionsControl = true;
         }
         if (password.length()<length) {
