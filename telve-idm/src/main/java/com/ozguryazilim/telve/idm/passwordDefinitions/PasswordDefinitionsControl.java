@@ -38,17 +38,17 @@ public class PasswordDefinitionsControl implements Serializable {
 
     @Inject
     private Kahve kahve;
-    
+
     @PostConstruct
     public void init()
     {
-        lowerCase = kahve.get("password.lowercase").getAsInteger();
-        upperCase = kahve.get("password.uppercase").getAsInteger();
-        length = kahve.get("password.length").getAsInteger();
-        special = kahve.get("password.special").getAsBoolean();
-        number = kahve.get("password.number").getAsInteger();
+        lowerCase = kahve.get("password.lowercase","0").getAsInteger();
+        upperCase = kahve.get("password.uppercase","0").getAsInteger();
+        length = kahve.get("password.length","8").getAsInteger();
+        special = kahve.get("password.special","0").getAsBoolean();
+        number = kahve.get("password.number","0").getAsInteger();
     }
-
+    
     public boolean passwordControl(String password) {
         for (int i = 0; i < password.length(); i++) {
             if (Character.isLowerCase(password.charAt(i))) {
@@ -74,7 +74,7 @@ public class PasswordDefinitionsControl implements Serializable {
             definitionsControl = true;
         } 
         if (special==true && specialCount==0) {
-            FacesMessages.error("passwordDefinitions.error.special"+special);
+            FacesMessages.error("passwordDefinitions.error.special");
             definitionsControl = true;
         }
         if (password.length()<length) {
