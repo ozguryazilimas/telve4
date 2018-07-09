@@ -7,7 +7,9 @@ package com.ozguryazilim.telve.idm.passwordDefinitions;
 
 import com.ozguryazilim.mutfak.kahve.Kahve;
 import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.messages.Messages;
 import java.io.Serializable;
+import java.util.Locale;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -46,10 +48,8 @@ public class PasswordDefinitionsControl implements Serializable {
         special = kahve.get("password.special").getAsBoolean();
         number = kahve.get("password.number").getAsInteger();
     }
-    
+
     public boolean passwordControl(String password) {
-       
-        String temp = "";
         for (int i = 0; i < password.length(); i++) {
             if (Character.isLowerCase(password.charAt(i))) {
                 lowerCaseCount++;
@@ -62,23 +62,23 @@ public class PasswordDefinitionsControl implements Serializable {
             }
         }
         if (lowerCaseCount < lowerCase) {
-            FacesMessages.error(Integer.toString(lowerCase-lowerCaseCount),"passwordDefinitions.error.lowerCase");
+            FacesMessages.error(Messages.getMessageFromData(Messages.getCurrentLocale(),"passwordDefinitions.error.lowerCase$%&"+lowerCase));
             definitionsControl = true;
         }  
         if (upperCaseCount < upperCase) {
-            FacesMessages.error(Integer.toString(upperCase-upperCaseCount),"passwordDefinitions.error.upperCase");
+            FacesMessages.error(Messages.getMessageFromData(Messages.getCurrentLocale(),"passwordDefinitions.error.upperCase$%&"+upperCase));
             definitionsControl = true;
         }  
         if (numberCount < number) {
-            FacesMessages.error(Integer.toString(number-numberCount),"passwordDefinitions.error.number");
+            FacesMessages.error(Messages.getMessageFromData(Messages.getCurrentLocale(),"passwordDefinitions.error.number$%&"+number));
             definitionsControl = true;
         } 
         if (special==true && specialCount==0) {
-            FacesMessages.error("!","passwordDefinitions.error.special");
+            FacesMessages.error("passwordDefinitions.error.special$%&"+special);
             definitionsControl = true;
         }
         if (password.length()<length) {
-            FacesMessages.error(Integer.toString(length),"passwordDefinitions.error.length");
+            FacesMessages.error(Messages.getMessageFromData(Messages.getCurrentLocale(),"passwordDefinitions.error.length$%&"+length));
             definitionsControl = true;
         }
 
