@@ -74,7 +74,7 @@ public class ScheduledCommandBrowse implements Serializable{
     private String filterForInfo;
     private Date filterForStartDate;
     private Date filterForEndDate;
-    
+            
     private Map<String,ScheduledCommandUIModel> items;
     private List<ScheduledCommandUIModel> filteredItems;
     
@@ -159,8 +159,7 @@ public class ScheduledCommandBrowse implements Serializable{
             
             //Filtre üzerinde görev tipi seçilmemişse filterForType değişkeni  
             //üzerinde işlem yapmak hataya sebep oluyor.(replace yapılmıyor.)
-            if(filterForType !=null)
-            {
+            if(filterForType !=null){
                 selectedType = filterForType.replace("Editor", "").toLowerCase();
             }
             
@@ -168,20 +167,37 @@ public class ScheduledCommandBrowse implements Serializable{
             if (Strings.isNullOrEmpty(filterForName) && Strings.isNullOrEmpty(filterForInfo)  && Strings.isNullOrEmpty(filterForType) &&  filterForStartDate == null && filterForEndDate == null ){
                filteredItems.add(sc);
             }
-            else if(sc.getName().contains(filterForName)  && sc.getInfo().contains(filterForInfo) && simpleName.toLowerCase().contains(selectedType))
-            { 
-                //Zaman aralığı filtrelemesi varsa buraya girer
-                if(filterForEndDate != null && filterForStartDate != null){
+            else if(sc.getName().contains(filterForName)  && sc.getInfo().contains(filterForInfo) && simpleName.toLowerCase().contains(selectedType)){ 
+
+                //Herhangi bir zaman aralığı filtrelemesi varsa buraya girer
+                if(filterForEndDate != null || filterForStartDate != null){
                     
                     //Zaman aralığı filtrelemesi var ancak göreve bir zamanlama
                     //girilmemişse bu görevi pas geçiyoruz.
                     if(sc.getNextTimeout() == null){
                         continue;
-                    } 
-                    // Görev, verilen zaman aralığı arasında veya eşit ise listeye eklenir.
-                    if(filterForStartDate.compareTo(sc.getNextTimeout()) <= 0 && filterForEndDate.compareTo(sc.getNextTimeout()) >= 0){
-                        filteredItems.add(sc);
-                    } 
+                    }
+                    //Bitiş tarihi girilmemişse, başlangıç tarihinden sonraki 
+                    //tüm görevler kabul edilir.
+                    if(filterForEndDate == null){
+                        if(filterForStartDate.compareTo(sc.getNextTimeout()) <= 0){
+                            filteredItems.add(sc);
+                        }
+                    }
+                    //Başlangıç tarihi girilmemişse, bitiş tarihinden önceki 
+                    //tüm görevler kabul edilir.
+                    else if (filterForStartDate == null){
+                        if(filterForEndDate.compareTo(sc.getNextTimeout()) >= 0){
+                            filteredItems.add(sc);
+                        }
+                    }
+                    //Başlangıç ve Bitiş tarihi girilmişse, verilen zaman aralığı
+                    //arasında kalan tüm görevler kabul edilir.
+                    else if(filterForEndDate != null && filterForStartDate != null){
+                        if(filterForStartDate.compareTo(sc.getNextTimeout()) <= 0 && filterForEndDate.compareTo(sc.getNextTimeout()) >= 0){
+                            filteredItems.add(sc);
+                        }  
+                    }                    
                 }
                 else{
                     //Zaman aralığı filtresi uygulanmamış ancak diğer filtre

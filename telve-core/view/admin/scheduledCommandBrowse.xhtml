@@ -12,7 +12,7 @@
 
         <h:form id="filterSearch">
             <div class="row">
-                <div class="col-md-12 col-xs-12 pull-right">
+                <div class="col-xs-12 pull-right">
                     <span class="value">
                         <div class="input-group" style="width: 100%;">
                             <p:commandLink action="#{scheduledCommandBrowse.cleanFilter()}" update=":commands" styleClass="pull-right">
@@ -43,8 +43,8 @@
           
                     <p:outputLabel value="#{messages['command.label.Interval']}" />
                     <p:row>
-                        <p:column><p:calendar pattern="dd-MM-yyyy" id="popup"  placeholder="#{messages['general.label.BeginDate']}" value="#{scheduledCommandBrowse.filterForStartDate}" /></p:column>
-                        <p:column><p:calendar pattern="dd-MM-yyyy" id="popup2" placeholder="#{messages['general.label.EndDate']}" value="#{scheduledCommandBrowse.filterForEndDate}" /></p:column>
+                        <p:column><p:calendar pattern="dd-MM-yyyy" id="popup"  locale="#{messages['general.message.locale']}" placeholder="#{messages['general.label.BeginDate']}" value="#{scheduledCommandBrowse.filterForStartDate}" /></p:column>
+                        <p:column><p:calendar pattern="dd-MM-yyyy" id="popup2" locale="#{messages['general.message.locale']}" placeholder="#{messages['general.label.EndDate']}" value="#{scheduledCommandBrowse.filterForEndDate}" /></p:column>
                     </p:row>
                 
                     <p:outputLabel value="#{messages['general.label.Info']}" />
