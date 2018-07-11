@@ -43,8 +43,8 @@
           
                     <p:outputLabel value="#{messages['command.label.Interval']}" />
                     <p:row>
-                        <p:column><p:calendar pattern="dd-MM-yyyy" id="popup"  locale="#{messages['general.message.locale']}" placeholder="#{messages['general.label.BeginDate']}" value="#{scheduledCommandBrowse.filterForStartDate}" /></p:column>
-                        <p:column><p:calendar pattern="dd-MM-yyyy" id="popup2" locale="#{messages['general.message.locale']}" placeholder="#{messages['general.label.EndDate']}" value="#{scheduledCommandBrowse.filterForEndDate}" /></p:column>
+                        <p:column><p:calendar pattern="dd-MM-yyyy" id="popup"  locale="#{localeSelector.language}" placeholder="#{messages['general.label.BeginDate']}" value="#{scheduledCommandBrowse.filterForStartDate}" /></p:column>
+                        <p:column><p:calendar pattern="dd-MM-yyyy" id="popup2" locale="#{localeSelector.language}" placeholder="#{messages['general.label.EndDate']}" value="#{scheduledCommandBrowse.filterForEndDate}" /></p:column>
                     </p:row>
                 
                     <p:outputLabel value="#{messages['general.label.Info']}" />
