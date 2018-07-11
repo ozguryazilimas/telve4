@@ -29,11 +29,11 @@ public class PasswordDefinitionsControl implements Serializable {
     private int length;
     private boolean special;
     
-    private int lowerCaseCount = 0;
-    private int upperCaseCount = 0;
-    private int numberCount = 0;
-    private int specialCount = 0;
-    private boolean definitionsControl = false;
+    private int lowerCaseCount;
+    private int upperCaseCount;
+    private int numberCount;
+    private int specialCount;
+    private boolean definitionsControl;
     
 
     @Inject
@@ -45,7 +45,7 @@ public class PasswordDefinitionsControl implements Serializable {
         lowerCase = kahve.get("password.lowercase","0").getAsInteger();
         upperCase = kahve.get("password.uppercase","0").getAsInteger();
         length = kahve.get("password.length","8").getAsInteger();
-        special = kahve.get("password.special","0").getAsBoolean();
+        special = kahve.get("password.special",false).getAsBoolean();
         number = kahve.get("password.number","0").getAsInteger();
     }
     
