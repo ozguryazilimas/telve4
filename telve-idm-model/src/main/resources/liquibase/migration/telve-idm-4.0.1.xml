@@ -143,4 +143,16 @@
     <changeSet author="oyas (generated)" id="1467025451677-30">
         <addUniqueConstraint columnNames="LOGIN_NAME" constraintName="TLI_USER_LOGIN_NAME" deferrable="false" disabled="false" initiallyDeferred="false" tableName="TLI_USER"/>
     </changeSet>
+    <changeSet id="20180711-27697-1" author="scirit">
+        <customChange class="com.ozguryazilim.telve.query.filters.migration.UserSavedFiltersRemoveValue">
+            <param name="className" value="::query.UserBrowse."/>
+            <param name="filter" value="active"/>
+        </customChange>
+    </changeSet>
+    <changeSet id="20180711-27697-2" author="scirit">
+        <customChange class="com.ozguryazilim.telve.query.filters.migration.UserSavedFiltersRemoveValue">
+            <param name="className" value="::query.UserBrowse."/>
+            <param name="filter" value="autoCreated"/>
+        </customChange>
+    </changeSet>
 </databaseChangeLog>
