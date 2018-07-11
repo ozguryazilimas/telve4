@@ -68,7 +68,6 @@ public class ScheduledCommandBrowse implements Serializable{
     
     private ScheduledCommandUIModel selectedItem;
     
-    private String filter;
     private String filterForType;
     private String filterForName;
     private String filterForInfo;
@@ -427,16 +426,7 @@ public class ScheduledCommandBrowse implements Serializable{
     public void setSelectedItem(ScheduledCommandUIModel selectedItem) {
         this.selectedItem = selectedItem;
     }
-
-    public String getFilter() {
-        return filter;
-    }
-
-    public void setFilter(String filter) {
-        this.filter = filter;
-    }
-    
-             
+           
     public void onRowSelect(SelectEvent event) {
         selectedItem = (ScheduledCommandUIModel) event.getObject();
     }
