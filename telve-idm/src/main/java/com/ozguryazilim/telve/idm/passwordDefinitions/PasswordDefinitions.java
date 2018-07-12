@@ -40,11 +40,11 @@ public class PasswordDefinitions extends AbstractOptionPane {
 
     @PostConstruct
     public void init() {
-        lowerCase = kahve.get(PASSWORD_LOWERCASE, "0");
-        upperCase = kahve.get(PASSWORD_UPPERCASE, "0");
-        length = kahve.get(PASSWORD_LENGTH, "8");
-        special = kahve.get(PASSWORD_SPECIAL, Boolean.FALSE);
-        number = kahve.get(PASSWORD_NUMBER, "0");
+        lowerCase = kahve.get(PASSWORD_LOWERCASE,Boolean.TRUE);
+        upperCase = kahve.get(PASSWORD_UPPERCASE,Boolean.TRUE);
+        length = kahve.get(PASSWORD_LENGTH,"8");
+        special = kahve.get(PASSWORD_SPECIAL,Boolean.FALSE);
+        number = kahve.get(PASSWORD_NUMBER,Boolean.TRUE);
 
     }
 

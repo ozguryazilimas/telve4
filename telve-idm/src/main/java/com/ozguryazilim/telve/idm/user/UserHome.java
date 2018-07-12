@@ -67,10 +67,10 @@ public class UserHome extends FormBase<User, Long>{
 
     @Inject
     private TelveConfigResolver telveConfigResolver;
-    
+
     @Inject
     private PasswordDefinitionsControl passwordDefinitionsControl;
-
+    
     private String password;
 
     private Boolean createPasswordAndSend;
@@ -101,12 +101,13 @@ public class UserHome extends FormBase<User, Long>{
             password = generatePassword();
             sendEmailWithLoginInformation();
             getAuditLogger().actionLog(getEntity().getClass().getSimpleName(), getEntity().getId(), getBizKeyValue(), AuditLogCommand.CAT_AUTH, ACT_GENERATEPASSWORD, identity.getLoginName(), "");
+        } else {   //Eğer kullanıcı otomatik parola oluşturmuyorsa parola tanımlara uygun mu kontol edelim.
+            if (passwordDefinitionsControl.passwordControl(password)) {
+                return false;
+            }
         }
-        //Parola tanımlara uygun mu kontol edelim.
-        if(passwordDefinitionsControl.passwordControl(password))
-            return false;
-        
-        if( !Strings.isNullOrEmpty(password)){
+
+        if (!Strings.isNullOrEmpty(password)) {
             DefaultPasswordService passwordService = new DefaultPasswordService();
             getEntity().setPasswordEncodedHash(passwordService.encryptPassword(password));
             changeLogStore.addNewValue("user.caption.Password", "Changed");
@@ -245,25 +246,21 @@ public class UserHome extends FormBase<User, Long>{
         String possibleCharacters = upperCaseLetters + lowerCaseLetters + numbers + symbols;
 
         String initialPassword = RandomStringUtils
-            .random(passwordDefinitionsControl.getLength(), 0, possibleCharacters.toCharArray().length - 1, false, false,
+            .random(12, 0, possibleCharacters.toCharArray().length - 1, false, false,
                 possibleCharacters.toCharArray(), new SecureRandom());
         String upperCaseLetter = RandomStringUtils
-            .random(passwordDefinitionsControl.getUpperCase(), 0, upperCaseLetters.toCharArray().length - 1, false, false,
+            .random(1, 0, upperCaseLetters.toCharArray().length - 1, false, false,
                 upperCaseLetters.toCharArray(), new SecureRandom());
         String lowerCaseLetter = RandomStringUtils
-            .random(passwordDefinitionsControl.getLowerCase(), 0, lowerCaseLetters.toCharArray().length - 1, false, false,
+             .random(1, 0, lowerCaseLetters.toCharArray().length - 1, false, false,
                 lowerCaseLetters.toCharArray(), new SecureRandom());
         String number = RandomStringUtils
-            .random(passwordDefinitionsControl.getNumber(), 0, numbers.toCharArray().length - 1, false, false,
+             .random(1, 0, numbers.toCharArray().length - 1, false, false,
                 numbers.toCharArray(), new SecureRandom());
         
-        String symbol = "";
-        if (passwordDefinitionsControl.getSpecial()) {
-            symbol = RandomStringUtils
-                    .random(1, 0, symbols.toCharArray().length - 1, false, false,
-                            symbols.toCharArray(), new SecureRandom());
-        }
-
+        String symbol = RandomStringUtils
+            .random(1, 0, symbols.toCharArray().length - 1, false, false,
+                symbols.toCharArray(), new SecureRandom());
 
         StringBuilder randomPassword = new StringBuilder();
 
