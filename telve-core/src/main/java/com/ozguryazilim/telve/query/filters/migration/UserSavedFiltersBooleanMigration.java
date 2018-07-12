@@ -1,5 +1,9 @@
 package com.ozguryazilim.telve.query.filters.migration;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.ozguryazilim.telve.query.QueryModel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,6 +13,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import liquibase.change.custom.CustomTaskChange;
 import liquibase.database.Database;
 import liquibase.database.jvm.JdbcConnection;
@@ -18,7 +24,7 @@ import liquibase.exception.SetupException;
 import liquibase.exception.ValidationErrors;
 import liquibase.resource.ResourceAccessor;
 
-public class UserSavedFiltersRemoveValue implements CustomTaskChange {
+public class UserSavedFiltersBooleanMigration implements CustomTaskChange {
 
     private String className;
     private String filter;
@@ -43,20 +49,47 @@ public class UserSavedFiltersRemoveValue implements CustomTaskChange {
 
             map.forEach((k, v) -> {
                 try {
-                    System.out.println(k + " new");
-                    String newVal = v.replaceAll("(\"" + filter + "\":\".*?)(::.*?)(\")", "$1$3");
+                    Gson gson = new Gson();
+                    QueryModel model = gson.fromJson(v, QueryModel.class);
+
+                    String value = model.getFilterValues().get(filter);
+                    if (value.contains("Equal")) {
+                        if (value.contains("::T")) {
+                            value = "True";
+                        } else if (value.contains("::F")) {
+                            value = "False";
+                        }
+                    } else if (value.contains("All")) {
+                        value = "All";
+                    }
+                    model.getFilterValues().replace(filter, value);
+                    String newQuery = gson.toJson(model);
+
                     PreparedStatement updateQuery = connection.prepareStatement(
-                            "UPDATE KAHVE SET KV_VAL = " + "'" + newVal + "'"
+                            "UPDATE KAHVE SET KV_VAL = " + "'" + newQuery + "'"
                             + "WHERE KV_KEY = " + "'" + k + "'");
                     updateQuery.executeQuery();
                 } catch (DatabaseException | SQLException ex) {
-                    Logger.getLogger(UserSavedFiltersRemoveValue.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(UserSavedFiltersBooleanMigration.class.getName()).log(Level.SEVERE, null, ex);
                 }
             });
 
         } catch (DatabaseException | SQLException ex) {
-            Logger.getLogger(UserSavedFiltersRemoveValue.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserSavedFiltersBooleanMigration.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private String contertToNewValue(String value) {
+        if (value.contains("Equal")) {
+            if (value.contains("::T")) {
+                return "True";
+            } else if (value.contains("::F")) {
+                return "False";
+            }
+        } else if (value.contains("All")) {
+            return "All";
+        }
+        throw new RuntimeException();
     }
 
     @Override
