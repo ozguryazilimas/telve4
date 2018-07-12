@@ -42,7 +42,7 @@ public class ScheduledReportsControl implements Serializable {
     private Identity userIdentity;
 
     private List<ScheduledCommandUIModel> commands = new ArrayList<>();
-
+   
     @PostConstruct
     public void init() {
         populateScheduledReports();
@@ -53,7 +53,7 @@ public class ScheduledReportsControl implements Serializable {
         String user = userIdentity.getUserInfo().getId();
         //FIXME: Kullanıcının tercih etiği locale alınmalı
         PrettyTime prettyTime = new PrettyTime(new Locale("tr"));
-
+        
         for (Timer t : scheduler.getTimers()) {
             ScheduledCommand c = (ScheduledCommand) t.getInfo();
 
@@ -61,7 +61,7 @@ public class ScheduledReportsControl implements Serializable {
             if (c.getCommand() instanceof ReportCommand) {
                 //Kullanıcı bizim kullanıcımız mı?
                 //TODO: Belki burada ayrıca bir role yapabiliriz. Sadece zamanlanmış rapor yönetimi yetkisi olan bir kullanıcı, tüm kullanıcıların raporlarını mıncırabilir?
-                if (user.equals(c.getCreateBy())) {
+                if (user.equals(c.getCreateBy()) || userIdentity.getUserInfo().getUserType().equals("SUPERADMIN")) {
 
                     ScheduledCommandUIModel m = new ScheduledCommandUIModel();
 
