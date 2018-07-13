@@ -33,6 +33,9 @@ public class AuthenticatorListener implements Serializable{
     @Inject
     private NavigationParameterContext navigationParameterContext;
     
+    @Inject
+    private Identity identity;
+    
     /**
      * Login olunduktan sonra bir şekilde hata nedeniyle logine gelmiş isek o sayfaya geri dönelim...
      * @param event 
@@ -48,7 +51,27 @@ public class AuthenticatorListener implements Serializable{
             for( Map.Entry<String,String> e : m.entrySet() ){
                 navigationParameterContext.addPageParameter(e.getKey(), e.getValue());
             }
-            //Şimdi de sayfaya gidelim
+            //Login olduktan sonra getPasswordChange() true ise parola değiştirme sayfasına gönderiyoruz.
+            if (identity.getUserInfo().getPasswordChange()) {
+                this.viewNavigationHandler.navigateTo(Pages.ChangePassword.class);
+            } else {
+                this.viewNavigationHandler.navigateTo(accessDecisionVoter.getDeniedPage());
+            }
+            }
+        }
+    //PasswordChange eventini dinler ve sorun yoksa 
+    public void handlePasswordChange(@Observes PasswordChangeEvent event) {
+        //Geri dönülecek sayfa için request parametreleri varsa koyalım
+        Map<String, String> m = accessDecisionVoter.getRequestParams();
+        if (m.containsKey("javax.faces.partial.ajax")) {
+            //Ajax sorgusu. Dolayısı ile büyük ihtimal çağrıldığı yerle ilgili şeyler kayıp.
+            //O yüzden ana sayfaya gidiyoruz.
+            this.viewNavigationHandler.navigateTo(Pages.Home.class);
+        } else {
+            for (Map.Entry<String, String> e : m.entrySet()) {
+                navigationParameterContext.addPageParameter(e.getKey(), e.getValue());
+            }
+            //Parolayı değiştirdikten sonra Doğru sayfaya yönlendiriyoruz.
             this.viewNavigationHandler.navigateTo(accessDecisionVoter.getDeniedPage());
         }
     }

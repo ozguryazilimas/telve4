@@ -39,6 +39,9 @@ public class TelveAccessDecisionVoter extends AbstractAccessDecisionVoter {
 
     @Inject
     private ViewConfigResolver viewConfigResolver;
+    
+    @Inject
+    private Identity userIdentity;
 
     @Override
     protected void checkPermission(AccessDecisionVoterContext advc, Set<SecurityViolation> set) {
@@ -57,7 +60,19 @@ public class TelveAccessDecisionVoter extends AbstractAccessDecisionVoter {
                 requestParams = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
                 deniedPage = viewConfigResolver.getViewConfigDescriptor(FacesContext.getCurrentInstance().getViewRoot().getViewId()).getConfigClass();
             }
-
+            //Parola değiştirmesi zorunlu kılınan kullanıcı başka bir sayfaya geçmek isterse diye.
+            if (identity.isAuthenticated() && userIdentity.isChangePassword()) {
+                set.add(new SecurityViolation() {
+                    @Override
+                    public String getReason() {
+                        return "Not have permission;";
+                    }
+                });
+                //Hatayı ürettiğimiz yeri hatırlayalım. Belki parolasını değiştirip gelir.
+                requestParams = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+                deniedPage = viewConfigResolver.getViewConfigDescriptor(FacesContext.getCurrentInstance().getViewRoot().getViewId()).getConfigClass();
+            }
+            
             SecuredPage sc = advc.getMetaDataFor(SecuredPage.class.getName(), SecuredPage.class);
             if (!Strings.isNullOrEmpty(sc.value())) {
                 if (!identity.isPermitted(sc.value() + ":select")) {

@@ -21,14 +21,13 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-
 /**
  *
  * @author haky
  */
 @RequestScoped
 @Named
-public class LoginController {
+public class LoginController{
 
     @Inject
     private FacesContext facesContext;
@@ -47,7 +46,7 @@ public class LoginController {
     
     @Inject
     private Identity identity;
-
+    
     public void login() {
         Boolean result = Boolean.FALSE;
         Subject currentUser = SecurityUtils.getSubject();
@@ -58,7 +57,8 @@ public class LoginController {
                 //token.setRememberMe(true);
                 currentUser.login(token);
                 result = currentUser.isAuthenticated();
-                loggedInEvent.fire(new LoggedInEvent());
+                //Kullanıcı sorunsuz login oldu ve artık parola değiştirmesi gerekli mi diye kontrol etmeliyiz.
+                loggedInEvent.fire(new LoggedInEvent(identity.getUserInfo().getPasswordChange()));
             }
         } catch (UnknownAccountException | IncorrectCredentialsException uae) {
             result = false;
