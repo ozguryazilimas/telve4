@@ -82,6 +82,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
     private String firstNameAttr = "givenName";
     private String lastNameAttr = "sn";
     private String emailAttr = "mail";
+    private String loginNameAttr = "uid";
 
     private String defaultRole = "";
 
@@ -150,6 +151,14 @@ public class TelveIdmRealm extends JndiLdapRealm {
 
     public void setEmailAttr(String emailAttr) {
         this.emailAttr = emailAttr;
+    }
+
+    public String getLoginNameAttr() {
+        return loginNameAttr;
+    }
+
+    public void setLoginNameAttr(String loginNameAttr) {
+        this.loginNameAttr = loginNameAttr;
     }
 
     public String getDefaultRole() {
