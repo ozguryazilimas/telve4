@@ -23,11 +23,11 @@ import javax.inject.Inject;
 @OptionPane(permission = "PasswordDefinitions", optionPage = IdmPages.PasswordDefinitions.class, type = OptionPaneType.System)
 public class PasswordDefinitions extends AbstractOptionPane {
 
-    private static final String PASSWORD_LOWERCASE = "password.lowercase";//kaç adet küçük harf olacak.
-    private static final String PASSWORD_UPPERCASE = "password.uppercase";//kaç adet büyük harf olacak.
-    private static final String PASSWORD_LENGTH = "password.length";//minimum uzunluk ve üstü için
-    private static final String PASSWORD_SPECIAL = "password.special";//Noktalama işaretleri kaç adet olacak.
-    private static final String PASSWORD_NUMBER = "password.number";//Kaç adet sayı içerecek.
+    private static final String PASSWORD_LOWERCASE = "password.lowercase";
+    private static final String PASSWORD_UPPERCASE = "password.uppercase";
+    private static final String PASSWORD_LENGTH = "password.length";
+    private static final String PASSWORD_SPECIAL = "password.special";
+    private static final String PASSWORD_NUMBER = "password.number";
 
     @Inject
     private Kahve kahve;
