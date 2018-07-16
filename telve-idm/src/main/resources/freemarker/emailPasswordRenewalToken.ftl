@@ -3,6 +3,6 @@ ${request.setHeader("subject", headers.telveConfigResolver.getProperty("app.titl
 
 ${headers.messages["email.body.PasswordRenewal"]}
 
-${headers.telveConfigResolver.getProperty("app.linkDomain")}/passwordrenewal.xhtml?token=${headers.token}
+${headers.telveConfigResolver.getProperty("app.linkDomain")}/passwordrenewal.jsf?token=${headers.token}
 --
 provided by telve email channel

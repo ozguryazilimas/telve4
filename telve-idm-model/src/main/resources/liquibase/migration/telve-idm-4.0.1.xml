@@ -108,7 +108,7 @@
         <addColumn tableName="TLI_USER">
             <column name="MOBILE" type="VARCHAR(255)"/>
         </addColumn>
-    </changeSet>         
+    </changeSet>       
     
     <changeSet author="oyas (generated)" id="1467025451677-11">
         <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="TLI_USER_GROUP" constraintName="FK_cwoua04a5pyfbd082up2tfmx6" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="TLI_USER"/>
@@ -142,5 +142,16 @@
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-30">
         <addUniqueConstraint columnNames="LOGIN_NAME" constraintName="TLI_USER_LOGIN_NAME" deferrable="false" disabled="false" initiallyDeferred="false" tableName="TLI_USER"/>
+    </changeSet>
+    
+    <changeSet id="1207201829406-5" author="yusuf.unlu">
+        <createTable tableName="TLI_TOKEN_INFO">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="TLI_TOKENPK"/>
+            </column>
+            <column name="TOKEN" type="VARCHAR(255)"/>
+            <column name="TOKEN_DATE" type="DATETIME"/>
+            <column name="USER_ID" type="BIGINT"/>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

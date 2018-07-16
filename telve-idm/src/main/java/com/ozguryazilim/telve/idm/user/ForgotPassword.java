@@ -4,6 +4,7 @@ import com.google.common.hash.Hashing;
 import com.ozguryazilim.telve.channel.email.EmailChannel;
 import com.ozguryazilim.telve.config.TelveConfigResolver;
 import com.ozguryazilim.telve.idm.entities.User;
+import com.ozguryazilim.telve.idm.passwordrenewal.PasswordRenewalHome;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.messages.Messages;
 import java.nio.charset.StandardCharsets;
@@ -28,7 +29,11 @@ public class ForgotPassword {
     @Inject
     private TelveConfigResolver resolver;
 
-    private String email;
+    @Inject
+    PasswordRenewalHome passwordRenewalHome;
+
+    private String email = "";
+    private String token;
 
     public String getEmail() {
         return email;
@@ -41,10 +46,10 @@ public class ForgotPassword {
     public String sendEmailWithToken() {
         try {
             User user = repository.findByEmail(email);
-
+            generateToken();
             Map<String, Object> params = new HashMap<>();
             params.put("messageClass", "PASSWORDRENEWALTOKEN");
-            params.put("token", generateToken());
+            params.put("token", token);
             params.put("entity", user);
             params.put("telveConfigResolver", resolver);
 
@@ -52,6 +57,9 @@ public class ForgotPassword {
 
             FacesMessages.info(Messages.getMessageFromData(Messages.getCurrentLocale(),
                     "forgotPassword.info.SentRenewalEmail" + "$%&" + email));
+
+            passwordRenewalHome.saveToken(user, token);
+
             return "/login.xhtml?faces-redirect=true";
         } catch (NoResultException nre) {
             FacesMessages.error(Messages.getMessage("forgotPassword.error.InvalidEmail"));
@@ -59,8 +67,8 @@ public class ForgotPassword {
         }
     }
 
-    private String generateToken() {
-        return Hashing
+    private void generateToken() {
+        token = Hashing
                 .sha256()
                 .hashString(UUID.randomUUID().toString() + System.currentTimeMillis(),
                         StandardCharsets.UTF_8)
