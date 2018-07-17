@@ -163,7 +163,7 @@ public class PasswordRenewalHome extends FormBase<PasswordRenewalToken, Long> {
 
     @Override
     protected RepositoryBase<PasswordRenewalToken, ?> getRepository() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return passwordRenewalTokenRepository;
     }
 
 }
