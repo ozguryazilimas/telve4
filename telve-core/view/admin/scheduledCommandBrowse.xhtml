@@ -34,10 +34,11 @@
                             <p:dataTable value="#{scheduledCommandBrowse.filteredItems}" var="item"
                                          selectionMode="single"
                                          selection="#{scheduledCommandBrowse.selectedItem}" 
-                                         rowKey="#{item.id}" >
+                                         rowKey="#{item.id}"
+                                         emptyMessage="#{messages['general.message.browse.EmptyDesc']}">
 
 
-                                <p:ajax event="rowSelect" listener="#{scheduledCommandBrowse.onRowSelect}" />
+                                <p:ajax event="rowSelect" listener="#{scheduledCommandBrowse.onRowSelect}" update=":contextForm" />
 
 
                                 <p:column headerText="#{messages['general.label.Type']}">
@@ -84,7 +85,8 @@
 
                 <div class="row">
                     <div class="col-xs-12" >
-                        <strong>#{messages['command.name.'.concat( scheduledCommandBrowse.selectedItem.command.class.simpleName )]}</strong>
+                        <!--null olma durumu için kontrol edildi-->
+                        <strong>#{scheduledCommandBrowse.selectedItem.command.class.simpleName ne null ? messages['command.name.'.concat( scheduledCommandBrowse.selectedItem.command.class.simpleName )] : ''}</strong>
                     </div> 
                     <div class="col-xs-12" >
                         <strong>#{scheduledCommandBrowse.selectedItem.name}</strong>
@@ -190,9 +192,8 @@
 
         <ui:fragment rendered="#{identity.hasPermission( 'scheduledCommand', 'update')}">
             <li>
-                <p:commandLink  action="#{scheduledCommandBrowse.edit()}" update=":editorPopup"
-                                oncomplete="PF('editorPopup').show();" ajax="true" partialSubmit="true" process="@this" >
-                    <i class="fa fa-pencil"/>
+                <p:commandLink  action="#{scheduledCommandBrowse.edit()}" update=":editorPopup :commands" oncomplete="#{scheduledCommandBrowse.selectedItem != null ? 'PF(\'editorPopup\').show();':'PF(\'editorPopup\').hide();'}" ajax="true" partialSubmit="true" process="@this" >
+                     <i class="fa fa-pencil"/>
                     <span>#{messages['general.button.Edit']}</span>
                 </p:commandLink>
             </li>
@@ -200,7 +201,7 @@
 
         <ui:fragment rendered="#{identity.hasPermission( 'scheduledCommand', 'delete')}">
             <li>
-                <p:commandLink  action="#{scheduledCommandBrowse.delete()}" update=":commands" ajax="true" partialSubmit="true" process="@this" >
+                <p:commandLink  action="#{scheduledCommandBrowse.delete()}" update=":commands contextForm" ajax="true" partialSubmit="true" process="@this" >
                     <i class="fa fa-trash"/>
                     <span>#{messages['general.button.Delete']}</span>
                 </p:commandLink>
@@ -209,7 +210,7 @@
 
         <ui:fragment rendered="#{identity.hasPermission( 'scheduledCommand', 'exec')}">
             <li>
-                <p:commandLink  action="#{scheduledCommandBrowse.startSchedule()}" update=":schedulePopup" oncomplete="PF('schedulePopup').show();" ajax="true" partialSubmit="true" process="@this" >
+                <p:commandLink  action="#{scheduledCommandBrowse.startSchedule()}" update=":schedulePopup" oncomplete="#{scheduledCommandBrowse.selectedItem != null ? 'PF(\'schedulePopup\').show();':'PF(\'schedulePopup\').hide();'}" ajax="true" partialSubmit="true" process="@this" >
                     <i class="fa fa-calendar"/>
                     <span>#{messages['general.button.StartShedule']}</span>
                 </p:commandLink>

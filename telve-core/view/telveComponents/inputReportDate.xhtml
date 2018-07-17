@@ -33,7 +33,7 @@
                     <p:calendar id="#{cc.id}_inpc" value="#{cc.attrs.value.date}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}"
                                 placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.Date']}" showOn="button"
                                 navigator="true" yearRange="#{cc.attrs.yearRange}" mask="true" readonlyInput="#{cc.attrs.readonlyInput}" 
-                                rendered="#{cc.attrs.value.valueType eq 'Date'}">
+                                rendered="#{cc.attrs.value.valueType eq 'Date'}" locale="#{localeSelector.language}">
                         <f:convertDateTime pattern="#{messages['general.format.Date']}" />
                     </p:calendar>
                 </p:outputPanel>
