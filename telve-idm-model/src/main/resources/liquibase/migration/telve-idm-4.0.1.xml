@@ -144,6 +144,8 @@
         <addUniqueConstraint columnNames="LOGIN_NAME" constraintName="TLI_USER_LOGIN_NAME" deferrable="false" disabled="false" initiallyDeferred="false" tableName="TLI_USER"/>
     </changeSet>
     <changeSet author="serdar" id="1531490462422-1">
-        <column name="PW_CHANGE" type="BOOLEAN"/>
+        <addColumn tableName="TLI_USER">
+            <column name="PW_CHANGE" type="BOOLEAN"/>
+        </addColumn>
     </changeSet>
 </databaseChangeLog>
