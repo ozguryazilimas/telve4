@@ -22,6 +22,7 @@ import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 import java.util.Hashtable;
+import java.util.List;
 
 @CommandExecutor(command = LdapSyncCommand.class)
 public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCommand> {
@@ -72,6 +73,10 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             // Ldap uzerinden kullanicilari ariyoruz
             NamingEnumeration<SearchResult> ldapUserResults = ldapContext.search(realm.get(telveRealm +
                     "userSearchBase"), "(objectClass=*)", searchControls);
+
+            // Veritabanindaki kayitli ve otomatik uretilmis kullanicilari cekelim
+            // en son elimizde kalanlari pasif duruma cekelim
+            List<User> existingActiveUsers = userRepository.findAnyByAutoCreatedAndActive(Boolean.TRUE, Boolean.TRUE);
 
             // varsayilan rol tanimlanmis mi bakalim, gerekiyorsa olusturalim
             String defaultRole = !Strings.isNullOrEmpty(realm.get(telveRealm + "defaultRole")) ? realm.get(telveRealm
@@ -125,6 +130,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                         user.setFirstName(firstName);
                         user.setLastName(lastName);
                         user.setEmail(email);
+                        user.setActive(Boolean.TRUE);
 
                         userRepository.save(user);
 
@@ -140,13 +146,23 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                 userRoleRepository.save(newUserRole);
                             }
                         }
+                        // islemler bitti, kullaniciyi varsa listeden cikaralim
+                        existingActiveUsers.remove(user);
 
                         // kullaniciyi guncellemiyorsak loglayalim
                     } else {
-                        LOG.info("User" + user.getLoginName() + "wasn't updated during LdapSyncCommand");
+                        LOG.info("User " + user.getLoginName() + " wasn't updated during LdapSyncCommand");
                     }
                 }
             }
+
+            // kalan kullanicilar telve tarafinda ve aktif ancak Ldap tarafinda bulunmuyor
+            // bunlarin durumunu pasife cekelim
+            for (User user : existingActiveUsers) {
+                user.setActive(Boolean.FALSE);
+                userRepository.save(user);
+            }
+
         } catch (Exception e) {
             LOG.error("There was an error during LdapSyncCommand", e);
             e.printStackTrace();
