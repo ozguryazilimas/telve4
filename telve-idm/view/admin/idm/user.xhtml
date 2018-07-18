@@ -254,7 +254,7 @@
                         </p:selectBooleanCheckbox>
                     </t:inputAny>
 
-                    <p:messages id="messages" for=":form:pwdAcc:pwd1:pwd1"
+                    <p:messages id="messages" for=":form:pwdAcc:pwd1:pwd1" 
                                 showDetail="true">
                         <p:autoUpdate />
                     </p:messages>
@@ -268,14 +268,15 @@
                                             goodLabel="#{messages['password.good']}"
                                             strongLabel="#{messages['password.strong']}"
                                             match=":form:pwdAcc:pwd2:pwd2"
-                                            label="#{messages['user.label.Password']}"/>
+                                            label="#{messages['user.label.Password']}"
+                                            validatorMessage="#{messages['user.password.INVALID_MATCH_detail']}"/>
                                 <p:message for=":form:pwdAcc:pwd1:pwd1" display="text"
                                            showDetail="true"/>
                             </t:inputAny>
 
                             <t:inputAny id="pwd2" label="user.label.PasswordRetype"
                                         rendered="#{ userHome.canEditPassword() and not userHome.createPasswordAndSend}">
-                                <p:password id="pwd2" value="#{userHome.password}"
+                                <p:password id="pwd2" value="#{userHome.password}" 
                                             label="#{messages['user.label.PasswordRetype']}"/>
                             </t:inputAny>
                         </div>
