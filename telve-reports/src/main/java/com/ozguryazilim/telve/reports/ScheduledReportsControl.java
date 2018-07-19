@@ -61,8 +61,8 @@ public class ScheduledReportsControl implements Serializable {
             if (c.getCommand() instanceof ReportCommand) {
                 //Kullanıcı bizim kullanıcımız mı?
                 //TODO: Belki burada ayrıca bir role yapabiliriz. Sadece zamanlanmış rapor yönetimi yetkisi olan bir kullanıcı, tüm kullanıcıların raporlarını mıncırabilir?
-                if (user.equals(c.getCreateBy()) || userIdentity.getUserInfo().getUserType().equals("SUPERADMIN")) {
-
+                if (user.equals(c.getCreateBy()) || userIdentity.isPermitted("viewAll:select:*")) {
+                    
                     ScheduledCommandUIModel m = new ScheduledCommandUIModel();
 
                     m.setScheduledCommand((ScheduledCommand) t.getInfo());
