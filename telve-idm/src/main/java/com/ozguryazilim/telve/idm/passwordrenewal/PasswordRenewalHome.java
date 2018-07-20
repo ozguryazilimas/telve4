@@ -68,7 +68,7 @@ public class PasswordRenewalHome extends FormBase<PasswordRenewalToken, Long> {
         this.token = token;
         this.user = user;
 
-        PasswordRenewalToken getUserToken = passwordRenewalTokenRepository.hasUserToken(user.getId());
+        PasswordRenewalToken getUserToken = passwordRenewalTokenRepository.findAnyByUser(user);
 
         if (getUserToken != null) {
             getUserToken.setToken(token);

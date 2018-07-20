@@ -28,7 +28,6 @@ public abstract class PasswordRenewalTokenRepository extends RepositoryBase<Pass
     @Query(value = "select t from PasswordRenewalToken t where t.token = ?1", singleResult = SingleResultType.OPTIONAL)
     public abstract PasswordRenewalToken hasToken(String token);
 
-    @Query(value = "select t from PasswordRenewalToken t where user_id=?1", singleResult = SingleResultType.OPTIONAL)
-    public abstract PasswordRenewalToken hasUserToken(Long id);
+    public abstract PasswordRenewalToken findAnyByUser(User user);
 
 }
