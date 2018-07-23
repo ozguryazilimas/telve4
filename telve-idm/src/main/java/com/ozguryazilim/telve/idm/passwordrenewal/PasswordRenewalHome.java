@@ -36,9 +36,6 @@ import org.joda.time.DateTime;
 @Named
 public class PasswordRenewalHome extends FormBase<PasswordRenewalToken, Long> {
 
-    @Inject
-    private Event<IdmEvent> event;
-
     private String newPassword;
     private String checkPassword;
     private DateTime tokenBirth;
@@ -87,7 +84,7 @@ public class PasswordRenewalHome extends FormBase<PasswordRenewalToken, Long> {
     @Transactional
     public String changePassword() {
         if (token != null) {
-            PasswordRenewalToken prt = passwordRenewalTokenRepository.hasToken(token);
+            PasswordRenewalToken prt = passwordRenewalTokenRepository.findAnyByToken(token);
             if (prt == null) {
                 FacesMessages.error("passwordRenewalHome.error.accessTime");
                 return "/login.xhtml?faces-redirect=true";
