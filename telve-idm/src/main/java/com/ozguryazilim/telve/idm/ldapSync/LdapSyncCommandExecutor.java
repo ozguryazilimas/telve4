@@ -30,13 +30,13 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
     private static final Logger LOG = LoggerFactory.getLogger(LdapSyncCommandExecutor.class);
 
     @Inject
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Inject
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
 
     @Inject
-    UserRoleRepository userRoleRepository;
+    private UserRoleRepository userRoleRepository;
 
     @Override
     public void execute(LdapSyncCommand command) {
