@@ -92,9 +92,15 @@ public class ScheduledCommandBrowse implements Serializable{
         //Önce timer'ları bir toplayalım.
         for( Timer t : scheduler.getTimers()){
             
+            //Zamanlanmış Raporları pas geçiyoruz
+            ScheduledCommand scheduledCommand = (ScheduledCommand)t.getInfo();
+            if(scheduledCommand.getCommand().getClass().getSimpleName().equals("ReportCommand")){
+             continue;
+            }
+
             ScheduledCommandUIModel m = new ScheduledCommandUIModel();
             
-            m.setScheduledCommand((ScheduledCommand)t.getInfo());
+            m.setScheduledCommand(scheduledCommand);
             m.setId( m.getScheduledCommand().getId());
             try{
             m.setNextTimeout(t.getNextTimeout());

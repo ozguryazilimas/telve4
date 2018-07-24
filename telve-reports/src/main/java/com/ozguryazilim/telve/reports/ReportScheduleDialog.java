@@ -6,6 +6,7 @@
 package com.ozguryazilim.telve.reports;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.messagebus.command.CommandScheduler;
 import com.ozguryazilim.telve.messagebus.command.ScheduledCommand;
 import com.ozguryazilim.telve.utils.ScheduleModel;
@@ -38,6 +39,9 @@ public class ReportScheduleDialog implements Serializable{
     @Inject
     private CommandScheduler scheduler;
     
+    @Inject
+    private Identity userIdentity;
+    
     public void openDialog( ReportCommand command ){
         this.command = command;
         scheduleType = "O";
@@ -64,7 +68,7 @@ public class ReportScheduleDialog implements Serializable{
         
         //Şimdi komutu scheduler'a ekliyoruz.
         //TODO: Kullanıcı bilgisini alıp eklemek lazım.
-        ScheduledCommand sc = new ScheduledCommand(UUID.randomUUID().toString(), s, command.getUser(), command);
+        ScheduledCommand sc = new ScheduledCommand(UUID.randomUUID().toString(), s, userIdentity.getUserInfo().getId(), command);
         scheduler.addToSceduler(sc);
         
         RequestContext.getCurrentInstance().closeDialog(null);
