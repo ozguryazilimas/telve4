@@ -194,13 +194,8 @@ public class TelveIdmUserServiceProvider implements UserServiceProvider, Seriali
 
     private UserInfo createUserInfo(User u) {
         UserInfo ui = new UserInfo();
-        //Eski kullanıcılar dbden null döneceği için onları otomatik olarak false yapıyoruz.
-        if(u.getPasswordChange() == null){
-            ui.setPasswordChange(false);
-        }
-        else{
-            ui.setPasswordChange(u.getPasswordChange());
-        }
+
+        ui.setChangePassword(u.getChangePassword());
         ui.setId(u.getId().toString());
         ui.setLoginName(u.getLoginName());
         ui.setFirstName(u.getFirstName());

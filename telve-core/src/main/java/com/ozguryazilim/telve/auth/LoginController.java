@@ -58,7 +58,7 @@ public class LoginController{
                 currentUser.login(token);
                 result = currentUser.isAuthenticated();
                 //Kullanıcı sorunsuz login oldu ve artık parola değiştirmesi gerekli mi diye kontrol etmeliyiz.
-                loggedInEvent.fire(new LoggedInEvent(identity.getUserInfo().getPasswordChange()));
+                loggedInEvent.fire(new LoggedInEvent(identity.getUserInfo().getChangePassword()));
             }
         } catch (UnknownAccountException | IncorrectCredentialsException uae) {
             result = false;

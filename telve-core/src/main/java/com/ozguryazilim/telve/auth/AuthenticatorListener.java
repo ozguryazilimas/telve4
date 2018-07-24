@@ -52,7 +52,7 @@ public class AuthenticatorListener implements Serializable{
                 navigationParameterContext.addPageParameter(e.getKey(), e.getValue());
             }
             //Login olduktan sonra getPasswordChange() true ise parola değiştirme sayfasına gönderiyoruz.
-            if (identity.getUserInfo().getPasswordChange()) {
+            if (identity.getUserInfo().getChangePassword()) {
                 this.viewNavigationHandler.navigateTo(Pages.ChangePassword.class);
             } else {
                 this.viewNavigationHandler.navigateTo(accessDecisionVoter.getDeniedPage());

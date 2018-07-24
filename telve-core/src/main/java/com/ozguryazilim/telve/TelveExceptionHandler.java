@@ -60,7 +60,7 @@ public class TelveExceptionHandler {
     void onSecurityExceptions(@Handles ExceptionEvent<ErrorViewAwareAccessDeniedException> evt) {
         Subject identity = SecurityUtils.getSubject();
 
-        if (identity.isAuthenticated() && userIdentity.getUserInfo().getPasswordChange()) {
+        if (identity.isAuthenticated() && userIdentity.getUserInfo().getChangePassword()) {
             viewNavigationHandler.navigateTo(Pages.ChangePassword.class);
         } else {
             viewNavigationHandler.navigateTo(Pages.Login.class);

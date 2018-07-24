@@ -67,7 +67,7 @@ public class Identity {
      * @return 
      */
     public Boolean isChangePassword(){
-        return userService.getUserInfo(getLoginName()).getPasswordChange();
+        return userService.getUserInfo(getLoginName()).getChangePassword();
     }
     
     /**

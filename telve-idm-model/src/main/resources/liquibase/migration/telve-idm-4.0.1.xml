@@ -145,7 +145,7 @@
     </changeSet>
     <changeSet author="serdar" id="1531490462422-1">
         <addColumn tableName="TLI_USER">
-            <column name="PW_CHANGE" type="BOOLEAN"/>
+            <column name="PW_CHANGE" type="BOOLEAN" valueBoolean="false"/>
         </addColumn>
     </changeSet>
 </databaseChangeLog>

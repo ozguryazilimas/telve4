@@ -64,7 +64,7 @@ public class ChangePassword implements Serializable {
 
         DefaultPasswordService passwordService = new DefaultPasswordService();
         user.setPasswordEncodedHash(passwordService.encryptPassword(newPassword));
-        user.setPasswordChange(Boolean.FALSE);
+        user.setChangePassword(Boolean.FALSE);
         userRepository.save(user);
         userEvent.fire(new UserDataChangeEvent(identity.getLoginName()));
         passwordChangeEvent.fire(new PasswordChangeEvent());
