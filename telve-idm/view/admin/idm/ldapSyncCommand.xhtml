@@ -5,4 +5,24 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
+
+    <div class="row">
+        <t:inputAny label="ldapSyncCommand.label.groupsAndRoles"
+                    columnClass="col-xs-12">
+            <p:selectBooleanCheckbox itemLabel="ldapSyncCommand.itemLabel.syncGroupsAndAssignUsers"
+                                     value="#{ldapSyncCommandEditor.command.syncGroupsAndAssignUsers}">
+                <p:ajax event="change" update=":ceForm"/>
+            </p:selectBooleanCheckbox>
+        </t:inputAny>
+        <t:inputCheckbox label=""
+                         itemLabel="ldapSyncCommand.itemLabel.createMissingGroups"
+                         value="#{ldapSyncCommandEditor.command.createMissingGroups}"
+                         rendered="#{ldapSyncCommandEditor.command.syncGroupsAndAssignUsers}"
+                         columnClass="col-xs-12"/>
+        <t:inputCheckbox label=""
+                         itemLabel="ldapSyncCommand.itemLabel.syncRolesAndAssignUsers"
+                         value="#{ldapSyncCommandEditor.command.syncRolesAndAssignUsers}"
+                         columnClass="col-xs-12"/>
+    </div>
+
 </ui:composition>

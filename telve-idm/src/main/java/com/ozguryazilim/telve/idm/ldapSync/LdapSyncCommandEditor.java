@@ -9,7 +9,7 @@ public class LdapSyncCommandEditor extends CommandEditorBase<LdapSyncCommand> {
 
     @Override
     public LdapSyncCommand createNewCommand() {
-        return new LdapSyncCommand();
+        return new LdapSyncCommand(Boolean.TRUE, Boolean.TRUE, Boolean.TRUE);
     }
 
 }

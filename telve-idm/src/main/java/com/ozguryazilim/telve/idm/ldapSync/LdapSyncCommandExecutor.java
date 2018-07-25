@@ -1,14 +1,19 @@
 package com.ozguryazilim.telve.idm.ldapSync;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.idm.entities.Group;
 import com.ozguryazilim.telve.idm.entities.Role;
 import com.ozguryazilim.telve.idm.entities.User;
+import com.ozguryazilim.telve.idm.entities.UserGroup;
 import com.ozguryazilim.telve.idm.entities.UserRole;
+import com.ozguryazilim.telve.idm.group.GroupRepository;
 import com.ozguryazilim.telve.idm.role.RoleRepository;
+import com.ozguryazilim.telve.idm.user.UserGroupRepository;
 import com.ozguryazilim.telve.idm.user.UserRepository;
 import com.ozguryazilim.telve.idm.user.UserRoleRepository;
 import com.ozguryazilim.telve.messagebus.command.AbstractCommandExecuter;
 import com.ozguryazilim.telve.messagebus.command.CommandExecutor;
+import com.ozguryazilim.telve.utils.TreeUtils;
 import org.apache.shiro.config.Ini;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +43,12 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
     @Inject
     private UserRoleRepository userRoleRepository;
 
+    @Inject
+    private GroupRepository groupRepository;
+
+    @Inject
+    private UserGroupRepository userGroupRepository;
+
     @Override
     public void execute(LdapSyncCommand command) {
 
@@ -66,19 +77,20 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             // Ldap contextini olusturuyoruz
             LdapContext ldapContext = new InitialLdapContext(env, null);
 
-            SearchControls searchControls = new SearchControls();
-            searchControls.setReturningAttributes(new String[]{loginNameAttr, firstNameAttr, lastNameAttr, emailAttr});
-            searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+            SearchControls userSearchControls = new SearchControls();
+            userSearchControls.setReturningAttributes(new String[]{loginNameAttr, firstNameAttr, lastNameAttr,
+                    emailAttr});
+            userSearchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
 
             // Ldap uzerinden kullanicilari ariyoruz
             NamingEnumeration<SearchResult> ldapUserResults = ldapContext.search(realm.get(telveRealm +
-                    "userSearchBase"), "(objectClass=*)", searchControls);
+                    "userSearchBase"), "(objectClass=*)", userSearchControls);
 
             // Veritabanindaki kayitli ve otomatik uretilmis kullanicilari cekelim
             // en son elimizde kalanlari pasif duruma cekelim
             List<User> existingActiveUsers = userRepository.findAnyByAutoCreatedAndActive(Boolean.TRUE, Boolean.TRUE);
 
-            // varsayilan rol tanimlanmis mi bakalim, gerekiyorsa olusturalim
+            // varsayilan rol tanimlanmis mi bakalim
             String defaultRole = !Strings.isNullOrEmpty(realm.get(telveRealm + "defaultRole")) ? realm.get(telveRealm
                     + "defaultRole") : null;
             Role role = null;
@@ -163,6 +175,108 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                 userRepository.save(user);
             }
 
+            // eger true donerse gruplari senkronize ediyoruz
+            if (command.getSyncGroupsAndAssignUsers()) {
+                //otomatik olusturulmus gruplari bulalim
+                List<Group> autoCreatedGroups = groupRepository.findAnyByAutoCreated(Boolean.TRUE);
+
+                String groupNameAttr = realm.get(telveRealm + "groupNameAttr");
+                String groupMembersAttr = realm.get(telveRealm + "groupMembersAttr");
+
+                SearchControls groupSearchControls = new SearchControls();
+                groupSearchControls.setReturningAttributes(new String[]{groupNameAttr, groupMembersAttr});
+                groupSearchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+
+                // ldap uzerinden sonuclari cekelim
+                NamingEnumeration<SearchResult> ldapGroupResults = ldapContext.search(realm.get(telveRealm +
+                        "groupSearchBase"), "(objectClass=*)", groupSearchControls);
+
+                // sonuclarin uzerinden gecelim
+                while (ldapGroupResults.hasMoreElements()) {
+                    Attributes ldapGroup = ldapGroupResults.next().getAttributes();
+
+                    String groupName = ldapGroup.get(groupNameAttr) != null ? ldapGroup.get(groupNameAttr).get()
+                            .toString() : null;
+
+                    // eger grup adi mevcutsa islemleri yapalim
+                    if (groupName != null) {
+                        // gruba ait kullanicilar
+                        NamingEnumeration<?> members = ldapGroup.get(groupMembersAttr).getAll();
+
+                        // grup telve tarafinda kayitli mi?
+                        Group group = groupRepository.findAnyByName(groupName);
+
+                        // eger veritabaninda kayitli degil ve olusturulmasi icin parametre verilmis ise olusturalim
+                        if (group == null && command.getCreateMissingGroups()) {
+                            Group newGroup = new Group();
+                            newGroup.setActive(Boolean.TRUE);
+                            newGroup.setCode(groupName);
+                            newGroup.setName(groupName);
+                            newGroup.setAutoCreated(Boolean.TRUE);
+                            groupRepository.save(newGroup);
+                            // path id'sini verip tekrar kaydedelim
+                            newGroup.setPath(TreeUtils.getNodeIdPath(newGroup));
+                            groupRepository.save(newGroup);
+                            // grup degerini degistirelim
+                            group = newGroup;
+                        }
+
+                        // grup kayitli ise userGroup uyelerini cekelim,
+                        // ldap tarafinda silinen biri varsa biz de silecegiz userGroup'dan en sonda
+                        List<UserGroup> groupMembers = userGroupRepository.findByGroup(group);
+
+                        // eger grup var ise
+                        if (group != null) {
+                            // uyeleri while loopu ile cekelim
+                            while (members.hasMoreElements()) {
+                                // ustunde islem yapilacak uyeler
+                                String member = members.next().toString();
+
+                                // once kullaniciyi user tablosunda bulalim
+                                User existingUser = userRepository.findAnyByLoginName(member);
+
+                                // boyle bir kullanici var mi emin olalim
+                                if (existingUser != null) {
+
+                                    // ardindan gruba coktan kayitli mi bir kontrol edelim
+                                    UserGroup existingUserGroup = userGroupRepository.findAnyByUserAndGroup
+                                            (existingUser, group);
+
+                                    // eger kayitli degil ise kaydini yapalim
+                                    if (existingUserGroup == null) {
+                                        UserGroup newUserGroup = new UserGroup();
+                                        newUserGroup.setGroup(group);
+                                        newUserGroup.setUser(existingUser);
+                                        userGroupRepository.save(newUserGroup);
+                                    }
+                                    // katiyliysa da guncelleyelim
+                                    else {
+                                        existingUserGroup.setUser(existingUser);
+                                        existingUserGroup.setGroup(group);
+                                        userGroupRepository.save(existingUserGroup);
+                                        // kullaniciyi listeden silelim
+                                        groupMembers.remove(existingUserGroup);
+                                    }
+                                }
+
+                                //ardindan kalan userGroup'lari veritabanindan silelim
+                                for (UserGroup userGroup : groupMembers) {
+                                    userGroupRepository.remove(userGroup);
+                                }
+                            }
+
+                            // islemler bitti, listeden cikaralim
+                            autoCreatedGroups.remove(group);
+                        }
+                    }
+                }
+
+                // elimizde kalan kayitlari pasife cekelim
+                for (Group remainingGroups : autoCreatedGroups) {
+                    remainingGroups.setActive(Boolean.FALSE);
+                    groupRepository.save(remainingGroups);
+                }
+            }
         } catch (Exception e) {
             LOG.error("There was an error during LdapSyncCommand", e);
             e.printStackTrace();

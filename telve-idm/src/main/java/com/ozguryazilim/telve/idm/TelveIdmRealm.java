@@ -76,6 +76,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
      */
     private Boolean generateUser = Boolean.FALSE;
 
+    private String groupSearchBase;
     private String userSearchBase;
     private String userSearchFilter = "(uid={0})";
 
@@ -83,6 +84,8 @@ public class TelveIdmRealm extends JndiLdapRealm {
     private String lastNameAttr = "sn";
     private String emailAttr = "mail";
     private String loginNameAttr = "uid";
+    private String groupNameAttr = "cn";
+    private String groupMembersAttr = "memberUid";
 
     private String defaultRole = "";
 
@@ -111,6 +114,14 @@ public class TelveIdmRealm extends JndiLdapRealm {
 
     public void setGenerateUser(Boolean generateUser) {
         this.generateUser = generateUser;
+    }
+
+    public String getGroupSearchBase() {
+        return groupSearchBase;
+    }
+
+    public void setGroupSearchBase(String groupSearchBase) {
+        this.groupSearchBase = groupSearchBase;
     }
 
     public String getUserSearchBase() {
@@ -159,6 +170,22 @@ public class TelveIdmRealm extends JndiLdapRealm {
 
     public void setLoginNameAttr(String loginNameAttr) {
         this.loginNameAttr = loginNameAttr;
+    }
+
+    public String getGroupNameAttr() {
+        return groupNameAttr;
+    }
+
+    public void setGroupNameAttr(String groupNameAttr) {
+        this.groupNameAttr = groupNameAttr;
+    }
+
+    public String getGroupMembersAttr() {
+        return groupMembersAttr;
+    }
+
+    public void setGroupMembersAttr(String groupMembersAttr) {
+        this.groupMembersAttr = groupMembersAttr;
     }
 
     public String getDefaultRole() {
