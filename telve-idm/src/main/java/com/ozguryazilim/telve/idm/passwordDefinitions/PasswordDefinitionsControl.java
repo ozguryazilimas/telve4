@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ozguryazilim.telve.idm.passwordDefinitions;
 
 import com.ozguryazilim.mutfak.kahve.Kahve;
@@ -57,7 +52,7 @@ public class PasswordDefinitionsControl implements Serializable {
             definitionsControl = true;
         }
         if (password.length() < length) {
-            FacesMessages.error(Messages.getMessageFromData(Messages.getCurrentLocale(),"passwordDefinitions.error.length$%&"+length));
+            FacesMessages.error(Messages.getMessageFromData(Messages.getCurrentLocale(), "passwordDefinitions.error.length$%&" + length));
             definitionsControl = true;
         }
         if (number == true) {

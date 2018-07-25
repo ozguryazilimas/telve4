@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ozguryazilim.telve.idm.passwordDefinitions;
 
 import com.ozguryazilim.mutfak.kahve.Kahve;
@@ -40,11 +35,11 @@ public class PasswordDefinitions extends AbstractOptionPane {
 
     @PostConstruct
     public void init() {
-        lowerCase = kahve.get(PASSWORD_LOWERCASE,Boolean.TRUE);
-        upperCase = kahve.get(PASSWORD_UPPERCASE,Boolean.TRUE);
-        length = kahve.get(PASSWORD_LENGTH,"8");
-        special = kahve.get(PASSWORD_SPECIAL,Boolean.FALSE);
-        number = kahve.get(PASSWORD_NUMBER,Boolean.TRUE);
+        lowerCase = kahve.get(PASSWORD_LOWERCASE, Boolean.TRUE);
+        upperCase = kahve.get(PASSWORD_UPPERCASE, Boolean.TRUE);
+        length = kahve.get(PASSWORD_LENGTH, "8");
+        special = kahve.get(PASSWORD_SPECIAL, Boolean.FALSE);
+        number = kahve.get(PASSWORD_NUMBER, Boolean.TRUE);
 
     }
 
@@ -56,7 +51,6 @@ public class PasswordDefinitions extends AbstractOptionPane {
         kahve.put(PASSWORD_SPECIAL, special);
         kahve.put(PASSWORD_LENGTH, length);
     }
-    
 
     public KahveEntry getLowerCase() {
         return lowerCase;
