@@ -68,8 +68,12 @@ public class ScheduledCommandBrowse implements Serializable{
     
     private ScheduledCommandUIModel selectedItem;
     
-    private String filter;
-    
+    private String filterForType;
+    private String filterForName;
+    private String filterForInfo;
+    private Date filterForStartDate;
+    private Date filterForEndDate;
+            
     private Map<String,ScheduledCommandUIModel> items;
     private List<ScheduledCommandUIModel> filteredItems;
     
@@ -92,9 +96,15 @@ public class ScheduledCommandBrowse implements Serializable{
         //Önce timer'ları bir toplayalım.
         for( Timer t : scheduler.getTimers()){
             
+            //Zamanlanmış Raporları pas geçiyoruz
+            ScheduledCommand scheduledCommand = (ScheduledCommand)t.getInfo();
+            if(scheduledCommand.getCommand().getClass().getSimpleName().equals("ReportCommand")){
+             continue;
+            }
+
             ScheduledCommandUIModel m = new ScheduledCommandUIModel();
             
-            m.setScheduledCommand((ScheduledCommand)t.getInfo());
+            m.setScheduledCommand(scheduledCommand);
             m.setId( m.getScheduledCommand().getId());
             try{
             m.setNextTimeout(t.getNextTimeout());
@@ -145,15 +155,74 @@ public class ScheduledCommandBrowse implements Serializable{
         populateItems();
         
         filteredItems.clear();
-        
+       
         for( ScheduledCommandUIModel sc : items.values() ){
-            if( Strings.isNullOrEmpty(filter) || sc.getName().contains(filter) || sc.getInfo().contains(filter) ){
-                filteredItems.add(sc);
+
+            String simpleName = sc.getCommand().getClass().getSimpleName();
+            
+            String selectedType="";
+            
+            //Filtre üzerinde görev tipi seçilmemişse filterForType değişkeni  
+            //üzerinde işlem yapmak hataya sebep oluyor.(replace yapılmıyor.)
+            if(filterForType !=null){
+                selectedType = filterForType.replace("Editor", "").toLowerCase();
             }
+            
+            //Eğer herhangi bir filtre girilmemiş ise zamanlanmış görev listeye direk eklenir.
+            if (Strings.isNullOrEmpty(filterForName) && Strings.isNullOrEmpty(filterForInfo)  && Strings.isNullOrEmpty(filterForType) &&  filterForStartDate == null && filterForEndDate == null ){
+               filteredItems.add(sc);
+            }
+            else if(sc.getName().contains(filterForName)  && sc.getInfo().contains(filterForInfo) && simpleName.toLowerCase().contains(selectedType)){ 
+
+                //Herhangi bir zaman aralığı filtrelemesi varsa buraya girer
+                if(filterForEndDate != null || filterForStartDate != null){
+                    
+                    //Zaman aralığı filtrelemesi var ancak göreve bir zamanlama
+                    //girilmemişse bu görevi pas geçiyoruz.
+                    if(sc.getNextTimeout() == null){
+                        continue;
+                    }
+                    //Bitiş tarihi girilmemişse, başlangıç tarihinden sonraki 
+                    //tüm görevler kabul edilir.
+                    if(filterForEndDate == null){
+                        if(filterForStartDate.compareTo(sc.getNextTimeout()) <= 0){
+                            filteredItems.add(sc);
+                        }
+                    }
+                    //Başlangıç tarihi girilmemişse, bitiş tarihinden önceki 
+                    //tüm görevler kabul edilir.
+                    else if (filterForStartDate == null){
+                        if(filterForEndDate.compareTo(sc.getNextTimeout()) >= 0){
+                            filteredItems.add(sc);
+                        }
+                    }
+                    //Başlangıç ve Bitiş tarihi girilmişse, verilen zaman aralığı
+                    //arasında kalan tüm görevler kabul edilir.
+                    else if(filterForEndDate != null && filterForStartDate != null){
+                        if(filterForStartDate.compareTo(sc.getNextTimeout()) <= 0 && filterForEndDate.compareTo(sc.getNextTimeout()) >= 0){
+                            filteredItems.add(sc);
+                        }  
+                    }                    
+                }
+                else{
+                    //Zaman aralığı filtresi uygulanmamış ancak diğer filtre
+                    //koşullarını sağlayan görev, listeye eklenir.
+                    filteredItems.add(sc);
+                }
+            }
+
         }
         
     }
-
+    //Filtre Alanını temizlemek ve tüm görevleri listeletmek için kullanılır.
+    public void cleanFilter() throws ClassNotFoundException{
+        filterForType = null;
+        filterForName = null;
+        filterForInfo = null;
+        filterForStartDate = null;
+        filterForEndDate = null;
+        populateFilteredItems();
+    }
     /**
      * Filtrelenmiş listeyi döndürür.
      * @return
@@ -363,16 +432,7 @@ public class ScheduledCommandBrowse implements Serializable{
     public void setSelectedItem(ScheduledCommandUIModel selectedItem) {
         this.selectedItem = selectedItem;
     }
-
-    public String getFilter() {
-        return filter;
-    }
-
-    public void setFilter(String filter) {
-        this.filter = filter;
-    }
-    
-                
+           
     public void onRowSelect(SelectEvent event) {
         selectedItem = (ScheduledCommandUIModel) event.getObject();
     }
@@ -419,5 +479,45 @@ public class ScheduledCommandBrowse implements Serializable{
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-    
+
+    public String getFilterForType() {
+        return filterForType;
+    }
+
+    public void setFilterForType(String filterForType) {
+        this.filterForType = filterForType;
+    }
+
+    public String getFilterForName() {
+        return filterForName;
+    }
+
+    public void setFilterForName(String filterForName) {
+        this.filterForName = filterForName;
+    }
+
+    public String getFilterForInfo() {
+        return filterForInfo;
+    }
+
+    public void setFilterForInfo(String filterForInfo) {
+        this.filterForInfo = filterForInfo;
+    }
+
+    public Date getFilterForStartDate() {
+        return filterForStartDate;
+    }
+
+    public void setFilterForStartDate(Date filterForStartDate) {
+        this.filterForStartDate = filterForStartDate;
+    }
+
+    public Date getFilterForEndDate() {
+        return filterForEndDate;
+    }
+
+    public void setFilterForEndDate(Date filterForEndDate) {
+        this.filterForEndDate = filterForEndDate;
+    }
+ 
 }

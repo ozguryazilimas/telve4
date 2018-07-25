@@ -12,20 +12,64 @@
 
         <h:form id="filterSearch">
             <div class="row">
-                <div class="col-md-3 col-xs-12 pull-right">
+                <div class="col-xs-12 pull-right">
                     <span class="value">
-                        <div class="input-group">
-                            <p:inputText id="filter" value="#{scheduledCommandBrowse.filter}" 
-                                         placeholder="#{messages['general.info.ScheduledCommandBrowseFilter']}" />
-                            <div class="input-group-btn">
-                                <p:commandButton action="#{scheduledCommandBrowse.search()}" partialSubmit="true" process="@form" icon="fa fa-search" styleClass="ui-icon-only btn btn-default" update=":commands" />
-                            </div>
+                        <div class="input-group" style="width: 100%;">
+                            <p:commandLink action="#{scheduledCommandBrowse.cleanFilter()}" update=":commands" styleClass="pull-right">
+                                <i class="fa fa-refresh" />
+                            </p:commandLink>
+                            <p:commandLink onclick="PF('panel').show()" styleClass="pull-right" style="margin-right: 15px;">
+                                <i class="fa fa-filter" />
+                            </p:commandLink>
                         </div>
                     </span>
                 </div>
             </div>
         </h:form>
+        
+        <h:form >
+            <p:panel  id="toggleable" header="#{messages['general.label.AddFilter']}" toggleable="true"  closable="true" widgetVar="panel" visible="false" >
+                <p:panelGrid columns="4" styleClass="ui-noborder" layout="grid">
+                
+                    <p:outputLabel value="#{messages['general.label.ScheduleType']}" />
+                    <p:selectOneMenu value="#{scheduledCommandBrowse.filterForType}" >
+                        <f:selectItem itemValue="" itemLabel="#{messages['general.value.NotSelected']}" />
+                        <f:selectItems value="#{scheduledCommandBrowse.editorNames}" var="item" itemLabel="#{messages['command.editor.'.concat( item )]}" itemValue="#{item}" />
+                    </p:selectOneMenu>
+                
+                    <p:outputLabel value="#{messages['general.label.Name']}" />
+                    <p:inputText placeholder="#{messages['general.info.ScheduledCommandBrowseFilter']}" value="#{scheduledCommandBrowse.filterForName}" />
+                
+          
+                    <p:outputLabel value="#{messages['command.label.Interval']}" />
+                    <p:row>
+                        <p:column><p:calendar pattern="dd-MM-yyyy" id="popup"  locale="#{localeSelector.language}" placeholder="#{messages['general.label.BeginDate']}" value="#{scheduledCommandBrowse.filterForStartDate}" /></p:column>
+                        <p:column><p:calendar pattern="dd-MM-yyyy" id="popup2" locale="#{localeSelector.language}" placeholder="#{messages['general.label.EndDate']}" value="#{scheduledCommandBrowse.filterForEndDate}" /></p:column>
+                    </p:row>
+                
+                    <p:outputLabel value="#{messages['general.label.Info']}" />
+                    <p:inputText placeholder="#{messages['general.info.ScheduledCommandBrowseFilter']}" value="#{scheduledCommandBrowse.filterForInfo}" />
+                
+                </p:panelGrid>
+                
+                <p:separator />
+                <div class="pull-right">
+                    <p:commandButton update=":commands" value="#{messages['general.label.Filter']}" icon="fa fa-filter" action="#{scheduledCommandBrowse.search()}" style="margin-right: 15px;" />
+                    <p:commandButton update=":commands toggleable" value="#{messages['general.button.Clean']}" icon="fa fa-refresh" action="#{scheduledCommandBrowse.cleanFilter()}" />
+                </div>
+                
+                <f:facet name="options">
+                    <p:menu>
+                        <p:submenu label="Settings">
+                            <p:menuitem value="Toggle" url="#" icon="ui-icon-newwin" onclick="PF('panel').toggle()" />
+                            <p:menuitem value="Remove" url="#" icon="ui-icon-close" onclick="PF('panel').close()" />
+                        </p:submenu>
+                    </p:menu>
+                </f:facet>               
+            </p:panel>
 
+        </h:form>
+        
         <div class="row">
             <div class="col-xs-12">
                 <div class="box box-primary">
@@ -77,9 +121,9 @@
                 </div>
             </div>
         </div>
-
-
-
+        
+        
+        
         <p:dialog id="schedulePopup"  header="#{messages['module.caption.Sheduler']}" widgetVar="schedulePopup" modal="true" width="500">
             <h:form id="schedulrForm">
 
