@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ozguryazilim.telve.idm.passwordrenewal;
 
 import com.ozguryazilim.telve.data.RepositoryBase;
@@ -93,6 +88,7 @@ public class PasswordRenewalHome extends FormBase<PasswordRenewalToken, Long> {
                     DefaultPasswordService passwordService = new DefaultPasswordService();
                     user.setPasswordEncodedHash(passwordService.encryptPassword(newPassword));
                     userRepository.save(user);
+                    passwordRenewalTokenRepository.deleteById(prt.getId());
                     FacesMessages.info("passwordRenewalHome.success.changePassword");
                     return "/login.xhtml?faces-redirect=true";
                 }

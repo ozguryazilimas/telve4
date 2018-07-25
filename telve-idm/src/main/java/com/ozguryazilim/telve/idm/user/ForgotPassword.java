@@ -15,6 +15,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
 
 @RequestScoped
 @Named
@@ -44,25 +45,34 @@ public class ForgotPassword {
     }
 
     public String sendEmailWithToken() {
+
         try {
             User user = repository.findByEmail(email);
-            generateToken();
-            Map<String, Object> params = new HashMap<>();
-            params.put("messageClass", "PASSWORDRENEWALTOKEN");
-            params.put("token", token);
-            params.put("entity", user);
-            params.put("telveConfigResolver", resolver);
 
-            emailChannel.sendMessage(email, "", "", params);
+            if (user.getAutoCreated().equals(false)) {
+                generateToken();
+                Map<String, Object> params = new HashMap<>();
+                params.put("messageClass", "PASSWORDRENEWALTOKEN");
+                params.put("token", token);
+                params.put("entity", user);
+                params.put("telveConfigResolver", resolver);
 
-            FacesMessages.info(Messages.getMessageFromData(Messages.getCurrentLocale(),
-                    "forgotPassword.info.SentRenewalEmail" + "$%&" + email));
+                emailChannel.sendMessage(email, "", "", params);
 
-            passwordRenewalHome.saveToken(user, token);
+                FacesMessages.info(Messages.getMessageFromData(Messages.getCurrentLocale(),
+                        "forgotPassword.info.SentRenewalEmail" + "$%&" + email));
+
+                passwordRenewalHome.saveToken(user, token);
+            } else {
+                FacesMessages.error("forgotPassword.error.mailChangePermission");
+            }
 
             return "/login.xhtml?faces-redirect=true";
         } catch (NoResultException nre) {
             FacesMessages.error(Messages.getMessage("forgotPassword.error.InvalidEmail"));
+            return null;
+        } catch (NonUniqueResultException e) {
+            FacesMessages.error("forgotPassword.error.multipleEmail");
             return null;
         }
     }
