@@ -34,7 +34,7 @@ import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 @Repository
 @Dependent
 public abstract class UserGroupRepository extends RepositoryBase<UserGroup, UserGroupViewModel> implements CriteriaSupport<UserGroup>{
-    
+
     /**
      * Sorgularda filtrelenecek olan person.
      */
@@ -51,7 +51,7 @@ public abstract class UserGroupRepository extends RepositoryBase<UserGroup, User
     @Override
     public List<UserGroupViewModel> browseQuery(QueryDefinition queryDefinition) {
         List<Filter<UserGroup, ?, ?>> filters = queryDefinition.getFilters();
-        
+
         CriteriaBuilder criteriaBuilder = entityManager().getCriteriaBuilder();
         //Geriye AccidentAnalysisViewModel dönecek cq'yu ona göre oluşturuyoruz.
         CriteriaQuery<UserGroupViewModel> criteriaQuery = criteriaBuilder.createQuery(UserGroupViewModel.class);
@@ -88,10 +88,11 @@ public abstract class UserGroupRepository extends RepositoryBase<UserGroup, User
 
         return resultList;
     }
-    
+
     public abstract UserGroup findAnyByUserAndGroup( User user, Group grup );
-    
+
     public abstract List<UserGroup> findByGroup( Group grup );
     public abstract List<UserGroup> findByUser( User user );
-    
+
+    public abstract List<UserGroup> findAnyByGroup(Group group);
 }

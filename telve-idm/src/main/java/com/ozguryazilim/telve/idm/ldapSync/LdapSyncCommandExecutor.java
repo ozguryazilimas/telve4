@@ -25,10 +25,12 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.apache.shiro.config.Ini;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@Transactional
 @CommandExecutor(command = LdapSyncCommand.class)
 public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCommand> {
 
@@ -236,15 +238,16 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                     group = newGroup;
                 }
 
-                // grup kayitli ise userGroup uyelerini cekelim,
-                // ldap tarafinda silinen biri varsa biz de silecegiz userGroup'dan en sonda
-                List<UserGroup> groupMembers = userGroupRepository.findByGroup(group);
-
                 // eger grup var ise
                 if (group != null) {
+
+                    // grup kayitli ise userGroup uyelerini cekelim,
+                    // ldap tarafinda silinen biri varsa biz de silecegiz userGroup'dan en sonda
+                    List<UserGroup> groupMembers = userGroupRepository.findAnyByGroup(group);
+
                     // uyeleri while loopu ile cekelim
                     while (members.hasMoreElements()) {
-                        // ustunde islem yapilacak uyeler
+                        // ustunde islem yapilacak uye
                         String member = members.next().toString();
 
                         // once kullaniciyi user tablosunda bulalim
@@ -273,11 +276,11 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                 groupMembers.remove(existingUserGroup);
                             }
                         }
+                    }
 
-                        //ardindan kalan userGroup'lari veritabanindan silelim
-                        for (UserGroup userGroup : groupMembers) {
-                            userGroupRepository.remove(userGroup);
-                        }
+                    // ardindan kalan userGroup'lari veritabanindan silelim
+                    for (UserGroup userGroup : groupMembers) {
+                        userGroupRepository.remove(userGroup);
                     }
 
                     // islemler bitti, listeden cikaralim
