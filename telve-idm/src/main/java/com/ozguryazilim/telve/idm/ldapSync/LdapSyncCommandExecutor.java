@@ -14,10 +14,8 @@ import com.ozguryazilim.telve.idm.user.UserRoleRepository;
 import com.ozguryazilim.telve.messagebus.command.AbstractCommandExecuter;
 import com.ozguryazilim.telve.messagebus.command.CommandExecutor;
 import com.ozguryazilim.telve.utils.TreeUtils;
-import org.apache.shiro.config.Ini;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import java.util.Hashtable;
+import java.util.List;
 import javax.inject.Inject;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -27,8 +25,9 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
-import java.util.Hashtable;
-import java.util.List;
+import org.apache.shiro.config.Ini;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @CommandExecutor(command = LdapSyncCommand.class)
 public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCommand> {
@@ -40,12 +39,16 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
     @Inject
     private UserRepository userRepository;
+
     @Inject
     private RoleRepository roleRepository;
+
     @Inject
     private UserRoleRepository userRoleRepository;
+
     @Inject
     private GroupRepository groupRepository;
+
     @Inject
     private UserGroupRepository userGroupRepository;
 
@@ -93,16 +96,17 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         userSearchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
 
         // Ldap uzerinden kullanicilari ariyoruz
-        NamingEnumeration<SearchResult> ldapUserResults = ldapContext.search(realm.get(telveRealm + "userSearchBase")
-                , "(objectClass=*)", userSearchControls);
+        NamingEnumeration<SearchResult> ldapUserResults = ldapContext
+            .search(realm.get(telveRealm + "userSearchBase"), "(objectClass=*)", userSearchControls);
 
         // Veritabanindaki kayitli ve otomatik uretilmis kullanicilari cekelim
         // en son elimizde kalanlari pasif duruma cekelim
         List<User> existingActiveUsers = userRepository.findAnyByAutoCreatedAndActive(Boolean.TRUE, Boolean.TRUE);
 
         // varsayilan rol tanimlanmis mi bakalim
-        String defaultRole = !Strings.isNullOrEmpty(realm.get(telveRealm + "defaultRole")) ? realm.get(telveRealm +
-                "defaultRole") : null;
+        String defaultRole =
+            !Strings.isNullOrEmpty(realm.get(telveRealm + "defaultRole"))
+                ? realm.get(telveRealm + "defaultRole") : null;
         Role role = null;
         if (defaultRole != null) {
             role = roleRepository.findAnyByName(defaultRole);
@@ -111,12 +115,12 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         while (ldapUserResults.hasMoreElements()) {
             Attributes attributes = ldapUserResults.next().getAttributes();
 
-            String loginName = attributes.get(loginNameAttr) != null ? attributes.get(loginNameAttr).get().toString()
-                    : null;
-            String firstName = attributes.get(firstNameAttr) != null ? attributes.get(firstNameAttr).get().toString()
-                    : null;
-            String lastName = attributes.get(lastNameAttr) != null ? attributes.get(lastNameAttr).get().toString() :
-                    null;
+            String loginName =
+                attributes.get(loginNameAttr) != null ? attributes.get(loginNameAttr).get().toString() : null;
+            String firstName =
+                attributes.get(firstNameAttr) != null ? attributes.get(firstNameAttr).get().toString() : null;
+            String lastName =
+                attributes.get(lastNameAttr) != null ? attributes.get(lastNameAttr).get().toString() : null;
             String email = attributes.get(emailAttr) != null ? attributes.get(emailAttr).get().toString() : null;
 
             // loginName yoksa kullaniciyi kaydetmeyelim/guncellemeyelim
@@ -186,8 +190,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         }
     }
 
-    private void syncGroups(Ini.Section realm, LdapContext ldapContext, LdapSyncCommand command) throws
-            NamingException {
+    private void syncGroups(Ini.Section realm, LdapContext ldapContext, LdapSyncCommand command)
+        throws NamingException {
         //otomatik olusturulmus gruplari bulalim
         List<Group> autoCreatedGroups = groupRepository.findAnyByAutoCreated(Boolean.TRUE);
 
@@ -199,15 +203,15 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         groupSearchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
 
         // ldap uzerinden sonuclari cekelim
-        NamingEnumeration<SearchResult> ldapGroupResults = ldapContext.search(realm.get(telveRealm +
-                "groupSearchBase"), "(objectClass=*)", groupSearchControls);
+        NamingEnumeration<SearchResult> ldapGroupResults = ldapContext
+            .search(realm.get(telveRealm + "groupSearchBase"), "(objectClass=*)", groupSearchControls);
 
         // sonuclarin uzerinden gecelim
         while (ldapGroupResults.hasMoreElements()) {
             Attributes ldapGroup = ldapGroupResults.next().getAttributes();
 
-            String groupName = ldapGroup.get(groupNameAttr) != null ? ldapGroup.get(groupNameAttr).get().toString() :
-                    null;
+            String groupName =
+                ldapGroup.get(groupNameAttr) != null ? ldapGroup.get(groupNameAttr).get().toString() : null;
 
             // eger grup adi mevcutsa islemleri yapalim
             if (groupName != null) {
@@ -250,8 +254,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                         if (existingUser != null) {
 
                             // ardindan gruba coktan kayitli mi bir kontrol edelim
-                            UserGroup existingUserGroup = userGroupRepository.findAnyByUserAndGroup(existingUser,
-                                    group);
+                            UserGroup existingUserGroup = userGroupRepository
+                                .findAnyByUserAndGroup(existingUser, group);
 
                             // eger kayitli degil ise kaydini yapalim
                             if (existingUserGroup == null) {
