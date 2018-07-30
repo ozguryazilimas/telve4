@@ -9,7 +9,7 @@
     <div class="row">
         <t:inputAny label="ldapSyncCommand.label.groupsAndRoles"
                     columnClass="col-xs-12">
-            <p:selectBooleanCheckbox itemLabel="ldapSyncCommand.itemLabel.syncGroupsAndAssignUsers"
+            <p:selectBooleanCheckbox itemLabel="#{messages['ldapSyncCommand.itemLabel.syncGroupsAndAssignUser']}"
                                      value="#{ldapSyncCommandEditor.command.syncGroupsAndAssignUsers}">
                 <p:ajax event="change" update=":ceForm"/>
             </p:selectBooleanCheckbox>

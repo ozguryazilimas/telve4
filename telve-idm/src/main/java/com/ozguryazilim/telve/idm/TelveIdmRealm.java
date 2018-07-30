@@ -76,6 +76,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
      */
     private Boolean generateUser = Boolean.FALSE;
 
+    private String roleSearchBase;
     private String groupSearchBase;
     private String userSearchBase;
     private String userSearchFilter = "(uid={0})";
@@ -86,6 +87,8 @@ public class TelveIdmRealm extends JndiLdapRealm {
     private String loginNameAttr = "uid";
     private String groupNameAttr = "cn";
     private String groupMembersAttr = "memberUid";
+    private String roleNameAttr = "cn";
+    private String roleMembersAttr = "memberUid";
 
     private String defaultRole = "";
 
@@ -114,6 +117,14 @@ public class TelveIdmRealm extends JndiLdapRealm {
 
     public void setGenerateUser(Boolean generateUser) {
         this.generateUser = generateUser;
+    }
+
+    public String getRoleSearchBase() {
+        return roleSearchBase;
+    }
+
+    public void setRoleSearchBase(String roleSearchBase) {
+        this.roleSearchBase = roleSearchBase;
     }
 
     public String getGroupSearchBase() {
@@ -186,6 +197,22 @@ public class TelveIdmRealm extends JndiLdapRealm {
 
     public void setGroupMembersAttr(String groupMembersAttr) {
         this.groupMembersAttr = groupMembersAttr;
+    }
+
+    public String getRoleNameAttr() {
+        return roleNameAttr;
+    }
+
+    public void setRoleNameAttr(String roleNameAttr) {
+        this.roleNameAttr = roleNameAttr;
+    }
+
+    public String getRoleMembersAttr() {
+        return roleMembersAttr;
+    }
+
+    public void setRoleMembersAttr(String roleMembersAttr) {
+        this.roleMembersAttr = roleMembersAttr;
     }
 
     public String getDefaultRole() {

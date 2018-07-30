@@ -78,8 +78,17 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             syncUsers(realm, ldapContext);
 
             // eger true donerse gruplari senkronize ediyoruz
-            if (command.getSyncGroupsAndAssignUsers()) {
-                syncGroups(realm, ldapContext, command);
+            if (command.getSyncGroupsAndAssignUsers() != null) {
+                if (command.getSyncGroupsAndAssignUsers()) {
+                    syncGroups(realm, ldapContext, command);
+                }
+            }
+
+            // eger true donerse rolleri senkronize ediyoruz
+            if (command.getSyncRolesAndAssignUsers()) {
+                if (command.getSyncRolesAndAssignUsers()) {
+                    syncRoles(realm, ldapContext);
+                }
             }
         } catch (Exception e) {
             LOG.error("There was an error during LdapSyncCommand", e);
@@ -224,18 +233,20 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                 Group group = groupRepository.findAnyByName(groupName);
 
                 // eger veritabaninda kayitli degil ve olusturulmasi icin parametre verilmis ise olusturalim
-                if (group == null && command.getCreateMissingGroups()) {
-                    Group newGroup = new Group();
-                    newGroup.setActive(Boolean.TRUE);
-                    newGroup.setCode(groupName);
-                    newGroup.setName(groupName);
-                    newGroup.setAutoCreated(Boolean.TRUE);
-                    groupRepository.save(newGroup);
-                    // path id'sini verip tekrar kaydedelim
-                    newGroup.setPath(TreeUtils.getNodeIdPath(newGroup));
-                    groupRepository.save(newGroup);
-                    // grup degerini degistirelim
-                    group = newGroup;
+                if (command.getCreateMissingGroups() != null) {
+                    if (group == null && command.getCreateMissingGroups()) {
+                        Group newGroup = new Group();
+                        newGroup.setActive(Boolean.TRUE);
+                        newGroup.setCode(groupName);
+                        newGroup.setName(groupName);
+                        newGroup.setAutoCreated(Boolean.TRUE);
+                        groupRepository.save(newGroup);
+                        // path id'sini verip tekrar kaydedelim
+                        newGroup.setPath(TreeUtils.getNodeIdPath(newGroup));
+                        groupRepository.save(newGroup);
+                        // grup degerini degistirelim
+                        group = newGroup;
+                    }
                 }
 
                 // eger grup var ise
@@ -293,6 +304,79 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         for (Group remainingGroups : autoCreatedGroups) {
             remainingGroups.setActive(Boolean.FALSE);
             groupRepository.save(remainingGroups);
+        }
+    }
+
+    private void syncRoles(Ini.Section realm, LdapContext ldapContext) throws NamingException {
+        String roleNameAttr = realm.get(telveRealm + "roleNameAttr");
+        String roleMembersAttr = realm.get(telveRealm + "roleMembersAttr");
+
+        SearchControls roleSeachControls = new SearchControls();
+        roleSeachControls.setReturningAttributes(new String[]{roleNameAttr, roleMembersAttr});
+        roleSeachControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+
+        // ldap uzerinden sonuclari cekelim
+        NamingEnumeration<SearchResult> ldapRoleResults = ldapContext
+            .search(realm.get(telveRealm + "roleSearchBase"), "(objectClass=*)", roleSeachControls);
+
+        // sonuclarin uzerinden gecelim
+        while (ldapRoleResults.hasMoreElements()) {
+            Attributes ldapGroup = ldapRoleResults.next().getAttributes();
+
+            String roleName = ldapGroup.get(roleNameAttr) != null ? ldapGroup.get(roleNameAttr).get().toString() : null;
+
+            if (roleName != null) {
+                // role ait kullanicilar
+                NamingEnumeration<?> members = ldapGroup.get(roleMembersAttr).getAll();
+
+                // rol telve tarafinda kayitli mi?
+                Role role = roleRepository.findAnyByName(roleName);
+
+                // eger rol var ise
+                if (role != null) {
+
+                    // rol kayitli ise userRole uyelerini cekelim,
+                    // ldap tarafinda silinen biri varsa biz de silecegiz userRole'den en sonda
+                    List<UserRole> roleMembers = userRoleRepository.findAnyByRole(role);
+
+                    // uyeleri while loopu ile cekelim
+                    while (members.hasMoreElements()) {
+                        // ustunde islem yapilacak uye
+                        String member = members.next().toString();
+
+                        // once kullaniciyi user tablosunda bulalim
+                        User existingUser = userRepository.findAnyByLoginName(member);
+
+                        // boyle bir kullanici var mi emin olalim
+                        if (existingUser != null) {
+
+                            // ardindan role coktan kayitli mi bir kontrol edelim
+                            UserRole existingUserRole = userRoleRepository.findAnyByUserAndRole(existingUser, role);
+
+                            // eger kayitli degil ise kaydini yapalim
+                            if (existingUserRole == null) {
+                                UserRole newUserRole = new UserRole();
+                                newUserRole.setRole(role);
+                                newUserRole.setUser(existingUser);
+                                userRoleRepository.save(newUserRole);
+                            }
+                            // katiyliysa da guncelleyelim
+                            else {
+                                existingUserRole.setUser(existingUser);
+                                existingUserRole.setRole(role);
+                                userRoleRepository.save(existingUserRole);
+                                // kullaniciyi listeden silelim
+                                roleMembers.remove(existingUserRole);
+                            }
+
+                        }
+                    }
+                    // ardindan kalan userGroup'lari veritabanindan silelim
+                    for (UserRole userRole : roleMembers) {
+                        userRoleRepository.remove(userRole);
+                    }
+                }
+            }
         }
     }
 }
