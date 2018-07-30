@@ -42,13 +42,13 @@ public class AuthenticatorListener implements Serializable{
      */
     public void handleLoggedIn(@Observes LoggedInEvent event) {
         //Geri dönülecek sayfa için request parametreleri varsa koyalım
-        Map<String,String> m = accessDecisionVoter.getRequestParams();
-        if( m.containsKey("javax.faces.partial.ajax")){
+        Map<String, String> m = accessDecisionVoter.getRequestParams();
+        if (m.containsKey("javax.faces.partial.ajax")) {
             //Ajax sorgusu. Dolayısı ile büyük ihtimal çağrıldığı yerle ilgili şeyler kayıp.
             //O yüzden ana sayfaya gidiyoruz.
             this.viewNavigationHandler.navigateTo(Pages.Home.class);
         } else {
-            for( Map.Entry<String,String> e : m.entrySet() ){
+            for (Map.Entry<String, String> e : m.entrySet()) {
                 navigationParameterContext.addPageParameter(e.getKey(), e.getValue());
             }
             //Login olduktan sonra getPasswordChange() true ise parola değiştirme sayfasına gönderiyoruz.
@@ -57,8 +57,8 @@ public class AuthenticatorListener implements Serializable{
             } else {
                 this.viewNavigationHandler.navigateTo(accessDecisionVoter.getDeniedPage());
             }
-            }
         }
+    }
     //PasswordChange eventini dinler ve sorun yoksa 
     public void handlePasswordChange(@Observes PasswordChangeEvent event) {
         //Geri dönülecek sayfa için request parametreleri varsa koyalım
