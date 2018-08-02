@@ -123,7 +123,7 @@ public class DashboardManager implements Serializable {
         col = ConfigResolver.getProjectStageAwarePropertyValue("dashboard.column3", "");
 
         for (String d : Splitter.on(',').omitEmptyStrings().trimResults().split(col)) {
-            model.getColumn1().add(d);
+            model.getColumn3().add(d);
         }
 
         dashboards.add(model);
