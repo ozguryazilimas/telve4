@@ -7,9 +7,6 @@ package com.ozguryazilim.telve.notify;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
-import org.primefaces.json.JSONObject;
-import org.primefaces.push.EventBus;
-import org.primefaces.push.EventBusFactory;
 
 /**
  * PFP Notification mesajları için API
@@ -61,8 +58,8 @@ public class NotifyHandler {
      * @param message 
      */
     public void sendMessage(NotifyMessage message){
-        EventBus eventBus = EventBusFactory.getDefault().eventBus();
-        eventBus.publish(CHANNEL + message.getTo(), new JSONObject(message).toString());
+        //EventBus eventBus = EventBusFactory.getDefault().eventBus();
+        //eventBus.publish(CHANNEL + message.getTo(), new JSONObject(message).toString());
         //eventBus.publish(CHANNEL + "hakan", StringEscapeUtils.escapeHtml4(message));
     }
 }
