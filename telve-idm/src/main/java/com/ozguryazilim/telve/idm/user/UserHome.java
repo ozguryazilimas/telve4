@@ -84,6 +84,7 @@ public class UserHome extends FormBase<User, Long>{
         changeLogStore.addOldValue("general.label.LastName", getEntity().getLastName());
         changeLogStore.addOldValue("user.label.UserType", getEntity().getUserType());
         changeLogStore.addOldValue("general.label.Email", getEntity().getEmail());
+        changeLogStore.addOldValue("user.label.Manager", getEntity().getManager());
         changeLogStore.addOldValue("user.label.DomainGroup", getEntity().getDomainGroup() != null ? getEntity().getDomainGroup().getName() : null );
         
         return true;
@@ -118,6 +119,7 @@ public class UserHome extends FormBase<User, Long>{
         changeLogStore.addNewValue("general.label.LastName", getEntity().getLastName());
         changeLogStore.addNewValue("user.label.UserType", getEntity().getUserType());
         changeLogStore.addNewValue("general.label.Email", getEntity().getEmail());
+        changeLogStore.addNewValue("user.label.Manager", getEntity().getManager());
         changeLogStore.addNewValue("user.label.DomainGroup", getEntity().getDomainGroup() != null ? getEntity().getDomainGroup().getName() : null );
         
         

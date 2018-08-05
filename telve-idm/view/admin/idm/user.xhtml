@@ -53,6 +53,7 @@
                             <t:inputText label="user.label.Email" value="#{userHome.current.email}" required="true" />
                             <t:inputText label="user.label.Mobile" value="#{userHome.current.mobile}" required="false" />
                             <t:inputText label="user.label.LastName" value="#{userHome.current.lastName}" required="true" />
+                            <t:inputUser label="user.label.Manager" value="#{userHome.current.manager}" required="false" />
                             <t:inputCheckbox label="global.label.Status" itemLabel="global.label.Active" value="#{userHome.current.enabled}" required="true" />
                         </div>  
 
@@ -225,6 +226,7 @@
                                  leafSelect="false" required="#{userHome.domainGroupRequired}" disabled="#{not userHome.canChangeCriticalData()}" 
                                  columnClass="col-md-6 col-xs-12"/>
             <t:inputText label="general.label.Mobile" value="#{userHome.entity.mobile}" required="false" />
+            <t:inputUser label="user.label.Manager" value="#{userHome.entity.manager}" required="false" />
         </div>            
 
         <div id="extentions" class="row">

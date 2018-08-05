@@ -53,6 +53,9 @@ public class User extends EntityBase{
     @Column(name = "MOBILE")
     private String mobile;
     
+    @Column(name = "MANAGER")
+    private String manager;
+    
     @Column(name = "PW_HASH")
     private String passwordEncodedHash;
     
@@ -186,6 +189,13 @@ public class User extends EntityBase{
     public void setDomainGroup(Group domainGroup) {
         this.domainGroup = domainGroup;
     }
-    
-    
+
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
+    }
+
 }

@@ -23,12 +23,13 @@ public class UserViewModel implements ViewModel, Serializable{
     private String lastName;
     private String email;
     private String mobile;
+    private String manager;
     private Boolean active;
     private String userType;
     private String info;
     private Group domainGroup;
 
-    public UserViewModel(Long id, String loginName, String firstName, String lastName, String email, String mobile, Boolean active, String userType, String info, Long groupId, String groupName ) {
+    public UserViewModel(Long id, String loginName, String firstName, String lastName, String email, String mobile, Boolean active, String userType, String info, Long groupId, String groupName, String manager ) {
         this.id = id;
         this.loginName = loginName;
         this.firstName = firstName;
@@ -38,6 +39,7 @@ public class UserViewModel implements ViewModel, Serializable{
         this.active = active;
         this.userType = userType;
         this.info = info;
+        this.manager = manager;
         
         this.domainGroup = new Group();
         this.domainGroup.setId(groupId);
@@ -126,6 +128,16 @@ public class UserViewModel implements ViewModel, Serializable{
         this.domainGroup = domainGroup;
     }
 
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
+    }
+
+    
+    
     @Override
     public int hashCode() {
         int hash = 5;

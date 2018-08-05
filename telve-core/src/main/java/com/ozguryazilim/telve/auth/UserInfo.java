@@ -32,6 +32,7 @@ public class UserInfo implements Serializable{
     private String userType;
     private String email;
     private String mobile;
+    private String manager;
     private Long   domainGroupId;
     private String domainGroupName;
     private String domainGroupPath;
@@ -126,6 +127,14 @@ public class UserInfo implements Serializable{
     
     public String getUserName(){
         return getFirstName() + " " + getLastName();
+    }
+
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
     }
     
     @Override
