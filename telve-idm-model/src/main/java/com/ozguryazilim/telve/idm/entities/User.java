@@ -62,6 +62,8 @@ public class User extends EntityBase{
     @Column(name = "ISAUTOCREATED")
     private Boolean autoCreated = Boolean.FALSE;
     
+    @Column(name = "PW_CHANGE")
+    private Boolean changePassword = Boolean.TRUE;
     /**
      * Uygulama tarafından register edilen farklı kullanıcı tipleri.
      */
@@ -186,6 +188,12 @@ public class User extends EntityBase{
     public void setDomainGroup(Group domainGroup) {
         this.domainGroup = domainGroup;
     }
-    
-    
+
+    public Boolean getChangePassword() {
+        return changePassword;
+    }
+
+    public void setChangePassword(Boolean changePassword) {
+        this.changePassword = changePassword;
+    }
 }
