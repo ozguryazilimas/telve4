@@ -11,7 +11,7 @@ public class SubLinkColumn<E, F> extends Column<E> {
     private SingularAttribute<? super F, ?> subattribute;
 
     public SubLinkColumn(SingularAttribute<? super E, ?> attribute, SingularAttribute<? super F, ?> subattribute, String labelKey) {
-        super(attribute, labelKey);
+        super(attribute,(SingularAttribute<? super E, ?>)subattribute,labelKey);
         this.subattribute = subattribute;
     }
 
