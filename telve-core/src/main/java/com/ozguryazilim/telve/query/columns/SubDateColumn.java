@@ -18,7 +18,7 @@ public class SubDateColumn<E, D> extends Column<E> {
     private SingularAttribute<? super D, ?> subattribute;
 
     public SubDateColumn(Attribute<? super E, ?> attribute, SingularAttribute<? super D, ?> subattribute, String labelKey) {
-        super(attribute, labelKey);
+        super(attribute,(Attribute<? super E, ?>)subattribute, labelKey);
         this.subattribute = subattribute;
     }
 

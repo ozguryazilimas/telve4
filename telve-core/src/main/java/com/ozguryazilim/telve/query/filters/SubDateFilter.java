@@ -32,7 +32,7 @@ public class SubDateFilter<E, D> extends Filter<E, D, Date> {
     private SingularAttribute< ? super D, Date> subattribute;
 
     public SubDateFilter(SingularAttribute< ? super E, D> attribute, SingularAttribute< ? super D, Date> subattribute, String label) {
-        super(attribute, label);
+        super(attribute, (SingularAttribute<? super E, D>) subattribute, label);
 
         setOperands(Operands.getDateOperands());
         setOperand(FilterOperand.Equal);
@@ -40,11 +40,19 @@ public class SubDateFilter<E, D> extends Filter<E, D, Date> {
     }
 
     public SubDateFilter(SingularAttribute< ? super E, D> attribute, SingularAttribute< ? super D, Date> subattribute, String label, FilterOperand operand, DateValueType valueType) {
-        super(attribute, label);
+        super(attribute, (SingularAttribute<? super E, D>) subattribute, label);
 
         setOperands(Operands.getDateOperands());
         setOperand(operand);
         this.valueType = valueType;
+        this.subattribute = subattribute;
+    }
+
+    public SingularAttribute<? super D, Date> getSubattribute() {
+        return subattribute;
+    }
+
+    public void setSubattribute(SingularAttribute<? super D, Date> subattribute) {
         this.subattribute = subattribute;
     }
 
@@ -283,7 +291,10 @@ public class SubDateFilter<E, D> extends Filter<E, D, Date> {
 
     @Override
     public String serialize() {
-        return Joiner.on("::").join(getOperand(), getValue() == null ? "null" : getValue());
+         return Joiner.on("::").join(getOperand(), 
+                getValueType(), getValue() == null ? "null" : DateUtils.getDateTimeFormatter().print(new DateTime(getValue())), 
+                getValueType2(), 
+                getValue2() == null ? "null" : DateUtils.getDateTimeFormatter().print(new DateTime(getValue2())));
     }
 
     @Override
