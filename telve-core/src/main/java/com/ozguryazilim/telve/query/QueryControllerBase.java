@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.ozguryazilim.telve.query;
 
 import com.google.common.base.Joiner;
@@ -52,118 +51,123 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Sorgular View Control Sınıfları için taban sınıf.
- * 
+ *
  * FIXME: Repository'lere transfer edilen methodlar temizlenmeli
- * 
+ *
  * @author Hakan Uygun
  * @param <E> Entity sınıfı
  * @param <R> Result sınıfı
  */
-public abstract class QueryControllerBase<E extends EntityBase,R extends ViewModel> implements Serializable{
+public abstract class QueryControllerBase<E extends EntityBase, R extends ViewModel> implements Serializable {
 
     private static final Logger LOG = LoggerFactory.getLogger(QueryControllerBase.class);
 
     private static final String CSV = ".csv";
     private static final String CSV_MIME = "application/csv";
-    
+
     /**
      * Sorgu bilgilerini tutan sınıf
      */
     private QueryDefinition<E, R> queryDefinition = new QueryDefinition<>();
-    
+
     private List<R> entityList = Collections.emptyList();
-    
+
     protected R selectedItem;
     protected R[] selectedItems;
-    
+
     //Sorguyu saklamak için kullanılacak değerler.
     private String queryName;
     //Yeni sorgu ismi için geçici alan.
     private String newQueryName;
     private Boolean defaultQuery = false;
     private Boolean personal = true;
-    
-    private Map<String,QueryModel> systemQueries = new HashMap<>();
-    
-    @Inject @UserAware
+
+    private Map<String, QueryModel> systemQueries = new HashMap<>();
+
+    @Inject
+    @UserAware
     Kahve kahve;
-    
+
     @Inject
     PageTitleResolver pageTitleResolver;
 
     @Inject
     private FacesContext facesContext;
-    
+
     /**
      * GUI için sorgu özellikleri tanımlanır.
-     * @param queryDefinition 
+     *
+     * @param queryDefinition
      */
-    protected abstract void buildQueryDefinition( QueryDefinition<E, R> queryDefinition );
-    
-    protected abstract RepositoryBase<E,R> getRepository();
-    
+    protected abstract void buildQueryDefinition(QueryDefinition<E, R> queryDefinition);
+
+    protected abstract RepositoryBase<E, R> getRepository();
+
     @PostConstruct
-    public void init(){
+    public void init() {
         buildQueryDefinition(queryDefinition);
         loadSystemQueries();
         loadDefaultQuery();
-        
+
     }
 
-    
     public QueryDefinition<E, R> getQueryDefinition() {
         return queryDefinition;
     }
 
-    protected void decorateFilters( Criteria<E,R> criteria ){
-        for( Filter<E, ?, ?> f : queryDefinition.getFilters() ){
+    protected void decorateFilters(Criteria<E, R> criteria) {
+        for (Filter<E, ?, ?> f : queryDefinition.getFilters()) {
             f.decorateCriteria(criteria);
         }
     }
-    
+
     /**
      * Sıralamaları ekler.
-     * @param criteria 
+     *
+     * @param criteria
      */
-    protected void decorateOrders( Criteria<E,R> criteria ){
+    protected void decorateOrders(Criteria<E, R> criteria) {
         //FIXME: İçeriği yazılacak
     }
-    
+
     /**
-     * Alt sınıflar bu methodu override ederek sorguya yeni şeyler ekleyebilirler.
-     * @param criteria 
+     * Alt sınıflar bu methodu override ederek sorguya yeni şeyler
+     * ekleyebilirler.
+     *
+     * @param criteria
      */
-    protected void decorateCriteria( Criteria<E,R> criteria ){
-        
+    protected void decorateCriteria(Criteria<E, R> criteria) {
+
     }
-    
+
     /**
      * Reporsitory üzerinden sorgu düzenler.
-     * 
+     *
      * repositorye UI'dan seçilen parametreleri gönderir.
-     * 
-     * @return 
+     *
+     * @return
      */
-    protected List<R> executeCriteria(){
+    protected List<R> executeCriteria() {
         return getRepository().browseQuery(queryDefinition);
     }
-    
-    public void search(){
+
+    public void search() {
         entityList = executeCriteria();
         selectedItem = null;
         selectedItems = null;
     }
-    
+
     /**
-     * Sadece ana filtrelerin çalıştırılıp, quick filterların çalıştırılmadığı sorgu
+     * Sadece ana filtrelerin çalıştırılıp, quick filterların çalıştırılmadığı
+     * sorgu
      */
-    public void mainSearch(){
-        
+    public void mainSearch() {
+
         //Öncesinde quick filterların içini boşaltıyoruz.
-        for( Filter f : queryDefinition.getQuickFilters() ){
+        for (Filter f : queryDefinition.getQuickFilters()) {
             f.setValue(null);
         }
-        
+
         search();
     }
 
@@ -186,130 +190,139 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
     public void setSelectedItems(R[] selectedItems) {
         this.selectedItems = selectedItems;
     }
-    
-    public void save(){
-    
+
+    public void save() {
+
         //Eğer yeni bir sorgu kaydı ise newQueryName dolu olacaktır. Aksi halde eski bir sorgu güncelleniyordur.
-        if( !Strings.isNullOrEmpty(newQueryName)){
+        if (!Strings.isNullOrEmpty(newQueryName)) {
             queryName = newQueryName;
             newQueryName = "";
         }
-        
+
         QueryModel model = new QueryModel();
         model.setName(queryName);
         model.setResultLimit(queryDefinition.getResultLimit());
         model.setRowLimit(queryDefinition.getRowLimit());
-        
-        for( Column c : queryDefinition.getColumns()){
-            model.getColumns().add(c.getName());
+
+        for (Column c : queryDefinition.getColumns()) {
+            if (c.getSubattr() != null) {
+                model.getColumns().add(c.getName() + c.getSubattr().getName());
+            } else {
+                model.getColumns().add(c.getName());
+            }
         }
-        
+
         //Sadece visible filtreleri saklayacağız. Visible olmayanlar programla yönetiliyorlar.
-        for( Filter c : queryDefinition.getVisibleFilters()){
-            model.getFilters().add(c.getAttribute().getName());
-            model.getFilterValues().put(c.getAttribute().getName(), c.serialize());
+        for (Filter c : queryDefinition.getVisibleFilters()) {
+            if (c.getSubattr() != null) {
+                model.getFilters().add(c.getAttribute().getName()+c.getSubattr().getName());
+                model.getFilterValues().put(c.getAttribute().getName() + c.getSubattr().getName(), c.serialize());
+            } else {
+                model.getFilters().add(c.getAttribute().getName());
+                model.getFilterValues().put(c.getAttribute().getName(), c.serialize());
+            }
+
         }
-        
-        
+
         //Sorterları saklıyoruz
-        for( Column c : queryDefinition.getSorters()){
+        for (Column c : queryDefinition.getSorters()) {
             model.getSorters().add(c.getName());
-            model.getSorterValues().put(c.getName(), c.getSortAsc() ? "A" : "D" );
+            model.getSorterValues().put(c.getName(), c.getSortAsc() ? "A" : "D");
         }
-        
+
         Gson gson = new Gson();
         String s = gson.toJson(model);
 
         System.out.println(s);
-        
-        kahve.put( getQueryKey( queryName ), s );
-        
-        if( defaultQuery ){
-            kahve.put( getDefaultQueryKey(), queryName);
+
+        kahve.put(getQueryKey(queryName), s);
+
+        if (defaultQuery) {
+            kahve.put(getDefaultQueryKey(), queryName);
         }
-        
+
         //Sorgu adı yoksa listeye ekleniyor. 
         List<String> ls = new ArrayList(getQueryNames());
-        if( !ls.contains(queryName)){
+        if (!ls.contains(queryName)) {
             ls.add(queryName);
         }
-        
+
         String ss = Joiner.on(',').join(ls);
-        kahve.put(getQueryNamesKey(), ss );
+        kahve.put(getQueryNamesKey(), ss);
     }
 
-    public void deleteQuery(){
+    public void deleteQuery() {
         deleteQuery(queryName);
     }
-    
-    public void deleteQuery(String name){
-        kahve.remove(getQueryKey( name ));
-        
+
+    public void deleteQuery(String name) {
+        kahve.remove(getQueryKey(name));
+
         List<String> ls = new ArrayList(getQueryNames());
-        if( ls.contains(name)){
+        if (ls.contains(name)) {
             ls.remove(name);
         }
-        
+
         String ss = Joiner.on(',').join(ls);
-        kahve.put(getQueryNamesKey(), ss );
+        kahve.put(getQueryNamesKey(), ss);
         //Uygulama tanımlı ilk sorguya dönüyoruz.
         loadQuery("");
     }
-    
-    public void loadFromSaved( String name ){
-        KahveEntry e = kahve.get( getQueryKey(name) );
-        if( e == null ) {
-            LOG.error("Saved Query not found : {}", getQueryKey(name) );
+
+    public void loadFromSaved(String name) {
+        KahveEntry e = kahve.get(getQueryKey(name));
+        if (e == null) {
+            LOG.error("Saved Query not found : {}", getQueryKey(name));
             return;
         }
-        
+
         Gson gson = new Gson();
         QueryModel model = gson.fromJson(e.getAsString(), QueryModel.class);
-        
+
         loadFromModel(model);
     }
-    
-    protected void loadFromModel( QueryModel model ){
+
+    protected void loadFromModel(QueryModel model) {
         queryName = model.getName();
         queryDefinition.setResultLimit(model.getResultLimit());
         queryDefinition.setRowLimit(model.getRowLimit());
-        
+
         queryDefinition.getColumns().clear();
-        for( String s : model.getColumns() ){
-            Column< ? super E > c = queryDefinition.findColumnByName(s);
-            if( c != null ){
-                queryDefinition.getColumns().add( c );
+        for (String s : model.getColumns()) {
+            Column< ? super E> c = queryDefinition.findColumnByName(s);
+            if (c != null) {
+                queryDefinition.getColumns().add(c);
             }
         }
-        
+
         //Filtre değerlerini setliyoruz
-        for( String s : model.getFilters() ){
+        for (String s : model.getFilters()) {
             Filter f = queryDefinition.findFilterByName(s);
-            if( f != null ){
+            if (f != null) {
                 String val = model.getFilterValues().get(s);
-                if( val != null ){
+                if (val != null) {
                     f.deserialize(val);
-                }   
+                }
             }
         }
-        
+
         //Sıralama bilgilerini düzenliyoruz.
         queryDefinition.getSorters().clear();
-        for( String s : model.getSorters()){
+        for (String s : model.getSorters()) {
             Column c = queryDefinition.findColumnByName(s);
             String val = model.getFilterValues().get(s);
             c.setSortAsc("A".equals(val));
-            queryDefinition.getSorters().add( c );
+            queryDefinition.getSorters().add(c);
         }
     }
-    
-    protected void loadFromSystem( String name ){
+
+    protected void loadFromSystem(String name) {
         QueryModel model = systemQueries.get(name);
-        if( model != null ){
+        if (model != null) {
             loadFromModel(model);
         }
     }
-    
+
     /**
      * Saklanmış tüm sorguları siler.
      */
@@ -321,10 +334,10 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
         kahve.remove(getQueryNamesKey());
         kahve.remove(getDefaultQueryKey());
     }
-    
+
     /**
      * saklanmış olan sorguların isim listesini döner.
-     * @return 
+     * @return
      */
     public List<String> getQueryNames(){
         KahveEntry e = kahve.get(getQueryNamesKey());
@@ -334,21 +347,21 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
         } else {
             ls = new ArrayList<>();
         }
-        
+
         return ls;
     }
-    
+
     /**
      * Sistem sorgularının isim listesini döndürür.
-     * @return 
+     * @return
      */
     public List<String> getSystemQueryNames(){
         return new ArrayList<>(systemQueries.keySet());
     }
-    
+
     /**
      * Verilen isimli sorguyu yükler
-     * @param name 
+     * @param name
      */
     public void loadQuery( String name ){
         queryName = name;
@@ -360,7 +373,7 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
         kahve.put( getDefaultQueryKey(), queryName);
         search();
     }
-    
+
     /**
      * Varsayılan sorguyu yükler yosak olduğu gibi bırakır.
      */
@@ -373,31 +386,31 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
         }
     }
 
-    
     /**
      * QueryController için sistem tarafından önceden tanımlanmış olan sorguları yükler.
-     * 
+     *
      * Bu sorgular /Sınıfİsmi.queries.json dosyalarında bulunur.
-     * 
+     *
      * Aynı isimli dosya birden fazla jar içinde tanımlanabilir. Böylece farklı modüller farklı sorgular tanımlayabilirler.
-     * 
+     *
      * JSON formatı QueryModel listesinden oluşur.
      */
     protected void loadSystemQueries(){
         systemQueries.clear();
-        
+
         try {
             Enumeration<URL> jsons = getClass().getClassLoader().getResources("/" +getClass().getSimpleName() + ".queries.json");
-            
+
             Gson gson = new Gson();
-            Type collectionType = new TypeToken<List<QueryModel>>() {}.getType();
-            
-            while( jsons.hasMoreElements() ){
+            Type collectionType = new TypeToken<List<QueryModel>>() {
+            }.getType();
+
+            while (jsons.hasMoreElements()) {
                 InputStream is = jsons.nextElement().openStream();
-                if( is != null ){
+                if (is != null) {
                     Reader r = new InputStreamReader(is);
-                    List<QueryModel> models = gson.fromJson( r, collectionType);
-                    for( QueryModel m : models ){
+                    List<QueryModel> models = gson.fromJson(r, collectionType);
+                    for (QueryModel m : models) {
                         systemQueries.put(m.getName(), m);
                     }
                 }
@@ -418,7 +431,7 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
             }
         }*/
     }
-    
+
     public String getQueryName() {
         if( Strings.isNullOrEmpty(queryName)){
             queryName = pageTitleResolver.getPageTitle();
@@ -448,24 +461,24 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
 
     /**
      * Geriye ilgili browse için sorgu isimlerinin saklandığı kahve key'ini döndürür.
-     * @return 
+     * @return
      */
     protected String getQueryNamesKey(){
         return "query.names." + getClass().getSimpleName();
     }
-    
+
     /**
      * Geriye ilgili brose için sorgu key'ini döndürür.
      * @param s
-     * @return 
+     * @return
      */
     protected String getQueryKey( String s ){
         return "query." + getClass().getSimpleName() + "." + s;
     }
-    
+
     /**
      * Geriye ilgili brose için varsa default sorgunun saklandığı key'i döndürür.
-     * @return 
+     * @return
      */
     protected String getDefaultQueryKey(){
         return "query.default." + getClass().getSimpleName();
@@ -482,46 +495,46 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
     /**
      * Verilen isimli sorgunun sistem sorgusu olup olamadığı.
      * @param name
-     * @return 
+     * @return
      */
     public Boolean getIsSystemQuery( String name ){
         return systemQueries.containsKey(name);
     }
-    
+
     public Boolean getIsSystemQuery(){
         return getIsSystemQuery( queryName );
     }
-    
+
     /**
      * Query Sonucunu CVS olarak export eder.
      */
     public void export() throws IOException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
-        
+
         //Önce sorguyu bir daha çalıştıralım.
         search();
-        
+
         StringWriter doc = new StringWriter();
-        
+
         //Önce başlığı bir yazalım.
         exportHeader( doc );
-        
+
         for( R e : entityList ){
             exportRow( e, doc );
         }
-        
+
         LOG.debug(doc.toString());
-        
+
         sendExport(doc.toString().getBytes("UTF-8"));
     }
-    
+
     protected void sendExport( byte[] data ){
         HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
         response.reset();
         response.setContentType(CSV_MIME);
-        
+
         //TODO: FileName nasıl olsun?
         String fileName = getExportFileName() + CSV;
-        
+
         response.setHeader("Content-disposition", "attachment;filename=" + fileName );
         response.setContentLength(data.length);
 
@@ -545,26 +558,26 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
         String qn = getQueryName();
         //Eğer sorgu ismi yoksa default aynı değer
         boolean addqn = !f.equals(qn);
-            
+
         String result = Messages.getMessage(f);
-        
+
         if( addqn ) {
             result = result + "-" + qn;
         }
-        
+
         result = result + "-" + DateUtils.getDateTimeFormatter().print(new DateTime());
-        
+
         //TODO: isimdeli türkçe karakter, boşluk v.s temizlenmeli.
         result = result.replaceAll(" ", "_");
-        
+
         result = StringUtils.escapeTurkish(result);
-        
+
         return result;
     }
-    
+
     protected void exportHeader( Writer doc) throws IOException{
         boolean firstColumn = true;
-        
+
         for( Column c : queryDefinition.getColumns()){
             if( !firstColumn ){
                 doc.write(",");
@@ -575,21 +588,21 @@ public abstract class QueryControllerBase<E extends EntityBase,R extends ViewMod
         }
         doc.write("\n");
     }
-    
+
     protected void exportRow( R row, Writer doc) throws IOException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
         boolean firstColumn = true;
-        
+
         for( Column c : queryDefinition.getColumns()){
             if( !firstColumn ){
                 doc.write(",");
             } else {
                 firstColumn = false;
             }
-            
+
             c.export(row, doc);
-            
+
         }
         doc.write("\n");
     }
-    
+
 }

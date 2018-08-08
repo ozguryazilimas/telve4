@@ -24,14 +24,14 @@ import org.primefaces.model.DualListModel;
 public class QueryDefinition<E, R> {
 
     /**
-     * Genel bir sorgu alanı için veri saklanır.
-     * Sorgu implementasyonu hangi alanları arayacağını belirler.
-     * Genelde Ad Soyad, Açıklama v.b. gibi alanlar için kullanılır.
-     * 
+     * Genel bir sorgu alanı için veri saklanır. Sorgu implementasyonu hangi
+     * alanları arayacağını belirler. Genelde Ad Soyad, Açıklama v.b. gibi
+     * alanlar için kullanılır.
+     *
      * QueryModel üzerinde saklanmaz.
      */
     private String searchText;
-    
+
     private List<Filter<E, ?, ?>> visibleFilters = new ArrayList<>();
     private List<Filter<E, ?, ?>> filters = new ArrayList<>();
     private List<Filter<E, ?, ?>> quickFilters = new ArrayList<>();
@@ -51,9 +51,9 @@ public class QueryDefinition<E, R> {
      * Sıralama için kullanılabilecek kolonlar.
      */
     private List<Column<? super E>> sortables = new ArrayList<>();
-    
+
     private List<Column<? super E>> sorters = new ArrayList<>();
-    
+
     private Integer resultLimit = 100;
     private Integer rowLimit = 20;
 
@@ -65,28 +65,27 @@ public class QueryDefinition<E, R> {
      * @param required
      * @return
      */
-    public QueryDefinition<E, R> addFilter(Filter<E, ?, ?> filter, boolean visible ) {
+    public QueryDefinition<E, R> addFilter(Filter<E, ?, ?> filter, boolean visible) {
 
         filters.add(filter);
 
-        if (visible ) {
+        if (visible) {
             visibleFilters.add(filter);
         }
 
         return this;
     }
 
-    
     public QueryDefinition<E, R> addFilter(Filter<E, ?, ?> filter) {
         return addFilter(filter, true);
     }
-    
+
     public QueryDefinition<E, R> addQuickFilter(Filter<E, ?, ?> filter) {
         quickFilters.add(filter);
-        addFilter(filter,false);
+        addFilter(filter, false);
         return this;
     }
-    
+
     public QueryDefinition<E, R> addExtraFilter(Filter<?, ?, ?> filter) {
         extraFilters.add(filter);
         return this;
@@ -97,18 +96,18 @@ public class QueryDefinition<E, R> {
         if (visible) {
             columns.add(column);
         }
-        
-        if( sortable ){
+
+        if (sortable) {
             sortables.add(column);
         }
-        
+
         return this;
     }
 
     public QueryDefinition<E, R> addColumn(Column<? super E> column, boolean visible) {
         return addColumn(column, visible, true);
     }
-    
+
     public QueryDefinition<E, R> addColumn(Column<? super E> column) {
         return addColumn(column, false, true);
     }
@@ -124,11 +123,11 @@ public class QueryDefinition<E, R> {
     public List<Filter<E, ?, ?>> getQuickFilters() {
         return quickFilters;
     }
-    
+
     public List<Filter<?, ?, ?>> getExtraFilters() {
         return extraFilters;
     }
-    
+
     public List<Column<? super E>> getAllColumns() {
         return allColumns;
     }
@@ -169,11 +168,11 @@ public class QueryDefinition<E, R> {
     }
 
     public void setPickListColumns(DualListModel<Column<? super E>> columns) {
-         //Mutlaka 1 kolon seçilmeli yoksa önceki durumu hiç değiştirmeyelim
-         if( !columns.getTarget().isEmpty() ){
-             this.columns.clear();
-             this.columns.addAll(columns.getTarget());
-         }
+        //Mutlaka 1 kolon seçilmeli yoksa önceki durumu hiç değiştirmeyelim
+        if (!columns.getTarget().isEmpty()) {
+            this.columns.clear();
+            this.columns.addAll(columns.getTarget());
+        }
     }
 
     public List<Column<? super E>> getAvailColumns() {
@@ -203,7 +202,7 @@ public class QueryDefinition<E, R> {
         DualListModel<Column<? super E>> pickListColumns = new DualListModel<>(getAvailSortables(), getSorters());
         return pickListColumns;
     }
-    
+
     public void setSortListColumns(DualListModel<Column<? super E>> columns) {
         this.sorters.clear();
         this.sorters.addAll(columns.getTarget());
@@ -224,7 +223,7 @@ public class QueryDefinition<E, R> {
 
     public void setAvailSortables(List<Column<? super E>> allColumns) {
     }
-    
+
     public List<Column<? super E>> getSortables() {
         return sortables;
     }
@@ -240,32 +239,49 @@ public class QueryDefinition<E, R> {
     public void setSorters(List<Column<? super E>> sorters) {
         this.sorters = sorters;
     }
-    
-    public void toggleSortOrder( String name ){
-        Column<? super E> c = findColumnByName( name );
+
+    public void toggleSortOrder(String name) {
+        Column<? super E> c = findColumnByName(name);
         c.setSortAsc(!c.getSortAsc());
     }
-    
+
     /**
      * Verilen isimli kolon tanımını arar bulamazsa null döner.
+     *
      * @param name
-     * @return 
+     * @return
      */
-    public Column<? super E> findColumnByName( String name ){
-        for( Column<? super E> c : allColumns ){
-            if( c.getName().equals(name) ) return c;
+    public Column<? super E> findColumnByName(String name) {
+        for (Column<? super E> c : allColumns) {
+            if (c.getSubattr() != null) {
+                if ((c.getName() + c.getSubattr().getName()).equals(name)) {
+                    return c;
+                }
+            } else {
+                if (c.getName().equals(name)) {
+                    return c;
+                }
+            }
+
         }
         return null;
     }
 
     /**
      * Verilen isimli filtre tanımını arar bulamazsa null döner.
+     *
      * @param name
-     * @return 
+     * @return
      */
-    public Filter<E, ?, ?> findFilterByName( String name ){
-        for( Filter<E, ?, ?> c : filters ){
-            if( c.getAttribute().getName().equals(name) ) return c;
+    public Filter<E, ?, ?> findFilterByName(String name) {
+        for (Filter<E, ?, ?> c : filters) {
+            if (c.getSubattr() != null) {
+                if ((c.getAttribute().getName() + c.getSubattr().getName()).equals(name)) {
+                    return c;
+                }
+            } else if (c.getAttribute().getName().equals(name)) {
+                return c;
+            }
         }
         return null;
     }
@@ -277,6 +293,5 @@ public class QueryDefinition<E, R> {
     public void setSearchText(String searchText) {
         this.searchText = searchText;
     }
-    
-    
+
 }

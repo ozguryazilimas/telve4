@@ -28,6 +28,11 @@ public abstract class Filter<E, X, Y> {
     private SingularAttribute<? super E, X> attribute;
     
     /**
+     * Model üzerinde ilgilenilen alt alan
+     */
+    private SingularAttribute<? super E, X> subattr;
+    
+    /**
      * Ekranda hangi metni gösterecek
      */
     private String labelKey;
@@ -59,6 +64,12 @@ public abstract class Filter<E, X, Y> {
     public Filter( SingularAttribute<? super E, X> attribute, String label ){
         this.attribute = attribute;
         this.labelKey = label;
+    }
+    
+    public Filter( SingularAttribute<? super E, X> attribute,SingularAttribute<? super E, X> subattr, String label ){
+        this.attribute = attribute;
+        this.labelKey = label;
+        this.subattr=subattr;
     }
 
     public Filter(String label) {
@@ -119,6 +130,14 @@ public abstract class Filter<E, X, Y> {
 
     public void setValue2(Y value2) {
         this.value2 = value2;
+    }
+
+    public SingularAttribute<? super E, X> getSubattr() {
+        return subattr;
+    }
+
+    public void setSubattr(SingularAttribute<? super E, X> subattr) {
+        this.subattr = subattr;
     }
     
     public abstract void decorateCriteria( Criteria<E, ?> criteria );

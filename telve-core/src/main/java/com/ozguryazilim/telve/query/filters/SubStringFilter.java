@@ -28,7 +28,7 @@ public class SubStringFilter<E,S> extends Filter<E, S, String> {
     private SingularAttribute< ? super S, String> subattribute;
     
     public SubStringFilter(SingularAttribute< ? super E, S> attribute, SingularAttribute< ? super S, String> subattribute, String label) {
-        super(attribute, label);
+        super(attribute,(SingularAttribute< ? super E, S>) subattribute, label);
         
         this.subattribute = subattribute;
         
