@@ -103,6 +103,8 @@ public class UserHome extends FormBase<User, Long>{
         if( !Strings.isNullOrEmpty(password)){
             DefaultPasswordService passwordService = new DefaultPasswordService();
             getEntity().setPasswordEncodedHash(passwordService.encryptPassword(password));
+            //yönetici tarafından parola değişikliği yapıldı.O zaman kullanıcı tekrar parola değiştirmek zorunda
+            getEntity().setChangePassword(Boolean.TRUE);
             changeLogStore.addNewValue("user.caption.Password", "Changed");
         }
         

@@ -10,9 +10,9 @@ import javax.persistence.metamodel.SingularAttribute;
  * @param <E>
  * @param <P>
  */
-public class RatingFilter<E> extends NumberFilter<E, Integer>{
+public class RatingFilter<E> extends NumberFilter<E, Integer> {
 
-    private Integer length=5;
+    private Integer length = 5;
 
     public Integer getLength() {
         return length;
@@ -21,11 +21,11 @@ public class RatingFilter<E> extends NumberFilter<E, Integer>{
     public void setLength(Integer length) {
         this.length = length;
     }
-    
-    public RatingFilter(SingularAttribute<? super E, Integer> attribute, String label, Integer defaultValue,Integer starsLength) {
-        super(attribute, label,defaultValue);
-        length=starsLength;
-        
+
+    public RatingFilter(SingularAttribute<? super E, Integer> attribute, String label, Integer defaultValue, Integer starsLength) {
+        super(attribute, label, defaultValue);
+        length = starsLength;
+
     }
 
     @Override
@@ -34,9 +34,9 @@ public class RatingFilter<E> extends NumberFilter<E, Integer>{
         setOperand(FilterOperand.valueOf(ls.get(0)));
         setValue(new Integer(ls.get(1)));
     }
-    
+
     @Override
     public String getTemplate() {
         return "ratingFilter";
-    }  
+    }
 }
