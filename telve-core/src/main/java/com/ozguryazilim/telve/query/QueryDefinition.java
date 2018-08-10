@@ -254,7 +254,7 @@ public class QueryDefinition<E, R> {
     public Column<? super E> findColumnByName(String name) {
         for (Column<? super E> c : allColumns) {
             if (c.getSubattr() != null) {
-                if ((c.getName() + c.getSubattr().getName()).equals(name)) {
+                if ((c.getName() +"."+ c.getSubattr().getName()).equals(name)) {
                     return c;
                 }
             } else {
@@ -276,7 +276,7 @@ public class QueryDefinition<E, R> {
     public Filter<E, ?, ?> findFilterByName(String name) {
         for (Filter<E, ?, ?> c : filters) {
             if (c.getSubattr() != null) {
-                if ((c.getAttribute().getName() + c.getSubattr().getName()).equals(name)) {
+                if ((c.getAttribute().getName() +"."+ c.getSubattr().getName()).equals(name)) {
                     return c;
                 }
             } else if (c.getAttribute().getName().equals(name)) {

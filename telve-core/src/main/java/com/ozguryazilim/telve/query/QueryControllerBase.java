@@ -206,7 +206,7 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
 
         for (Column c : queryDefinition.getColumns()) {
             if (c.getSubattr() != null) {
-                model.getColumns().add(c.getName() + c.getSubattr().getName());
+                model.getColumns().add(c.getName() +"."+ c.getSubattr().getName());
             } else {
                 model.getColumns().add(c.getName());
             }
@@ -215,8 +215,8 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
         //Sadece visible filtreleri saklayacağız. Visible olmayanlar programla yönetiliyorlar.
         for (Filter c : queryDefinition.getVisibleFilters()) {
             if (c.getSubattr() != null) {
-                model.getFilters().add(c.getAttribute().getName()+c.getSubattr().getName());
-                model.getFilterValues().put(c.getAttribute().getName() + c.getSubattr().getName(), c.serialize());
+                model.getFilters().add(c.getAttribute().getName()+"."+c.getSubattr().getName());
+                model.getFilterValues().put(c.getAttribute().getName() +"."+ c.getSubattr().getName(), c.serialize());
             } else {
                 model.getFilters().add(c.getAttribute().getName());
                 model.getFilterValues().put(c.getAttribute().getName(), c.serialize());
