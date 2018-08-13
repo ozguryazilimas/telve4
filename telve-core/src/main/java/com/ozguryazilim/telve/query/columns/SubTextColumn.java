@@ -31,7 +31,7 @@ public class SubTextColumn<E, F> extends Column<E> {
      * @param labelKey
      */
     public SubTextColumn(SingularAttribute<? super E, ?> attribute, SingularAttribute<? super F, ?> subattribute, String labelKey) {
-        super(attribute, labelKey);
+        super(attribute,(SingularAttribute<? super E, ?>)subattribute, labelKey);
         this.subattribute = subattribute;
     }
 
