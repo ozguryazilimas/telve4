@@ -1,0 +1,6 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui">
+    <p:commandLink value="#{item[col.name][col.subName]}" action="#{bean.view(item.id)}" partialSubmit="true" process="@this" styleClass="fa fa-external-link"/>
+</ui:composition>
