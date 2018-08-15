@@ -19,6 +19,8 @@
         <composite:attribute name="mindate" />
         <composite:attribute name="maxdate" />
         <composite:clientBehavior name="dateSelect" event="dateSelect" targets="#{cc.id}_inp" />
+        <composite:attribute name="bindRangePrev" type="javax.faces.component.UINamingContainer" />
+        <composite:attribute name="bindRangeNext" type="javax.faces.component.UINamingContainer" />
     </composite:interface>
 
     <composite:implementation>
@@ -29,7 +31,10 @@
                     <p:calendar id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}"
                                 placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.Date']}" showOn="#{cc.attrs.readonly ? 'none' : 'button'}"
                                 navigator="true" yearRange="#{cc.attrs.yearRange}" mask="true" readonlyInput="#{cc.attrs.readonlyInput}" 
-                                mindate="#{cc.attrs.mindate}" maxdate="#{cc.attrs.maxdate}" showButtonPanel="true" locale="#{localeSelector.language}">
+                                mindate="#{cc.attrs.mindate}" maxdate="#{cc.attrs.maxdate}" showButtonPanel="true" locale="#{localeSelector.language}"
+                                validator="dateRangeValidator" immediate="#{not empty cc.attrs.binding ? true : false}" >
+                        <f:attribute name="bindRangePrev" value="#{cc.attrs.bindRangePrev}" />
+                        <f:attribute name="bindRangeNext" value="#{cc.attrs.bindRangeNext}" />
                         <f:convertDateTime pattern="#{messages['general.format.Date']}" />
                         <p:clientValidator />
                     </p:calendar>
