@@ -95,4 +95,6 @@ public abstract class UserRoleRepository extends RepositoryBase<UserRole, UserRo
     public abstract List<UserRole> findByRole( Role role );
     
     public abstract List<UserRole> findByUserAndRole_active( User user, Boolean active );
+
+    public abstract List<UserRole> findAnyByRole(Role role);
 }

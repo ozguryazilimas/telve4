@@ -40,6 +40,9 @@ public class TelveAccessDecisionVoter extends AbstractAccessDecisionVoter {
     @Inject
     private ViewConfigResolver viewConfigResolver;
 
+    @Inject
+    private Identity userIdentity;
+
     @Override
     protected void checkPermission(AccessDecisionVoterContext advc, Set<SecurityViolation> set) {
 
@@ -54,8 +57,20 @@ public class TelveAccessDecisionVoter extends AbstractAccessDecisionVoter {
                     }
                 });
                 //Hatayı ürettiğimiz yeri hatırlayalım. Ki login sonrası geri dönebilelim.
-                requestParams = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-                deniedPage = viewConfigResolver.getViewConfigDescriptor(FacesContext.getCurrentInstance().getViewRoot().getViewId()).getConfigClass();
+                setRequestParam();
+                setDeniedPage();
+            }
+            //Parola değiştirmesi zorunlu kılınan kullanıcı başka bir sayfaya geçmek isterse diye.
+            if (identity.isAuthenticated() && userIdentity.isChangePassword()) {
+                set.add(new SecurityViolation() {
+                    @Override
+                    public String getReason() {
+                        return "Not have permission;";
+                    }
+                });
+                //Hatayı ürettiğimiz yeri hatırlayalım. Belki parolasını değiştirip gelir.
+                setRequestParam();
+                setDeniedPage();
             }
 
             SecuredPage sc = advc.getMetaDataFor(SecuredPage.class.getName(), SecuredPage.class);
@@ -68,8 +83,8 @@ public class TelveAccessDecisionVoter extends AbstractAccessDecisionVoter {
                         }
                     });
                     //Hatayı ürettiğimiz yeri hatırlayalım. Belki farklı yetkili biri olarak geri gelir :)
-                    requestParams = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-                    deniedPage = viewConfigResolver.getViewConfigDescriptor(FacesContext.getCurrentInstance().getViewRoot().getViewId()).getConfigClass();
+                    setRequestParam();
+                    setDeniedPage();
                 }
 
                 //Uygulama için ayarlardan yetki çıkarma kontrolü
@@ -95,6 +110,21 @@ public class TelveAccessDecisionVoter extends AbstractAccessDecisionVoter {
             });
         }
 
+    }
+
+    /**
+     * Security exception verilmeden önce sayfaya gönderilen parametleri
+     * kaydeder.
+     */
+    public void setRequestParam() {
+        requestParams = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+    }
+
+    /**
+     * Security exception verilmeden önce gidilmek istenen sayfayı kaydeder.
+     */
+    public void setDeniedPage() {
+        deniedPage = viewConfigResolver.getViewConfigDescriptor(FacesContext.getCurrentInstance().getViewRoot().getViewId()).getConfigClass();
     }
 
     /**

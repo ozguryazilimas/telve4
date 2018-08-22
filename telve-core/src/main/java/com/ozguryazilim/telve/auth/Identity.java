@@ -62,7 +62,14 @@ public class Identity {
         return currentUser.isPermitted( permission );
     }
     
-
+    /**
+     * Kullanıcıların parola değiştirme durumlarını döndürür.
+     * @return 
+     */
+    public Boolean isChangePassword(){
+        return userService.getUserInfo(getLoginName()).getChangePassword();
+    }
+    
     /**
      * Kullanıcın gerçek adını döndürür.
      * @return 

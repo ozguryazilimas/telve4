@@ -40,6 +40,9 @@ public interface Pages extends ViewConfig {
     class Options implements Pages {
     };
     
+    class ChangePassword implements Pages {
+    };
+    
     @SecuredPage
     class FeatureLookup implements Pages {};
 

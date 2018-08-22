@@ -24,13 +24,19 @@ public abstract class Column<E> implements Serializable {
      * Kolon adı : bean.name
      */
     private Attribute<? super E, ?> attribute;
-    
+    private Attribute<? super E, ?> subattr;
     private String labelKey;
     private String permission;
     private String keyPrefix;
     private Boolean sortAsc = Boolean.TRUE;
 
     public Column(Attribute<? super E, ?> attribute, String labelKey) {
+        this.attribute = attribute;
+        this.labelKey = labelKey;
+    }
+    
+    public Column(Attribute<? super E, ?> attribute,Attribute<? super E, ?> subattr, String labelKey) {
+        this.subattr=subattr;
         this.attribute = attribute;
         this.labelKey = labelKey;
     }
@@ -42,6 +48,14 @@ public abstract class Column<E> implements Serializable {
     public void setAttribute(Attribute<? super E, ?> attribute) {
         this.attribute = attribute;
     }
+
+    public Attribute<? super E, ?> getSubattr() {
+        return subattr;
+    }
+
+    public void setSubattr(Attribute<? super E, ?> subattr) {
+        this.subattr = subattr;
+    }
     
     /**
      * Attribute adını döndürür.
@@ -50,7 +64,6 @@ public abstract class Column<E> implements Serializable {
     public String getName(){
         return getAttribute().getName();
     }
-
     public String getLabelKey() {
         return labelKey;
     }
