@@ -1,26 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.ozguryazilim.telve.audit.housekeep;
 
 import com.ozguryazilim.telve.messagebus.command.AbstractStorableCommand;
 
 /**
- * 
+ *
  * Belirlenen tarihten eski güvenlik loglarını temizlemek için komut.
- *  
- * 
- * 
+ *
+ *
+ *
  * @author Ceyhun Onur
  */
-public class AuditLogClearCommand extends AbstractStorableCommand{
-    
+public class AuditLogClearCommand extends AbstractStorableCommand {
+
     /**
-     * Ne kadar önceki değere bakacak?
+     * interval = Ne kadar önceki değere bakacak?
      */
     private String interval;
+    private String domain;
+    private String category;
+    private String action;
 
     public String getInterval() {
         return interval;
@@ -29,6 +27,28 @@ public class AuditLogClearCommand extends AbstractStorableCommand{
     public void setInterval(String interval) {
         this.interval = interval;
     }
-    
-    
+
+    public String getDomain() {
+        return domain;
+    }
+
+    public void setDomain(String domain) {
+        this.domain = domain;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
 }
