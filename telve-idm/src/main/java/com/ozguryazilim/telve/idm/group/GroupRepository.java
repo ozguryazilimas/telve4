@@ -11,6 +11,8 @@ import javax.enterprise.context.Dependent;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 
+import java.util.List;
+
 /**
  *
  * @author oyas
@@ -30,5 +32,8 @@ public abstract class GroupRepository extends TreeRepositoryBase<Group> implemen
         entity.setParent(parent);
         return entity;
     }
-    
+
+    public abstract Group findAnyByName(String name);
+
+    public abstract List<Group> findAnyByAutoCreated(Boolean autoCreated);
 }

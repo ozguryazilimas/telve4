@@ -384,4 +384,6 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
             "INNER JOIN TLI_GROUP g on u.GROUP_ID = g.ID\n" +
             "WHERE u.LOGIN_NAME = ?1 ) gg on g.path like gg.grpPath", isNative = true)
     public abstract List<String> findAllGroupMembers(String loginName);
+
+    public abstract List<User> findAnyByAutoCreatedAndActive(Boolean isAutoCreated, Boolean isActive);
 }

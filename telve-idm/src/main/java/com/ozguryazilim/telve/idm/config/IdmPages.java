@@ -56,4 +56,9 @@ public interface IdmPages extends Pages.Admin{
     
     @SecuredPage @View 
     class PasswordOptionPane implements Admin {};
+
+    @SecuredPage
+    @View
+    class LdapSyncCommand implements Admin {
+    };
 }
