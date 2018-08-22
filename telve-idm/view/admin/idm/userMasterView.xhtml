@@ -16,6 +16,7 @@
                 <t:outputText label="user.label.DomainGroup" value="#{userHome.entity.domainGroup.caption}" />
                 <t:outputText label="general.label.Email" value="#{userHome.entity.email}" />
                 <t:outputText label="general.label.Mobile" value="#{userHome.entity.mobile}" />
+                <t:outputText label="user.label.Manager" value="#{userLookup.getUserName(userHome.entity.manager)}" />
                 
                 <t:outputBoolean label="user.label.LDAP" itemLabel="general.boolean.yesno." value="#{userHome.entity.autoCreated}" />
                 <t:outputText label="general.label.Info" value="#{userHome.entity.info}" columnClass="col-xs-12"/>

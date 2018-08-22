@@ -143,6 +143,13 @@
     <changeSet author="oyas (generated)" id="1467025451677-30">
         <addUniqueConstraint columnNames="LOGIN_NAME" constraintName="TLI_USER_LOGIN_NAME" deferrable="false" disabled="false" initiallyDeferred="false" tableName="TLI_USER"/>
     </changeSet>
+
+    <changeSet author="hakan.uygun" id="201808051322">
+        <addColumn tableName="TLI_USER">
+            <column name="MANAGER" type="VARCHAR(100)"/>
+        </addColumn>
+    </changeSet>         
+
     <changeSet id="20180725-29678-1" author="scirit">
         <addColumn tableName="TLI_GROUP">
             <column name="AUTO_CREATED" type="BOOLEAN" valueBoolean="FALSE"/>
@@ -153,4 +160,5 @@
             <column name="PW_CHANGE" type="BOOLEAN" valueBoolean="false"/>
         </addColumn>
     </changeSet>
+
 </databaseChangeLog>

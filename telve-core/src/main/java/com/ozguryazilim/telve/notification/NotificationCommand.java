@@ -121,6 +121,14 @@ public class NotificationCommand extends AbstractCommand{
         this.sender = sender;
     }
 
+    /**
+     * Aşağıdaki formatta bir hedef sorgusu gönderilir.
+     * 
+     * cs=contactSourceName;key=value;key=value||cs=contactSourceName;key=value;key=value
+     * 
+     * Örnek: cs=contact;id=bişi;firstname=Hakan;lastname=Uygun;email=ccc@example.com;mobile=+9052222222||.... 
+     * @return 
+     */
     public String getTarget() {
         return target;
     }

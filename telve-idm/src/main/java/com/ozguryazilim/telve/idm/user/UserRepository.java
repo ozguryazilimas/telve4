@@ -268,7 +268,8 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
                 from.get(User_.userType),
                 from.get(User_.info),
                 groupFrom.get(Group_.id),
-                groupFrom.get(Group_.name)
+                groupFrom.get(Group_.name),
+                from.get(User_.manager)
         );
     }
 
