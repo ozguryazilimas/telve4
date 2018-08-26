@@ -25,14 +25,13 @@ import com.ozguryazilim.telve.query.filters.DateValueType;
 import com.ozguryazilim.telve.reports.JasperReportBase;
 import com.ozguryazilim.telve.reports.Report;
 import com.ozguryazilim.telve.reports.ReportDate;
-import com.ozguryazilim.telve.view.Pages;
 
 /**
  * AuditLog'lar için standart rapor
  *
  * @author Hakan Uygun
  */
-@Report( filterPage = Pages.Admin.AdminReportPages.AuditLogReport.class, permission="auditLogReport", path="/admin/audit", template = "auditLogReport")
+@Report( filterPage = AdminReportPages.AuditLogReport.class, permission="auditLogReport", path="/admin/audit", template = "auditLogReport")
 public class AuditLogReport extends JasperReportBase{
 
     @Inject

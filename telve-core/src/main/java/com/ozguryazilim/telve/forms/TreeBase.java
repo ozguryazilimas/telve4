@@ -112,10 +112,12 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
     public void edit(E e) {
         LOG.debug("Edit edicedik : {}", e);
         entity = e;
+        auditLog(AuditLogCommand.ACT_SELECT);
     }
 
     public void delete(E e) {
         entity = e;
+        auditLog(AuditLogCommand.ACT_DELETE);
         delete();
     }
 
@@ -286,6 +288,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
         Long pk = Long.valueOf(params.get("nodeId"));
         entity = getRepository().findBy(pk);
+        auditLog(AuditLogCommand.ACT_SELECT);
         treeModel.setSelectedNodes(params.get("nodeId"));
     }
 

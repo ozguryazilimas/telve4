@@ -10,14 +10,14 @@
     <ui:param name="homeBean" value="#{userHome}" />
     <ui:param name="entityName" value="user" />
     <ui:param name="entity" value="#{userHome.entity}" />
-    
+
     <ui:define name="metadata">
         <f:metadata>
             <f:viewParam name="eid" value="#{userHome.id}" />
             <f:viewAction action="#{userHome.initData()}" />
         </f:metadata>
     </ui:define>
-    
+
     <ui:remove>
         <ui:define name="body">
 
@@ -62,9 +62,9 @@
                             </c:forEach>
                         </div>
 
-                        <ui:fragment rendered="#{telveConfigResolver.getProperty('ui.user.ShowPassword') eq 'true' and ( not userHome.entity.autoCreated )}">
+                        <ui:fragment rendered="#{not userHome.entity.autoCreated }">
                             <div class="row">
-                                <t:accordion id="pwdAcc" label="#{messages['user.caption.Password']}" hide="false">
+                                <t:accordion id="pwdAcc" label="#{messages['user.caption.Password']}" hide="false" columnClass="col-xs-12">
                                     <p:messages id="messages" for=":form:pwdAcc:pwd1:pwd1" showDetail="true"  >
                                         <p:autoUpdate />
                                     </p:messages>
@@ -210,7 +210,7 @@
 
     <ui:define name="form">
         <div class="row">
-            <t:inputCombobox label="user.label.UserType" value="#{userHome.entity.userType}" required="false" last="true" disabled="#{not userHome.canChangeCriticalData()}">
+            <t:inputCombobox label="user.label.UserType" value="#{userHome.entity.userType}" required="false" last="true" disabled="#{not userHome.canChangeCriticalData()}" columnClass="col-md-6 col-xs-12">
                 <f:selectItems value="#{userHome.getUserTypes()}" var="ut" itemLabel="#{messages[ 'userType.label.'.concat(ut) ]}" itemValue="#{ut}" />
                 <ui:remove>
                     <p:ajax event="onchange" update=":form:extentions" />
@@ -221,8 +221,9 @@
             <t:inputText label="general.label.LastName" value="#{userHome.entity.lastName}" required="true" />
             <t:inputText label="general.label.Email" value="#{userHome.entity.email}" required="true" />
             <t:inputLookupDialog value="#{userHome.entity.domainGroup}" label="user.label.DomainGroup"  
-                             lookupBean="#{groupLookup}" lookupListener="userHome.entity.domainGroup" 
-                             leafSelect="false" required="#{userHome.domainGroupRequired}" disabled="#{not userHome.canChangeCriticalData()}"/>
+                                 lookupBean="#{groupLookup}" lookupListener="userHome.entity.domainGroup" 
+                                 leafSelect="false" required="#{userHome.domainGroupRequired}" disabled="#{not userHome.canChangeCriticalData()}" 
+                                 columnClass="col-md-6 col-xs-12"/>
             <t:inputText label="general.label.Mobile" value="#{userHome.entity.mobile}" required="false" />
         </div>            
 
@@ -241,24 +242,46 @@
 
 
 
-        <ui:fragment rendered="#{telveConfigResolver.getProperty('ui.user.ShowPassword') eq 'true'}">
+        <ui:fragment rendered="#{not userHome.entity.autoCreated}">
             <div class="row">
-                <t:accordion id="pwdAcc" label="#{messages['user.caption.Password']}" hide="false">
-                    <p:messages id="messages" for=":form:pwdAcc:pwd1:pwd1" showDetail="true" >
+                <t:accordion id="pwdAcc" label="#{messages['user.caption.Password']}" hide="false" columnClass="col-xs-12">
+
+
+                    <t:inputAny label="" columnClass="col-xs-12">
+                        <p:selectBooleanCheckbox value="#{userHome.createPasswordAndSend}"
+                                                 itemLabel="#{messages['user.label.CreateNewAndSendEmail']}">
+                            <p:ajax event="change" update=":form:pwdAcc:pwdInput" process="@this"/>
+                        </p:selectBooleanCheckbox>
+                    </t:inputAny>
+
+                    <p:messages id="messages" for=":form:pwdAcc:pwd1:pwd1" 
+                                showDetail="true">
                         <p:autoUpdate />
                     </p:messages>
-                    <div class="row">
-                        <t:inputAny id="pwd1" label="user.label.Password">
-                            <p:password id="pwd1" value="#{userHome.password}" feedback="true"
-                                        promptLabel="#{messages['password.prompt']}" weakLabel="#{messages['password.week']}"
-                                        goodLabel="#{messages['password.good']}" strongLabel="#{messages['password.strong']}" match=":form:pwdAcc:pwd2:pwd2" label="#{messages['user.label.Password']}"/>
-                            <p:message for=":form:pwdAcc:pwd1:pwd1" display="text" showDetail="true" />
-                        </t:inputAny>
+                    <h:panelGroup id="pwdInput" styleClass="col-xs-12" layout="block">
+                        <div class="row">
+                            <t:inputAny id="pwd1" label="user.label.Password"
+                                        rendered="#{ userHome.canEditPassword() and not userHome.createPasswordAndSend}">
+                                <p:password id="pwd1" value="#{userHome.password}" feedback="true"
+                                            promptLabel="#{messages['password.prompt']}"
+                                            weakLabel="#{messages['password.week']}"
+                                            goodLabel="#{messages['password.good']}"
+                                            strongLabel="#{messages['password.strong']}"
+                                            match=":form:pwdAcc:pwd2:pwd2"
+                                            label="#{messages['user.label.Password']}"
+                                            validatorMessage="#{messages['user.password.INVALID_MATCH_detail']}"/>
+                                <p:message for=":form:pwdAcc:pwd1:pwd1" display="text"
+                                           showDetail="true"/>
+                            </t:inputAny>
 
-                        <t:inputAny id="pwd2" label="user.label.PasswordRetype">
-                            <p:password id="pwd2" value="#{userHome.password}" label="#{messages['user.label.PasswordRetype']}" />
-                        </t:inputAny>
-                    </div>
+                            <t:inputAny id="pwd2" label="user.label.PasswordRetype"
+                                        rendered="#{ userHome.canEditPassword() and not userHome.createPasswordAndSend}">
+                                <p:password id="pwd2" value="#{userHome.password}" 
+                                            label="#{messages['user.label.PasswordRetype']}"/>
+                            </t:inputAny>
+                        </div>
+                    </h:panelGroup>
+
                 </t:accordion>
             </div>
         </ui:fragment>

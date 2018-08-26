@@ -27,7 +27,7 @@
                 <ui:remove>
                 <p:calendar id="#{cc.id}_inp" value="#{cc.attrs.value}" required="#{cc.attrs.required}" readonly="#{cc.attrs.readonly}"
                             placeholder="#{cc.attrs.placeholder}" pattern="#{messages['general.format.Time']}" showOn="button"
-                            navigator="true" timeOnly="true" mask="true" readonlyInput="#{cc.attrs.readonlyInput}">
+                            navigator="true" timeOnly="true" mask="true" readonlyInput="#{cc.attrs.readonlyInput}" locale="#{localeSelector.language}">
                     <f:convertDateTime pattern="#{messages['general.format.Time']}" />
                     <p:clientValidator />
                 </p:calendar>

@@ -40,6 +40,9 @@ public interface Pages extends ViewConfig {
     class Options implements Pages {
     };
     
+    class ChangePassword implements Pages {
+    };
+    
     @SecuredPage
     class FeatureLookup implements Pages {};
 
@@ -71,18 +74,6 @@ public interface Pages extends ViewConfig {
         class AuditLogClearCommand implements Admin {
         };
 
-        @Folder(name = "/admin/reports")
-        public interface AdminReportPages extends Pages.Admin {
-
-            @SecuredPage
-            @View
-            @PageTitle("report.name.auditLogReport")
-            class AuditLogReport implements AdminReportPages {
-            }
-
-
-        }
-
         class AllOptionsPane implements Admin {
         };
 
@@ -99,16 +90,4 @@ public interface Pages extends ViewConfig {
         };
     }
 
-    @SecuredPage
-    interface Reports extends Pages {
-
-        @Navigation(icon = "fa fa-print", section = MainNavigationSection.class, order = 100)
-        class ReportConsole implements Reports {
-        };
-
-        //Navigasyon yok. ReportConsole contextine gidecek
-        class ScheduledReportConsole implements Reports {
-        };
-    }
-    
 }

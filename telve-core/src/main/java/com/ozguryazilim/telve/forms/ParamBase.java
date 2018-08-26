@@ -99,14 +99,18 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
         LOG.debug("Edit edicedik : {}", e);
 
         onBeforeLoad();
-
+        
         entity = e;
+        auditLog(AuditLogCommand.ACT_SELECT);
+        
         onAfterLoad();
     }
 
     public void delete(E e) {
         entity = e;
+        auditLog(AuditLogCommand.ACT_DELETE);
         delete();
+        
     }
 
     @Transactional
