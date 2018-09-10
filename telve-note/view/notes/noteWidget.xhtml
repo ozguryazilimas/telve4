@@ -3,7 +3,8 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:of="http://omnifaces.org/functions">
 
     #{noteWidget.init(featurePointer)}
 
@@ -101,7 +102,7 @@
                     
                     <div class="text-sm pull-right" >
                         <i class="fa fa-user margin-r-5"/>#{userLookup.getUserName(note.owner)}
-                        <i class="fa  fa-clock-o margin-r-5"/><t:cellOutputPrettyTime value="#{note.createDate}" />
+                        <i class="fa  fa-clock-o margin-r-5"/><t:cellOutputPrettyTime title="#{of:formatDate(note.createDate,messages['general.format.DateTime'])}" value="#{note.createDate}" />
                     </div>
                     
                 </div>
