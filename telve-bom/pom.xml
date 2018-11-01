@@ -8,24 +8,25 @@
     <packaging>pom</packaging>
     
     <properties>
-        <deltaspike.version>1.8.1</deltaspike.version>
+        <deltaspike.version>1.8.2</deltaspike.version>
         <shiro.version>1.3.2</shiro.version>
         <primeface.version>6.2</primeface.version>
         <primefaces-ext.version>6.2</primefaces-ext.version>
         <atmosphere.version>2.4.6</atmosphere.version>
-        <omnifaces.version>2.6.8</omnifaces.version>
-        <liquibase.version>3.5.5</liquibase.version>
+        <omnifaces.version>2.7</omnifaces.version>
+        <liquibase.version>3.6.2</liquibase.version>
+        <liquibase-slf4j.version>2.0.0</liquibase-slf4j.version>
         <prettytime.version>4.0.0.Final</prettytime.version>
         
         <mysql.version>5.1.26</mysql.version>
         
-        <camel.version>2.20.2</camel.version>
-        <jasperreports.version>6.5.1</jasperreports.version>
+        <camel.version>2.22.1</camel.version>
+        <jasperreports.version>6.7.0</jasperreports.version>
         <camunda.version>7.7.0</camunda.version>
         <jasperreports-fonts.version>6.0.0</jasperreports-fonts.version>
         <infinispan.version>8.1.0.Final</infinispan.version>
         
-        <jodatime.version>2.9.9</jodatime.version>
+        <jodatime.version>2.10</jodatime.version>
         
         <arquillian.universe.version>1.1.13.7</arquillian.universe.version>
         <junit.version>4.12</junit.version>
@@ -39,7 +40,7 @@
             <dependency>
                 <groupId>org.jboss.spec</groupId>
                 <artifactId>jboss-javaee-7.0</artifactId>
-                <version>1.1.0.Final</version>
+                <version>1.1.1.Final</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency> 
@@ -444,7 +445,7 @@
             <dependency>
                 <groupId>com.mattbertolini</groupId>
                 <artifactId>liquibase-slf4j</artifactId>
-                <version>1.2.1</version>
+                <version>${liquibase-slf4j.version}</version>
             </dependency>
 
             <dependency>
