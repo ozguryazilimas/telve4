@@ -144,7 +144,7 @@ public class GroupHome extends TreeBase<Group>{
     @Override
     protected void onBeforeDelete() {
         event.fire(new IdmEvent(IdmEvent.FROM_GROUP, IdmEvent.DELETE, getEntity().getName()));
-        super.onAfterDelete();
+        super.onBeforeDelete();
     }
 
     @Override

@@ -24,5 +24,11 @@ public class TelveSimplePrinciple implements TelveIdmPrinciple, Serializable{
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+    
     
 }
