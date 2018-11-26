@@ -68,7 +68,7 @@ public class ModeShapeRepositoryFactory {
     private static void deployRepository() {
         
         //Config sisteminden dosya adını alalım.
-        String configFile = ConfigResolver.getProjectStageAwarePropertyValue("attachment.modedape.config", "modeshape-config.json");
+        String configFile = ConfigResolver.getProjectStageAwarePropertyValue("attachment.modeshape.config", "modeshape-config.json");
     
         if( "modeshape-config.json".equals(configFile)){
             LOGGER.error("!!! ModeShape Starter on Development Mode !!!");

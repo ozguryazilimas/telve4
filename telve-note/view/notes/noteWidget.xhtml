@@ -19,7 +19,7 @@
         <p:outputPanel styleClass="box-body" layout="block" rendered="#{noteWidget.editMode}">
             <h:form id="noteForm">
                 <div class="row">
-                    <t:inputTextarea label="general.label.Note" value="#{noteWidget.note.body}" columnClass="col-xs-12"/>
+                    <t:inputTextarea label="general.label.Note" value="#{noteWidget.note.body}" columnClass="col-xs-12" maxlength="2000"/>
                 </div>
                 <div class="box-footer">
                     
