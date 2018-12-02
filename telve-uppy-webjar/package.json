@@ -1,0 +1,20 @@
+{
+  "name": "telve-uppy",
+  "version": "0.28.0",
+  "description": "",
+  "main": "./app",
+  "scripts": {
+    "build": "webpack -p"
+  },
+  "author": "Özgür Yazılım A.Ş.",
+  "license": "MIT",
+  "dependencies": {
+    "uppy": "0.28.0"
+  },
+  "devDependencies": {
+    "webpack": "4.26.1",
+    "webpack-cli": "3.1.2",
+    "css-loader": "0.28.11",
+    "style-loader": "0.19.1"
+  }
+}

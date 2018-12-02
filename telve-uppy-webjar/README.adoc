@@ -1,0 +1,21 @@
+= Telve Uppy WebJar
+
+Uppy projesini webpack ile bundle olarak webjar formatı ile paketler.
+
+== Uppy Pluginleri
+
+Bu paket içerisinde şu pluginler var :
+* @uppy/core
+* @uppy/dashboard
+* @uppy/tus
+
+
+== JSF içerisinde Kullanımı
+
+[source,xml]
+----
+
+<h:outputStylesheet  library="webjars/telve-uppy/0.28.0" name="uppy-bundle.min.css"/>
+<h:outputScript library="webjars/telve-uppy/0.28.0" name="uppy-bundle.js"/>
+
+----
