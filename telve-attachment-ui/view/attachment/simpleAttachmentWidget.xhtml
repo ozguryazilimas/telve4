@@ -27,8 +27,9 @@
                     </p:column>
                     <p:column styleClass="actionColumn" >
                         <f:facet name="header">
-                            <p:commandLink title="#{messages['attachment.hint.UploadFile']}" onclick="PF('fdlg').show();" process="@this">
+                            <p:commandLink title="#{messages['attachment.hint.UploadFile']}" action="#{simpleAttachmentWidget.uploadDocument()}" process="@this">
                                 <i class="fa fa-plus" />
+                                <p:ajax event="dialogReturn" update="@([id$=fileAttachs])" partialSubmit="true" process="@this" />
                             </p:commandLink>
                         </f:facet>
                         <p:commandLink title="#{messages['attachment.hint.Delete']}" 
@@ -46,12 +47,5 @@
         </p:outputPanel>
     </t:accordion>
 
-    <h:form id="uploaddialog" enctype="multipart/form-data">
-        <p:dialog header="#{messages['attachment.caption.UploadFileDialog']}" widgetVar="fdlg" showEffect="clip" hideEffect="clip">
-            <p:fileUpload fileUploadListener="#{simpleAttachmentWidget.handleFileUpload}" mode="advanced" dragDropSupport="true"
-                          update="@([id$=fileAttachs])" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|.*)$/"  sequential="true"
-                          label="#{messages['general.label.SelectFile']}" uploadLabel="#{messages['general.button.Upload']}" cancelLabel="#{messages['general.button.Cancel']}"/>
-        </p:dialog>
-    </h:form>
 
 </ui:composition>

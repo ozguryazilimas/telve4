@@ -37,6 +37,11 @@
             <artifactId>telve-attachment</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>telve-uploader</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
