@@ -1,0 +1,143 @@
+= Telve File Upload Service
+
+Tus.io protokolünü ve Uppy.io bileşenini kullanarak web arayüzünden dosya yükleme işlemlerini kolaylaştırır.
+
+== Bağımlılık
+
+[source,xml]
+----
+<dependency>
+    <groupId>${project.groupId}</groupId>
+    <artifactId>telve-uploader</artifactId>
+    <version>${project.version}</version>
+</dependency>
+----
+
+Bağımlılık olarak eklenir.
+
+== Ayarlar
+
+Telve Properties üzerinden yapılabilir. Varsayılan değerleri ile ayarlar şunlardır:
+
+tus.storagePath = /tmp/tus
+tus.expirationPeriod = 300000 #5dk
+tus.maxUploadSize = 1073741824 #1GB
+tus.chunkSize = 2097152 #2MB
+
+TIP: ChunkSize değerleri MaxUploadSize'dan küçük olmalıdır.
+
+== Kod içerisinde kullanımı
+
+PrimeFaces DialogFramework'ü üzerinden çalışmaktadır. Dolayısı ile şu iki yoldan biri ile dialog açılabilir : 
+
+.Java Kodundan
+[source,java]
+----
+
+@Inject
+private FileUploadDialog fileUploadDialog;
+
+public void openUploadDialog(){
+    fileUploadDialog.openDialog(this, "ID" );
+}
+----
+
+
+.JSF EL üzerinden
+----
+<p:commandLink action="#{fileUploadDialog.open(bean)}" />
+----
+
+=== Yüklenen dosyayı işleme
+
+Yüklenmiş olan dosya servis üzerinde geçici olarak tutulacaktır. Dolayısı ile 
+dosya yükleme tamamlandıktan sonra alınıp nerede kalıcı olarak saklanacak ( disk, jcr, db ) 
+oraya aktarılmalı ya da özel bir işleme süreci gerçekleşecek ise bu yapılmalıdır.
+
+Dosya yükleme bittiğinde UploadDialog nesnesi üzerinden bir geri çağrı yapılacaktır, 
+bunun için dosya işleycek kodun FileUploadHandler interface'ini implemente etmiş 
+ve ilgili sınıfı openDialog methodunda verimiş olması gerekir.
+
+TIP: Dosya işleme işi bittikten sonra servis üzerinden silinmesi kaynak kullanımı açısından önemlidir.
+
+[source,java]
+----
+public class DocumentBean implements FileUploadHandler{
+    
+    @Inject 
+    priate TusFileUploadService uploadService;
+
+    public void handleFile( String uri ){
+
+        UploadInfo uploadInfo = uploadService.getUploadInfo(uri);
+        uploadService.getUploadedBytes(uri);
+        uploadService.deleteUpload(uri);
+    }
+}
+
+
+----
+
+
+=== Arayüz Tazeleme
+
+Yükleme dialoğu PrimeFaces DialogFramework üzerinden çalışmaktadır. Dolayısı ile bu framework'ün sağladığı bütün yetenekler kullanılabilir.
+
+DialogReturn eventi yakalanarak ek işlemler yapılacağı gibi sadece arayüz güncelleme de sağlanabilir.
+
+[source,xml]
+----
+<p:commandLink title="#{messages['attachment.hint.UploadFile']}" action="#{explorerWidget.uploadDocument()}" process="@this" styleClass="btn-add margin-r-5">
+    <i class="fa fa-plus" />
+    <p:ajax event="dialogReturn" update="@([id$=fileAttachs])" partialSubmit="true" process="@this" />
+</p:commandLink>
+----
+
+== Örnek Kullanım
+
+Bu servis ve bileşenlerin örnek kullanımı için Attachment API'ye bakılabilir.
+
+.SimpleAttachmentWidget.java
+[source,java]
+----
+public class SimpleAttachmentWidget implements Serializable, FileUploadHandler {
+    ....
+    
+    @Inject
+    private AttachmentStore store;
+
+    @Inject
+    private FileUploadDialog fileUploadDialog;
+    
+    @Inject
+    private TusFileUploadService fileUploadService;
+
+
+    public void uploadDocument(){
+        fileUploadDialog.openDialog(this, "");
+    }
+    
+    @Override
+    public void handleFileUpload(String uri) {
+        
+        try {
+            UploadInfo uploadInfo = fileUploadService.getUploadInfo(uri);
+            LOG.debug("Uploaded File : {}", uploadInfo.getFileName());
+            store.addDocument(context, folder, new AttachmentDocument(uploadInfo.getFileName()), fileUploadService.getUploadedBytes(uri));
+            fileUploadService.deleteUpload(uri);
+            clearChache();
+        } catch (IOException | TusException | AttachmentException ex) {
+            LOG.error("Attachment cannot add", ex);
+        }
+    }
+}
+----
+
+.simpleAttachmentWidget.xhtml
+[source,xml]
+----
+<p:commandLink title="#{messages['attachment.hint.UploadFile']}" action="#{simpleAttachmentWidget.uploadDocument()}" process="@this">
+    <i class="fa fa-plus" />
+    <p:ajax event="dialogReturn" update="@([id$=fileAttachs])" partialSubmit="true" process="@this" />
+</p:commandLink>
+----
