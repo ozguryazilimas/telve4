@@ -1,0 +1,17 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:p="http://primefaces.org/ui">
+
+    #{featureImageWidget.init(featurePointer, placeholder )}
+
+    <p:outputPanel deferred="true" styleClass="#{columnClass}" >
+        <p:commandLink id="fiww" action="#{featureImageWidget.edit()}" process="@this">
+            <o:graphicImage value="#{imageService.getImage(featureImageWidget.getImageId())}" styleClass="img-responsive img-thumbnail" />
+            <p:ajax event="dialogReturn" update="fiww" process="@this" />
+        </p:commandLink>
+    </p:outputPanel>
+
+</ui:composition>

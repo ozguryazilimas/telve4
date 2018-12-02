@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>telve-parent</artifactId>
+        <groupId>com.ozguryazilim.mutfak</groupId>
+        <version>4.0.0.Beta6-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com.ozguryazilim.mutfak</groupId>
+    <artifactId>telve-image</artifactId>
+    <packaging>ejb</packaging>
+
+    <name>telve-image</name>
+    <description>Telve Image Store and UI ackage</description>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/view</directory>
+                <targetPath>META-INF/resources</targetPath>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>telve-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>telve-uploader</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.imgscalr</groupId>
+            <artifactId>imgscalr-lib</artifactId>
+            <version>4.2</version>
+        </dependency>
+    </dependencies>
+
+</project>

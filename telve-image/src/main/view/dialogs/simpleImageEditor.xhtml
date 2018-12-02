@@ -1,0 +1,36 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:p="http://primefaces.org/ui"                
+                xmlns:o="http://omnifaces.org/ui"
+                template="/layout/dialogBase.xhtml">
+
+    <ui:param name="title" value="Feature Image Editor" />
+    
+    <ui:define name="form">
+        <h:form id="fiwe">
+            
+            <div class="row">
+                <o:graphicImage id="fiwimg" value="#{imageService.getImage(simpleImageEditor.getImageId())}" styleClass="img-responsive img-thumbnail" />
+            </div>
+
+            <h:panelGroup styleClass="row actionButtons" layout="block" >
+                <p:commandLink action="#{simpleImageEditor.uploadFile()}" process="@this" styleClass="btn btn-default pull-left">
+                    <i class="fa fa-upload" /> Upload Image
+                    <p:ajax event="dialogReturn" update="fiwimg" process="@this" />
+                </p:commandLink>
+                <p:commandLink action="#{simpleImageEditor.delete()}" process="@this" update="fiwimg" styleClass="btn btn-default pull-left">
+                    <i class="fa fa-trash" /> Delete Image
+                </p:commandLink>
+                <p:commandButton id="close" 
+                                 value="#{messages['general.button.Close']}" 
+                                 icon="ui-icon-close" 
+                                 action="#{simpleImageEditor.closeDialog()}" 
+                                 partialSubmit="true" 
+                                 process="@this"/>
+            </h:panelGroup>
+        </h:form>
+    </ui:define> 
+</ui:composition>
