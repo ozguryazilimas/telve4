@@ -8,11 +8,12 @@
 
     <composite:interface>
         <composite:attribute name="value" required="true"/>
+        <composite:attribute name="title" required="false"/>
     </composite:interface>
 
     <composite:implementation>
 
-        <h:outputText id="#{cc.id}_inp" value="#{cc.attrs.value}" converter="prettyTimeConverter" />
+        <h:outputText id="#{cc.id}_inp" title="#{cc.attrs.title}" value="#{cc.attrs.value}" converter="prettyTimeConverter" />
         
     </composite:implementation>
 
