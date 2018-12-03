@@ -53,7 +53,10 @@ public class FileUploadDialog implements Serializable{
         }    
   
         if (null == serverName)  {
-          serverName = externalContext.getRequestServerName() + ":" + externalContext.getRequestServerPort();
+            serverName = externalContext.getRequestHeaderMap().get("Host");
+            if( null == serverName ){
+                serverName = externalContext.getRequestServerName() + ":" + externalContext.getRequestServerPort();
+            }
         }
         
         endPoint = protocol + "://" + serverName + externalContext.getRequestContextPath() + "/tus";
