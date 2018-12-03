@@ -11,3 +11,5 @@ faces-config.NavData
 /telve-idm/nbproject/
 .idea
 *.iml
+node_modules
+node

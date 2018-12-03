@@ -17,7 +17,8 @@ import com.ozguryazilim.telve.attachment.qualifiers.FileStore;
 import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.entities.FeaturePointer;
 import com.ozguryazilim.telve.messages.FacesMessages;
-import java.io.File;
+import com.ozguryazilim.telve.uploader.ui.FileUploadDialog;
+import com.ozguryazilim.telve.uploader.ui.FileUploadHandler;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
@@ -27,9 +28,11 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletResponse;
+import me.desair.tus.server.TusFileUploadService;
+import me.desair.tus.server.exception.TusException;
+import me.desair.tus.server.upload.UploadInfo;
 import org.apache.commons.io.IOUtils;
 import org.apache.deltaspike.core.api.scope.GroupedConversationScoped;
-import org.primefaces.event.FileUploadEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +42,7 @@ import org.slf4j.LoggerFactory;
  */
 @Named
 @GroupedConversationScoped
-public class SimpleAttachmentWidget implements Serializable {
+public class SimpleAttachmentWidget implements Serializable, FileUploadHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(SimpleAttachmentWidget.class);
 
@@ -53,6 +56,13 @@ public class SimpleAttachmentWidget implements Serializable {
     @Inject
     private AttacmentContextProviderSelector providerSelector;
 
+    @Inject
+    private FileUploadDialog fileUploadDialog;
+    
+    @Inject
+    private TusFileUploadService fileUploadService;
+    
+    
     private FeaturePointer featurePointer;
     
     private AttachmentContext context;
@@ -118,26 +128,6 @@ public class SimpleAttachmentWidget implements Serializable {
 
     }
 
-    /**
-     * UI'dan gelen FileUpload dialoğunu karşılar.
-     *
-     * FIXME: Exception Handling
-     *
-     * @param event
-     * @throws AttachmentException
-     * @throws IOException
-     */
-    public void handleFileUpload(FileUploadEvent event) throws AttachmentException, IOException {
-        LOG.debug("Uploaded File : {}", event.getFile().getFileName());
-
-        String fileNamePath = event.getFile().getFileName();
-        String fileName = fileNamePath.substring(fileNamePath.lastIndexOf(File.separatorChar) + 1);
-
-        LOG.debug("File Name : {}", fileName);
-        store.addDocument(context, folder, new AttachmentDocument(fileName), event.getFile().getInputstream());
-        clearChache();
-    }
-
     protected void clearChache(){
         if( documents == null ) return;
         
@@ -175,6 +165,27 @@ public class SimpleAttachmentWidget implements Serializable {
 
             default:
                 return "fa-file-o";
+        }
+    }
+
+    /**
+     * Bu Method FileUploadDialog'unu açmasını sağlar.
+     */
+    public void uploadDocument(){
+        fileUploadDialog.openDialog(this, "");
+    }
+    
+    @Override
+    public void handleFileUpload(String uri) {
+        
+        try {
+            UploadInfo uploadInfo = fileUploadService.getUploadInfo(uri);
+            LOG.debug("Uploaded File : {}", uploadInfo.getFileName());
+            store.addDocument(context, folder, new AttachmentDocument(uploadInfo.getFileName()), fileUploadService.getUploadedBytes(uri));
+            fileUploadService.deleteUpload(uri);
+            clearChache();
+        } catch (IOException | TusException | AttachmentException ex) {
+            LOG.error("Attachment cannot add", ex);
         }
     }
 }

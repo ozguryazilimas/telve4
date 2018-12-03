@@ -8,23 +8,11 @@
     </parent>
 
     <groupId>com.ozguryazilim.mutfak</groupId>
-    <artifactId>telve-attachment-ui</artifactId>
+    <artifactId>telve-image-jpa</artifactId>
     <packaging>ejb</packaging>
 
-    <name>telve-attachment-ui</name>
-    <description>Telve Attachment UI Package</description>
-
-    <build>
-        <resources>
-            <resource>
-                <directory>view</directory>
-                <targetPath>META-INF/resources</targetPath>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
-    </build>
+    <name>telve-image-jpa</name>
+    <description>Telve Image Simple JPA Storage Package</description>
 
     <dependencies>
         <dependency>
@@ -34,12 +22,12 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>telve-attachment</artifactId>
+            <artifactId>telve-image</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>telve-uploader</artifactId>
+            <artifactId>telve-image-jpa-model</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

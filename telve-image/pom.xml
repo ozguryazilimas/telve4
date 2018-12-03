@@ -8,16 +8,16 @@
     </parent>
 
     <groupId>com.ozguryazilim.mutfak</groupId>
-    <artifactId>telve-attachment-ui</artifactId>
+    <artifactId>telve-image</artifactId>
     <packaging>ejb</packaging>
 
-    <name>telve-attachment-ui</name>
-    <description>Telve Attachment UI Package</description>
+    <name>telve-image</name>
+    <description>Telve Image Store and UI ackage</description>
 
     <build>
         <resources>
             <resource>
-                <directory>view</directory>
+                <directory>src/main/view</directory>
                 <targetPath>META-INF/resources</targetPath>
             </resource>
             <resource>
@@ -34,13 +34,13 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>telve-attachment</artifactId>
+            <artifactId>telve-uploader</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>telve-uploader</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.imgscalr</groupId>
+            <artifactId>imgscalr-lib</artifactId>
+            <version>4.2</version>
         </dependency>
     </dependencies>
 

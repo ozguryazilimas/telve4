@@ -8,11 +8,16 @@
     </parent>
 
     <groupId>com.ozguryazilim.mutfak</groupId>
-    <artifactId>telve-attachment-ui</artifactId>
+    <artifactId>telve-uploader</artifactId>
     <packaging>ejb</packaging>
 
-    <name>telve-attachment-ui</name>
-    <description>Telve Attachment UI Package</description>
+    <name>telve-uploader</name>
+    <description>Telve File Uploder Package</description>
+
+    <properties>
+        <version.uppy>0.28.0</version.uppy>
+        <version.tus>1.0.0-1.2</version.tus>
+    </properties>
 
     <build>
         <resources>
@@ -34,13 +39,13 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>telve-attachment</artifactId>
+            <artifactId>telve-uppy-webjar</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>telve-uploader</artifactId>
-            <version>${project.version}</version>
+            <groupId>me.desair.tus</groupId>
+            <artifactId>tus-java-server</artifactId>
+            <version>${version.tus}</version>
         </dependency>
     </dependencies>
 

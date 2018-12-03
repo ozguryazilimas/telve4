@@ -17,6 +17,8 @@ import com.ozguryazilim.telve.attachment.qualifiers.FileStore;
 import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.entities.FeaturePointer;
 import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.uploader.ui.FileUploadDialog;
+import com.ozguryazilim.telve.uploader.ui.FileUploadHandler;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,6 +31,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletResponse;
+import me.desair.tus.server.TusFileUploadService;
+import me.desair.tus.server.exception.TusException;
+import me.desair.tus.server.upload.UploadInfo;
 import org.apache.commons.io.IOUtils;
 import org.apache.deltaspike.core.api.scope.GroupedConversationScoped;
 import org.primefaces.event.FileUploadEvent;
@@ -41,7 +46,7 @@ import org.slf4j.LoggerFactory;
  */
 @Named
 @GroupedConversationScoped
-public class ExplorerWidget implements Serializable{
+public class ExplorerWidget implements Serializable, FileUploadHandler{
     private static final Logger LOG = LoggerFactory.getLogger(ExplorerWidget.class);
 
     @Inject
@@ -54,6 +59,12 @@ public class ExplorerWidget implements Serializable{
     @Inject
     private AttacmentContextProviderSelector providerSelector;
 
+    @Inject
+    private FileUploadDialog fileUploadDialog;
+    
+    @Inject
+    private TusFileUploadService fileUploadService;
+    
     private FeaturePointer featurePointer;
     
     private Map<String, String> parentMap = new HashMap<>();
@@ -239,6 +250,26 @@ public class ExplorerWidget implements Serializable{
 
     public AttachmentFolder getSelectedFolder() {
         return selectedFolder;
+    }
+
+    /**
+     * Bu Method FileUploadDialog'unu açmasını sağlar.
+     */
+    public void uploadDocument(){
+        fileUploadDialog.openDialog(this, "");
+    }
+    
+    @Override
+    public void handleFileUpload(String uri) {
+        try {
+            UploadInfo uploadInfo = fileUploadService.getUploadInfo(uri);
+            LOG.debug("Uploaded File : {}", uploadInfo.getFileName());
+            store.addDocument(context, selectedFolder, new AttachmentDocument(uploadInfo.getFileName()), fileUploadService.getUploadedBytes(uri));
+            fileUploadService.deleteUpload(uri);
+            clearChache();
+        } catch (IOException | TusException | AttachmentException ex) {
+            LOG.error("Attachment cannot add", ex);
+        }
     }
     
     

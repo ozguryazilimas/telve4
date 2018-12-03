@@ -260,6 +260,11 @@
         <module>telve-admin-reports</module>
         <module>telve-idm-reports</module>
         <module>telve-dynamicreports</module>
+        <module>telve-image-jpa-model</module>
+        <module>telve-image</module>
+        <module>telve-image-jpa</module>
+        <module>telve-uploader</module>
+        <module>telve-uppy-webjar</module>
     </modules>
     
     <distributionManagement>

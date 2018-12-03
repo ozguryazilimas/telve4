@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
+                xmlns:p="http://primefaces.org/ui"                
+                template="/layout/dialogBase.xhtml">
+
+    <ui:param name="title" value="File Uploader" />
+    <ui:define name="form">
+        <h:form id="fileUpload">
+            <p:remoteCommand name="sendFileUploadEvent" action="#{fileUploadDialog.fileUploaded}" />
+                        
+            <div class="row">
+            
+                <div class="DashboardContainer"></div>
+                
+                <h:outputScript library="webjars" name="/telve-uppy/0.28.0/uppy-bundle.js" />
+                <script>
+                        
+      var uppy = Uppy.Core({
+            allowMultipleUploads: true,
+            debug: false,
+            autoProceed: true,
+            restrictions: {
+                maxFileSize: #{fileUploadDialog.maxFileSize},
+                maxNumberOfFiles: #{fileUploadDialog.maxNumberOfFiles},
+                allowedFileTypes: #{fileUploadDialog.allowedFileTypes}
+            }
+        })
+        
+        .use(Uppy.Dashboard, {
+          inline: true,
+          target: '.DashboardContainer',
+          replaceTargetContent: true,
+          height: 250
+        })/*
+        .use(Uppy.FileInput, {target: '.DashboardContainer', replaceTargetContent: true})
+        .use(Uppy.ProgressBar, {
+            target: 'body',
+            fixed: true,
+            hideAfterFinish: false
+        })*/
+        .use(Uppy.Tus, {endpoint: '#{fileUploadDialog.endPoint}', chunkSize: #{fileUploadDialog.chunkSize}});
+
+      uppy.on('complete', (result) => {
+        console.log(`Upload complete! We’ve uploaded these files: ${result.successful}`)
+      });
+      
+      uppy.on('upload-success', function(file, upload) {
+        console.log("Upload " + file.name + " completed with URL " + upload.url);
+        console.log("Developer: Now pass URL " + upload.url + " to the backend or dynmically add it to an existing form!");
+        sendFileUploadEvent([{'name': 'uri', 'value': upload.url}]);
+       });
+    
+                </script>
+            </div>
+
+            
+
+            <h:panelGroup styleClass="row actionButtons" layout="block" >
+                <ui:insert name="actionButtons" />
+                <p:commandButton id="select" 
+                                 value="#{messages['general.button.Ok']}" 
+                                 icon="fa fa-check" 
+                                 disabled="#{facesContext.validationFailed}"
+                                 validateClient="true"
+                                 action="#{fileUploadDialog.closeDialog()}" 
+                                 styleClass="btn-primary" />
+                <p:commandButton id="close" 
+                                 value="#{messages['general.button.Cancel']}" 
+                                 icon="ui-icon-close" 
+                                 action="#{fileUploadDialog.closeDialog()}" 
+                                 partialSubmit="true" 
+                                 process="@this"/>
+            </h:panelGroup>
+        </h:form>
+    </ui:define> 
+</ui:composition>

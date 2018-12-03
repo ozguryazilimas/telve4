@@ -1,0 +1,21 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:composite="http://java.sun.com/jsf/composite"
+              xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <composite:interface>
+        <composite:attribute name="value" required="true"/>
+        <composite:attribute name="label" required="true"/>
+    </composite:interface>
+
+    <composite:implementation>
+        <p>Buraya UppyDashbord gelmeli</p>
+        <div class="DashboardContainer"></div>
+        
+        <h:outputScript library="webjars" name="/telve-uppy/0.28.0/uppy-bundle.js" target="body"/>
+    </composite:implementation>
+
+</ui:component>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet author="huygun" id="201811261005-1">
+        <createTable tableName="TLV_IMAGE">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATE_DATE" type="datetime"/>
+            <column name="OWNER" type="VARCHAR(255)"/>
+            <column name="IMAGE_KEY" type="VARCHAR(255)"/>
+            <column name="ASPECT" type="VARCHAR(255)"/>
+            <column name="IMAGE_ID" type="VARCHAR(255)"/>
+            <column name="MIME" type="varchar(255)"/>
+            <column name="CONTENT" type="BLOB"  />
+            <column name="INFO" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

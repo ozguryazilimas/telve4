@@ -23,8 +23,9 @@
                 <div class="">
                     <div class="ui-orderlist-caption" style="padding: 4px; text-align: center">
                         <div class="pull-right">
-                            <p:commandLink title="#{messages['attachment.hint.UploadFile']}" onclick="PF('fdlg').show();" process="@this" styleClass="btn-add margin-r-5">
+                            <p:commandLink title="#{messages['attachment.hint.UploadFile']}" action="#{explorerWidget.uploadDocument()}" process="@this" styleClass="btn-add margin-r-5">
                                 <i class="fa fa-plus" />
+                                <p:ajax event="dialogReturn" update="@([id$=fileAttachs])" partialSubmit="true" process="@this" />
                             </p:commandLink>
                         </div>
 
