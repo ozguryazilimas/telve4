@@ -44,7 +44,19 @@ public class FileUploadDialog implements Serializable{
         
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         
-        endPoint = externalContext.getRequestScheme() + "://" + externalContext.getRequestServerName() + ":" + externalContext.getRequestServerPort() + externalContext.getRequestContextPath() + "/tus";
+        //ReversProxy ardındaysa bunlar lazım
+        String protocol = externalContext.getRequestHeaderMap().get("x-forwarded-proto");
+        String serverName = externalContext.getRequestHeaderMap().get("x-forwarded-host");
+        
+        if (null == protocol) {
+          protocol = externalContext.getRequestScheme();
+        }    
+  
+        if (null == serverName)  {
+          serverName = externalContext.getRequestServerName() + ":" + externalContext.getRequestServerPort();
+        }
+        
+        endPoint = protocol + "://" + serverName + externalContext.getRequestContextPath() + "/tus";
         chunkSize = Long.parseLong(ConfigResolver.getProjectStageAwarePropertyValue("tus.chunkSize", "2097152"));
     
         maxFileSize = Long.parseLong(ConfigResolver.getProjectStageAwarePropertyValue("tus.maxUploadSize", "1073741824"));
