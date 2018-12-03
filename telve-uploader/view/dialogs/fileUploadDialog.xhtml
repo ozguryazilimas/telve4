@@ -23,9 +23,9 @@
             debug: false,
             autoProceed: true,
             restrictions: {
-                maxFileSize: #{fileUploadDialog.maxFileSize},
-                maxNumberOfFiles: #{fileUploadDialog.maxNumberOfFiles},
-                allowedFileTypes: #{fileUploadDialog.allowedFileTypes}
+                maxFileSize: #{fileUploadDialog.maxFileSize != null ? fileUploadDialog.maxFileSize : 'null'},
+                maxNumberOfFiles: #{fileUploadDialog.maxNumberOfFiles != null ? fileUploadDialog.maxNumberOfFiles : 'null'},
+                allowedFileTypes: #{fileUploadDialog.allowedFileTypes != null ? fileUploadDialog.allowedFileTypes : 'null'}
             }
         })
         
