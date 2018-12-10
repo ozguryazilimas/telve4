@@ -161,4 +161,10 @@
         </addColumn>
     </changeSet>
 
+    <changeSet author="aydogan.sel" id="user-20180530-001">
+        <addColumn tableName="TLI_USER">
+            <column name="TCKN" type="VARCHAR(100)"/>
+        </addColumn>
+    </changeSet>         
+    
 </databaseChangeLog>

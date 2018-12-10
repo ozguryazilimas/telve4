@@ -54,7 +54,7 @@ public class JcrController {
     private Map<String, String> parentMap = new HashMap<>();
     private List<String> defaultFolders = new ArrayList<>();
     private Boolean showContextRoot = Boolean.TRUE;
-    
+
     private UrlEncoder encoder;
 
     public JcrController(String contextRoot, String sourceDomain, String sourceCaption, Long sourceId) {
@@ -83,8 +83,8 @@ public class JcrController {
         this.selectedPath = contextRoot;
         this.defaultFolders.addAll(defaultFolders);
     }
-    
-    public JcrController(String contextRoot, String sourceDomain, String sourceCaption, Long sourceId, List<String> defaultFolders, Boolean showContextRoot ) {
+
+    public JcrController(String contextRoot, String sourceDomain, String sourceCaption, Long sourceId, List<String> defaultFolders, Boolean showContextRoot) {
         encoder = new UrlEncoder();
         encoder.setSlashEncoded(false);
         contextRoot = encoder.encode(contextRoot);
@@ -140,7 +140,6 @@ public class JcrController {
 
     private void populateFolders() throws RepositoryException {
         folders = new ArrayList<>();
-
         Session session = getSession();
         JcrTools jcrTools = new JcrTools();
         Node node = jcrTools.findOrCreateNode(session, getContextRoot(), "nt:folder");
@@ -149,21 +148,21 @@ public class JcrController {
             for (String df : defaultFolders) {
                 Node dfnode = jcrTools.findOrCreateNode(session, getContextRoot() + "/" + encoder.encode(df), "nt:folder");
                 LOG.debug("Default Folder Created {}", dfnode.getIdentifier());
-                if( !showContextRoot ){
+                if (!showContextRoot) {
                     popuplateFolderNodes(dfnode, true);
                 }
             }
             session.save();
-            
+
             //Populate sonrası default selection
-            if( !folders.isEmpty()){
+            if (!folders.isEmpty()) {
                 setSelectedPath(folders.get(0).getPath());
             } else {
                 setSelectedPath(getContextRoot());
             }
         }
 
-        if( showContextRoot ){
+        if (showContextRoot) {
             popuplateFolderNodes(node, true);
             setSelectedPath(getContextRoot());
         }
@@ -211,8 +210,8 @@ public class JcrController {
         FileInfo fm = new FileInfo();
 
         fm.setId(node.getIdentifier());
-        fm.setName(node.getName());
-        fm.setPath(node.getPath());
+        fm.setName(encoder.decode(node.getName()));
+        fm.setPath(encoder.decode(node.getPath()));
 
         fm.setCreateBy(node.getProperty("jcr:createdBy").getString());
         fm.setCreateDate(node.getProperty("jcr:created").getDate().getTime());
@@ -239,9 +238,9 @@ public class JcrController {
 
         Node cn = node.getNode("jcr:content");
 
-        try{
+        try {
             fm.setMimeType(cn.getProperty("jcr:mimeType").getString());
-        } catch( Exception ex ){
+        } catch (Exception ex) {
             LOG.warn("MimeType not found", ex);
         }
 
@@ -255,11 +254,15 @@ public class JcrController {
     private void populateFiles(String folder) throws RepositoryException {
         files = new ArrayList<>();
 
-        Session session = getSession();
-        JcrTools jcrTools = new JcrTools();
-        Node node = jcrTools.findOrCreateNode(session, folder, "nt:folder");
+        try {
+            Session session = getSession();
+            JcrTools jcrTools = new JcrTools();
+            Node node = jcrTools.findOrCreateNode(session, folder, "nt:folder");
 
-        popuplateFileNodes(node);
+            popuplateFileNodes(node);
+        } catch (Exception ex) {
+            LOG.error("Files cannot populate", ex);
+        }
     }
 
     private void popuplateFileNodes(Node node) throws RepositoryException {
@@ -374,9 +377,9 @@ public class JcrController {
 
         try {
             JcrTools jcrTools = new JcrTools();
-            
-            fileName = encoder.decode( fileName );
-            fileName = encoder.encode( fileName );
+
+            fileName = encoder.decode(fileName);
+            fileName = encoder.encode(fileName);
             Node n = jcrTools.uploadFile(session, fileName, in);
 
             n.addMixin("tlv:ref");
@@ -436,9 +439,9 @@ public class JcrController {
 
         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
 
-        try{
-        response.setContentType(content.getProperty("jcr:mimeType").getString());
-        } catch ( Exception ex ){
+        try {
+            response.setContentType(content.getProperty("jcr:mimeType").getString());
+        } catch (Exception ex) {
             LOG.warn("MimeType not found", ex);
         }
 
@@ -586,6 +589,5 @@ public class JcrController {
     public UrlEncoder getEncoder() {
         return encoder;
     }
-    
-    
+
 }

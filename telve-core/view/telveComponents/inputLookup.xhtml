@@ -35,12 +35,12 @@
                                 itemValue="#{item}"
                                 queryDelay="#{cc.attrs.queryDelay}"
                                 minQueryLength="#{cc.attrs.minQueryLength}"                                
-                                maxResults="#{cc.attrs.maxResults}"
+                                scrollHeight="250"
                                 converter="entityConverter"
                                 required="#{cc.attrs.required}"
                                 disabled="#{cc.attrs.disabled}"
-                                placeholder="#{cc.attrs.placeholder}"
-                                dropdown="true">
+                                dropdown="true"
+                                placeholder="#{cc.attrs.placeholder}">
                     <p:clientValidator />
                     <f:attribute name="lookupProfile" value="#{cc.attrs.lookupProfile}" />
                 </p:autoComplete>

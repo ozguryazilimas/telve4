@@ -95,7 +95,7 @@ public class UserHome extends FormBase<User, Long>{
     @Override
     public boolean onBeforeSave() {
 
-        if (createPasswordAndSend.equals(true)) {
+        if (createPasswordAndSend != null && createPasswordAndSend.equals(true)) {
             password = generatePassword();
             sendEmailWithLoginInformation();
             getAuditLogger().actionLog(getEntity().getClass().getSimpleName(), getEntity().getId(), getBizKeyValue(), AuditLogCommand.CAT_AUTH, ACT_GENERATEPASSWORD, identity.getLoginName(), "");
@@ -124,6 +124,9 @@ public class UserHome extends FormBase<User, Long>{
         changeLogStore.addNewValue("user.label.Manager", getEntity().getManager());
         changeLogStore.addNewValue("user.label.DomainGroup", getEntity().getDomainGroup() != null ? getEntity().getDomainGroup().getName() : null );
         
+        if ( !isValidTckn( getEntity().getTckn())) {
+            return false;
+        }
         
         return true;
     }
@@ -278,4 +281,46 @@ public class UserHome extends FormBase<User, Long>{
 
         emailChannel.sendMessage(getEntity().getEmail(), "", "", params);
     }
+    
+    public boolean isValidTckn(String tckn) {
+        if ( !"true".equals(ConfigResolver.getPropertyValue("user.rule.tcknRequired", "false"))) {
+            return true;
+        }
+        try {
+            String tmp = tckn;
+
+            if (tmp.length() == 11) {
+                int totalOdd = 0;
+
+                int totalEven = 0;
+
+                for (int i = 0; i < 9; i++) {
+                    int val = Integer.valueOf(tmp.substring(i, i + 1));
+
+                    if (i % 2 == 0) {
+                        totalOdd += val;
+                    } else {
+                        totalEven += val;
+                    }
+                }
+
+                int total = totalOdd + totalEven + Integer.valueOf(tmp.substring(9, 10));
+
+                int lastDigit = total % 10;
+
+                if (tmp.substring(10).equals(String.valueOf(lastDigit))) {
+                    int check = (totalOdd * 7 - totalEven) % 10;
+
+                    if (tmp.substring(9, 10).equals(String.valueOf(check))) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("TCKN Hatalı");
+        }
+        FacesMessages.error("TCKN Hatalı. Kayıt edilemez.");
+        return false;
+    }
+    
 }

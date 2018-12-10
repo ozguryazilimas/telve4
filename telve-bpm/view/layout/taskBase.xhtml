@@ -75,12 +75,12 @@
         <h:form id="delegateForm">
 
             <div class="row">
-                <t:inputUser label="general.label.User" value="#{bean.delegatedUser}" columnClass="col-xs-12"/>
+                <t:inputUser label="general.label.User" value="#{bean.delegatedUser}" required="true" columnClass="col-xs-12"/>
                 <t:inputTextarea label="general.label.Comment" value="#{bean.comment}" maxlength="255" columnClass="col-xs-12" />
             </div>
 
             <h:panelGroup styleClass="row actionButtons" layout="block">
-                <p:commandButton value="#{messages['general.button.Ok']}" styleClass="btn-primary" icon="fa fa-save" action="#{bean.delegateTask()}" oncomplete="PF('delegatePop').hide();" update="console,taskView"/>
+                <p:commandButton value="#{messages['general.button.Ok']}" styleClass="btn-primary" icon="fa fa-save" action="#{bean.delegateTask()}" validateClient="true" oncomplete="PF('delegatePop').hide();" update="console,taskView"/>
                 <p:button value="#{messages['general.button.Close']}"  icon="fa fa-close" onclick="PF('delegatePop').hide();return false;"/>
             </h:panelGroup>
 

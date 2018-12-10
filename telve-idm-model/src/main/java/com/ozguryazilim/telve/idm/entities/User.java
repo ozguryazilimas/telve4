@@ -55,6 +55,10 @@ public class User extends EntityBase{
     
     @Column(name = "MANAGER")
     private String manager;
+   
+    @Column(name = "TCKN")
+    private String tckn;
+    
     
     @Column(name = "PW_HASH")
     private String passwordEncodedHash;
@@ -209,4 +213,13 @@ public class User extends EntityBase{
         this.changePassword = changePassword;
     }
 
+    public String getTckn() {
+        return tckn;
+    }
+
+    public void setTckn(String tckn) {
+        this.tckn = tckn;
+    }
+    
+    
 }

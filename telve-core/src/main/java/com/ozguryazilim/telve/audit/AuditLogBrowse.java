@@ -46,6 +46,7 @@ public class AuditLogBrowse extends BrowseBase<AuditLog, AuditLog>{
                 .addFilter(new StringListFilter<>(AuditLog_.category, catValues, "general.label.Category", ""))
                 .addFilter(new StringListFilter<>(AuditLog_.action, actValues, "general.label.Action", ""))
                 .addFilter(new StringFilter<>(AuditLog_.user, "general.label.User"))
+                .addFilter(new StringFilter<>(AuditLog_.message, "general.label.Message"))
                 .addFilter(dtf);
         
         queryDefinition.addColumn(new DateTimeColumn<>(AuditLog_.date, "general.label.DateTime"),true);
@@ -54,7 +55,7 @@ public class AuditLogBrowse extends BrowseBase<AuditLog, AuditLog>{
         queryDefinition.addColumn(new TextColumn<>(AuditLog_.user, "general.label.User"),true);
         queryDefinition.addColumn(new TextColumn<>(AuditLog_.action, "general.label.Action"),true);
         queryDefinition.addColumn(new TextColumn<>(AuditLog_.category, "general.label.Category"),true);
-        //queryDefinition.addColumn(new TextColumn<>(AuditLog_.message, "general.label.Message"),true);
+        queryDefinition.addColumn(new TextColumn<>(AuditLog_.message, "general.label.Message"),false);
         
     }
 
