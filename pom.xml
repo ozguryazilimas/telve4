@@ -5,13 +5,19 @@
 	
     <groupId>com.ozguryazilim.mutfak</groupId>
     <artifactId>telve-parent</artifactId>
-    <version>4.0.0.Beta6-SNAPSHOT</version> 
+    <version>${revision}${changelist}</version> 
     <name>${project.groupId} : ${project.artifactId} : ${project.version}</name>
     <description>Telve Parent POM</description>
     <url>http://www.ozguryazilim.com.tr/</url>
     <packaging>pom</packaging> 
 
     <properties>
+        <buildNumber>SNAPSHOT</buildNumber>
+        <revision>4.0.0</revision>
+        <changelist>-${buildNumber}</changelist>
+        
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jdk.debug>true</jdk.debug>
         <jdk.optimize>false</jdk.optimize>
         <jdk.source>1.8</jdk.source>
@@ -146,6 +152,32 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
     
     <profiles>

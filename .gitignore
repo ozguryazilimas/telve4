@@ -13,3 +13,4 @@ faces-config.NavData
 *.iml
 node_modules
 node
+.flattened-pom.xml
