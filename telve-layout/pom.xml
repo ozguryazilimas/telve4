@@ -6,10 +6,49 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ozguryazilim.mutfak</groupId>
     <artifactId>telve-layout</artifactId>
-    <version>4.0.0.Beta6-SNAPSHOT</version> 
+    <version>${revision}${changelist}</version> 
     <name>Telve Base Layout Templates</name>
     <packaging>jar</packaging>
 	
+    <properties>
+        <buildNumber>SNAPSHOT</buildNumber>
+        <revision>4.0.0</revision>
+        <changelist>-${buildNumber}</changelist>
+        
+        <jdk.debug>true</jdk.debug>
+        <jdk.optimize>false</jdk.optimize>
+        <jdk.source>1.8</jdk.source>
+        <jdk.target>1.8</jdk.target>
+    </properties>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <distributionManagement>
         <repository>
