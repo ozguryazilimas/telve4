@@ -11,6 +11,7 @@
             <property name="jobExecutorActivate">true</property>
             <property name="transactionsExternallyManaged">true</property>
             <property name="databaseSchemaUpdate">true</property>
+            <property name="metricsEnabled">false</property>
             <!--
             <property name="postParseListeners">org.camunda.bpm.engine.cdi.impl.event.CdiEventSupportBpmnParseListener</property>
             -->
