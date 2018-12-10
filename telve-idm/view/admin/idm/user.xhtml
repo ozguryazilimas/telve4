@@ -225,6 +225,7 @@
                                  leafSelect="false" required="#{userHome.domainGroupRequired}" disabled="#{not userHome.canChangeCriticalData()}" 
                                  columnClass="col-md-6 col-xs-12"/>
             <t:inputText label="general.label.Mobile" value="#{userHome.entity.mobile}" required="false" />
+            <t:inputText label="user.label.Tckn" value="#{userHome.entity.tckn}" required="#{telveConfigResolver.getProperty('user.rule.tcknRequired')}" />            
         </div>            
 
         <div id="extentions" class="row">
