@@ -13,7 +13,6 @@ import javax.jcr.Session;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.slf4j.Logger;
@@ -35,23 +34,27 @@ public class ImageResourceService {
     
     @GET    
     @Path("/image/{id}")
-    @Produces("image/*")
     public Response getImage( @PathParam("id") String id ) throws RepositoryException{
         
         //JCR'den content nodeu bulalım
         Node cn = getImageContent( id );
         
+        
         //MimeType Mapping
-        //String mt = cn.getProperty("jcr:mimeType").getString();//new MimetypesFileTypeMap().getContentType(cn.getProperty("jcr:mimeType").getString());
+        String mt = "image/*";
+        if( cn.hasProperty("jcr:mimeType")){
+            mt = cn.getProperty("jcr:mimeType").getString();//new MimetypesFileTypeMap().getContentType(cn.getProperty("jcr:mimeType").getString());
+        } 
+        
+        LOG.info("Response MimeType : {}", mt);
         
         //İçeriği yollayalım.
-        return Response.ok(cn.getProperty("jcr:data").getBinary().getStream()).build();
+        return Response.ok(cn.getProperty("jcr:data").getBinary().getStream(), mt).build();
         
     }
     
     @GET    
     @Path("/default/{id}")
-    @Produces("image/*")
     public Response getDefaultImage( @PathParam("id") String id ) throws RepositoryException{
         
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("/" + id );

@@ -6,6 +6,8 @@
 package com.ozguryazilim.telve.jcr.image;
 
 import com.google.common.base.Strings;
+import com.j256.simplemagic.ContentInfo;
+import com.j256.simplemagic.ContentInfoUtil;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -221,6 +223,17 @@ public class ImageLookupController implements Serializable {
 
             session.save();
 
+            Node cn = n.getNode("jcr:content");
+            if( !cn.hasProperty("jcr:mimeType")){
+                LOG.info("MimeType Tespit edilecek");
+                //MimeType bulunamadı bulalım.
+                ContentInfoUtil util = new ContentInfoUtil();
+                ContentInfo info = util.findMatch(cn.getProperty("jcr:data").getBinary().getStream());
+                cn.setProperty("jcr:mimeType", info.getMimeType());
+                session.save();
+                LOG.info("MimeType Tespit edildi : {}", info.getMimeType());
+            }
+            
             LOG.info("Dosya JCR'e kondu : {}", fileName);
 
         } catch (RepositoryException ex) {
@@ -245,6 +258,8 @@ public class ImageLookupController implements Serializable {
             Node n = jcrTools.uploadFile(session, fileName, fileURL);
 
             session.save();
+            
+            
 
             LOG.info("Dosya JCR'e kondu : {}", fileName);
 

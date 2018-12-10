@@ -12,7 +12,6 @@ import javax.jcr.Session;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.slf4j.Logger;
@@ -36,7 +35,6 @@ public class GalleryResourceService {
     
     @GET    
     @Path("/image/{id}")
-    @Produces("image/*")
     public Response getImage( @PathParam("id") String id ) throws RepositoryException{
         
         //JCR'den content nodeu bulalım
