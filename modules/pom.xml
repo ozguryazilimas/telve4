@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+	
+    <groupId>com.ozguryazilim.telve</groupId>
+    <artifactId>telve-parent</artifactId>
+    <version>${revision}${changelist}</version> 
+    <name>${project.groupId} : ${project.artifactId} : ${project.version}</name>
+    <description>Telve Parent POM</description>
+    <url>http://www.ozguryazilim.com.tr/</url>
+    <packaging>pom</packaging> 
+
+    <properties>
+        <buildNumber>SNAPSHOT</buildNumber>
+        <revision>4.0.0</revision>
+        <changelist>-${buildNumber}</changelist>
+        
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <jdk.debug>true</jdk.debug>
+        <jdk.optimize>false</jdk.optimize>
+        <jdk.source>1.8</jdk.source>
+        <jdk.target>1.8</jdk.target>
+        
+        <deltaspike.version>1.8.2</deltaspike.version>
+        <shiro.version>1.3.2</shiro.version>
+        <primeface.version>6.2</primeface.version>
+        <primefaces-ext.version>6.2</primefaces-ext.version>
+        <atmosphere.version>2.4.6</atmosphere.version>
+        <omnifaces.version>2.7</omnifaces.version>
+        <liquibase.version>3.5.5</liquibase.version>
+        <liquibase-slf4j.version>2.0.0</liquibase-slf4j.version>
+        <prettytime.version>4.0.0.Final</prettytime.version>
+        
+        <camel.version>2.22.2</camel.version>
+        <jasperreports.version>6.7.0</jasperreports.version>
+        <jasperreports-fonts.version>6.0.0</jasperreports-fonts.version>
+        
+        <camunda.version>7.7.0</camunda.version>
+        <infinispan.version>8.1.0.Final</infinispan.version>
+        
+        <jodatime.version>2.10</jodatime.version>
+        
+        <junit.version>4.12</junit.version>
+
+        <version.maven-processor-plugin>3.3.3</version.maven-processor-plugin>
+        <version.liquibase-maven-plugin>3.6.2</version.liquibase-maven-plugin>
+        <version.hibernate-jpamodelgen>5.2.1.Final</version.hibernate-jpamodelgen>
+        
+        <maven.build.timestamp.format>yyyyMMdd-HHmm</maven.build.timestamp.format>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            
+            <dependency>
+                <groupId>org.jboss.spec</groupId>
+                <artifactId>jboss-javaee-7.0</artifactId>
+                <version>1.1.1.Final</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency> 
+            
+            <!--
+            
+            <dependency>
+                <groupId>org.arquillian</groupId>
+                <artifactId>arquillian-universe</artifactId>
+                <version>${arquillian.universe.version}</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            -->
+        
+            <!-- DeltaSpike -->
+            <dependency>
+                <groupId>org.apache.deltaspike.core</groupId>
+                <artifactId>deltaspike-core-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.core</groupId>
+                <artifactId>deltaspike-core-impl</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+        
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-security-module-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-security-module-impl</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-partial-bean-module-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-partial-bean-module-impl</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-jpa-module-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-jpa-module-impl</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-jsf-module-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-jsf-module-impl</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+        
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-data-module-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-data-module-impl</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-test-control-module-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.deltaspike.modules</groupId>
+                <artifactId>deltaspike-test-control-module-impl</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>test</scope>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.apache.deltaspike.cdictrl</groupId>
+                <artifactId>deltaspike-cdictrl-api</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>compile</scope>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.apache.deltaspike.cdictrl</groupId>
+                <artifactId>deltaspike-cdictrl-weld</artifactId>
+                <version>${deltaspike.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            
+            <!--
+            <dependency>
+                <groupId>org.jboss.weld.se</groupId>
+                <artifactId>weld-se</artifactId>
+                <version>2.2.4.Final</version>
+                <scope>test</scope>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.jboss</groupId>
+                <artifactId>jandex</artifactId>
+                <version>1.2.1.Final</version>
+                <scope>test</scope>
+            </dependency>
+            -->
+
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-core</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-web</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+                                    
+            <!-- PrimeFaces -->
+            <dependency>
+                <groupId>org.primefaces</groupId>
+                <artifactId>primefaces</artifactId>
+                <version>${primeface.version}</version>
+            </dependency>
+
+            <!--    
+            <dependency>  
+                <groupId>org.primefaces.themes</groupId>  
+                <artifactId>all-themes</artifactId>  
+                <version>1.0.10</version>  
+            </dependency>
+            -->
+                
+            <dependency>
+                <groupId>org.primefaces.extensions</groupId>
+                <artifactId>primefaces-extensions</artifactId>
+                <version>${primefaces-ext.version}</version>
+            </dependency>
+            
+            
+            <dependency>
+                <groupId>org.omnifaces</groupId>
+                <artifactId>omnifaces</artifactId>
+                <version>${omnifaces.version}</version>
+            </dependency>
+            
+            <!-- Push Notify - PFP -->
+            <dependency>
+                <groupId>org.atmosphere</groupId>
+                <artifactId>atmosphere-runtime</artifactId>
+                <version>${atmosphere.version}</version>
+            </dependency>
+            
+            <!-- Camel -->
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-core</artifactId>
+                <version>${camel.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-cdi</artifactId>
+                <version>${camel.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-test</artifactId>
+                <version>${camel.version}</version>
+                <scope>test</scope>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.apache.camel</groupId>
+                <artifactId>camel-freemarker</artifactId>
+                <version>${camel.version}</version>
+            </dependency>
+            
+            <!-- Camunda -->
+            <dependency>
+                <groupId>org.camunda.bpm</groupId>
+                <artifactId>camunda-engine</artifactId>
+                <version>${camunda.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.uuid</groupId>
+                <artifactId>java-uuid-generator</artifactId>
+                <version>3.1.0</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>org.camunda.bpm.javaee</groupId>
+                <artifactId>camunda-ejb-client</artifactId>
+                <version>${camunda.version}</version>
+            </dependency>
+
+            <dependency>
+              <groupId>org.camunda.bpm</groupId>
+              <artifactId>camunda-engine-cdi</artifactId>
+              <version>${camunda.version}</version>
+            </dependency>
+            
+            <!-- Utilities-->
+            
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.25</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>17.0</version>
+            </dependency>
+            <dependency>
+                    <groupId>com.google.code.gson</groupId>
+                    <artifactId>gson</artifactId>
+                    <version>2.8.1</version>
+            </dependency>
+            <dependency>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                    <version>3.6</version>
+            </dependency>
+
+            <dependency>
+                <groupId>dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>1.6.1</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>5.0.7.Final</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-jpamodelgen</artifactId>
+                <version>${version.hibernate-jpamodelgen}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>net.sf.jasperreports</groupId>
+                <artifactId>jasperreports</artifactId>
+                <version>${jasperreports.version}</version>
+                
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.lucene</groupId>
+                        <artifactId>lucene-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.lucene</groupId>
+                        <artifactId>lucene-analyzers-common</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.apache.lucene</groupId>
+                        <artifactId>lucene-queryparser</artifactId>
+                    </exclusion>
+                </exclusions>
+                
+            </dependency>
+
+            <dependency>
+                <groupId>net.sf.jasperreports</groupId>
+                <artifactId>jasperreports-fonts</artifactId>
+                <version>${jasperreports-fonts.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.infinispan</groupId>
+                <artifactId>infinispan-jcache</artifactId>
+                <version>${infinispan.version}</version>
+             </dependency>
+            
+            <dependency>
+                <groupId>javax.cache</groupId>
+                <artifactId>cache-api</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>net.java.dev.rome</groupId>
+                <artifactId>rome</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${jodatime.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-core</artifactId>
+                <version>${liquibase.version}</version>
+            </dependency>
+            
+            <dependency>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-cdi</artifactId>
+                <version>${liquibase.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mattbertolini</groupId>
+                <artifactId>liquibase-slf4j</artifactId>
+                <version>${liquibase-slf4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.ocpsoft.prettytime</groupId>
+                <artifactId>prettytime</artifactId>
+                <version>${prettytime.version}</version>
+            </dependency>
+        
+            <dependency>
+                <groupId>org.ocpsoft.prettytime</groupId>
+                <artifactId>prettytime-integration-jsf</artifactId>
+                <version>${prettytime.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jboss.spec.javax.ejb</groupId>
+            <artifactId>jboss-ejb-api_3.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.faces</groupId>
+            <artifactId>jboss-jsf-api_2.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.javax.persistence</groupId>
+            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.enterprise.concurrent</groupId>
+            <artifactId>jboss-concurrency-api_1.0_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.transaction</groupId>
+            <artifactId>jboss-transaction-api_1.2_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.el</groupId>
+            <artifactId>jboss-el-api_3.0_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.servlet</groupId>
+            <artifactId>jboss-servlet-api_3.1_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.ws.rs</groupId>
+            <artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- JavaDoc derlenmesi için lazım oluyor -->
+        <dependency>
+            <groupId>javax.interceptor</groupId>
+            <artifactId>javax.interceptor-api</artifactId>
+            <version>1.2</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>${jdk.source}</source>
+                        <target>${jdk.target}</target>
+                        <encoding>utf-8</encoding>
+                        <debug>${jdk.debug}</debug>
+                        <optimize>${jdk.optimize}</optimize>
+                    </configuration>
+                </plugin>
+                
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-ejb-plugin</artifactId>
+                    <configuration>
+                        <ejbVersion>3.2</ejbVersion>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.alexnederlof</groupId>
+                    <artifactId>jasperreports-plugin</artifactId>
+                    <version>2.4</version>
+                    <executions>
+                        <execution>
+                            <phase>process-sources</phase>
+                            <goals>
+                                <goal>jasper</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <dependencies>
+                        <dependency>
+                            <groupId>net.sf.jasperreports</groupId>
+                            <artifactId>jasperreports</artifactId>
+                            <version>${jasperreports.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <!-- These are the default configurations: -->
+                        <compiler>net.sf.jasperreports.engine.design.JRJdtCompiler</compiler>
+                        <sourceDirectory>src/main/jasperreports</sourceDirectory>
+                        <outputDirectory>${project.build.directory}/classes/jasper</outputDirectory>
+                        <outputFileExt>.jasper</outputFileExt>
+                        <xmlValidation>true</xmlValidation>
+                        <verbose>true</verbose>
+                        <numberOfThreads>4</numberOfThreads>
+                    </configuration>
+                </plugin>
+                <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
+                <version>${version.maven-processor-plugin}</version>
+                <executions>
+                    <execution>
+                        <id>process</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <processors>
+                                <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+                            </processors>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.hibernate</groupId>
+                        <artifactId>hibernate-jpamodelgen</artifactId>
+                        <version>${version.hibernate-jpamodelgen}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                        
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>${version.liquibase-maven-plugin}</version>
+                        <configuration>
+                            <diffChangeLogFile>src/main/resources/liquibase/migration/changelog-${maven.build.timestamp}.xml</diffChangeLogFile>
+                            <driver>${liquibase.driver}</driver>
+                            <url>${liquibase.url}</url>
+                            <defaultSchemaName>${liquibase.schema}</defaultSchemaName>
+                            <username>${liquibase.username}</username>
+                            <password>${liquibase.password}</password>
+                            <verbose>true</verbose>
+                            <logging>debug</logging>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.liquibase.ext</groupId>
+                                <artifactId>liquibase-hibernate4</artifactId>
+                                <version>${version.liquibase-hibernate4}</version>
+                                <exclusions>
+                                    <exclusion>
+                                        <groupId>org.hibernate</groupId>
+                                        <artifactId>hibernate-core</artifactId>
+                                    </exclusion>
+                                    <exclusion>
+                                        <groupId>org.hibernate</groupId>
+                                        <artifactId>hibernate-entitymanager</artifactId>
+                                    </exclusion>
+                                    <exclusion>
+                                        <groupId>org.hibernate</groupId>
+                                        <artifactId>hibernate-envers</artifactId>
+                                    </exclusion>
+                                    <exclusion>
+                                        <groupId>org.hibernate.javax.persistence</groupId>
+                                        <artifactId>hibernate-jpa-2.0-api</artifactId>
+                                    </exclusion>
+                                </exclusions>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.hibernate</groupId>
+                                <artifactId>hibernate-core</artifactId>
+                                <version>${version.hibernate}</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.hibernate</groupId>
+                                <artifactId>hibernate-entitymanager</artifactId>
+                                <version>${version.hibernate}</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.hibernate</groupId>
+                                <artifactId>hibernate-envers</artifactId>
+                                <version>${version.hibernate}</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.0.1</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>oss</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+                  <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M2</version>
+        <executions>
+          <execution>
+            <id>enforcer</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireJavaVersion>
+                  <version>1.8</version>
+                </requireJavaVersion>
+                <requireMavenVersion>
+                  <version>3.5.4</version>
+                </requireMavenVersion>
+                <!-- Aquillian ile ilgili bağımlılıklardan sonra deneyelim
+                <requireUpperBoundDeps>
+                </requireUpperBoundDeps>
+                -->
+              </rules>
+              <fail>true</fail>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+        </plugins>
+    </build>
+    
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+        
+    
+    <issueManagement>
+        <system>Redmine</system>
+        <url>https://islergucler.ozguryazilim.com.tr/projects/telve-4</url>
+    </issueManagement>
+	
+    <scm>
+        <connection>scm:git:https://lab.ozguryazilim.com.tr/telve/telve4</connection>
+        <developerConnection>scm:git:https://lab.ozguryazilim.com.tr/telve/telve4</developerConnection>
+        <url>https://lab.ozguryazilim.com.tr/telve/telve4</url>
+    </scm>
+	 
+    <organization>
+        <name>Özgür Yazılım A.Ş.</name>
+        <url>http://www.ozguryazilim.com.tr/</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>LGPL 3</name>
+            <url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+
+    <developers>
+        <developer>
+            <id>ozguryazilim.com.tr</id>
+            <name>Özgür Yazılım A.Ş.</name>
+            <organization>Özgür Yazılım A.Ş.</organization>
+            <organizationUrl>http://www.ozguryazilim.com.tr</organizationUrl>
+            <timezone>GMT +2</timezone>
+        </developer>
+    </developers>
+    
+    <modules>
+        <module>telve-core</module>
+        <module>telve-core-model</module>
+        <module>telve-idm-model</module>
+        <module>kahve</module>
+        <module>telve-bpm</module>
+        <module>telve-dynaform</module>
+        <module>telve-jcr</module>
+        <module>telve-theme</module>
+        <module>telve-gallery</module>
+        <module>telve-idm</module>
+        <module>telve-unit</module>
+        <module>telve-keycloak</module>
+        <module>telve-note</module>
+        <module>telve-calendar</module>
+        <module>telve-bpm-calendar</module>
+        <module>telve-sms</module>
+        <module>telve-sms-mobildev</module>
+        <module>telve-batch</module>
+        <module>telve-layout</module>
+        <module>telve-dashboard</module>
+        <module>telve-attachment</module>
+        <module>telve-attachment-jpa</module>
+        <module>telve-attachment-jpa-model</module>
+        <module>telve-attachment-modeshape</module>
+        <module>telve-attachment-ui</module>
+        <module>telve-jasperreports</module>
+        <module>telve-reports</module>
+        <module>telve-admin-reports</module>
+        <module>telve-idm-reports</module>
+        <module>telve-dynamicreports</module>
+        <module>telve-image-jpa-model</module>
+        <module>telve-image</module>
+        <module>telve-image-jpa</module>
+        <module>telve-uploader</module>
+        <module>telve-uppy-webjar</module>
+    </modules>
+    
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <name>Özgür Yazılım A.Ş. Nexus Reporsiyory</name>
+            <url>http://nexus.ozguryazilim.com.tr/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus</id>
+            <name>Özgür Yazılım A.Ş. Nexus Snapshots Reporsiyory</name>
+            <url>http://nexus.ozguryazilim.com.tr/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+</project>
