@@ -3,12 +3,10 @@ target
 faces-config.NavData
 *~
 *.versionsBackup
-/telve-core/nbproject/
+nbproject
 .settings
 .project
 .classpath
-/telve-unit/nbproject/
-/telve-idm/nbproject/
 .idea
 *.iml
 node_modules
