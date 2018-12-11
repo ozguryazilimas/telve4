@@ -2,9 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
         
-    <groupId>com.ozguryazilim.telve</groupId>
-    <version>${revision}${changelist}</version> 
-    <artifactId>telve-app-base</artifactId>
+    <parent>
+        <groupId>com.ozguryazilim.telve</groupId>
+        <version>${revision}${changelist}</version> 
+        <artifactId>telve-helpers-parent</artifactId>
+    </parent>
+
+    <artifactId>telve-app-parent</artifactId>
     <packaging>pom</packaging>
     
     <properties>
@@ -36,9 +40,9 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.jboss.spec</groupId>
-                <artifactId>jboss-javaee-7.0</artifactId>
-                <version>1.1.1.Final</version>
+                <groupId>com.ozguryazilim.telve</groupId>
+                <artifactId>telve-depchain</artifactId>
+                <version>${version.telve}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency> 
@@ -49,6 +53,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- 
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
@@ -73,6 +78,7 @@
                 <artifactId>liquibase-slf4j</artifactId>
                 <version>${liquibase-slf4j.version}</version>
             </dependency>
+            -->
         </dependencies>
     </dependencyManagement>
     
@@ -296,7 +302,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
-                <version>1.0.0</version>
+                <version>1.0.1</version>
                 <configuration>
                     <updatePomFile>true</updatePomFile>
                     <flattenMode>minimum</flattenMode>

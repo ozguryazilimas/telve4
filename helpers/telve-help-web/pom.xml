@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.ozguryazilim.telve</groupId>
-        <artifactId>telve-parent</artifactId>
+        <artifactId>telve-helpers-parent</artifactId>
         <version>${revision}${changelist}</version>
     </parent>
 
-    <artifactId>telve-help</artifactId>
+    <artifactId>telve-help-web</artifactId>
     <packaging>war</packaging>
 
     <name>telve-help</name>
@@ -32,17 +32,6 @@
             <scope>provided</scope>
         </dependency>
         -->
-        
-        <!--
-        <dependency>
-            <groupId>com.ozguryazilim.telve</groupId>
-            <artifactId>telve-core-help</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        -->
-        
-        
     </dependencies>
 
     
