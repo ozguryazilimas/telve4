@@ -3,11 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>telve-parent</artifactId>
-        <groupId>com.ozguryazilim.mutfak</groupId>
+        <groupId>com.ozguryazilim.telve</groupId>
         <version>${revision}${changelist}</version>
     </parent>
 
-    <groupId>com.ozguryazilim.mutfak</groupId>
     <artifactId>telve-dashboard</artifactId>
     <packaging>ejb</packaging>
 

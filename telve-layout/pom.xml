@@ -4,63 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.ozguryazilim.mutfak</groupId>
+
+    <parent>
+        <artifactId>telve-parent</artifactId>
+        <groupId>com.ozguryazilim.telve</groupId>
+        <version>${revision}${changelist}</version>
+    </parent>
+
+
     <artifactId>telve-layout</artifactId>
-    <version>${revision}${changelist}</version> 
     <name>Telve Base Layout Templates</name>
     <packaging>jar</packaging>
-	
-    <properties>
-        <buildNumber>SNAPSHOT</buildNumber>
-        <revision>4.0.0</revision>
-        <changelist>-${buildNumber}</changelist>
-        
-        <jdk.debug>true</jdk.debug>
-        <jdk.optimize>false</jdk.optimize>
-        <jdk.source>1.8</jdk.source>
-        <jdk.target>1.8</jdk.target>
-    </properties>
-    
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-                <version>1.0.0</version>
-                <configuration>
-                    <updatePomFile>true</updatePomFile>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>flatten</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>flatten</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>flatten.clean</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
-    <distributionManagement>
-        <repository>
-            <id>nexus</id>
-            <name>Özgür Yazılım A.Ş. Nexus Reporsiyory</name>
-            <url>http://nexus.ozguryazilim.com.tr/content/repositories/releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <name>Özgür Yazılım A.Ş. Nexus Snapshots Reporsiyory</name>
-            <url>http://nexus.ozguryazilim.com.tr/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>    
-	
 </project> 

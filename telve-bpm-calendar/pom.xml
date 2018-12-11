@@ -3,11 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>telve-parent</artifactId>
-        <groupId>com.ozguryazilim.mutfak</groupId>
+        <groupId>com.ozguryazilim.telve</groupId>
         <version>${revision}${changelist}</version>
     </parent>
 
-    <groupId>com.ozguryazilim.mutfak</groupId>
     <artifactId>telve-bpm-calendar</artifactId>
     <packaging>ejb</packaging>
 
@@ -49,24 +48,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.arquillian.junit</groupId>
-            <artifactId>arquillian-junit-container</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.wildfly</groupId>
-            <artifactId>wildfly-arquillian-container-managed</artifactId>
-            <version>8.2.0.Final</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.shrinkwrap.resolver</groupId>
-            <artifactId>shrinkwrap-resolver-depchain</artifactId>
-            <version>2.1.1</version>
-            <scope>test</scope>
-            <type>pom</type>
         </dependency>
     </dependencies>
 

@@ -2,14 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-    <artifactId>telve-parent</artifactId>
-    <groupId>com.ozguryazilim.mutfak</groupId>
-    <version>4.0.0.Beta6-SNAPSHOT</version>
-  </parent>
+        <artifactId>telve-parent</artifactId>
+        <groupId>com.ozguryazilim.telve</groupId>
+        <version>${revision}${changelist}</version>
+    </parent>
 
-    <groupId>com.ozguryazilim.mutfak</groupId>
+    
     <artifactId>telve-web</artifactId>
-    <version>4.0.0.Beta6-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>telve-web</name>
