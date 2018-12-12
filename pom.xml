@@ -123,4 +123,17 @@
             <url>http://nexus.ozguryazilim.com.tr/repository/maven-public</url>
         </repository>
     </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>nexus</id>
+            <name>Özgür Yazılım A.Ş. Nexus Reporsiyory</name>
+            <url>http://nexus.ozguryazilim.com.tr/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus</id>
+            <name>Özgür Yazılım A.Ş. Nexus Snapshots Reporsiyory</name>
+            <url>http://nexus.ozguryazilim.com.tr/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
