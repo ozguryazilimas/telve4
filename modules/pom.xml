@@ -3,9 +3,13 @@
 
     <modelVersion>4.0.0</modelVersion>
 	
-    <groupId>com.ozguryazilim.telve</groupId>
+    <parent>
+        <groupId>com.ozguryazilim.telve</groupId>
+        <artifactId>telve-project-parent</artifactId>
+        <version>${revision}${changelist}</version> 
+    </parent>
+
     <artifactId>telve-parent</artifactId>
-    <version>${revision}${changelist}</version> 
     <name>Telve Modules : ${project.version}</name>
     <description>Telve Parent POM</description>
     <url>http://www.ozguryazilim.com.tr/</url>

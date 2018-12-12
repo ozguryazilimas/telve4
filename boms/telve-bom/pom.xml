@@ -487,6 +487,7 @@
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-core</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
 
             <dependency>
@@ -499,6 +500,7 @@
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-web</artifactId>
                 <version>${telve.version}</version>
+                <type>war</type>
             </dependency>
             
             <dependency>
@@ -516,16 +518,19 @@
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-bpm</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-dynaform</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-jcr</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
@@ -536,51 +541,61 @@
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-gallery</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-idm</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-unit</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-keycloak</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-note</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-calendar</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-bpm-calendar</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-sms</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-sms-mobildev</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-batch</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
@@ -591,16 +606,19 @@
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-dashboard</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-attachment</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-attachment-jpa</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
@@ -611,36 +629,43 @@
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-attachment-modeshape</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-attachment-ui</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-jasperreports</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-reports</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-admin-reports</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-idm-reports</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-dynamicreports</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
@@ -651,16 +676,19 @@
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-image</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-image-jpa</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-uploader</artifactId>
                 <version>${telve.version}</version>
+                <type>ejb</type>
             </dependency>
             <dependency>
                 <groupId>com.ozuryazilim.mutfak</groupId>
