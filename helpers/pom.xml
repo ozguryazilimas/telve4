@@ -22,7 +22,9 @@
 
     <modules>
         <module>telve-app-parent</module>
-        <module>telve-web</module>
-        <module>telve-help-web</module>
+	<module>telve-web</module>
+	<!--
+	<module>telve-help-web</module>
+	-->
     </modules>
 </project>

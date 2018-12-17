@@ -115,13 +115,20 @@
       </plugin>
         </plugins>
     </build>
-
     <repositories>
+        <!--
         <repository>
             <id>ozguryazilim</id>
             <name>Özgür Yazılım A.Ş. Nexus Reporsitory</name>
             <url>http://nexus.ozguryazilim.com.tr/repository/maven-public</url>
         </repository>
+        -->
+        <repository>
+            <id>central</id>
+            <name>central</name>
+            <url>http://central.maven.org/maven2/</url>
+        </repository>
+        
     </repositories>
 
     <distributionManagement>

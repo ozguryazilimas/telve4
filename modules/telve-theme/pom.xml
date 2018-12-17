@@ -48,7 +48,7 @@
             <plugin>
                 <groupId>org.primefaces</groupId>
                 <artifactId>maven-jsf-plugin</artifactId>
-                <version>1.3.0</version>
+                <version>1.3.2</version>
                 <executions>
                     <execution>
                         <configuration>
@@ -89,6 +89,21 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>primefaces</id>
+            <url>https://repository.primefaces.org/</url>
+            <name>PrimeFaces Maven Repository</name>
+        </repository>
+    </repositories>
+    
+    <pluginRepositories>
+        <pluginRepository>
+            <id>primefaces</id>
+            <url>https://repository.primefaces.org/</url>
+            <name>PrimeFaces Maven Repository</name>
+        </pluginRepository>
+    </pluginRepositories>
 
     <distributionManagement>
         <repository>
