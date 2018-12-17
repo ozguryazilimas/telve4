@@ -16,7 +16,7 @@
         <div id="#{cc.clientId}" class="disprop #{cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
             <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]} :" styleClass="name" />
             <span class="value">
-                <pre><h:outputText id="#{cc.id}_inp" value="#{cc.attrs.value}" /></pre>
+                <h:outputText id="#{cc.id}_inp" value="#{cc.attrs.value}" style="white-space: pre-wrap"/>
                 <h:outputText value="." style="color: #FFF" rendered="#{cc.attrs.value eq null or cc.attrs.value eq ''}"/>
             </span>
         </div>
