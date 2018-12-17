@@ -52,7 +52,7 @@
                                                 <ui:fragment rendered="#{nav.fontIcon}">
                                                     <i class="#{ nav.bundleKey ? messages[nav.icon] : nav.icon}"></i>
                                                 </ui:fragment>
-                                                #{messages[nav.label]} #{navigationOptionPane.menus.contains(nav.label) ? "true" : "false"}
+                                                #{messages[nav.label]}}
                                             </span>
                                         </li>
                                     </ui:repeat>
