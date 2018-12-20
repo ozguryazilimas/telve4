@@ -12,3 +12,4 @@ nbproject
 node_modules
 node
 .flattened-pom.xml
+package-lock.json
