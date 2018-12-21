@@ -66,9 +66,11 @@
                             </div>
                             <div class="box-footer">
                                 <div class="box-tools pull-right">
+                                    <ui:remove>
                                     <p:commandLink action="#{galleryConsole.selectItem(file.id)}" styleClass="btn btn-box-tool" oncomplete="PF('metadata').show();" update="metadata" process="@this" rendered="#{identity.hasPermission('gallery','update')}">
                                         <i class="fa fa-pencil"/>
                                     </p:commandLink>
+                                    </ui:remove>
                                     <p:commandLink action="#{galleryConsole.deleteItem(file.id)}" styleClass="btn btn-box-tool" update="@([id$=galleryView])" process="@this" rendered="#{identity.hasPermission('gallery','delete')}">
                                         <i class="fa fa-trash"/>
                                     </p:commandLink>
@@ -93,14 +95,6 @@
 
 
         </h:panelGroup>
-
-        <h:form id="uploaddialog" enctype="multipart/form-data">
-            <p:dialog header="#{messages['gallery.caption.UploadFileDialog']}" widgetVar="fdlg" showEffect="clip" hideEffect="clip">
-                <p:fileUpload fileUploadListener="#{galleryConsole.handleFileUpload}" mode="advanced" dragDropSupport="true"
-                              update="@([id$=galleryView])" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|.*)$/" 
-                              label="#{messages['general.label.SelectFile']}" uploadLabel="#{messages['general.button.Upload']}" cancelLabel="#{messages['general.button.Cancel']}"/>
-            </p:dialog>
-        </h:form>
 
         <p:dialog id="metadata" widgetVar="metadata" modal="true" width="550" minWidth="550">
             <f:facet name="header">
@@ -132,9 +126,10 @@
 
     <ui:define name="context-menu">
         <li>
-            <p:commandLink title="#{messages['general.hint.Upload']}" onclick="PF('fdlg').show();" process="@this" rendered="#{identity.hasPermission('gallery','insert')}">
+            <p:commandLink title="#{messages['general.hint.Upload']}" action="#{galleryConsole.uploadDocument()}" process="@this" rendered="#{identity.hasPermission('gallery','insert')}">
                 <i class="fa fa-upload" />
                 #{messages['general.button.Upload']}
+                <p:ajax event="dialogReturn" update="@([id$=galleryView])" partialSubmit="true" process="@this" />
             </p:commandLink>
         </li>
     </ui:define>
