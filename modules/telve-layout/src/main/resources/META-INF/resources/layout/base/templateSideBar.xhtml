@@ -73,6 +73,9 @@
                 </ui:repeat>
 
                 <ui:remove><!-- Fav Navigations --></ui:remove>
+                <h:panelGroup rendered="#{nagivationController.favNavigations.size() > 0}">
+                    <li class="header">#{messages['general.label.Favorites']}</li>
+                </h:panelGroup>
                 <ui:repeat value="#{nagivationController.favNavigations}" var="nav" >
 
                     <li>
