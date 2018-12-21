@@ -17,19 +17,21 @@
             </div>
 
             <h:panelGroup styleClass="row actionButtons" layout="block" >
-                <p:commandLink action="#{simpleImageEditor.uploadFile()}" process="@this" styleClass="btn btn-default pull-left">
-                    <i class="fa fa-upload" /> #{messages['general.button.UploadImage']}
-                    <p:ajax event="dialogReturn" update="fiwimg" process="@this" />
-                </p:commandLink>
-                <p:commandLink action="#{simpleImageEditor.delete()}" process="@this" update="fiwimg" styleClass="btn btn-default pull-left">
-                    <i class="fa fa-trash" /> #{messages['general.button.DeleteImage']}
-                </p:commandLink>
-                <p:commandButton id="close" 
-                                 value="#{messages['general.button.Close']}" 
-                                 icon="ui-icon-close" 
-                                 action="#{simpleImageEditor.closeDialog()}" 
-                                 partialSubmit="true" 
-                                 process="@this"/>
+                <div class="footer navbar-fixed-bottom">
+                    <p:commandLink action="#{simpleImageEditor.uploadFile()}" process="@this" styleClass="btn btn-default pull-left">
+                        <i class="fa fa-upload" /> #{messages['general.button.UploadImage']}
+                        <p:ajax event="dialogReturn" update="fiwimg" process="@this" />
+                    </p:commandLink>
+                    <p:commandLink action="#{simpleImageEditor.delete()}" process="@this" update="fiwimg" styleClass="btn btn-default pull-left">
+                        <i class="fa fa-trash" /> #{messages['general.button.DeleteImage']}
+                    </p:commandLink>
+                    <p:commandButton id="close" 
+                                     value="#{messages['general.button.Close']}" 
+                                     icon="ui-icon-close" 
+                                     action="#{simpleImageEditor.closeDialog()}" 
+                                     partialSubmit="true" 
+                                     process="@this"/>
+                </div>
             </h:panelGroup>
         </h:form>
     </ui:define> 
