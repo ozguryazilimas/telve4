@@ -3,6 +3,8 @@ package com.ozguryazilim.telve.gallery.ui;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.ozguryazilim.telve.jcr.ui.FileInfo;
+import com.ozguryazilim.telve.uploader.ui.FileUploadDialog;
+import com.ozguryazilim.telve.uploader.ui.FileUploadHandler;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,10 +12,14 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import me.desair.tus.server.TusFileUploadService;
+import me.desair.tus.server.exception.TusException;
+import me.desair.tus.server.upload.UploadInfo;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.modeshape.common.text.UrlEncoder;
 import org.modeshape.jcr.api.JcrTools;
@@ -37,7 +43,7 @@ import org.slf4j.LoggerFactory;
  */
 @Named
 @WindowScoped
-public class GalleryConsole extends AbstractGalleryController {
+public class GalleryConsole extends AbstractGalleryController implements FileUploadHandler{
 
     private static final Logger LOG = LoggerFactory.getLogger(GalleryConsole.class);
 
@@ -56,6 +62,12 @@ public class GalleryConsole extends AbstractGalleryController {
     private String selectedNodeInfo;
     private String selectedNodeTags;
 
+    @Inject
+    private FileUploadDialog fileUploadDialog;
+    
+    @Inject
+    private TusFileUploadService fileUploadService;
+    
     @PostConstruct
     public void init() {
         populateGalleries();
@@ -229,6 +241,30 @@ public class GalleryConsole extends AbstractGalleryController {
 
     public void setSelectedNodeTags(String selectedNodeTags) {
         this.selectedNodeTags = selectedNodeTags;
+    }
+
+    @Override
+    public void handleFileUpload(String uri) {
+        try {
+            UploadInfo uploadInfo = fileUploadService.getUploadInfo(uri);
+            LOG.debug("Uploaded File : {}", uploadInfo.getFileName());
+
+            String folderName = getSelectedPath();
+            String path = folderName + "/" + uploadInfo.getFileName();
+
+            LOG.info("Folder Name : {}", path);
+            copyFile( path, fileUploadService.getUploadedBytes(uri));
+            fileUploadService.deleteUpload(uri);
+        } catch (IOException | TusException ex) {
+            LOG.error("Attachment cannot add", ex);
+        }
+    }
+    
+    /**
+     * Bu Method FileUploadDialog'unu açmasını sağlar.
+     */
+    public void uploadDocument(){
+        fileUploadDialog.openDialog(this, "");
     }
 
 }

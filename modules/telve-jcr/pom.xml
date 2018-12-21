@@ -58,7 +58,12 @@
             <groupId>org.modeshape</groupId>
             <artifactId>modeshape-extractor-tika</artifactId>
         </dependency>
-        
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>telve-uploader</artifactId>
+            <version>${project.version}</version>
+        </dependency>        
         
         <dependency>
             <groupId>com.j256.simplemagic</groupId>

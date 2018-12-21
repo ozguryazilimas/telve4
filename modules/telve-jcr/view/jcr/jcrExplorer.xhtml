@@ -43,12 +43,18 @@
                 <div class="box-header">
                     <div class="tools pull-right">
                         <h:form style="display: inline">
-                            <p:remoteCommand name="selectNode" action="#{jcrController.selectNode}" update="@([id$=filesPanel]),@([id$=uploaddialog])" partialSubmit="true" process="@this" />
-                            <p:remoteCommand name="updateFileDialog" update="@([id$=uploaddialog])" partialSubmit="true" process="@this" />
+                            <p:remoteCommand name="selectNode" action="#{jcrController.selectNode}" update="@([id$=filesPanel])" partialSubmit="true" process="@this" />
 
+                            <p:commandLink title="#{messages['jcr.hint.UploadFile']}" action="#{jcrController.uploadDocument()}" process="@this">
+                                <i class="fa fa-plus" />
+                                <p:ajax event="dialogReturn" update="@([id$=filesPanel])" partialSubmit="true" process="@this" />
+                            </p:commandLink>
+                            
+                            <ui:remove>
                             <p:commandLink title="#{messages['jcr.hint.UploadFile']}" onclick="PF('fdlg').show();" process="@this">
                                 <i class="fa fa-upload" />
                             </p:commandLink>
+                            </ui:remove>
                             
                             <p:commandLink title="#{messages['jcr.hint.WidgetMode']}" action="#{jcrController.setViewMode('widget')}" update="@([id$=filesPanel])" process="@this">
                                 <i class="fa fa-table" />
@@ -195,20 +201,8 @@
                                 }
                                 
                                 setNodeSelections();
-                                setTimeout(function(){
-                                    updateFileDialog();
-                                },1000);
         </script>
         
-        
-    <h:form id="uploaddialog" enctype="multipart/form-data">
-        <p:dialog header="#{messages['jcr.caption.UploadFileDialog']}" widgetVar="fdlg" showEffect="clip" hideEffect="clip">
-            <p:fileUpload fileUploadListener="#{jcrController.handleFileUpload}" mode="advanced" dragDropSupport="true"
-                          update="@([id$=filesPanel])" sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png|.*)$/"  sequential="true"
-                          label="#{messages['general.label.SelectFile']}" uploadLabel="#{messages['general.button.Upload']}" cancelLabel="#{messages['general.button.Cancel']}"/>
-        </p:dialog>
-    </h:form>
-
     <h:form id="folderDialog">
         <p:dialog header="#{messages['jcr.caption.NewFolderDialog']}" widgetVar="dlg" >
             

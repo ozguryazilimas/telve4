@@ -1,6 +1,8 @@
 package com.ozguryazilim.telve.jcr.ui;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.uploader.ui.FileUploadDialog;
+import com.ozguryazilim.telve.uploader.ui.FileUploadHandler;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +17,9 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.servlet.http.HttpServletResponse;
+import me.desair.tus.server.TusFileUploadService;
+import me.desair.tus.server.exception.TusException;
+import me.desair.tus.server.upload.UploadInfo;
 import org.apache.commons.io.IOUtils;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.modeshape.common.text.UrlEncoder;
@@ -30,7 +35,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Hakan Uygun
  */
-public class JcrController {
+public class JcrController implements FileUploadHandler{
 
     private static final Logger LOG = LoggerFactory.getLogger(JcrController.class);
 
@@ -585,4 +590,36 @@ public class JcrController {
         return encoder;
     }
 
+    @Override
+    public void handleFileUpload(String uri) {
+        try {
+            UploadInfo uploadInfo = getFileUploadService().getUploadInfo(uri);
+            LOG.debug("Uploaded File : {}", uploadInfo.getFileName());
+
+            String folderName = getSelectedPath();
+            String path = folderName + "/" + uploadInfo.getFileName();
+
+            LOG.info("Folder Name : {}", path);
+            copyFile( path, getFileUploadService().getUploadedBytes(uri));
+            getFileUploadService().deleteUpload(uri);
+        } catch (IOException | TusException ex) {
+            LOG.error("Attachment cannot add", ex);
+        }
+    }
+
+    /**
+     * Bu Method FileUploadDialog'unu açmasını sağlar.
+     */
+    public void uploadDocument(){
+        getFileUploadDialog().openDialog(this, "");
+    }
+    
+    protected TusFileUploadService getFileUploadService(){
+        return BeanProvider.getContextualReference(TusFileUploadService.class, true);
+    }
+    
+    protected FileUploadDialog getFileUploadDialog(){
+        return BeanProvider.getContextualReference(FileUploadDialog.class, true);
+    }
+    
 }
