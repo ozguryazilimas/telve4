@@ -226,7 +226,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
         }
 
         LOG.debug("Entity Saved : {0} ", entity);
-        FacesMessages.info( "general.message.record.SaveSuccess");
+        showSuccessMessage();
 
         raiseRefreshBrowserEvent( getEntity().getId());
 
@@ -310,6 +310,15 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     protected boolean onAfterDelete() {
         //Alt sınıflar için 
         return true;
+    }
+    
+    /**
+     * Alt sınıflar tarafından override edilerek değiştirilebilir ya da
+     * Yoksayılabilir.
+     *
+     */
+    public void showSuccessMessage() {
+        FacesMessages.info("general.message.record.SaveSuccess");
     }
 
     public void reattachRequiredEntities() {
