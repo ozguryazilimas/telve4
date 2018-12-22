@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCommand> {
 
     private static final Logger LOG = LoggerFactory.getLogger(LdapSyncCommandExecutor.class);
+    private static final String OBJECT_CLASS = "(objectClass=*)";
 
     // tekrari azaltmak icin telveRealm degeri
     private String telveRealm = "telveRealm.";
@@ -78,21 +79,16 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             syncUsers(realm, ldapContext);
 
             // eger true donerse gruplari senkronize ediyoruz
-            if (command.getSyncGroupsAndAssignUsers() != null) {
-                if (command.getSyncGroupsAndAssignUsers()) {
-                    syncGroups(realm, ldapContext, command);
-                }
+            if (command.getSyncGroupsAndAssignUsers() != null && command.getSyncGroupsAndAssignUsers()) {
+                syncGroups(realm, ldapContext, command);
             }
 
             // eger true donerse rolleri senkronize ediyoruz
-            if (command.getSyncRolesAndAssignUsers()) {
-                if (command.getSyncRolesAndAssignUsers()) {
-                    syncRoles(realm, ldapContext);
-                }
+            if (command.getSyncRolesAndAssignUsers() != null && command.getSyncRolesAndAssignUsers()) {
+                syncRoles(realm, ldapContext);
             }
         } catch (Exception e) {
             LOG.error("There was an error during LdapSyncCommand", e);
-            e.printStackTrace();
         }
     }
 
@@ -108,7 +104,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
         // Ldap uzerinden kullanicilari ariyoruz
         NamingEnumeration<SearchResult> ldapUserResults = ldapContext
-            .search(realm.get(telveRealm + "userSearchBase"), "(objectClass=*)", userSearchControls);
+            .search(realm.get(telveRealm + "userSearchBase"), OBJECT_CLASS, userSearchControls);
 
         // Veritabanindaki kayitli ve otomatik uretilmis kullanicilari cekelim
         // en son elimizde kalanlari pasif duruma cekelim
@@ -188,7 +184,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
                     // kullaniciyi guncellemiyorsak loglayalim
                 } else {
-                    LOG.info("User " + user.getLoginName() + " wasn't updated during LdapSyncCommand");
+                    LOG.info("User {} wasn't updated during LdapSyncCommand", user.getLoginName());
                 }
             }
         }
@@ -215,7 +211,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
         // ldap uzerinden sonuclari cekelim
         NamingEnumeration<SearchResult> ldapGroupResults = ldapContext
-            .search(realm.get(telveRealm + "groupSearchBase"), "(objectClass=*)", groupSearchControls);
+            .search(realm.get(telveRealm + "groupSearchBase"), OBJECT_CLASS, groupSearchControls);
 
         // sonuclarin uzerinden gecelim
         while (ldapGroupResults.hasMoreElements()) {
@@ -233,20 +229,18 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                 Group group = groupRepository.findAnyByName(groupName);
 
                 // eger veritabaninda kayitli degil ve olusturulmasi icin parametre verilmis ise olusturalim
-                if (command.getCreateMissingGroups() != null) {
-                    if (group == null && command.getCreateMissingGroups()) {
-                        Group newGroup = new Group();
-                        newGroup.setActive(Boolean.TRUE);
-                        newGroup.setCode(groupName);
-                        newGroup.setName(groupName);
-                        newGroup.setAutoCreated(Boolean.TRUE);
-                        groupRepository.save(newGroup);
-                        // path id'sini verip tekrar kaydedelim
-                        newGroup.setPath(TreeUtils.getNodeIdPath(newGroup));
-                        groupRepository.save(newGroup);
-                        // grup degerini degistirelim
-                        group = newGroup;
-                    }
+                if (command.getCreateMissingGroups() != null && group == null && command.getCreateMissingGroups()) {
+                    Group newGroup = new Group();
+                    newGroup.setActive(Boolean.TRUE);
+                    newGroup.setCode(groupName);
+                    newGroup.setName(groupName);
+                    newGroup.setAutoCreated(Boolean.TRUE);
+                    groupRepository.save(newGroup);
+                    // path id'sini verip tekrar kaydedelim
+                    newGroup.setPath(TreeUtils.getNodeIdPath(newGroup));
+                    groupRepository.save(newGroup);
+                    // grup degerini degistirelim
+                    group = newGroup;
                 }
 
                 // eger grup var ise
@@ -317,7 +311,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
         // ldap uzerinden sonuclari cekelim
         NamingEnumeration<SearchResult> ldapRoleResults = ldapContext
-            .search(realm.get(telveRealm + "roleSearchBase"), "(objectClass=*)", roleSeachControls);
+            .search(realm.get(telveRealm + "roleSearchBase"), OBJECT_CLASS, roleSeachControls);
 
         // sonuclarin uzerinden gecelim
         while (ldapRoleResults.hasMoreElements()) {
