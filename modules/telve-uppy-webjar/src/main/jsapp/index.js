@@ -1,8 +1,9 @@
-
-module.exports.Core = require('@uppy/core');
-module.exports.Dashboard = require('@uppy/dashboard');
-module.exports.Tus = require('@uppy/tus');
-module.exports.FileInput = require('@uppy/file-input');
-module.exports.ProgressBar = require('@uppy/progress-bar');
-module.exports.Css = require('uppy/dist/uppy.min.css');
-
+module.exports = {
+    Core: require('@uppy/core'),
+    Dashboard: require('@uppy/dashboard'),
+    Tus: require('@uppy/tus'),
+    FileInput: require('@uppy/file-input'),
+    ProgressBar: require('@uppy/progress-bar'),
+    Css: require('uppy/dist/uppy.min.css'),
+    Locale: require('./locale'),
+};

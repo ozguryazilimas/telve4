@@ -1,9 +1,7 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
-                xmlns:p="http://primefaces.org/ui"                
+                xmlns:p="http://primefaces.org/ui"
                 template="/layout/dialogBase.xhtml">
 
     <ui:param name="title" value="File Uploader" />
@@ -17,18 +15,25 @@
                 
                 <h:outputScript library="webjars" name="/telve-uppy/0.28.0/uppy-bundle.js" />
                 <script>
-                        
-      var uppy = Uppy.Core({
+
+        var uppyLocale;
+        if ('#{localeSelector.language}' === 'tr') {
+            uppyLocale = Uppy.Locale.turkish;
+        }
+
+
+        var uppy = Uppy.Core({
             allowMultipleUploads: true,
             debug: false,
             autoProceed: true,
+            locale: uppyLocale,
             restrictions: {
                 maxFileSize: #{fileUploadDialog.maxFileSize != null ? fileUploadDialog.maxFileSize : 'null'},
                 maxNumberOfFiles: #{fileUploadDialog.maxNumberOfFiles != null ? fileUploadDialog.maxNumberOfFiles : 'null'},
                 allowedFileTypes: #{fileUploadDialog.allowedFileTypes != null ? fileUploadDialog.allowedFileTypes : 'null'}
             }
         })
-        
+
         .use(Uppy.Dashboard, {
           inline: true,
           target: '.DashboardContainer',
@@ -46,13 +51,13 @@
       uppy.on('complete', (result) => {
         console.log(`Upload complete! We’ve uploaded these files: ${result.successful}`)
       });
-      
+
       uppy.on('upload-success', function(file, upload) {
         console.log("Upload " + file.name + " completed with URL " + upload.url);
         console.log("Developer: Now pass URL " + upload.url + " to the backend or dynmically add it to an existing form!");
         sendFileUploadEvent([{'name': 'uri', 'value': upload.url}]);
        });
-    
+
                 </script>
             </div>
 

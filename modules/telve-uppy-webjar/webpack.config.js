@@ -1,13 +1,10 @@
-var packageJSON = require('./package.json');
-var path = require('path');
-var webpack = require('webpack');
+const packageJSON = require('./package.json');
+const path = require('path');
 
-const PATHS = {
-  build: path.join(__dirname, 'target', 'classes', 'META-INF', 'resources', 'webjars', packageJSON.name, packageJSON.version)
-};
-
+const buildPath = path.join(__dirname, 'target/classes/META-INF/resources/webjars', packageJSON.name, packageJSON.version);
 
 module.exports = {
+    mode: 'production',
     entry: './src/main/jsapp/index.js',
     module: {
         rules: [
@@ -18,7 +15,7 @@ module.exports = {
         ]
   },
   output: {
-    path: PATHS.build,
+    path: buildPath,
     filename: 'uppy-bundle.js',
     libraryTarget: 'var',
     library: 'Uppy'
