@@ -18,8 +18,6 @@
             <action name="select" />
             <action name="exec" />
         </permission>
-    </permissionGroup>
-    <permissionGroup name="Reports">
         <permission name="viewAll">
             <action name="select"/>
         </permission>        
