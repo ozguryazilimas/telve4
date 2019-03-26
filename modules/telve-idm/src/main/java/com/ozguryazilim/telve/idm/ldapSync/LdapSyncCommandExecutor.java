@@ -144,6 +144,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                     newUser.setFirstName(firstName);
                     newUser.setLastName(lastName);
                     newUser.setAutoCreated(Boolean.TRUE);
+                    newUser.setChangePassword(false);
 
                     userRepository.save(newUser);
 
