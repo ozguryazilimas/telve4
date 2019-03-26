@@ -64,8 +64,19 @@ public class User extends EntityBase{
     @Column(name = "ISAUTOCREATED")
     private Boolean autoCreated = Boolean.FALSE;
     
+    /**
+     * Kullanıcı bilgi ve parolaları TelveIDM tarafından mı yönetiliyor yoksa başka bir dış sistem tarafından mı?
+     * Örneğin LDAP/SSO sistemleri v.b.
+     */
+    @Column(name = "ISMANAGED")
+    private Boolean managed = Boolean.TRUE;
+    
+    /**
+     * Kullanıcı bir sonraki girişinde parola değiştirmeli mi?
+     */
     @Column(name = "PW_CHANGE")
     private Boolean changePassword = Boolean.TRUE;
+    
     /**
      * Uygulama tarafından register edilen farklı kullanıcı tipleri.
      */
@@ -215,6 +226,15 @@ public class User extends EntityBase{
     public void setTckn(String tckn) {
         this.tckn = tckn;
     }
+
+    public Boolean getManaged() {
+        return managed;
+    }
+
+    public void setManaged(Boolean managed) {
+        this.managed = managed;
+    }
+    
     
     
 }

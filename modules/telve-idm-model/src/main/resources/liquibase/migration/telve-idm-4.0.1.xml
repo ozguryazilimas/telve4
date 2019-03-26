@@ -167,4 +167,10 @@
         </addColumn>
     </changeSet>         
     
+    <changeSet author="huygun" id="201903262005-1">
+        <addColumn tableName="TLI_USER">
+            <column name="ISMANAGED" type="BOOLEAN" valueBoolean="true"/>
+        </addColumn>
+    </changeSet>
+    
 </databaseChangeLog>

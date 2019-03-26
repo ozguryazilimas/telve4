@@ -19,7 +19,8 @@
                 <t:outputText label="user.label.Manager" value="#{userLookup.getUserName(userHome.entity.manager)}" />
                 <t:outputText label="user.label.Tckn" value="#{userHome.entity.tckn}" />
                 
-                <t:outputBoolean label="user.label.LDAP" itemLabel="general.boolean.yesno." value="#{userHome.entity.autoCreated}" />
+                <t:outputBoolean label="user.label.AutoCreated" itemLabel="general.boolean.yesno." value="#{userHome.entity.autoCreated}" />
+                <t:outputBoolean label="user.label.Managed" itemLabel="general.boolean.yesno." value="#{userHome.entity.managed}" />
                 <t:outputText label="general.label.Info" value="#{userHome.entity.info}" columnClass="col-xs-12"/>
             </div>
         </h:panelGroup>

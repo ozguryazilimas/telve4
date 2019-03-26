@@ -154,7 +154,7 @@ public class UserHome extends FormBase<User, Long>{
             populateFragments();
         }
 
-        LOG.info("UI Fragments : {}", fragments);
+        LOG.debug("UI Fragments : {}", fragments);
 
         return fragments;
     }
