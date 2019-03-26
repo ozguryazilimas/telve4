@@ -294,7 +294,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
         }
 
         //Normal kullanıcılar ( LDAP'tan vs gelmeyen ) kendi parolasını değiştirebilmeli.
-        if (!user.getAutoCreated()) {
+        if (user.getManaged()) {
             permissions.add("PasswordEditor:*");
         }
 
@@ -345,7 +345,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
                 }
 
                 try {
-                    //FIXME: Burada kullanıcı idm veri tabanında yok ve LDAP bilgileri ile oluşturulacak.
+                    //Burada kullanıcı idm veri tabanında yok ve LDAP bilgileri ile oluşturulacak.
                     createUser(upToken);
                 } catch (NamingException ex) {
                     throw new UnknownAccountException("No account created for user [" + username + "]");
@@ -486,7 +486,8 @@ public class TelveIdmRealm extends JndiLdapRealm {
         user.setLastName(lastName);
         user.setEmail(email);
         user.setAutoCreated(Boolean.TRUE);
-        user.setChangePassword(false);
+        user.setChangePassword(Boolean.FALSE);
+        user.setManaged(Boolean.FALSE);
 
         getUserRepository().save(user);
 
