@@ -97,10 +97,11 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         String firstNameAttr = realm.get(telveRealm + "firstNameAttr");
         String lastNameAttr = realm.get(telveRealm + "lastNameAttr");
         String emailAttr = realm.get(telveRealm + "emailAttr");
+        String scope = realm.get(telveRealm + "userScope");
 
         SearchControls userSearchControls = new SearchControls();
         userSearchControls.setReturningAttributes(new String[]{loginNameAttr, firstNameAttr, lastNameAttr, emailAttr});
-        userSearchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+        setScope(scope, userSearchControls);
 
         // Ldap uzerinden kullanicilari ariyoruz
         NamingEnumeration<SearchResult> ldapUserResults = ldapContext
@@ -205,10 +206,11 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
         String groupNameAttr = realm.get(telveRealm + "groupNameAttr");
         String groupMembersAttr = realm.get(telveRealm + "groupMembersAttr");
+        String scope = realm.get(telveRealm + "groupScope");
 
         SearchControls groupSearchControls = new SearchControls();
         groupSearchControls.setReturningAttributes(new String[]{groupNameAttr, groupMembersAttr});
-        groupSearchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+        setScope(scope, groupSearchControls);
 
         // ldap uzerinden sonuclari cekelim
         NamingEnumeration<SearchResult> ldapGroupResults = ldapContext
@@ -224,7 +226,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             // eger grup adi mevcutsa islemleri yapalim
             if (groupName != null) {
                 // gruba ait kullanicilar
-                NamingEnumeration<?> members = ldapGroup.get(groupMembersAttr).getAll();
+                NamingEnumeration<?> members = ldapGroup.get(groupMembersAttr) != null
+                    ? ldapGroup.get(groupMembersAttr).getAll() : null;
 
                 // grup telve tarafinda kayitli mi?
                 Group group = groupRepository.findAnyByName(groupName);
@@ -252,7 +255,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                     List<UserGroup> groupMembers = userGroupRepository.findAnyByGroup(group);
 
                     // uyeleri while loopu ile cekelim
-                    while (members.hasMoreElements()) {
+                    while (members != null && members.hasMoreElements()) {
                         // ustunde islem yapilacak uye
                         String member = members.next().toString();
 
@@ -305,10 +308,11 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
     private void syncRoles(Ini.Section realm, LdapContext ldapContext) throws NamingException {
         String roleNameAttr = realm.get(telveRealm + "roleNameAttr");
         String roleMembersAttr = realm.get(telveRealm + "roleMembersAttr");
+        String scope = realm.get(telveRealm + "roleScope");
 
         SearchControls roleSeachControls = new SearchControls();
         roleSeachControls.setReturningAttributes(new String[]{roleNameAttr, roleMembersAttr});
-        roleSeachControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+        setScope(scope, roleSeachControls);
 
         // ldap uzerinden sonuclari cekelim
         NamingEnumeration<SearchResult> ldapRoleResults = ldapContext
@@ -322,7 +326,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
             if (roleName != null) {
                 // role ait kullanicilar
-                NamingEnumeration<?> members = ldapGroup.get(roleMembersAttr).getAll();
+                NamingEnumeration<?> members = ldapGroup.get(roleMembersAttr) != null
+                    ? ldapGroup.get(roleMembersAttr).getAll() : null;
 
                 // rol telve tarafinda kayitli mi?
                 Role role = roleRepository.findAnyByName(roleName);
@@ -335,7 +340,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                     List<UserRole> roleMembers = userRoleRepository.findAnyByRole(role);
 
                     // uyeleri while loopu ile cekelim
-                    while (members.hasMoreElements()) {
+                    while (members != null && members.hasMoreElements()) {
                         // ustunde islem yapilacak uye
                         String member = members.next().toString();
 
@@ -373,5 +378,17 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                 }
             }
         }
+    }
+
+    private void setScope(String scope, SearchControls controls) {
+        int searchScope = SearchControls.ONELEVEL_SCOPE;
+        if (!Strings.isNullOrEmpty(scope)) {
+            if (scope.equals("sub")) {
+                searchScope = SearchControls.SUBTREE_SCOPE;
+            } else if (scope.equals("base")) {
+                searchScope = SearchControls.OBJECT_SCOPE;
+            }
+        }
+        controls.setSearchScope(searchScope);
     }
 }

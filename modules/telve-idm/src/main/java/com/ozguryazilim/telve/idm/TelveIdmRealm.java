@@ -74,6 +74,9 @@ public class TelveIdmRealm extends JndiLdapRealm {
     private String roleSearchBase;
     private String groupSearchBase;
     private String userSearchBase;
+    private String userScope;
+    private String groupScope;
+    private String roleScope;
     private String userSearchFilter = "(uid={0})";
 
     private String firstNameAttr = "givenName";
@@ -216,6 +219,30 @@ public class TelveIdmRealm extends JndiLdapRealm {
 
     public void setDefaultRole(String defaultRole) {
         this.defaultRole = defaultRole;
+    }
+
+    public String getUserScope() {
+        return userScope;
+    }
+
+    public void setUserScope(String userScope) {
+        this.userScope = userScope;
+    }
+
+    public String getGroupScope() {
+        return groupScope;
+    }
+
+    public void setGroupScope(String groupScope) {
+        this.groupScope = groupScope;
+    }
+
+    public String getRoleScope() {
+        return roleScope;
+    }
+
+    public void setRoleScope(String roleScope) {
+        this.roleScope = roleScope;
     }
 
     @Override
