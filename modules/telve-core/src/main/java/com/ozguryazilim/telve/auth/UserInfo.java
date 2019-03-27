@@ -32,6 +32,7 @@ public class UserInfo implements Serializable{
     private String domainGroupName;
     private String domainGroupPath;
     private Boolean changePassword;
+    private Boolean managed;
 
     /**
      * Geriye Kullanıcının ID'sini döndürür.
@@ -140,8 +141,15 @@ public class UserInfo implements Serializable{
     public void setChangePassword(Boolean changePassword) {
         this.changePassword = changePassword;
     }
- 
 
+    public Boolean getManaged() {
+        return managed;
+    }
+
+    public void setManaged(Boolean managed) {
+        this.managed = managed;
+    }
+ 
     @Override
     public int hashCode() {
         int hash = 5;
