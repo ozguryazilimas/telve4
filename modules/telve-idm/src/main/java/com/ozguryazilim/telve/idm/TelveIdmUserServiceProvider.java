@@ -196,6 +196,7 @@ public class TelveIdmUserServiceProvider implements UserServiceProvider, Seriali
         UserInfo ui = new UserInfo();
 
         ui.setChangePassword(u.getChangePassword());
+        ui.setManaged(u.getManaged());
         ui.setId(u.getId().toString());
         ui.setLoginName(u.getLoginName());
         ui.setFirstName(u.getFirstName());
