@@ -57,6 +57,10 @@ public class TelveExceptionHandler {
 
         if (identity.isAuthenticated() && userIdentity.getUserInfo().getChangePassword()) {
             viewNavigationHandler.navigateTo(Pages.ChangePassword.class);
+        } else if (identity.isAuthenticated() ) {
+            //Eğer zaten login ise ve yetkisi olmayan bir yere gitmeye çalışıyor ise Ana Sayfadan başka yönlendirecek bir yerimiz yok.
+            //TODO: Bir uyarı mesajı vermek fena olmaz ama dashboardda mesaj gösterilmiyor. FacesMessages.error("general.message.exception.AuthorizationException");
+            viewNavigationHandler.navigateTo(Pages.Home.class);
         } else {
             viewNavigationHandler.navigateTo(Pages.Login.class);
         }
