@@ -3,6 +3,7 @@ package com.ozguryazilim.telve.auth;
 import com.ozguryazilim.telve.audit.AuditLogCommand;
 import com.ozguryazilim.telve.audit.AuditLogger;
 import com.ozguryazilim.telve.messages.FacesMessages;
+import com.ozguryazilim.telve.view.Pages;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
 import javax.faces.context.FacesContext;
@@ -54,6 +55,9 @@ public class LoginController{
                 result = currentUser.isAuthenticated();
                 //Kullanıcı sorunsuz login oldu ve artık parola değiştirmesi gerekli mi diye kontrol etmeliyiz.
                 loggedInEvent.fire(new LoggedInEvent(identity.getUserInfo().getChangePassword()));
+            } else {
+                //Yani zaten login olmuş durumda ise Ana sayfaya yollayalım
+                 this.viewNavigationHandler.navigateTo(Pages.Home.class);
             }
         } catch (UnknownAccountException | IncorrectCredentialsException uae) {
             result = false;
