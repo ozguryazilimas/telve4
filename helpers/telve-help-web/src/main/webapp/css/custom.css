@@ -3,11 +3,17 @@ h2{
     font-size: 24px;
 }
 
+.details{
+    display: none;
+}
+
 #footer{
+    display: none;
     margin-top: 40px;
 }
 
 #footer-text {
+    display: none;
     font-size: 10px;
 }
 
