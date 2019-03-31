@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.shiro.subject.Subject;
 import org.primefaces.context.RequestContext;
 
@@ -26,6 +27,7 @@ public class GuiOptionPane extends AbstractOptionPane{
     private Map<String, String> themes;
     private String theme;
     private String locale;
+    private Boolean showSidebar = Boolean.TRUE;
     
     @Inject
     private ThemeSelector themeSelector;
@@ -77,6 +79,8 @@ public class GuiOptionPane extends AbstractOptionPane{
         themes.put("UI-Darkness", "ui-darkness");  
         themes.put("UI-Lightness", "ui-lightness");  
         themes.put("Vader", "vader");  
+        
+        showSidebar = !"true".equals(ConfigResolver.getPropertyValue("optionPane.exclude.Sidebar", "false"));
     }
 
     public Map<String, String> getThemes() {
@@ -143,5 +147,7 @@ public class GuiOptionPane extends AbstractOptionPane{
         RequestContext.getCurrentInstance().getApplicationContext().getCacheProvider().remove("main-sidebar", identity.getPrincipal().toString());
     }
     
-    
+    public Boolean getShowSidebar(){
+        return showSidebar;
+    }
 }

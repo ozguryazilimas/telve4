@@ -4,8 +4,11 @@ import java.util.Map.Entry;
 import javax.enterprise.inject.Any;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * OptionPane'leri kullanarak kullanıcıların sistem ayarlarını tanımlaması için
@@ -17,6 +20,8 @@ import org.apache.shiro.subject.Subject;
 @Named
 public class OptionPaneController extends AbstractOptionPaneController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(OptionPaneController.class);
+    
     @Inject
     @Any
     private Subject identity;
@@ -33,8 +38,12 @@ public class OptionPaneController extends AbstractOptionPaneController {
                     p = e.getKey();
                 }
 
-                //Herkes kendi arayüzünü değiştirebilir.
-                if (p.equals("PUBLIC") || identity.isPermitted(p + ":select")) {
+                //OptionPane exclude edildi mi?
+                Boolean excluded = "true".equals(ConfigResolver.getPropertyValue("optionPane.exclude." + e.getKey(), "false"));
+                LOG.debug( "OptionPane {}  excluded : {}", e.getKey(), excluded);
+                
+                //Yetki kontrolü yapalım bakalım
+                if ( !excluded && ( p.equals("PUBLIC") || identity.isPermitted(p + ":select"))) {
                     getOptionPanes().add(e.getKey());
 
                     String viewId = getOptiponPageViewId(e.getValue().optionPage());
