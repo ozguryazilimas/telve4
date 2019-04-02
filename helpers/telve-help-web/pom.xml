@@ -21,7 +21,7 @@
         <dependency>
             <groupId>org.tobarsegais</groupId>
             <artifactId>tobar-segais-webapp</artifactId>
-            <version>1.17.OYAS1</version>
+	    <version>1.17.OYAS2</version>
             <type>war</type>
         </dependency>
         <!--
