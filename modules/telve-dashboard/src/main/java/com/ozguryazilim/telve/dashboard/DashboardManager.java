@@ -142,6 +142,9 @@ public class DashboardManager implements Serializable {
      */
     protected void initDashboardModel() {
         model = new DefaultDashboardModel();
+        
+        //Tanımlardan gelen bilgiler Avail Dashlets listesinde var mı diye kontrol etmek için listeyi alalım.
+        List<String> ads = getAvailDashlets();
 
         //Tanımlı hiç dashborad yok :( Normal şartlarda olmamasını bekleriz.
         if (dashboards.isEmpty()) {
@@ -152,17 +155,23 @@ public class DashboardManager implements Serializable {
 
         DefaultDashboardColumn column1 = new DefaultDashboardColumn();
         for (String w : data.getColumn1()) {
-            column1.addWidget(w);
+            if( ads.contains(w)){
+                column1.addWidget(w);
+            }
         }
 
         DefaultDashboardColumn column2 = new DefaultDashboardColumn();
         for (String w : data.getColumn2()) {
-            column2.addWidget(w);
+            if( ads.contains(w)){
+                column2.addWidget(w);
+            }
         }
 
         DefaultDashboardColumn column3 = new DefaultDashboardColumn();
         for (String w : data.getColumn3()) {
-            column3.addWidget(w);
+            if( ads.contains(w)){
+                column3.addWidget(w);
+            }
         }
 
         //Kolon widget atamaları
