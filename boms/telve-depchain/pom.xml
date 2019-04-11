@@ -18,7 +18,6 @@
         <shiro.version>1.3.2</shiro.version>
         <primeface.version>6.2</primeface.version>
         <primefaces-ext.version>6.2</primefaces-ext.version>
-        <atmosphere.version>2.4.6</atmosphere.version>
         <omnifaces.version>2.7</omnifaces.version>
         <liquibase.version>3.5.5</liquibase.version>
         <liquibase-slf4j.version>2.0.0</liquibase-slf4j.version>

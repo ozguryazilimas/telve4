@@ -3,10 +3,9 @@
                  xmlns:h="http://java.sun.com/jsf/html"
                  xmlns:f="http://java.sun.com/jsf/core"
                  xmlns:p="http://primefaces.org/ui"
+                 xmlns:o="http://omnifaces.org/ui"
                  >
 
-    <ui:remove>
-        FIXME: Aslında PF 7 ile birlikte p:socket tarih oluyor. Dolayısı ile alternatif bir yöntem düşünülmeli.
     <p:notificationBar id="notifyBar" position="top" effect="slide" styleClass="top alert-info" style="z-index: 3000; margin: 0;" widgetVar="notifyBar" >
         <i id="notifyIcon" class=""/>
         <span id="notifySubject" style="font-size:36px;"></span>
@@ -14,8 +13,11 @@
         <span id="notifyDetail" style="font-size:22px;"></span>
     </p:notificationBar>
 
-    
-        <p:socket onMessage="handleMessage" channel="/notify/#{identity.loginName}" />
+        <o:socket channel="notify" onmessage="handleMessage" user="#{identity.loginName}"/>
+        
+        <ui:remove>
+            <p:socket onMessage="handleMessage" channel="/notify/#{identity.loginName}" />
+        </ui:remove>
     
 
     <script type="text/javascript">
@@ -28,21 +30,23 @@
         }
 
         
-        function handleMessage(notify) {
+        function handleMessage(message, channel, event) {
             //facesmessage.severity = 'info';
-            //alert(facesmessage.summary);
-            jQuery("#notifyBar").removeClass().addClass("ui-notificationbar ui-widget ui-widget-content top alert-" + notify.severity);
-            jQuery("#notifyIcon").removeClass().addClass("fa fa-3x " + notify.icon);
-            jQuery("#notifySubject").html(notify.subject);
-            jQuery("#notifyDetail").html(notify.body);
+            //alert(message);
+            //alert(channel);
+            //alert(event);
+            
+            jQuery("#notifyBar").removeClass().addClass("ui-notificationbar ui-widget ui-widget-content top alert-" + message.severity);
+            jQuery("#notifyIcon").removeClass().addClass("fa fa-3x " + message.icon);
+            jQuery("#notifySubject").text(message.subject);
+            jQuery("#notifyDetail").text(message.body);
             PF('notifyBar').show();
             setTimeout(function () {
                 PF('notifyBar').hide();
             }, 15000);
-            updateNotifies();
+            //updateNotifies();
         }
         
     </script>
-        </ui:remove>
 
 </ui:composition>
