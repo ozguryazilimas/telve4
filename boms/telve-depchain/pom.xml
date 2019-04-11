@@ -230,13 +230,6 @@
                 <version>${omnifaces.version}</version>
             </dependency>
             
-            <!-- Push Notify - PFP -->
-            <dependency>
-                <groupId>org.atmosphere</groupId>
-                <artifactId>atmosphere-runtime</artifactId>
-                <version>${atmosphere.version}</version>
-            </dependency>
-            
             <!-- Camel -->
             <dependency>
                 <groupId>org.apache.camel</groupId>

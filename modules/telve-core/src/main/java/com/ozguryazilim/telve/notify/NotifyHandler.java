@@ -4,7 +4,14 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
 /**
- * PFP Notification mesajları için API
+ * PushNotification Handler.
+ * 
+ * FIXME: PF üzerinden kalktığı için şimdilik temizliyoruz. 
+ * Aslında bütün bu süreç SMS Channel gibi tamamen kendine ait bir optinal modülegitmeli.
+ * 
+ * NotifyChannelDispacher için bir interface üzerinden produce edilmeli ve istenilir ise kullanılabilmeli.
+ * 
+ * Burada Push Notification kavramı aslında çeşitli IM implementasyonları bile olabilir.
  * 
  * @author Hakan Uygun
  */
