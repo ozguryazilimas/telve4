@@ -13,7 +13,7 @@
             
                 <div class="DashboardContainer"></div>
                 
-                <h:outputScript library="webjars" name="/telve-uppy/0.28.0/uppy-bundle.js" />
+                <h:outputScript library="webjars" name="/telve-uppy/0.30.4/uppy-bundle.js" />
                 <script>
 
         var uppyLocale;
@@ -21,7 +21,8 @@
             uppyLocale = Uppy.Locale.turkish;
         }
 
-
+        
+        
         var uppy = Uppy.Core({
             allowMultipleUploads: true,
             debug: false,
@@ -38,7 +39,7 @@
           inline: true,
           target: '.DashboardContainer',
           replaceTargetContent: true,
-          height: 250
+          height: 400
         })/*
         .use(Uppy.FileInput, {target: '.DashboardContainer', replaceTargetContent: true})
         .use(Uppy.ProgressBar, {
@@ -48,8 +49,8 @@
         })*/
         .use(Uppy.Tus, {endpoint: '#{fileUploadDialog.endPoint}', chunkSize: #{fileUploadDialog.chunkSize}});
 
-      uppy.on('upload-success', function(file, upload) {
-        sendFileUploadEvent([{'name': 'uri', 'value': upload.url}]);
+      uppy.on('upload-success', function(file, response) {
+        sendFileUploadEvent([{'name': 'uri', 'value': response.uploadURL}]);
        });
 
                 </script>
