@@ -56,19 +56,11 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     
-    <servlet>
-        <servlet-name>Push Servlet</servlet-name>
-        <servlet-class>org.primefaces.push.PushServlet</servlet-class>
-        <init-param>
-            <param-name>org.atmosphere.cpr.broadcasterCacheClass</param-name>
-            <param-value>org.atmosphere.cache.UUIDBroadcasterCache</param-value>
-        </init-param>
-        <async-supported>true</async-supported>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Push Servlet</servlet-name>
-        <url-pattern>/primepush/*</url-pattern>
-    </servlet-mapping>
+    <!-- OminiFaces Socket Push -->
+    <context-param>
+        <param-name>org.omnifaces.SOCKET_ENDPOINT_ENABLED</param-name>
+        <param-value>true</param-value>
+    </context-param>
     
     <servlet-mapping>
         <servlet-name>javax.ws.rs.core.Application</servlet-name>

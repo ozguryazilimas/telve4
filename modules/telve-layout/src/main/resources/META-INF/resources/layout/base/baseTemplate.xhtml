@@ -36,7 +36,9 @@
             
             <ds:windowId />
 
-            <!-- pe:ajaxErrorHandler / -->
+            <ui:remove>
+            <!-- FIXME: pe:ajaxErrorHandler / -->
+            </ui:remove>
 
             <h:form>
                 <p:remoteCommand name="updateNotifies" update="notifyCount"  />
@@ -47,7 +49,10 @@
                 <p:commandButton value="#{messages['general.button.Yes']}" type="button" styleClass="ui-confirmdialog-yes pull-right" icon="ui-icon-check" />
             </p:confirmDialog>
 
-            <ui:include src="/layout/notificationBar.xhtml" />
+            <ui:fragment rendered="#{notifyHandler.pushEnabled}">
+                <ui:include src="/layout/notificationBar.xhtml" />
+            </ui:fragment>
+            
             
             <ui:insert name="outerspace"></ui:insert>
 

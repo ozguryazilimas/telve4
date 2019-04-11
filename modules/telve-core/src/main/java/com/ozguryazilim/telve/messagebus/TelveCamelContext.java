@@ -9,6 +9,7 @@ import org.apache.camel.cdi.CdiCamelContext;
 import org.apache.camel.cdi.ContextName;
 import org.apache.camel.impl.DefaultShutdownStrategy;
 import org.apache.camel.spi.ShutdownStrategy;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 
 /**
  * Telve Camel Context Bean
@@ -23,7 +24,7 @@ public class TelveCamelContext extends CdiCamelContext{
     
     @PostConstruct
     public void init(){
-        setTracing(Boolean.TRUE);
+        setTracing("true".equals(ConfigResolver.getProjectStageAwarePropertyValue("camel.tracer", "false")));
         //TODO: Belki buraya project stage eklenebilir. Debug amaçlı camel yavaşlatıcı
         //setDelayer(1000l);
         ShutdownStrategy ss = new DefaultShutdownStrategy(); 

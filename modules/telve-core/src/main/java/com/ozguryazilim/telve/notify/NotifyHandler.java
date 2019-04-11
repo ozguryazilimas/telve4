@@ -1,10 +1,18 @@
 package com.ozguryazilim.telve.notify;
 
+import com.ozguryazilim.telve.notification.NotificationService;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
+import org.omnifaces.cdi.Push;
+import org.omnifaces.cdi.PushContext;
 
 /**
- * PFP Notification mesajları için API
+ * PushNotification Handler.
+ * 
+ * OmniFaces socket üzerinden push notification gönderir.
  * 
  * @author Hakan Uygun
  */
@@ -12,7 +20,19 @@ import javax.inject.Named;
 @Named
 public class NotifyHandler {
     
-    private final static String CHANNEL = "/notify/";
+    private Boolean pushEnabled = Boolean.FALSE;
+    
+    @Inject @Push(channel="notify")
+    private PushContext notifyPushContext;
+    
+    @Inject
+    private NotificationService notificationService;
+    
+    @PostConstruct
+    public void init(){
+        pushEnabled = "true".equals(ConfigResolver.getProjectStageAwarePropertyValue("notification.push.enabled", "false"));
+    }
+    
     
     /**
      * Sistemde login olan herkese mesaj gönderir.
@@ -49,12 +69,19 @@ public class NotifyHandler {
     }
     
     /**
-     * Atmosfer üzerinden push Notify mesajı gönderir.
+     * Omnifaces socket üzerinden push notify mesajı gönderir.
      * @param message 
      */
     public void sendMessage(NotifyMessage message){
-        //EventBus eventBus = EventBusFactory.getDefault().eventBus();
-        //eventBus.publish(CHANNEL + message.getTo(), new JSONObject(message).toString());
-        //eventBus.publish(CHANNEL + "hakan", StringEscapeUtils.escapeHtml4(message));
+        
+        
+        if( pushEnabled ){
+            notifyPushContext.send(message, message.getTo());
+        }
     }
+
+    public Boolean getPushEnabled() {
+        return pushEnabled;
+    }
+    
 }
