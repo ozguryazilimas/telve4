@@ -153,8 +153,6 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
 
         FacesMessages.info("general.message.record.SaveSuccess");
 
-        refreshEntityList();
-
         return null;
     }
 
@@ -193,8 +191,6 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
 
         FacesMessages.info("general.message.record.DeleteSuccess");
 
-        refreshEntityList();
-
         return null;
     }
 
@@ -215,7 +211,8 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
      *
      */
     public void refreshEntityList() {
-
+        entityList.clear();
+        entityList = null;
     }
 
     public E getEntity() {
