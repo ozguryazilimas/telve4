@@ -261,7 +261,74 @@ public class JasperReportHandler {
             }
         }
     }
+    
+    /**
+     * Verilen isimli jasper reportu verilen isimli xsl olarak istemciye
+     * gönderir.Rapor parametreleri Map içerisinde gönderilecektir.
+     *
+     * @param name Jasper Dosya adı. /jasper/{name}.jasper olarak aranacaktır
+     * @param fileName İstemciye gönderilecek olan pdf adı {fileName}.xsl olarak
+     * yollanacaktır.
+     * @param params rapor parametreleri
+     * @param data
+     * @throws net.sf.jasperreports.engine.JRException
+     */
+    @SuppressWarnings("rawtypes")
+    public void reportToXLS(String name, String fileName, Map params, Collection data) throws JRException {
 
+        //LOG.info("Jasper Rapor Exec : {} {} {}", name, fileName, params);
+        decorateParams(params);
+
+        InputStream is = getReportSource(name);
+
+        if (is == null) {
+            LOG.warn("Dosya Bulunamadı : {}.jasper ", name);
+            return;
+        }
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        JRDataSource ds = new JRBeanCollectionDataSource(data);
+            
+        JasperPrint jasperPrint = JasperFillManager.fillReport(is, params, ds );
+        JRXlsMetadataExporter exporter = new JRXlsMetadataExporter();
+
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        //exporter.setConfiguration(new SimpleXlsExporterConfiguration());
+        exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(os));
+
+        exporter.exportReport();
+
+        sendResponse(fileName, XLS, os.toByteArray());
+    }
+
+    public void reportToCSV(String name, String fileName, Map params, Collection data) throws JRException {
+        decorateParams(params);
+
+        InputStream is = getReportSource(name);
+
+        if (is == null) {
+            LOG.warn("Dosya Bulunamadı : {}.jasper ", name);
+            return;
+        }
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        JRDataSource ds = new JRBeanCollectionDataSource(data);
+        
+        JasperPrint jasperPrint = JasperFillManager.fillReport(is, params, ds);
+        JRCsvMetadataExporter exporter = new JRCsvMetadataExporter(); //getJasperExporter(outputFormat);
+        
+        SimpleCsvMetadataExporterConfiguration conf = new SimpleCsvMetadataExporterConfiguration();
+
+        exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        //exporter.setConfiguration( conf );
+        exporter.setExporterOutput(new SimpleWriterExporterOutput(os));
+
+        exporter.exportReport();
+
+        sendResponse(fileName, CSV, os.toByteArray());
+
+    }
+    
     public void reportToCSV(String name, String fileName, Map params) throws JRException {
         decorateParams(params);
 
