@@ -152,6 +152,23 @@
             </h:form>
 
         </p:dialog>
+        
+        <p:dialog id="killprocessPop" widgetVar="killprocessPop" header="#{messages['delegatePopup.label.Title']}" width="350">
+
+            <h:form id="killprocessForm">
+
+                <div class="row">
+                    <t:inputTextarea label="general.label.Comment" value="#{processBrowse.processInfo}" maxlength="255" columnClass="col-xs-12" />
+                </div>
+
+                <h:panelGroup styleClass="row actionButtons" layout="block">
+                    <p:commandButton value="#{messages['general.button.Ok']}" styleClass="btn-primary" icon="fa fa-save" action="#{processBrowse.killProcess()}" oncomplete="PF('killprocessPop').hide();" update=":tasks"/>
+                    <p:button value="#{messages['general.button.Close']}"  icon="fa fa-close" onclick="PF('killprocessPop').hide();return false;"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>        
     </ui:define>
 
     <ui:define name="context-menu">
@@ -162,6 +179,13 @@
                 <span>#{messages['general.button.Delegate']}</span>
             </p:commandLink> 
         </li>
+        
+        <li>
+            <p:commandLink id="killProcess" onclick="PF('killprocessPop').show();return false;" ajax="true" partialSubmit="true" process="@this" >
+                <i class="fa fa-users"/>
+                <span>#{messages['general.button.Delete']}</span>
+            </p:commandLink> 
+        </li>        
         
         <li>
             <p:commandLink action="#{processBrowse.showDiagram()}" ajax="true" partialSubmit="true" process="@this">
