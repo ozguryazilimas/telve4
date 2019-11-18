@@ -16,11 +16,11 @@ import javax.sql.DataSource;
  */
 public class KahveStore {
 
-    private final Connection connection;
+    private final DataSource dataSource;
+    private Connection connection;
 
-    public KahveStore(DataSource dataSource) throws SQLException, NamingException {
-
-        connection = dataSource.getConnection();
+    protected KahveStore(DataSource dataSource) throws SQLException, NamingException {
+        this.dataSource = dataSource;
     }
 
     private static KahveStore instance;
@@ -51,23 +51,23 @@ public class KahveStore {
         KahveEntry ke = load(s);
 
         if (ke == null) {
-            connection.createStatement().executeUpdate(
+            getConnection().createStatement().executeUpdate(
                     String.format("insert into KAHVE ( KV_KEY, KV_VAL ) values ( '%s', '%s' )", s, o.getValue()));
         } else {
-            connection.createStatement().executeUpdate(
+            getConnection().createStatement().executeUpdate(
                     String.format("update KAHVE set KV_VAL = '%s' where KV_KEY = '%s'", o.getValue(), s));
         }
     }
 
     public void delete(String s) throws SQLException {
-        connection.createStatement().executeUpdate(
+        getConnection().createStatement().executeUpdate(
                 String.format("delete from KAHVE where KV_KEY = '%s'", s));
     }
 
     public KahveEntry load(String s) {
 
         try {
-            ResultSet rs = connection.createStatement().executeQuery("select KV_VAL from KAHVE where KV_KEY = '" + s + "'");
+            ResultSet rs = getConnection().createStatement().executeQuery("select KV_VAL from KAHVE where KV_KEY = '" + s + "'");
 
             try {
                 if (!rs.next()) {
@@ -83,6 +83,18 @@ public class KahveStore {
         }
 
         return null;
+    }
+    
+    private Connection getConnection() throws SQLException{
+        if( connection == null ){
+            connection = dataSource.getConnection();
+        }
+        
+        if( !connection.isValid(1000)){
+            connection = dataSource.getConnection();
+        }
+        
+        return connection;
     }
 
 }
