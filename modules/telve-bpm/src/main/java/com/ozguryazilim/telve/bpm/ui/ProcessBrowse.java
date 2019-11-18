@@ -1,6 +1,8 @@
 package com.ozguryazilim.telve.bpm.ui;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.audit.AuditLogCommand;
+import com.ozguryazilim.telve.audit.AuditLogger;
 import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.bpm.TaskRepository;
 import com.ozguryazilim.telve.bpm.handlers.ProcessHandlerRegistery;
@@ -10,8 +12,11 @@ import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
+import org.camunda.bpm.engine.BadUserRequestException;
 import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.IdentityService;
+import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.history.HistoricProcessInstance;
 import org.camunda.bpm.engine.history.HistoricProcessInstanceQuery;
@@ -42,6 +47,10 @@ public class ProcessBrowse implements Serializable{
     
     @Inject
     private IdentityService identityService;
+    
+    @Inject
+    RuntimeService runtimeService;
+    
 
     @Inject
     private Identity identity;
@@ -52,6 +61,9 @@ public class ProcessBrowse implements Serializable{
     @Inject 
     private TaskRepository taskRepository;
     
+    @Inject
+    private AuditLogger auditLogger;
+
     private List<HistoricProcessInstance> processes;
     private List<HistoricTaskInstance> tasks;
     
@@ -61,6 +73,7 @@ public class ProcessBrowse implements Serializable{
     private String searchProcessType = "";
     private String searchText = "";
     private List<String> processTypeNames;
+    private String processInfo = "";
 
     
     private List<Comment> comments;
@@ -113,7 +126,7 @@ public class ProcessBrowse implements Serializable{
                 .processInstanceId(selectedProcess.getId())
                 .list();
     }
-
+    
     public List<HistoricProcessInstance> getProcesses() {
         return processes;
     }
@@ -217,6 +230,7 @@ public class ProcessBrowse implements Serializable{
         if (!Strings.isNullOrEmpty(getDelegatedUser())) {
             saveComment();
             taskService.setAssignee(selectedTask.getId(), getDelegatedUser());
+            auditLogger.actionLog("ProcessBrowse", 0L, selectedTask.getId(), AuditLogCommand.ACT_UPDATE, AuditLogCommand.ACT_UPDATE, identity.getLoginName(), "Görev başkasına yönlendirildi" );
         }
     }
 
@@ -246,6 +260,30 @@ public class ProcessBrowse implements Serializable{
                 
     }
     
+    /**
+     * Task seçili mi?
+     * 
+     * Başka iş kuralları eklenebilir diye bir metod duzenlendi
+     * 
+     * @return 
+     */
+    public boolean disabledKill(){
+        LOG.error("Selected Process: " + selectedProcess );
+        return ( selectedProcess == null );
+    }    
+    
+    @Transactional
+    public Boolean killProcess() {
+        try {
+            runtimeService.deleteProcessInstance(selectedProcess.getId(), processInfo);
+            auditLogger.actionLog("ProcessBrowse", 0L, selectedProcess.getId(), AuditLogCommand.ACT_DELETE, AuditLogCommand.ACT_DELETE, identity.getLoginName(), "Proses sonlandırıldı: " + processInfo );
+            return true;
+        } catch (BadUserRequestException ex) {
+            LOG.error("Process sonlandırılamadı : ".concat(selectedProcess.getId()));
+        }
+        return false;
+    }      
+    
     
     /**
      * Seçili olan taskın süreç diagamını gösterecek popup'ı açar.
@@ -254,4 +292,14 @@ public class ProcessBrowse implements Serializable{
         if( selectedTask == null ) return;
         diagramPopup.openPopup(selectedTask, selectedProcess.getBusinessKey());
     }
+
+    public String getProcessInfo() {
+        return processInfo;
+    }
+
+    public void setProcessInfo(String processInfo) {
+        this.processInfo = processInfo;
+    }
+    
+     
 }
