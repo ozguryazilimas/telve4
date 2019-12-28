@@ -14,7 +14,7 @@
                     <div class="tools pull-right">
                         
                             
-                            <p:commandLink title="#{messages['jcr.hint.NewFolder']}" update="@([id$=#{idPrefix}folderDialog])" oncomplete="PF('dlg').show();"  >
+                            <p:commandLink title="#{messages['jcr.hint.NewFolder']}" update="@([id$=#{idPrefix}folderDialog])" oncomplete="PF('#{idPrefix}dlg').show();"  >
                                 <i class="fa fa-plus-circle" />
                             </p:commandLink>
                             
@@ -158,7 +158,7 @@
                             
                         function buildTree(){
                                 // inline data 
-                                jQuery("##{idPrefix}data")
+                                jQuery("##{formId}\\:#{idPrefix}data")
                                     .on("changed.jstree", function (e, data) {
                                         //alert( data.instance.get_node(data.selected[0]).id );
                                         selectNode( [ { 'name': 'nodeId', 'value' : data.instance.get_node(data.selected[0]).id }]);
