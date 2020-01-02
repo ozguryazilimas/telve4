@@ -11,9 +11,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +28,8 @@ import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.modeshape.common.text.UrlEncoder;
 import org.modeshape.jcr.api.JcrTools;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,7 +40,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Hakan Uygun
  */
-public class JcrController implements FileUploadHandler{
+public class JcrController implements FileUploadHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(JcrController.class);
 
@@ -600,7 +605,7 @@ public class JcrController implements FileUploadHandler{
             String path = folderName + "/" + uploadInfo.getFileName();
 
             LOG.info("Folder Name : {}", path);
-            copyFile( path, getFileUploadService().getUploadedBytes(uri));
+            copyFile(path, getFileUploadService().getUploadedBytes(uri));
             getFileUploadService().deleteUpload(uri);
         } catch (IOException | TusException ex) {
             LOG.error("Attachment cannot add", ex);
@@ -610,16 +615,94 @@ public class JcrController implements FileUploadHandler{
     /**
      * Bu Method FileUploadDialog'unu açmasını sağlar.
      */
-    public void uploadDocument(){
+    public void uploadDocument() {
         getFileUploadDialog().openDialog(this, "");
     }
-    
-    protected TusFileUploadService getFileUploadService(){
+
+    protected TusFileUploadService getFileUploadService() {
         return BeanProvider.getContextualReference(TusFileUploadService.class, true);
     }
-    
-    protected FileUploadDialog getFileUploadDialog(){
+
+    protected FileUploadDialog getFileUploadDialog() {
         return BeanProvider.getContextualReference(FileUploadDialog.class, true);
     }
-    
+
+    public InputStream getImage(String imageId) {
+        LOG.debug("Requested Image : {}", imageId);
+        InputStream is = null;
+        try {
+            is = getImageContent(imageId); //Burada default bir imaj döndürmek lazım...
+        } catch (RepositoryException ex) {
+            LOG.error("Image not found", ex);
+        }
+
+        return is;
+    }
+
+    public StreamedContent getImage() {
+        LOG.info("Image getting");
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        String fileId2 = context.getExternalContext().getRequestParameterMap().get("fileid");
+        String name = context.getExternalContext().getRequestParameterMap().get("name");
+        LOG.info("File id is :  " + fileId2);
+        LOG.info("File name is :  " + name);
+
+        for (FileInfo m : files) {
+            LOG.info("File name is :  " + m.getName());
+            LOG.info("File id is :  " + m.getId());
+        }
+
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        } else {
+            // So, browser is requesting the image. Return a real StreamedContent with the image bytes.
+            //Long fileId = Long.parseLong(context.getExternalContext().getRequestParameterMap().get("fileId"));
+            String fileId = context.getExternalContext().getRequestParameterMap().get("fileId");
+            LOG.info("File is :  " + fileId);
+            FileInfo fInfo = null;
+            for (FileInfo m : files) {
+                if (fileId.equals(m.getId())) {
+                    LOG.info("Bulundu");
+                    fInfo = m;
+                    break;
+                }
+            }
+
+            InputStream is = null;
+            try {
+                is = getImageContent(fInfo); //Burada default bir imaj döndürmek lazım...
+            } catch (RepositoryException ex) {
+                java.util.logging.Logger.getLogger(JcrController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //Burada default bir imaj döndürmek lazım...
+            if (is != null) {
+                return new DefaultStreamedContent(is);
+            } else {
+                return null;
+            }
+
+        }
+    }
+
+    public InputStream getImageContent(FileInfo file) throws RepositoryException {
+        return getImageContent(file.getId());
+    }
+
+    public InputStream getImageContent(String id) throws RepositoryException {
+        try {
+            Session session = getSession();
+            Node node = session.getNodeByIdentifier(id);
+            Node content = node.getNode("jcr:content");
+            return content.getProperty("jcr:data").getBinary().getStream();
+        } catch (PathNotFoundException e) {
+            return null;
+        }
+    }
+
+    public StreamedContent getDefaultImage() {
+        return new DefaultStreamedContent(Thread.currentThread().getContextClassLoader().getResourceAsStream("/defaultImage.jpg"));
+    }
+
 }
