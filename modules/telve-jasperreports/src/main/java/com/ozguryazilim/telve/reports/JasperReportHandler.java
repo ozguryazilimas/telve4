@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.ozguryazilim.telve.config.LocaleSelector;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.messages.TelveResourceBundle;
+import javax.inject.Named;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
@@ -48,6 +49,7 @@ import net.sf.jasperreports.export.SimpleWriterExporterOutput;
  * @author Hakan Uygun
  */
 @RequestScoped
+@Named
 public class JasperReportHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(JasperReportHandler.class);

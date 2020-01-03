@@ -66,6 +66,10 @@ public abstract class JasperReportBase extends AbstractReportBase{
             
             ReportCommand command = new ReportCommand();
             
+            
+            //ScheduledReportHandler implementasyonu hangisi kullanılacak
+            command.setEngine("scheduledJasperReportHandler");
+            
             //rapor locale bilgilerini koyuyoruz.
             //Bundle ve Locale varsa siliyoruz. Çünkü serialize olmuyorlar.
             Object o = params.get(JRParameter.REPORT_RESOURCE_BUNDLE);

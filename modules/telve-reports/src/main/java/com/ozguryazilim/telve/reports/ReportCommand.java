@@ -55,6 +55,11 @@ public class ReportCommand extends AbstractCommand{
      */
     private String info;
     
+    /**
+     * Zamanlanmış raporun hangi engine ile çalışacağı
+     */
+    private String engine;
+    
     public String getName() {
         return name;
     }
@@ -126,5 +131,14 @@ public class ReportCommand extends AbstractCommand{
     public void setInfo(String info) {
         this.info = info;
     }
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
+    
     
 }
