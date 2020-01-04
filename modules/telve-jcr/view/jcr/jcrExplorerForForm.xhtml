@@ -3,6 +3,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
 
@@ -49,11 +50,11 @@
                                 <p:ajax event="dialogReturn" update="@([id$=filesPanel])" partialSubmit="true" process="@this" />
                             </p:commandLink>
                             
-                            <p:commandLink title="#{messages['jcr.hint.WidgetMode']}" action="#{jcrController.setViewMode('widget')}" update="@([id$=#{idPrefix}filesPanel])" process="@this">
+                            <p:commandLink title="#{messages['jcr.hint.TableMode']}" action="#{jcrController.setViewMode('table')}" update="@([id$=#{idPrefix}filesPanel])" process="@this">
                                 <i class="fa fa-table" />
                             </p:commandLink>
                             
-                            <p:commandLink title="#{messages['jcr.hint.TableMode']}" action="#{jcrController.setViewMode('table')}" update="@([id$=#{idPrefix}filesPanel])" process="@this">
+                            <p:commandLink title="#{messages['jcr.hint.WidgetMode']}" action="#{jcrController.setViewMode('widget')}" update="@([id$=#{idPrefix}filesPanel])" process="@this">
                                 <i class="fa fa-th" />
                             </p:commandLink>
                         
@@ -62,13 +63,22 @@
                 </div>
                 <div class="box-body">
                     <p:outputPanel id="#{idPrefix}filesPanel" layout="block">
-                        <ui:fragment rendered="#{not jcrController.isViewModeWidget}">
+                        <ui:fragment rendered="#{jcrController.isViewModeWidget}">
                     <ui:repeat value="#{jcrController.files}" var="file">
 
                             <div class="col-lg-4 col-md-6 col-xs-12">
                                 <div class="info-box bg-blue">
                                     <span class="info-box-icon" style="vertical-align: middle">
-                                        <i class="fa #{jcrController.getIcon(file.mimeType)}"/>
+                                        <ui:fragment rendered="#{not file.mimeType.startsWith('image')}">
+                                            <i class="fa #{jcrController.getIcon(file.mimeType)}"/>
+                                        </ui:fragment>
+                                        
+                                        <ui:fragment rendered="#{file.mimeType.startsWith('image')}">
+                                            <o:graphicImage id="imageBtn" value="#{imageService.getImage(file.id)}" styleClass="img-responsive img-thumbnail" />
+                                            <p:overlayPanel id="imagePanel" for="imageBtn" hideEffect="fade">
+                                                <o:graphicImage value="#{imageService.getImage(file.id)}" styleClass="img-responsive img-thumbnail" />
+                                            </p:overlayPanel>
+                                        </ui:fragment>
                                     </span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">
@@ -105,7 +115,7 @@
                             </div>
                         </ui:repeat>
                     </ui:fragment>
-                        <ui:fragment rendered="#{jcrController.isViewModeWidget}">
+                        <ui:fragment rendered="#{not jcrController.isViewModeWidget}">
                     <table class="table">
                     <ui:repeat value="#{jcrController.files}" var="file">
                         <tr>
