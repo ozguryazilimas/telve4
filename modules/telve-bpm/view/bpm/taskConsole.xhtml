@@ -86,7 +86,7 @@
             </div>
 
 
-            <div class="list-group">
+            <div class="list-group" style="overflow-y: auto; height: 450px;">
                 <ui:repeat value="#{taskConsole.taskList}" var="item" varStatus="loop2">
                     <p:commandLink action="#{taskConsole.onSelectTask(item)}" ajax="true" process="@this" update=":taskView" styleClass="list-group-item">
                         <span class="label label-primary pull-right">
