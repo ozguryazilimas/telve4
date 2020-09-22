@@ -52,8 +52,11 @@ public class TaskRepository implements Serializable {
         TaskQuery qry = taskService.createTaskQuery()
                 .initializeFormKeys() // must be invoked
                 .active()
-                .orderByDueDate().asc()
-                .orderByTaskName().asc();
+                .orderByTaskCreateTime().desc();
+        
+        
+                //.orderByDueDate().asc()
+                //.orderByTaskName().asc()
 
         //Atanma kontrolü bakalım.
         if (assigned && !candidate) {

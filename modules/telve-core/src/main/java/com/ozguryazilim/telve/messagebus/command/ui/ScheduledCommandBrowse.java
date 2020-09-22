@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TreeMap;
 import javax.ejb.NoMoreTimeoutsException;
 import javax.ejb.Timer;
 import javax.enterprise.event.Observes;
@@ -28,6 +29,7 @@ import org.ocpsoft.prettytime.PrettyTime;
 import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.ozguryazilim.telve.messages.Messages;
 
 /**
  * Zamanlanmış Görevler için tarama UI control sınıfı.
@@ -57,6 +59,7 @@ public class ScheduledCommandBrowse implements Serializable{
     
     @Inject
     private Identity identity;
+    
 
     private StoredCommand entity;
     private CommandEditorBase currentEditor;
@@ -242,7 +245,18 @@ public class ScheduledCommandBrowse implements Serializable{
     
     
     public List<String> getEditorNames(){
-        return CommandEditorRegistery.getEditorNames();
+        List<String> edNames = CommandEditorRegistery.getEditorNames();
+        HashMap<String,String> hm = new HashMap<String,String>();
+        String resName = "";
+        for (String st : edNames) {
+            resName = Messages.getMessage( "command.editor." + st);
+            if (!Strings.isNullOrEmpty(resName)) {
+                hm.put(resName, st );
+            } else hm.put(st, st );
+        }
+        Map<String, String> treeMap = new TreeMap<String, String>(hm);
+        
+        return new ArrayList<String>(treeMap.values());
     }
 
     /**
