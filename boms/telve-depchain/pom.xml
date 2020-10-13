@@ -32,7 +32,7 @@
         
         <jodatime.version>2.10</jodatime.version>
         
-        <junit.version>4.12</junit.version>
+        <junit.version>4.13.1</junit.version>
 
         
 
