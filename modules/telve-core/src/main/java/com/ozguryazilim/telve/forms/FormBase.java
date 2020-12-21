@@ -537,7 +537,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
                 auditLog(AuditLogCommand.ACT_SELECT);
             }
         }
-        this.id = ( id == -1 ? (PK)new Long(0) : id );
+        this.id = ( id == null || id == -1   ? (PK)new Long(0) : id );
         selectedSubView = "";
         needCreateNew = false;
     }

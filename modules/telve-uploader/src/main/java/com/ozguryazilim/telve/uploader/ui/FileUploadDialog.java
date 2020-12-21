@@ -37,6 +37,18 @@ public class FileUploadDialog implements Serializable{
     @PostConstruct
     public void init(){
         
+        //Configde varsa onu kullanır yoksa yeni hazırlar.
+        endPoint = ConfigResolver.getProjectStageAwarePropertyValue("tus.endpoint", buildEndPoint());
+        LOG.debug("Selected EndPoint : {}", endPoint);
+        chunkSize = Long.parseLong(ConfigResolver.getProjectStageAwarePropertyValue("tus.chunkSize", "2097152"));
+    
+        maxFileSize = Long.parseLong(ConfigResolver.getProjectStageAwarePropertyValue("tus.maxUploadSize", "1073741824"));
+        maxNumberOfFiles = null;
+        allowedFileTypes = null;
+        
+    }
+    
+    private String buildEndPoint(){
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         
         //ReversProxy ardındaysa bunlar lazım
@@ -54,15 +66,12 @@ public class FileUploadDialog implements Serializable{
             }
         }
         
-        endPoint = protocol + "://" + serverName + externalContext.getRequestContextPath() + "/tus";
-        chunkSize = Long.parseLong(ConfigResolver.getProjectStageAwarePropertyValue("tus.chunkSize", "2097152"));
-    
-        maxFileSize = Long.parseLong(ConfigResolver.getProjectStageAwarePropertyValue("tus.maxUploadSize", "1073741824"));
-        maxNumberOfFiles = null;
-        allowedFileTypes = null;
+        String result = protocol + "://" + serverName + externalContext.getRequestContextPath() + "/tus";
+        LOG.debug("Builded TUS end point : {}", result);
         
+        
+        return result;
     }
-    
     
     public void openImageDialog( FileUploadHandler handler ){
         maxFileSize = 1048576L; //1MB

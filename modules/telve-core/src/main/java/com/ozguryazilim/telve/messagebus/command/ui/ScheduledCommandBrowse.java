@@ -433,6 +433,13 @@ public class ScheduledCommandBrowse implements Serializable{
         
         commandSender.sendCommand(selectedItem.getCommand());
     }
+    
+    public void save() throws ClassNotFoundException {
+        currentEditor.save();
+        selectedItem = null;
+        search();
+        
+    }
 
     public ScheduledCommandUIModel getSelectedItem() {
         return selectedItem;

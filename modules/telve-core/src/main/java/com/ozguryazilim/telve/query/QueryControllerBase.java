@@ -43,6 +43,7 @@ import org.apache.deltaspike.data.api.criteria.Criteria;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 
 /**
  * Sorgular View Control Sınıfları için taban sınıf.
@@ -59,6 +60,9 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
 
     private static final String CSV = ".csv";
     private static final String CSV_MIME = "application/csv";
+
+    private Boolean bom = false;
+    private String delimiter = ",";
 
     /**
      * Sorgu bilgilerini tutan sınıf
@@ -201,7 +205,7 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
 
         for (Column c : queryDefinition.getColumns()) {
             if (c.getSubattr() != null) {
-                model.getColumns().add(c.getName() +"."+ c.getSubattr().getName());
+                model.getColumns().add(c.getName() + "." + c.getSubattr().getName());
             } else {
                 model.getColumns().add(c.getName());
             }
@@ -210,8 +214,8 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
         //Sadece visible filtreleri saklayacağız. Visible olmayanlar programla yönetiliyorlar.
         for (Filter c : queryDefinition.getVisibleFilters()) {
             if (c.getSubattr() != null) {
-                model.getFilters().add(c.getAttribute().getName()+"."+c.getSubattr().getName());
-                model.getFilterValues().put(c.getAttribute().getName() +"."+ c.getSubattr().getName(), c.serialize());
+                model.getFilters().add(c.getAttribute().getName() + "." + c.getSubattr().getName());
+                model.getFilterValues().put(c.getAttribute().getName() + "." + c.getSubattr().getName(), c.serialize());
             } else {
                 model.getFilters().add(c.getAttribute().getName());
                 model.getFilterValues().put(c.getAttribute().getName(), c.serialize());
@@ -321,10 +325,10 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
     /**
      * Saklanmış tüm sorguları siler.
      */
-    public void deleteAll(){
+    public void deleteAll() {
         List<String> ls = getQueryNames();
-        for( String s : ls ){
-            kahve.remove( getQueryKey(s));
+        for (String s : ls) {
+            kahve.remove(getQueryKey(s));
         }
         kahve.remove(getQueryNamesKey());
         kahve.remove(getDefaultQueryKey());
@@ -332,12 +336,13 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
 
     /**
      * saklanmış olan sorguların isim listesini döner.
+     *
      * @return
      */
-    public List<String> getQueryNames(){
+    public List<String> getQueryNames() {
         KahveEntry e = kahve.get(getQueryNamesKey());
         List<String> ls;
-        if( e != null ){
+        if (e != null) {
             ls = Splitter.on(',').omitEmptyStrings().trimResults().splitToList(e.getAsString());
         } else {
             ls = new ArrayList<>();
@@ -348,33 +353,35 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
 
     /**
      * Sistem sorgularının isim listesini döndürür.
+     *
      * @return
      */
-    public List<String> getSystemQueryNames(){
+    public List<String> getSystemQueryNames() {
         return new ArrayList<>(systemQueries.keySet());
     }
 
     /**
      * Verilen isimli sorguyu yükler
+     *
      * @param name
      */
-    public void loadQuery( String name ){
+    public void loadQuery(String name) {
         queryName = name;
-        if( systemQueries.containsKey(name)){
+        if (systemQueries.containsKey(name)) {
             loadFromSystem(name);
         } else {
-            loadFromSaved( name );
+            loadFromSaved(name);
         }
-        kahve.put( getDefaultQueryKey(), queryName);
+        kahve.put(getDefaultQueryKey(), queryName);
         search();
     }
 
     /**
      * Varsayılan sorguyu yükler yosak olduğu gibi bırakır.
      */
-    public void loadDefaultQuery(){
+    public void loadDefaultQuery() {
         KahveEntry e = kahve.get(getDefaultQueryKey());
-        if( e != null ){
+        if (e != null) {
             loadQuery(e.getAsString());
         } else {
             queryName = "";
@@ -382,19 +389,21 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
     }
 
     /**
-     * QueryController için sistem tarafından önceden tanımlanmış olan sorguları yükler.
+     * QueryController için sistem tarafından önceden tanımlanmış olan sorguları
+     * yükler.
      *
      * Bu sorgular /Sınıfİsmi.queries.json dosyalarında bulunur.
      *
-     * Aynı isimli dosya birden fazla jar içinde tanımlanabilir. Böylece farklı modüller farklı sorgular tanımlayabilirler.
+     * Aynı isimli dosya birden fazla jar içinde tanımlanabilir. Böylece farklı
+     * modüller farklı sorgular tanımlayabilirler.
      *
      * JSON formatı QueryModel listesinden oluşur.
      */
-    protected void loadSystemQueries(){
+    protected void loadSystemQueries() {
         systemQueries.clear();
 
         try {
-            Enumeration<URL> jsons = getClass().getClassLoader().getResources("/" +getClass().getSimpleName() + ".queries.json");
+            Enumeration<URL> jsons = getClass().getClassLoader().getResources("/" + getClass().getSimpleName() + ".queries.json");
 
             Gson gson = new Gson();
             Type collectionType = new TypeToken<List<QueryModel>>() {
@@ -428,7 +437,7 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
     }
 
     public String getQueryName() {
-        if( Strings.isNullOrEmpty(queryName)){
+        if (Strings.isNullOrEmpty(queryName)) {
             queryName = pageTitleResolver.getPageTitle();
         }
         return queryName;
@@ -455,27 +464,32 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
     }
 
     /**
-     * Geriye ilgili browse için sorgu isimlerinin saklandığı kahve key'ini döndürür.
+     * Geriye ilgili browse için sorgu isimlerinin saklandığı kahve key'ini
+     * döndürür.
+     *
      * @return
      */
-    protected String getQueryNamesKey(){
+    protected String getQueryNamesKey() {
         return "query.names." + getClass().getSimpleName();
     }
 
     /**
      * Geriye ilgili brose için sorgu key'ini döndürür.
+     *
      * @param s
      * @return
      */
-    protected String getQueryKey( String s ){
+    protected String getQueryKey(String s) {
         return "query." + getClass().getSimpleName() + "." + s;
     }
 
     /**
-     * Geriye ilgili brose için varsa default sorgunun saklandığı key'i döndürür.
+     * Geriye ilgili brose için varsa default sorgunun saklandığı key'i
+     * döndürür.
+     *
      * @return
      */
-    protected String getDefaultQueryKey(){
+    protected String getDefaultQueryKey() {
         return "query.default." + getClass().getSimpleName();
     }
 
@@ -489,32 +503,42 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
 
     /**
      * Verilen isimli sorgunun sistem sorgusu olup olamadığı.
+     *
      * @param name
      * @return
      */
-    public Boolean getIsSystemQuery( String name ){
+    public Boolean getIsSystemQuery(String name) {
         return systemQueries.containsKey(name);
     }
 
-    public Boolean getIsSystemQuery(){
-        return getIsSystemQuery( queryName );
+    public Boolean getIsSystemQuery() {
+        return getIsSystemQuery(queryName);
     }
 
     /**
      * Query Sonucunu CVS olarak export eder.
      */
-    public void export() throws IOException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+    public void export() throws IOException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+
+        bom = "true".equals(ConfigResolver.getPropertyValue("csv.export.bom", "false"));
+        delimiter = ConfigResolver.getPropertyValue("csv.export.delimiter", ",");
 
         //Önce sorguyu bir daha çalıştıralım.
         search();
 
         StringWriter doc = new StringWriter();
 
-        //Önce başlığı bir yazalım.
-        exportHeader( doc );
+        if ( bom ) {
+            byte[] BOM = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
+            //UTF-8 BOM
+            doc.write(new String(BOM));
+        }
 
-        for( R e : entityList ){
-            exportRow( e, doc );
+        //Önce başlığı bir yazalım.
+        exportHeader(doc);
+
+        for (R e : entityList) {
+            exportRow(e, doc);
         }
 
         LOG.debug(doc.toString());
@@ -522,7 +546,7 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
         sendExport(doc.toString().getBytes("UTF-8"));
     }
 
-    protected void sendExport( byte[] data ){
+    protected void sendExport(byte[] data) {
         HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
         response.reset();
         response.setContentType(CSV_MIME);
@@ -530,7 +554,7 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
         //TODO: FileName nasıl olsun?
         String fileName = getExportFileName() + CSV;
 
-        response.setHeader("Content-disposition", "attachment;filename=" + fileName );
+        response.setHeader("Content-disposition", "attachment;filename=" + fileName);
         response.setContentLength(data.length);
 
         try {
@@ -543,12 +567,12 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
 
             facesContext.responseComplete();
         } catch (IOException ex) {
-            FacesMessages.error("Error while downloading the file: " + fileName );
+            FacesMessages.error("Error while downloading the file: " + fileName);
         }
 
     }
 
-    protected String getExportFileName(){
+    protected String getExportFileName() {
         String f = pageTitleResolver.getPageTitle();
         String qn = getQueryName();
         //Eğer sorgu ismi yoksa default aynı değer
@@ -556,7 +580,7 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
 
         String result = Messages.getMessage(f);
 
-        if( addqn ) {
+        if (addqn) {
             result = result + "-" + qn;
         }
 
@@ -570,12 +594,12 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
         return result;
     }
 
-    protected void exportHeader( Writer doc) throws IOException{
+    protected void exportHeader(Writer doc) throws IOException {
         boolean firstColumn = true;
 
-        for( Column c : queryDefinition.getColumns()){
-            if( !firstColumn ){
-                doc.write(",");
+        for (Column c : queryDefinition.getColumns()) {
+            if (!firstColumn) {
+                doc.write(delimiter);
             } else {
                 firstColumn = false;
             }
@@ -584,12 +608,12 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
         doc.write("\n");
     }
 
-    protected void exportRow( R row, Writer doc) throws IOException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+    protected void exportRow(R row, Writer doc) throws IOException, NoSuchFieldException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         boolean firstColumn = true;
 
-        for( Column c : queryDefinition.getColumns()){
-            if( !firstColumn ){
-                doc.write(",");
+        for (Column c : queryDefinition.getColumns()) {
+            if (!firstColumn) {
+                doc.write(delimiter);
             } else {
                 firstColumn = false;
             }

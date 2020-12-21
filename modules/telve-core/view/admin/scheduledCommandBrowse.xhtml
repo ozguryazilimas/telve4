@@ -201,7 +201,7 @@
                     <ui:include src="#{scheduledCommandBrowse.currentEditor.dialogPageViewId}" />
 
                     <div class="actionButtons">
-                        <p:commandButton id="save" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{scheduledCommandBrowse.currentEditor.save()}" update=":commands" oncomplete="PF('editorPopup').hide();"
+                        <p:commandButton id="save" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{scheduledCommandBrowse.save()}" update=":commands" oncomplete="PF('editorPopup').hide();"
                                          validateClient="true"
                                          styleClass="btn-primary"/>
                         <p:button id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" onclick="PF('editorPopup').hide();return false;"/>
