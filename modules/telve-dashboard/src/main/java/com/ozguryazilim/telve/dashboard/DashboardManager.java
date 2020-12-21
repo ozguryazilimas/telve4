@@ -604,7 +604,7 @@ public class DashboardManager implements Serializable {
                 p = e.getKey();
             }
             //Kullanıcının bu dashlet'i görme yetkisi var mı?
-            if (identity.isPermitted(p  + ":select")) {
+            if ( "public".equals(p) || identity.isPermitted(p  + ":select")) {
                 ls.add(e.getKey());
             }
         }
