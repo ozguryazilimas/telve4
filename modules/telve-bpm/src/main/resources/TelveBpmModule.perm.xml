@@ -2,6 +2,9 @@
 
 <permissions>
     <permissionGroup name="Admin">
+        <permission target="taskConsole" >
+            <entityActions/>
+        </permission>
         <permission target="processBrowse" >
             <entityActions/>
         </permission>

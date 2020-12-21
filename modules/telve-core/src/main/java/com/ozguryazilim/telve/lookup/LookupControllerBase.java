@@ -338,7 +338,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      * GUI'den yeni arama talebi karşılar.
      */
     public void search() {
-        LOG.info("Searh Called");
+        LOG.debug("Searh Called");
         if (!model.isDataEmpty() ) {
             model.clearData();
         }
@@ -370,7 +370,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         initProfile();
 
         List<E> ls = populateSuggestData(text);
-        LOG.info("Suggest List : {}", ls);
+        LOG.debug("Suggest List : {}", ls);
         return ls;
     }
 

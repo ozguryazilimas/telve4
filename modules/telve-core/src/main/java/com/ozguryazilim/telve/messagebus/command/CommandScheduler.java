@@ -76,7 +76,7 @@ public class CommandScheduler {
                 break;
             case Period :
                 //Period'u milisecond cinsine çeviriyoruz.
-                timerService.createIntervalTimer(sm.getStartDate(), sm.getPeriod().toStandardSeconds().getSeconds() * 1000, new TimerConfig(command, true));
+                timerService.createIntervalTimer(sm.getStartDate(), sm.getPeriod().toStandardSeconds().getSeconds() * 1000L, new TimerConfig(command, true));
                 break;
             case Once :
                 //Bir kere verilen tarih saat içinde çalıştıracak

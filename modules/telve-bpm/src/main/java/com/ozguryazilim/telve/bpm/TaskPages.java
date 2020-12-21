@@ -17,7 +17,7 @@ import org.apache.deltaspike.jsf.api.config.view.View;
 @Folder(name="/bpm")
 public interface TaskPages extends Pages{
     
-    @SecuredPage() @View @Navigation( icon = "fa fa-tasks", section = MainNavigationSection.class)
+    @SecuredPage("taskConsole") @View @Navigation( icon = "fa fa-tasks", section = MainNavigationSection.class)
     class TaskConsole implements TaskPages {};
     
     @SecuredPage("processBrowse") @View @Navigation( icon = "fa fa-tasks", section = AdminNavigationSection.class)

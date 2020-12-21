@@ -32,28 +32,28 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Kullanıcı tanımlama ekranı.
- * 
+ *
  * @author Hakan Uygun
  */
-@FormEdit( feature = UserFeature.class )
-public class UserHome extends FormBase<User, Long>{
-    
+@FormEdit(feature = UserFeature.class)
+public class UserHome extends FormBase<User, Long> {
+
     private static final Logger LOG = LoggerFactory.getLogger(UserHome.class);
 
     public static final String ACT_GENERATEPASSWORD = "PASSWORD";
-    
+
     @Inject
     private ViewConfigResolver viewConfigResolver;
-    
+
     @Inject
     private UserRepository repository;
-    
-    @Inject 
-    private Event<IdmEvent>  event;
-    
+
+    @Inject
+    private Event<IdmEvent> event;
+
     @Inject
     private Event<UserDataChangeEvent> userEvent;
-    
+
     @Inject
     private Identity identity;
 
@@ -66,27 +66,25 @@ public class UserHome extends FormBase<User, Long>{
     private String password;
 
     private Boolean createPasswordAndSend;
-    
+
     private List<String> fragments;
-    
+
     private ChangeLogStore changeLogStore = new ChangeLogStore();
 
     @Override
     public boolean onAfterLoad() {
         changeLogStore.clear();
-        
+
         changeLogStore.addOldValue("general.label.FirstName", getEntity().getFirstName());
         changeLogStore.addOldValue("general.label.LastName", getEntity().getLastName());
         changeLogStore.addOldValue("user.label.UserType", getEntity().getUserType());
         changeLogStore.addOldValue("general.label.Email", getEntity().getEmail());
         changeLogStore.addOldValue("user.label.Manager", getEntity().getManager());
-        changeLogStore.addOldValue("user.label.DomainGroup", getEntity().getDomainGroup() != null ? getEntity().getDomainGroup().getName() : null );
-        
+        changeLogStore.addOldValue("user.label.DomainGroup", getEntity().getDomainGroup() != null ? getEntity().getDomainGroup().getName() : null);
+
         return true;
     }
 
-    
-    
     @Override
     public boolean onBeforeSave() {
 
@@ -95,34 +93,35 @@ public class UserHome extends FormBase<User, Long>{
             sendEmailWithLoginInformation();
             getAuditLogger().actionLog(getEntity().getClass().getSimpleName(), getEntity().getId(), getBizKeyValue(), AuditLogCommand.CAT_AUTH, ACT_GENERATEPASSWORD, identity.getLoginName(), "");
         }
-        
-        if( !Strings.isNullOrEmpty(password)){
-            DefaultPasswordService passwordService = new DefaultPasswordService();
-            getEntity().setPasswordEncodedHash(passwordService.encryptPassword(password));
-            //yönetici tarafından parola değişikliği yapıldı.O zaman kullanıcı tekrar parola değiştirmek zorunda
-            getEntity().setChangePassword(Boolean.TRUE);
-            changeLogStore.addNewValue("user.caption.Password", "Changed");
+
+        if (getEntity().getManaged()) {
+            if (!Strings.isNullOrEmpty(password)) {
+                DefaultPasswordService passwordService = new DefaultPasswordService();
+                getEntity().setPasswordEncodedHash(passwordService.encryptPassword(password));
+                changeLogStore.addNewValue("user.caption.Password", "Changed");
+            }
+        } else {
+            getEntity().setPasswordEncodedHash(null);
+            getEntity().setChangePassword(false);
         }
-        
-        
-        User ofUser = repository.hasLoginName( getEntity().getLoginName(), getEntity().getId() == null ? 0 : getEntity().getId());
-        if ( ofUser != null ) {
-            FacesMessages.error(Messages.getMessage("user.message.SameUser"),Messages.getMessage("user.message.SameUser.Details"));
+
+        User ofUser = repository.hasLoginName(getEntity().getLoginName(), getEntity().getId() == null ? 0 : getEntity().getId());
+        if (ofUser != null) {
+            FacesMessages.error(Messages.getMessage("user.message.SameUser"), Messages.getMessage("user.message.SameUser.Details"));
             return false;
         }
-        
-        
+
         changeLogStore.addNewValue("general.label.FirstName", getEntity().getFirstName());
         changeLogStore.addNewValue("general.label.LastName", getEntity().getLastName());
         changeLogStore.addNewValue("user.label.UserType", getEntity().getUserType());
         changeLogStore.addNewValue("general.label.Email", getEntity().getEmail());
         changeLogStore.addNewValue("user.label.Manager", getEntity().getManager());
-        changeLogStore.addNewValue("user.label.DomainGroup", getEntity().getDomainGroup() != null ? getEntity().getDomainGroup().getName() : null );
-        
-        if ( !isValidTckn( getEntity().getTckn())) {
+        changeLogStore.addNewValue("user.label.DomainGroup", getEntity().getDomainGroup() != null ? getEntity().getDomainGroup().getName() : null);
+
+        if (!isValidTckn(getEntity().getTckn())) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -131,17 +130,15 @@ public class UserHome extends FormBase<User, Long>{
         event.fire(new IdmEvent(IdmEvent.FROM_USER, IdmEvent.CREATE, getEntity().getLoginName()));
         userEvent.fire(new UserDataChangeEvent(getEntity().getLoginName()));
         createPasswordAndSend = false;
-        return super.onAfterSave(); 
+        return super.onAfterSave();
     }
-    
+
     @Override
     public boolean onBeforeDelete() {
         event.fire(new IdmEvent(IdmEvent.FROM_USER, IdmEvent.DELETE, getEntity().getLoginName()));
         userEvent.fire(new UserDataChangeEvent(getEntity().getLoginName()));
-        return super.onAfterSave(); 
+        return super.onAfterSave();
     }
-    
-    
 
     /**
      * Geriye ek model UI fragmentlerinin listesi döner.
@@ -170,35 +167,40 @@ public class UserHome extends FormBase<User, Long>{
         }
     }
 
-    
     /**
      * Geriye kullanıcı tiplerini döndürür.
      *
      * @return
      */
     public List<String> getUserTypes() {
-        
+
         //Eğer kullanıcı SUPERADMIN değil ise başka bir kullanıcıyı SUPERADMIN yapamaz
         List<String> result = UserModelRegistery.getUserTypes();
-        if( !UserModelRegistery.SUPER_ADMIN_TYPE.equals(identity.getUserInfo().getUserType())){
+        if (!UserModelRegistery.SUPER_ADMIN_TYPE.equals(identity.getUserInfo().getUserType())) {
             result.remove(UserModelRegistery.SUPER_ADMIN_TYPE);
         }
-        
+
         return UserModelRegistery.getUserTypes();
     }
-    
+
     /**
-     * Eğer kullanıcı SUPERADMIN değil ise kendi bilgilerinden kritik olan yerleri değiştiremez.
-     * 
+     * Eğer kullanıcı SUPERADMIN değil ise kendi bilgilerinden kritik olan
+     * yerleri değiştiremez.
+     *
      * Örneğin UserType, DomainGroup v.b.
-     * @return 
+     *
+     * @return
      */
-    public Boolean canChangeCriticalData(){
-        if( !identity.getLoginName().equals( getEntity().getLoginName())) return true;
-        if( UserModelRegistery.SUPER_ADMIN_TYPE.equals(identity.getUserInfo().getUserType())) return true;
+    public Boolean canChangeCriticalData() {
+        if (!identity.getLoginName().equals(getEntity().getLoginName())) {
+            return true;
+        }
+        if (UserModelRegistery.SUPER_ADMIN_TYPE.equals(identity.getUserInfo().getUserType())) {
+            return true;
+        }
         return false;
     }
-    
+
     public String getPassword() {
         return password;
     }
@@ -215,22 +217,22 @@ public class UserHome extends FormBase<User, Long>{
         this.createPasswordAndSend = createPasswordAndSend;
     }
 
-    public Boolean getDomainGroupRequired(){
+    public Boolean getDomainGroupRequired() {
         return "true".equals(ConfigResolver.getPropertyValue("security.domainGroup.control", "false"));
     }
-    
+
     @Override
     protected RepositoryBase<User, ?> getRepository() {
         return repository;
-    }    
+    }
 
-    public boolean canEditPassword(){
+    public boolean canEditPassword() {
         return "true".equals(ConfigResolver.getPropertyValue("userHome.CanEditPassword", "true"));
     }
-    
+
     @Override
     protected void auditLog(String action) {
-        getAuditLogger().actionLog(getEntity().getClass().getSimpleName(), getEntity().getId(), getBizKeyValue(), AuditLogCommand.CAT_AUTH,  action, identity.getLoginName(), "", changeLogStore.getChangeValues());
+        getAuditLogger().actionLog(getEntity().getClass().getSimpleName(), getEntity().getId(), getBizKeyValue(), AuditLogCommand.CAT_AUTH, action, identity.getLoginName(), "", changeLogStore.getChangeValues());
     }
 
     private String generatePassword() {
@@ -241,30 +243,30 @@ public class UserHome extends FormBase<User, Long>{
         String possibleCharacters = upperCaseLetters + lowerCaseLetters + numbers + symbols;
 
         String initialPassword = RandomStringUtils
-            .random(12, 0, possibleCharacters.toCharArray().length - 1, false, false,
-                possibleCharacters.toCharArray(), new SecureRandom());
+                .random(12, 0, possibleCharacters.toCharArray().length - 1, false, false,
+                        possibleCharacters.toCharArray(), new SecureRandom());
         String upperCaseLetter = RandomStringUtils
-            .random(1, 0, upperCaseLetters.toCharArray().length - 1, false, false,
-                upperCaseLetters.toCharArray(), new SecureRandom());
+                .random(1, 0, upperCaseLetters.toCharArray().length - 1, false, false,
+                        upperCaseLetters.toCharArray(), new SecureRandom());
         String lowerCaseLetter = RandomStringUtils
-            .random(1, 0, lowerCaseLetters.toCharArray().length - 1, false, false,
-                lowerCaseLetters.toCharArray(), new SecureRandom());
+                .random(1, 0, lowerCaseLetters.toCharArray().length - 1, false, false,
+                        lowerCaseLetters.toCharArray(), new SecureRandom());
         String number = RandomStringUtils
-            .random(1, 0, numbers.toCharArray().length - 1, false, false,
-                numbers.toCharArray(), new SecureRandom());
+                .random(1, 0, numbers.toCharArray().length - 1, false, false,
+                        numbers.toCharArray(), new SecureRandom());
         String symbol = RandomStringUtils
-            .random(1, 0, symbols.toCharArray().length - 1, false, false,
-                symbols.toCharArray(), new SecureRandom());
+                .random(1, 0, symbols.toCharArray().length - 1, false, false,
+                        symbols.toCharArray(), new SecureRandom());
 
         StringBuilder randomPassword = new StringBuilder();
 
         return randomPassword
-            .append(initialPassword)
-            .insert(new SecureRandom().nextInt(randomPassword.length()), upperCaseLetter)
-            .insert(new SecureRandom().nextInt(randomPassword.length()), lowerCaseLetter)
-            .insert(new SecureRandom().nextInt(randomPassword.length()), number)
-            .insert(new SecureRandom().nextInt(randomPassword.length()), symbol)
-            .toString();
+                .append(initialPassword)
+                .insert(new SecureRandom().nextInt(randomPassword.length()), upperCaseLetter)
+                .insert(new SecureRandom().nextInt(randomPassword.length()), lowerCaseLetter)
+                .insert(new SecureRandom().nextInt(randomPassword.length()), number)
+                .insert(new SecureRandom().nextInt(randomPassword.length()), symbol)
+                .toString();
     }
 
     private void sendEmailWithLoginInformation() {
@@ -276,9 +278,9 @@ public class UserHome extends FormBase<User, Long>{
 
         emailChannel.sendMessage(getEntity().getEmail(), "", "", params);
     }
-    
+
     public boolean isValidTckn(String tckn) {
-        if ( !"true".equals(ConfigResolver.getPropertyValue("user.rule.tcknRequired", "false"))) {
+        if (!"true".equals(ConfigResolver.getPropertyValue("user.rule.tcknRequired", "false"))) {
             return true;
         }
         try {
@@ -317,5 +319,5 @@ public class UserHome extends FormBase<User, Long>{
         FacesMessages.error("TCKN Hatalı. Kayıt edilemez.");
         return false;
     }
-    
+
 }
