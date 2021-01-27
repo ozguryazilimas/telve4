@@ -14,6 +14,7 @@ import com.ozguryazilim.telve.idm.user.UserRoleRepository;
 import com.ozguryazilim.telve.messagebus.command.AbstractCommandExecuter;
 import com.ozguryazilim.telve.messagebus.command.CommandExecutor;
 import com.ozguryazilim.telve.utils.TreeUtils;
+import java.io.IOException;
 import java.util.Hashtable;
 import java.util.List;
 import javax.inject.Inject;
@@ -23,8 +24,11 @@ import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
+import javax.naming.ldap.Control;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
+import javax.naming.ldap.PagedResultsControl;
+import javax.naming.ldap.PagedResultsResponseControl;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.apache.shiro.config.Ini;
 import org.slf4j.Logger;
@@ -98,14 +102,14 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         String lastNameAttr = realm.get(telveRealm + "lastNameAttr");
         String emailAttr = realm.get(telveRealm + "emailAttr");
         String scope = realm.get(telveRealm + "userScope");
+        String pageSizeStr = realm.get(telveRealm + "pageSize");
 
-        SearchControls userSearchControls = new SearchControls();
-        userSearchControls.setReturningAttributes(new String[]{loginNameAttr, firstNameAttr, lastNameAttr, emailAttr});
-        setScope(scope, userSearchControls);
-
-        // Ldap uzerinden kullanicilari ariyoruz
-        NamingEnumeration<SearchResult> ldapUserResults = ldapContext
-            .search(realm.get(telveRealm + "userSearchBase"), OBJECT_CLASS, userSearchControls);
+        int pageSize = 1000;
+        try {
+            pageSize = Integer.parseInt(pageSizeStr);
+        } catch (NumberFormatException e) {
+            LOG.error("pageSize realm value must be an integer value, so pageSize has been set to 1000 as the default.", e);
+        }
 
         // Veritabanindaki kayitli ve otomatik uretilmis kullanicilari cekelim
         // en son elimizde kalanlari pasif duruma cekelim
@@ -120,76 +124,103 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             role = roleRepository.findAnyByName(defaultRole);
         }
 
-        while (ldapUserResults.hasMoreElements()) {
-            Attributes attributes = ldapUserResults.next().getAttributes();
+        try {
 
-            String loginName =
-                attributes.get(loginNameAttr) != null ? attributes.get(loginNameAttr).get().toString() : null;
-            String firstName =
-                attributes.get(firstNameAttr) != null ? attributes.get(firstNameAttr).get().toString() : null;
-            String lastName =
-                attributes.get(lastNameAttr) != null ? attributes.get(lastNameAttr).get().toString() : null;
-            String email = attributes.get(emailAttr) != null ? attributes.get(emailAttr).get().toString() : null;
+            SearchControls userSearchControls = new SearchControls();
+            userSearchControls.setReturningAttributes(new String[]{loginNameAttr, firstNameAttr, lastNameAttr, emailAttr});
+            setScope(scope, userSearchControls);
 
-            // loginName yoksa kullaniciyi kaydetmeyelim/guncellemeyelim
-            if (loginName != null) {
-                // Kullanici veritabaninda kayitli mi kontrol edelim
-                User user = userRepository.findAnyByLoginName(loginName);
+            ldapContext.setRequestControls(new Control[]{new PagedResultsControl(pageSize, true)});
 
-                // Eger yoksa yeni kayit olusturalim
-                if (user == null) {
-                    User newUser = new User();
+            byte[] cookie = null;
 
-                    newUser.setLoginName(loginName);
-                    newUser.setEmail(email);
-                    newUser.setFirstName(firstName);
-                    newUser.setLastName(lastName);
-                    newUser.setAutoCreated(Boolean.TRUE);
-                    newUser.setChangePassword(Boolean.FALSE);
-                    newUser.setManaged(Boolean.FALSE);
+            do {
+                // Ldap uzerinden kullanicilari ariyoruz
+                NamingEnumeration<SearchResult> ldapUserResults = ldapContext
+                    .search(realm.get(telveRealm + "userSearchBase"), OBJECT_CLASS, userSearchControls);
 
-                    userRepository.save(newUser);
+                while (ldapUserResults.hasMoreElements()) {
+                    Attributes attributes = ldapUserResults.next().getAttributes();
 
-                    // varsayilan rol'u kontrol edelim, varsa atayalim
-                    if (role != null) {
-                        UserRole userRole = new UserRole();
-                        userRole.setUser(newUser);
-                        userRole.setRole(role);
+                    String loginName =
+                        attributes.get(loginNameAttr) != null ? attributes.get(loginNameAttr).get().toString() : null;
+                    String firstName =
+                        attributes.get(firstNameAttr) != null ? attributes.get(firstNameAttr).get().toString() : null;
+                    String lastName =
+                        attributes.get(lastNameAttr) != null ? attributes.get(lastNameAttr).get().toString() : null;
+                    String email = attributes.get(emailAttr) != null ? attributes.get(emailAttr).get().toString() : null;
 
-                        userRoleRepository.save(userRole);
-                    }
+                    // loginName yoksa kullaniciyi kaydetmeyelim/guncellemeyelim
+                    if (loginName != null) {
+                        // Kullanici veritabaninda kayitli mi kontrol edelim
+                        User user = userRepository.findAnyByLoginName(loginName);
 
-                    // eger kullanici varsa bilgilerini guncelleyelim
-                    // autoCreated degilse telve tarafinda kullanicisi elle acilmis demektir, bunu otomatik olarak
-                    // ldap'a baglamak mantikli olmaz
-                } else if (user.getAutoCreated()) {
-                    user.setFirstName(firstName);
-                    user.setLastName(lastName);
-                    user.setEmail(email);
-                    user.setActive(Boolean.TRUE);
+                        // Eger yoksa yeni kayit olusturalim
+                        if (user == null) {
+                            User newUser = new User();
 
-                    userRepository.save(user);
+                            newUser.setLoginName(loginName);
+                            newUser.setEmail(email);
+                            newUser.setFirstName(firstName);
+                            newUser.setLastName(lastName);
+                            newUser.setAutoCreated(Boolean.TRUE);
+                            newUser.setChangePassword(Boolean.FALSE);
+                            newUser.setManaged(Boolean.FALSE);
 
-                    // varsayilan rol'e ekli mi? ekli degilse ekleyelim
-                    if (role != null) {
-                        UserRole userRole = userRoleRepository.findAnyByUserAndRole(user, role);
+                            userRepository.save(newUser);
 
-                        if (userRole == null) {
-                            UserRole newUserRole = new UserRole();
-                            newUserRole.setUser(user);
-                            newUserRole.setRole(role);
+                            // varsayilan rol'u kontrol edelim, varsa atayalim
+                            if (role != null) {
+                                UserRole userRole = new UserRole();
+                                userRole.setUser(newUser);
+                                userRole.setRole(role);
 
-                            userRoleRepository.save(newUserRole);
+                                userRoleRepository.save(userRole);
+                            }
+
+                            // eger kullanici varsa bilgilerini guncelleyelim
+                            // autoCreated degilse telve tarafinda kullanicisi elle acilmis demektir, bunu otomatik olarak
+                            // ldap'a baglamak mantikli olmaz
+                        } else if (user.getAutoCreated()) {
+                            user.setFirstName(firstName);
+                            user.setLastName(lastName);
+                            user.setEmail(email);
+                            user.setActive(Boolean.TRUE);
+
+                            userRepository.save(user);
+
+                            // varsayilan rol'e ekli mi? ekli degilse ekleyelim
+                            if (role != null) {
+                                UserRole userRole = userRoleRepository.findAnyByUserAndRole(user, role);
+
+                                if (userRole == null) {
+                                    UserRole newUserRole = new UserRole();
+                                    newUserRole.setUser(user);
+                                    newUserRole.setRole(role);
+
+                                    userRoleRepository.save(newUserRole);
+                                }
+                            }
+                            // islemler bitti, kullaniciyi varsa listeden cikaralim
+                            existingActiveUsers.remove(user);
+
+                            // kullaniciyi guncellemiyorsak loglayalim
+                        } else {
+                            LOG.info("User {} wasn't updated during LdapSyncCommand", user.getLoginName());
                         }
                     }
-                    // islemler bitti, kullaniciyi varsa listeden cikaralim
-                    existingActiveUsers.remove(user);
-
-                    // kullaniciyi guncellemiyorsak loglayalim
-                } else {
-                    LOG.info("User {} wasn't updated during LdapSyncCommand", user.getLoginName());
                 }
-            }
+
+                cookie = getControlResponse(ldapContext.getResponseControls());
+
+                ldapContext.setRequestControls(new Control[]{new PagedResultsControl(pageSize, cookie, Control.CRITICAL)});
+
+            } while (cookie.length != 0);
+
+        } catch (NamingException | IOException e) {
+            LOG.error("There was an error during LdapSyncCommand", e);
+            // Hata olustu, kullanicilari pasif yapmayalim.
+            return;
         }
 
         // kalan kullanicilar telve tarafinda ve aktif ancak Ldap tarafinda bulunmuyor
@@ -392,4 +423,19 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         }
         controls.setSearchScope(searchScope);
     }
+
+    private static byte[] getControlResponse(Control[] controls) throws NamingException {
+        // Examine the paged results control response
+        byte[] cookie = null;
+        if (controls != null) {
+            for (int i = 0; i < controls.length; i++) {
+                if (controls[i] instanceof PagedResultsResponseControl) {
+                    PagedResultsResponseControl prrc = (PagedResultsResponseControl)controls[i];
+                    cookie = prrc.getCookie();
+                }
+            }
+        }
+        return (cookie == null) ? new byte[0] : cookie;
+    }
+
 }

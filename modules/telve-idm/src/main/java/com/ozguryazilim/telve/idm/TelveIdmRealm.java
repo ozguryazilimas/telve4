@@ -90,6 +90,8 @@ public class TelveIdmRealm extends JndiLdapRealm {
 
     private String defaultRole = "";
 
+    private String pageSize = "1000";
+
     private CredentialsMatcher ldapMatcher = new AllowAllCredentialsMatcher();
     private CredentialsMatcher idmMatcher = new PasswordMatcher();
 
@@ -244,6 +246,15 @@ public class TelveIdmRealm extends JndiLdapRealm {
     public void setRoleScope(String roleScope) {
         this.roleScope = roleScope;
     }
+
+    public String getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(String pageSize) {
+        this.pageSize = pageSize;
+    }
+
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
