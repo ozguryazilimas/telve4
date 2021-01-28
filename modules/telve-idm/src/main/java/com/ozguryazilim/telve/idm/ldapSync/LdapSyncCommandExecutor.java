@@ -39,7 +39,6 @@ import org.slf4j.LoggerFactory;
 public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCommand> {
 
     private static final Logger LOG = LoggerFactory.getLogger(LdapSyncCommandExecutor.class);
-    private static final String OBJECT_CLASS = "(objectClass=*)";
 
     // tekrari azaltmak icin telveRealm degeri
     private String telveRealm = "telveRealm.";
@@ -80,52 +79,52 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             // Ldap contextini olusturuyoruz
             LdapContext ldapContext = new InitialLdapContext(env, null);
 
-            syncUsers(realm, ldapContext);
+            String scope = realm.get(telveRealm + "userScope");
+            String pageSizeStr = realm.get(telveRealm + "pageSize");
+            int pageSize = 1000;
+            try {
+                pageSize = Integer.parseInt(pageSizeStr);
+            } catch (NumberFormatException e) {
+                LOG.error("pageSize realm value must be an integer value, so pageSize has been set to 1000 as the default.", e);
+            }
+
+            syncUsers(realm, ldapContext, scope, pageSize);
 
             // eger true donerse gruplari senkronize ediyoruz
             if (command.getSyncGroupsAndAssignUsers() != null && command.getSyncGroupsAndAssignUsers()) {
-                syncGroups(realm, ldapContext, command);
+                syncGroups(realm, ldapContext, scope, pageSize, command);
             }
 
             // eger true donerse rolleri senkronize ediyoruz
             if (command.getSyncRolesAndAssignUsers() != null && command.getSyncRolesAndAssignUsers()) {
-                syncRoles(realm, ldapContext);
+                syncRoles(realm, ldapContext, scope, pageSize);
             }
         } catch (Exception e) {
             LOG.error("There was an error during LdapSyncCommand", e);
         }
     }
 
-    private void syncUsers(Ini.Section realm, LdapContext ldapContext) throws NamingException {
+    private void syncUsers(Ini.Section realm, LdapContext ldapContext, String scope, int pageSize) throws NamingException {
         String loginNameAttr = realm.get(telveRealm + "loginNameAttr");
         String firstNameAttr = realm.get(telveRealm + "firstNameAttr");
         String lastNameAttr = realm.get(telveRealm + "lastNameAttr");
         String emailAttr = realm.get(telveRealm + "emailAttr");
-        String scope = realm.get(telveRealm + "userScope");
-        String pageSizeStr = realm.get(telveRealm + "pageSize");
-
-        int pageSize = 1000;
-        try {
-            pageSize = Integer.parseInt(pageSizeStr);
-        } catch (NumberFormatException e) {
-            LOG.error("pageSize realm value must be an integer value, so pageSize has been set to 1000 as the default.", e);
-        }
+        String userSearchBase = realm.get(telveRealm + "userSearchBase");
+        String userSyncFilter = realm.get(telveRealm + "userSyncFilter");
+        String defaultRole = !Strings.isNullOrEmpty(realm.get(telveRealm + "defaultRole")) ?
+            realm.get(telveRealm + "defaultRole") : null;
 
         // Veritabanindaki kayitli ve otomatik uretilmis kullanicilari cekelim
         // en son elimizde kalanlari pasif duruma cekelim
         List<User> existingActiveUsers = userRepository.findAnyByAutoCreatedAndActive(Boolean.TRUE, Boolean.TRUE);
 
         // varsayilan rol tanimlanmis mi bakalim
-        String defaultRole =
-            !Strings.isNullOrEmpty(realm.get(telveRealm + "defaultRole"))
-                ? realm.get(telveRealm + "defaultRole") : null;
         Role role = null;
         if (defaultRole != null) {
             role = roleRepository.findAnyByName(defaultRole);
         }
 
         try {
-
             SearchControls userSearchControls = new SearchControls();
             userSearchControls.setReturningAttributes(new String[]{loginNameAttr, firstNameAttr, lastNameAttr, emailAttr});
             setScope(scope, userSearchControls);
@@ -137,7 +136,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             do {
                 // Ldap uzerinden kullanicilari ariyoruz
                 NamingEnumeration<SearchResult> ldapUserResults = ldapContext
-                    .search(realm.get(telveRealm + "userSearchBase"), OBJECT_CLASS, userSearchControls);
+                    .search(userSearchBase, userSyncFilter, userSearchControls);
 
                 while (ldapUserResults.hasMoreElements()) {
                     Attributes attributes = ldapUserResults.next().getAttributes();
@@ -218,7 +217,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             } while (cookie.length != 0);
 
         } catch (NamingException | IOException e) {
-            LOG.error("There was an error during LdapSyncCommand", e);
+            LOG.error("There was an error during LdapSyncCommand - users", e);
             // Hata olustu, kullanicilari pasif yapmayalim.
             return;
         }
@@ -231,103 +230,127 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         }
     }
 
-    private void syncGroups(Ini.Section realm, LdapContext ldapContext, LdapSyncCommand command)
+    private void syncGroups(Ini.Section realm, LdapContext ldapContext, String scope, int pageSize, LdapSyncCommand command)
         throws NamingException {
         //otomatik olusturulmus gruplari bulalim
         List<Group> autoCreatedGroups = groupRepository.findAnyByAutoCreated(Boolean.TRUE);
 
         String groupNameAttr = realm.get(telveRealm + "groupNameAttr");
         String groupMembersAttr = realm.get(telveRealm + "groupMembersAttr");
-        String scope = realm.get(telveRealm + "groupScope");
+        String groupSearchBase = realm.get(telveRealm + "groupSearchBase");
+        String groupSyncFilter = realm.get(telveRealm + "groupSyncFilter");
 
-        SearchControls groupSearchControls = new SearchControls();
-        groupSearchControls.setReturningAttributes(new String[]{groupNameAttr, groupMembersAttr});
-        setScope(scope, groupSearchControls);
+        try {
+            SearchControls groupSearchControls = new SearchControls();
+            groupSearchControls.setReturningAttributes(new String[]{groupNameAttr, groupMembersAttr});
+            setScope(scope, groupSearchControls);
 
-        // ldap uzerinden sonuclari cekelim
-        NamingEnumeration<SearchResult> ldapGroupResults = ldapContext
-            .search(realm.get(telveRealm + "groupSearchBase"), OBJECT_CLASS, groupSearchControls);
+            ldapContext.setRequestControls(new Control[]{new PagedResultsControl(pageSize, true)});
 
-        // sonuclarin uzerinden gecelim
-        while (ldapGroupResults.hasMoreElements()) {
-            Attributes ldapGroup = ldapGroupResults.next().getAttributes();
+            byte[] cookie = null;
 
-            String groupName =
-                ldapGroup.get(groupNameAttr) != null ? ldapGroup.get(groupNameAttr).get().toString() : null;
+            do {
+                // ldap uzerinden sonuclari cekelim
+                NamingEnumeration<SearchResult> ldapGroupResults = ldapContext
+                    .search(groupSearchBase, groupSyncFilter, groupSearchControls);
 
-            // eger grup adi mevcutsa islemleri yapalim
-            if (groupName != null) {
-                // gruba ait kullanicilar
-                NamingEnumeration<?> members = ldapGroup.get(groupMembersAttr) != null
-                    ? ldapGroup.get(groupMembersAttr).getAll() : null;
+                // sonuclarin uzerinden gecelim
+                while (ldapGroupResults.hasMoreElements()) {
+                    Attributes ldapGroup = ldapGroupResults.next().getAttributes();
 
-                // grup telve tarafinda kayitli mi?
-                Group group = groupRepository.findAnyByName(groupName);
+                    String groupName =
+                        ldapGroup.get(groupNameAttr) != null ? ldapGroup.get(groupNameAttr).get().toString(): null;
 
-                // eger veritabaninda kayitli degil ve olusturulmasi icin parametre verilmis ise olusturalim
-                if (command.getCreateMissingGroups() != null && group == null && command.getCreateMissingGroups()) {
-                    Group newGroup = new Group();
-                    newGroup.setActive(Boolean.TRUE);
-                    newGroup.setCode(groupName);
-                    newGroup.setName(groupName);
-                    newGroup.setAutoCreated(Boolean.TRUE);
-                    groupRepository.save(newGroup);
-                    // path id'sini verip tekrar kaydedelim
-                    newGroup.setPath(TreeUtils.getNodeIdPath(newGroup));
-                    groupRepository.save(newGroup);
-                    // grup degerini degistirelim
-                    group = newGroup;
-                }
+                    // eger grup adi mevcutsa islemleri yapalim
+                    if (groupName != null) {
 
-                // eger grup var ise
-                if (group != null) {
+                        if (groupName.length() > 30)
+                            groupName = groupName.substring(0, 30);
 
-                    // grup kayitli ise userGroup uyelerini cekelim,
-                    // ldap tarafinda silinen biri varsa biz de silecegiz userGroup'dan en sonda
-                    List<UserGroup> groupMembers = userGroupRepository.findAnyByGroup(group);
+                        // gruba ait kullanicilar
+                        NamingEnumeration<?> members = ldapGroup.get(groupMembersAttr) != null
+                            ? ldapGroup.get(groupMembersAttr).getAll() : null;
 
-                    // uyeleri while loopu ile cekelim
-                    while (members != null && members.hasMoreElements()) {
-                        // ustunde islem yapilacak uye
-                        String member = members.next().toString();
+                        // grup telve tarafinda kayitli mi?
+                        Group group = groupRepository.findAnyByName(groupName);
 
-                        // once kullaniciyi user tablosunda bulalim
-                        User existingUser = userRepository.findAnyByLoginName(member);
+                        // eger veritabaninda kayitli degil ve olusturulmasi icin parametre verilmis ise olusturalim
+                        if (command.getCreateMissingGroups() != null && group == null && command.getCreateMissingGroups()) {
+                            Group newGroup = new Group();
+                            newGroup.setActive(Boolean.TRUE);
+                            newGroup.setCode(groupName);
+                            newGroup.setName(groupName);
+                            newGroup.setAutoCreated(Boolean.TRUE);
+                            groupRepository.save(newGroup);
+                            // path id'sini verip tekrar kaydedelim
+                            newGroup.setPath(TreeUtils.getNodeIdPath(newGroup));
+                            groupRepository.save(newGroup);
+                            // grup degerini degistirelim
+                            group = newGroup;
+                        }
 
-                        // boyle bir kullanici var mi emin olalim
-                        if (existingUser != null) {
+                        // eger grup var ise
+                        if (group != null) {
 
-                            // ardindan gruba coktan kayitli mi bir kontrol edelim
-                            UserGroup existingUserGroup = userGroupRepository
-                                .findAnyByUserAndGroup(existingUser, group);
+                            // grup kayitli ise userGroup uyelerini cekelim,
+                            // ldap tarafinda silinen biri varsa biz de silecegiz userGroup'dan en sonda
+                            List<UserGroup> groupMembers = userGroupRepository.findAnyByGroup(group);
 
-                            // eger kayitli degil ise kaydini yapalim
-                            if (existingUserGroup == null) {
-                                UserGroup newUserGroup = new UserGroup();
-                                newUserGroup.setGroup(group);
-                                newUserGroup.setUser(existingUser);
-                                userGroupRepository.save(newUserGroup);
+                            // uyeleri while loopu ile cekelim
+                            while (members != null && members.hasMoreElements()) {
+                                // ustunde islem yapilacak uye
+                                String member = members.next().toString();
+
+                                // once kullaniciyi user tablosunda bulalim
+                                User existingUser = userRepository.findAnyByLoginName(member);
+
+                                // boyle bir kullanici var mi emin olalim
+                                if (existingUser != null) {
+
+                                    // ardindan gruba coktan kayitli mi bir kontrol edelim
+                                    UserGroup existingUserGroup = userGroupRepository
+                                        .findAnyByUserAndGroup(existingUser, group);
+
+                                    // eger kayitli degil ise kaydini yapalim
+                                    if (existingUserGroup == null) {
+                                        UserGroup newUserGroup = new UserGroup();
+                                        newUserGroup.setGroup(group);
+                                        newUserGroup.setUser(existingUser);
+                                        userGroupRepository.save(newUserGroup);
+                                    }
+                                    // katiyliysa da guncelleyelim
+                                    else {
+                                        existingUserGroup.setUser(existingUser);
+                                        existingUserGroup.setGroup(group);
+                                        userGroupRepository.save(existingUserGroup);
+                                        // kullaniciyi listeden silelim
+                                        groupMembers.remove(existingUserGroup);
+                                    }
+                                }
                             }
-                            // katiyliysa da guncelleyelim
-                            else {
-                                existingUserGroup.setUser(existingUser);
-                                existingUserGroup.setGroup(group);
-                                userGroupRepository.save(existingUserGroup);
-                                // kullaniciyi listeden silelim
-                                groupMembers.remove(existingUserGroup);
+
+                            // ardindan kalan userGroup'lari veritabanindan silelim
+                            for (UserGroup userGroup : groupMembers) {
+                                userGroupRepository.remove(userGroup);
                             }
+
+                            // islemler bitti, listeden cikaralim
+                            autoCreatedGroups.remove(group);
                         }
                     }
-
-                    // ardindan kalan userGroup'lari veritabanindan silelim
-                    for (UserGroup userGroup : groupMembers) {
-                        userGroupRepository.remove(userGroup);
-                    }
-
-                    // islemler bitti, listeden cikaralim
-                    autoCreatedGroups.remove(group);
                 }
-            }
+
+                cookie = getControlResponse(ldapContext.getResponseControls());
+
+                ldapContext.setRequestControls(new Control[]{new PagedResultsControl(pageSize, cookie, Control.CRITICAL)});
+
+            } while (cookie.length != 0);
+
+
+        } catch (NamingException | IOException e) {
+            LOG.error("There was an error during LdapSyncCommand - groups", e);
+            // Hata olustu, grouplari pasif yapmayalim.
+            return;
         }
 
         // elimizde kalan kayitlari pasife cekelim
@@ -337,78 +360,94 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         }
     }
 
-    private void syncRoles(Ini.Section realm, LdapContext ldapContext) throws NamingException {
+    private void syncRoles(Ini.Section realm, LdapContext ldapContext, String scope, int pageSize) throws NamingException {
         String roleNameAttr = realm.get(telveRealm + "roleNameAttr");
         String roleMembersAttr = realm.get(telveRealm + "roleMembersAttr");
-        String scope = realm.get(telveRealm + "roleScope");
+        String roleSearchBase = realm.get(telveRealm + "roleSearchBase");
+        String roleSyncFilter = realm.get(telveRealm + "roleSyncFilter");
 
-        SearchControls roleSeachControls = new SearchControls();
-        roleSeachControls.setReturningAttributes(new String[]{roleNameAttr, roleMembersAttr});
-        setScope(scope, roleSeachControls);
+        try {
+            SearchControls roleSeachControls = new SearchControls();
+            roleSeachControls.setReturningAttributes(new String[]{roleNameAttr, roleMembersAttr});
+            setScope(scope, roleSeachControls);
 
-        // ldap uzerinden sonuclari cekelim
-        NamingEnumeration<SearchResult> ldapRoleResults = ldapContext
-            .search(realm.get(telveRealm + "roleSearchBase"), OBJECT_CLASS, roleSeachControls);
+            ldapContext.setRequestControls(new Control[]{new PagedResultsControl(pageSize, true)});
 
-        // sonuclarin uzerinden gecelim
-        while (ldapRoleResults.hasMoreElements()) {
-            Attributes ldapGroup = ldapRoleResults.next().getAttributes();
+            byte[] cookie = null;
 
-            String roleName = ldapGroup.get(roleNameAttr) != null ? ldapGroup.get(roleNameAttr).get().toString() : null;
+            do {
+                // ldap uzerinden sonuclari cekelim
+                NamingEnumeration<SearchResult> ldapRoleResults = ldapContext
+                    .search(roleSearchBase, roleSyncFilter, roleSeachControls);
 
-            if (roleName != null) {
-                // role ait kullanicilar
-                NamingEnumeration<?> members = ldapGroup.get(roleMembersAttr) != null
-                    ? ldapGroup.get(roleMembersAttr).getAll() : null;
+                // sonuclarin uzerinden gecelim
+                while (ldapRoleResults.hasMoreElements()) {
+                    Attributes ldapGroup = ldapRoleResults.next().getAttributes();
 
-                // rol telve tarafinda kayitli mi?
-                Role role = roleRepository.findAnyByName(roleName);
+                    String roleName = ldapGroup.get(roleNameAttr) != null ? ldapGroup.get(roleNameAttr).get().toString() : null;
 
-                // eger rol var ise
-                if (role != null) {
+                    if (roleName != null) {
+                        // role ait kullanicilar
+                        NamingEnumeration<?> members = ldapGroup.get(roleMembersAttr) != null
+                            ? ldapGroup.get(roleMembersAttr).getAll() : null;
 
-                    // rol kayitli ise userRole uyelerini cekelim,
-                    // ldap tarafinda silinen biri varsa biz de silecegiz userRole'den en sonda
-                    List<UserRole> roleMembers = userRoleRepository.findAnyByRole(role);
+                        // rol telve tarafinda kayitli mi?
+                        Role role = roleRepository.findAnyByName(roleName);
 
-                    // uyeleri while loopu ile cekelim
-                    while (members != null && members.hasMoreElements()) {
-                        // ustunde islem yapilacak uye
-                        String member = members.next().toString();
+                        // eger rol var ise
+                        if (role != null) {
 
-                        // once kullaniciyi user tablosunda bulalim
-                        User existingUser = userRepository.findAnyByLoginName(member);
+                            // rol kayitli ise userRole uyelerini cekelim,
+                            // ldap tarafinda silinen biri varsa biz de silecegiz userRole'den en sonda
+                            List<UserRole> roleMembers = userRoleRepository.findAnyByRole(role);
 
-                        // boyle bir kullanici var mi emin olalim
-                        if (existingUser != null) {
+                            // uyeleri while loopu ile cekelim
+                            while (members != null && members.hasMoreElements()) {
+                                // ustunde islem yapilacak uye
+                                String member = members.next().toString();
 
-                            // ardindan role coktan kayitli mi bir kontrol edelim
-                            UserRole existingUserRole = userRoleRepository.findAnyByUserAndRole(existingUser, role);
+                                // once kullaniciyi user tablosunda bulalim
+                                User existingUser = userRepository.findAnyByLoginName(member);
 
-                            // eger kayitli degil ise kaydini yapalim
-                            if (existingUserRole == null) {
-                                UserRole newUserRole = new UserRole();
-                                newUserRole.setRole(role);
-                                newUserRole.setUser(existingUser);
-                                userRoleRepository.save(newUserRole);
+                                // boyle bir kullanici var mi emin olalim
+                                if (existingUser != null) {
+
+                                    // ardindan role coktan kayitli mi bir kontrol edelim
+                                    UserRole existingUserRole = userRoleRepository.findAnyByUserAndRole(existingUser, role);
+
+                                    // eger kayitli degil ise kaydini yapalim
+                                    if (existingUserRole == null) {
+                                        UserRole newUserRole = new UserRole();
+                                        newUserRole.setRole(role);
+                                        newUserRole.setUser(existingUser);
+                                        userRoleRepository.save(newUserRole);
+                                    }
+                                    // katiyliysa da guncelleyelim
+                                    else {
+                                        existingUserRole.setUser(existingUser);
+                                        existingUserRole.setRole(role);
+                                        userRoleRepository.save(existingUserRole);
+                                        // kullaniciyi listeden silelim
+                                        roleMembers.remove(existingUserRole);
+                                    }
+
+                                }
                             }
-                            // katiyliysa da guncelleyelim
-                            else {
-                                existingUserRole.setUser(existingUser);
-                                existingUserRole.setRole(role);
-                                userRoleRepository.save(existingUserRole);
-                                // kullaniciyi listeden silelim
-                                roleMembers.remove(existingUserRole);
+                            // ardindan kalan userGroup'lari veritabanindan silelim
+                            for (UserRole userRole : roleMembers) {
+                                userRoleRepository.remove(userRole);
                             }
-
                         }
                     }
-                    // ardindan kalan userGroup'lari veritabanindan silelim
-                    for (UserRole userRole : roleMembers) {
-                        userRoleRepository.remove(userRole);
-                    }
                 }
-            }
+                cookie = getControlResponse(ldapContext.getResponseControls());
+
+                ldapContext.setRequestControls(new Control[]{new PagedResultsControl(pageSize, cookie, Control.CRITICAL)});
+
+            } while (cookie.length != 0);
+
+        } catch (NamingException | IOException e) {
+            LOG.error("There was an error during LdapSyncCommand - roles", e);
         }
     }
 
