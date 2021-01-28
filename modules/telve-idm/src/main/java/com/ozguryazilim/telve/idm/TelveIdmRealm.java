@@ -78,6 +78,9 @@ public class TelveIdmRealm extends JndiLdapRealm {
     private String groupScope;
     private String roleScope;
     private String userSearchFilter = "(uid={0})";
+    private String userSyncFilter = "(objectClass=*)";
+    private String groupSyncFilter = "(objectClass=*)";
+    private String roleSyncFilter = "(objectClass=*)";
 
     private String firstNameAttr = "givenName";
     private String lastNameAttr = "sn";
@@ -89,6 +92,8 @@ public class TelveIdmRealm extends JndiLdapRealm {
     private String roleMembersAttr = "memberUid";
 
     private String defaultRole = "";
+
+    private String pageSize = "1000";
 
     private CredentialsMatcher ldapMatcher = new AllowAllCredentialsMatcher();
     private CredentialsMatcher idmMatcher = new PasswordMatcher();
@@ -244,6 +249,39 @@ public class TelveIdmRealm extends JndiLdapRealm {
     public void setRoleScope(String roleScope) {
         this.roleScope = roleScope;
     }
+
+    public String getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(String pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public String getUserSyncFilter() {
+        return userSyncFilter;
+    }
+
+    public void setUserSyncFilter(String userSyncFilter) {
+        this.userSyncFilter = userSyncFilter;
+    }
+
+    public String getGroupSyncFilter() {
+        return groupSyncFilter;
+    }
+
+    public void setGroupSyncFilter(String groupSyncFilter) {
+        this.groupSyncFilter = groupSyncFilter;
+    }
+
+    public String getRoleSyncFilter() {
+        return roleSyncFilter;
+    }
+
+    public void setRoleSyncFilter(String roleSyncFilter) {
+        this.roleSyncFilter = roleSyncFilter;
+    }
+
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
