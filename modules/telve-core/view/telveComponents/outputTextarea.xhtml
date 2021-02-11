@@ -8,6 +8,7 @@
     <composite:interface>
         <composite:attribute name="value" required="true"/>
         <composite:attribute name="label" required="true"/>
+        <composite:attribute name="maxHeight" required="false" type="java.lang.String" default="100px"/>
         <composite:attribute name="columnClass" required="false" default="col-xs-6"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
     </composite:interface>
@@ -16,7 +17,7 @@
         <div id="#{cc.clientId}" class="disprop #{cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
             <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]} :" styleClass="name" />
             <span class="value">
-                <h:outputText id="#{cc.id}_inp" value="#{cc.attrs.value}" style="white-space: pre-wrap"/>
+                <h:outputText id="#{cc.id}_inp" value="#{cc.attrs.value}" style="white-space: pre-wrap; max-height: #{cc.attrs.maxHeight}; overflow: auto;"/>
                 <h:outputText value="." style="color: #FFF" rendered="#{cc.attrs.value eq null or cc.attrs.value eq ''}"/>
             </span>
         </div>

@@ -174,7 +174,7 @@
                                         selectNode( [ { 'name': 'nodeId', 'value' : data.instance.get_node(data.selected[0]).id }]);
                                     })  
                                     .on('loaded.jstree', function() {
-                                        jQuery('##{idPrefix}data').jstree('open_all');
+                                        jQuery('##{formId}\\:#{idPrefix}data').jstree('open_all');
                                         setNodeSelections();
                                      })
                                     .jstree({

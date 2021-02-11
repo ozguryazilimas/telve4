@@ -165,6 +165,10 @@
                                         })
                                         .bind("loaded.jstree", function (e, data) {
                                             jQuery('#data').jstree("select_node", "#{bean.model.selectedNodes}", true); 
+                                    
+                                            <ui:fragment rendered="#{bean.model.leafSelect  and bean.model.getMultiSelect()}">
+                                            jQuery('#data').jstree('open_all');
+                                            </ui:fragment>
                                         }); 
                                         
                                     }
@@ -192,6 +196,7 @@
                                     }
                                     
                                     function setMultiSelectionsLabel( data, add ){
+                                        <ui:remove>
                                             var s = jQuery('#selected_labels').text();
                                             var a = s.split(',');
                                             if( add ){
@@ -201,8 +206,9 @@
                                                 a.splice( i, 1);
                                             }
                                             jQuery('#selected_labels').text(a.join());
-                                            
+                                        </ui:remove>    
                                     }
+
 
                                     
                                 </script>
