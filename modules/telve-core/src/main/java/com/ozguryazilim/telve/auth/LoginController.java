@@ -61,9 +61,11 @@ public class LoginController{
             }
         } catch (UnknownAccountException | IncorrectCredentialsException uae) {
             result = false;
+            auditLogger.actionLog("Login attempts", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, loginCredentials.getUsername(), "Auth Fail");
             FacesMessages.error("general.message.AuthFail");
         } catch (LockedAccountException | ExcessiveAttemptsException lae) {
             result = false;
+            auditLogger.actionLog("Login attempts", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, loginCredentials.getUsername(), "Account Locked");
             FacesMessages.error("general.message.AccountLocked");
         } 
 
