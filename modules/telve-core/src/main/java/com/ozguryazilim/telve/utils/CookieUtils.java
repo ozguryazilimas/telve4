@@ -89,7 +89,7 @@ public class CookieUtils {
         if( cookie != null ){
             String val = null;
             try {
-                String decodedValue =  String.valueOf(Base64.getDecoder().decode(cookie.getValue()));
+                String decodedValue =  new String(Base64.getDecoder().decode(cookie.getValue()));
                 val = URLDecoder.decode(decodedValue, "UTF-8");
             } catch (UnsupportedEncodingException | IllegalArgumentException ex) {
                 LOG.warn("Cookie cannot read", ex);

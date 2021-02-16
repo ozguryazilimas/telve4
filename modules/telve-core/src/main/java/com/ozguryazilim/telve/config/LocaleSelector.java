@@ -5,6 +5,7 @@ import com.ozguryazilim.telve.utils.CookieUtils;
 import java.io.Serializable;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -71,6 +72,10 @@ public class LocaleSelector implements Serializable {
         language = tokens.hasMoreTokens() ? tokens.nextToken() : null;
         country = tokens.hasMoreTokens() ? tokens.nextToken() : null;
         variant = tokens.hasMoreTokens() ? tokens.nextToken() : null;
+        
+        if( !Arrays.asList(Locale.getISOLanguages()).contains(language)){
+            language = ConfigResolver.getPropertyValue("application.locale", "tr");
+        }
         
         setLocale(calculateLocale(FacesContext.getCurrentInstance() == null ? null : FacesContext.getCurrentInstance().getViewRoot().getLocale()));
     }
