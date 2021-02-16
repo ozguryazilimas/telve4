@@ -14,7 +14,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
-import javax.servlet.http.Cookie;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 
@@ -42,9 +41,9 @@ public class LocaleSelector implements Serializable {
     @PostConstruct
     public void init() {
         //Önce Cookie'ye bir bakalım 
-        Cookie c = CookieUtils.getCookie(LOCALE_COOKIE);
+        String c = CookieUtils.getCookie(LOCALE_COOKIE);
         if (c != null) {
-            setLocaleString(c.getValue());
+            setLocaleString(c);
         } else {
             //Yoksa config değerini alalım.
             setLocaleString(ConfigResolver.getPropertyValue("application.locale", "tr"));

@@ -30,9 +30,9 @@ public class ThemeSelector implements Serializable {
         if (theme == null) {
 
             //Önce Cookie var mı diye bakalım.
-            Cookie c = CookieUtils.getCookie(THEME_COOKIE);
+            String c = CookieUtils.getCookie(THEME_COOKIE);
             if (c != null) {
-                theme = c.getValue();
+                theme = c;
             } else {
 
                 String t = configResolver.getProperty("theme.name");

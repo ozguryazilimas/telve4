@@ -4,7 +4,6 @@ import com.ozguryazilim.telve.utils.CookieUtils;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import javax.servlet.http.Cookie;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 
 /**
@@ -29,9 +28,9 @@ public class SkinSelector implements Serializable{
         if (skin == null) {
 
             //Önce Cookie var mı diye bakalım.
-            Cookie c = CookieUtils.getCookie(SKIN_COOKIE);
+            String c = CookieUtils.getCookie(SKIN_COOKIE);
             if (c != null) {
-                skin = c.getValue();
+                skin = c;
             } else {
                 String t = ConfigResolver.getPropertyValue("theme.skin.name", "skin-blue");
                 setSkin( t );
@@ -49,9 +48,9 @@ public class SkinSelector implements Serializable{
         if (sidebarMini == null) {
 
             //Önce Cookie var mı diye bakalım.
-            Cookie c = CookieUtils.getCookie(SIDEBAR_COOKIE);
+            String c = CookieUtils.getCookie(SIDEBAR_COOKIE);
             if (c != null) {
-                sidebarMini = "true".equals( c.getValue() );
+                sidebarMini = "true".equals( c );
             } else {
                 String t = ConfigResolver.getPropertyValue("theme.sidebarmini", "false");
                 setSidebarMini( "true".equals(t) );
@@ -69,9 +68,9 @@ public class SkinSelector implements Serializable{
         if (slimScroll == null) {
 
             //Önce Cookie var mı diye bakalım.
-            Cookie c = CookieUtils.getCookie(SLIMSCROLL_COOKIE);
+            String c = CookieUtils.getCookie(SLIMSCROLL_COOKIE);
             if (c != null) {
-                slimScroll = "true".equals( c.getValue() );
+                slimScroll = "true".equals( c );
             } else {
                 String t = ConfigResolver.getPropertyValue("theme.slimScroll", "true");
                 setSlimScroll( "true".equals(t) );
