@@ -259,6 +259,11 @@ public class GalleryConsole extends AbstractGalleryController implements FileUpl
             LOG.error("Attachment cannot add", ex);
         }
     }
+
+    @Override
+    public void handleFileUpload(String uri, boolean a1) {
+
+    }
     
     /**
      * Bu Method FileUploadDialog'unu açmasını sağlar.
