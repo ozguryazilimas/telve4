@@ -56,10 +56,8 @@
                 </script>
             </div>
 
-            
-
             <h:panelGroup styleClass="row actionButtons" layout="block" >
-                <ui:insert name="actionButtons" />
+                <p:selectBooleanCheckbox value="#{fileUploadDialog.decompress}" itemLabel="Decompress Zip Files"/>
                 <p:commandButton id="close" 
                                  value="#{messages['general.button.Close']}" 
                                  icon="ui-icon-close" 

@@ -15,5 +15,12 @@ public interface FileUploadHandler {
      * @param uri 
      */
     void handleFileUpload( String uri );
+
+    /**
+     * Upload with check zip files (if decompress true, zip is automatically decompress and extract same directory)
+     * @param uri
+     * @param decompress
+     */
+    void handleFileUpload( String uri, boolean decompress);
     
 }

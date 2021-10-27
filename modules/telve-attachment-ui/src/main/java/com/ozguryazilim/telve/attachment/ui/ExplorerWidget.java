@@ -266,6 +266,8 @@ public class ExplorerWidget implements Serializable, FileUploadHandler{
             LOG.error("Attachment cannot add", ex);
         }
     }
-    
-    
+
+    @Override
+    public void handleFileUpload(String uri, boolean decompress) {
+    }
 }

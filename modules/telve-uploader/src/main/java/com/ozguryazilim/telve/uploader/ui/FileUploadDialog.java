@@ -33,6 +33,8 @@ public class FileUploadDialog implements Serializable{
     private Long maxFileSize;
     private Integer maxNumberOfFiles;
     private String allowedFileTypes;
+    //zip dosyalari decompress edilsin mi?
+    private boolean decompress;
     
     @PostConstruct
     public void init(){
@@ -91,7 +93,7 @@ public class FileUploadDialog implements Serializable{
         
         this.ownerKey = ownerKey;
         this.handler = handler;
-        
+
         Map<String, Object> options = new HashMap<>();
         options.put("modal", true);
         //options.put("draggable", false);  
@@ -117,7 +119,7 @@ public class FileUploadDialog implements Serializable{
         String uri = params.get("uri");
         LOG.debug("File Upload Handler : {} {}", handler, ownerKey);
         if( handler != null ){
-            handler.handleFileUpload(uri);
+            handler.handleFileUpload(uri, decompress);
         }
     }
 

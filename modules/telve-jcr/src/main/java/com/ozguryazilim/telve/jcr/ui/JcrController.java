@@ -612,6 +612,10 @@ public class JcrController implements FileUploadHandler {
         }
     }
 
+    @Override
+    public void handleFileUpload(String uri, boolean decompress) {
+    }
+
     /**
      * Bu Method FileUploadDialog'unu açmasını sağlar.
      */

@@ -183,4 +183,8 @@ public class SimpleAttachmentWidget implements Serializable, FileUploadHandler {
             LOG.error("Attachment cannot add", ex);
         }
     }
+
+    @Override
+    public void handleFileUpload(String uri, boolean decompress) {
+    }
 }

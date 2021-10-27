@@ -91,6 +91,9 @@ public class SimpleImageEditor implements Serializable, FileUploadHandler{
             LOG.error("File Info not found", ex);
         }
     }
+    @Override
+    public void handleFileUpload(String uri, boolean decompress) {
+    }
 
     protected void saveThumbnail( String uri ) throws IOException, TusException{
         
