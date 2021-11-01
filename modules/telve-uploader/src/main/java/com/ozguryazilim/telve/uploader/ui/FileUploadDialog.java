@@ -47,7 +47,7 @@ public class FileUploadDialog implements Serializable{
         maxFileSize = Long.parseLong(ConfigResolver.getProjectStageAwarePropertyValue("tus.maxUploadSize", "1073741824"));
         maxNumberOfFiles = null;
         allowedFileTypes = null;
-        
+        decompress = "true".equals(ConfigResolver.getPropertyValue("auto.decompress.zip.files.default.value", "true"));
     }
     
     private String buildEndPoint(){
@@ -98,7 +98,7 @@ public class FileUploadDialog implements Serializable{
         options.put("modal", true);
         //options.put("draggable", false);  
         options.put("resizable", false);
-        options.put("contentHeight", 450);
+        options.put("contentHeight", 480);
 
         PrimeFaces.current().dialog().openDynamic("/dialogs/fileUploadDialog", options, null);
         
@@ -142,6 +142,12 @@ public class FileUploadDialog implements Serializable{
     public String getAllowedFileTypes() {
         return allowedFileTypes;
     }
-    
-    
+
+    public boolean isDecompress() {
+        return decompress;
+    }
+
+    public void setDecompress(boolean decompress) {
+        this.decompress = decompress;
+    }
 }

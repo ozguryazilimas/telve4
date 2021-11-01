@@ -57,7 +57,11 @@
             </div>
 
             <h:panelGroup styleClass="row actionButtons" layout="block" >
-                <p:selectBooleanCheckbox value="#{fileUploadDialog.decompress}" itemLabel="Decompress Zip Files"/>
+
+                <h:panelGrid columns="1" style="margin-right:10px" cellpadding="5">
+                    <p:selectBooleanCheckbox value="#{fileUploadDialog.decompress}" itemLabel="#{messages['fileUploadDialog.autoExtractZipFiles']}"/>
+                </h:panelGrid>
+
                 <p:commandButton id="close" 
                                  value="#{messages['general.button.Close']}" 
                                  icon="ui-icon-close" 
@@ -67,5 +71,5 @@
                                  process="@this"/>
             </h:panelGroup>
         </h:form>
-    </ui:define> 
+    </ui:define>
 </ui:composition>
