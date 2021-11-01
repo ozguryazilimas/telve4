@@ -187,4 +187,5 @@ public class SimpleAttachmentWidget implements Serializable, FileUploadHandler {
     @Override
     public void handleFileUpload(String uri, boolean decompress) {
     }
+
 }

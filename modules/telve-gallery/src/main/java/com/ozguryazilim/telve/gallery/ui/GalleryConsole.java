@@ -261,8 +261,7 @@ public class GalleryConsole extends AbstractGalleryController implements FileUpl
     }
 
     @Override
-    public void handleFileUpload(String uri, boolean a1) {
-
+    public void handleFileUpload(String uri, boolean decompress) {
     }
     
     /**

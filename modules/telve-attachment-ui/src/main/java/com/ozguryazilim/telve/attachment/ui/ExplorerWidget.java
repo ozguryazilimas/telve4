@@ -270,4 +270,5 @@ public class ExplorerWidget implements Serializable, FileUploadHandler{
     @Override
     public void handleFileUpload(String uri, boolean decompress) {
     }
+
 }
