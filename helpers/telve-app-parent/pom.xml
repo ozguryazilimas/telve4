@@ -274,11 +274,6 @@
                                 </exclusions>
                             </dependency>
                             <dependency>
-                                <groupId>mysql</groupId>
-                                <artifactId>mysql-connector-java</artifactId>
-                                <version>${version.mysql-connector-java}</version>
-                            </dependency>
-                            <dependency>
                                 <groupId>org.hibernate</groupId>
                                 <artifactId>hibernate-core</artifactId>
                                 <version>${version.hibernate}</version>
