@@ -1,6 +1,7 @@
 package com.ozguryazilim.telve.idm.ldapSync;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.idm.IdmEvent;
 import com.ozguryazilim.telve.idm.entities.Group;
 import com.ozguryazilim.telve.idm.entities.Role;
 import com.ozguryazilim.telve.idm.entities.User;
@@ -17,6 +18,7 @@ import com.ozguryazilim.telve.utils.TreeUtils;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.List;
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -58,6 +60,9 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
     @Inject
     private UserGroupRepository userGroupRepository;
 
+    @Inject
+    private Event<IdmLdapSyncEvent> event;
+    
     @Override
     public void execute(LdapSyncCommand command) {
 
@@ -228,6 +233,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             user.setActive(Boolean.FALSE);
             userRepository.save(user);
         }
+        
+        event.fire(new IdmLdapSyncEvent(IdmLdapSyncEvent.USER));
     }
 
     private void syncGroups(Ini.Section realm, LdapContext ldapContext, String scope, int pageSize, LdapSyncCommand command)
@@ -358,6 +365,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             remainingGroups.setActive(Boolean.FALSE);
             groupRepository.save(remainingGroups);
         }
+        
+        event.fire(new IdmLdapSyncEvent(IdmLdapSyncEvent.GROUP));
     }
 
     private void syncRoles(Ini.Section realm, LdapContext ldapContext, String scope, int pageSize) throws NamingException {
@@ -449,6 +458,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         } catch (NamingException | IOException e) {
             LOG.error("There was an error during LdapSyncCommand - roles", e);
         }
+        
+        event.fire(new IdmLdapSyncEvent(IdmLdapSyncEvent.ROLE));
     }
 
     private void setScope(String scope, SearchControls controls) {
