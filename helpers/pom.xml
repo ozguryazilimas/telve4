@@ -14,12 +14,6 @@
     <description>Telve Helpers Parent POM</description>
     <packaging>pom</packaging> 
 
-    <properties>
-        <buildNumber>SNAPSHOT</buildNumber>
-        <revision>4.0.0</revision>
-        <changelist>-${buildNumber}</changelist>
-    </properties>
-
     <modules>
         <module>telve-app-parent</module>
 	<module>telve-web</module>

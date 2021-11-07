@@ -16,9 +16,6 @@
     <packaging>pom</packaging> 
 
     <properties>
-        <buildNumber>SNAPSHOT</buildNumber>
-        <revision>4.0.0</revision>
-        <changelist>-${buildNumber}</changelist>
         
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
