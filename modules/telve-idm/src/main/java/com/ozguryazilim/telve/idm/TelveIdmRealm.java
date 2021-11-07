@@ -10,8 +10,10 @@ import com.ozguryazilim.telve.idm.role.RoleRepository;
 import com.ozguryazilim.telve.idm.user.UserRepository;
 import com.ozguryazilim.telve.idm.user.UserRoleRepository;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import javax.naming.AuthenticationNotSupportedException;
 import javax.naming.NamingEnumeration;
@@ -62,6 +64,18 @@ public class TelveIdmRealm extends JndiLdapRealm {
      * LDAP doğrulaması kullanacak mıyız?
      */
     private Boolean useLdap = Boolean.FALSE;
+
+    /**
+     * Multi LDAP doğrulaması kullanacak mıyız?
+     */
+    private Boolean useMultiLdap = Boolean.FALSE;
+
+    /**
+     * Birden fazla LDAP bağlantısı kullanılabilmesi için domain=ldapcontext
+     * bilgisi
+     */
+    private Map<String, TelveLdapContext> ldapContexts = new HashMap<>();
+
     /**
      * LDAP kullanıcısı olmaması halinde veri tabanına bakacak mıyız?
      */
@@ -104,6 +118,22 @@ public class TelveIdmRealm extends JndiLdapRealm {
 
     public void setUseLdap(Boolean useLdap) {
         this.useLdap = useLdap;
+    }
+
+    public Boolean getUseMultiLdap() {
+        return useMultiLdap;
+    }
+
+    public void setUseMultiLdap(Boolean useMultiLdap) {
+        this.useMultiLdap = useMultiLdap;
+    }
+
+    public Map<String, TelveLdapContext> getLdapContexts() {
+        return ldapContexts;
+    }
+
+    public void setLdapContexts(Map<String, TelveLdapContext> ldapContexts) {
+        this.ldapContexts = ldapContexts;
     }
 
     public Boolean getOptionalLdap() {
@@ -282,7 +312,6 @@ public class TelveIdmRealm extends JndiLdapRealm {
         this.roleSyncFilter = roleSyncFilter;
     }
 
-
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         //null usernames are invalid
@@ -304,31 +333,30 @@ public class TelveIdmRealm extends JndiLdapRealm {
             // Retrieve roles and permissions from database
             roleNames = getRoleNamesForUser(user);
             permissions = getPermissions(user);
-            
 
             //$owner ve $group ile ilgili yetki zenginleştirmesi
             String groupScope = "";
             Set<String> scopePerms = new HashSet<>();
-            for( String p : permissions ){
-                if( p.contains("$group")){
+            for (String p : permissions) {
+                if (p.contains("$group")) {
                     //Eğer daha önceden grup üyeleri bulunmadıysa onları bir bulalım
-                    if( Strings.isNullOrEmpty(groupScope) ){
-                        List<String> ls = getUserRepository().findAllGroupMembers( username );
+                    if (Strings.isNullOrEmpty(groupScope)) {
+                        List<String> ls = getUserRepository().findAllGroupMembers(username);
                         groupScope = Joiner.on(',').join(ls);
                     }
-                    
+
                     scopePerms.add(p.replace("$group", groupScope));
-                    
-                } else if( p.contains("$owner")){
+
+                } else if (p.contains("$owner")) {
                     scopePerms.add(p.replace("$owner", username));
                 }
             }
-            
+
             LOG.debug("Scope Permissions {}", scopePerms);
-            if( !scopePerms.isEmpty()){
+            if (!scopePerms.isEmpty()) {
                 permissions.addAll(scopePerms);
             }
-            
+
         }
 
         //Normal kullanıcılar ( LDAP'tan vs gelmeyen ) kendi parolasını değiştirebilmeli.
@@ -346,19 +374,46 @@ public class TelveIdmRealm extends JndiLdapRealm {
 
         SimpleAuthenticationInfo info = null;
         if (useLdap) {
-            try {
-                setCredentialsMatcher(ldapMatcher);
-                info = (SimpleAuthenticationInfo) queryForAuthenticationInfo(token, getContextFactory());
-            } catch (AuthenticationNotSupportedException e) {
-                String msg = "Unsupported configured authentication mechanism";
-                throw new UnsupportedAuthenticationMechanismException(msg, e);
-            } catch (javax.naming.AuthenticationException e) {
-                if (!optionalLdap) {
-                    throw new AuthenticationException("LDAP authentication failed.", e);
+
+            if (useMultiLdap) {
+                //Eğer Multi LDAP varsa sırayla deneyeceğiz. Eğer hala doğrulama olmadıysa optinal Olup olmadığına bakacağız.
+                for (TelveLdapContext tlc : ldapContexts.values()) {
+
+                    try {
+                        setCredentialsMatcher(ldapMatcher);
+                        info = (SimpleAuthenticationInfo) queryForAuthenticationInfo(token, tlc.getContextFactory());
+                    } catch (AuthenticationNotSupportedException e) {
+                        String msg = "Unsupported configured authentication mechanism";
+                        LOG.warn(msg);
+                    } catch (javax.naming.AuthenticationException e) {
+                        //Burada özel olarak yapacak bir şey yok. Döngüye devam etmesini istiyoruz.
+                    } catch (NamingException e) {
+                        String msg = "LDAP naming error while attempting to authenticate user.";
+                        LOG.warn(msg);
+                    }
+                    
+                    if( info == null && !optionalLdap ){
+                        throw new AuthenticationException("LDAP authentication failed.");
+                    } else {
+                        break;
+                    }
                 }
-            } catch (NamingException e) {
-                String msg = "LDAP naming error while attempting to authenticate user.";
-                throw new AuthenticationException(msg, e);
+            } else {
+
+                try {
+                    setCredentialsMatcher(ldapMatcher);
+                    info = (SimpleAuthenticationInfo) queryForAuthenticationInfo(token, getContextFactory());
+                } catch (AuthenticationNotSupportedException e) {
+                    String msg = "Unsupported configured authentication mechanism";
+                    throw new UnsupportedAuthenticationMechanismException(msg, e);
+                } catch (javax.naming.AuthenticationException e) {
+                    if (!optionalLdap) {
+                        throw new AuthenticationException("LDAP authentication failed.", e);
+                    }
+                } catch (NamingException e) {
+                    String msg = "LDAP naming error while attempting to authenticate user.";
+                    throw new AuthenticationException(msg, e);
+                }
             }
         }
 
@@ -393,12 +448,12 @@ public class TelveIdmRealm extends JndiLdapRealm {
             if (!user.getActive()) {
                 throw new LockedAccountException("Account is lock for user [" + username + "]");
             }
-            
+
             //Login sırasında girilen veri yerine veri tabanındaki loginName kullanılsın
             upToken.setUsername(user.getLoginName());
             username = user.getLoginName();
-            
-            if( info != null ){
+
+            if (info != null) {
                 info.setPrincipals(new SimplePrincipalCollection(new TelveSimplePrinciple(username), getName()));
             }
         }
@@ -411,7 +466,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
                 throw new UnknownAccountException("No account found for user [" + username + "]");
             }
 
-            info = new SimpleAuthenticationInfo( new TelveSimplePrinciple(username), password.toCharArray(), getName());
+            info = new SimpleAuthenticationInfo(new TelveSimplePrinciple(username), password.toCharArray(), getName());
 
             setCredentialsMatcher(idmMatcher);
         }
@@ -434,7 +489,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
             return Collections.emptySet();
         }
 
-        List<UserRole> userRoles = getUserRoleRepository().findByUserAndRole_active( user, true );
+        List<UserRole> userRoles = getUserRoleRepository().findByUserAndRole_active(user, true);
 
         for (UserRole ur : userRoles) {
             roleNames.add(ur.getRole().getName());
@@ -551,5 +606,4 @@ public class TelveIdmRealm extends JndiLdapRealm {
         return new SimpleAuthenticationInfo(new TelveSimplePrinciple(token.getPrincipal().toString()), token.getCredentials(), getName());
     }
 
-    
 }
