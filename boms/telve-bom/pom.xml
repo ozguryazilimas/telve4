@@ -12,10 +12,6 @@
     <packaging>pom</packaging>
     
     <properties>
-        
-        <buildNumber>SNAPSHOT</buildNumber>
-        <revision>4.0.0</revision>
-        <changelist>-${buildNumber}</changelist>
         <telve.version>${revision}${changelist}</telve.version>
     </properties>
     

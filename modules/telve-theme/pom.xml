@@ -4,16 +4,24 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.ozguryazilim.telve</groupId>
+    
+    <parent>
+        <artifactId>telve-parent</artifactId>
+        <groupId>com.ozguryazilim.telve</groupId>
+        <version>${revision}${changelist}</version>
+    </parent>
+    
     <artifactId>telve-theme</artifactId>
-    <version>${revision}${changelist}</version> 
     <name>Telve Theme</name>
     <packaging>jar</packaging>
 	
     <properties>
+        <!--
         <buildNumber>SNAPSHOT</buildNumber>
-        <revision>4.0.0</revision>
+        <minorNumber>1</minorNumber>
+        <revision>4.0.${minorNumber}</revision>
         <changelist>-${buildNumber}</changelist>
+        -->
         
         <jdk.debug>true</jdk.debug>
         <jdk.optimize>false</jdk.optimize>
