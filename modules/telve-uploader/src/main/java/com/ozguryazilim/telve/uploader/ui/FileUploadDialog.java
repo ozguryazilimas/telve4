@@ -23,15 +23,15 @@ import org.slf4j.LoggerFactory;
 public class FileUploadDialog implements Serializable{
     
     private static final Logger LOG = LoggerFactory.getLogger(FileUploadDialog.class);
+
+    protected String ownerKey;
     
-    private String ownerKey;
-    
-    private FileUploadHandler handler;
+    protected FileUploadHandler handler;
     private String endPoint;
     private Long chunkSize;
     
     private Long maxFileSize;
-    private Integer maxNumberOfFiles;
+    protected Integer maxNumberOfFiles;
     private String allowedFileTypes;
     
     @PostConstruct
