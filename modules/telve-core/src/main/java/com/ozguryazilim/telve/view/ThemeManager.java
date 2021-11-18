@@ -39,7 +39,7 @@ public class ThemeManager implements Serializable{
         //Dosyaların classpath'de olup olmadığına bakılacak ve eğer yoksa default degere fallback olacak.
         layoutName = ConfigResolver.getPropertyValue("themeManager.layout", "Default");
         
-        LOG.info("Using Layout Theme : {}", layoutName);
+        LOG.debug("Using Layout Theme : {}", layoutName);
         
         layoutTemplate = templateCheckOrFallback( layoutName , "baseTemplate.xhtml" );
         templateHeader = templateCheckOrFallback( layoutName , "templateHeader.xhtml" );
