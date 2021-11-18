@@ -46,8 +46,9 @@ public class DefaultHelpResolver implements HelpResolver{
             topic = topic.replace("View", "");
         }
         
-        //String topicPath = "/help/" + LocaleSelector.instance().getLocaleString() + topic;
-        String topicPath = "/docs?topic=" + topic;
+        topic = topic.replace("/", "-");
+        
+        String topicPath = "/help/" + topic;
         
         LOG.debug("Help yolu : {}", topicPath );
         
