@@ -2,24 +2,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>    
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<f:view locale="#{localeSelector.locale}">
+    <h:head>
 
         <title>#{messages[title]}</title>
         <ui:include src="#{themeManager.templateHeader}" />
-        
+
         <style>
             html {
                 background: none !important;
             }
         </style>
-        
+
     </h:head>
 
     <h:body>
         <script type="text/javascript">
             jQuery(document).ready(function () {
-               bindEnters(); 
+                bindEnters();
             });
         </script>
         <ui:fragment rendered="#{ajaxStatus eq 'true'}">
@@ -31,16 +33,17 @@
         <div class="container-fluid">
             <ui:insert name="form" />
         </div>
-        
+
         <script type="text/javascript">
-            
+
             //Mobil cihazlar için tam ekran dialog desteği
             setTimeout(function () {
                 maximazeDialog();
                 zIndexChange();
             }, 100);
-            
+
         </script>
 
     </h:body>
+</f:view>
 </html>
