@@ -384,7 +384,7 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
         if (e != null) {
             loadQuery(e.getAsString());
         } else {
-            queryName = "";
+            search();
         }
     }
 
