@@ -63,7 +63,7 @@ public class LogViewer implements Serializable {
     @PostConstruct
     public void init(){
         
-        String loglst = ConfigResolver.getProjectStageAwarePropertyValue("logviwer.log.list");
+        String loglst = ConfigResolver.getProjectStageAwarePropertyValue("logviewer.log.list");
         
         if( Strings.isNullOrEmpty(loglst)){
             logNames = new ArrayList<>();
@@ -90,7 +90,7 @@ public class LogViewer implements Serializable {
      * @return 
      */
     public String getLogCaption( String logName ){
-        return ConfigResolver.getProjectStageAwarePropertyValue("logviwer.log." + logName + ".caption", logName);
+        return ConfigResolver.getProjectStageAwarePropertyValue("logviewer.log." + logName + ".caption", logName);
     }
     
     /**
@@ -102,7 +102,7 @@ public class LogViewer implements Serializable {
      * @return 
      */
     public String getLogFileName( String logName ){
-        return ConfigResolver.getProjectStageAwarePropertyValue("logviwer.log." + logName + ".fileName");
+        return ConfigResolver.getProjectStageAwarePropertyValue("logviewer.log." + logName + ".fileName");
     }
     /**
      * Read Filtred Log Lines
