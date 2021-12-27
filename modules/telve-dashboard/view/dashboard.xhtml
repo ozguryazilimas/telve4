@@ -4,10 +4,10 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:t="http://java.sun.com/jsf/composite/telveComponents"
                 template="#{themeManager.layoutTemplate}">
 
     <ui:param name="dontShowContentHeader" value="true" />
+    <ui:param name="pageTitle" value="#{messages['homepage.dashboard.title']}"/>
 
     <ui:define name="body">
         <ui:include src="/layout/messages.xhtml" />
