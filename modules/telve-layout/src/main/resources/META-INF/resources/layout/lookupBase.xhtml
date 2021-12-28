@@ -15,6 +15,7 @@
                     <t:inputAny label="general.label.SearchKey" columnClass="col-xs-12">
                         <h:panelGroup styleClass="input-group" layout="block">
                             <p:inputText value="#{bean.model.searchText}" />
+                            <p:defaultCommand target="search2" />
                             <div class="input-group-btn">
                             <p:commandButton id="search2" icon="fa fa-search" action="#{bean.search()}" update=":lookupForm:resultLists" styleClass="ui-icon-only btn btn-default" />
                             </div>

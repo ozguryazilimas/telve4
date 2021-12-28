@@ -73,8 +73,9 @@
 			<h:form id="search">
 				<div class="input-group">
 					<p:inputText value="#{homeBean.filter}" required="false" placeholder="#{messages['general.label.SearchText']}" />
+					<p:defaultCommand target="treeSearch" />
 					<div class="input-group-btn">
-						<p:commandButton icon="fa fa-search" update="treePanel" action="#{homeBean.search()}" partialSubmit="false" styleClass="btn btn-default" />
+						<p:commandButton id="treeSearch" icon="fa fa-search" update="treePanel" action="#{homeBean.search()}" partialSubmit="false" styleClass="btn btn-default" />
 					</div>
 				</div>
 			</h:form>
