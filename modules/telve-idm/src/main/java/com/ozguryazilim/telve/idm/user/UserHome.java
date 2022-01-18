@@ -16,19 +16,20 @@ import com.ozguryazilim.telve.idm.IdmEvent;
 import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.messages.Messages;
-import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.shiro.authc.credential.DefaultPasswordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Kullanıcı tanımlama ekranı.
@@ -276,7 +277,8 @@ public class UserHome extends FormBase<User, Long> {
         params.put("entity", getEntity());
         params.put("password", password);
 
-        emailChannel.sendMessage(getEntity().getEmail(), "", "", params);
+        String subject = telveConfigResolver.getProperty("app.title") + " " + Messages.getMessage("email.subject.LoginInfo");
+        emailChannel.sendMessage(getEntity().getEmail(), subject, "", params);
     }
 
     public boolean isValidTckn(String tckn) {
