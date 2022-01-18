@@ -75,8 +75,9 @@
                                 <div class="input-group">
                                     <p:inputText id="filter" value="#{bean.queryDefinition.searchText}" 
                                                  placeholder="#{messages['general.info.SearchText']}" />
+                                    <p:defaultCommand target="browseSearch" />
                                     <div class="input-group-btn">
-                                        <p:commandButton action="#{bean.mainSearch()}" process="@form" icon="fa fa-search" styleClass="ui-icon-only btn btn-default" update="@([id$=results])" />
+                                        <p:commandButton id="browseSearch" action="#{bean.mainSearch()}" process="@form" icon="fa fa-search" styleClass="ui-icon-only btn btn-default" update="@([id$=results])" />
                                     </div>
                                 </div>
                             </span>
