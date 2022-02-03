@@ -90,6 +90,7 @@ public class GroupHome extends TreeBase<Group>{
                 userGrouprepository.save(ur);
             }
         }
+        event.fire(new IdmEvent(IdmEvent.FROM_GROUP, IdmEvent.UPDATE, getEntity().getName()));
         search();
     }
 
@@ -128,6 +129,7 @@ public class GroupHome extends TreeBase<Group>{
     public void removeItem( Long id ){
         UserGroup ug = userGrouprepository.findBy(id);
         userGrouprepository.remove(ug);
+        event.fire(new IdmEvent(IdmEvent.FROM_GROUP, IdmEvent.UPDATE, getEntity().getName()));
     }
 
     @Override

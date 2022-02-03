@@ -7,6 +7,7 @@ import com.ozguryazilim.telve.auth.UserDataChangeEvent;
 import com.ozguryazilim.telve.data.RepositoryBase;
 import com.ozguryazilim.telve.forms.SubView;
 import com.ozguryazilim.telve.forms.SubViewQueryBase;
+import com.ozguryazilim.telve.idm.IdmEvent;
 import com.ozguryazilim.telve.idm.config.IdmPages;
 import com.ozguryazilim.telve.idm.entities.Group;
 import com.ozguryazilim.telve.idm.entities.Group_;
@@ -39,10 +40,10 @@ public class UserGroupSubView extends SubViewQueryBase<UserGroup, UserGroupViewM
     
     @Inject
     private AuditLogger auditLogger;
-    
+
     @Inject
     private Event<UserDataChangeEvent> userEvent;
-    
+
     @Override
     protected void buildQueryDefinition(QueryDefinition<UserGroup, UserGroupViewModel> queryDefinition) {
         queryDefinition
@@ -72,8 +73,6 @@ public class UserGroupSubView extends SubViewQueryBase<UserGroup, UserGroupViewM
         userEvent.fire(new UserDataChangeEvent(userHome.getEntity().getLoginName()));
         return true;
     }
-    
-    
 
     /**
      * Verilen şikayetleri muayene'ye ekler
