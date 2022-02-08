@@ -111,7 +111,12 @@
 
                         <div class="box-body" >
                             <div class="row">
-                                <t:inputText label="general.label.Name" value="#{dashboardManager.selectedBoard.name}" required="true" />
+                                <ui:fragment rendered="#{!dashboardManager.selectedBoard.isMain()}">
+                                    <t:inputText label="general.label.Name" value="#{dashboardManager.selectedBoard.name}" required="true" />
+                                </ui:fragment>
+                                <ui:fragment rendered="#{dashboardManager.selectedBoard.isMain()}">
+                                    <t:inputText label="general.label.Name" value="#{messages['dashboard.main.name']}" readonly="true" />
+                                </ui:fragment>
 
 
                                 <t:inputAny label="general.label.Layout" >
@@ -269,7 +274,15 @@
                             </f:facet>
                         </ui:remove>
                         <p:column headerText="#{messages['general.label.Dashboard']}">
-                            <h:outputText value="#{dashboard.name}" />
+
+                            <ui:fragment rendered="#{!dashboard.isMain()}">
+                                <h:outputText value="#{dashboard.name}" />
+                            </ui:fragment>
+
+                            <ui:fragment rendered="#{dashboard.isMain()}">
+                                <h:outputText value="#{messages['dashboard.main.name']}" readonly="true" />
+                            </ui:fragment>
+
                         </p:column>
                         <p:column headerText="#{messages['general.label.Layout']}" >
                             <i class="ly-icon-layout#{dashboard.layout}" />
@@ -300,7 +313,9 @@
                                 <p:commandLink id="newDashboard" action="#{dashboardManager.newDashboard()}" styleClass="fa fa-plus-circle btn-add" update=":editForm" oncomplete="initSortables();PF('layoutEditor').show();" partialSubmit="true" process="@this"/>
                             </f:facet>
                             <p:commandLink id="editDashboard" styleClass="fa fa-pencil btn-edit" action="#{dashboardManager.editDashboard(dashboard)}" update=":editForm" oncomplete="initSortables();PF('layoutEditor').show();" partialSubmit="true" process="@this"/>
-                            <p:commandLink id="deleteDashboard" styleClass="fa fa-trash btn-delete" action="#{dashboardManager.deleteDashboard(dashboard)}" update="dashboardList" partialSubmit="true" process="@this"/>
+                            <ui:fragment rendered="#{!dashboard.isMain()}">
+                                <p:commandLink id="deleteDashboard" styleClass="fa fa-trash btn-delete" action="#{dashboardManager.deleteDashboard(dashboard)}" update="dashboardList" partialSubmit="true" process="@this"/>
+                            </ui:fragment>
                         </p:column>
                     </p:dataTable>
                 </h:form>

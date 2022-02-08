@@ -18,6 +18,9 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.shiro.subject.Subject;
 import org.primefaces.event.CloseEvent;
@@ -96,7 +99,7 @@ public class DashboardManager implements Serializable {
     protected void initSystemDashbord() {
 
         DashboardDataModel model = new DashboardDataModel();
-        model.setName(ConfigResolver.getProjectStageAwarePropertyValue("dashboard.name", "Ana Sayfa"));
+        model.setName("");
         int tc = Integer.parseInt(ConfigResolver.getProjectStageAwarePropertyValue("dashboard.layout", "0"));
         model.setLayout(tc);
 
@@ -120,6 +123,8 @@ public class DashboardManager implements Serializable {
         for (String d : Splitter.on(',').omitEmptyStrings().trimResults().split(col)) {
             model.getColumn3().add(d);
         }
+
+        model.setMain(true);
 
         dashboards.add(model);
         saveData();
@@ -343,6 +348,9 @@ public class DashboardManager implements Serializable {
             col = o.getAsString();
             setColumnDashets(t.getColumn3(), col);
 
+            o = kahve.get(TAB_KEY + i + ".main");
+            t.setMain(o != null ? o.getAsBoolean() : false);
+
             dashboards.add(t);
         }
     }
@@ -375,6 +383,8 @@ public class DashboardManager implements Serializable {
 
             s = Joiner.on(",").join(data.getColumn3());
             kahve.put(TAB_KEY + i + ".col3", s);
+
+            kahve.put(TAB_KEY + i + ".main", data.isMain());
 
         }
     }
@@ -419,6 +429,9 @@ public class DashboardManager implements Serializable {
      * @param layoutMap
      */
     public void setLayoutMap(String layoutMap) {
+        if (StringUtils.isBlank(layoutMap)) {
+           return;
+        }
         this.layoutMap = layoutMap;
 
         //set edildiğinde değerler parse edilip yerlerine yerleştirilecek...

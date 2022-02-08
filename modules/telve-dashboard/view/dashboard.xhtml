@@ -33,7 +33,12 @@
                 <h:link id="dashborad#{loop.index}" >
                     <f:param name="board" value="#{loop.index}" />
                     <i class="fa fa-th-large" />
-                    <span>#{dashboard.name}</span> 
+                    <ui:fragment rendered="#{dashboard.isMain()}">
+                        <span>#{messages['dashboard.main.name']}</span>
+                    </ui:fragment>
+                    <ui:fragment rendered="#{!dashboard.isMain()}">
+                        <span>#{dashboard.name}</span>
+                    </ui:fragment>
                 </h:link>
             </li>
         </c:forEach>
