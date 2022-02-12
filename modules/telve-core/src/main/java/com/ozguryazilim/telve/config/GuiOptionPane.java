@@ -28,6 +28,7 @@ public class GuiOptionPane extends AbstractOptionPane{
     private String theme;
     private String locale;
     private Boolean showSidebar = Boolean.TRUE;
+    private Boolean showThemes = Boolean.TRUE;
     
     @Inject
     private ThemeSelector themeSelector;
@@ -78,9 +79,10 @@ public class GuiOptionPane extends AbstractOptionPane{
         themes.put("Trontastic", "trontastic");  
         themes.put("UI-Darkness", "ui-darkness");  
         themes.put("UI-Lightness", "ui-lightness");  
-        themes.put("Vader", "vader");  
-        
+        themes.put("Vader", "vader");
+
         showSidebar = !"true".equals(ConfigResolver.getPropertyValue("optionPane.exclude.Sidebar", "false"));
+        showThemes = !"true".equals(ConfigResolver.getPropertyValue("optionPane.exclude.Themes", "false"));
     }
 
     public Map<String, String> getThemes() {
@@ -149,5 +151,9 @@ public class GuiOptionPane extends AbstractOptionPane{
     
     public Boolean getShowSidebar(){
         return showSidebar;
+    }
+
+    public Boolean getShowThemes() {
+        return showThemes;
     }
 }
