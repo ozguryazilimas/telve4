@@ -129,6 +129,10 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             role = roleRepository.findAnyByName(defaultRole);
         }
 
+        // Ldap den veri çekilip çekilmediği bilgisini saklar. Eğer hiç veri çekilmemişse bir sorun olduğu bellidir.
+        // Bu durumda hiçbir şey yapılmamalı. Kullanıcılar pasifleştirilmemeli.
+        boolean isAnyLdapUser = false;
+
         try {
             SearchControls userSearchControls = new SearchControls();
             userSearchControls.setReturningAttributes(new String[]{loginNameAttr, firstNameAttr, lastNameAttr, emailAttr});
@@ -142,6 +146,9 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                 // Ldap uzerinden kullanicilari ariyoruz
                 NamingEnumeration<SearchResult> ldapUserResults = ldapContext
                     .search(userSearchBase, userSyncFilter, userSearchControls);
+
+                //Ldap üzerinden veri çekilip çekilmediğinin bilgisini elde ediyoruz.
+                isAnyLdapUser = ldapUserResults.hasMoreElements();
 
                 while (ldapUserResults.hasMoreElements()) {
                     Attributes attributes = ldapUserResults.next().getAttributes();
@@ -229,9 +236,12 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
         // kalan kullanicilar telve tarafinda ve aktif ancak Ldap tarafinda bulunmuyor
         // bunlarin durumunu pasife cekelim
-        for (User user : existingActiveUsers) {
-            user.setActive(Boolean.FALSE);
-            userRepository.save(user);
+        // Eğer Ldap üzerinden hiç veri çekilmemiş ise bu işlemi gerçekleştirmeyelim
+        if (isAnyLdapUser) {
+            for (User user : existingActiveUsers) {
+                user.setActive(Boolean.FALSE);
+                userRepository.save(user);
+            }
         }
         
         event.fire(new IdmLdapSyncEvent(IdmLdapSyncEvent.USER));
@@ -429,12 +439,14 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                         UserRole newUserRole = new UserRole();
                                         newUserRole.setRole(role);
                                         newUserRole.setUser(existingUser);
+                                        newUserRole.setLdapRole(true);
                                         userRoleRepository.save(newUserRole);
                                     }
                                     // katiyliysa da guncelleyelim
                                     else {
                                         existingUserRole.setUser(existingUser);
                                         existingUserRole.setRole(role);
+                                        existingUserRole.setLdapRole(true);
                                         userRoleRepository.save(existingUserRole);
                                         // kullaniciyi listeden silelim
                                         roleMembers.remove(existingUserRole);

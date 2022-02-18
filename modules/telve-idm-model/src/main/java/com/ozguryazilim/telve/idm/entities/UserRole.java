@@ -32,6 +32,9 @@ public class UserRole extends EntityBase{
     @JoinColumn(name = "ROLE_ID", foreignKey = @ForeignKey(name = "FK_UR_ROLEID"))
     private Role role;
 
+    @Column(name = "IS_LDAP_ROLE")
+    private Boolean isLdapRole = Boolean.FALSE;
+
     @Override
     public Long getId() {
         return id;
@@ -56,7 +59,12 @@ public class UserRole extends EntityBase{
     public void setRole(Role role) {
         this.role = role;
     }
-    
-    
-    
+
+    public Boolean getLdapRole() {
+        return isLdapRole;
+    }
+
+    public void setLdapRole(Boolean ldapRole) {
+        isLdapRole = ldapRole;
+    }
 }

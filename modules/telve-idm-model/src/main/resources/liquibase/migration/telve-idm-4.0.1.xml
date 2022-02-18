@@ -86,6 +86,7 @@
             </column>
             <column name="ROLE_ID" type="BIGINT"/>
             <column name="USER_ID" type="BIGINT"/>
+            <column name="IS_LDAP_ROLE" type="BOOLEAN"/>
         </createTable>
     </changeSet>
 
