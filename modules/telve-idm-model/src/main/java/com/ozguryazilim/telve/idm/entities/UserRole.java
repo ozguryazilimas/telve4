@@ -32,8 +32,8 @@ public class UserRole extends EntityBase{
     @JoinColumn(name = "ROLE_ID", foreignKey = @ForeignKey(name = "FK_UR_ROLEID"))
     private Role role;
 
-    @Column(name = "IS_LDAP_ROLE")
-    private Boolean isLdapRole = Boolean.FALSE;
+    @Column(name = "ISAUTOCREATED")
+    private Boolean autoCreated = Boolean.FALSE;
 
     @Override
     public Long getId() {
@@ -60,11 +60,11 @@ public class UserRole extends EntityBase{
         this.role = role;
     }
 
-    public Boolean getLdapRole() {
-        return isLdapRole;
+    public Boolean getAutoCreated() {
+        return autoCreated;
     }
 
-    public void setLdapRole(Boolean ldapRole) {
-        isLdapRole = ldapRole;
+    public void setAutoCreated(Boolean autoCreated) {
+        this.autoCreated = autoCreated;
     }
 }

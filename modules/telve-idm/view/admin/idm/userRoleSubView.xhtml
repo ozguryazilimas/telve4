@@ -16,6 +16,7 @@
     <ui:param name="canInsert" value="false" />
     <ui:param name="canEdit" value="false" />
     <ui:param name="canDelete" value="false" />
+    <ui:param name="showAdditionalSymbol" value="true" />
     <ui:param name="showActionColumn" value="true" />
     <ui:param name="actionColumnStyle" value="actionColumnDouble" />
     <ui:param name="permission" value="userRole" />
@@ -33,11 +34,19 @@
         <p:commandLink action="#{bean.removeItem( item.id )}" 
                        update="results" 
                        title="#{messages['general.label.DeleteLine']}"
-                       partialSubmit="true" process="@this" rendered="#{identity.hasPermission('userRole', 'DELETE') and userRoleSubView.canInsert()}">
+                       partialSubmit="true" process="@this" rendered="#{identity.hasPermission('userRole', 'DELETE') and userRoleSubView.canInsert() and userRoleSubView.canRemove(item)}">
             <i class="fa fa-trash-o btn-delete" ></i>
             <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
         </p:commandLink>
+        <ui:fragment rendered="#{!userRoleSubView.canRemove(item)}">
+            <i class="fa fa-trash-o btn-disabled" ></i>
+        </ui:fragment>
     </ui:define>
-    
+
+    <ui:define name="additionalSymbol">
+        <ui:fragment rendered="#{!empty userRoleSubView.userRoleAdditionalSymbol(item)}">
+            <i class="#{userRoleSubView.userRoleAdditionalSymbol(item)}"/>
+        </ui:fragment>
+    </ui:define>
 
 </ui:composition>

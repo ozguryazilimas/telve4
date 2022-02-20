@@ -333,12 +333,14 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                         UserGroup newUserGroup = new UserGroup();
                                         newUserGroup.setGroup(group);
                                         newUserGroup.setUser(existingUser);
+                                        newUserGroup.setAutoCreated(true);
                                         userGroupRepository.save(newUserGroup);
                                     }
                                     // katiyliysa da guncelleyelim
                                     else {
                                         existingUserGroup.setUser(existingUser);
                                         existingUserGroup.setGroup(group);
+                                        existingUserGroup.setAutoCreated(true);
                                         userGroupRepository.save(existingUserGroup);
                                         // kullaniciyi listeden silelim
                                         groupMembers.remove(existingUserGroup);
@@ -439,14 +441,14 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                         UserRole newUserRole = new UserRole();
                                         newUserRole.setRole(role);
                                         newUserRole.setUser(existingUser);
-                                        newUserRole.setLdapRole(true);
+                                        newUserRole.setAutoCreated(true);
                                         userRoleRepository.save(newUserRole);
                                     }
                                     // katiyliysa da guncelleyelim
                                     else {
                                         existingUserRole.setUser(existingUser);
                                         existingUserRole.setRole(role);
-                                        existingUserRole.setLdapRole(true);
+                                        existingUserRole.setAutoCreated(true);
                                         userRoleRepository.save(existingUserRole);
                                         // kullaniciyi listeden silelim
                                         roleMembers.remove(existingUserRole);

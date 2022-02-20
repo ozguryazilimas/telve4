@@ -70,6 +70,10 @@
 
                                     <ui:include src="/columns/#{col.template}.xhtml" />
 
+                                    <ui:fragment rendered="#{showAdditionalSymbol eq 'true'}">
+                                        <ui:insert name="additionalSymbol" />
+                                    </ui:fragment>
+
                                 </p:column>
                             </c:forEach>
                             

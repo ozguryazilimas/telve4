@@ -62,7 +62,8 @@ public abstract class UserGroupRepository extends RepositoryBase<UserGroup, User
                 ug.get(User_.id),
                 ug.get(User_.loginName),
                 rg.get(Group_.id),
-                rg.get(Group_.name)
+                rg.get(Group_.name),
+                from.get(UserGroup_.autoCreated)
         );
 
         //Filtreleri ekleyelim.

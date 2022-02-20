@@ -384,6 +384,10 @@ textarea.ui-inputfield, .ui-selectonemenu {
     color:  #4582ec !important;
 }
 
+.btn-disabled{
+    color:  #d8d8d8 !important;
+}
+
 
 
 /*Skin Extentions*/

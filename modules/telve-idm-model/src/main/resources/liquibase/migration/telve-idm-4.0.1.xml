@@ -77,6 +77,7 @@
             </column>
             <column name="GROUP_ID" type="BIGINT"/>
             <column name="USER_ID" type="BIGINT"/>
+            <column name="ISAUTOCREATED" type="BOOLEAN" valueBoolean="FALSE"/>
         </createTable>
     </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-9">
@@ -86,7 +87,7 @@
             </column>
             <column name="ROLE_ID" type="BIGINT"/>
             <column name="USER_ID" type="BIGINT"/>
-            <column name="IS_LDAP_ROLE" type="BOOLEAN"/>
+            <column name="ISAUTOCREATED" type="BOOLEAN" valueBoolean="FALSE"/>
         </createTable>
     </changeSet>
 

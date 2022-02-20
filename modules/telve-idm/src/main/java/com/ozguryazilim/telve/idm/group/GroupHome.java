@@ -154,5 +154,16 @@ public class GroupHome extends TreeBase<Group>{
     public boolean getIsMultiGroupActive(){
         return "true".equals(ConfigResolver.getPropertyValue("security.multiGroup.control", "false"));
     }
+
+    public boolean canRemove(UserGroup userGroup) {
+        return Boolean.FALSE.equals(userGroup.getAutoCreated());
+    }
+
+    public String userGroupAdditionalSymbol(UserGroup userGroup) {
+        if (Boolean.TRUE.equals(userGroup.getAutoCreated())) {
+            return "fa fa-server";
+        }
+        return "";
+    }
     
 }

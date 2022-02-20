@@ -14,6 +14,7 @@ public class UserGroupViewModel implements ViewModel, Serializable{
     private Long id;
     private User user;
     private Group group;
+    private Boolean autoCreated = Boolean.FALSE;
 
     public UserGroupViewModel() {
     }
@@ -26,6 +27,18 @@ public class UserGroupViewModel implements ViewModel, Serializable{
 
     public UserGroupViewModel(Long id, Long userId, String loginName, Long groupId, String groupName ) {
         this.id = id;
+        this.autoCreated = false;
+        this.user = new User();
+        this.user.setId(userId);
+        this.user.setLoginName(loginName);
+        this.group = new Group();
+        this.group.setId(groupId);
+        this.group.setName(groupName);
+    }
+
+    public UserGroupViewModel(Long id, Long userId, String loginName, Long groupId, String groupName, Boolean autoCreated ) {
+        this.id = id;
+        this.autoCreated = autoCreated;
         this.user = new User();
         this.user.setId(userId);
         this.user.setLoginName(loginName);
@@ -58,6 +71,12 @@ public class UserGroupViewModel implements ViewModel, Serializable{
     public void setGroup(Group group) {
         this.group = group;
     }
-    
-    
+
+    public Boolean getAutoCreated() {
+        return autoCreated;
+    }
+
+    public void setAutoCreated(Boolean autoCreated) {
+        this.autoCreated = autoCreated;
+    }
 }

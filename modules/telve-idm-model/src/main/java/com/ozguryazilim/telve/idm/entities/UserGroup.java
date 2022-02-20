@@ -35,6 +35,9 @@ public class UserGroup extends EntityBase{
     @JoinColumn(name = "GROUP_ID", foreignKey = @ForeignKey(name = "FK_UG_GROUPID"))
     private Group group;
 
+    @Column(name = "ISAUTOCREATED")
+    private Boolean autoCreated = Boolean.FALSE;
+
     @Override
     public Long getId() {
         return id;
@@ -60,5 +63,11 @@ public class UserGroup extends EntityBase{
         this.group = group;
     }
 
-    
+    public Boolean getAutoCreated() {
+        return autoCreated;
+    }
+
+    public void setAutoCreated(Boolean autoCreated) {
+        this.autoCreated = autoCreated;
+    }
 }
