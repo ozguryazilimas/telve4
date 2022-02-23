@@ -18,6 +18,7 @@ public class NotifyMessage implements Serializable{
     private String icon = "fa-bell-o";
     private String severity = "info";
     private String link;
+    private Long duration;
 
     public NotifyMessage() {
         this.id = UUID.randomUUID().toString();
@@ -45,6 +46,17 @@ public class NotifyMessage implements Serializable{
         this.to = to;
         this.icon = icon;
         this.severity = severity;
+    }
+
+    public NotifyMessage(String to, String subject, String body, String link, String icon, String severity, Long duration) {
+        this.id = UUID.randomUUID().toString();
+        this.subject = subject;
+        this.body = body;
+        this.link = link;
+        this.to = to;
+        this.icon = icon;
+        this.severity = severity;
+        this.duration = duration;
     }
 
     public String getTo() {
