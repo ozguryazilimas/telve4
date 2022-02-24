@@ -42,6 +42,11 @@ public interface Pages extends ViewConfig {
     class FeatureLookup implements Pages {};
 
     @SecuredPage
+    @View
+    class CleanupExpiredNotifiesCommand implements Admin {
+    };
+
+    @SecuredPage
     interface Admin extends Pages {
 
         @SecuredPage("scheduledCommand")
@@ -83,6 +88,7 @@ public interface Pages extends ViewConfig {
         @Navigation(icon = "fa fa-gears", section = AdminNavigationSection.class)
         class SystemOptions implements Admin {
         };
+
     }
 
 }

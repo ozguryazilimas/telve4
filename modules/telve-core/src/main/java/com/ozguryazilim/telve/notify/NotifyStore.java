@@ -48,6 +48,10 @@ public class NotifyStore implements Serializable {
         KahveEntry e = kahve.get(key, 0);
         Integer ix = e.getAsInteger();
 
+        if (message.getTimestamp() == null) {
+            message.setTimestamp(System.currentTimeMillis());
+        }
+
         Gson gson = new Gson();
         String data = gson.toJson(message);
 
@@ -109,6 +113,28 @@ public class NotifyStore implements Serializable {
         }
 
         kahve.remove(key);
+    }
+
+    /**
+     * Kullanıcıya ait ilgili id lere ait notify ları siler.
+     * @param identity
+     * @param ids
+     */
+    public void clearNotifiesByIds(String identity, List<String> ids) {
+        List<NotifyMessage> notifies = getNotifies(identity);
+        ids.stream()
+                .map(id -> notifies.stream().filter(n -> n.getId().equals(id)).findFirst())
+                .forEach(notifies::remove);
+
+        clear(identity);
+        save(identity, notifies);
+    }
+
+    public void clearNotifiesByNotifies(String identity, List<NotifyMessage> notifies) {
+        List<NotifyMessage> userNotifies = getNotifies(identity);
+        userNotifies.removeAll(notifies);
+        clear(identity);
+        save(identity, userNotifies);
     }
     
     /**
