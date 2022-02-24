@@ -116,20 +116,10 @@ public class NotifyStore implements Serializable {
     }
 
     /**
-     * Kullanıcıya ait ilgili id lere ait notify ları siler.
+     * Kullanıcıya ait ilgili notify ları siler ve notify listelerini günceller.
      * @param identity
-     * @param ids
+     * @param notifies
      */
-    public void clearNotifiesByIds(String identity, List<String> ids) {
-        List<NotifyMessage> notifies = getNotifies(identity);
-        ids.stream()
-                .map(id -> notifies.stream().filter(n -> n.getId().equals(id)).findFirst())
-                .forEach(notifies::remove);
-
-        clear(identity);
-        save(identity, notifies);
-    }
-
     public void clearNotifiesByNotifies(String identity, List<NotifyMessage> notifies) {
         List<NotifyMessage> userNotifies = getNotifies(identity);
         userNotifies.removeAll(notifies);
