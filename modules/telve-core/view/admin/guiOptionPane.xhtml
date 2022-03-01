@@ -38,24 +38,26 @@
                     <p:selectBooleanCheckbox value="#{guiOptionPane.slimScroll}" itemLabel="#{messages['Slim Scroll']}" /> 
                 </t:inputCheckboxGroup>
             </ui:fragment>
-            
-            <t:inputAny label="general.label.Theme">
-                <p:selectOneMenu value="#{guiOptionPane.skin}" >
-                    <f:selectItem itemLabel="Blue" itemValue="skin-blue" />
-                    <f:selectItem itemLabel="Green" itemValue="skin-green" />
-                    <f:selectItem itemLabel="Red" itemValue="skin-red" />
-                    <f:selectItem itemLabel="Yellow" itemValue="skin-yellow" />
-                    <f:selectItem itemLabel="Black" itemValue="skin-black" />
-                    <f:selectItem itemLabel="Purple" itemValue="skin-purple" />
-                    
-                    <f:selectItem itemLabel="Blue Light" itemValue="skin-blue-light" />
-                    <f:selectItem itemLabel="Green Light" itemValue="skin-green-light" />
-                    <f:selectItem itemLabel="Red Light" itemValue="skin-red-light" />
-                    <f:selectItem itemLabel="Yellow Light" itemValue="skin-yellow-light" />
-                    <f:selectItem itemLabel="Black Light" itemValue="skin-black-light" />
-                    <f:selectItem itemLabel="Puple Light" itemValue="skin-purple-light" />
-                </p:selectOneMenu>
-            </t:inputAny>
+
+            <ui:fragment rendered="#{guiOptionPane.showThemes}">
+                <t:inputAny label="general.label.Theme">
+                    <p:selectOneMenu value="#{guiOptionPane.skin}" >
+                        <f:selectItem itemLabel="Blue" itemValue="skin-blue" />
+                        <f:selectItem itemLabel="Green" itemValue="skin-green" />
+                        <f:selectItem itemLabel="Red" itemValue="skin-red" />
+                        <f:selectItem itemLabel="Yellow" itemValue="skin-yellow" />
+                        <f:selectItem itemLabel="Black" itemValue="skin-black" />
+                        <f:selectItem itemLabel="Purple" itemValue="skin-purple" />
+
+                        <f:selectItem itemLabel="Blue Light" itemValue="skin-blue-light" />
+                        <f:selectItem itemLabel="Green Light" itemValue="skin-green-light" />
+                        <f:selectItem itemLabel="Red Light" itemValue="skin-red-light" />
+                        <f:selectItem itemLabel="Yellow Light" itemValue="skin-yellow-light" />
+                        <f:selectItem itemLabel="Black Light" itemValue="skin-black-light" />
+                        <f:selectItem itemLabel="Puple Light" itemValue="skin-purple-light" />
+                    </p:selectOneMenu>
+                </t:inputAny>
+            </ui:fragment>
         </div>
         
         <script type="text/javascript">
