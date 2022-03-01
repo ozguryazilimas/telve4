@@ -18,6 +18,8 @@ public class NotifyMessage implements Serializable{
     private String icon = "fa-bell-o";
     private String severity = "info";
     private String link;
+    private Long timestamp = System.currentTimeMillis();
+    private Long duration = -1L;
 
     public NotifyMessage() {
         this.id = UUID.randomUUID().toString();
@@ -45,6 +47,17 @@ public class NotifyMessage implements Serializable{
         this.to = to;
         this.icon = icon;
         this.severity = severity;
+    }
+
+    public NotifyMessage(String to, String subject, String body, String link, String icon, String severity, Long duration) {
+        this.id = UUID.randomUUID().toString();
+        this.subject = subject;
+        this.body = body;
+        this.link = link;
+        this.to = to;
+        this.icon = icon;
+        this.severity = severity;
+        this.duration = duration;
     }
 
     public String getTo() {
@@ -103,6 +116,22 @@ public class NotifyMessage implements Serializable{
         this.id = id;
     }
 
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Long duration) {
+        this.duration = duration;
+    }
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -130,9 +159,7 @@ public class NotifyMessage implements Serializable{
 
     @Override
     public String toString() {
-        return "NotifyMessage{" + "to=" + to + ", subject=" + subject + ", body=" + body + ", icon=" + icon + ", severity=" + severity + '}';
+        return "NotifyMessage{" + "to=" + to + ", subject=" + subject + ", body=" + body + ", icon=" + icon + ", severity=" + severity + ", timestamp=" + timestamp + ", duration=" + duration + '}';
     }
-    
-    
-    
+
 }

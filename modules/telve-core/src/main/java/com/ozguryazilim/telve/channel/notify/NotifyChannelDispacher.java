@@ -34,7 +34,8 @@ public class NotifyChannelDispacher {
                 exchange.getIn().getBody(String.class), 
                 exchange.getIn().getHeader("link", String.class),
                 exchange.getIn().getHeader("icon", String.class),
-                exchange.getIn().getHeader("severity", String.class)
+                exchange.getIn().getHeader("severity", String.class),
+                exchange.getIn().getHeader("duration", Long.class)
         );
         
         notifyStore.save(message);

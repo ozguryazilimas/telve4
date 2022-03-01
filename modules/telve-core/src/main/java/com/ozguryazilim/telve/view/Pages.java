@@ -83,6 +83,12 @@ public interface Pages extends ViewConfig {
         @Navigation(icon = "fa fa-gears", section = AdminNavigationSection.class)
         class SystemOptions implements Admin {
         };
+
+        @SecuredPage
+        @View
+        class CleanupExpiredNotifiesCommand implements Admin {
+        };
+
     }
 
 }
