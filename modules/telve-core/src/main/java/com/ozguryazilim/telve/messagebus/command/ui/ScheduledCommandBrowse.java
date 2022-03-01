@@ -5,6 +5,7 @@ import com.ozguryazilim.telve.audit.AuditLogger;
 import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.entities.StoredCommand;
 import com.ozguryazilim.telve.forms.RefreshBrowserEvent;
+import com.ozguryazilim.telve.messagebus.command.CommandRegistery;
 import com.ozguryazilim.telve.messagebus.command.CommandScheduler;
 import com.ozguryazilim.telve.messagebus.command.CommandSender;
 import com.ozguryazilim.telve.messagebus.command.ScheduledCommand;
@@ -17,12 +18,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TreeMap;
 import javax.ejb.NoMoreTimeoutsException;
 import javax.ejb.Timer;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.core.Response;
+
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.ocpsoft.prettytime.PrettyTime;
@@ -71,10 +75,10 @@ public class ScheduledCommandBrowse implements Serializable{
     private String filterForInfo;
     private Date filterForStartDate;
     private Date filterForEndDate;
-            
+
     private Map<String,ScheduledCommandUIModel> items;
     private List<ScheduledCommandUIModel> filteredItems;
-    
+
     private String scheduleType;
     private Date startDate;
     private Date endDate;
@@ -433,7 +437,7 @@ public class ScheduledCommandBrowse implements Serializable{
         
         commandSender.sendCommand(selectedItem.getCommand());
     }
-    
+
     public void save() throws ClassNotFoundException {
         currentEditor.save();
         selectedItem = null;
