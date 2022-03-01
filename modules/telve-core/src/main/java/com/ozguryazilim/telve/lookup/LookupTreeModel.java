@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.primefaces.model.TreeNode;
 
 /**
@@ -43,6 +44,10 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
     private Map<Long, T> idMap = new HashMap<>();
     private Map<String, Long> pathMap = new HashMap<>();
     
+    private boolean caseSensitiveSearch = "true".equals(ConfigResolver.getPropertyValue("caseSensitiveSearch", "false"));
+
+    private Locale searchLocale = Locale.forLanguageTag(ConfigResolver.getPropertyValue("searchLocale", "tr-TR"));
+
 
     public void clearModel() {
         allItems.clear();
@@ -280,6 +285,10 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         resultItems.remove(item);
     }
     
+    private boolean isCaptionContainsText(String caption, String searchText){
+        return caseSensitiveSearch ? caption.contains(searchText) :  caption.toLowerCase(searchLocale).contains(searchText.toLowerCase(searchLocale));
+    }
+    
     public void buildResultList(){
         resultItems.clear();
         resultIdMap.clear();
@@ -290,8 +299,7 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
         } else {
             
             for( T ent : allItems ){
-                //Case Insensitive arama TODO: Locale kısmını config'e almak lazım... ( Türkçe Locale ile )
-                if( ent.getCaption().toLowerCase(new Locale("tr")).contains(getSearchText().toLowerCase(new Locale("tr"))) ){
+                if(isCaptionContainsText(ent.getCaption(), searchText)){
                     addFilteredItem(ent);
                     //Eger sadeye en son node seçilebiliyorsa bulunanların detaylarını da ekleyelim...
                     if( getLeafSelect() ){

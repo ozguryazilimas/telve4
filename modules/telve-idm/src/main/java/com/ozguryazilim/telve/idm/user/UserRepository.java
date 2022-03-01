@@ -17,6 +17,7 @@ import com.ozguryazilim.telve.query.filters.Filter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.persistence.TypedQuery;
@@ -45,6 +46,10 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
 
     @Inject
     private Identity identity;
+    
+    private boolean caseSensitiveSearch = "true".equals(ConfigResolver.getPropertyValue("caseSensitiveSearch", "false"));
+
+    private Locale searchLocale = Locale.forLanguageTag(ConfigResolver.getPropertyValue("searchLocale", "tr-TR"));
 
     public User createNew() throws InstantiationException, IllegalAccessException {
         User result = super.createNew();
@@ -325,9 +330,15 @@ public abstract class UserRepository extends RepositoryBase<User, UserViewModel>
      */
     private void buildSearchTextControl(String searchText, CriteriaBuilder criteriaBuilder, List<Predicate> predicates, Root<User> from) {
         if (!Strings.isNullOrEmpty(searchText)) {
-            predicates.add(criteriaBuilder.or(criteriaBuilder.like(from.get(User_.loginName), "%" + searchText + "%"),
+            if (caseSensitiveSearch) {
+                predicates.add(criteriaBuilder.or(criteriaBuilder.like(from.get(User_.loginName), "%" + searchText + "%"),
                     criteriaBuilder.like(from.get(User_.firstName), "%" + searchText + "%"),
-                    criteriaBuilder.like(from.get(User_.lastName), "%" + searchText + "%")));
+                    criteriaBuilder.like(from.get(User_.lastName), "%" + searchText + "%")));   
+            }else{
+                predicates.add(criteriaBuilder.or(criteriaBuilder.like(criteriaBuilder.lower(from.get(User_.loginName)), "%" + searchText.toLowerCase(searchLocale) + "%"),
+                    criteriaBuilder.like(criteriaBuilder.lower(from.get(User_.firstName)), "%" + searchText.toLowerCase(searchLocale) + "%"),
+                    criteriaBuilder.like(criteriaBuilder.lower(from.get(User_.lastName)), "%" + searchText.toLowerCase(searchLocale) + "%")));
+            }
         }
     }
 
