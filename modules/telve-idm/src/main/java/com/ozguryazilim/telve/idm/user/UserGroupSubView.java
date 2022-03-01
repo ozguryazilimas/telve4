@@ -128,4 +128,16 @@ public class UserGroupSubView extends SubViewQueryBase<UserGroup, UserGroupViewM
     public Boolean canInsert(){
         return userHome.canChangeCriticalData();
     }
+
+    public String userGroupAdditionalSymbol(UserGroupViewModel userGroup) {
+        if (Boolean.TRUE.equals(userGroup.getAutoCreated())) {
+            return "fa fa-server";
+        }
+        return "";
+    }
+
+    public Boolean canRemove(UserGroupViewModel userGroup) {
+        return Boolean.FALSE.equals(userGroup.getAutoCreated());
+    }
+
 }

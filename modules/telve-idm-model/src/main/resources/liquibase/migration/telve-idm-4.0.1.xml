@@ -79,6 +79,11 @@
             <column name="USER_ID" type="BIGINT"/>
         </createTable>
     </changeSet>
+    <changeSet author="emrygun" id="1646050090538">
+        <addColumn tableName="TLI_USER_GROUP">
+            <column name="ISAUTOCREATED" type="BOOLEAN" valueBoolean="FALSE"/>
+        </addColumn>
+    </changeSet>
     <changeSet author="oyas (generated)" id="1467025451677-9">
         <createTable tableName="TLI_USER_ROLE">
             <column name="ID" type="BIGINT">
@@ -87,6 +92,11 @@
             <column name="ROLE_ID" type="BIGINT"/>
             <column name="USER_ID" type="BIGINT"/>
         </createTable>
+    </changeSet>
+    <changeSet author="emrygun" id="1646050147214">
+        <addColumn tableName="TLI_USER_ROLE">
+            <column name="ISAUTOCREATED" type="BOOLEAN" valueBoolean="FALSE"/>
+        </addColumn>
     </changeSet>
 
     <changeSet author="oyas (generated)" id="default-user">

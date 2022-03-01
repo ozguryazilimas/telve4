@@ -124,7 +124,18 @@ public class UserRoleSubView extends SubViewQueryBase<UserRole, UserRoleViewMode
         return ls;
     }
 
+    public boolean canRemove(UserRoleViewModel userRole) {
+        return Boolean.FALSE.equals(userRole.getAutoCreated());
+    }
+
     public Boolean canInsert(){
         return userHome.canChangeCriticalData();
+    }
+
+    public String userRoleAdditionalSymbol(UserRoleViewModel userRole) {
+        if (Boolean.TRUE.equals(userRole.getAutoCreated())) {
+            return "fa fa-server";
+        }
+        return "";
     }
 }

@@ -29,6 +29,9 @@
                                  emptyMessage="#{messages['general.message.browse.EmptyDesc']}">>
                         <p:column headerText="#{messages['general.label.Member']}">
                             <h:outputText value="#{member.user.firstName} #{member.user.lastName}" />
+                            <ui:fragment rendered="#{!empty groupHome.userGroupAdditionalSymbol(member)}">
+                                <i class="#{groupHome.userGroupAdditionalSymbol(member)}" ></i>
+                            </ui:fragment>
                         </p:column>
                         <p:column styleClass="actionColumn">
                             <f:facet name="header">
@@ -39,13 +42,18 @@
                                             process="@this" update="members"/>   
                                 </p:commandLink>
                             </f:facet>
-                            <p:commandLink action="#{groupHome.removeItem( member.id )}" 
-                                           update="members" 
-                                           title="#{messages['general.label.DeleteLine']}"
-                                           partialSubmit="true" process="@this">
-                                <i class="fa fa-trash-o btn-delete" ></i>
-                                <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
-                            </p:commandLink>
+                            <ui:fragment rendered="#{groupHome.canRemove(member)}" >
+                                <p:commandLink action="#{groupHome.removeItem( member.id )}"
+                                               update="members"
+                                               title="#{messages['general.label.DeleteLine']}"
+                                               partialSubmit="true" process="@this">
+                                    <i class="fa fa-trash-o btn-delete" ></i>
+                                    <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
+                                </p:commandLink>
+                            </ui:fragment>
+                            <ui:fragment rendered="#{!groupHome.canRemove(member)}">
+                                <i class="fa fa-trash-o btn-disabled" ></i>
+                            </ui:fragment>
                         </p:column>
                     </p:dataTable>
                 </div>

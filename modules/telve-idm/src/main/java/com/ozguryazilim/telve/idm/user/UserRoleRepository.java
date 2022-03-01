@@ -62,7 +62,8 @@ public abstract class UserRoleRepository extends RepositoryBase<UserRole, UserRo
                 ug.get(User_.id),
                 ug.get(User_.loginName),
                 rg.get(Role_.id),
-                rg.get(Role_.name)
+                rg.get(Role_.name),
+                from.get(UserRole_.autoCreated)
         );
 
         //Filtreleri ekleyelim.
