@@ -9,6 +9,7 @@ import com.ozguryazilim.mutfak.kahve.KahveEntry;
 import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -18,8 +19,12 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.shiro.subject.Subject;
+import org.primefaces.component.dashboard.Dashboard;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.DashboardReorderEvent;
 import org.primefaces.model.DashboardColumn;
@@ -419,6 +424,9 @@ public class DashboardManager implements Serializable {
      * @param layoutMap
      */
     public void setLayoutMap(String layoutMap) {
+        if (StringUtils.isBlank(layoutMap)) {
+           return;
+        }
         this.layoutMap = layoutMap;
 
         //set edildiğinde değerler parse edilip yerlerine yerleştirilecek...
@@ -742,5 +750,8 @@ public class DashboardManager implements Serializable {
         this.board = board;
     }
 
-    
+    public boolean isDefaultDashboardName(DashboardDataModel dashboard) {
+        List<String> defaultDashboardNames = Arrays.asList(ConfigResolver.getProjectStageAwarePropertyValue("default.dashboard.name", "Ana Sayfa").split(","));
+        return defaultDashboardNames.stream().anyMatch(dashboard.getName()::equals);
+    }
 }

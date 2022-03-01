@@ -113,7 +113,6 @@
                             <div class="row">
                                 <t:inputText label="general.label.Name" value="#{dashboardManager.selectedBoard.name}" required="true" />
 
-
                                 <t:inputAny label="general.label.Layout" >
 
                                     <p:selectOneRadio id="customRadio" value="#{dashboardManager.selectedBoard.layout}" layout="custom" >  
@@ -269,7 +268,15 @@
                             </f:facet>
                         </ui:remove>
                         <p:column headerText="#{messages['general.label.Dashboard']}">
-                            <h:outputText value="#{dashboard.name}" />
+
+                            <ui:fragment rendered="#{!dashboardManager.isDefaultDashboardName(dashboard)}">
+                                <h:outputText value="#{dashboard.name}" />
+                            </ui:fragment>
+
+                            <ui:fragment rendered="#{dashboardManager.isDefaultDashboardName(dashboard)}">
+                                <h:outputText value="#{messages['dashboard.main.name']}" readonly="true" />
+                            </ui:fragment>
+
                         </p:column>
                         <p:column headerText="#{messages['general.label.Layout']}" >
                             <i class="ly-icon-layout#{dashboard.layout}" />
