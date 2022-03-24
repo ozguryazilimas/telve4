@@ -1,6 +1,7 @@
 package com.ozguryazilim.telve.idm;
 
 import com.ozguryazilim.telve.idm.entities.User;
+import java.util.Map;
 import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -73,10 +74,10 @@ public class TelveAdfsRealm extends TelveIdmRealm {
         User user = new User();
 
         user.setLoginName(adsfToken.getAccessToken().getUsername());
-        //adsfToken.getAccessToken().getIdTokenClaims().get("");
-        //FIXME: Burada claimler ile düzenlenmeli
-        //user.setFirstName(adsfToken.getAccessToken().getAccount());
-        //user.setLastName(kcToken.getAccessToken().getFamilyName());
+        
+        Map<String,Object> claims = adsfToken.getAccessToken().getIdTokenClaims();
+        user.setFirstName( (String)claims.get("name"));
+        user.setLastName((String)claims.get("surname"));
         //user.setEmail(kcToken.getAccessToken().getEmail());
         user.setAutoCreated(Boolean.TRUE);
 
