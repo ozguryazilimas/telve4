@@ -104,6 +104,12 @@
             </dependency>
             <dependency>
                 <groupId>com.ozguryazilim.telve</groupId>
+                <artifactId>telve-adfs</artifactId>
+                <version>${telve.version}</version>
+                <type>ejb</type>
+            </dependency>
+            <dependency>
+                <groupId>com.ozguryazilim.telve</groupId>
                 <artifactId>telve-note</artifactId>
                 <version>${telve.version}</version>
                 <type>ejb</type>
