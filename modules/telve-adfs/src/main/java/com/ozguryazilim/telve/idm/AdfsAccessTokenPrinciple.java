@@ -8,17 +8,17 @@ import java.io.Serializable;
  *
  * @author oyas
  */
-public class AdsfAccessTokenPrinciple implements TelveIdmPrinciple, Serializable{
+public class AdfsAccessTokenPrinciple implements TelveIdmPrinciple, Serializable{
 
     private IdentityContextData context;
 
-    public AdsfAccessTokenPrinciple(IdentityContextData context) {
+    public AdfsAccessTokenPrinciple(IdentityContextData context) {
         this.context = context;
     }
 
     @Override
     public String getName() {
-        return context.getUsername();
+        return context.getAccount().username().split("@")[0];
     }
 
     public IdentityContextData getContext() {

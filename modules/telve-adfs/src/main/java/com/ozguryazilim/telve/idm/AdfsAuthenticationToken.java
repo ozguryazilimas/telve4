@@ -21,12 +21,12 @@ public class AdfsAuthenticationToken implements AuthenticationToken{
     
     @Override
     public Object getPrincipal() {
-        return new AdsfAccessTokenPrinciple(context);
+        return new AdfsAccessTokenPrinciple(context);
     }
 
     @Override
     public Object getCredentials() {
-        return context.getUsername();
+        return ((AdfsAccessTokenPrinciple)getPrincipal()).getName();
     }
     
 }

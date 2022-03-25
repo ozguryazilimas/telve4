@@ -31,14 +31,14 @@ public class AdfsAuhtcFilter extends AuthenticatingFilter{
             AuthHelper.signIn(contextAdapter);
         }
         
-        LOG.debug("Claims: {}", context.getIdTokenClaims());
+        LOG.debug("Claims: {}, AccountId: {}, Username: {}", context.getIdTokenClaims(), context.getAccount().homeAccountId(), context.getAccount().username());
         
         return new AdfsAuthenticationToken( context );
     }
 
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
-        LOG.debug("Shiro login by Keycloak Authentication Token");
+        LOG.debug("Shiro login by ADFS Authentication Token");
         return executeLogin(request, response);
     }
 

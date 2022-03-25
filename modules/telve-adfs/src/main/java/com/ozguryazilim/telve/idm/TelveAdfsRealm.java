@@ -31,7 +31,9 @@ public class TelveAdfsRealm extends TelveIdmRealm {
         
         AdfsAuthenticationToken adsfToken = (AdfsAuthenticationToken)token;
         
-        String username = adsfToken.getAccessToken().getUsername();
+        String username = (String)adsfToken.getCredentials();
+        
+        LOG.debug("Authc UserName : {}", username);
         
         // Null username is invalid
         if (username == null) {
@@ -41,7 +43,10 @@ public class TelveAdfsRealm extends TelveIdmRealm {
         //Eğer gelen kullanıcı sistemde yoksa otomatik olarak yeni bir kullanıcı tanımlıyoruz.
         User user = getUserRepository().findAnyByLoginName(username);
         if (user == null) {
-            //FIXME: Burada kullanıcı idm veri tabanında yok ve LDAP bilgileri ile oluşturulacak.
+            //Eğer otomatik oluşturma istenmiyor ise hata fırlat
+            if (!getGenerateUser()) {
+                throw new UnknownAccountException("No account found for user [" + username + "]");
+            }
             createUser(adsfToken);
         }
 
