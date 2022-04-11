@@ -9,6 +9,7 @@ import javax.enterprise.event.Event;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
@@ -79,7 +80,7 @@ public class LoginController{
         auditLogger.actionLog("Logout", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, identity.getLoginName(), "");
         currentUser.logout();
         facesContext.getExternalContext().invalidateSession();
-        
-        return "/home.xhtml?faces-redirect=true";
+        String redirectTo = ConfigResolver.getPropertyValue("logout.redirect", "/home.xhtml?faces-redirect=true");
+        return redirectTo;
     }
 }
