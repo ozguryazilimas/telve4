@@ -23,7 +23,7 @@
             <h:form style="display: inline;">
                 <ui:insert name="extraButtons" />
                 <p:commandLink onclick="jQuery('##{dashlet}editPane').slideToggle(500);" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
-                               rendered="#{dashletRegistery.hasCapability( dashlet, 'canEdit' )}"><h:outputText styleClass="ui-icon ui-icon-pencil" /></p:commandLink>
+                               rendered="#{dashletRegistery.hasCapability( dashlet, 'canEdit' )}"><h:outputText styleClass="ui-icon #{dashletEditActionIcon ne null ? dashletEditActionIcon : 'ui-icon-pencil'}" /></p:commandLink>
                 <p:commandLink action="#{bean.refresh()}" update=":#{dashlet}" styleClass="ui-panel-titlebar-icon ui-corner-all ui-state-default"
                                rendered="#{dashletRegistery.hasCapability( dashlet, 'canRefresh' )}"><h:outputText styleClass="ui-icon ui-icon-refresh" /></p:commandLink>
             </h:form>
