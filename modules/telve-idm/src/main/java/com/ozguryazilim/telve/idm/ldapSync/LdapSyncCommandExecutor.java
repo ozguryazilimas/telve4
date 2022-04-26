@@ -110,6 +110,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
     }
 
     private void syncUsers(Ini.Section realm, LdapContext ldapContext, String scope, int pageSize) throws NamingException {
+        LOG.info("LDAP USER SYNCHRONIZATION STARTING...");
         String loginNameAttr = realm.get(telveRealm + "loginNameAttr");
         String firstNameAttr = realm.get(telveRealm + "firstNameAttr");
         String lastNameAttr = realm.get(telveRealm + "lastNameAttr");
@@ -133,6 +134,13 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         // Bu durumda hiçbir şey yapılmamalı. Kullanıcılar pasifleştirilmemeli.
         boolean isAnyLdapUser = false;
 
+        // Başarılı user create sync'ları sayacak counter.
+        int createUserCounter = 0;
+        // Başarılı user update sync'ları sayacak counter.
+        int updateUserCounter = 0;
+        // Deaktif edilen user'ları sayacak counter.
+        int deactiveUserCounter = 0;
+
         try {
             SearchControls userSearchControls = new SearchControls();
             userSearchControls.setReturningAttributes(new String[]{loginNameAttr, firstNameAttr, lastNameAttr, emailAttr});
@@ -150,6 +158,10 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                 //Ldap üzerinden veri çekilip çekilmediğinin bilgisini elde ediyoruz.
                 isAnyLdapUser = ldapUserResults.hasMoreElements();
 
+                if(!isAnyLdapUser){
+                    LOG.warn("There isn't any user coming from LDAP. User Sync is completed without any change...");
+                }
+
                 while (ldapUserResults.hasMoreElements()) {
                     Attributes attributes = ldapUserResults.next().getAttributes();
 
@@ -161,6 +173,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                         attributes.get(lastNameAttr) != null ? attributes.get(lastNameAttr).get().toString() : null;
                     String email = attributes.get(emailAttr) != null ? attributes.get(emailAttr).get().toString() : null;
 
+                    LOG.debug("LDAP User Sync - Login Name: {}, First Name: {}, Last Name: {}, E-mail: {}.", loginName, firstName, lastName, email);
+
                     // loginName yoksa kullaniciyi kaydetmeyelim/guncellemeyelim
                     if (loginName != null) {
                         // Kullanici veritabaninda kayitli mi kontrol edelim
@@ -168,6 +182,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
                         // Eger yoksa yeni kayit olusturalim
                         if (user == null) {
+                            LOG.debug("User not found in database. Will be added. Login Name: {}", loginName);
                             User newUser = new User();
 
                             newUser.setLoginName(loginName);
@@ -179,7 +194,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                             newUser.setManaged(Boolean.FALSE);
 
                             userRepository.save(newUser);
-
+                            LOG.debug("User added and active now. Login Name: {}", loginName);
+                            createUserCounter++;
                             // varsayilan rol'u kontrol edelim, varsa atayalim
                             if (role != null) {
                                 UserRole userRole = new UserRole();
@@ -187,19 +203,22 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                 userRole.setRole(role);
 
                                 userRoleRepository.save(userRole);
+                                LOG.debug("User role added. Login Name: {}, Role: {}", loginName, role.getName());
                             }
 
                             // eger kullanici varsa bilgilerini guncelleyelim
                             // autoCreated degilse telve tarafinda kullanicisi elle acilmis demektir, bunu otomatik olarak
                             // ldap'a baglamak mantikli olmaz
                         } else if (user.getAutoCreated()) {
+                            LOG.debug("User already saved in database. Login Name: {}", loginName);
                             user.setFirstName(firstName);
                             user.setLastName(lastName);
                             user.setEmail(email);
                             user.setActive(Boolean.TRUE);
 
                             userRepository.save(user);
-
+                            LOG.debug("User updated and active now. Login Name: {}", loginName);
+                            updateUserCounter++;
                             // varsayilan rol'e ekli mi? ekli degilse ekleyelim
                             if (role != null) {
                                 UserRole userRole = userRoleRepository.findAnyByUserAndRole(user, role);
@@ -210,6 +229,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                     newUserRole.setRole(role);
 
                                     userRoleRepository.save(newUserRole);
+                                    LOG.debug("User role updated. Login Name: {}, Role: {}", loginName, role.getName());
                                 }
                             }
                             // islemler bitti, kullaniciyi varsa listeden cikaralim
@@ -219,6 +239,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                         } else {
                             LOG.info("User {} wasn't updated during LdapSyncCommand", user.getLoginName());
                         }
+                    } else {
+                        LOG.warn("Username not found for LDAP user record. First Name: {}, Last Name: {}.", firstName, lastName);
                     }
                 }
 
@@ -233,7 +255,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             // Hata olustu, kullanicilari pasif yapmayalim.
             return;
         }
-
+        LOG.debug("User deactivation process starting... ");
         // kalan kullanicilar telve tarafinda ve aktif ancak Ldap tarafinda bulunmuyor
         // bunlarin durumunu pasife cekelim
         // Eğer Ldap üzerinden hiç veri çekilmemiş ise bu işlemi gerçekleştirmeyelim
@@ -241,14 +263,20 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             for (User user : existingActiveUsers) {
                 user.setActive(Boolean.FALSE);
                 userRepository.save(user);
+                LOG.debug("User updated and passive now. Login Name: {}", user.getLoginName());
+                deactiveUserCounter++;
             }
         }
+
+        LOG.info("LDAP USER SYNCHRONIZATION COMPLETED. Created Users Count: {}, Updated Users Count: {}, Deactivated Users Count: {}",
+                createUserCounter, updateUserCounter, deactiveUserCounter);
         
         event.fire(new IdmLdapSyncEvent(IdmLdapSyncEvent.USER));
     }
 
     private void syncGroups(Ini.Section realm, LdapContext ldapContext, String scope, int pageSize, LdapSyncCommand command)
         throws NamingException {
+        LOG.info("LDAP GROUP SYNCHRONIZATION STARTING...");
         //otomatik olusturulmus gruplari bulalim
         List<Group> autoCreatedGroups = groupRepository.findAnyByAutoCreated(Boolean.TRUE);
 
@@ -256,6 +284,19 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         String groupMembersAttr = realm.get(telveRealm + "groupMembersAttr");
         String groupSearchBase = realm.get(telveRealm + "groupSearchBase");
         String groupSyncFilter = realm.get(telveRealm + "groupSyncFilter");
+
+        // Başarılı group create sync'ları sayacak counter.
+        int createGroupCounter = 0;
+        // Başarılı group update sync'ları sayacak counter.
+        int updateGroupCounter = 0;
+        // Deaktif edilen group'ları sayacak counter.
+        int deactiveGroupCounter = 0;
+        // Eklenen toplam group member sayacak counter.
+        int createGroupMemberCounter = 0;
+        // Güncellenen toplam group member sayacak counter.
+        int updateGroupMemberCounter = 0;
+        // Silinen toplam group member sayacak counter.
+        int removeGroupMemberCounter = 0;
 
         try {
             SearchControls groupSearchControls = new SearchControls();
@@ -271,12 +312,17 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                 NamingEnumeration<SearchResult> ldapGroupResults = ldapContext
                     .search(groupSearchBase, groupSyncFilter, groupSearchControls);
 
+                if(!ldapGroupResults.hasMoreElements()){
+                    LOG.warn("There isn't any group coming from LDAP. Group Sync is completed without any change...");
+                }
                 // sonuclarin uzerinden gecelim
                 while (ldapGroupResults.hasMoreElements()) {
                     Attributes ldapGroup = ldapGroupResults.next().getAttributes();
 
                     String groupName =
                         ldapGroup.get(groupNameAttr) != null ? ldapGroup.get(groupNameAttr).get().toString(): null;
+
+                    LOG.debug("LDAP Group Sync - Group Name: {}", groupName);
 
                     // eger grup adi mevcutsa islemleri yapalim
                     if (groupName != null) {
@@ -293,6 +339,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
                         // eger veritabaninda kayitli degil ve olusturulmasi icin parametre verilmis ise olusturalim
                         if (command.getCreateMissingGroups() != null && group == null && command.getCreateMissingGroups()) {
+                            LOG.debug("Group not found in database. Will be added. Group Name: {}", groupName);
                             Group newGroup = new Group();
                             newGroup.setActive(Boolean.TRUE);
                             newGroup.setCode(groupName);
@@ -304,19 +351,27 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                             groupRepository.save(newGroup);
                             // grup degerini degistirelim
                             group = newGroup;
+                            LOG.debug("Group added to database. Group Name: {}", groupName);
+                            createGroupCounter++;
                         }
 
                         // eger grup var ise
                         if (group != null) {
-
+                            LOG.debug("Group already saved in database. Group Name: {}", groupName);
                             // grup kayitli ise userGroup uyelerini cekelim,
                             // ldap tarafinda silinen biri varsa biz de silecegiz userGroup'dan en sonda
                             List<UserGroup> groupMembers = userGroupRepository.findAnyByGroup(group);
+
+                            if(members == null || !members.hasMoreElements()){
+                                LOG.warn("There isn't any group member coming from LDAP. Group Name: {}", groupName);
+                            }
 
                             // uyeleri while loopu ile cekelim
                             while (members != null && members.hasMoreElements()) {
                                 // ustunde islem yapilacak uye
                                 String member = members.next().toString();
+
+                                LOG.debug("Group Member Checking... Group Name: {}, Member Name: {}", groupName, member);
 
                                 // once kullaniciyi user tablosunda bulalim
                                 User existingUser = userRepository.findAnyByLoginName(member);
@@ -335,6 +390,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                         newUserGroup.setUser(existingUser);
                                         newUserGroup.setAutoCreated(true);
                                         userGroupRepository.save(newUserGroup);
+                                        LOG.debug("Group member not found. Member is added. Group Name: {}, Member Name: {}", groupName, member);
+                                        createGroupMemberCounter++;
                                     }
                                     // katiyliysa da guncelleyelim
                                     else {
@@ -344,18 +401,30 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                         userGroupRepository.save(existingUserGroup);
                                         // kullaniciyi listeden silelim
                                         groupMembers.remove(existingUserGroup);
+                                        LOG.debug("Group member already added. Member is updated. Group Name: {}, Member Name: {}", groupName, member);
+                                        updateGroupMemberCounter++;
                                     }
+                                } else {
+                                    LOG.warn("Group member not found in database. User can't be added to group. Group Name: {}, Member Name: {}", groupName, member);
                                 }
                             }
-
+                            LOG.debug("Group member removing process starting. Group Name: {}", groupName);
                             // ardindan kalan userGroup'lari veritabanindan silelim
                             for (UserGroup userGroup : groupMembers) {
                                 userGroupRepository.remove(userGroup);
+                                if(userGroup != null && userGroup.getGroup() != null && userGroup.getUser() != null){
+                                    LOG.debug("Group Member Removed. Group Name: {}, Member Name: {}", userGroup.getGroup().getName(),
+                                            userGroup.getUser().getLoginName());
+                                }
+                                removeGroupMemberCounter++;
                             }
 
                             // islemler bitti, listeden cikaralim
                             autoCreatedGroups.remove(group);
+                            updateGroupCounter++;
                         }
+                    } else {
+                        LOG.warn("Group Name not found for LDAP group record.");
                     }
                 }
 
@@ -371,21 +440,34 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             // Hata olustu, grouplari pasif yapmayalim.
             return;
         }
-
+        LOG.debug("Group deactivation process starting...");
         // elimizde kalan kayitlari pasife cekelim
         for (Group remainingGroups : autoCreatedGroups) {
             remainingGroups.setActive(Boolean.FALSE);
             groupRepository.save(remainingGroups);
+            LOG.debug("Group updated and passive now. Group Name: {}", remainingGroups.getName());
+            deactiveGroupCounter++;
         }
-        
+        LOG.info("LDAP GROUP SYNCHRONIZATION COMPLETED. Created Groups Count: {}, Updated Groups Count: {}, Deactivated Groups Count: {}," +
+                        " Created Group Members Count: {}, Updated Group Members Count: {}, Removed Group Members Count: {}.",
+                createGroupCounter, updateGroupCounter, deactiveGroupCounter, createGroupMemberCounter,
+                updateGroupMemberCounter, removeGroupMemberCounter);
         event.fire(new IdmLdapSyncEvent(IdmLdapSyncEvent.GROUP));
     }
 
     private void syncRoles(Ini.Section realm, LdapContext ldapContext, String scope, int pageSize) throws NamingException {
+        LOG.info("LDAP ROLES SYNCHRONIZATION STARTING...");
         String roleNameAttr = realm.get(telveRealm + "roleNameAttr");
         String roleMembersAttr = realm.get(telveRealm + "roleMembersAttr");
         String roleSearchBase = realm.get(telveRealm + "roleSearchBase");
         String roleSyncFilter = realm.get(telveRealm + "roleSyncFilter");
+
+        // Başarılı user role eklemelerini sayacak counter.
+        int createUserRoleCounter = 0;
+        // Başarılı user role update'leri sayacak counter.
+        int updateUserRoleCounter = 0;
+        // Silinen user role'ları sayacak counter.
+        int removeUserRoleCounter = 0;
 
         try {
             SearchControls roleSeachControls = new SearchControls();
@@ -401,11 +483,17 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                 NamingEnumeration<SearchResult> ldapRoleResults = ldapContext
                     .search(roleSearchBase, roleSyncFilter, roleSeachControls);
 
+                if(!ldapRoleResults.hasMoreElements()){
+                    LOG.warn("There isn't any role coming from LDAP. Role Sync is completed without any change...");
+                }
+
                 // sonuclarin uzerinden gecelim
                 while (ldapRoleResults.hasMoreElements()) {
                     Attributes ldapGroup = ldapRoleResults.next().getAttributes();
 
                     String roleName = ldapGroup.get(roleNameAttr) != null ? ldapGroup.get(roleNameAttr).get().toString() : null;
+
+                    LOG.debug("LDAP Role Sync - Role Name: {}.", roleName);
 
                     if (roleName != null) {
                         // role ait kullanicilar
@@ -417,15 +505,19 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
                         // eger rol var ise
                         if (role != null) {
-
+                            LOG.debug("LDAP Role already exist in database - Role Name: {}.", roleName);
                             // rol kayitli ise userRole uyelerini cekelim,
                             // ldap tarafinda silinen biri varsa biz de silecegiz userRole'den en sonda
                             List<UserRole> roleMembers = userRoleRepository.findAnyByRole(role);
-
+                            if(members == null || !members.hasMoreElements()){
+                                LOG.warn("There isn't any role member coming from LDAP. Role Name: {}", roleName);
+                            }
                             // uyeleri while loopu ile cekelim
                             while (members != null && members.hasMoreElements()) {
                                 // ustunde islem yapilacak uye
                                 String member = members.next().toString();
+
+                                LOG.debug("Role Member Checking... Role Name: {}, Member Name: {}", roleName, member);
 
                                 // once kullaniciyi user tablosunda bulalim
                                 User existingUser = userRepository.findAnyByLoginName(member);
@@ -443,6 +535,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                         newUserRole.setUser(existingUser);
                                         newUserRole.setAutoCreated(true);
                                         userRoleRepository.save(newUserRole);
+                                        LOG.debug("Role member not found. Member is added. Role Name: {}, Member Name: {}", roleName, member);
+                                        createUserRoleCounter++;
                                     }
                                     // katiyliysa da guncelleyelim
                                     else {
@@ -452,15 +546,29 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                         userRoleRepository.save(existingUserRole);
                                         // kullaniciyi listeden silelim
                                         roleMembers.remove(existingUserRole);
+                                        LOG.debug("Role member already added. Member is updated. Role Name: {}, Member Name: {}", roleName, member);
+                                        updateUserRoleCounter++;
                                     }
 
+                                } else {
+                                    LOG.debug("Role member not found in database. User can't added to role. Role Name: {}, Member Name: {}", roleName, member);
                                 }
                             }
+                            LOG.debug("Role member removing process starting...");
                             // ardindan kalan userGroup'lari veritabanindan silelim
                             for (UserRole userRole : roleMembers) {
                                 userRoleRepository.remove(userRole);
+                                if(userRole != null && userRole.getRole() != null && userRole.getUser() != null){
+                                    LOG.debug("User Role removed. Role Name: {}, Member Name: {}", userRole.getRole().getName(),
+                                            userRole.getUser().getLoginName());
+                                }
+                                removeUserRoleCounter++;
                             }
+                        } else {
+                            LOG.warn("Role not found in database. Role Name: {}.", roleName);
                         }
+                    } else {
+                        LOG.warn("Role Name not found for LDAP Role record.");
                     }
                 }
                 cookie = getControlResponse(ldapContext.getResponseControls());
@@ -472,7 +580,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         } catch (NamingException | IOException e) {
             LOG.error("There was an error during LdapSyncCommand - roles", e);
         }
-        
+        LOG.info("LDAP ROLE SYNCHRONIZATION COMPLETED. Created User Roles Count: {}, Updated User Roles Count: {}, Removed User Roles Count: {}",
+                createUserRoleCounter, updateUserRoleCounter, removeUserRoleCounter);
         event.fire(new IdmLdapSyncEvent(IdmLdapSyncEvent.ROLE));
     }
 
