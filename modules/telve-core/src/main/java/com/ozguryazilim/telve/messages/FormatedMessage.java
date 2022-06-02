@@ -13,7 +13,13 @@ import javax.inject.Named;
 @RequestScoped
 @Named
 public class FormatedMessage {
-    
+
+    public String getFormatedMessage( String key, String msg ){
+        Object[] args = new Object[1];
+        args[0] = msg;
+        return Messages.getMessage(Messages.getCurrentLocale(), key, args);
+    }
+
     public String getFormatedMessage( String key, Object... o ){
         return Messages.getMessage(Messages.getCurrentLocale(), key, o);
     }
