@@ -9,6 +9,7 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,24 +18,23 @@ import org.slf4j.LoggerFactory;
  * @author oyas
  */
 public class TelveAdfsRealm extends TelveIdmRealm {
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(TelveAdfsRealm.class);
-    
+
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
         SimpleAuthenticationInfo info = null;
 
-        
-        if( !( token instanceof AdfsAuthenticationToken )){
+        if (!(token instanceof AdfsAuthenticationToken)) {
             throw new UnknownAccountException("Token is not a ADSF Authentication Token");
         }
-        
-        AdfsAuthenticationToken adsfToken = (AdfsAuthenticationToken)token;
-        
-        String username = (String)adsfToken.getCredentials();
-        
+
+        AdfsAuthenticationToken adsfToken = (AdfsAuthenticationToken) token;
+
+        String username = (String) adsfToken.getCredentials();
+
         LOG.debug("Authc UserName : {}", username);
-        
+
         // Null username is invalid
         if (username == null) {
             throw new AccountException("Null usernames are not allowed by this realm.");
@@ -67,27 +67,37 @@ public class TelveAdfsRealm extends TelveIdmRealm {
 
             setCredentialsMatcher(idmMatcher);
         }*/
-
+        
         info = new SimpleAuthenticationInfo( adsfToken.getPrincipal(), "", getName());
         
-        return info;
+        LOG.debug("adfs.getprincipal : {}", adsfToken.getPrincipal());
         
+        //Login sırasında girilen veri yerine veri tabanındaki loginName kullanılsın
+        username = user.getLoginName();
+
+        info.setPrincipals(new SimplePrincipalCollection(new TelveSimplePrinciple(username), getName()));
+        
+        LOG.debug("getName() : {}", getName());
+        
+        LOG.debug("Logged UserName : {}", username);
+        
+        return info;
+
     }
-    
-    
+
     private void createUser(AdfsAuthenticationToken adsfToken) {
         User user = new User();
 
         user.setLoginName(adsfToken.getAccessToken().getUsername());
-        
-        Map<String,Object> claims = adsfToken.getAccessToken().getIdTokenClaims();
-        user.setFirstName( (String)claims.get("name"));
-        user.setLastName((String)claims.get("surname"));
+
+        Map<String, Object> claims = adsfToken.getAccessToken().getIdTokenClaims();
+        user.setFirstName((String) claims.get("name"));
+        user.setLastName((String) claims.get("surname"));
         //user.setEmail(kcToken.getAccessToken().getEmail());
         user.setAutoCreated(Boolean.TRUE);
 
         getUserRepository().save(user);
-        
+
     }
-    
+
 }
