@@ -33,7 +33,7 @@ public class TelveAdfsRealm extends TelveIdmRealm {
 
         String username = (String) adsfToken.getCredentials();
 
-        LOG.debug("Authc UserName : {}", username);
+        // LOG.debug("Authc UserName : {}", username);
 
         // Null username is invalid
         if (username == null) {
@@ -76,8 +76,6 @@ public class TelveAdfsRealm extends TelveIdmRealm {
         username = user.getLoginName();
 
         info.setPrincipals(new SimplePrincipalCollection(new TelveSimplePrinciple(username), getName()));
-        
-        LOG.debug("getName() : {}", getName());
         
         LOG.debug("Logged UserName : {}", username);
         
