@@ -28,8 +28,12 @@ public class TelveAdfsRealm extends TelveIdmRealm {
         if (!(token instanceof AdfsAuthenticationToken)) {
             throw new UnknownAccountException("Token is not a ADSF Authentication Token");
         }
+         
+        LOG.debug("token : {}", token );
 
         AdfsAuthenticationToken adsfToken = (AdfsAuthenticationToken) token;
+        
+        LOG.debug("AdfsAuthenticationToken : {}", adsfToken );
 
         String username = (String) adsfToken.getCredentials();
 
@@ -85,7 +89,8 @@ public class TelveAdfsRealm extends TelveIdmRealm {
 
     }
 
-    private void createUser(AdfsAuthenticationToken adsfToken) {
+    protected void createUser(AdfsAuthenticationToken adsfToken) {
+        LOG.debug("User creating by TelveAdfsRealm");
         User user = new User();
 
         user.setLoginName(adsfToken.getAccessToken().getUsername());
