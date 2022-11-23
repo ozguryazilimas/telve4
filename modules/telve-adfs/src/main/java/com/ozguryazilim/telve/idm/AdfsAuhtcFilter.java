@@ -31,7 +31,9 @@ public class AdfsAuhtcFilter extends AuthenticatingFilter{
             AuthHelper.signIn(contextAdapter);
         }
         
-        LOG.debug("Claims: {}, AccountId: {}, Username: {}", context.getIdTokenClaims(), context.getAccount().homeAccountId(), context.getAccount().username());
+        LOG.debug("Claims: {}, Account: {}, Context: {}", context.getIdTokenClaims(), context.getAccount(), context );
+        
+        //LOG.debug("Claims: {}, AccountId: {}, Username: {}", context.getIdTokenClaims(), context.getAccount().homeAccountId(), context.getAccount().username());
         
         return new AdfsAuthenticationToken( context );
     }
