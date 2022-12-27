@@ -2,6 +2,7 @@ package com.ozguryazilim.telve.idm;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.auth.TelveIdmPrinciple;
 import com.ozguryazilim.telve.idm.entities.Role;
 import com.ozguryazilim.telve.idm.entities.RolePermission;
 import com.ozguryazilim.telve.idm.entities.User;
@@ -319,7 +320,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
             throw new AuthorizationException("PrincipalCollection method argument cannot be null.");
         }
 
-        String username = ((TelveSimplePrinciple) getAvailablePrincipal(principals)).getName();
+        String username = ((TelveIdmPrinciple) getAvailablePrincipal(principals)).getName();
 
         Set<String> roleNames = null;
         Set<String> permissions = null;

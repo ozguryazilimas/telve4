@@ -4,11 +4,14 @@ import com.ozguryazilim.telve.audit.AuditLogCommand;
 import com.ozguryazilim.telve.audit.AuditLogger;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.view.Pages;
+import java.io.IOException;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Event;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.navigation.ViewNavigationHandler;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
@@ -74,12 +77,27 @@ public class LoginController{
         }
     }
 
-    public String logout() {
+    public String logout() throws IOException {
         Subject currentUser = SecurityUtils.getSubject();
         auditLogger.actionLog("Logout", 0l, "", AuditLogCommand.CAT_AUTH, AuditLogCommand.ACT_AUTH, identity.getLoginName(), "");
-        currentUser.logout();
-        facesContext.getExternalContext().invalidateSession();
         
-        return "/home.xhtml?faces-redirect=true";
+        
+        ExternalContext externalContext = facesContext.getExternalContext();
+                
+        //Logout and session invalidation
+        currentUser.logout();
+        externalContext.invalidateSession();
+        
+         
+        
+        
+        String redirectTo = ConfigResolver.getPropertyValue("logout.redirect", "/home.xhtml?faces-redirect=true");
+        
+        if( redirectTo.contains("//")){
+            externalContext.redirect(redirectTo);
+            return "";
+        }
+        
+        return redirectTo;
     }
 }
