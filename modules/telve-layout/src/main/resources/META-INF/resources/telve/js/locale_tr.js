@@ -1,4 +1,4 @@
-PrimeFaces.locales['tr'] = {
+paPrimeFaces.locales['tr'] = {
     closeText: 'kapat',
     prevText: '',
     nextText: '',

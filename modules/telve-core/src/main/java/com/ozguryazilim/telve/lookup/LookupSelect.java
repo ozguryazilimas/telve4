@@ -17,10 +17,13 @@ import javax.inject.Qualifier;
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE})
 @Retention(RUNTIME)
 public @interface LookupSelect {
-    
+
+    // #70421
     /**
      * Observer için gerekirse ek filtre olması için
      * @return 
      */
     String value() default "";
+
+    String test();
 }
