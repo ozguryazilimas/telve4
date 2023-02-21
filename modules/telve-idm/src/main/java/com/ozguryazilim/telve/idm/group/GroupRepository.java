@@ -1,6 +1,7 @@
 package com.ozguryazilim.telve.idm.group;
 
 import com.ozguryazilim.telve.data.TreeRepositoryBase;
+import com.ozguryazilim.telve.entities.TreeNodeEntityBase_;
 import com.ozguryazilim.telve.idm.entities.Group;
 import javax.enterprise.context.Dependent;
 import org.apache.deltaspike.data.api.Repository;
@@ -31,4 +32,15 @@ public abstract class GroupRepository extends TreeRepositoryBase<Group> implemen
     public abstract Group findAnyByName(String name);
 
     public abstract List<Group> findAnyByAutoCreated(Boolean autoCreated);
+
+    @Override
+    public List<Group> suggestion(String searchText) {
+        return criteria()
+                .or(
+                        criteria().likeIgnoreCase( TreeNodeEntityBase_.code, "%" + searchText + "%"),
+                        criteria().likeIgnoreCase( TreeNodeEntityBase_.name, "%" + searchText + "%")
+                )
+                .eq(TreeNodeEntityBase_.active, true)
+                .getResultList();
+    }
 }
