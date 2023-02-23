@@ -516,6 +516,14 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
         return getIsSystemQuery(queryName);
     }
 
+    public Boolean getIsPageDefaultQuery(String name) {
+        return name.equals(pageTitleResolver.getPageTitle());
+    }
+
+    public Boolean getIsPageDefaultQuery() {
+        return getIsPageDefaultQuery(queryName);
+    }
+
     /**
      * Query Sonucunu CVS olarak export eder.
      */

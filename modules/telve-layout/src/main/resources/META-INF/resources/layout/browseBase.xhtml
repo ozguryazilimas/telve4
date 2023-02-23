@@ -60,8 +60,8 @@
                                     </ui:repeat>
                                     <li role="separator" class="divider"></li>
                                     <li><p:commandLink process="@this" update="qrySaveFrm" oncomplete="PF('qrySave').show();"><i class="fa fa-save"/>#{messages['general.button.SaveAsNew']}</p:commandLink></li>
-                                    <li><p:commandLink action="#{bean.save()}" process="@this" disabled="#{bean.isSystemQuery}"><i class="fa fa-save"/>#{messages['general.button.Update']}</p:commandLink></li>
-                                    <li><p:commandLink action="#{bean.deleteQuery()}" process="@this" disabled="#{bean.isSystemQuery}" update="@([id$=results]),bheader"><i class="fa fa-trash-o"/>#{messages['general.button.Delete']}</p:commandLink></li>
+                                    <li><p:commandLink action="#{bean.save()}" process="@this" disabled="#{bean.isSystemQuery || bean.isPageDefaultQuery}"><i class="fa fa-save"/>#{messages['general.button.Update']}</p:commandLink></li>
+                                    <li><p:commandLink action="#{bean.deleteQuery()}" process="@this" disabled="#{bean.isSystemQuery || bean.isPageDefaultQuery}" update="@([id$=results]),bheader"><i class="fa fa-trash-o"/>#{messages['general.button.Delete']}</p:commandLink></li>
                                 </ul>
                             </div>
                         </h3>
