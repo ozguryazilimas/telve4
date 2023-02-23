@@ -307,7 +307,9 @@
                                 <p:commandLink id="newDashboard" action="#{dashboardManager.newDashboard()}" styleClass="fa fa-plus-circle btn-add" update=":editForm" oncomplete="initSortables();PF('layoutEditor').show();" partialSubmit="true" process="@this"/>
                             </f:facet>
                             <p:commandLink id="editDashboard" styleClass="fa fa-pencil btn-edit" action="#{dashboardManager.editDashboard(dashboard)}" update=":editForm" oncomplete="initSortables();PF('layoutEditor').show();" partialSubmit="true" process="@this"/>
-                            <p:commandLink id="deleteDashboard" styleClass="fa fa-trash btn-delete" action="#{dashboardManager.deleteDashboard(dashboard)}" update="dashboardList" partialSubmit="true" process="@this"/>
+                            <p:commandLink id="deleteDashboard" styleClass="fa fa-trash btn-delete" action="#{dashboardManager.deleteDashboard(dashboard)}" update="dashboardList" partialSubmit="true" process="@this">
+                                <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
+                            </p:commandLink>
                         </p:column>
                     </p:dataTable>
                 </h:form>
