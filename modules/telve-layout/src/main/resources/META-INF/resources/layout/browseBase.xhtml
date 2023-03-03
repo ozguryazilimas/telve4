@@ -23,13 +23,16 @@
 
         <h:form id="qrySaveFrm">
             <p:dialog id="qrySave" widgetVar="qrySave" header="#{messages['general.caption.SaveQuery']}" width="350px">
-                <div class="row">
-                    <t:inputText label="general.label.QueryName" value="#{bean.newQueryName}" columnClass="col-xs-12" required="true"/>
-                </div>
+                <h:panelGroup layout="block" id="input-panel">
+                    <div class="row">
+                        <t:inputText label="general.label.QueryName" value="#{bean.newQueryName}" columnClass="col-xs-12" required="true"/>
+                    </div>
+                </h:panelGroup>
 
                 <h:panelGroup id="dialogButtons" styleClass="actionButtons" layout="block">
-                    <p:commandButton id="saveQuery" value="#{messages['general.button.Save']}" action="#{bean.save()}" update="bheader" styleClass="btn-primary" oncomplete="PF('qrySave').hide();"/>
+                    <p:commandButton id="saveQuery" value="#{messages['general.button.Save']}" action="#{bean.save()}" ajax="true" update="bheader input-panel" styleClass="btn-primary" oncomplete="if (!args.validationFailed) PF('qrySave').hide();"/>
                 </h:panelGroup>
+                <p:defaultCommand target="saveQuery"/>
             </p:dialog>
         </h:form>
 
