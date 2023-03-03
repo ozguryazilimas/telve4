@@ -133,7 +133,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
             //Unique Code olup olmadığını bir kontrol edelim...
             List<E> ls = getRepository().findByCode(entity.getCode());
             if (!ls.isEmpty()) {
-                FacesMessages.error("general.message.record.CodeNotUnique");
+                FacesMessages.error("general.message.record.CodeNotUnique", "");
                 return null;
             }
         }
