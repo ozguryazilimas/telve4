@@ -12,7 +12,7 @@
         <composite:attribute name="placeholder" required="false"/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="readonly" required="false" type="java.lang.Boolean" default="false"/>
-        <composite:attribute name="maxlength" required="false" type="java.lang.Integer" default=""/>
+        <composite:attribute name="maxlength" required="false" type="java.lang.Integer" default="2147483647" />
         <composite:attribute name="columnClass" required="false" default="col-md-6 col-xs-12"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
         <composite:clientBehavior name="blur" event="blur" targets="#{cc.id}_inp" />
@@ -30,7 +30,7 @@
                              placeholder="#{cc.attrs.placeholder}"
                              required="#{cc.attrs.required}"
                              readonly="#{cc.attrs.readonly}"
-                             maxlength="#{(cc.attrs.maxlength ne null and not empty cc.attrs.maxlength) ? cc.attrs.maxlength : ''}" >
+                             maxlength="#{cc.attrs.maxlength}" >
                     <p:clientValidator />
                     <c:if test="#{cc.attrs.regexValidator}">
                         <f:validateRequired/>
