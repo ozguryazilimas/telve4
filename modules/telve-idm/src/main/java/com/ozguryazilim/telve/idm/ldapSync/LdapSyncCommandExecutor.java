@@ -1,6 +1,7 @@
 package com.ozguryazilim.telve.idm.ldapSync;
 
 import com.google.common.base.Strings;
+import com.ozguryazilim.telve.auth.UserDataChangeEvent;
 import com.ozguryazilim.telve.idm.IdmEvent;
 import com.ozguryazilim.telve.idm.entities.Group;
 import com.ozguryazilim.telve.idm.entities.Role;
@@ -62,6 +63,9 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
     @Inject
     private Event<IdmLdapSyncEvent> event;
+
+    @Inject
+    private Event<UserDataChangeEvent> userDataChangeEventEvent;
     
     @Override
     public void execute(LdapSyncCommand command) {
@@ -234,6 +238,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                             }
                             // islemler bitti, kullaniciyi varsa listeden cikaralim
                             existingActiveUsers.remove(user);
+                            userDataChangeEventEvent.fire(new UserDataChangeEvent(user.getLoginName()));
 
                             // kullaniciyi guncellemiyorsak loglayalim
                         } else {
@@ -263,6 +268,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             for (User user : existingActiveUsers) {
                 user.setActive(Boolean.FALSE);
                 userRepository.save(user);
+                userDataChangeEventEvent.fire(new UserDataChangeEvent(user.getLoginName()));
                 LOG.debug("User updated and passive now. Login Name: {}", user.getLoginName());
                 deactiveUserCounter++;
             }
@@ -404,6 +410,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                         LOG.debug("Group member already added. Member is updated. Group Name: {}, Member Name: {}", groupName, member);
                                         updateGroupMemberCounter++;
                                     }
+
+                                    userDataChangeEventEvent.fire(new UserDataChangeEvent(existingUser.getLoginName()));
                                 } else {
                                     LOG.warn("Group member not found in database. User can't be added to group. Group Name: {}, Member Name: {}", groupName, member);
                                 }
@@ -415,6 +423,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                 if(userGroup != null && userGroup.getGroup() != null && userGroup.getUser() != null){
                                     LOG.debug("Group Member Removed. Group Name: {}, Member Name: {}", userGroup.getGroup().getName(),
                                             userGroup.getUser().getLoginName());
+
+                                    userDataChangeEventEvent.fire(new UserDataChangeEvent(userGroup.getUser().getLoginName()));
                                 }
                                 removeGroupMemberCounter++;
                             }
@@ -445,6 +455,10 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         for (Group remainingGroups : autoCreatedGroups) {
             remainingGroups.setActive(Boolean.FALSE);
             groupRepository.save(remainingGroups);
+            userGroupRepository.findByGroup(remainingGroups).stream()
+                    .map(UserGroup::getUser)
+                    .forEach(user -> userDataChangeEventEvent.fire(new UserDataChangeEvent(user.getLoginName())));
+
             LOG.debug("Group updated and passive now. Group Name: {}", remainingGroups.getName());
             deactiveGroupCounter++;
         }
@@ -550,6 +564,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                         updateUserRoleCounter++;
                                     }
 
+                                    userDataChangeEventEvent.fire(new UserDataChangeEvent(existingUser.getLoginName()));
+
                                 } else {
                                     LOG.debug("Role member not found in database. User can't added to role. Role Name: {}, Member Name: {}", roleName, member);
                                 }
@@ -561,6 +577,8 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                 if(userRole != null && userRole.getRole() != null && userRole.getUser() != null){
                                     LOG.debug("User Role removed. Role Name: {}, Member Name: {}", userRole.getRole().getName(),
                                             userRole.getUser().getLoginName());
+
+                                    userDataChangeEventEvent.fire(new UserDataChangeEvent(userRole.getUser().getLoginName()));
                                 }
                                 removeUserRoleCounter++;
                             }
