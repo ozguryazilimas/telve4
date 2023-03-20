@@ -75,30 +75,41 @@
                         </p:selectBooleanCheckbox>
                     </t:inputAny>
 
-                    <p:messages id="messages" for=":form:pwdAcc:pwd1:pwd1" 
-                                showDetail="true">
-                        <p:autoUpdate />
-                    </p:messages>
                     <h:panelGroup id="pwdInput" styleClass="col-xs-12" layout="block">
                         <div class="row">
-                            <t:inputAny id="pwd1" label="user.label.Password"
+                            <t:inputAny id="pwd1" label="user.label.Password" required="true" for="pwd1_input"
                                         rendered="#{ userHome.canEditPassword() and not userHome.createPasswordAndSend}">
-                                <p:password id="pwd1" value="#{userHome.password}" feedback="true"
+                                <p:password id="pwd1_input" value="#{userHome.password}" feedback="true"
+                                            styleClass="#{invalid?'errors':''}"
+                                            required="true"
                                             promptLabel="#{messages['password.prompt']}"
                                             weakLabel="#{messages['password.week']}"
                                             goodLabel="#{messages['password.good']}"
                                             strongLabel="#{messages['password.strong']}"
-                                            match=":form:pwdAcc:pwd2:pwd2"
+                                            match=":form:pwdAcc:pwd2:pwd2_input"
                                             label="#{messages['user.label.Password']}"
-                                            validatorMessage="#{messages['user.password.INVALID_MATCH_detail']}"/>
-                                <p:message for=":form:pwdAcc:pwd1:pwd1" display="text"
-                                           showDetail="true"/>
+                                            validatorMessage="#{messages['user.password.INVALID_MATCH_detail']}">
+                                    <p:clientValidator />
+                                </p:password>
+                                <p:message for="pwd1_input" display="text" style="margin: 0px;"
+                                           showDetail="true">
+                                </p:message>
+                                <p:autoUpdate />
                             </t:inputAny>
 
-                            <t:inputAny id="pwd2" label="user.label.PasswordRetype"
+                            <t:inputAny id="pwd2" label="user.label.PasswordRetype" required="true" for="pwd2_input"
                                         rendered="#{ userHome.canEditPassword() and not userHome.createPasswordAndSend}">
-                                <p:password id="pwd2" value="#{userHome.password}" 
-                                            label="#{messages['user.label.PasswordRetype']}"/>
+                                <p:password id="pwd2_input" value="#{userHome.password}"
+                                            required="true"
+                                            styleClass="#{invalid?'errors':''}"
+                                            label="#{messages['user.label.PasswordRetype']}">
+                                    <p:clientValidator />
+                                </p:password>
+
+                                <p:message for="pwd2_input" display="text" style="margin: 0px;"
+                                           showDetail="true">
+                                </p:message>
+                                <p:autoUpdate />
                             </t:inputAny>
                         </div>
                     </h:panelGroup>

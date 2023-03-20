@@ -10,12 +10,13 @@
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="columnClass" required="false" default="col-md-6 col-xs-12"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
+        <composite:attribute name="for" required="false" type="java.lang.String" default=""/>
     </composite:interface>
 
     <composite:implementation>
         <div id="#{cc.clientId}" class="prop #{cc.attrs.columnClass} columns #{cc.attrs.last ? 'end' : '' }">
 
-            <p:outputLabel value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
+            <p:outputLabel value="#{messages[cc.attrs.label]}" for="#{cc.attrs.for}" styleClass="name #{invalid?'errors':''}" />
             <span class="value">
                 <composite:insertChildren />
             </span>
