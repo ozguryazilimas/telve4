@@ -201,9 +201,19 @@
                     <ui:include src="#{scheduledCommandBrowse.currentEditor.dialogPageViewId}" />
 
                     <div class="actionButtons">
-                        <p:commandButton id="save" value="#{messages['general.button.Ok']}" icon="ui-icon-check" action="#{scheduledCommandBrowse.save()}" update=":commands" oncomplete="PF('editorPopup').hide();"
+                        <p:commandButton id="save" value="#{messages['general.button.Ok']}"
+                                         icon="ui-icon-check"
+                                         action="#{scheduledCommandBrowse.save()}"
+                                         update=":commands :ceForm"
+                                         oncomplete="if (args &amp;&amp; !args.validationFailed){ PF('editorPopup').hide(); }"
                                          validateClient="true"
-                                         styleClass="btn-primary"/>
+                                         styleClass="btn-primary">
+                            <c:if test="#{scheduledCommandBrowse.currentEditor.confirmationText ne null}">
+                                <p:confirm  header="#{messages['general.caption.Confirm']}"
+                                            message="#{scheduledCommandBrowse.currentEditor.confirmationText}"
+                                            icon="ui-icon-alert" />
+                            </c:if>
+                        </p:commandButton>
                         <p:button id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" onclick="PF('editorPopup').hide();return false;"/>
                     </div>
                 </h:form>
