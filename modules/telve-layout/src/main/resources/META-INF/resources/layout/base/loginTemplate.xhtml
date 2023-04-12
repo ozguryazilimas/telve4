@@ -47,7 +47,7 @@
                                         <i class="fa fa-lock"></i>
                                     </ui:fragment>
                                     <ui:fragment rendered="#{telveConfigResolver.getProperty('brand.company.loginLogo') ne null}" >
-                                        <img src="#{request.contextPath}/javax.faces.resource/img/#{telveConfigResolver.getProperty('brand.company.loginLogo')}.jsf?ln=brand" class="img-thumbnail" with="128"/>
+                                        <img src="#{request.contextPath}/javax.faces.resource/img/#{telveConfigResolver.getProperty('brand.company.loginLogo')}.jsf?ln=brand" class="img-thumbnail" with="128" style="background: none; border: none;" />
                                     </ui:fragment>
                                 </div>
                             </div>
