@@ -33,6 +33,7 @@ public class UserInfo implements Serializable{
     private String domainGroupPath;
     private Boolean changePassword;
     private Boolean managed;
+    private Boolean isActive;
 
     /**
      * Geriye Kullanıcının ID'sini döndürür.
@@ -149,7 +150,15 @@ public class UserInfo implements Serializable{
     public void setManaged(Boolean managed) {
         this.managed = managed;
     }
- 
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;
