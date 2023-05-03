@@ -957,3 +957,9 @@ iframe.width-changed {
     .ui-fileupload-buttonbar .ui-button .ui-button-text {
         display: block !important;
     }
+
+.generic-tooltip {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+}

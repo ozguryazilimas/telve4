@@ -633,4 +633,8 @@ public abstract class QueryControllerBase<E extends EntityBase, R extends ViewMo
         doc.write("\n");
     }
 
+    public int getEntityListSize() {
+        return this.entityList.size();
+    }
+
 }
