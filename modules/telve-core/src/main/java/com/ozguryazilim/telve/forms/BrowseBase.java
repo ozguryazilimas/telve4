@@ -174,4 +174,8 @@ public abstract class BrowseBase<E extends EntityBase, R extends ViewModel> exte
     public boolean isShowingRowCountInformationAvailable() {
         return false;
     }
+
+    public String getName() {
+        return ProxyUtils.getUnproxiedClass(this.getClass()).getSimpleName();
+    }
 }
