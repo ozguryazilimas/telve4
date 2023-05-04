@@ -191,7 +191,7 @@ function maximazeDialog() {
     }
 }
 
-function zIndexChange(){
+function zIndexChange(zIndex = '1035'){
     // Dialog penceresi 'mousedown' konumunda iken z-index değerini otomatik
     // olarak 1000 degerine çekiyor ve dialogun navbar altında kalmasına neden oluyor.
     // Bu soruna çözüm için oluşturulmuştur.
@@ -202,7 +202,7 @@ function zIndexChange(){
 
         if (wv != undefined) {
             wd.mousedown(function (){
-                wd.css('z-index', '1035');
+                wd.css('z-index', zIndex);
             });
         }});
 }
