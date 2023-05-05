@@ -170,4 +170,12 @@ public abstract class BrowseBase<E extends EntityBase, R extends ViewModel> exte
         //TODO: Buna bir const versek mi?
         return "BROWSE";
     }
+
+    public boolean isShowingRowCountInformationAvailable() {
+        return false;
+    }
+
+    public String getName() {
+        return ProxyUtils.getUnproxiedClass(this.getClass()).getSimpleName();
+    }
 }

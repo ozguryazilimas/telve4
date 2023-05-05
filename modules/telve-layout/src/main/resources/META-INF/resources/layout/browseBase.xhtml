@@ -199,9 +199,24 @@
                     <div class="box box-primary">
                         <div class="box-header with-border">
 
-                            <h3 class="box-title">
-                                <h:outputText value="#{messages['general.label.Results']}" />
-                            </h3>
+                            <h:panelGroup id="browseHeader" style="display: inline-flex;">
+                                <h3 class="box-title">
+                                    <h:outputText value="#{messages['general.label.Results']}" />
+                                </h3>
+                                <c:if test="#{bean.isShowingRowCountInformationAvailable()}">
+                                    <h:panelGroup id="rowCountInformation-results" layout="block" style="padding: 0 5px; display: inline-flex">
+                                        <h3 class="box-title">
+                                            <h:outputFormat value="#{'('.concat(messages[bean.name.concat('.general.label.firstNResultsShown')]).concat(')')}" escape="false">
+                                                <f:param value="#{bean.entityListSize}" />
+                                            </h:outputFormat>
+                                        </h3>
+                                        <p:outputLabel id="nResultShownInfoIcon" style="margin: 0 3px;">
+                                            <i class="fa fa-info-circle" />
+                                        </p:outputLabel>
+                                        <p:tooltip for="nResultShownInfoIcon" styleClass="generic-tooltip" value="#{messages[bean.name.concat('.general.label.firstNResultsShownGuide')]}" position="top" />
+                                    </h:panelGroup>
+                                </c:if>
+                            </h:panelGroup>
                             <div class="box-tools pull-right">
                                 <p:commandLink actionListener="#{bean.search()}" styleClass="btn btn-box-tool" update="@([id$=results]) :contextForm, :browseListForm:detailPanel" process="@this" title="#{messages['general.button.Refresh']}">
                                     <i class="fa fa-refresh"/>

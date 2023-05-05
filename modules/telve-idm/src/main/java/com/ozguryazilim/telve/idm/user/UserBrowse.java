@@ -86,6 +86,9 @@ public class UserBrowse extends BrowseBase<User, UserViewModel>{
         groupFilter.setValue(selectedGroup);
         search();
     }
-    
-    
+
+    @Override
+    public boolean isShowingRowCountInformationAvailable() {
+        return true;
+    }
 }
