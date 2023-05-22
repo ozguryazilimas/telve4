@@ -165,7 +165,7 @@ function quickPanelToogle() {
 function maximazeDialog() {
     w = jQuery(parent.window).width();
     h = jQuery(parent.window).height();
-    if (w <= 480 || h <= 640 ) {
+    if (w <= 480 && h <= 640 ) {
         jQuery('.ui-dialog', parent.document).each(function () {
             wd = jQuery(this);
             var wv = wd.attr('data-widgetvar');
