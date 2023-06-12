@@ -128,7 +128,7 @@ public abstract class ParamBase<E extends EntityBase, PK extends Serializable> i
                 ParamEntityBase pe = (ParamEntityBase) entity;
                 List<E> ls = ((ParamRepositoryBase) getRepository()).findByCode(pe.getCode());
                 if (!ls.isEmpty()) {
-                    FacesMessages.error("general.message.record.CodeNotUnique");
+                    FacesMessages.error("general.message.record.CodeNotUnique", "");
                     return null;
                 }
             }
