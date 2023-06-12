@@ -262,6 +262,7 @@
                 <p:commandLink  action="#{scheduledCommandBrowse.delete()}" update=":commands contextForm" ajax="true" partialSubmit="true" process="@this" >
                     <i class="fa fa-trash"/>
                     <span>#{messages['general.button.Delete']}</span>
+                    <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
                 </p:commandLink>
             </li>
         </ui:fragment>
