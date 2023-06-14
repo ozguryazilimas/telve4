@@ -81,6 +81,7 @@
             <p:commandLink title="#{messages['general.button.Delete']}" action="#{homeBean.delete()}" rendered="#{not hideDelete and not empty entity.id and homeBean.hasDeletePermission() }">
                 <i class="fa fa-trash-o"></i>
                 <h:outputText value=" #{messages['general.button.Delete']}" />
+                <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
             </p:commandLink>
         </li>
     </ui:define>
