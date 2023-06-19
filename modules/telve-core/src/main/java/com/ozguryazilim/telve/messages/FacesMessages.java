@@ -100,7 +100,7 @@ public class FacesMessages {
      * @param detail message
      */
     public static void message( FacesMessage.Severity severity, String clientId, String summary, String detail ){
-        FacesContext.getCurrentInstance().addMessage(clientId, new FacesMessage(severity, summary, detail));
+        FacesContext.getCurrentInstance().addMessage(clientId, new FacesMessage(severity, summary, detail != null ? detail : ""));
     }
     
     /**
