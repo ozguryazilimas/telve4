@@ -9,21 +9,27 @@
         <composite:attribute name="label" required="false" default="general.label.Email"/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="columnClass" required="false" default="col-md-6 col-xs-12"/>
+        <composite:attribute name="messageDisplay" required="false" default="both"/>
         <composite:clientBehavior name="keyup" event="keyup" targets="#{cc.id}_inp"/>
     </composite:interface>
 
     <composite:implementation>
         <div id="#{cc.clientId}" class="prop #{cc.attrs.columnClass}">
-            <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" />
+
+            <p:outputLabel for="#{cc.id}_inp" value="#{messages[cc.attrs.label]}" styleClass="name #{invalid?'errors':''}" />
             <span class="value">
-                    <p:inputText id="#{cc.id}_inp" value="#{cc.attrs.value}"
+                    <p:inputText id="#{cc.id}_inp"
+                                 value="#{cc.attrs.value}"
+                                 validator="emailInputTextValidator"
                                  validatorMessage="#{messages['inputEmail.message.InvalidEmail']}"
-                                 required="#{cc.attrs.required}" autocomplete="off">
-                        <f:validateRegex
-                                pattern="^(|[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z])$"/>
+                                 required="#{cc.attrs.required}"
+                                 autocomplete="off">
+                        <f:validateRegex pattern="^(|[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z])$"/>
                     </p:inputText>
             </span>
-                <p:message id="#{cc.id}_msg" for="#{cc.id}_inp"><p:autoUpdate/></p:message>
+            <p:message id="#{cc.id}_msg" for="#{cc.id}_inp" display="#{cc.attrs.messageDisplay}">
+                <p:autoUpdate/>
+            </p:message>
         </div>
     </composite:implementation>
 
