@@ -5,6 +5,7 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+				xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:ut="http://utech.com/jsf/comps" template="#{themeManager.layoutTemplate}">
 
     <ui:param name="showListBar" value="true" />
@@ -56,7 +57,9 @@
 								<p:commandButton id="delete" value="#{messages['general.button.Delete']}" action="#{homeBean.delete()}"
 									rendered="#{not empty homeBean.entity.id and identity.hasPermission(entityName, 'delete')}" ajax="true" partialSubmit="false" process="@form" update=":form, :treePanel" validateClient="true"
 									styleClass="btn-danger" icon="fa fa-trash">
-									<p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
+										<p:confirm header="#{messages['general.caption.Confirm']}"
+												   message="#{homeBean.entityHasChild(homeBean.entity.id) ? messages['general.message.confirm.DeleteRoot'] : messages['general.message.confirm.Delete']}"
+												   icon="ui-icon-alert" />
 								</p:commandButton>
 								<p:commandButton id="close" value="#{messages['general.button.Close']}" action="#{homeBean.close()}" ajax="true" partialSubmit="true" process="@this" icon="ui-icon-close" />
 							</div>
