@@ -16,6 +16,8 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import javax.enterprise.event.Event;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -41,7 +43,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
     private List<E> entityList;
 
     private String filter;
-    
+
     @Inject
     private Event<RefreshBrowserEvent> refreshBrowserEvent;
 
@@ -50,10 +52,10 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
 
     @Inject
     private Identity identity;
-    
+
     @Inject
     private AuditLogger auditLogger;
-    
+
     /**
      * Geriye kullanılacak olan repository'i döndürür.
      *
@@ -128,7 +130,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         }
 
         String act = entity.isPersisted() ? AuditLogCommand.ACT_UPDATE : AuditLogCommand.ACT_INSERT;
-        
+
         if (!entity.isPersisted()) {
             //Unique Code olup olmadığını bir kontrol edelim...
             List<E> ls = getRepository().findByCode(entity.getCode());
@@ -147,7 +149,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         getRepository().save(entity);
 
         auditLog(act);
-        
+
         if (!getEntityList().contains(entity)) {
             getEntityList().add(entity);
             getTreeModel().addItem(entity);
@@ -164,7 +166,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         FacesMessages.info("general.message.record.SaveSuccess");
 
         refreshEntityList();
-        
+
         raiseRefreshBrowserEvent( getEntity().getId());
 
         return null;
@@ -182,20 +184,28 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         try {
 
             auditLog(AuditLogCommand.ACT_DELETE);
-            
-            getRepository().deleteById(entity.getId());
-            //getRepository().remove(entity);
+
+            //Orphan remove
+            getRepository().remove(entity);
+
+            //Orphan remove from models and cache
             getTreeModel().removeItem(entity);
-            //Listeden de çıkaralım
-            getEntityList().remove(entity);
+            List<E> entitiesToDelete = getEntityList().stream()
+                    .filter(e -> e.getPath().startsWith(entity.getPath()))
+                    .collect(Collectors.toList());
+
+            entitiesToDelete.forEach(e -> {
+                getTreeModel().removeItem(e);
+                getEntityList().remove(e);
+            });
 
         } catch (Exception e) {
-            LOG.error("Hata : {}", e);
+            LOG.error("Hata", e);
             FacesMessages.error("general.message.record.DeleteFaild");
             return null;
         }
 
-        LOG.debug("Entity Removed : {} ", entity);
+        LOG.debug("Entity Removed : {}", entity);
 
         onAfterDelete();
 
@@ -230,7 +240,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
     public void refreshEntityList() {
 
     }
-    
+
     protected void raiseRefreshBrowserEvent( Long id ) {
         refreshBrowserEvent.fire(new RefreshBrowserEvent(getRepository().getEntityClass().getName(), id ));
     }
@@ -266,7 +276,7 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
     public String getNodeCodePath() {
         return TreeUtils.getNodeCodePath(entity);
     }
-    
+
     public String getNodeNamePath() {
         return TreeUtils.getNodeNamePath(entity);
     }
@@ -421,4 +431,8 @@ public abstract class TreeBase< E extends TreeNodeEntityBase> implements TreeNod
         return AuditLogCommand.CAT_PARAM;
     }
 
+    public boolean entityHasChild(long id) {
+        return ((List<E>) getTreeModel().dataModel()).stream()
+                .anyMatch(leaf -> leaf.getParentId() == id);
+    }
 }
