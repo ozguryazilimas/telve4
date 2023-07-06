@@ -89,6 +89,12 @@ public class UserHome extends FormBase<User, Long> {
     @Override
     public boolean onBeforeSave() {
 
+        User ofUser = repository.hasLoginName(getEntity().getLoginName(), getEntity().getId() == null ? 0 : getEntity().getId());
+        if (ofUser != null) {
+            FacesMessages.error(Messages.getMessage("user.message.SameUser"), Messages.getMessage("user.message.SameUser.Details"));
+            return false;
+        }
+
         if (createPasswordAndSend != null && createPasswordAndSend.equals(true)) {
             password = generatePassword();
             sendEmailWithLoginInformation();
@@ -104,12 +110,6 @@ public class UserHome extends FormBase<User, Long> {
         } else {
             getEntity().setPasswordEncodedHash(null);
             getEntity().setChangePassword(false);
-        }
-
-        User ofUser = repository.hasLoginName(getEntity().getLoginName(), getEntity().getId() == null ? 0 : getEntity().getId());
-        if (ofUser != null) {
-            FacesMessages.error(Messages.getMessage("user.message.SameUser"), Messages.getMessage("user.message.SameUser.Details"));
-            return false;
         }
 
         changeLogStore.addNewValue("general.label.FirstName", getEntity().getFirstName());
