@@ -5,6 +5,9 @@
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
+
+    <ui:param name="saveButtonActive" value="#{saveButtonActive ne null ? saveButtonActive : true}" />
+
     <h:form id="paneForm">
 
         <ui:insert name="content" />
@@ -13,15 +16,17 @@
 
             <ui:insert name="extraButtons" />
 
-            <p:commandButton id="save" 
-                             value="#{messages['general.button.Save']}"
-                             action="#{bean.save()}"
-                             icon="ui-icon-disk" 
-                             partialSubmit="false"
-                             validateClient="true"
-                             styleClass="btn-primary"
-                             process="@form"
-                             ajax="false"/>
+            <ui:fragment rendered="#{saveButtonActive}">
+                <p:commandButton id="save"
+                                 value="#{messages['general.button.Save']}"
+                                 action="#{bean.save()}"
+                                 icon="ui-icon-disk"
+                                 partialSubmit="false"
+                                 validateClient="true"
+                                 styleClass="btn-primary"
+                                 process="@form"
+                                 ajax="false"/>
+            </ui:fragment>
             <ui:remove>
             <p:commandButton id="cancel" 
                              value="#{messages['general.button.Close']}"
