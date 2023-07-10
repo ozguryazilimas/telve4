@@ -212,8 +212,8 @@
                                              action="#{dashboardManager.saveDashboard()}"
                                              value="#{messages['general.button.Save']}" 
                                              ajax="true"
-                                             update=":editor"
-                                             oncomplete="PF('layoutEditor').hide();"
+                                             update=":editor :editForm"
+                                             oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('layoutEditor').hide(); }"
                                              icon="fa fa-save" 
                                              styleClass="btn-primary"/>  
 
