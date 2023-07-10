@@ -6,10 +6,9 @@
                  xmlns:o="http://omnifaces.org/ui"
                  xmlns:of="http://omnifaces.org/functions">
 
-
     <li class="dropdown messages-menu">
         <h:form>
-            <p:remoteCommand name="rc" update="notifiyData"  />
+            <p:remoteCommand name="rc" update="notifiyData notifyHeader notifyFooter" />
         </h:form>
         <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="#{messages['nav.label.Notifications']}" onclick="rc();">
             <i class="fa fa-bell-o"></i>
@@ -18,11 +17,14 @@
                 <p:autoUpdate />
             </p:outputPanel>
         </a>
-
-
         <ul class="dropdown-menu">
 
-            <li class="header">#{messages['notifications.hint.UnReadedMessages']}</li>
+            <li class="header">
+                <p:outputPanel id="notifyHeader">
+                    #{notifyStore.getNotifies(identity.loginName).size() > 0 ? messages['notifications.hint.UnReadedMessages'] : messages['notifications.hint.NoUnreadedMessages']}
+                </p:outputPanel>
+            </li>
+
             <li>
                 <p:outputPanel id="notifiyData">
                     <!-- inner menu: contains the actual data -->
@@ -31,7 +33,7 @@
                             <li>
                                 <p:commandLink action="#{notifyStore.go(identity.loginName, notify.id )}" >
                                     <div class="pull-left">
-                                        <i class="fa fa-2x #{notify.icon}" /> 
+                                        <i class="fa fa-2x #{notify.icon}" />
                                     </div>
                                     <h4>#{notify.subject}</h4>
                                     <p style="white-space: normal;">#{notify.body}</p>
@@ -41,13 +43,19 @@
                     </ul>
                 </p:outputPanel>
             </li>
+
             <li class="footer">
-                <p:commandLink action="#{notifyStore.clear(identity.loginName)}" ajax="true" 
-                               partialSubmit="true" process="@this" update="notifiyData" 
-                               styleClass="pull-right">
-                    <i class="fa fa-trash"></i>
-                    #{messages['general.button.Delete']}
-                </p:commandLink>
+                <p:outputPanel id="notifyFooter">
+                    <ui:fragment rendered="#{notifyStore.getNotifies(identity.loginName).size() > 0}">
+                        <p:commandLink action="#{notifyStore.clear(identity.loginName)}" ajax="true"
+                                       style="padding: 7px 10px; color: #444 !important;"
+                                       partialSubmit="true" process="@this" update="notifiyData"
+                                       styleClass="pull-right">
+                            <i class="fa fa-trash" style="margin-right: 10px"></i>
+                            #{messages['general.button.Delete']}
+                        </p:commandLink>
+                    </ui:fragment>
+                </p:outputPanel>
             </li>
         </ul>
 
