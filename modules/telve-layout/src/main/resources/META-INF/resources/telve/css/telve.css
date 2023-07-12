@@ -963,3 +963,11 @@ iframe.width-changed {
     box-shadow: none;
     border: none;
 }
+
+.navbar-inverse .navbar-nav > li .context-dashboard.selected {
+    color: #cdcdcd;
+}
+
+.navbar-inverse .navbar-nav > li .context-dashboard.selected:hover {
+    color: #FFFFFF;
+}

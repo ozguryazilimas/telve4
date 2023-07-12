@@ -746,6 +746,10 @@ public class DashboardManager implements Serializable {
         //return board;
     }
 
+    public Integer getCurrentBoard() {
+        return currentBoard;
+    }
+
     public void setBoard(Integer board) {
         this.board = board;
     }
