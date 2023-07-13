@@ -30,7 +30,7 @@
 
         <c:forEach items="#{dashboardManager.dashboards}" var="dashboard" varStatus="loop">
             <li>
-                <h:link id="dashborad#{loop.index}" >
+                <h:link id="dashborad#{loop.index}" styleClass="context-dashboard #{loop.index == dashboardManager.getCurrentBoard() ? 'selected' : ''}" >
                     <f:param name="board" value="#{loop.index}" />
                     <i class="fa fa-th-large" />
                     <ui:fragment rendered="#{dashboardManager.isDefaultDashboardName(dashboard)}">
