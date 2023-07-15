@@ -10,9 +10,12 @@ import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.idm.entities.UserGroup;
 import com.ozguryazilim.telve.idm.user.UserGroupRepository;
 import com.ozguryazilim.telve.lookup.LookupSelectTuple;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -59,6 +62,18 @@ public class GroupHome extends TreeBase<Group>{
     
     @Override
     protected boolean onBeforeSave() {
+
+        //Check if name is changed in autoCreated entities
+        if (getEntity().getAutoCreated()) {
+            Optional<Group> oldEntity  = getEntityList().stream()
+                    .filter(e -> Objects.equals(e.getId(), getEntity().getId()))
+                    .findAny();
+
+            if (oldEntity.isPresent() && !oldEntity.get().getName().equals(getEntity().getName())) {
+                return false;
+            }
+        }
+
         getEntity().setCode(getEntity().getName());
         return true;
     }
@@ -167,5 +182,5 @@ public class GroupHome extends TreeBase<Group>{
         }
         return "";
     }
-    
+
 }
