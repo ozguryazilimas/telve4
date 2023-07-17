@@ -13,7 +13,7 @@
 
     <ui:define name="form">
         <div class="row">
-            <t:inputText label="general.label.Name" value="#{groupHome.entity.name}" styleClass="large" required="true" maxlength="30"/>
+            <t:inputText label="general.label.Name" value="#{groupHome.entity.name}" styleClass="large" required="true" readonly="#{groupHome.entity.autoCreated}" maxlength="30"/>
         </div>
         <div class="row">     
             <t:inputTextarea label="general.label.Info" maxlength="255" value="#{groupHome.entity.info}" />
