@@ -137,7 +137,13 @@
                 </div>
                 <div class="box-footer">
                     <div class="pull-right">
-                        <p:commandButton styleClass="btn btn-primary" ajax="true" process="@form" value="#{messages['general.button.Ok']}" update="@([id$=results])" oncomplete="PF('columnsPop').hide();"/>
+                        <p:commandButton styleClass="btn btn-primary"
+                                         ajax="true"
+                                         process="@form"
+                                         action="#{bean.search()}"
+                                         value="#{messages['general.button.Ok']}"
+                                         update="@([id$=results]) :contextForm, :browseListForm:detailPanel"
+                                         oncomplete="PF('columnsPop').hide();"/>
                         <p:button styleClass="btn btn-default" onclick="PF('columnsPop').hide();return false;" value="#{messages['general.button.Cancel']}" />
                     </div>
                 </div>
