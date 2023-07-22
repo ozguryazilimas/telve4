@@ -2,8 +2,10 @@ package com.ozguryazilim.telve.query.filters;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.ozguryazilim.telve.config.LocaleSelector;
 import com.ozguryazilim.telve.query.Operands;
 import java.util.List;
+import java.util.Locale;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -31,22 +33,22 @@ public class StringFilter<E> extends Filter<E, String, String> {
 
             switch (getOperand()) {
                 case Equal:
-                    criteria.eq(getAttribute(), getValue());
+                    criteria.eqIgnoreCase(getAttribute(), getValue());
                     break;
                 case NotEqual:
-                    criteria.notEq(getAttribute(), getValue());
+                    criteria.notEqIgnoreCase(getAttribute(), getValue());
                     break;
                 case Contains:
-                    criteria.like(getAttribute(), "%" + getValue() + "%");
+                    criteria.likeIgnoreCase(getAttribute(), "%" + getValue() + "%");
                     break;
                 case BeginsWith:
-                    criteria.like(getAttribute(), getValue() + "%");
+                    criteria.likeIgnoreCase(getAttribute(), getValue() + "%");
                     break;
                 case EndsWith:
-                    criteria.like(getAttribute(), "%" + getValue() );
+                    criteria.likeIgnoreCase(getAttribute(), "%" + getValue());
                     break;
                 case NotContains:
-                    criteria.notLike(getAttribute(), "%" + getValue() + "%");
+                    criteria.notLikeIgnoreCase(getAttribute(), "%" + getValue() + "%");
                     break;
                 default:
                     break;
@@ -57,25 +59,26 @@ public class StringFilter<E> extends Filter<E, String, String> {
     @Override
     public void decorateCriteriaQuery( List<Predicate> predicates, CriteriaBuilder builder, Root<E> from ){
         if (getValue() != null && !getValue().isEmpty() ) {
+            Locale sessionLocale = LocaleSelector.instance().getLocale();
 
             switch (getOperand()) {
                 case Equal:
-                    predicates.add(builder.equal(from.get(getAttribute()), getValue()));
+                    predicates.add(builder.equal(builder.lower(from.get(getAttribute())), getValue().toLowerCase(sessionLocale)));
                     break;
                 case NotEqual:
-                    predicates.add(builder.notEqual(from.get(getAttribute()), getValue()));
+                    predicates.add(builder.notEqual(builder.lower(from.get(getAttribute())), getValue().toLowerCase(sessionLocale)));
                     break;
                 case Contains:
-                    predicates.add(builder.like(from.get(getAttribute()), "%" + getValue() + "%"));
+                    predicates.add(builder.like(builder.lower(from.get(getAttribute())), "%" + getValue().toLowerCase(sessionLocale) + "%"));
                     break;
                 case BeginsWith:
-                    predicates.add(builder.like(from.get(getAttribute()), getValue() + "%"));
+                    predicates.add(builder.like(builder.lower(from.get(getAttribute())), getValue().toLowerCase(sessionLocale) + "%"));
                     break;
                 case EndsWith:
-                    predicates.add(builder.like(from.get(getAttribute()), "%" + getValue() ));
+                    predicates.add(builder.like(builder.lower(from.get(getAttribute())), "%" + getValue().toLowerCase(sessionLocale)));
                     break;
                 case NotContains:
-                    predicates.add(builder.notLike(from.get(getAttribute()), "%" + getValue() + "%"));
+                    predicates.add(builder.notLike(builder.lower(from.get(getAttribute())), "%" + getValue().toLowerCase(sessionLocale) + "%"));
                     break;
                 default:
                     break;
