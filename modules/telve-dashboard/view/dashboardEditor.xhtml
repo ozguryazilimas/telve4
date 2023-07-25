@@ -100,7 +100,7 @@
 
         <p:dialog id="layoutEditor" header="#{messages['general.caption.LayoutEditor']}" modal="true" widgetVar="layoutEditor" width="980">
 
-            <h:form id="editForm">
+            <h:form id="editForm" style="height: 100%;">
 
                 <ui:fragment rendered="#{dashboardManager.selectedBoard ne null}" >
 
@@ -235,28 +235,6 @@
 
     <ui:define name="body">
 
-        <script type="text/javascript">
-
-            function getLayoutMap() {
-                var columns = [];
-                $('.db-column').each(function () {
-                    columns.push($(this).sortable('toArray').join(','));
-                });
-
-                return columns.join(';');
-            }
-
-            function initSortables() {
-                $('.ui-sortable').sortable({
-                    connectWith: '.ui-sortable',
-                    placeholder: 'placeholder',
-                    update: function () {
-                        $("#editForm\\:layoutMap").val(getLayoutMap());
-                    }
-                });
-            }
-        </script>
-
         <div class="box box-primary">
             <div class="box-body">
                 <h:form id="editor">
@@ -314,6 +292,54 @@
                     </p:dataTable>
                 </h:form>
             </div>
+
+            <script type="text/javascript">
+                function getLayoutMap() {
+                    var columns = [];
+                    $('.db-column').each(function () {
+                        columns.push($(this).sortable('toArray').join(','));
+                    });
+
+                    return columns.join(';');
+                }
+
+                function initSortables() {
+                    $('.ui-sortable').sortable({
+                        connectWith: '.ui-sortable',
+                        placeholder: 'placeholder',
+                        update: function () {
+                            $("#editForm\\:layoutMap").val(getLayoutMap());
+                        }
+                    });
+                }
+
+
+                setTimeout(function () {
+                    w = jQuery(parent.window).width();
+                    h = jQuery(parent.window).height();
+                    jQuery('#layoutEditor', parent.document).each(function () {
+                        wd = jQuery(this);
+
+                        w = jQuery(parent.window).width();
+                        h = jQuery(parent.window).height();// - 100;
+                        wd.css('height', h - 100 + 'px');
+                        wd.css('width', w + 'px');
+                        wd.css('top', '100px');
+                        wd.css('left', '0px');
+                        wd.css('z-index', 1035);
+
+                        content = jQuery('.ui-dialog-content', this);
+                        h = h - 60 - 100;
+                        content.css('height', h + 'px');
+
+                        wd.mousedown(function (){
+                            wd.css('z-index', 1035);
+                        });
+                    });
+                }, 700);
+
+            </script>
+
         </div>
     </ui:define>
 
