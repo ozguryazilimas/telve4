@@ -965,7 +965,7 @@ iframe.width-changed {
 }
 
 .navbar-inverse .navbar-nav > li .context-dashboard.selected {
-    color: #cdcdcd;
+    color: #f2f2f2;
 }
 
 .navbar-inverse .navbar-nav > li .context-dashboard.selected:hover {
