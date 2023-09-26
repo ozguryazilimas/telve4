@@ -40,6 +40,8 @@ public abstract class GroupRepository extends TreeRepositoryBase<Group> implemen
 
     public abstract Group findAnyByName(String name);
 
+    public abstract Group findAnyByCode(String code);
+
     public abstract List<Group> findAnyByAutoCreated(Boolean autoCreated);
 
     @Override
