@@ -325,31 +325,31 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                 while (ldapGroupResults.hasMoreElements()) {
                     Attributes ldapGroup = ldapGroupResults.next().getAttributes();
 
-                    String groupName =
+                    String groupCode =
                         ldapGroup.get(groupNameAttr) != null ? ldapGroup.get(groupNameAttr).get().toString(): null;
 
-                    LOG.debug("LDAP Group Sync - Group Name: {}", groupName);
+                    LOG.debug("LDAP Group Sync - LDAP Group Name: {}", groupCode);
 
                     // eger grup adi mevcutsa islemleri yapalim
-                    if (groupName != null) {
+                    if (groupCode != null) {
 
-                        if (groupName.length() > 30)
-                            groupName = groupName.substring(0, 30);
+                        if (groupCode.length() > 30)
+                            groupCode = groupCode.substring(0, 30);
 
                         // gruba ait kullanicilar
                         NamingEnumeration<?> members = ldapGroup.get(groupMembersAttr) != null
                             ? ldapGroup.get(groupMembersAttr).getAll() : null;
 
                         // grup telve tarafinda kayitli mi?
-                        Group group = groupRepository.findAnyByName(groupName);
+                        Group group = groupRepository.findAnyByCode(groupCode);
 
                         // eger veritabaninda kayitli degil ve olusturulmasi icin parametre verilmis ise olusturalim
                         if (command.getCreateMissingGroups() != null && group == null && command.getCreateMissingGroups()) {
-                            LOG.debug("Group not found in database. Will be added. Group Name: {}", groupName);
+                            LOG.debug("Group not found in database. Will be added. LDAP Group Name: {}", groupCode);
                             Group newGroup = new Group();
                             newGroup.setActive(Boolean.TRUE);
-                            newGroup.setCode(groupName);
-                            newGroup.setName(groupName);
+                            newGroup.setCode(groupCode);
+                            newGroup.setName(groupCode);
                             newGroup.setAutoCreated(Boolean.TRUE);
                             groupRepository.save(newGroup);
                             // path id'sini verip tekrar kaydedelim
@@ -357,19 +357,19 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                             groupRepository.save(newGroup);
                             // grup degerini degistirelim
                             group = newGroup;
-                            LOG.debug("Group added to database. Group Name: {}", groupName);
+                            LOG.debug("Group added to database. LDAP Group Name: {}", groupCode);
                             createGroupCounter++;
                         }
 
                         // eger grup var ise
                         if (group != null) {
-                            LOG.debug("Group already saved in database. Group Name: {}", groupName);
+                            LOG.debug("Group already saved in database. LDAP Group Name: {}", groupCode);
                             // grup kayitli ise userGroup uyelerini cekelim,
                             // ldap tarafinda silinen biri varsa biz de silecegiz userGroup'dan en sonda
                             List<UserGroup> groupMembers = userGroupRepository.findAnyByGroup(group);
 
                             if(members == null || !members.hasMoreElements()){
-                                LOG.warn("There isn't any group member coming from LDAP. Group Name: {}", groupName);
+                                LOG.warn("There isn't any group member coming from LDAP. LDAP Group Name: {}", groupCode);
                             }
 
                             // uyeleri while loopu ile cekelim
@@ -377,7 +377,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                 // ustunde islem yapilacak uye
                                 String member = members.next().toString();
 
-                                LOG.debug("Group Member Checking... Group Name: {}, Member Name: {}", groupName, member);
+                                LOG.debug("Group Member Checking... LDAP Group Name: {}, Member Name: {}", groupCode, member);
 
                                 // once kullaniciyi user tablosunda bulalim
                                 User existingUser = userRepository.findAnyByLoginName(member);
@@ -396,7 +396,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                         newUserGroup.setUser(existingUser);
                                         newUserGroup.setAutoCreated(true);
                                         userGroupRepository.save(newUserGroup);
-                                        LOG.debug("Group member not found. Member is added. Group Name: {}, Member Name: {}", groupName, member);
+                                        LOG.debug("Group member not found. Member is added. LDAP Group Name: {}, Member Name: {}", groupCode, member);
                                         createGroupMemberCounter++;
                                     }
                                     // katiyliysa da guncelleyelim
@@ -407,16 +407,16 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                         userGroupRepository.save(existingUserGroup);
                                         // kullaniciyi listeden silelim
                                         groupMembers.remove(existingUserGroup);
-                                        LOG.debug("Group member already added. Member is updated. Group Name: {}, Member Name: {}", groupName, member);
+                                        LOG.debug("Group member already added. Member is updated. LDAP Group Name: {}, Member Name: {}", groupCode, member);
                                         updateGroupMemberCounter++;
                                     }
 
                                     userDataChangeEventEvent.fire(new UserDataChangeEvent(existingUser.getLoginName()));
                                 } else {
-                                    LOG.warn("Group member not found in database. User can't be added to group. Group Name: {}, Member Name: {}", groupName, member);
+                                    LOG.warn("Group member not found in database. User can't be added to group. LDAP Group Name: {}, Member Name: {}", groupCode, member);
                                 }
                             }
-                            LOG.debug("Group member removing process starting. Group Name: {}", groupName);
+                            LOG.debug("Group member removing process starting. LDAP Group Name: {}", groupCode);
                             // ardindan kalan userGroup'lari veritabanindan silelim
                             for (UserGroup userGroup : groupMembers) {
                                 userGroupRepository.remove(userGroup);
