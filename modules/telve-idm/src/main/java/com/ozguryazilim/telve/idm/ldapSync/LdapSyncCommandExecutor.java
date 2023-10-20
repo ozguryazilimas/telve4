@@ -288,6 +288,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
         String groupNameAttr = realm.get(telveRealm + "groupNameAttr");
         String groupMembersAttr = realm.get(telveRealm + "groupMembersAttr");
+        boolean queryGroupMembersWithAttr = Boolean.getBoolean(realm.get(telveRealm + "queryGroupMembersWithAttrDN"));
         String groupSearchBase = realm.get(telveRealm + "groupSearchBase");
         String groupSyncFilter = realm.get(telveRealm + "groupSyncFilter");
 
@@ -376,6 +377,25 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                             while (members != null && members.hasMoreElements()) {
                                 // ustunde islem yapilacak uye
                                 String member = members.next().toString();
+
+                                //Get group search result with dn
+                                if (queryGroupMembersWithAttr) {
+                                    String loginNameAttr = realm.get(telveRealm + "loginNameAttr");
+                                    String firstNameAttr = realm.get(telveRealm + "firstNameAttr");
+                                    String lastNameAttr = realm.get(telveRealm + "lastNameAttr");
+                                    String emailAttr = realm.get(telveRealm + "emailAttr");
+                                    String userSyncFilter = realm.get(telveRealm + "userSyncFilter");
+
+                                    SearchControls userSearchControls = new SearchControls();
+                                    userSearchControls.setReturningAttributes(new String[]{loginNameAttr, firstNameAttr, lastNameAttr, emailAttr});
+                                    setScope(scope, userSearchControls);
+
+                                    NamingEnumeration<SearchResult> groupUserSearchResult = ldapContext.search(member, userSyncFilter, userSearchControls);
+                                    if (groupUserSearchResult != null && groupUserSearchResult.hasMoreElements()) {
+                                        Attributes attributes = groupUserSearchResult.next().getAttributes();
+                                        member = attributes != null ? attributes.get(loginNameAttr).get().toString() : null;
+                                    }
+                                }
 
                                 LOG.debug("Group Member Checking... LDAP Group Name: {}, Member Name: {}", groupCode, member);
 
