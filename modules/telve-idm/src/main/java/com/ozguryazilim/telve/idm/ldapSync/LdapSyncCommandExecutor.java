@@ -22,6 +22,7 @@ import java.util.List;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.naming.Context;
+import javax.naming.InvalidNameException;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
@@ -288,7 +289,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
         String groupNameAttr = realm.get(telveRealm + "groupNameAttr");
         String groupMembersAttr = realm.get(telveRealm + "groupMembersAttr");
-        boolean queryGroupMembersWithAttr = Boolean.getBoolean(realm.get(telveRealm + "queryGroupMembersWithAttrDN"));
+        boolean queryGroupMembersWithAttr = Boolean.parseBoolean(realm.get(telveRealm + "queryGroupMembersWithAttrDN"));
         String groupSearchBase = realm.get(telveRealm + "groupSearchBase");
         String groupSyncFilter = realm.get(telveRealm + "groupSyncFilter");
 
@@ -390,10 +391,17 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                                     userSearchControls.setReturningAttributes(new String[]{loginNameAttr, firstNameAttr, lastNameAttr, emailAttr});
                                     setScope(scope, userSearchControls);
 
-                                    NamingEnumeration<SearchResult> groupUserSearchResult = ldapContext.search(member, userSyncFilter, userSearchControls);
-                                    if (groupUserSearchResult != null && groupUserSearchResult.hasMoreElements()) {
-                                        Attributes attributes = groupUserSearchResult.next().getAttributes();
-                                        member = attributes != null ? attributes.get(loginNameAttr).get().toString() : null;
+                                    try {
+                                        NamingEnumeration<SearchResult> groupUserSearchResult = ldapContext.search(member, userSyncFilter, userSearchControls);
+                                        if (groupUserSearchResult != null && groupUserSearchResult.hasMoreElements()) {
+                                            Attributes attributes = groupUserSearchResult.next().getAttributes();
+                                            member = attributes != null ? attributes.get(loginNameAttr).get().toString() : null;
+                                            LOG.debug("LDAP member with DN found. DN: {}", member);
+                                        } else {
+                                            LOG.error("LDAP member with DN not found. DN: {}", member);
+                                        }
+                                    } catch (InvalidNameException ex) {
+                                        LOG.error("Error while searching member DN: {}", member, ex);
                                     }
                                 }
 

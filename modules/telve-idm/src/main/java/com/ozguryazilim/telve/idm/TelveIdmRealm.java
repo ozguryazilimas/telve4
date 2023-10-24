@@ -105,6 +105,7 @@ public class TelveIdmRealm extends JndiLdapRealm {
     private String groupMembersAttr = "memberUid";
     private String roleNameAttr = "cn";
     private String roleMembersAttr = "memberUid";
+    private String queryGroupMembersWithAttrDN = "true";
 
     private String defaultRole = "";
 
@@ -313,6 +314,12 @@ public class TelveIdmRealm extends JndiLdapRealm {
         this.roleSyncFilter = roleSyncFilter;
     }
 
+    public String getQueryGroupMembersWithAttrDN() {
+        return queryGroupMembersWithAttrDN;
+    }
+    public void setQueryGroupMembersWithAttrDN(String queryGroupMembersWithAttrDN) {
+        this.queryGroupMembersWithAttrDN = queryGroupMembersWithAttrDN;
+    }
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         //null usernames are invalid
