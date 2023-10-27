@@ -2,27 +2,23 @@ package com.ozguryazilim.telve.idm.ldapSync;
 
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.auth.UserDataChangeEvent;
-import com.ozguryazilim.telve.idm.IdmEvent;
 import com.ozguryazilim.telve.idm.entities.Group;
 import com.ozguryazilim.telve.idm.entities.Role;
 import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.idm.entities.UserGroup;
 import com.ozguryazilim.telve.idm.entities.UserRole;
 import com.ozguryazilim.telve.idm.group.GroupRepository;
+import com.ozguryazilim.telve.idm.ldapSync.groupsync.LdapGroupSyncCommand;
 import com.ozguryazilim.telve.idm.role.RoleRepository;
 import com.ozguryazilim.telve.idm.user.UserGroupRepository;
 import com.ozguryazilim.telve.idm.user.UserRepository;
 import com.ozguryazilim.telve.idm.user.UserRoleRepository;
 import com.ozguryazilim.telve.messagebus.command.AbstractCommandExecuter;
 import com.ozguryazilim.telve.messagebus.command.CommandExecutor;
-import com.ozguryazilim.telve.utils.TreeUtils;
-import java.io.IOException;
-import java.util.Hashtable;
-import java.util.List;
+import com.ozguryazilim.telve.messagebus.command.CommandSender;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.naming.Context;
-import javax.naming.InvalidNameException;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
@@ -37,6 +33,12 @@ import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.apache.shiro.config.Ini;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Transactional
 @CommandExecutor(command = LdapSyncCommand.class)
@@ -67,6 +69,9 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
     @Inject
     private Event<UserDataChangeEvent> userDataChangeEventEvent;
+
+    @Inject
+    private CommandSender commandSender;
     
     @Override
     public void execute(LdapSyncCommand command) {
@@ -293,19 +298,6 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         String groupSearchBase = realm.get(telveRealm + "groupSearchBase");
         String groupSyncFilter = realm.get(telveRealm + "groupSyncFilter");
 
-        // Başarılı group create sync'ları sayacak counter.
-        int createGroupCounter = 0;
-        // Başarılı group update sync'ları sayacak counter.
-        int updateGroupCounter = 0;
-        // Deaktif edilen group'ları sayacak counter.
-        int deactiveGroupCounter = 0;
-        // Eklenen toplam group member sayacak counter.
-        int createGroupMemberCounter = 0;
-        // Güncellenen toplam group member sayacak counter.
-        int updateGroupMemberCounter = 0;
-        // Silinen toplam group member sayacak counter.
-        int removeGroupMemberCounter = 0;
-
         try {
             SearchControls groupSearchControls = new SearchControls();
             groupSearchControls.setReturningAttributes(new String[]{groupNameAttr, groupMembersAttr});
@@ -315,6 +307,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
             byte[] cookie = null;
 
+            List<String> ldapGroupCodes = new ArrayList<>();
             do {
                 // ldap uzerinden sonuclari cekelim
                 NamingEnumeration<SearchResult> ldapGroupResults = ldapContext
@@ -325,145 +318,20 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                 }
                 // sonuclarin uzerinden gecelim
                 while (ldapGroupResults.hasMoreElements()) {
-                    Attributes ldapGroup = ldapGroupResults.next().getAttributes();
-
-                    String groupCode =
-                        ldapGroup.get(groupNameAttr) != null ? ldapGroup.get(groupNameAttr).get().toString(): null;
-
-                    LOG.debug("LDAP Group Sync - LDAP Group Name: {}", groupCode);
-
-                    // eger grup adi mevcutsa islemleri yapalim
-                    if (groupCode != null) {
-
-                        if (groupCode.length() > 30)
-                            groupCode = groupCode.substring(0, 30);
-
-                        // gruba ait kullanicilar
-                        NamingEnumeration<?> members = ldapGroup.get(groupMembersAttr) != null
-                            ? ldapGroup.get(groupMembersAttr).getAll() : null;
-
-                        // grup telve tarafinda kayitli mi?
-                        Group group = groupRepository.findAnyByCode(groupCode);
-
-                        // eger veritabaninda kayitli degil ve olusturulmasi icin parametre verilmis ise olusturalim
-                        if (command.getCreateMissingGroups() != null && group == null && command.getCreateMissingGroups()) {
-                            LOG.debug("Group not found in database. Will be added. LDAP Group Name: {}", groupCode);
-                            Group newGroup = new Group();
-                            newGroup.setActive(Boolean.TRUE);
-                            newGroup.setCode(groupCode);
-                            newGroup.setName(groupCode);
-                            newGroup.setAutoCreated(Boolean.TRUE);
-                            groupRepository.save(newGroup);
-                            // path id'sini verip tekrar kaydedelim
-                            newGroup.setPath(TreeUtils.getNodeIdPath(newGroup));
-                            groupRepository.save(newGroup);
-                            // grup degerini degistirelim
-                            group = newGroup;
-                            LOG.debug("Group added to database. LDAP Group Name: {}", groupCode);
-                            createGroupCounter++;
-                        }
-
-                        // eger grup var ise
-                        if (group != null) {
-                            LOG.debug("Group already saved in database. LDAP Group Name: {}", groupCode);
-                            // grup kayitli ise userGroup uyelerini cekelim,
-                            // ldap tarafinda silinen biri varsa biz de silecegiz userGroup'dan en sonda
-                            List<UserGroup> groupMembers = userGroupRepository.findAnyByGroup(group);
-
-                            if(members == null || !members.hasMoreElements()){
-                                LOG.warn("There isn't any group member coming from LDAP. LDAP Group Name: {}", groupCode);
-                            }
-
-                            // uyeleri while loopu ile cekelim
-                            while (members != null && members.hasMoreElements()) {
-                                // ustunde islem yapilacak uye
-                                String member = members.next().toString();
-
-                                //Get group search result with dn
-                                if (queryGroupMembersWithAttr) {
-                                    String loginNameAttr = realm.get(telveRealm + "loginNameAttr");
-                                    String firstNameAttr = realm.get(telveRealm + "firstNameAttr");
-                                    String lastNameAttr = realm.get(telveRealm + "lastNameAttr");
-                                    String emailAttr = realm.get(telveRealm + "emailAttr");
-                                    String userSyncFilter = realm.get(telveRealm + "userSyncFilter");
-
-                                    SearchControls userSearchControls = new SearchControls();
-                                    userSearchControls.setReturningAttributes(new String[]{loginNameAttr, firstNameAttr, lastNameAttr, emailAttr});
-                                    setScope(scope, userSearchControls);
-
-                                    try {
-                                        NamingEnumeration<SearchResult> groupUserSearchResult = ldapContext.search(member, userSyncFilter, userSearchControls);
-                                        if (groupUserSearchResult != null && groupUserSearchResult.hasMoreElements()) {
-                                            Attributes attributes = groupUserSearchResult.next().getAttributes();
-                                            member = attributes != null ? attributes.get(loginNameAttr).get().toString() : null;
-                                            LOG.debug("LDAP member with DN found. DN: {}", member);
-                                        } else {
-                                            LOG.error("LDAP member with DN not found. DN: {}", member);
-                                        }
-                                    } catch (InvalidNameException ex) {
-                                        LOG.error("Error while searching member DN: {}", member, ex);
-                                    }
-                                }
-
-                                LOG.debug("Group Member Checking... LDAP Group Name: {}, Member Name: {}", groupCode, member);
-
-                                // once kullaniciyi user tablosunda bulalim
-                                User existingUser = userRepository.findAnyByLoginName(member);
-
-                                // boyle bir kullanici var mi emin olalim
-                                if (existingUser != null) {
-
-                                    // ardindan gruba coktan kayitli mi bir kontrol edelim
-                                    UserGroup existingUserGroup = userGroupRepository
-                                        .findAnyByUserAndGroup(existingUser, group);
-
-                                    // eger kayitli degil ise kaydini yapalim
-                                    if (existingUserGroup == null) {
-                                        UserGroup newUserGroup = new UserGroup();
-                                        newUserGroup.setGroup(group);
-                                        newUserGroup.setUser(existingUser);
-                                        newUserGroup.setAutoCreated(true);
-                                        userGroupRepository.save(newUserGroup);
-                                        LOG.debug("Group member not found. Member is added. LDAP Group Name: {}, Member Name: {}", groupCode, member);
-                                        createGroupMemberCounter++;
-                                    }
-                                    // katiyliysa da guncelleyelim
-                                    else {
-                                        existingUserGroup.setUser(existingUser);
-                                        existingUserGroup.setGroup(group);
-                                        existingUserGroup.setAutoCreated(true);
-                                        userGroupRepository.save(existingUserGroup);
-                                        // kullaniciyi listeden silelim
-                                        groupMembers.remove(existingUserGroup);
-                                        LOG.debug("Group member already added. Member is updated. LDAP Group Name: {}, Member Name: {}", groupCode, member);
-                                        updateGroupMemberCounter++;
-                                    }
-
-                                    userDataChangeEventEvent.fire(new UserDataChangeEvent(existingUser.getLoginName()));
-                                } else {
-                                    LOG.warn("Group member not found in database. User can't be added to group. LDAP Group Name: {}, Member Name: {}", groupCode, member);
-                                }
-                            }
-                            LOG.debug("Group member removing process starting. LDAP Group Name: {}", groupCode);
-                            // ardindan kalan userGroup'lari veritabanindan silelim
-                            for (UserGroup userGroup : groupMembers) {
-                                userGroupRepository.remove(userGroup);
-                                if(userGroup != null && userGroup.getGroup() != null && userGroup.getUser() != null){
-                                    LOG.debug("Group Member Removed. Group Name: {}, Member Name: {}", userGroup.getGroup().getName(),
-                                            userGroup.getUser().getLoginName());
-
-                                    userDataChangeEventEvent.fire(new UserDataChangeEvent(userGroup.getUser().getLoginName()));
-                                }
-                                removeGroupMemberCounter++;
-                            }
-
-                            // islemler bitti, listeden cikaralim
-                            autoCreatedGroups.remove(group);
-                            updateGroupCounter++;
-                        }
-                    } else {
-                        LOG.warn("Group Name not found for LDAP group record.");
+                    // Collect LDAP group codes
+                    SearchResult groupSearchResult = ldapGroupResults.next();
+                    Attributes groupSearchResultAttributes = groupSearchResult.getAttributes();
+                    if (groupSearchResultAttributes.get(groupNameAttr) != null) {
+                        ldapGroupCodes.add(groupSearchResultAttributes.get(groupNameAttr).get().toString());
                     }
+
+                    // Filter autoCreatedGroups
+                    autoCreatedGroups = autoCreatedGroups.stream()
+                            .filter(group -> ldapGroupCodes.contains(group.getCode()))
+                            .collect(Collectors.toList());
+
+                    LdapGroupSyncCommand ldapGroupSyncCommand = new LdapGroupSyncCommand(command, groupSearchResult);
+                    commandSender.sendCommand(ldapGroupSyncCommand);
                 }
 
                 cookie = getControlResponse(ldapContext.getResponseControls());
@@ -471,7 +339,6 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                 ldapContext.setRequestControls(new Control[]{new PagedResultsControl(pageSize, cookie, Control.CRITICAL)});
 
             } while (cookie.length != 0);
-
 
         } catch (NamingException | IOException e) {
             LOG.error("There was an error during LdapSyncCommand - groups", e);
@@ -488,13 +355,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                     .forEach(user -> userDataChangeEventEvent.fire(new UserDataChangeEvent(user.getLoginName())));
 
             LOG.debug("Group updated and passive now. Group Name: {}", remainingGroups.getName());
-            deactiveGroupCounter++;
         }
-        LOG.info("LDAP GROUP SYNCHRONIZATION COMPLETED. Created Groups Count: {}, Updated Groups Count: {}, Deactivated Groups Count: {}," +
-                        " Created Group Members Count: {}, Updated Group Members Count: {}, Removed Group Members Count: {}.",
-                createGroupCounter, updateGroupCounter, deactiveGroupCounter, createGroupMemberCounter,
-                updateGroupMemberCounter, removeGroupMemberCounter);
-        event.fire(new IdmLdapSyncEvent(IdmLdapSyncEvent.GROUP));
     }
 
     private void syncRoles(Ini.Section realm, LdapContext ldapContext, String scope, int pageSize) throws NamingException {
