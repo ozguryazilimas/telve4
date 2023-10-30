@@ -7,6 +7,8 @@ import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.idm.entities.UserGroup;
 import com.ozguryazilim.telve.idm.group.GroupRepository;
 import com.ozguryazilim.telve.idm.ldapSync.IdmLdapSyncEvent;
+import com.ozguryazilim.telve.idm.ldapSync.LdapSyncCommandExecutor;
+import com.ozguryazilim.telve.idm.ldapSync.LdapSyncContext;
 import com.ozguryazilim.telve.idm.user.UserGroupRepository;
 import com.ozguryazilim.telve.idm.user.UserRepository;
 import com.ozguryazilim.telve.messagebus.command.AbstractCommandExecuter;
@@ -230,32 +232,8 @@ public class LdapGroupSyncCommandExecutor extends AbstractCommandExecuter<LdapGr
             // classpath uzerinden ini dosyasini okuyoruz
             Ini iniFile = Ini.fromResourcePath("classpath:shiro.ini");
             Ini.Section realm = iniFile.get("main");
-
-            // realm uzerinden sik tekrarlanan bir kisim degerleri cekelim
-
-            // Ldap baglantisi icin gerekli olan degerler
-            Hashtable<String, String> env = new Hashtable<>();
-            env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-            env.put(Context.PROVIDER_URL, realm.get(telveRealm + "contextFactory.url"));
-            env.put(Context.SECURITY_AUTHENTICATION, "simple");
-            env.put(Context.SECURITY_PRINCIPAL, realm.get(telveRealm + "contextFactory.systemUsername"));
-            env.put(Context.SECURITY_CREDENTIALS, realm.get(telveRealm + "contextFactory.systemPassword"));
-
-            // Ldap contextini olusturuyoruz
-            LdapContext ldapContext = new InitialLdapContext(env, null);
-
-            String scope = realm.get(telveRealm + "userScope");
-            String pageSizeStr = realm.get(telveRealm + "pageSize");
-            int pageSize = 1000;
-            try {
-                pageSize = Integer.parseInt(pageSizeStr);
-            } catch (NumberFormatException e) {
-                LOG.error("Could not format realm pageSize value: " +
-                        "pageSize realm value must be an Integer value, so pageSize has been set to 1000 as default. " +
-                        "Value: {}", pageSizeStr);
-            }
-
-            syncGroups(realm, ldapContext, scope, pageSize, command);
+            LdapSyncContext ldapSyncContext = LdapSyncCommandExecutor.prepareLdapContext(realm);
+            syncGroups(realm, ldapSyncContext.getLdapContext(), ldapSyncContext.getScope(), ldapSyncContext.getPageSize(), command);
         } catch (Exception e) {
             LOG.error("There was an error during LdapGroupSyncCommand", e);
         }
