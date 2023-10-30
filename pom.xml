@@ -13,7 +13,7 @@
 
     <properties>
         <buildNumber>SNAPSHOT</buildNumber>
-        <minorNumber>17</minorNumber>
+        <minorNumber>18</minorNumber>
         <revision>4.2.${minorNumber}</revision>
         <changelist>-${buildNumber}</changelist>
     </properties>
