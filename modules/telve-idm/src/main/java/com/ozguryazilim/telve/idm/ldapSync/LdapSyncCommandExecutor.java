@@ -72,6 +72,32 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
 
     @Inject
     private CommandSender commandSender;
+
+    public static LdapSyncContext prepareLdapContext(Ini.Section realm) throws NamingException {
+        // Ldap baglantisi icin gerekli olan degerler
+        String telveRealm = "telveRealm.";
+
+        Hashtable<String, String> env = new Hashtable<>();
+        env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
+        env.put(Context.PROVIDER_URL, realm.get(telveRealm + "contextFactory.url"));
+        env.put(Context.SECURITY_AUTHENTICATION, "simple");
+        env.put(Context.SECURITY_PRINCIPAL, realm.get(telveRealm + "contextFactory.systemUsername"));
+        env.put(Context.SECURITY_CREDENTIALS, realm.get(telveRealm + "contextFactory.systemPassword"));
+
+        // Ldap contextini olusturuyoruz
+        LdapContext ldapContext = new InitialLdapContext(env, null);
+        String scope = realm.get(telveRealm + "userScope");
+        String pageSizeStr = realm.get(telveRealm + "pageSize");
+        int pageSize = 1000;
+        try {
+            pageSize = Integer.parseInt(pageSizeStr);
+        } catch (NumberFormatException e) {
+            LOG.error("Could not format realm pageSize value: " +
+                    "pageSize realm value must be an Integer value, so pageSize has been set to 1000 as default. " +
+                    "Value: {}", pageSizeStr);
+        }
+        return new LdapSyncContext(ldapContext, pageSize, scope);
+    }
     
     @Override
     public void execute(LdapSyncCommand command) {
@@ -80,39 +106,17 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             // classpath uzerinden ini dosyasini okuyoruz
             Ini iniFile = Ini.fromResourcePath("classpath:shiro.ini");
             Ini.Section realm = iniFile.get("main");
-
-            // realm uzerinden sik tekrarlanan bir kisim degerleri cekelim
-
-            // Ldap baglantisi icin gerekli olan degerler
-            Hashtable<String, String> env = new Hashtable<>();
-            env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-            env.put(Context.PROVIDER_URL, realm.get(telveRealm + "contextFactory.url"));
-            env.put(Context.SECURITY_AUTHENTICATION, "simple");
-            env.put(Context.SECURITY_PRINCIPAL, realm.get(telveRealm + "contextFactory.systemUsername"));
-            env.put(Context.SECURITY_CREDENTIALS, realm.get(telveRealm + "contextFactory.systemPassword"));
-
-            // Ldap contextini olusturuyoruz
-            LdapContext ldapContext = new InitialLdapContext(env, null);
-
-            String scope = realm.get(telveRealm + "userScope");
-            String pageSizeStr = realm.get(telveRealm + "pageSize");
-            int pageSize = 1000;
-            try {
-                pageSize = Integer.parseInt(pageSizeStr);
-            } catch (NumberFormatException e) {
-                LOG.error("pageSize realm value must be an integer value, so pageSize has been set to 1000 as the default.", e);
-            }
-
-            syncUsers(realm, ldapContext, scope, pageSize);
+            LdapSyncContext ldapSyncContext = prepareLdapContext(realm);
+            syncUsers(realm, ldapSyncContext.getLdapContext(), ldapSyncContext.getScope(), ldapSyncContext.getPageSize());
 
             // eger true donerse gruplari senkronize ediyoruz
             if (command.getSyncGroupsAndAssignUsers() != null && command.getSyncGroupsAndAssignUsers()) {
-                syncGroups(realm, ldapContext, scope, pageSize, command);
+                syncGroups(realm, ldapSyncContext.getLdapContext(), ldapSyncContext.getScope(), ldapSyncContext.getPageSize(), command);
             }
 
             // eger true donerse rolleri senkronize ediyoruz
             if (command.getSyncRolesAndAssignUsers() != null && command.getSyncRolesAndAssignUsers()) {
-                syncRoles(realm, ldapContext, scope, pageSize);
+                syncRoles(realm, ldapSyncContext.getLdapContext(), ldapSyncContext.getScope(), ldapSyncContext.getPageSize());
             }
         } catch (Exception e) {
             LOG.error("There was an error during LdapSyncCommand", e);
