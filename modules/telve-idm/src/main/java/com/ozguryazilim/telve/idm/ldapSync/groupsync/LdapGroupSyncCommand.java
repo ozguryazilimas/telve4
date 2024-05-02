@@ -12,7 +12,8 @@ public class LdapGroupSyncCommand extends LdapSyncCommand {
                                 SearchResult groupSearchResult) {
         super(ldapSyncCommand.getSyncGroupsAndAssignUsers(),
                 ldapSyncCommand.getCreateMissingGroups(),
-                ldapSyncCommand.getSyncRolesAndAssignUsers());
+                ldapSyncCommand.getSyncRolesAndAssignUsers(),
+                ldapSyncCommand.getActivateDeactivatedGroups());
         this.groupSearchResult = groupSearchResult;
     }
 

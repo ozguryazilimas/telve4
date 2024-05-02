@@ -15,6 +15,10 @@
             </p:selectBooleanCheckbox>
         </t:inputAny>
         <t:inputCheckbox label=""
+                         itemLabel="ldapSyncCommand.itemLabel.activateDeactivatedGroups"
+                         value="#{ldapSyncCommandEditor.command.activateDeactivatedGroups}"
+                         columnClass="col-xs-12"/>
+        <t:inputCheckbox label=""
                          itemLabel="ldapSyncCommand.itemLabel.createMissingGroups"
                          value="#{ldapSyncCommandEditor.command.createMissingGroups}"
                          rendered="#{ldapSyncCommandEditor.command.syncGroupsAndAssignUsers}"

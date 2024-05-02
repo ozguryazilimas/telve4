@@ -92,7 +92,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
         try {
             pageSize = Integer.parseInt(pageSizeStr);
         } catch (NumberFormatException e) {
-            LOG.error("Could not format realm pageSize value: " +
+            LOG.trace("Could not format realm pageSize value: " +
                     "pageSize realm value must be an Integer value, so pageSize has been set to 1000 as default. " +
                     "Value: {}", pageSizeStr);
         }
@@ -330,9 +330,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                     }
 
                     // Filter autoCreatedGroups
-                    autoCreatedGroups = autoCreatedGroups.stream()
-                            .filter(group -> ldapGroupCodes.contains(group.getCode()))
-                            .collect(Collectors.toList());
+                    autoCreatedGroups.removeIf(group -> ldapGroupCodes.contains(group.getCode()));
 
                     LdapGroupSyncCommand ldapGroupSyncCommand = new LdapGroupSyncCommand(command, groupSearchResult);
                     commandSender.sendCommand(ldapGroupSyncCommand);
@@ -349,7 +347,10 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
             // Hata olustu, grouplari pasif yapmayalim.
             return;
         }
-        LOG.debug("Group deactivation process starting...");
+        if (!autoCreatedGroups.isEmpty()) {
+            LOG.info("Group deactivation process starting for {} groups", autoCreatedGroups.size());
+        }
+
         // elimizde kalan kayitlari pasife cekelim
         for (Group remainingGroups : autoCreatedGroups) {
             remainingGroups.setActive(Boolean.FALSE);
@@ -358,7 +359,7 @@ public class LdapSyncCommandExecutor extends AbstractCommandExecuter<LdapSyncCom
                     .map(UserGroup::getUser)
                     .forEach(user -> userDataChangeEventEvent.fire(new UserDataChangeEvent(user.getLoginName())));
 
-            LOG.debug("Group updated and passive now. Group Name: {}", remainingGroups.getName());
+            LOG.info("Group updated and passive now. Group Name: {}", remainingGroups.getName());
         }
     }
 
