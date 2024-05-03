@@ -99,9 +99,7 @@ public class LdapGroupSyncCommandExecutor extends AbstractCommandExecuter<LdapGr
                             String scope,
                             int pageSize,
                             LdapGroupSyncCommand command) {
-        LOG.info("LDAP GROUP SYNCHRONIZATION STARTING.");
         //otomatik olusturulmus gruplari bulalim
-
         String groupNameAttr = realm.get(telveRealm + "groupNameAttr");
         String groupMembersAttr = realm.get(telveRealm + "groupMembersAttr");
         boolean queryGroupMembersWithAttr = Boolean.parseBoolean(realm.get(telveRealm + "queryGroupMembersWithAttrDN"));
@@ -112,7 +110,7 @@ public class LdapGroupSyncCommandExecutor extends AbstractCommandExecuter<LdapGr
 
             String groupCode = ldapGroup.get(groupNameAttr) != null ? ldapGroup.get(groupNameAttr).get().toString() : null;
 
-            LOG.debug("LDAP Group Sync - LDAP Group Name: {}", groupCode);
+            LOG.info("LDAP Group Sync - LDAP Group Name: {}", groupCode);
 
             // eger grup adi mevcutsa islemleri yapalim
             if (groupCode != null) {
@@ -202,16 +200,25 @@ public class LdapGroupSyncCommandExecutor extends AbstractCommandExecuter<LdapGr
                             LOG.warn("Group member not found in database. User can't be added to group. LDAP Group Name: {}, Member Name: {}", groupCode, member);
                         }
                     }
-                    LOG.debug("Group member removing process starting. LDAP Group Name: {}", groupCode);
+
+                    if (!groupMembers.isEmpty()) {
+                        LOG.info("Group member removing process starting. LDAP Group Name: {}", groupCode);
+                    }
+
                     // ardindan kalan userGroup'lari veritabanindan silelim
                     for (UserGroup userGroup : groupMembers) {
                         userGroupRepository.remove(userGroup);
                         if(userGroup != null && userGroup.getGroup() != null && userGroup.getUser() != null){
-                            LOG.debug("Group Member Removed. Group Name: {}, Member Name: {}", userGroup.getGroup().getName(),
-                                    userGroup.getUser().getLoginName());
-
+                            LOG.info("Group Member Removed. Group Name: {}, Member Name: {}", userGroup.getGroup().getName(), userGroup.getUser().getLoginName());
                             userDataChangeEventEvent.fire(new UserDataChangeEvent(userGroup.getUser().getLoginName()));
                         }
+                    }
+
+                    // Activate group if deactivated
+                    if (command.getActivateDeactivatedGroups() && !group.getActive()) {
+                        group.setActive(true);
+                        groupRepository.save(group);
+                        LOG.info("Group updated and active now. Group Name: {}", group.getName());
                     }
                 }
             } else {

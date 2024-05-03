@@ -5,14 +5,18 @@ import com.ozguryazilim.telve.messagebus.command.AbstractStorableCommand;
 public class LdapSyncCommand extends AbstractStorableCommand {
 
     private Boolean syncGroupsAndAssignUsers;
+    private Boolean activateDeactivatedGroups;
     private Boolean createMissingGroups;
     private Boolean syncRolesAndAssignUsers;
 
-    public LdapSyncCommand(Boolean syncGroupsAndAssignUsers, Boolean createMissingGroups, Boolean
-            syncRolesAndAssignUsers) {
+    public LdapSyncCommand(Boolean syncGroupsAndAssignUsers,
+                           Boolean createMissingGroups,
+                           Boolean syncRolesAndAssignUsers,
+                           Boolean activateDeactivatedGroups) {
         this.syncGroupsAndAssignUsers = syncGroupsAndAssignUsers;
         this.createMissingGroups = createMissingGroups;
         this.syncRolesAndAssignUsers = syncRolesAndAssignUsers;
+        this.activateDeactivatedGroups = activateDeactivatedGroups;
     }
 
     public Boolean getSyncGroupsAndAssignUsers() {
@@ -37,5 +41,13 @@ public class LdapSyncCommand extends AbstractStorableCommand {
 
     public void setSyncRolesAndAssignUsers(Boolean syncRolesAndAssignUsers) {
         this.syncRolesAndAssignUsers = syncRolesAndAssignUsers;
+    }
+
+    public Boolean getActivateDeactivatedGroups() {
+        return activateDeactivatedGroups;
+    }
+
+    public void setActivateDeactivatedGroups(Boolean activateDeactivatedGroups) {
+        this.activateDeactivatedGroups = activateDeactivatedGroups;
     }
 }
