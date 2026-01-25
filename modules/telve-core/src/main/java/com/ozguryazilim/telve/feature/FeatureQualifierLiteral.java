@@ -1,6 +1,6 @@
 package com.ozguryazilim.telve.feature;
 
-import javax.enterprise.util.AnnotationLiteral;
+import jakarta.enterprise.util.AnnotationLiteral;
 
 /**
  *

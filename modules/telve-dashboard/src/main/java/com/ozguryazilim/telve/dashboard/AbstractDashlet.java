@@ -2,7 +2,7 @@ package com.ozguryazilim.telve.dashboard;
 
 import com.google.common.base.CaseFormat;
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 /**
  * Dashlet'ler için taban sınıf.

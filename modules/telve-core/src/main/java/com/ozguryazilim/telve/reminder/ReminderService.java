@@ -8,9 +8,9 @@ import com.ozguryazilim.telve.messagebus.command.CommandSender;
 import com.ozguryazilim.telve.messagebus.command.ScheduledCommand;
 import java.util.Date;
 import java.util.List;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 /**
  * Reminder üretmek ve yönetmek için API.

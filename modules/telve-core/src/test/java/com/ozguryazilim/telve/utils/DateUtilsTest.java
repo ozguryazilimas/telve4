@@ -1,7 +1,7 @@
 package com.ozguryazilim.telve.utils;
 
 import java.util.Date;
-import javax.ejb.ScheduleExpression;
+import jakarta.ejb.ScheduleExpression;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.junit.After;

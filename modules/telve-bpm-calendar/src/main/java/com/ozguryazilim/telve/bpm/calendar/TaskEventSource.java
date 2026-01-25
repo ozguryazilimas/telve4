@@ -8,9 +8,9 @@ import com.ozguryazilim.telve.calendar.annotations.CalendarEventSource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.faces.application.NavigationHandler;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
+import jakarta.faces.application.NavigationHandler;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Task;
 

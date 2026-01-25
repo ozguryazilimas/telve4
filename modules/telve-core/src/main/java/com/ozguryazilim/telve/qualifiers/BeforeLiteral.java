@@ -1,6 +1,6 @@
 package com.ozguryazilim.telve.qualifiers;
 
-import javax.enterprise.util.AnnotationLiteral;
+import jakarta.enterprise.util.AnnotationLiteral;
 
 /**
  *

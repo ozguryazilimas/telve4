@@ -4,7 +4,7 @@ import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import java.util.Date;
 import java.util.Map;
-import javax.ejb.ScheduleExpression;
+import jakarta.ejb.ScheduleExpression;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 

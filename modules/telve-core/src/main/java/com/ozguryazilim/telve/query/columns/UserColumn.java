@@ -4,7 +4,7 @@ import com.ozguryazilim.telve.auth.UserService;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
-import javax.persistence.metamodel.Attribute;
+import jakarta.persistence.metamodel.Attribute;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 

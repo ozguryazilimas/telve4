@@ -5,7 +5,7 @@ import com.ozguryazilim.telve.messagebus.command.ui.CommandEditor;
 import com.ozguryazilim.telve.messagebus.command.ui.CommandEditorBase;
 import com.ozguryazilim.telve.view.Pages;
 import java.util.List;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  *

@@ -11,7 +11,7 @@ import com.ozguryazilim.telve.query.columns.MessageColumn;
 import com.ozguryazilim.telve.query.filters.StringFilter;
 import com.ozguryazilim.telve.query.filters.StringListFilter;
 import com.ozguryazilim.telve.query.columns.TextColumn;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 
 /**

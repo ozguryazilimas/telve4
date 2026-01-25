@@ -5,7 +5,7 @@ import com.ozguryazilim.telve.messages.Messages;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 import org.apache.commons.beanutils.BeanUtils;
 
 /**

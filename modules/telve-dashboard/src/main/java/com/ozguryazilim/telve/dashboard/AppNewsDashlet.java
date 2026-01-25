@@ -3,7 +3,7 @@ package com.ozguryazilim.telve.dashboard;
 import com.ozguryazilim.mutfak.kahve.Kahve;
 import com.ozguryazilim.mutfak.kahve.KahveEntry;
 import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 
 /**

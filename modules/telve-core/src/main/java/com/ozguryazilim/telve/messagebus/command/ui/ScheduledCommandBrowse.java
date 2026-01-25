@@ -20,12 +20,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
-import javax.ejb.NoMoreTimeoutsException;
-import javax.ejb.Timer;
-import javax.enterprise.event.Observes;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.ws.rs.core.Response;
+import jakarta.ejb.NoMoreTimeoutsException;
+import jakarta.ejb.Timer;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.ws.rs.core.Response;
 
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;

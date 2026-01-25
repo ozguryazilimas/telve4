@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.faces.model.ListDataModel;
+import java.util.Objects;
+
+import jakarta.faces.model.ListDataModel;
 import org.primefaces.model.SelectableDataModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,11 +45,11 @@ public class LookupTableModel<T extends ViewModel> extends ListDataModel<T> impl
      * @return 
      */
     @Override
-    public Object getRowKey(T t) {
+    public String getRowKey(T t) {
         List<T> ls = (List<T>)getWrappedData();
         LOG.info("Object : {}, List : {}", t, ls );
         if( ls == null ) return null;
-        return ls.indexOf(t);
+        return Objects.toString(ls.indexOf(t));
     }
 
     /**

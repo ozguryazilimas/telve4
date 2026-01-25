@@ -7,12 +7,13 @@ import com.ozguryazilim.telve.view.Pages;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.faces.model.SelectItem;
-import javax.inject.Inject;
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.model.SelectItem;
+import jakarta.inject.Inject;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.shiro.subject.Subject;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
+
 
 /**
  * Kullanıcı için Tema ve Dil seçimlerini ayarlar.
@@ -146,7 +147,10 @@ public class GuiOptionPane extends AbstractOptionPane{
         localeSelector.setLocaleString(locale);
         kahve.put("locale.name", new KahveEntry(locale));
         
+        /* FIXME: jakarta: burada ApplicationContext'i nasıl alacağız?
+        PrimeFaces.current()?
         RequestContext.getCurrentInstance().getApplicationContext().getCacheProvider().remove("main-sidebar", identity.getPrincipal().toString());
+         */
     }
     
     public Boolean getShowSidebar(){

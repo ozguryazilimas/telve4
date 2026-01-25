@@ -1,10 +1,10 @@
 package com.ozguryazilim.telve.view;
 
 import com.ozguryazilim.telve.utils.RomanNumeral;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.FacesConverter;
 
 /**
  * Integer değerleri roman rakamı olarak convert eder.

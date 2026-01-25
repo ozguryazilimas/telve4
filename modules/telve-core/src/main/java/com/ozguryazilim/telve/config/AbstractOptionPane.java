@@ -1,7 +1,7 @@
 package com.ozguryazilim.telve.config;
 
 import java.io.Serializable;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 

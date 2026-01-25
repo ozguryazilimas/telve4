@@ -2,7 +2,7 @@ package com.ozguryazilim.telve.query.filters;
 
 import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.lookup.LookupControllerBase;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 
 /**
  * Dialog popup çıkararak kullanıcıya seçim şansı veren entity filter.

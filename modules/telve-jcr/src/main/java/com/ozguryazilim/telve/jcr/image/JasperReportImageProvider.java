@@ -4,7 +4,7 @@ import com.google.common.base.Strings;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
-import javax.enterprise.context.RequestScoped;
+import jakarta.enterprise.context.RequestScoped;
 
 import javax.imageio.ImageIO;
 import javax.jcr.Node;

@@ -2,11 +2,11 @@ package com.ozguryazilim.telve.suggestion;
 
 import com.ozguryazilim.telve.entities.SuggestionItem;
 import java.util.List;
-import javax.enterprise.inject.Default;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.enterprise.inject.Default;
+import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import junit.framework.Assert;
 // import org.apache.deltaspike.data.api.QueryInvocationException;
 // import org.jboss.arquillian.container.test.api.Deployment;

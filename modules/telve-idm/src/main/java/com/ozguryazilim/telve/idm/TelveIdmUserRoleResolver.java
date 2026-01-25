@@ -10,7 +10,7 @@ import com.ozguryazilim.telve.idm.user.UserRoleRepository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  * Verilen kullanıcı için role resolver implementasyonu.

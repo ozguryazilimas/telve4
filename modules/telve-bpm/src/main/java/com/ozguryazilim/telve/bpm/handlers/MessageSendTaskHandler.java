@@ -4,9 +4,9 @@ import com.ozguryazilim.telve.messagebus.command.CommandSender;
 import com.ozguryazilim.telve.notification.NotificationCommand;
 import java.io.Serializable;
 import java.util.Map;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.cdi.annotation.ExecutionId;
 

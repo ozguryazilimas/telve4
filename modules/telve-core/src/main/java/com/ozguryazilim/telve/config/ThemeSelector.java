@@ -2,10 +2,10 @@ package com.ozguryazilim.telve.config;
 
 import com.ozguryazilim.telve.utils.CookieUtils;
 import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.servlet.http.Cookie;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.servlet.http.Cookie;
 
 /**
  * Kişiye özel olarak tema desteği sağlar.

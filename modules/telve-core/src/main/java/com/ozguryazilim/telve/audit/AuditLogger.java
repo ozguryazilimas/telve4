@@ -4,9 +4,9 @@ import com.ozguryazilim.telve.entities.AuditLogDetail;
 import com.ozguryazilim.telve.messagebus.command.CommandSender;
 import java.io.Serializable;
 import java.util.List;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 
 /**

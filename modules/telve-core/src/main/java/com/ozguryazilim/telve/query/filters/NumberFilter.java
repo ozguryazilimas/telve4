@@ -3,10 +3,10 @@ package com.ozguryazilim.telve.query.filters;
 import com.google.common.base.Joiner;
 import com.ozguryazilim.telve.query.Operands;
 import java.util.List;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 
 /**
@@ -70,6 +70,7 @@ public abstract class NumberFilter<E, P extends Number & Comparable> extends Fil
                 case NotEqual:
                     predicates.add(builder.notEqual(from.get(getAttribute()), getValue()));
                     break;
+                /* FIXME: jakarta: Aşağıdaki methodları nasıl impl edeceğiz?
                 case Greater:
                     predicates.add(builder.greaterThan(from.get(getAttribute()), getValue()));
                     break;
@@ -85,6 +86,7 @@ public abstract class NumberFilter<E, P extends Number & Comparable> extends Fil
                 case Between:
                     predicates.add(builder.between(from.get(getAttribute()), getValue(), getValue2()));
                     break;
+                 */
                 default:
                     break;
             }

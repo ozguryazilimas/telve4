@@ -1,8 +1,8 @@
 package com.ozguryazilim.telve.sequence;
 
 import java.util.concurrent.ConcurrentHashMap;
-import javax.enterprise.context.RequestScoped;
-import javax.enterprise.inject.Alternative;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.enterprise.inject.Alternative;
 
 /**
  * Sequence değerlerini memory'de saklar.

@@ -6,10 +6,11 @@ import com.ozguryazilim.telve.lookup.LookupSelectTuple;
 import com.ozguryazilim.telve.utils.ELUtils;
 import java.io.Serializable;
 import java.util.List;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import org.primefaces.context.RequestContext;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -68,7 +69,7 @@ public class SuggestionControl implements Serializable {
         this.data = "";
         this.info = "";
 
-        RequestContext.getCurrentInstance().openDialog("/admin/suggestionPopup");
+        PrimeFaces.current().dialog().openDynamic("/admin/suggestionPopup");
     }
 
     public void closeDialog() {
@@ -87,7 +88,7 @@ public class SuggestionControl implements Serializable {
 
         sl = getLookupSelectTuple();
 
-        RequestContext.getCurrentInstance().closeDialog(sl);
+        PrimeFaces.current().dialog().closeDynamic(sl);
 
     }
 
@@ -95,7 +96,7 @@ public class SuggestionControl implements Serializable {
      * Dialogu hiç bir şey seçmeden kapatır.
      */
     public void cancelDialog() {
-        RequestContext.getCurrentInstance().closeDialog(null);
+        PrimeFaces.current().dialog().closeDynamic(null);
     }
 
     public void onSelect(SelectEvent event) {

@@ -4,12 +4,12 @@ import com.ozguryazilim.telve.config.LocaleSelector;
 import com.ozguryazilim.telve.data.TreeRepositoryBase;
 import com.ozguryazilim.telve.entities.TreeNodeEntityBase_;
 import com.ozguryazilim.telve.idm.entities.Group;
-import javax.enterprise.context.Dependent;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import jakarta.enterprise.context.Dependent;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;

@@ -3,7 +3,7 @@ package com.ozguryazilim.telve.reports;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.primefaces.context.RequestContext;

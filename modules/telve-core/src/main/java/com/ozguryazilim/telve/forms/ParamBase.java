@@ -13,7 +13,7 @@ import com.ozguryazilim.telve.view.Pages;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.List;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;

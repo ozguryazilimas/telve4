@@ -10,14 +10,14 @@ import com.ozguryazilim.telve.feature.Feature;
 import com.ozguryazilim.telve.feature.FeatureHandler;
 import com.ozguryazilim.telve.feature.Page;
 import com.ozguryazilim.telve.feature.PageType;
-import javax.enterprise.event.Observes;
-import javax.enterprise.event.Reception;
-import javax.inject.Inject;
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.event.Reception;
+import jakarta.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.config.view.navigation.NavigationParameterContext;
-import org.apache.deltaspike.core.api.literal.AnyLiteral;
+//import org.apache.deltaspike.core.api.literal.AnyLiteral;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.core.util.ProxyUtils;
 
@@ -114,7 +114,10 @@ public abstract class BrowseBase<E extends EntityBase, R extends ViewModel> exte
     }
     
     public FeatureHandler getFeature(){
+        /* FIXME: jakarta: AnyLteral yerine deltaspike'da ne kullanılacak?
         return BeanProvider.getContextualReference(getFeatureClass(), false, new AnyLiteral());
+         */
+        return null;
     }
     
     /**

@@ -6,7 +6,7 @@ import static com.ozguryazilim.telve.bpm.handlers.TaskResultCommand.ACCEPT;
 import static com.ozguryazilim.telve.bpm.handlers.TaskResultCommand.COMPLETE;
 import static com.ozguryazilim.telve.bpm.handlers.TaskResultCommand.REJECT;
 import com.ozguryazilim.telve.bpm.handlers.TaskResultCommandRegistery;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

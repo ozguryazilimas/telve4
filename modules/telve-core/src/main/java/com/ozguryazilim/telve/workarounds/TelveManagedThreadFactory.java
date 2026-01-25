@@ -1,6 +1,10 @@
 package com.ozguryazilim.telve.workarounds;
 
-import javax.enterprise.concurrent.ManagedThreadFactory;
+import jakarta.enterprise.concurrent.ManagedThreadFactory;
+
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinWorkerThread;
+
 import org.apache.camel.util.concurrent.ThreadHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +39,13 @@ public class TelveManagedThreadFactory implements ManagedThreadFactory {
 
         LOG.trace("Created thread[{}] -> {}", threadName, answer);
         return answer;
+    }
+
+    @Override
+    public ForkJoinWorkerThread newThread(ForkJoinPool pool) {
+        //FIXME: jakarta: bu method yeni geldi nasıl impl etmek gerekiyor bakmak lazım
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'newThread'");
     }
 
 

@@ -6,7 +6,7 @@ import com.ozguryazilim.telve.messagebus.command.ScheduledCommand;
 import com.ozguryazilim.telve.messagebus.command.StorableCommand;
 import java.util.Date;
 import java.util.Objects;
-import javax.ejb.ScheduleExpression;
+import jakarta.ejb.ScheduleExpression;
 
 /**
  * Zamanlanmış ( ScheduledCommand ) ve Saklanmış ( StoredCommand ) komutları bir arada aynı arayüzde sunmak için UI modeli.

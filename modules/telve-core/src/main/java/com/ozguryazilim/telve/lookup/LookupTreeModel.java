@@ -198,9 +198,12 @@ public class LookupTreeModel<T extends TreeNodeModel> implements LookupModel<T, 
             node.setSelectable(true);
         }
 
+        node.getChildren().forEach( n -> setSelectionStrategy((TreeNode)n));
+        /* FIXME: jakarta: primefaces sürümü ile aşağıdaki kod çalışmadı yukarıyı deneyelim
         for (TreeNode n : node.getChildren()) {
             setSelectionStrategy(n);
         }
+             */
 
     }
 

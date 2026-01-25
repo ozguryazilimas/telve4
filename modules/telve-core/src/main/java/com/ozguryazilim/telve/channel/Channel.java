@@ -2,7 +2,7 @@ package com.ozguryazilim.telve.channel;
 
 import com.ozguryazilim.telve.contact.Contact;
 import java.util.Map;
-import javax.activation.DataHandler;
+import jakarta.activation.DataHandler;
 
 /**
  * Channel implementasyonları için arayüz.

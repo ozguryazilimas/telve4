@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.ozguryazilim.telve.bpm.handlers.AbstractDialogProcessHandler;
 import com.ozguryazilim.telve.bpm.handlers.ProcessHandler;

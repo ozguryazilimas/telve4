@@ -2,10 +2,10 @@ package com.ozguryazilim.telve.calendar;
 
 import com.ozguryazilim.telve.calendar.annotations.CalendarEventSource;
 import com.google.common.base.CaseFormat;
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.spi.Extension;
-import javax.enterprise.inject.spi.ProcessAnnotatedType;
-import javax.enterprise.inject.spi.WithAnnotations;
+import jakarta.enterprise.event.Observes;
+import jakarta.enterprise.inject.spi.Extension;
+import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
+import jakarta.enterprise.inject.spi.WithAnnotations;
 
 /**
  * CalendarEventSource ile işretlenmiş sınfıları tarar ve registery'e yerleştirir.

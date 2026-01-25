@@ -2,8 +2,8 @@ package com.ozguryazilim.telve.attachment;
 
 import com.ozguryazilim.telve.auth.Identity;
 import com.ozguryazilim.telve.entities.FeaturePointer;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 /**
  * En düşük öncelikli Default AttachmentContextProvider.

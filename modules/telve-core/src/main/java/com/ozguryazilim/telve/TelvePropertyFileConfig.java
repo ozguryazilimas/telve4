@@ -1,6 +1,6 @@
 package com.ozguryazilim.telve;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.apache.deltaspike.core.api.config.PropertyFileConfig;
 
 /**

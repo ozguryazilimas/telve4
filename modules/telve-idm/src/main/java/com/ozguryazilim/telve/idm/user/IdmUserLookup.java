@@ -7,7 +7,7 @@ import com.ozguryazilim.telve.idm.entities.User_;
 import com.ozguryazilim.telve.lookup.Lookup;
 import com.ozguryazilim.telve.lookup.LookupTableControllerBase;
 import com.ozguryazilim.telve.lookup.LookupTableModel;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  *

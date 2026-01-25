@@ -6,16 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.event.Event;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.persistence.Entity;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.event.Event;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
+import jakarta.persistence.Entity;
 
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -217,7 +217,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
             search();
         }
 
-        RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
+        PrimeFaces.current().dialog().openDynamic(getDialogName(), options, null);
     }
 
     /**
@@ -278,7 +278,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
 
         //Eğer bir şey seçilmemiş ise sadece dialoğu kapatalım.
         if( sl == null ){
-            RequestContext.getCurrentInstance().closeDialog(null);
+            PrimeFaces.current().dialog().closeDynamic(null);
             return;
         }
 
@@ -289,7 +289,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
         //Buraya listede gelebilir
         //lookupSelectEvent.fire((E)sl.getValue());
 
-        RequestContext.getCurrentInstance().closeDialog(sl);
+        PrimeFaces.current().dialog().closeDynamic(sl);
 
     }
 
@@ -297,7 +297,7 @@ public abstract class LookupControllerBase<E extends EntityBase, R extends ViewM
      * Dialogu hiç bir şey seçmeden kapatır.
      */
     public void cancelDialog() {
-        RequestContext.getCurrentInstance().closeDialog(null);
+        PrimeFaces.current().dialog().closeDynamic(null);
     }
 
     /**

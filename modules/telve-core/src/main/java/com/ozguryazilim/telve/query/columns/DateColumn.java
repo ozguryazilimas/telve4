@@ -1,7 +1,7 @@
 package com.ozguryazilim.telve.query.columns;
 
 import java.util.Date;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 
 /**
  * Tarih tipi alanlar için kolon oluşturur.

@@ -19,7 +19,7 @@ import com.ozguryazilim.telve.query.filters.FilterOperand;
 import com.ozguryazilim.telve.query.filters.StringFilter;
 import com.ozguryazilim.telve.query.filters.StringListFilter;
 import com.ozguryazilim.telve.query.filters.TreeEntityFilter;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  * User Browse Controller

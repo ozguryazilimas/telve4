@@ -10,8 +10,8 @@ import com.ozguryazilim.telve.entities.Attachment;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
 
 /**
  *

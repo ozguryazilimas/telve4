@@ -1,10 +1,10 @@
 package com.ozguryazilim.telve.notify;
 
 import com.ozguryazilim.telve.notification.NotificationService;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.omnifaces.cdi.Push;
 import org.omnifaces.cdi.PushContext;

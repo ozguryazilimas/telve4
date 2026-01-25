@@ -1,9 +1,9 @@
 package com.ozguryazilim.telve.query;
 
 import java.lang.reflect.Member;
-import javax.persistence.metamodel.ManagedType;
-import javax.persistence.metamodel.SingularAttribute;
-import javax.persistence.metamodel.Type;
+import jakarta.persistence.metamodel.ManagedType;
+import jakarta.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.Type;
 
 /**
  * Sadece View Model üzerinde bulunan alanların colon olarak eklenebilmesi için SingularAttribute implementasyonu.

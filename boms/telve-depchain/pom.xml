@@ -14,16 +14,16 @@
     <packaging>pom</packaging> 
 
     <properties>
-        <deltaspike.version>1.8.2</deltaspike.version>
+        <deltaspike.version>2.0.1</deltaspike.version>
         <shiro.version>1.8.0</shiro.version>
-        <primeface.version>6.2</primeface.version>
-        <primefaces-ext.version>6.2</primefaces-ext.version>
-        <omnifaces.version>2.7</omnifaces.version>
+        <primeface.version>15.0.12</primeface.version>
+        <primefaces-ext.version>15.0.12</primefaces-ext.version>
+        <omnifaces.version>4.7.1</omnifaces.version>
         <liquibase.version>3.5.5</liquibase.version>
         <liquibase-slf4j.version>2.0.0</liquibase-slf4j.version>
         <prettytime.version>4.0.0.Final</prettytime.version>
         
-        <camel.version>2.25.4</camel.version>
+        <camel.version>4.17.0</camel.version>
         <jasperreports.version>6.7.0</jasperreports.version>
         <jasperreports-fonts.version>6.0.0</jasperreports-fonts.version>
         
@@ -41,7 +41,7 @@
 
     <dependencyManagement>
         <dependencies>
-            
+            <!--
             <dependency>
                 <groupId>org.jboss.spec</groupId>
                 <artifactId>jboss-javaee-7.0</artifactId>
@@ -49,7 +49,17 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency> 
+            -->
             
+<!-- Source: https://mvnrepository.com/artifact/jakarta.platform/jakarta.jakartaee-bom -->
+<dependency>
+    <groupId>jakarta.platform</groupId>
+    <artifactId>jakarta.jakartaee-bom</artifactId>
+    <version>10.0.0</version>
+    <type>pom</type>
+    <scope>import</scope>
+</dependency>
+
             <!--
             
             <dependency>
@@ -193,12 +203,14 @@
                 <groupId>org.apache.shiro</groupId>
                 <artifactId>shiro-core</artifactId>
                 <version>${shiro.version}</version>
+    <!-- <classifier>jakarta</classifier> -->
             </dependency>
             
             <dependency>
                 <groupId>org.apache.shiro</groupId>
                 <artifactId>shiro-web</artifactId>
                 <version>${shiro.version}</version>
+    <!-- <classifier>jakarta</classifier> -->
             </dependency>
                                     
             <!-- PrimeFaces -->
@@ -206,6 +218,7 @@
                 <groupId>org.primefaces</groupId>
                 <artifactId>primefaces</artifactId>
                 <version>${primeface.version}</version>
+    <classifier>jakarta</classifier>
             </dependency>
 
             <!--    
@@ -220,6 +233,7 @@
                 <groupId>org.primefaces.extensions</groupId>
                 <artifactId>primefaces-extensions</artifactId>
                 <version>${primefaces-ext.version}</version>
+    <classifier>jakarta</classifier>
             </dependency>
             
             
@@ -236,11 +250,13 @@
                 <version>${camel.version}</version>
             </dependency>
             
+            <!--
             <dependency>
                 <groupId>org.apache.camel</groupId>
                 <artifactId>camel-cdi</artifactId>
                 <version>${camel.version}</version>
             </dependency>
+            -->
             
             <dependency>
                 <groupId>org.apache.camel</groupId>

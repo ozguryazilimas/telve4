@@ -1,12 +1,12 @@
 package com.ozguryazilim.telve.view;
 
 import java.lang.reflect.Field;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
-import javax.persistence.EntityManager;
-import javax.persistence.Id;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.Converter;
+import jakarta.faces.convert.FacesConverter;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Id;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

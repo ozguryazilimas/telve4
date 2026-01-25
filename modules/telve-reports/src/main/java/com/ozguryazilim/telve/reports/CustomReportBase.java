@@ -3,9 +3,9 @@ package com.ozguryazilim.telve.reports;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import java.io.IOException;
 import java.io.OutputStream;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 
 /**

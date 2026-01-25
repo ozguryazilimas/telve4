@@ -5,13 +5,13 @@ import com.ozguryazilim.telve.contact.Contact;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import javax.activation.DataHandler;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.activation.DataHandler;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.cdi.ContextName;
-import org.apache.camel.cdi.Uri;
+//import org.apache.camel.cdi.ContextName;
+//import org.apache.camel.cdi.Uri;
 
 /**
  * NotifyChannel üzerinden mesaj göndermek için kullanılır.
@@ -21,8 +21,10 @@ import org.apache.camel.cdi.Uri;
 @Named
 public class NotifyChannel implements Channel, Serializable{
 
-    @Inject @ContextName("telve")
-    @Uri("seda:notifyChannel")
+    @Inject 
+    // FIXME: jakarta: camel 4 ile beraber camel-cdi kalkmış yerine ne kullanacağız?
+    //@ContextName("telve")
+    //@Uri("seda:notifyChannel")
     private ProducerTemplate notifyProducer; 
     
     

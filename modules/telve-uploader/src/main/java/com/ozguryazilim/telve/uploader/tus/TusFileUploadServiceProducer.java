@@ -1,10 +1,10 @@
 package com.ozguryazilim.telve.uploader.tus;
 
 import java.io.File;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import javax.servlet.ServletContext;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Inject;
+import jakarta.servlet.ServletContext;
 import me.desair.tus.server.TusFileUploadService;
 import org.apache.commons.io.FileUtils;
 import org.apache.deltaspike.core.api.config.ConfigResolver;

@@ -2,8 +2,8 @@ package com.ozguryazilim.telve.batch;
 
 import com.ozguryazilim.telve.messagebus.command.AbstractCommandExecuter;
 import com.ozguryazilim.telve.messagebus.command.CommandExecutor;
-import javax.batch.runtime.BatchRuntime;
-import javax.ejb.Stateful;
+import jakarta.batch.runtime.BatchRuntime;
+import jakarta.ejb.Stateful;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

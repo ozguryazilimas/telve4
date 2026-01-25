@@ -1,7 +1,7 @@
 package com.ozguryazilim.telve.qualifiers;
 
 import com.ozguryazilim.telve.entities.EntityBase;
-import javax.enterprise.util.AnnotationLiteral;
+import jakarta.enterprise.util.AnnotationLiteral;
 
 /**
  *

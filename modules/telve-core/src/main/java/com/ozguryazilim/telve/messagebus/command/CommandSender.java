@@ -1,12 +1,12 @@
 package com.ozguryazilim.telve.messagebus.command;
 
 import java.io.Serializable;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.cdi.ContextName;
-import org.apache.camel.cdi.Uri;
+//import org.apache.camel.cdi.ContextName;
+//import org.apache.camel.cdi.Uri;
 
 /**
  * Telve MessageBus üzerinden komut göndermek için API.
@@ -17,8 +17,10 @@ import org.apache.camel.cdi.Uri;
 @Dependent
 public class CommandSender implements Serializable{
     
-    @Inject @ContextName("telve")
-    @Uri("seda:command")
+    @Inject 
+    // FIXME: jakarta: camel 4 ile beraber camel-cdi kalkmış yerine ne kullanacağız?
+    //@ContextName("telve")
+    //@Uri("seda:command")
     private ProducerTemplate commandMessageProducer; 
     
     

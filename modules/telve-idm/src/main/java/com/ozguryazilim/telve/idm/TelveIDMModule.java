@@ -3,7 +3,7 @@ package com.ozguryazilim.telve.idm;
 import com.ozguryazilim.telve.api.module.TelveModule;
 import com.ozguryazilim.telve.auth.UserModelRegistery;
 import com.ozguryazilim.telve.suggestion.SuggestionGroupRegistery;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 /**
  * Telve Admin Module Tanım Sınıfı.

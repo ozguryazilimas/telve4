@@ -2,7 +2,7 @@ package com.ozguryazilim.telve.entities;
 
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.MappedSuperclass;
 
 /**
  * Telve içerisinde kullanılacakolan Entity'ler bu sınıfı miras alırlar.

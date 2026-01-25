@@ -8,12 +8,12 @@ import com.ozguryazilim.telve.auth.UserDataChangeEvent;
 import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import java.io.Serializable;
-import javax.enterprise.event.Event;
-import javax.enterprise.context.SessionScoped;
+import jakarta.enterprise.event.Event;
+import jakarta.enterprise.context.SessionScoped;
 
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.credential.DefaultPasswordService;

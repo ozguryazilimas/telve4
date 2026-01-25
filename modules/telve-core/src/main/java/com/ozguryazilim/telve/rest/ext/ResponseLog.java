@@ -1,8 +1,8 @@
 package com.ozguryazilim.telve.rest.ext;
 
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Request;
+import jakarta.ws.rs.container.ContainerResponseContext;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Request;
 
 public class ResponseLog {
     private int status;

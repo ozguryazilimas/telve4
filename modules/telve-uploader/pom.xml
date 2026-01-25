@@ -41,6 +41,11 @@
             <artifactId>telve-uppy-webjar</artifactId>
             <version>${project.version}</version>
         </dependency>
+  <dependency>
+   <groupId>jakarta.servlet</groupId>
+   <artifactId>jakarta.servlet-api</artifactId>
+   <version>6.0.0</version>
+  </dependency>
         <dependency>
             <groupId>me.desair.tus</groupId>
             <artifactId>tus-java-server</artifactId>

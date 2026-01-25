@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
@@ -202,7 +202,9 @@ public class LogViewer implements Serializable {
         InputStream is;
         try {
             is = new FileInputStream(new File(logFileName));
-            return new DefaultStreamedContent(is, "text/plain", logName +".log.txt");
+            //FIXME: jakarta: primefaces yeni sürümde stream content yapısı değişti düzeltelim
+            //return new DefaultStreamedContent(is, "text/plain", logName +".log.txt");
+            return null;
         } catch (FileNotFoundException ex) {
             FacesMessages.warn("message.logfile.NotConfigured");
             LOG.error("LogFile Not Found", ex);

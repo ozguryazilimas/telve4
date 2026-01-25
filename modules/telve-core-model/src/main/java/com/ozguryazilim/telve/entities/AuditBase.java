@@ -1,10 +1,10 @@
 package com.ozguryazilim.telve.entities;
 
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import org.apache.deltaspike.data.api.audit.CreatedOn;
 import org.apache.deltaspike.data.api.audit.ModifiedBy;
 import org.apache.deltaspike.data.api.audit.ModifiedOn;

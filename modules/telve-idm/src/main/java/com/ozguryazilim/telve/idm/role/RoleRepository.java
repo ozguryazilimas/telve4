@@ -5,9 +5,9 @@ import com.ozguryazilim.telve.idm.entities.Role;
 import com.ozguryazilim.telve.idm.entities.Role_;
 import java.util.HashMap;
 import java.util.Map;
-import javax.enterprise.context.Dependent;
-import javax.persistence.EntityGraph;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.enterprise.context.Dependent;
+import jakarta.persistence.EntityGraph;
+import jakarta.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 

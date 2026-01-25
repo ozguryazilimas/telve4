@@ -3,10 +3,10 @@ package com.ozguryazilim.telve.view;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.el.ValueExpression;
-import javax.faces.component.FacesComponent;
-import javax.faces.component.UINamingContainer;
-import javax.faces.context.FacesContext;
+import jakarta.el.ValueExpression;
+import jakarta.faces.component.FacesComponent;
+import jakarta.faces.component.UINamingContainer;
+import jakarta.faces.context.FacesContext;
 
 /**
  * Telve InpuEnum JSF bileşeni için control sınıfı.

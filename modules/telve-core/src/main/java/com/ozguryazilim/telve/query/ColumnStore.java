@@ -4,7 +4,7 @@ import com.ozguryazilim.telve.query.columns.Column;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import javax.inject.Named;
+import jakarta.inject.Named;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 

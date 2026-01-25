@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 import java.lang.reflect.InvocationTargetException;
-import javax.persistence.metamodel.Attribute;
+import jakarta.persistence.metamodel.Attribute;
 import org.apache.commons.beanutils.BeanUtils;
 
 /**

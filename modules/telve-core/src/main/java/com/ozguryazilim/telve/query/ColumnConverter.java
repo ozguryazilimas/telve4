@@ -1,16 +1,16 @@
 package com.ozguryazilim.telve.query;
 
 import com.ozguryazilim.telve.query.columns.Column;
-import javax.faces.component.UIComponent;
-import javax.faces.context.FacesContext;
-import javax.faces.convert.FacesConverter;
+import jakarta.faces.component.UIComponent;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.convert.FacesConverter;
 
 /**
  * 
  * @author Hakan Uygun
  */
 @FacesConverter("ColumnConverter")
-public class ColumnConverter implements javax.faces.convert.Converter{
+public class ColumnConverter implements jakarta.faces.convert.Converter{
 
 	@Override
 	public Object getAsObject(FacesContext arg0, UIComponent arg1, String arg2) {

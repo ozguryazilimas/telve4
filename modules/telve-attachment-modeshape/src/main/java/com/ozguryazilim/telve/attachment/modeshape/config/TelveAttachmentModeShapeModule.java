@@ -2,8 +2,8 @@ package com.ozguryazilim.telve.attachment.modeshape.config;
 
 import com.ozguryazilim.telve.api.module.TelveModule;
 import com.ozguryazilim.telve.attachment.modeshape.ModeShapeRepositoryFactory;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 
 /**
  *

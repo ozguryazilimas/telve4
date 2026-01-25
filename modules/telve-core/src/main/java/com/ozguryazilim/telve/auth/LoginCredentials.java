@@ -1,6 +1,6 @@
 package com.ozguryazilim.telve.auth;
 
-import javax.enterprise.inject.Model;
+import jakarta.enterprise.inject.Model;
 
 /**
  *

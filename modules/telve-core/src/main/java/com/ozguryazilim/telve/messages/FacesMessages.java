@@ -1,8 +1,8 @@
 package com.ozguryazilim.telve.messages;
 
 import java.util.Map;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 
 /**
  * FacesMessages sistemi için Utility sınıf.

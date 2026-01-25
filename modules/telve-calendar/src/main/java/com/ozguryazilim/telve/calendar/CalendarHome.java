@@ -2,9 +2,9 @@ package com.ozguryazilim.telve.calendar;
 
 import java.io.Serializable;
 import java.util.Map;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.slf4j.Logger;

@@ -1,11 +1,11 @@
 package com.ozguryazilim.telve.channel.email;
 
 import java.util.Map;
-import javax.activation.DataHandler;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.mail.MessagingException;
+import jakarta.activation.DataHandler;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.mail.MessagingException;
 import org.apache.camel.Exchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +28,8 @@ public class EmailChannelDispacher {
 
         
         try {
-            
-            Map<String,DataHandler> attachments = exchange.getIn().getAttachments();
+            //FIXME: jakarta: camel 4 attachment yapısını nasıl oldu ki?
+            Map<String,DataHandler> attachments = null; //exchange.getIn().getAttachments();
             
             if( attachments.isEmpty()){
                 emailSender.send(exchange.getIn().getHeader("target", String.class),

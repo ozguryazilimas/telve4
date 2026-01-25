@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="jakarta.faces.facelets"
+      xmlns:h="jakarta.faces.html"
       xmlns:ds="http://deltaspike.apache.org/jsf"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:c="jakarta.tags.core"
+      xmlns:p="primefaces">
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
         <c:if test="#{telveConfigResolver.getProperty('brand.company.favicon') ne null}">
-            <link rel="icon" href="#{request.contextPath}/javax.faces.resource/img/#{telveConfigResolver.getProperty('brand.company.favicon')}.jsf?ln=brand" />
-            <link rel="shortcut icon" href="#{request.contextPath}/javax.faces.resource/img/#{telveConfigResolver.getProperty('brand.company.favicon')}.jsf?ln=brand" />
+            <link rel="icon" href="#{request.contextPath}/jakarta.faces.resource/img/#{telveConfigResolver.getProperty('brand.company.favicon')}.jsf?ln=brand" />
+            <link rel="shortcut icon" href="#{request.contextPath}/jakarta.faces.resource/img/#{telveConfigResolver.getProperty('brand.company.favicon')}.jsf?ln=brand" />
         </c:if>
         <title>#{telveConfigResolver.getProperty('app.title')}</title>
 
@@ -22,7 +22,7 @@
 
         <script type="text/javascript">
             jQuery(document).ready(function () {
-                jQuery.backstretch("#{request.contextPath}/javax.faces.resource/img/#{telveConfigResolver.getProperty('app.login.image')}.jsf?ln=brand");
+                jQuery.backstretch("#{request.contextPath}/jakarta.faces.resource/img/#{telveConfigResolver.getProperty('app.login.image')}.jsf?ln=brand");
             });
         </script>
 
@@ -47,7 +47,7 @@
                                         <i class="fa fa-lock"></i>
                                     </ui:fragment>
                                     <ui:fragment rendered="#{telveConfigResolver.getProperty('brand.company.loginLogo') ne null}" >
-                                        <img src="#{request.contextPath}/javax.faces.resource/img/#{telveConfigResolver.getProperty('brand.company.loginLogo')}.jsf?ln=brand" class="img-thumbnail" with="128" style="background: none; border: none;" />
+                                        <img src="#{request.contextPath}/jakarta.faces.resource/img/#{telveConfigResolver.getProperty('brand.company.loginLogo')}.jsf?ln=brand" class="img-thumbnail" with="128" style="background: none; border: none;" />
                                     </ui:fragment>
                                 </div>
                             </div>

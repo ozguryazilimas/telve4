@@ -1,15 +1,16 @@
 package com.ozguryazilim.telve.channel.email;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.cdi.ContextName;
+//import org.apache.camel.ContextName;
 
 /**
  * EMailChannel için Camel Route tanımı
  * @author Hakan Uygun
  */
-@Dependent @ContextName("telve")
+// FIXME: jakarta: camel 4 ile beraber camel-cdi kalkmış yerine ne kullanacağız?
+@Dependent //@ContextName("telve")
 public class EmailChannelRoute extends RouteBuilder{
     
     @Inject

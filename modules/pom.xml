@@ -24,7 +24,7 @@
         <jdk.source>1.8</jdk.source>
         <jdk.target>1.8</jdk.target>
         
-        <version.maven-processor-plugin>3.3.3</version.maven-processor-plugin>
+        <version.maven-processor-plugin>5.1</version.maven-processor-plugin>
         <version.liquibase-maven-plugin>3.6.2</version.liquibase-maven-plugin>
         <version.hibernate-jpamodelgen>5.2.1.Final</version.hibernate-jpamodelgen>
         
@@ -47,6 +47,7 @@
     </dependencyManagement>
 
     <dependencies>
+        <!--
         <dependency>
             <groupId>org.jboss.spec.javax.ejb</groupId>
             <artifactId>jboss-ejb-api_3.2_spec</artifactId>
@@ -57,21 +58,47 @@
             <artifactId>jboss-jsf-api_2.2_spec</artifactId>
             <scope>provided</scope>
         </dependency>
+        -->
+        <!-- Source: https://mvnrepository.com/artifact/jakarta.platform/jakarta.jakartaee-api -->
+<dependency>
+    <groupId>jakarta.platform</groupId>
+    <artifactId>jakarta.jakartaee-api</artifactId>
+    <version>10.0.0</version>
+    <scope>provided</scope>
+</dependency>
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>javax.enterprise</groupId>
-            <artifactId>cdi-api</artifactId>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>jakarta.inject</groupId>
+            <artifactId>jakarta.inject-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/jakarta.faces/jakarta.faces-api -->
+        <dependency>
+            <groupId>jakarta.faces</groupId>
+            <artifactId>jakarta.faces-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/jakarta.ejb/jakarta.ejb-api -->
+<dependency>
+    <groupId>jakarta.ejb</groupId>
+    <artifactId>jakarta.ejb-api</artifactId>
+    <scope>provided</scope>
+</dependency>
+        <!-- 
         <dependency>
             <groupId>org.jboss.spec.javax.enterprise.concurrent</groupId>
             <artifactId>jboss-concurrency-api_1.0_spec</artifactId>
@@ -97,16 +124,16 @@
             <artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
             <scope>provided</scope>
         </dependency>
+        -->
         <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
+            <groupId>jakarta.mail</groupId>
+            <artifactId>jakarta.mail-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <!-- JavaDoc derlenmesi için lazım oluyor -->
         <dependency>
-            <groupId>javax.interceptor</groupId>
-            <artifactId>javax.interceptor-api</artifactId>
-            <version>1.2</version>
+            <groupId>jakarta.interceptor</groupId>
+            <artifactId>jakarta.interceptor-api</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -182,10 +209,24 @@
                         </execution>
                     </executions>
                     <dependencies>
+                        <!--
                         <dependency>
                             <groupId>org.hibernate</groupId>
                             <artifactId>hibernate-jpamodelgen</artifactId>
                             <version>${version.hibernate-jpamodelgen}</version>
+                        </dependency>
+                        -->
+                        <!-- Source: https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen-jakarta -->
+                        <dependency>
+                            <groupId>org.hibernate</groupId>
+                            <artifactId>hibernate-jpamodelgen-jakarta</artifactId>
+                            <version>5.6.15.Final</version>
+                        </dependency>
+                        <!-- Source: https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
+                        <dependency>
+                            <groupId>javax.xml.bind</groupId>
+                            <artifactId>jaxb-api</artifactId>
+                            <version>2.3.1</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -412,14 +453,19 @@
     </developers>
     
     <modules>
-        <module>telve-core</module>
-        <module>telve-core-model</module>
-        <module>telve-idm-model</module>
         <module>kahve</module>
+        <module>telve-layout</module>
+        <module>telve-theme</module>
+        <module>telve-core-model</module>
+        <module>telve-core</module>
+        <!--
+        
+        <module>telve-idm-model</module>
+        
         <module>telve-bpm</module>
         <module>telve-dynaform</module>
         <module>telve-jcr</module>
-        <module>telve-theme</module>
+        
         <module>telve-gallery</module>
         <module>telve-idm</module>
         <module>telve-unit</module>
@@ -431,7 +477,7 @@
         <module>telve-sms</module>
         <module>telve-sms-mobildev</module>
         <module>telve-batch</module>
-        <module>telve-layout</module>
+        
         <module>telve-dashboard</module>
         <module>telve-attachment</module>
         <module>telve-attachment-jpa</module>
@@ -448,6 +494,7 @@
         <module>telve-image-jpa</module>
         <module>telve-uploader</module>
         <module>telve-uppy-webjar</module>
+        -->
     </modules>
     
     <distributionManagement>

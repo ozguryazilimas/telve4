@@ -5,7 +5,7 @@ import com.ozguryazilim.telve.entities.FeaturePointer;
 import com.ozguryazilim.telve.entities.Note;
 import com.ozguryazilim.telve.entities.Note_;
 import java.util.List;
-import javax.enterprise.context.Dependent;
+import jakarta.enterprise.context.Dependent;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;

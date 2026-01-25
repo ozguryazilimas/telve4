@@ -95,11 +95,13 @@
         <dependency>
             <groupId>org.primefaces</groupId>
             <artifactId>primefaces</artifactId>
+   <classifier>jakarta</classifier>
         </dependency>
             
         <dependency>
             <groupId>org.primefaces.extensions</groupId>
             <artifactId>primefaces-extensions</artifactId>
+   <classifier>jakarta</classifier>
         </dependency>
         
         
@@ -169,6 +171,21 @@
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
         </dependency>
+  <dependency>
+   <groupId>jakarta.mail</groupId>
+   <artifactId>jakarta.mail-api</artifactId>
+   <version>2.0.2</version>
+  </dependency>
+  <dependency>
+   <groupId>jakarta.servlet</groupId>
+   <artifactId>jakarta.servlet-api</artifactId>
+   <version>5.0.0</version>
+  </dependency>
+  <dependency>
+   <groupId>jakarta.ws.rs</groupId>
+   <artifactId>jakarta.ws.rs-api</artifactId>
+   <version>3.0.0</version>
+  </dependency>
                 
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -196,10 +213,12 @@
             <artifactId>camel-core</artifactId>
         </dependency>
             
+        <!--
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-cdi</artifactId>
         </dependency>
+        -->
 
         <dependency>
             <groupId>org.apache.camel</groupId>
@@ -232,11 +251,13 @@
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-core</artifactId>
+   <!-- <classifier>jakarta</classifier> -->
         </dependency>
         
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-web</artifactId>
+   <!-- <classifier>jakarta</classifier> -->
         </dependency>
 
         <!-- Test -->

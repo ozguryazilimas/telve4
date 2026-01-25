@@ -1,9 +1,9 @@
 package com.ozguryazilim.telve.config;
 
 import java.util.Map;
-import javax.enterprise.inject.Any;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.inject.Any;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 import org.apache.shiro.subject.Subject;
 

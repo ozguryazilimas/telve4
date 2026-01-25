@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import com.ozguryazilim.telve.config.TelveConfigResolver;
 import com.ozguryazilim.telve.idm.reports.config.IdmReportPages;

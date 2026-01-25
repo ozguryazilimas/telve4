@@ -1,10 +1,10 @@
 package com.ozguryazilim.telve.workarounds;
 
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Alternative;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Alternative;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.transaction.UserTransaction;
+import jakarta.transaction.UserTransaction;
 import org.apache.deltaspike.jpa.impl.transaction.BeanManagedUserTransactionStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,13 +38,13 @@ public class TelveUserTransactionStrategy extends BeanManagedUserTransactionStra
         InitialContext context = null;
         try {
             context = new InitialContext();
-            UserTransaction returnUserTransaction = (javax.transaction.UserTransaction) context
+            UserTransaction returnUserTransaction = (jakarta.transaction.UserTransaction) context
                     .lookup("java:comp/UserTransaction");
             return returnUserTransaction;
         } catch (NamingException ne) {
             LOG.debug(ne.getExplanation());
             try {
-                javax.transaction.UserTransaction ut = (javax.transaction.UserTransaction) context
+                jakarta.transaction.UserTransaction ut = (jakarta.transaction.UserTransaction) context
                         .lookup("UserTransaction");
                 ut.getStatus();
                 return ut;

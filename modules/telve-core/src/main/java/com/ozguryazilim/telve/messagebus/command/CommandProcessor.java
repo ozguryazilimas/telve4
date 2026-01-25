@@ -1,12 +1,12 @@
 package com.ozguryazilim.telve.messagebus.command;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.cdi.ContextName;
+//import org.apache.camel.cdi.ContextName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +19,9 @@ public class CommandProcessor implements Processor{
 
     private static final Logger LOG = LoggerFactory.getLogger(CommandProcessor.class);
     
-    @Inject @ContextName("telve")
+    @Inject 
+    // FIXME: jakarta: camel 4 ile beraber camel-cdi kalkmış yerine ne kullanacağız?
+    //@ContextName("telve")
     private CamelContext context;
     
     //@Inject @ContextName("telve")

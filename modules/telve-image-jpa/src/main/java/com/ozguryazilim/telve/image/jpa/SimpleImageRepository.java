@@ -1,7 +1,7 @@
 package com.ozguryazilim.telve.image.jpa;
 
 import com.ozguryazilim.telve.entities.SimpleImage;
-import javax.enterprise.context.Dependent;
+import jakarta.enterprise.context.Dependent;
 import org.apache.deltaspike.data.api.AbstractEntityRepository;
 import org.apache.deltaspike.data.api.Query;
 import org.apache.deltaspike.data.api.Repository;

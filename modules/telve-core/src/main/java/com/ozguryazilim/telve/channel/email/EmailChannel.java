@@ -6,15 +6,15 @@ import com.ozguryazilim.telve.contact.Contact;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import javax.activation.DataHandler;
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.activation.DataHandler;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.ProducerTemplate;
-import org.apache.camel.cdi.ContextName;
-import org.apache.camel.cdi.Uri;
+//import org.apache.camel.cdi.ContextName;
+//import org.apache.camel.cdi.Uri;
 
 /**
  * EmailChannel üzerinden mesaj göndermek için kullanılır.
@@ -25,8 +25,10 @@ import org.apache.camel.cdi.Uri;
 @Named
 public class EmailChannel implements Channel, Serializable{
     
-    @Inject @ContextName("telve")
-    @Uri("seda:emailChannel")
+    // FIXME: jakarta: camel 4 ile beraber camel-cdi kalkmış yerine ne kullanacağız?
+    @Inject 
+    //@ContextName("telve")
+    //@Uri("seda:emailChannel")
     private ProducerTemplate mailProducer; 
     
     @Override
@@ -61,7 +63,8 @@ public class EmailChannel implements Channel, Serializable{
         m.setBody(message);
         
         for( Map.Entry<String, DataHandler> ent : attachments.entrySet()){
-            m.addAttachment(ent.getKey(), ent.getValue());
+            //FIXME: jakarta: camel 4 attachment yapısını nasıl oldu ki?
+            //m.addAttachment(ent.getKey(), ent.getValue());
         }
         
         mailProducer.send(exchange);

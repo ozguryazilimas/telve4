@@ -1,7 +1,7 @@
 package com.ozguryazilim.telve.query.columns;
 
 import com.ozguryazilim.telve.entities.FeaturePointer;
-import javax.persistence.metamodel.Attribute;
+import jakarta.persistence.metamodel.Attribute;
 
 /**
  *

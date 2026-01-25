@@ -21,21 +21,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.enterprise.event.Event;
-import javax.enterprise.inject.Any;
-import javax.enterprise.inject.Instance;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.persistence.EntityExistsException;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.event.Event;
+import jakarta.enterprise.inject.Any;
+import jakarta.enterprise.inject.Instance;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityExistsException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.apache.deltaspike.core.api.config.view.DefaultErrorView;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigDescriptor;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.api.config.view.navigation.NavigationParameterContext;
-import org.apache.deltaspike.core.api.literal.AnyLiteral;
+//import org.apache.deltaspike.core.api.literal.AnyLiteral;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.apache.deltaspike.core.api.scope.GroupedConversation;
 import org.apache.deltaspike.core.util.ProxyUtils;
@@ -537,7 +537,7 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
                 auditLog(AuditLogCommand.ACT_SELECT);
             }
         }
-        this.id = ( id == null || id == -1   ? (PK)new Long(0) : id );
+        this.id = ( id == null || id == -1   ? (PK)(Long.valueOf(0)) : id );
         selectedSubView = "";
         needCreateNew = false;
     }
@@ -552,7 +552,10 @@ public abstract class FormBase<E extends EntityBase, PK extends Long> implements
     }
     
     public FeatureHandler getFeature(){
+        /* FIXME: jakarta:  
         return BeanProvider.getContextualReference(getFeatureClass(), false, new AnyLiteral());
+        */
+       return null;
     }
     
     protected Class<? extends ViewConfig> findPage(PageType pageType) {

@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
+import jakarta.annotation.PostConstruct;
+import jakarta.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
 import org.apache.deltaspike.core.util.ProxyUtils;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
 import org.primefaces.event.SelectEvent;
 
 /**
@@ -120,7 +120,7 @@ public abstract class AbtsractFeatureLookup implements Serializable{
             search();
         }
 
-        RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
+        PrimeFaces.current().dialog().openDynamic(getDialogName(), options, null);
     }
 
     /**
@@ -169,7 +169,7 @@ public abstract class AbtsractFeatureLookup implements Serializable{
 
         //Eğer bir şey seçilmemiş ise sadece dialoğu kapatalım.
         if( sl == null ){
-            RequestContext.getCurrentInstance().closeDialog(null);
+            PrimeFaces.current().dialog().closeDynamic(null);
             return;
         }
 
@@ -180,7 +180,7 @@ public abstract class AbtsractFeatureLookup implements Serializable{
         //Buraya listede gelebilir
         //lookupSelectEvent.fire((E)sl.getValue());
         
-        RequestContext.getCurrentInstance().closeDialog(sl);
+        PrimeFaces.current().dialog().closeDynamic(sl);
         
     }
 
@@ -272,7 +272,7 @@ public abstract class AbtsractFeatureLookup implements Serializable{
      * Dialogu hiç bir şey seçmeden kapatır.
      */
     public void cancelDialog() {
-        RequestContext.getCurrentInstance().closeDialog(null);
+        PrimeFaces.current().dialog().closeDynamic(null);
     }
 
 

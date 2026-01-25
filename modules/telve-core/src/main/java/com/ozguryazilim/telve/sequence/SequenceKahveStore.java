@@ -1,8 +1,8 @@
 package com.ozguryazilim.telve.sequence;
 
 import com.ozguryazilim.mutfak.kahve.Kahve;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
 
 /**
  * Sequence durumlarını Kahve ile saklar.

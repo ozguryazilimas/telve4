@@ -3,7 +3,7 @@ package com.ozguryazilim.telve.channel.sms;
 import com.google.common.base.Strings;
 import com.ozguryazilim.telve.messages.Messages;
 import java.util.Map;
-import javax.enterprise.context.Dependent;
+import jakarta.enterprise.context.Dependent;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.deltaspike.core.api.config.ConfigResolver;

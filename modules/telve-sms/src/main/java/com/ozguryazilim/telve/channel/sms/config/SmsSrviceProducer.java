@@ -4,8 +4,8 @@ import com.google.common.base.Strings;
 import com.ozguryazilim.telve.channel.sms.SmsService;
 import com.ozguryazilim.telve.sms.mock.MockSmsService;
 import java.io.Serializable;
-import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Produces;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Produces;
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.slf4j.LoggerFactory;
 

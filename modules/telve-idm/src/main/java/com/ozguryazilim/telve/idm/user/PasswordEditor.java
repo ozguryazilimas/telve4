@@ -9,7 +9,7 @@ import com.ozguryazilim.telve.idm.config.IdmPages;
 import com.ozguryazilim.telve.idm.entities.User;
 import com.ozguryazilim.telve.messages.FacesMessages;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.apache.shiro.authc.credential.DefaultPasswordService;
 

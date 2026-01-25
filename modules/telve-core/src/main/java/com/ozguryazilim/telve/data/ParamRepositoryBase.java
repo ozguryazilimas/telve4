@@ -4,7 +4,7 @@ import com.ozguryazilim.telve.entities.ParamEntityBase;
 import com.ozguryazilim.telve.entities.ParamEntityBase_;
 import com.ozguryazilim.telve.entities.ViewModel;
 import java.util.List;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 

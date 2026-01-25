@@ -3,7 +3,7 @@ package com.ozguryazilim.telve.notification;
 import com.ozguryazilim.telve.messagebus.command.AbstractCommand;
 import java.util.HashMap;
 import java.util.Map;
-import javax.activation.DataHandler;
+import jakarta.activation.DataHandler;
 
 /**
  * Notification gönderimi için komut.

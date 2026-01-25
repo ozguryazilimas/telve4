@@ -2,7 +2,7 @@ package com.ozguryazilim.telve.bpm.handlers;
 
 import java.io.Serializable;
 import java.util.Map;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 

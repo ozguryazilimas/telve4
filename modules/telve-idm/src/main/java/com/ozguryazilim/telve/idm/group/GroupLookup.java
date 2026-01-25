@@ -6,7 +6,7 @@ import com.ozguryazilim.telve.idm.entities.Group;
 import com.ozguryazilim.telve.idm.entities.Group_;
 import com.ozguryazilim.telve.lookup.Lookup;
 import com.ozguryazilim.telve.lookup.LookupTreeControllerBase;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  *

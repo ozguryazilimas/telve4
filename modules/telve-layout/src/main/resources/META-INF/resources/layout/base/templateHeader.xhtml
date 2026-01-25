@@ -1,17 +1,17 @@
 <ui:composition  xmlns="http://www.w3.org/1999/xhtml"
-                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                 xmlns:h="http://java.sun.com/jsf/html"
-                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="jakarta.faces.facelets"
+                 xmlns:h="jakarta.faces.html"
+                 xmlns:f="jakarta.faces.core"
                  xmlns:o="http://omnifaces.org/ui"
                  xmlns:of="http://omnifaces.org/functions"
-                 xmlns:c="http://java.sun.com/jsp/jstl/core">
+                 xmlns:c="jakarta.tags.core">
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport" />
 
     <c:if test="#{telveConfigResolver.getProperty('brand.company.favicon') ne null}">
-        <link rel="icon" href="#{request.contextPath}/javax.faces.resource/img/#{telveConfigResolver.getProperty('brand.company.favicon')}.jsf?ln=brand" />
-        <link rel="shortcut icon" href="#{request.contextPath}/javax.faces.resource/img/#{telveConfigResolver.getProperty('brand.company.favicon')}.jsf?ln=brand" />
+        <link rel="icon" href="#{request.contextPath}/jakarta.faces.resource/img/#{telveConfigResolver.getProperty('brand.company.favicon')}.jsf?ln=brand" />
+        <link rel="shortcut icon" href="#{request.contextPath}/jakarta.faces.resource/img/#{telveConfigResolver.getProperty('brand.company.favicon')}.jsf?ln=brand" />
     </c:if>
 
     <h:outputScript library="primefaces" name="jquery/jquery.js" />
@@ -50,7 +50,7 @@
         
         
         //PF 6.1 InputNumber ClientSideValidation hatasını düzeltmek için.
-        PrimeFaces.converter['javax.faces.BigDecimal'].regex = /^\d.*$/;
+        PrimeFaces.converter['jakarta.faces.BigDecimal'].regex = /^\d.*$/;
         
         //Quick Panel ve Maskı için arkadan gelen bir resize eventi.
         /*

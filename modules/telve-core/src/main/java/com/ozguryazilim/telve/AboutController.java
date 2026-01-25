@@ -3,9 +3,11 @@ package com.ozguryazilim.telve;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
-import org.primefaces.context.RequestContext;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Named;
+
+import org.primefaces.PrimeFaces;
+
 
 /**
  * About Dialogu için UI controller.
@@ -24,11 +26,11 @@ public class AboutController implements Serializable{
         options.put("resizable", false);
         options.put("contentHeight", 450);
         
-        RequestContext.getCurrentInstance().openDialog("/layout/aboutPopup", options, null);
+        PrimeFaces.current().dialog().openDynamic("/layout/aboutPopup", options, null);
     }
     
     public void closeDialog() {
-        RequestContext.getCurrentInstance().closeDialog(null);
+        PrimeFaces.current().dialog().closeDynamic(null);
     }
     
 }

@@ -5,7 +5,7 @@ import com.ozguryazilim.telve.auth.UserInfo;
 import com.ozguryazilim.telve.auth.UserService;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 /**
  * User bilgisi üzerinden contact resolve eder.

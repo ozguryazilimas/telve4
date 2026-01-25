@@ -14,10 +14,10 @@ import static net.sf.dynamicreports.report.builder.DynamicReports.*;
 
 import java.util.Map;
 import java.util.ResourceBundle;
-import javax.faces.context.FacesContext;
+import jakarta.faces.context.FacesContext;
 import javax.imageio.ImageIO;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletResponse;
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.jasper.builder.export.JasperCsvExporterBuilder;
 import net.sf.dynamicreports.jasper.builder.export.JasperXlsxExporterBuilder;

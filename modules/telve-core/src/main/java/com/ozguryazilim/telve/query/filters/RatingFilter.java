@@ -2,7 +2,7 @@ package com.ozguryazilim.telve.query.filters;
 
 import com.google.common.base.Splitter;
 import java.util.List;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 
 /**
  *

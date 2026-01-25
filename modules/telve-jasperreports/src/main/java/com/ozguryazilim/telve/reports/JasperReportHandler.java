@@ -10,11 +10,11 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.deltaspike.core.api.config.ConfigResolver;
 import org.hibernate.engine.spi.SessionImplementor;
@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.ozguryazilim.telve.config.LocaleSelector;
 import com.ozguryazilim.telve.messages.FacesMessages;
 import com.ozguryazilim.telve.messages.TelveResourceBundle;
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;

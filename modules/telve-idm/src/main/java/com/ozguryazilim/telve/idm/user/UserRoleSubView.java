@@ -17,8 +17,8 @@ import com.ozguryazilim.telve.query.QueryDefinition;
 import com.ozguryazilim.telve.query.columns.SubTextColumn;
 import java.util.ArrayList;
 import java.util.List;
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
+import jakarta.enterprise.event.Event;
+import jakarta.inject.Inject;
 import org.primefaces.event.SelectEvent;
 
 /**

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.apache.deltaspike.core.util.ProxyUtils;
 import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.TaskAlreadyClaimedException;

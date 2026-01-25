@@ -1,7 +1,7 @@
 package com.ozguryazilim.telve.query.columns;
 
-import javax.persistence.metamodel.ListAttribute;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.ListAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 
 /**
  * Liste detaylarını gösteren kolon tipi

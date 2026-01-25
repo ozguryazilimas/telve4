@@ -2,8 +2,8 @@ package com.ozguryazilim.telve.quick;
 
 import com.google.common.base.Strings;
 import java.io.Serializable;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.apache.deltaspike.core.api.scope.WindowScoped;
 
 /**

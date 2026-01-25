@@ -4,8 +4,8 @@ import com.ozguryazilim.telve.entities.EntityBase;
 import com.ozguryazilim.telve.lookup.LookupControllerBase;
 import com.ozguryazilim.telve.lookup.LookupSelect;
 import com.ozguryazilim.telve.lookup.LookupSelectListener;
-import javax.enterprise.event.Observes;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.enterprise.event.Observes;
+import jakarta.persistence.metamodel.SingularAttribute;
 
 /**
  * Overlay popup çıkararak kullanıcıya seçim şansı veren entity filter.

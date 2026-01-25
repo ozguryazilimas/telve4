@@ -1,6 +1,6 @@
 package com.ozguryazilim.telve.query.columns;
 
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 
 /**
  * Link üretecek column tipi

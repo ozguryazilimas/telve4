@@ -4,9 +4,9 @@ import com.ozguryazilim.telve.entities.FeaturePointer;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 /**
  * Feature'lara ve genel geöer fonksiyonlarına erişim için kullanılır.

@@ -6,7 +6,7 @@ import com.ozguryazilim.telve.dashboard.DashletCapability;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import org.apache.deltaspike.core.api.provider.BeanProvider;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;

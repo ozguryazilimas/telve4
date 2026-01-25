@@ -1,10 +1,10 @@
 <ui:composition  xmlns="http://www.w3.org/1999/xhtml"
-                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                 xmlns:f="http://java.sun.com/jsf/core"
+                 xmlns:ui="jakarta.faces.facelets"
+                 xmlns:f="jakarta.faces.core"
                  xmlns:ut="http://utech.com/jsf/comps"
-                 xmlns:p="http://primefaces.org/ui"
-                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+                 xmlns:p="primefaces"
+                 xmlns:h="jakarta.faces.html"
+                 xmlns:c="jakarta.tags.core">
 
     <p:panel id="#{dashlet}"  
              toggleable="#{dashletRegistery.hasCapability( dashlet, 'canMinimize' )}" 

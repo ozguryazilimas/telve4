@@ -1,8 +1,8 @@
 package com.ozguryazilim.telve.link;
 
 import java.io.Serializable;
-import javax.enterprise.context.Dependent;
-import javax.inject.Named;
+import jakarta.enterprise.context.Dependent;
+import jakarta.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

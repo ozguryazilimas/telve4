@@ -4,7 +4,7 @@ import com.ozguryazilim.telve.auth.SecuredPage;
 import com.ozguryazilim.telve.nav.MainNavigationSection;
 import com.ozguryazilim.telve.nav.Navigation;
 import com.ozguryazilim.telve.view.Pages;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.apache.deltaspike.jsf.api.config.view.Folder;
 import org.apache.deltaspike.jsf.api.config.view.View;
 

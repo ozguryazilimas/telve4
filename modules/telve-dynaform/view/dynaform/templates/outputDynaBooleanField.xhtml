@@ -1,10 +1,10 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:c="http://java.sun.com/jsp/jstl/core"
-                xmlns:t="http://java.sun.com/jsf/composite/telveComponents">
+                xmlns:ui="jakarta.faces.facelets"
+                xmlns:f="jakarta.faces.core"
+                xmlns:h="jakarta.faces.html"
+                xmlns:p="primefaces"
+                xmlns:c="jakarta.tags.core"
+                xmlns:t="jakarta.faces.composite/telveComponents">
 
     <t:outputBoolean label="#{field.label}" value="#{dynaForm.getBinder(field.id).value}" itemLabel="general.boolean.yesno." columnClass="#{cont.doubleColumn ? 'col-md-6 col-xs-12' : 'col-xs-12'}"/>
 

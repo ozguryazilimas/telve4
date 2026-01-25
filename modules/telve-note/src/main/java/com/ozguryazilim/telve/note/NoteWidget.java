@@ -10,9 +10,9 @@ import com.ozguryazilim.telve.qualifiers.EntityQualifierLiteral;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.enterprise.event.Event;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.event.Event;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.apache.deltaspike.core.api.scope.GroupedConversationScoped;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 

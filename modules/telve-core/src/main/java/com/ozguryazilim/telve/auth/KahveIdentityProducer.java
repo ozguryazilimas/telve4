@@ -2,10 +2,10 @@ package com.ozguryazilim.telve.auth;
 
 import com.ozguryazilim.mutfak.kahve.annotations.UserAware;
 import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
-import javax.inject.Named;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 /**
  * Kahve'nin userAware çalışması için bir String olarak mevcut kullanıcıyı göndermek gerekiyor.

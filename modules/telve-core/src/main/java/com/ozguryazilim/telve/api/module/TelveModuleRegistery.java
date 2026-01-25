@@ -2,7 +2,7 @@ package com.ozguryazilim.telve.api.module;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.enterprise.inject.Typed;
+import jakarta.enterprise.inject.Typed;
 
 /**
  * Telve Module Tanım Bilgilerini tutar.

@@ -36,6 +36,11 @@
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
         </dependency>
+  <dependency>
+   <groupId>jakarta.ws.rs</groupId>
+   <artifactId>jakarta.ws.rs-api</artifactId>
+   <version>3.1.0</version>
+  </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>telve-core</artifactId>
