@@ -10,10 +10,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import org.primefaces.PrimeFaces;
+
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import org.primefaces.context.RequestContext;
+
 
 /**
  * Rapor Zamanlama dialoğu
@@ -47,7 +50,7 @@ public class ReportScheduleDialog implements Serializable{
         options.put("resizable", false);
         options.put("contentHeight", 450);
 
-        RequestContext.getCurrentInstance().openDialog("/reports/scheduleReportDialog", options, null);
+        PrimeFaces.current().dialog().openDynamic("/reports/scheduleReportDialog", options, null);
     }
 
     public void schedule(){
@@ -66,7 +69,7 @@ public class ReportScheduleDialog implements Serializable{
         ScheduledCommand sc = new ScheduledCommand(UUID.randomUUID().toString(), s, userIdentity.getUserInfo().getId(), command);
         scheduler.addToSceduler(sc);
         
-        RequestContext.getCurrentInstance().closeDialog(null);
+        PrimeFaces.current().dialog().closeDynamic(null);
     }
     
     
@@ -88,7 +91,7 @@ public class ReportScheduleDialog implements Serializable{
     
     
     public void cancelDialog(){
-        RequestContext.getCurrentInstance().closeDialog(null);
+        PrimeFaces.current().dialog().closeDynamic(null);
     }
     
     public ReportCommand getCommand() {

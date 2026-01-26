@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
-import org.primefaces.context.RequestContext;
+
+import org.primefaces.PrimeFaces;
 
 /**
  * Process Başlatma popup kontrol sınıfı.
@@ -27,7 +28,7 @@ public class StartProcessPopup implements Serializable{
         options.put("resizable", false);
         options.put("contentHeight", 450);
 
-        RequestContext.getCurrentInstance().openDialog( dialogName, options, null);
+        PrimeFaces.current().dialog().openDynamic( dialogName, options, null);
     }
     
     public void closeDialog() {

@@ -2,7 +2,9 @@ package com.ozguryazilim.telve.bpm.handlers;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.primefaces.context.RequestContext;
+
+import org.primefaces.PrimeFaces;
+
 
 /**
  *
@@ -17,16 +19,16 @@ public abstract class AbstractDialogProcessHandler extends AbstractProcessHandle
         options.put("resizable", false);
         options.put("contentHeight", 450);
 
-        RequestContext.getCurrentInstance().openDialog( getDialogName(), options, null);
+        PrimeFaces.current().dialog().openDynamic( getDialogName(), options, null);
     }
     
     public void closeDialog() {
         startProcess();
-        RequestContext.getCurrentInstance().closeDialog(null);
+        PrimeFaces.current().dialog().closeDynamic(null);
     }
     
     public void cancelDialog() {
-        RequestContext.getCurrentInstance().closeDialog(null);
+        PrimeFaces.current().dialog().closeDynamic(null);
     }
         
     public abstract String getDialogName();

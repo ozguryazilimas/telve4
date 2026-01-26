@@ -27,10 +27,12 @@ import org.apache.shiro.subject.Subject;
 import org.primefaces.component.dashboard.Dashboard;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.event.DashboardReorderEvent;
+/*
 import org.primefaces.model.DashboardColumn;
 import org.primefaces.model.DashboardModel;
 import org.primefaces.model.DefaultDashboardColumn;
 import org.primefaces.model.DefaultDashboardModel;
+ */
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +74,9 @@ public class DashboardManager implements Serializable {
     /**
      * Aktif dashbord PF Modeli
      */
-    private DashboardModel model = null;
+    //FIXME: jakarta: primefaces yeni sürümde model değişikliği var sanırım. düzeltilmesi gerek
+    //private DashboardModel model = null;
+    private Object model = null;
     /**
      * Aktif dashbord dashletleri
      */
@@ -136,17 +140,19 @@ public class DashboardManager implements Serializable {
      *
      * @return
      */
+    /* FIXME: jakarta: model / dashboard nasıl olacak?
     public DashboardModel getDashboardModel() {
         checkDashboard();
         LOG.debug("Current : {}, Board : {}", currentBoard, board);
         return model;
     }
+         */
 
     /**
      * Aktif dashboard için PF modelini üretir.
      */
     protected void initDashboardModel() {
-        model = new DefaultDashboardModel();
+        model = null; //FIXME: jakarta: new DefaultDashboardModel();
         
         //Tanımlardan gelen bilgiler Avail Dashlets listesinde var mı diye kontrol etmek için listeyi alalım.
         List<String> ads = getAvailDashlets();
@@ -158,6 +164,7 @@ public class DashboardManager implements Serializable {
 
         DashboardDataModel data = dashboards.get(currentBoard);
 
+        /* FIXME: jakarta: dashboard 
         DefaultDashboardColumn column1 = new DefaultDashboardColumn();
         for (String w : data.getColumn1()) {
             if( ads.contains(w)){
@@ -178,6 +185,7 @@ public class DashboardManager implements Serializable {
                 column3.addWidget(w);
             }
         }
+            
 
         //Kolon widget atamaları
         dashlets.clear();
@@ -263,6 +271,7 @@ public class DashboardManager implements Serializable {
                 column3.setStyleClass("col-md-6 col-xs-12");
                 break;
         }
+                */
     }
 
     /**
@@ -718,10 +727,12 @@ public class DashboardManager implements Serializable {
      */
     public void handleClose(CloseEvent event) {
 
+        /* FIXME: jakarta: model yapısı düzeltilecek 
         //Önce GUI Modelden çıkartıyoruz
         for (DashboardColumn col : model.getColumns()) {
             col.removeWidget(event.getComponent().getId());
         }
+            */
 
         //Sonra data'dan çıkartıp kaydediyoruz
         DashboardDataModel data = dashboards.get(currentBoard);

@@ -12,7 +12,7 @@ import org.apache.commons.io.IOUtils;
 import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.history.HistoricTaskInstance;
 import org.camunda.bpm.engine.task.Task;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,7 +79,7 @@ public class DiagramPopup implements Serializable{
             LOG.error("Process Diagram connat read", ex ); 
         }
         
-        RequestContext.getCurrentInstance().openDialog( dialogName, options, null);
+        PrimeFaces.current().dialog().openDynamic( dialogName, options, null);
     }
 
     public String getDiagramXML() {

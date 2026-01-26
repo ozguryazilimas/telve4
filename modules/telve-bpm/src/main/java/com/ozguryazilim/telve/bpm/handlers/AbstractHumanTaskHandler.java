@@ -18,7 +18,8 @@ import org.camunda.bpm.engine.IdentityService;
 import org.camunda.bpm.engine.TaskAlreadyClaimedException;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.task.Comment;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
+
 
 /**
  * Sistemde tanımlı Human Task handlerlar için taban sınıf.
@@ -72,7 +73,7 @@ public abstract class AbstractHumanTaskHandler implements Serializable {
 
         comments = taskService.getTaskComments(task.getId());
 
-        RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
+        PrimeFaces.current().dialog().openDynamic(getDialogName(), options, null);
     }
 
     /**
@@ -214,7 +215,7 @@ public abstract class AbstractHumanTaskHandler implements Serializable {
     }
 
     public void cancelDialog() {
-        RequestContext.getCurrentInstance().closeDialog(null);
+        PrimeFaces.current().dialog().closeDynamic(null);
     }
 
     public List<TaskResultCommand> getResultCommands() {

@@ -458,16 +458,29 @@
         <module>telve-theme</module>
         <module>telve-core-model</module>
         <module>telve-core</module>
+
+        <module>telve-idm-model</module>
+        <module>telve-idm</module>
+
+        <module>telve-jasperreports</module>
+        <module>telve-reports</module>
+        <module>telve-admin-reports</module>
+        <module>telve-idm-reports</module>
+
+        <module>telve-dashboard</module>
+
+        <module>telve-bpm</module>
+
         <!--
         
-        <module>telve-idm-model</module>
         
-        <module>telve-bpm</module>
+        
+        
         <module>telve-dynaform</module>
         <module>telve-jcr</module>
         
         <module>telve-gallery</module>
-        <module>telve-idm</module>
+        
         <module>telve-unit</module>
         <module>telve-keycloak</module>
         <module>telve-adfs</module>
@@ -478,16 +491,14 @@
         <module>telve-sms-mobildev</module>
         <module>telve-batch</module>
         
-        <module>telve-dashboard</module>
+        
         <module>telve-attachment</module>
         <module>telve-attachment-jpa</module>
         <module>telve-attachment-jpa-model</module>
         <module>telve-attachment-modeshape</module>
         <module>telve-attachment-ui</module>
-        <module>telve-jasperreports</module>
-        <module>telve-reports</module>
-        <module>telve-admin-reports</module>
-        <module>telve-idm-reports</module>
+        
+        
         <module>telve-dynamicreports</module>
         <module>telve-image-jpa-model</module>
         <module>telve-image</module>

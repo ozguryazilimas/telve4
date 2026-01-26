@@ -6,7 +6,8 @@ import java.util.Map;
 import jakarta.inject.Inject;
 import org.apache.deltaspike.core.api.config.view.ViewConfig;
 import org.apache.deltaspike.core.api.config.view.metadata.ViewConfigResolver;
-import org.primefaces.context.RequestContext;
+import org.primefaces.PrimeFaces;
+
 
 /**
  *
@@ -28,7 +29,7 @@ public abstract class AbstractReportBase implements ReportController, Serializab
         options.put("resizable", false);
         options.put("contentHeight", 450);
 
-        RequestContext.getCurrentInstance().openDialog(getDialogName(), options, null);
+        PrimeFaces.current().dialog().openDynamic(getDialogName(), options, null);
     }
     
     /**
@@ -67,7 +68,7 @@ public abstract class AbstractReportBase implements ReportController, Serializab
      */
     public void cancelDialog() {
         //RequestContext.getCurrentInstance().closeDialog("Rapordan İptalle Çıkıldı");
-        RequestContext.getCurrentInstance().closeDialog(null);
+        PrimeFaces.current().dialog().closeDynamic(null);
     }
     
     protected String getTemplateName() {
