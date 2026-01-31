@@ -1,7 +1,11 @@
 package com.ozguryazilim.telve.workarounds;
 
+import jakarta.annotation.Priority;
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Alternative;
+import jakarta.enterprise.inject.Default;
+import jakarta.interceptor.Interceptor;
+
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import jakarta.transaction.UserTransaction;
@@ -18,6 +22,8 @@ import org.slf4j.LoggerFactory;
  */
 @Dependent
 @Alternative
+@Priority(Interceptor.Priority.APPLICATION + 1)
+@Default
 public class TelveUserTransactionStrategy extends BeanManagedUserTransactionStrategy {
     
     private static final Logger LOG = LoggerFactory.getLogger(TelveUserTransactionStrategy.class);

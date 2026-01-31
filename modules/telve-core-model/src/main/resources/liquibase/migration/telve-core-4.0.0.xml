@@ -21,7 +21,7 @@
         </insert>
     </changeSet>
     
-    <changeSet author="haky" id="BASE-5" dbms="postgresql,oracle">
+    <changeSet author="haky" id="BASE-5" dbms="postgresql,oracle,h2">
         <createSequence 
             incrementBy="1"
             sequenceName="generic_seq"

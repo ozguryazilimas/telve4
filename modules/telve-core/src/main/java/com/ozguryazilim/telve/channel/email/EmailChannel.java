@@ -26,7 +26,7 @@ import org.apache.camel.ProducerTemplate;
 public class EmailChannel implements Channel, Serializable{
     
     // FIXME: jakarta: camel 4 ile beraber camel-cdi kalkmış yerine ne kullanacağız?
-    @Inject 
+    //@Inject 
     //@ContextName("telve")
     //@Uri("seda:emailChannel")
     private ProducerTemplate mailProducer; 

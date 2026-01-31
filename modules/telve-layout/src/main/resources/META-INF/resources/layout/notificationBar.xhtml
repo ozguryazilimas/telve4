@@ -5,7 +5,8 @@
                  xmlns:p="primefaces"
                  xmlns:o="http://omnifaces.org/ui"
                  >
-
+<ui:remove>
+    <!-- FIXME: PF 10 ile birlikte aşağıdaki kısım kalkıyor sanırım -->
     <p:notificationBar id="notifyBar" position="top" effect="slide" styleClass="top alert-info" style="z-index: 3000; margin: 0;" widgetVar="notifyBar" >
         <i id="notifyIcon" class=""/>
         <span id="notifySubject" style="font-size:36px;"></span>
@@ -16,7 +17,7 @@
         <o:socket channel="notify" onmessage="handleMessage" user="#{identity.loginName}"/>
         
         <ui:remove>
-            <p:socket onMessage="handleMessage" channel="/notify/#{identity.loginName}" />
+            <!-- p : socket onMessage="handleMessage" channel="/notify/#{identity.loginName}" / -->
         </ui:remove>
     
 
@@ -48,5 +49,5 @@
         }
         
     </script>
-
+</ui:remove>
 </ui:composition>

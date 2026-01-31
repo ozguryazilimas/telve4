@@ -17,7 +17,7 @@ import org.apache.camel.ProducerTemplate;
 @Dependent
 public class CommandSender implements Serializable{
     
-    @Inject 
+    //@Inject 
     // FIXME: jakarta: camel 4 ile beraber camel-cdi kalkmış yerine ne kullanacağız?
     //@ContextName("telve")
     //@Uri("seda:command")

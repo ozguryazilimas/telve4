@@ -9,20 +9,21 @@
         <param-name>jakarta.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
+
+    
     <context-param>
         <param-name>primefaces.CLIENT_SIDE_VALIDATION</param-name>
         <param-value>true</param-value>
     </context-param>
-    <context-param>
-        <param-name>primefaces.FONT_AWESOME</param-name>
-        <param-value>true</param-value>
-    </context-param>
+    <!--
     
     <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>#{themeSelector.theme}</param-value>
     </context-param>
-        
+    
+    -->
+    
     <context-param>
         <param-name>primefaces.UPLOADER</param-name>
         <param-value>native</param-value>
@@ -31,6 +32,7 @@
         <param-name>jakarta.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
         <param-value>true</param-value>
     </context-param>
+    
     <!-- JCache Provider ve ya Infinispan Provider lazım -->
     <context-param>
         <param-name>primefaces.CACHE_PROVIDER</param-name>
@@ -45,7 +47,7 @@
     </context-param>
     -->
     
-    
+    <!--
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
         <filter-class>org.omnifaces.filter.CharacterEncodingFilter</filter-class>
@@ -55,18 +57,26 @@
         <filter-name>characterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    
-    <!-- OminiFaces Socket Push -->
+    -->
+    <!-- OminiFaces Socket Push 
     <context-param>
         <param-name>org.omnifaces.SOCKET_ENDPOINT_ENABLED</param-name>
         <param-value>true</param-value>
     </context-param>
+    -->
     
     <servlet-mapping>
         <servlet-name>jakarta.ws.rs.core.Application</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
     
+
+    <context-param>
+        <param-name>jakarta.faces.AUTOMATIC_EXTENSIONLESS_MAPPING</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <!-- jakarta ile sanırım artık bunlar gerekmiyor
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
@@ -76,6 +86,7 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.jsf</url-pattern>
     </servlet-mapping>
+    -->
    
     <security-constraint>
       <display-name>Restrict raw XHTML Documents</display-name>

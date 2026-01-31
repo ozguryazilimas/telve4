@@ -17,11 +17,13 @@ import jakarta.faces.context.FacesContext;
 @ApplicationScoped
 public class DefaultResourceProducer {
 
+    /* FIXME: jakarta: bu method acaba artık gerekmiyor olabilir mi?
     @Produces @Default
     @RequestScoped
     public FacesContext produceFacesContext() {
         return FacesContext.getCurrentInstance();
     }
+         */
     
     @Produces
     @Default

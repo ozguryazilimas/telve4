@@ -22,7 +22,7 @@ public class CamelBootstrap implements Serializable{
     
     private static final Logger LOG = LoggerFactory.getLogger(CamelBootstrap.class);
     
-    @Inject //@ContextName("telve")
+    //@Inject //@ContextName("telve")
     //private CdiCamelContext camelContext;
     private Object camelContext;
     

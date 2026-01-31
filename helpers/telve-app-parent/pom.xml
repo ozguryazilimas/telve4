@@ -19,9 +19,10 @@
         <version.liquibase-maven-plugin>3.6.2</version.liquibase-maven-plugin>
         <version.hibernate-jpamodelgen>5.2.1.Final</version.hibernate-jpamodelgen>
         <version.hibernate>4.3.11.Final</version.hibernate>
+        
         <!-- Bunlar aslında BOM'a alınabilir sanki -->
         <junit.version>4.12</junit.version>
-        <liquibase.version>3.5.5</liquibase.version>
+        <liquibase.version>5.0.1</liquibase.version>
         <liquibase-slf4j.version>2.0.0</liquibase-slf4j.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -80,43 +81,45 @@
     
     <dependencies>
         <!-- Source: https://mvnrepository.com/artifact/jakarta.platform/jakarta.jakartaee-api -->
-<dependency>
-    <groupId>jakarta.platform</groupId>
-    <artifactId>jakarta.jakartaee-api</artifactId>
-    <version>10.0.0</version>
-    <scope>provided</scope>
-</dependency>
-<!--
         <dependency>
-            <groupId>org.jboss.spec.javax.ejb</groupId>
-            <artifactId>jboss-ejb-api_3.2_spec</artifactId>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>10.0.0</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.faces</groupId>
-            <artifactId>jboss-jsf-api_2.2_spec</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        -->
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
             <scope>provided</scope>
-   <version>3.0.2</version>
         </dependency>
-        <!--
         <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
             <scope>provided</scope>
         </dependency>
-        -->
         <dependency>
             <groupId>jakarta.enterprise</groupId>
             <artifactId>jakarta.enterprise.cdi-api</artifactId>
             <scope>provided</scope>
-   <version>4.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>jakarta.inject</groupId>
+            <artifactId>jakarta.inject-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/jakarta.faces/jakarta.faces-api -->
+        <dependency>
+            <groupId>jakarta.faces</groupId>
+            <artifactId>jakarta.faces-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/jakarta.ejb/jakarta.ejb-api -->
+        <dependency>
+            <groupId>jakarta.ejb</groupId>
+            <artifactId>jakarta.ejb-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        
         <!--
         <dependency>
             <groupId>org.jboss.spec.javax.enterprise.concurrent</groupId>
@@ -148,7 +151,6 @@
             <groupId>jakarta.mail</groupId>
             <artifactId>jakarta.mail-api</artifactId>
             <scope>provided</scope>
-   <version>2.1.5</version>
         </dependency>
         <!-- Hibernate'e özgü annotaionlar için. Özellikle : LazyCollection-->
         <dependency>

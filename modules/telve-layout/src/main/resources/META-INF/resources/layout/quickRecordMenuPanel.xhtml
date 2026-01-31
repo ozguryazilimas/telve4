@@ -9,13 +9,13 @@
 
     <nav class="navbar  navbar-static-top">
         <ul class="nav navbar-nav">
-            <p:repeat value="#{quickRecordManager.getQuickRecords()}" var="quick">
+            <ui:repeat value="#{quickRecordManager.getQuickRecords()}" var="quick">
                 <li>
                     <p:commandLink action="#{quickRecordController.setName(quick)}" ajax="true" process="@this" update="quickPanelContent">
                         <i class="#{messages['quickRecord.icon.'.concat(quick)]}"></i> #{messages['quickRecord.caption.'.concat(quick)]}
                     </p:commandLink>
                 </li>
-            </p:repeat>
+            </ui:repeat>
         </ul>
     </nav>
 

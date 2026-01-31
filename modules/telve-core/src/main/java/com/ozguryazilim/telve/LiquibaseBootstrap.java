@@ -5,7 +5,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
 import jakarta.inject.Inject;
-//import liquibase.integration.cdi.CDILiquibase;
+import liquibase.integration.jakarta.cdi.CDILiquibase;
 
 /**
  * PicketLink'in Liqubase'i beklemesi için
@@ -16,7 +16,7 @@ import jakarta.inject.Inject;
 public class LiquibaseBootstrap implements Serializable{
   
     /* FIXME: jakarta: liquibase yeni sürümleri artık böyle şeyler desteklemiyor :( 
-        Yeni bir yöntem düşünmek gerekecek
+        Yeni bir yöntem düşünmek gerekecek */
     @Inject
     private CDILiquibase liquibase;
     
@@ -24,5 +24,5 @@ public class LiquibaseBootstrap implements Serializable{
     public void onStartup(){
         liquibase.isInitialized();
     }
-         */
+         
 }

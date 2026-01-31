@@ -19,7 +19,7 @@ public class CommandProcessor implements Processor{
 
     private static final Logger LOG = LoggerFactory.getLogger(CommandProcessor.class);
     
-    @Inject 
+    //@Inject 
     // FIXME: jakarta: camel 4 ile beraber camel-cdi kalkmış yerine ne kullanacağız?
     //@ContextName("telve")
     private CamelContext context;
