@@ -222,6 +222,7 @@
         </dependency>
 
         <!-- Camel -->
+          
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-core</artifactId>
@@ -233,11 +234,12 @@
             <artifactId>camel-cdi</artifactId>
         </dependency>
         -->
-
+        <!--
         <dependency>
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-freemarker</artifactId>
         </dependency>
+        -->
 
         <dependency>
             <groupId>org.freemarker</groupId>

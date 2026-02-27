@@ -17,7 +17,7 @@ import org.apache.camel.ProducerTemplate;
 @Dependent
 public class CommandSender implements Serializable{
     
-    //@Inject 
+    @Inject 
     // FIXME: jakarta: camel 4 ile beraber camel-cdi kalkmış yerine ne kullanacağız?
     //@ContextName("telve")
     //@Uri("seda:command")
@@ -25,6 +25,7 @@ public class CommandSender implements Serializable{
     
     
     public void sendCommand( Command command ){
+        commandMessageProducer.setDefaultEndpointUri("seda:command");
         //Header'a "command" keyi ile gelen komut adı konup gönderiyoruz. Body params'dan oluşuyor.
         commandMessageProducer.sendBodyAndHeader(command, "command", command.getClass().getName());
     }

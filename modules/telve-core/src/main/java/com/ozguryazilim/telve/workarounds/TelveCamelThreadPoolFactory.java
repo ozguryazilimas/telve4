@@ -1,10 +1,9 @@
 package com.ozguryazilim.telve.workarounds;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import jakarta.enterprise.concurrent.ManagedThreadFactory;
-//import org.apache.camel.impl.DefaultThreadPoolFactory;
+
+import org.apache.camel.support.DefaultThreadPoolFactory;
 import org.apache.camel.util.concurrent.CamelThreadFactory;
 import org.apache.camel.util.concurrent.ThreadHelper;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -20,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * @author Hakan Uygun
  */
 //FIXME: jakarta: camel 4 ile birlikte burayı da düzenlemek gerekiyor!
-public class TelveCamelThreadPoolFactory /* extends DefaultThreadPoolFactory */ {
+public class TelveCamelThreadPoolFactory  extends DefaultThreadPoolFactory {
 
     private static final Logger LOG = LoggerFactory.getLogger(TelveCamelThreadPoolFactory.class);
 
