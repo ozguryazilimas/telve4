@@ -19,25 +19,25 @@
 
     <ui:define name="body">
 
-        <h:panelGroup layout="block" rendered="#{showCaption eq 'true'}">
-            <ui:remove>
-                <div class="ui-widget ui-widget-content ui-corner-top" style="padding: 4px; margin-bottom: 4px; background-color: #fdeeb3; border-color: #F1C43F;">
-                    <ui:insert name="caption" /> 
+        <div class="vstack gap-2 mx-auto">
+            <ui:include src="/layout/messages.xhtml" />
+
+
+            <h:panelGroup layout="block" rendered="#{showCaption eq 'true'}">
+
+                <div class="card card-outline card-warning">
+                    <div class="card-body">
+                        <ui:insert name="caption" />
+                    </div>
                 </div>
-            </ui:remove>
-            <div class="box box-warning">
-                <div class="box-body">
-                    <ui:insert name="caption" /> 
-                </div>
+            </h:panelGroup>
+
+
+            <div class="card card-outline card-primary">
+                <p:outputPanel id="viewarea">
+                        <ui:include src="#{bean.getSubViewId()}" />
+                </p:outputPanel>
             </div>
-        </h:panelGroup>
-
-        <ui:include src="/layout/messages.xhtml" />
-
-        <div class="box box-primary">
-            <p:outputPanel id="viewarea">
-                    <ui:include src="#{bean.getSubViewId()}" />
-            </p:outputPanel>
         </div>
 
     </ui:define>
@@ -45,32 +45,32 @@
     <ui:define name="content-list">
 
         <h:form id="subViewCommandForm" >
-            <div class="box box-solid box-default">
-                <div class="box-header">
+            <div class="card card-solid card-default">
+                <div class="card-header">
                     #{messages['general.label.SubViews']}
                 </div>
-                <div class="box-body no-padding">
-                    <ul class="nav nav-pills nav-stacked">
-                        <li class="#{'' == bean.getSelectedSubView()  ? 'active': '' }">
-                            <p:commandLink  value="#{messages['general.caption.MasterView']}"
-                                            action="#{bean.setSelectedSubView(null)}" update=":viewarea, subViewCommandForm" styleClass="ui-sidelink" />
-                        </li>
+                <div class="card-body no-padding">
+                    <nav class="nav flex-column nav-pills">
+                        <p:commandLink  value="#{messages['general.caption.MasterView']}"
+                                        action="#{bean.setSelectedSubView(null)}" update=":viewarea, subViewCommandForm" styleClass="ui-sidelink nav-link #{'' == bean.getSelectedSubView()  ? 'active': '' }" />
                         <ui:repeat value="#{bean.getSubViews('main')}" var="module" >
-                            <li class="#{module eq bean.getSelectedSubView() ? 'active' : ''}">
-                                <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
-                                               action="#{bean.setSelectedSubView(module)}" update=":viewarea, subViewCommandForm" 
-                                               styleClass="ui-sidelink "/>  
-                            </li>
+
+                                <p:commandLink value="#{messages[ bean.getPageTitle(module)]}"
+                                               action="#{bean.setSelectedSubView(module)}" update=":viewarea, subViewCommandForm"
+                                               styleClass="ui-sidelink nav-link #{module eq bean.getSelectedSubView() ? 'active' : ''}"/>
+
                         </ui:repeat>
-                    </ul>
+                    </nav>
+
                 </div>
 
-                <ui:repeat value="#{bean.subViewGroups}" var="grp" >
 
-                    <div class="box-header">
+                <ui:repeat value="#{bean.subViewGroups}" var="grp" >
+                    <!-- FIXME: Burası yukarıdaki gibi değiştirilmesi gerekecek sanırım -->
+                    <div class="card-header">
                         #{messages[ 'subview.group.'.concat( grp )]}
                     </div>
-                    <div class="box-body no-padding">
+                    <div class="card-body no-padding">
                         <ul class="nav nav-pills nav-stacked">
                             <ui:repeat value="#{bean.getSubViews(grp)}" var="module" >
                                 <li class="#{module eq bean.getSelectedSubView() ? 'active' : ''}">
@@ -85,28 +85,19 @@
                 </ui:repeat>
             </div>
 
-            <ui:remove>
-                <c:forEach id="subViewRepeater" items="#{bean.subViewList}"
-                           var="module" varStatus="rowCounter">
-                    <p:commandLink value="#{messages[ bean.getPageTitle(module)]}" 
-                                   action="#{bean.setSelectedSubView(module)}" update=":viewarea" 
-                                   styleClass="ui-sidelink "/>  
-                </c:forEach>
-            </ui:remove>
-
         </h:form>
 
     </ui:define>
 
     <ui:define name="context-menu">
-        <li>
-            <p:commandLink action="#{bean.create()}" title="#{messages['general.button.Add']}" ajax="false">
+        <li class="nav-item">
+            <p:commandLink action="#{bean.create()}" title="#{messages['general.button.Add']}" ajax="false" styleClass="context-command nav-link">
                 <i class="fa fa-plus-circle"></i>
                 <h:outputText value=" #{messages['general.button.Add']}" />
             </p:commandLink>
         </li>
-        <li>
-            <p:commandLink action="#{bean.edit()}" title="#{messages['general.button.Edit']}" ajax="false" rendered="#{bean.hasUpdatePermission()}">
+        <li class="nav-item">
+            <p:commandLink action="#{bean.edit()}" title="#{messages['general.button.Edit']}" ajax="false" rendered="#{bean.hasUpdatePermission()}" styleClass="context-command nav-link">
                 <i class="fa fa-pencil"></i>
                 <h:outputText value=" #{messages['general.button.Edit']}" />
             </p:commandLink>
@@ -118,14 +109,14 @@
     </ui:define>
     
     <ui:define name="context-menu-right">
-        <li>
-            <p:commandLink action="#{bean.refresh()}" title="#{messages['general.button.Refresh']}" update=":viewarea">
+        <li class="nav-item">
+            <p:commandLink action="#{bean.refresh()}" title="#{messages['general.button.Refresh']}" update=":viewarea" styleClass="context-command nav-link">
                 <i class="fa fa-refresh"></i>
                 <h:outputText value=" #{messages['general.button.Refresh']}" styleClass="visible-xs-inline"/>
             </p:commandLink>
         </li>
-        <li>
-            <p:commandLink action="#{bean.close()}" title="#{messages['general.button.Close']}" >
+        <li class="nav-item">
+            <p:commandLink action="#{bean.close()}" title="#{messages['general.button.Close']}" styleClass="context-command nav-link">
                 <i class="fa fa-close"></i>
                 <h:outputText value=" #{messages['general.button.Close']}" styleClass="visible-xs-inline"/>
             </p:commandLink>

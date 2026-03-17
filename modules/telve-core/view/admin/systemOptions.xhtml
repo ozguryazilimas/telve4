@@ -16,11 +16,11 @@
         <ui:include src="/layout/messages.xhtml" />
         <h:panelGroup id="pane" layout="block">
             <ui:fragment rendered="#{not empty systemOptionPaneController.selectedPane}">
-                <div class="box box-primary">
-                    <div class="box-header with-border">
+                <div class="card card-primary">
+                    <div class="card-header">
                         #{messages[ 'optionPane.caption.'.concat( systemOptionPaneController.selectedPane )]}
                     </div>
-                    <div class="box-body">
+                    <div class="card-body">
                         <ui:include src="#{systemOptionPaneController.getSelectedPaneViewId()}">
                             <ui:param name="pane" value="#{systemOptionPaneController.selectedPane}" />
                         </ui:include>

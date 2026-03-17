@@ -2,5 +2,8 @@
                 xmlns:ui="jakarta.faces.facelets"
                 xmlns:h="jakarta.faces.html"
                 xmlns:p="primefaces">
-    <p:commandLink value="#{item[col.name]}" action="#{bean.view(item.id)}" partialSubmit="true" process="@this" styleClass="fa fa-external-link"/>
+    <p:commandLink action="#{bean.view(item.id)}" partialSubmit="true" process="@this" >
+        <i class="fa fa-external-link" />
+        #{item[col.name]}
+    </p:commandLink>
 </ui:composition>

@@ -17,7 +17,7 @@
         <composite:attribute name="update" required="false"/>
         <composite:attribute name="required" required="false" type="java.lang.Boolean" default="false"/>
         <composite:attribute name="showLabel" required="false" type="java.lang.Boolean" default="true"/>
-        <composite:attribute name="columnClass" required="false" default="col-xs-6"/>
+        <composite:attribute name="columnClass" required="false" default="col-md-6 col-12"/>
         <composite:attribute name="last" required="false" type="java.lang.Boolean" default="false"/>
     </composite:interface>
 
@@ -28,7 +28,7 @@
 
             <span class="value">
 
-                <div class="input-group">
+                <div class="ui-inputgroup">
                     <p:autoComplete id="#{cc.id}_inp" value="#{cc.attrs.value}" 
                                     forceSelection="true" 
                                     completeMethod="#{cc.attrs.lookupBean.suggest}"
@@ -46,12 +46,11 @@
                         <f:attribute name="lookupProfile" value="#{cc.attrs.lookupProfile}" />
                     </p:autoComplete>
 
-                    <div class="input-group-btn">
+
                     <p:commandButton id="popdown" action="#{cc.attrs.lookupBean.initOverlay(cc.attrs.lookupProfile, cc.attrs.lookupListener)}" ajax="true" 
                                      partialSubmit="true" process="@this"
                                      update="ovl1" onsuccess="PF('#{cc.id}lookupOverlay').loadContents();PF('#{cc.id}lookupOverlay').show()"
                                      icon="fa fa-caret-down" styleClass="ui-icon-only btn btn-default"/>
-                    </div>
                 </div>
 
                 <p:overlayPanel id="ovl1" for="#{cc.id}_inp" 

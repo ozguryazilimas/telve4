@@ -16,16 +16,17 @@
     <properties>
         <deltaspike.version>2.0.1</deltaspike.version>
         <shiro.version>2.0.6</shiro.version>
-        <primeface.version>15.0.12</primeface.version>
-        <primefaces-ext.version>15.0.12</primefaces-ext.version>
+        <primefaces.version>15.0.13</primefaces.version>
+        <primefaces-ext.version>15.0.13</primefaces-ext.version>
         <omnifaces.version>4.7.1</omnifaces.version>
         <liquibase.version>5.0.1</liquibase.version>
         <liquibase-slf4j.version>2.0.0</liquibase-slf4j.version>
         <prettytime.version>4.0.0.Final</prettytime.version>
-        
+        <hibernate.version>6.6.40.Final</hibernate.version>
         <camel.version>4.17.0</camel.version>
         <jasperreports.version>6.7.0</jasperreports.version>
         <jasperreports-fonts.version>6.0.0</jasperreports-fonts.version>
+        <dom4j.version>2.2.0</dom4j.version>
         
         <camunda.version>7.24.0</camunda.version>
         <infinispan.version>8.1.0.Final</infinispan.version>
@@ -217,7 +218,7 @@
             <dependency>
                 <groupId>org.primefaces</groupId>
                 <artifactId>primefaces</artifactId>
-                <version>${primeface.version}</version>
+                <version>${primefaces.version}</version>
                 <classifier>jakarta</classifier>
             </dependency>
 
@@ -233,7 +234,13 @@
                 <groupId>org.primefaces.extensions</groupId>
                 <artifactId>primefaces-extensions</artifactId>
                 <version>${primefaces-ext.version}</version>
-    <classifier>jakarta</classifier>
+                <classifier>jakarta</classifier>
+            </dependency>
+
+            <dependency>
+                <groupId>org.primefaces</groupId>
+                <artifactId>primefaces-themes</artifactId>
+                <version>${primefaces.version}</version>
             </dependency>
             
             
@@ -329,7 +336,7 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
-                <version>5.0.7.Final</version>
+                <version>${hibernate.version}</version>
                 <scope>provided</scope>
             </dependency>
 
@@ -435,6 +442,13 @@
                 <groupId>org.ocpsoft.prettytime</groupId>
                 <artifactId>prettytime-integration-jsf</artifactId>
                 <version>${prettytime.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.dom4j</groupId>
+                <artifactId>dom4j</artifactId>
+                <version>${dom4j.version}</version>
+                <scope>compile</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>

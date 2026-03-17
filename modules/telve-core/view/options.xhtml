@@ -15,15 +15,15 @@
 
         <ui:include src="/layout/messages.xhtml" />
         <h:panelGroup id="pane" layout="block">
-            <div class="box box-primary">
-                <div class="box-header with-border">
+            <div class="card card-fill card-primary">
+                <div class="card-header">
             #{messages[ 'optionPane.caption.'.concat( optionPaneController.selectedPane )]}
             </div>
-                <div class="box-body">
-            <ui:include src="#{optionPaneController.getSelectedPaneViewId()}">
-                <ui:param name="pane" value="#{optionPaneController.selectedPane}" />
-            </ui:include>
-                    </div>
+                <div class="card-body">
+                    <ui:include src="#{optionPaneController.getSelectedPaneViewId()}">
+                        <ui:param name="pane" value="#{optionPaneController.selectedPane}" />
+                    </ui:include>
+                </div>
             </div>
         </h:panelGroup>
     </ui:define> 
@@ -31,14 +31,14 @@
     <ui:define name="content-list">
         <h:form id="menuForm">
             <div class="list-group">
-            <c:forEach items="#{optionPaneController.optionPanes}" var="pane">
-                <p:commandLink value="#{messages[ 'optionPane.caption.'.concat( pane )]}" 
-                               update=":pane" 
-                               action="#{optionPaneController.setSelectedPane(pane)}" 
-                               partialSubmit="true" process="@this" 
-                               styleClass="list-group-item"/>
-            </c:forEach>
-                </div>
+                <c:forEach items="#{optionPaneController.optionPanes}" var="pane">
+                    <p:commandLink value="#{messages[ 'optionPane.caption.'.concat( pane )]}"
+                                   update=":pane"
+                                   action="#{optionPaneController.setSelectedPane(pane)}"
+                                   partialSubmit="true" process="@this"
+                                   styleClass="list-group-item"/>
+                </c:forEach>
+            </div>
         </h:form>
     </ui:define>
 </ui:composition>

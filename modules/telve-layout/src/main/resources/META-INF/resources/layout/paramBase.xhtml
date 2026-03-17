@@ -29,13 +29,13 @@
 
         <h:form id="form" >
 
-            <div class="box box-primary">
-                <div class="box-body">
+            <div class="card card-outline card-primary">
+                <div class="card-body">
                     <ui:insert name="form" />
                 </div>
 
-                <div class="box-footer">
-                    <div class="pull-right">
+                <div class="card-footer">
+                    <div class="d-flex flex-row p-2 justify-content-end">
                     <p:commandButton id="saveAndNew" 
                                      value="#{messages['general.button.SaveAndNew']}" 
                                      action="#{homeBean.saveAndNew()}"
@@ -45,7 +45,7 @@
                                      process="@form"
                                      update=":form,:listForm:itemlist"
                                      validateClient="true"
-                                     styleClass="btn-primary"
+                                     styleClass="ui-button-primary me-1"
                                      icon="fa fa-save"/>  
 
                     <p:commandButton id="save" 
@@ -57,7 +57,7 @@
                                      process="@form"
                                      update=":form,:listForm:itemlist"
                                      validateClient="true"
-                                     styleClass="btn-success"
+                                     styleClass="ui-button-success me-1"
                                      icon="fa fa-save" />  
 
 
@@ -71,7 +71,7 @@
                                      process="@form"
                                      update=":form,:listForm:itemlist"
                                      validateClient="true"
-                                     styleClass="btn-danger"
+                                     styleClass="ui-button-danger me-1"
                                      icon="fa fa-trash">
                         <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="ui-icon-alert" />
                     </p:commandButton>
@@ -81,7 +81,8 @@
                                      ajax="true"
                                      partialSubmit="true"
                                      process="@this"
-                                     icon="ui-icon-close"/>
+                                     styleClass="ui-button-secondary me-1"
+                                     icon="fa fa-close"/>
                     </div>
                 </div>
             </div>
@@ -92,34 +93,38 @@
     </ui:define>
 
     <ui:define name="content-list">
-        <h:form id="listForm" styleClass="min-height: 100%;">
-            <p:remoteCommand name="newParameter" update=":form" action="#{homeBean.createNew()}"  partialSubmit="true" process="@this" />
-            <p:dataTable id="itemlist" 
-                         var="item"
-                         value="#{itemList}" 
-                         rowKey="rowKey"
-                         emptyMessage="#{messages['general.hint.EmptyList']}"
-                         rows="25"
-                         filteredValue="#{homeBean.filteredList}"
-                         paginatorAlwaysVisible="false"
-                         paginator="true"
-                         paginatorPosition="bottom"
-                         paginatorTemplate="{PageLinks}">
-                <p:column filterBy="#{item[itemCaption]}" 
-                          filterMatchMode="contains">
-                    <p:commandLink action="#{homeBean.edit(item)}" ajax="true" partialSubmit="true" process="@this" update=":form">
-                        <h:outputText value="#{item[itemCaption]}" />
-                    </p:commandLink>
+        <div class="card">
+            <div class="card-body p-0">
+            <h:form id="listForm" styleClass="min-height: 100%;">
+                <p:remoteCommand name="newParameter" update=":form" action="#{homeBean.createNew()}"  partialSubmit="true" process="@this" />
+                <p:dataTable id="itemlist"
+                             var="item"
+                             value="#{itemList}"
+                             rowKey="rowKey"
+                             emptyMessage="#{messages['general.hint.EmptyList']}"
+                             rows="25"
+                             filteredValue="#{homeBean.filteredList}"
+                             paginatorAlwaysVisible="false"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{PageLinks}">
+                    <p:column filterBy="#{item[itemCaption]}"
+                              filterMatchMode="contains">
+                        <p:commandLink action="#{homeBean.edit(item)}" ajax="true" partialSubmit="true" process="@this" update=":form">
+                            <h:outputText value="#{item[itemCaption]}" />
+                        </p:commandLink>
 
-                </p:column>
-            </p:dataTable>
-        </h:form>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+            </div>
+        </div>
     </ui:define>
 
     <ui:define name="context-menu">
         <li>
             <p:commandLink action="#{homeBean.createNew()}" 
-                           styleClass="context-command" 
+                           styleClass="context-command nav-link"
                            update=":form" resetValues="true"
                            partialSubmit="true" process="@this">
                 <i class="fa fa-plus-circle"></i>
@@ -130,7 +135,7 @@
 
     <ui:define name="context-menu-right">
         <li>
-            <p:commandLink action="#{homeBean.close()}" title="#{messages['general.button.Close']}" >
+            <p:commandLink action="#{homeBean.close()}" title="#{messages['general.button.Close']}" styleClass="context-command nav-link">
                 <i class="fa fa-close"></i>
                 <h:outputText value=" #{messages['general.button.Close']}" styleClass="visible-xs"/>
             </p:commandLink>

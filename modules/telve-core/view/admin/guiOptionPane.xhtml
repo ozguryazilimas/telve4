@@ -12,18 +12,27 @@
 
         <div class="row">
             <ui:remove>
-            <div class="prop col-md-6 col-xs-12">
+            <div class="prop col-md-6 col-12">
                 <p:outputLabel  value="#{messages['general.label.Theme']}" styleClass="name" />
                 <span class="value">
-                    <p:themeSwitcher  value="#{guiOptionPane.theme}" effect="fade" id="statefulSwitcher">
+                    <!-- p:themeSwitcher  value="#{guiOptionPane.theme}" effect="fade" id="statefulSwitcher">
                         <f:selectItems value="#{guiOptionPane.themes}" />  
                         <p:ajax listener="#{guiOptionPane.saveTheme}" partialSubmit="true" process="@this"/> 
-                    </p:themeSwitcher>
+                    </p:themeSwitcher -->
                 </span>
             </div>
                 </ui:remove>
 
-            <div class="prop col-md-6 col-xs-12">
+            <t:inputAny label="general.label.Theme">
+                <p:selectOneMenu value="#{guiOptionPane.theme}" >
+                    <f:selectItem itemLabel="Telve" itemValue="telve" />
+                    <f:selectItem itemLabel="Saga" itemValue="saga" />
+                    <f:selectItem itemLabel="Vela" itemValue="vela" />
+                    <f:selectItem itemLabel="Arya" itemValue="arya" />
+                </p:selectOneMenu>
+            </t:inputAny>
+
+            <div class="prop col-md-6 col-12">
                 <p:outputLabel  value="#{messages['general.label.Locale']}" styleClass="name" />
                 <span class="value">
                     <p:selectOneMenu  value="#{guiOptionPane.locale}" >

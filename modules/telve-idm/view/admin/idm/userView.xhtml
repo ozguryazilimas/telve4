@@ -20,16 +20,18 @@
     </ui:define>
 
     <ui:define name="caption">
-        <div class="col-xs-12">
-            <h:panelGroup layout="block" styleClass="callout callout-warning" rendered="#{not userHome.entity.active}">
-                <i class="fa fa-lock" style="margin-right: 5px;"/>
-                <h:outputText value="#{messages['general.label.AccountLocked']}"  />
-            </h:panelGroup>
+        <div class="row">
+            <div class="col-12">
+                <h:panelGroup layout="block" styleClass="callout callout-warning" rendered="#{not userHome.entity.active}">
+                    <i class="fa fa-lock" style="margin-right: 5px;"/>
+                    <h:outputText value="#{messages['general.label.AccountLocked']}"  />
+                </h:panelGroup>
+            </div>
+            <t:outputText label="general.label.LoginName" value="#{userHome.entity.loginName}" />
+            <t:outputText label="user.label.UserType" value="#{messages[ 'userType.label.'.concat(userHome.entity.userType) ]}" />
+            <t:outputText label="general.label.FirstName" value="#{userHome.entity.firstName}" />
+            <t:outputText label="general.label.LastName" value="#{userHome.entity.lastName}" />
         </div>
-        <t:outputText label="general.label.LoginName" value="#{userHome.entity.loginName}" />
-        <t:outputText label="user.label.UserType" value="#{messages[ 'userType.label.'.concat(userHome.entity.userType) ]}" />
-        <t:outputText label="general.label.FirstName" value="#{userHome.entity.firstName}" />
-        <t:outputText label="general.label.LastName" value="#{userHome.entity.lastName}" />
     </ui:define>
 
 </ui:composition>

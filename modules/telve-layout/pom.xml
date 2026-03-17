@@ -15,4 +15,28 @@
     <artifactId>telve-layout</artifactId>
     <name>Telve Base Layout Templates</name>
     <packaging>jar</packaging>
+
+    <dependencies>
+        <!-- Source: https://mvnrepository.com/artifact/org.webjars/popper.js -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>popper.js</artifactId>
+            <version>2.11.7</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/org.webjars/bootstrap -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>5.3.8</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Source: https://mvnrepository.com/artifact/org.webjars/jstree -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jstree</artifactId>
+            <version>3.3.16</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 </project> 

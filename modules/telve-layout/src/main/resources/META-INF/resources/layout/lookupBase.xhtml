@@ -12,17 +12,15 @@
 
             <div class="row">
                 <ui:fragment rendered="#{not hideStandartFilter}">
-                    <t:inputAny label="general.label.SearchKey" columnClass="col-xs-12">
-                        <h:panelGroup styleClass="input-group" layout="block">
+                    <t:inputAny label="general.label.SearchKey" columnClass="col-12">
+                        <h:panelGroup styleClass="ui-inputgroup" layout="block">
                             <p:inputText value="#{bean.model.searchText}" />
                             <p:defaultCommand target="search2" />
-                            <div class="input-group-btn">
-                            <p:commandButton id="search2" icon="fa fa-search" action="#{bean.search()}" update=":lookupForm:resultLists" styleClass="ui-icon-only btn btn-default" />
-                            </div>
+                            <p:commandButton id="search2" icon="fa fa-search" action="#{bean.search()}" update=":lookupForm:resultLists" styleClass="ui-icon-only" />
                         </h:panelGroup>
                     </t:inputAny>
                 </ui:fragment>
-                <div class="col-xs-12" style="padding-top: 4px;">
+                <div class="col-12" style="padding-top: 4px;">
                     <ui:insert name="filters" />
                     <h:panelGroup id="selectionResult" layout="block" styleClass="pull-right" rendered="#{ bean.model.modelType eq 'Table' and bean.model.getMultiSelect()}">
                         #{messages['general.label.TotalSelection']} : #{bean.model.getSelectedViewModels().size()}
@@ -37,16 +35,17 @@
             <div id="selected_labels"></div>
             
             <h:panelGroup id="resultLists" layout="block" styleClass="row" style="height: 320px; overflow: auto;">
-                <div class="col-xs-12">
+                <div class="col-12">
 
                     <c:if test="#{ bean.model.modelType eq 'Table' and bean.model.getMultiSelect()}" >
                         <div class="row">
-                        <div class="col-xs-6">
+                        <div class="col-6">
                         <p:dataTable id="multiSelectDialog" var="item" value="#{bean.model.dataModel()}"  selectionMode="multiple" 
                                      selection="#{bean.model.selectedDatas}" rows="8"  paginator="true" rowKey="#{item.id}"
                                      paginatorPosition="bottom" 
                                      paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}"
-                                     paginatorAlwaysVisible="false">
+                                     paginatorAlwaysVisible="false"
+                                        styleClass="border">
 
                             <p:ajax event="rowSelect" update=":lookupForm:selectionResult,:lookupForm:selectedResuls" process="@form"/>
                             
@@ -70,8 +69,8 @@
                             function setSelections(){}
                         </script>
                         </div>
-                            <h:panelGroup id="selectedResuls" layout="block" styleClass="col-xs-6">
-                                <p:dataTable value="#{bean.model.getSelectedViewModels()}" var="item">
+                            <h:panelGroup id="selectedResuls" layout="block" styleClass="col-6">
+                                <p:dataTable value="#{bean.model.getSelectedViewModels()}" var="item" styleClass="border">
                                     <p:column headerText="#{messages['general.label.SearchSelections']}">
                                     #{item[bean.captionFieldName]}
                                     </p:column>
@@ -87,7 +86,8 @@
                                      selectionMode="single"
                                      selection="#{bean.model.selectedData}" rows="8"  paginator="true" rowKey="#{item.id}"
                                      paginatorPosition="bottom" 
-                                     paginatorAlwaysVisible="false">
+                                     paginatorAlwaysVisible="false"
+                                     styleClass="border">
                             <ui:remove>
                             <p:column selectionMode="single" style="width:36px;" />  
                             </ui:remove>
@@ -212,10 +212,10 @@
                     
                 </div>
             </h:panelGroup>
-            <h:panelGroup styleClass="row actionButtons" layout="block" style="position: fixed; bottom: 0; display: block;">
+            <h:panelGroup styleClass="d-flex flex-row p-2 justify-content-end" layout="block" >
                 <ui:insert name="actionButtons" />
-                <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="fa fa-check" action="#{bean.closeDialog()}" onclick="setSelections()" styleClass="btn-primary"/>
-                <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{bean.cancelDialog()}" />
+                <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="fa fa-check" action="#{bean.closeDialog()}" onclick="setSelections()" styleClass="ui-button-primary m-2"/>
+                <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{bean.cancelDialog()}" styleClass="ui-button-secondary m-2"/>
             </h:panelGroup>
         </h:form>
     </ui:define>

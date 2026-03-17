@@ -165,10 +165,10 @@ function quickPanelToogle() {
 function maximazeDialog() {
     w = jQuery(parent.window).width();
     h = jQuery(parent.window).height();
-    if (w <= 480 && h <= 640 ) {
+    if (w <= 480 || h <= 640 ) {
         jQuery('.ui-dialog', parent.document).each(function () {
             wd = jQuery(this);
-            var wv = wd.attr('data-widgetvar');
+            var wv = wd.attr('data-widget');
 
             if (wv != undefined) {
                 //parent.PF(wv).toggleMaximize();
@@ -181,8 +181,8 @@ function maximazeDialog() {
                 wd.css('z-index', '1035');
 
                 iff = jQuery('iframe', this);
-                h = h - 90;
-                w = w - 30;
+                //h = h - 90;
+                //w = w - 30;
                 iff.css('height', h + 'px');
                 iff.css('width', w + 'px');
             }

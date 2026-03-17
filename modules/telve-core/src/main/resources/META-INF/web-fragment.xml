@@ -16,11 +16,14 @@
         <param-value>true</param-value>
     </context-param>
 
+
     <context-param>
+
         <param-name>primefaces.THEME</param-name>
-        <param-value>telve</param-value>
-        <!-- param-value>#{themeSelector.theme}</param-value -->
+        <!-- param-value>saga</param-value -->
+        <param-value>#{themeSelector.theme}</param-value>
     </context-param>
+
     
 
     <context-param>

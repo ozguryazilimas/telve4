@@ -7,21 +7,21 @@
                 xmlns:t="jakarta.faces.composite/telveComponents">
 
 
-    <div class="box-header with-border">
-        <h:outputText value="#{messages[moduleCaption]}" styleClass="box-title"/>
-        <div class="box-tools pull-right">
-            <a title="#{messages['general.button.Filter']}" href="javascript:" class="btn btn-box-tool" onclick="jQuery('#subFilter').toggle();
+    <div class="card-header">
+        <h:outputText value="#{messages[moduleCaption]}" styleClass="card-title"/>
+        <div class="card-tools ms-auto">
+            <a title="#{messages['general.button.Filter']}" href="javascript:" class="btn btn-tool" onclick="jQuery('#subFilter').toggle();
                     jQuery('#subFilter').toggleClass('col-md-2 col-xs-12 ');
                     jQuery('#subResults').toggleClass('col-md-10 ');"
                                 style="#{filterEnabled eq 'true' ? '' : 'display:none;'}">
                 <i class="fa fa-filter"/>
             </a>
-            <p:commandLink actionListener="#{bean.search()}" styleClass="btn btn-box-tool" update="@([id$=results])" process="@this" title="#{messages['general.button.Refresh']}">
+            <p:commandLink actionListener="#{bean.search()}" styleClass="btn btn-tool" update="@([id$=results])" process="@this" title="#{messages['general.button.Refresh']}">
                 <i class="fa fa-refresh"/>
             </p:commandLink>
         </div>
     </div>
-    <div class="box-body">
+    <div class="card-body p-0">
         <ui:insert name="content" />
         <div class="row">
             <div id="subFilter" class="" style="display: none;">

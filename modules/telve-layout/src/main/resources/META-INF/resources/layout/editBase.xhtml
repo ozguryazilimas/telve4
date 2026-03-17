@@ -16,15 +16,15 @@
         <ui:include src="/layout/messages.xhtml"/>
 
 
-        <div class="box box-primary">
+        <div class="card card-outline card-primary">
             <h:form id="form" class="editForm">
                 <p:focus context="form"/>
                 
-                <div class="box-body">
+                <div class="card-body">
                     <ui:insert name="form" />
                 </div>
 
-                <div class="box-footer #{telveConfigResolver.getProperty('telve.framework.showFooterButtons') ne 'true' ? 'hide' : ''}">
+                <div class="card-footer #{telveConfigResolver.getProperty('telve.framework.showFooterButtons') ne 'true' ? 'invisible' : ''}">
                     <div class="row">
                         <div class="col-xs-12" >
 
@@ -71,14 +71,15 @@
     </ui:define>
     
     <ui:define name="context-menu">
-        <li>
-            <p:commandLink title="#{messages['general.button.Save']}" onclick="jQuery('#form\\:save').click();return false;" rendered="#{not hideSave and (( not empty entity.id and homeBean.hasUpdatePermission()) or ( empty entity.id and homeBean.hasInsertPermission()))}">
+        <li class="nav-item">
+            <p:commandLink title="#{messages['general.button.Save']}" onclick="jQuery('#form\\:save').click();return false;"
+                           rendered="#{not hideSave and (( not empty entity.id and homeBean.hasUpdatePermission()) or ( empty entity.id and homeBean.hasInsertPermission()))}" styleClass="context-command nav-link">
                 <i class="fa fa-save"></i>
                 <h:outputText value=" #{messages['general.button.Save']}" />
             </p:commandLink>
         </li>
-        <li>
-            <p:commandLink title="#{messages['general.button.Delete']}" action="#{homeBean.delete()}" rendered="#{not hideDelete and not empty entity.id and homeBean.hasDeletePermission() }">
+        <li class="nav-item">
+            <p:commandLink title="#{messages['general.button.Delete']}" action="#{homeBean.delete()}" rendered="#{not hideDelete and not empty entity.id and homeBean.hasDeletePermission() }" styleClass="context-command nav-link">
                 <i class="fa fa-trash-o"></i>
                 <h:outputText value=" #{messages['general.button.Delete']}" />
                 <p:confirm header="#{messages['general.caption.Confirm']}" message="#{messages['general.message.confirm.Delete']}" icon="fa fa-2x fa-exclamation-triangle btn-delete" />
@@ -87,8 +88,8 @@
     </ui:define>
     
     <ui:define name="context-menu-right">
-        <li>
-            <p:commandLink action="#{homeBean.close()}" title="#{messages['general.button.Close']}" >
+        <li class="nav-item">
+            <p:commandLink action="#{homeBean.close()}" title="#{messages['general.button.Close']}" styleClass="context-command nav-link">
                 <i class="fa fa-close"></i>
                 <h:outputText value=" #{messages['general.button.Close']}" styleClass="visible-xs-inline"/>
             </p:commandLink>

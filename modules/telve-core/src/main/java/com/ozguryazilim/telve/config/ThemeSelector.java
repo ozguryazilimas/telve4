@@ -34,10 +34,9 @@ public class ThemeSelector implements Serializable {
             if (c != null) {
                 theme = c;
             } else {
-
                 String t = configResolver.getProperty("theme.name");
                 //Config'de bir değer yoksa default bootstrap yapalım...
-                setTheme( t == null ? "telve" : t );
+                setTheme( t == null ? "arya" : t );
             }
         }
         return theme;
@@ -48,6 +47,11 @@ public class ThemeSelector implements Serializable {
 
         CookieUtils.setCookie("telve.theme", theme, CookieUtils.EXPIRE_IN_TEN_YEAR);
 
+    }
+
+    public String getSkin(){
+        //FIXME: aslında burada farklı thema isimlendirmesi ile bir map daha doğru olacak. Light/Dark yerine saga/arya v.b. şeklinde.
+        return getTheme().equals("saga") ? "light" : "dark";
     }
 
 }

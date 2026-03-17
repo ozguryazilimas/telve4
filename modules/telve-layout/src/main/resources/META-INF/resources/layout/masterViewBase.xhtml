@@ -6,11 +6,11 @@
                 xmlns:p="primefaces"
                 xmlns:t="jakarta.faces.composite/telveComponents">
 
-    <div class="box-body">
+    <div class="card-body">
         <ui:insert name="content" />
     </div>
 
-    <div class="box-footer #{telveConfigResolver.getProperty('telve.framework.showFooterButtons') ne 'true' ? 'hide' : ''}">
+    <div class="card-footer #{telveConfigResolver.getProperty('telve.framework.showFooterButtons') ne 'true' ? 'invisible' : ''}">
         <h:form id="actionButtons">
             <div class="pull-right">
 

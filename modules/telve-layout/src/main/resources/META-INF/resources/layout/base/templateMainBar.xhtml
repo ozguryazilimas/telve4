@@ -8,7 +8,7 @@
                  xmlns:of="http://omnifaces.org/functions">
 
 
-    <header class="main-header">
+    <header class="app-header main-header">
         <ui:remove>
             <p:ajaxStatus onstart="NProgress.start();" onsuccess="NProgress.done();" />
         </ui:remove>
@@ -18,6 +18,8 @@
             <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
         </p:dialog>
 
+        <ui:remove>
+                <!-- Admin LTE 4 Brand'i sidebar üstüne almış-->
         <h:link outcome="/home.xhtml" styleClass="nav-brand logo">
             <span class="logo-mini">
                 <i class="#{telveConfigResolver.getProperty('app.title.mini.icon')}" />#{telveConfigResolver.getProperty('app.title.mini')}
@@ -26,8 +28,10 @@
                 <i class="#{telveConfigResolver.getProperty('app.title.icon')}" />#{telveConfigResolver.getProperty('app.title')}
             </span>
         </h:link>
-        <nav class="navbar navbar-static-top" role="navigation">
-            
+        </ui:remove>
+        <nav class="navbar navbar-expand bg-body" role="navigation">
+
+                <!-- FIXME: bu js kısmı hala gerekli mi? -->
                 <script type="text/javascript">
                     jQuery(document).ready(function () {
                         jQuery('#sideToggle').click(function (e) {
@@ -71,11 +75,11 @@
                 </script>
 
             
-            <div class="navbar-custom-menu" style="width: 100%">
+            <div class="container-fluid">
                 
-                    <ul class="nav navbar-nav pull-left">
-                        <li>
-                            <a id="sideToggle" href="#" role="button" title="#{messages['nav.label.MainMenu']}">
+                    <ul class="navbar-nav" role="navigation">
+                        <li class="nav-item">
+                            <a href="#" role="button" title="#{messages['nav.label.MainMenu']}" class="nav-link" data-lte-toggle="sidebar">
                                 <i class="fa fa-bars"></i>
                             </a>
                         </li>
@@ -84,23 +88,25 @@
                         </ui:remove>
                         <!-- Main Navigations -->
                         <ui:repeat value="#{nagivationController.mainNavigations}" var="nav" >
-                            <li >
-                                <h:link  outcome="#{nav.viewId}" title="#{messages[nav.label]}">
+                            <li class="nav-item d-none d-md-block">
+                                <h:link  outcome="#{nav.viewId}" title="#{messages[nav.label]}" styleClass="nav-link">
                                     <i class="#{messages[nav.icon]}"></i>
                                 </h:link>
                             </li>
                         </ui:repeat>
                         <!-- /p:cache -->
 
+
                         <ui:fragment rendered="#{quickRecordManager.hasQuickRecords()}">
-                        <li class="">
-                            <a href="#" class="dropdown-toggle" title="#{messages['nav.label.QuickRecords']}" onclick="quickPanelToogle();">
-                                <i class="fa fa-plus-circle"></i>
-                            </a>
-                        </li>
+                            <!-- FIXME: QUick Records kısmı test edilmeli -->
+                            <li class="nav-item d-none d-md-block">
+                                <a href="#" class="dropdown-toggle" title="#{messages['nav.label.QuickRecords']}" onclick="quickPanelToogle();">
+                                    <i class="fa fa-plus-circle"></i>
+                                </a>
+                            </li>
                         </ui:fragment>
                     </ul>
-                    <ul class="nav navbar-nav pull-right">
+                    <ul class="navbar-nav ms-auto" role="navigation">
                             <ui:remove>
                                 //FIXME: Dashbord Paketi yoksa boomarkDashlet'i de yok. Dolayısı ile bu parça dağılıyor.
                                 <li>
@@ -121,70 +127,41 @@
                             
                             <ui:include src="/fragments/notiftyPopupFragment.xhtml" />
                             
-                            <li class="hidden-xs">
-                                <a href="#{helpPathService.helpPath}" target="HelpWinId" onclick="openHelp();" title="#{messages['nav.label.Help']}">
+                            <li class="nav-item hidden-xs">
+                                <a href="#{helpPathService.helpPath}" target="HelpWinId" onclick="openHelp();" title="#{messages['nav.label.Help']}" class="nav-link">
                                     <i class="fa fa-question-circle"></i>
-
                                 </a>
                             </li>
-                            <!-- User Account: style can be found in dropdown.less -->
-                            <li class="dropdown user user-menu">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+
+                            <li class="nav-item dropdown user user-menu">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
                                     <i class="fa fa-user"/>
                                     <span class="hidden-xs">#{identity.userName}</span>
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <ui:remove>
-                                        <!-- User image -->
-                                        <li class="user-header">
-                                            <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
-                                            <p>
-                                                Alexander Pierce - Web Developer
-                                                <small>Member since Nov. 2012</small>
-                                            </p>
-                                        </li>
-                                    </ui:remove>
-                                    <!-- Menu Body -->
-                                    <li class="user-body">
-                                        <div class="col-xs-4 text-center">
-
-                                            <p:commandLink action="#{aboutController.openDialog()}" 
-                                                           ajax="true" partialSubmit="true" process="@this" >
-                                                <i class="fa fa-question-circle" /> #{messages['general.button.About']}
-                                            </p:commandLink>
-                                        </div>
-                                        <ui:remove>
-                                            <div class="col-xs-4 text-center">
-                                                <a href="#">Sales</a>
-                                            </div>
-                                            <div class="col-xs-4 text-center">
-                                                <a href="#">Friends</a>
-                                            </div>
-                                        </ui:remove>
+                                <ul class="dropdown-menu dropdown-menu-lg-end">
+                                    <li>
+                                        <p:commandLink action="#{aboutController.openDialog()}"
+                                                       ajax="true" partialSubmit="true" process="@this"  styleClass="dropdown-item" style="color: var(--bs-dropdown-link-color);">
+                                            <i class="fa fa-question-circle" /> #{messages['general.button.About']}
+                                        </p:commandLink>
                                     </li>
-                                    <!-- Menu Footer-->
-                                    <li class="user-footer">
-                                        <div class="pull-left">
-                                            <h:link outcome="/options.xhtml" styleClass="btn btn-default btn-flat">
-                                                <i class="fa fa-gears" /> #{messages['module.caption.Options']}
-                                            </h:link>
-                                        </div>
-                                        <div class="pull-right">
-                                            <h:form>
-                                                <p:commandLink action="#{loginController.logout()}" ajax="false" styleClass="btn btn-default btn-flat">
-                                                    <i class="fa fa-power-off" /> #{messages['general.button.Logout']}
-                                                </p:commandLink>
-                                            </h:form>
-                                        </div>
+
+                                    <li >
+                                        <h:link outcome="/options.xhtml" styleClass="dropdown-item">
+                                            <i class="fa fa-gears" /> #{messages['module.caption.Options']}
+                                        </h:link>
+                                    </li>
+                                    <li>
+                                        <h:form>
+                                            <p:commandLink action="#{loginController.logout()}" ajax="false" styleClass="dropdown-item" style="color: var(--bs-dropdown-link-color);">
+                                                <i class="fa fa-power-off" /> #{messages['general.button.Logout']}
+                                            </p:commandLink>
+                                        </h:form>
                                     </li>
                                 </ul>
                             </li>
-                            
                         </ul>
-
-                    
                 </div>
-                  
         </nav>
 
     </header>

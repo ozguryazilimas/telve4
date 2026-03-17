@@ -6,26 +6,26 @@
                  xmlns:o="http://omnifaces.org/ui"
                  xmlns:of="http://omnifaces.org/functions">
 
-    <li class="dropdown messages-menu">
+    <li class="nav-item dropdown">
         <h:form>
             <p:remoteCommand name="rc" update="notifiyData notifyHeader notifyFooter" />
         </h:form>
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="#{messages['nav.label.Notifications']}" onclick="rc();">
+        <a href="#" class="nav-link" data-bs-toggle="dropdown" title="#{messages['nav.label.Notifications']}" onclick="rc();">
             <i class="fa fa-bell-o"></i>
             <p:outputPanel id="notifyCount" styleClass="#{notifyStore.getNotifyCount(identity.loginName) gt 0 ? 'label label-warning' : ''}">
                 <h:outputText value="#{notifyStore.getNotifyCount(identity.loginName)}" styleClass="" rendered="#{notifyStore.getNotifyCount(identity.loginName) gt 0}"/>
                 <p:autoUpdate />
             </p:outputPanel>
         </a>
-        <ul class="dropdown-menu">
+        <ul class="dropdown-menu dropdown-menu-lg-end">
 
-            <li class="header">
+            <li class="dropdown-header">
                 <p:outputPanel id="notifyHeader">
                     #{notifyStore.getNotifies(identity.loginName).size() > 0 ? messages['notifications.hint.UnReadedMessages'] : messages['notifications.hint.NoUnreadedMessages']}
                 </p:outputPanel>
             </li>
 
-            <li>
+            <li class="dropdown-item">
                 <p:outputPanel id="notifiyData">
                     <!-- inner menu: contains the actual data -->
                     <ul class="menu">
@@ -44,7 +44,7 @@
                 </p:outputPanel>
             </li>
 
-            <li class="footer">
+            <li class="dropdown-footer">
                 <p:outputPanel id="notifyFooter">
                     <ui:fragment rendered="#{notifyStore.getNotifies(identity.loginName).size() > 0}">
                         <p:commandLink action="#{notifyStore.clear(identity.loginName)}" ajax="true"

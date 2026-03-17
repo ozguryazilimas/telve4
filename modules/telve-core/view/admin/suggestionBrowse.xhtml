@@ -57,17 +57,17 @@
                 <h:form id="suggestionPopupForm">
 
                     <div class="row">
-                        <t:inputCombobox label="general.label.Group" value="#{suggestionBrowse.suggestionItem.group}" required="true" columnClass="col-xs-12">
+                        <t:inputCombobox label="general.label.Group" value="#{suggestionBrowse.suggestionItem.group}" required="true" columnClass="col-12">
                             <f:selectItems value="#{suggestionGroupRegistery.getGroupNames()}" var="group" itemLabel="#{messages[ 'suggestionGroup.label.'.concat(group) ]}" itemValue="#{group}" />
                         </t:inputCombobox>
 
-                        <t:inputText label="general.label.Data" value="#{suggestionBrowse.suggestionItem.data}" required="true" columnClass="col-xs-12"/>
+                        <t:inputText label="general.label.Data" value="#{suggestionBrowse.suggestionItem.data}" required="true" columnClass="col-12"/>
                     </div>
 
                     <div class="row">
-                        <t:inputTextarea label="general.label.Info" value="#{suggestionBrowse.suggestionItem.info}" maxlength="255" />
+                        <t:inputTextarea label="general.label.Info" value="#{suggestionBrowse.suggestionItem.info}" maxlength="255" columnClass="col-9"/>
                         <t:inputCheckboxGroup label="general.label.Status">
-                            <p:selectBooleanCheckbox value="#{suggestionBrowse.suggestionItem.active}" itemLabel="#{messages['general.label.Active']}" />
+                            <p:selectBooleanCheckbox value="#{suggestionBrowse.suggestionItem.active}" itemLabel="#{messages['general.label.Active']}" columnClass="col-3"/>
                         </t:inputCheckboxGroup>
                     </div>
 
@@ -79,8 +79,10 @@
                                          update=":browseListForm:results" 
                                          oncomplete="PF('suggestionPopup').hide();" 
                                          validateClient="true"
-                                         styleClass="btn-primary"/>
-                        <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{suggestionBrowse.cancelDialog()}" oncomplete="PF('suggestionPopup').hide();" partialSubmit="true" process="@this"/>
+                                         styleClass="ui-button-primary me-1"/>
+                        <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="fa fa-close"
+                                         styleClass="ui-button-secondary me-1"
+                                         action="#{suggestionBrowse.cancelDialog()}" oncomplete="PF('suggestionPopup').hide();" partialSubmit="true" process="@this"/>
                     </div>
                 </h:form>
             </ui:fragment>
@@ -89,27 +91,27 @@
     </ui:define>
     
     <ui:define name="context-menu">
-        <li>
-            <p:commandLink id="newSuggestion" update=":suggestionPopup" actionListener="#{suggestionBrowse.newSuggestion}" oncomplete="PF('suggestionPopup').show();" >
+        <li class="nav-item">
+            <p:commandLink id="newSuggestion" update=":suggestionPopup" actionListener="#{suggestionBrowse.newSuggestion}" oncomplete="PF('suggestionPopup').show();" styleClass="context-command nav-link">
                 <i class="fa fa-plus-circle"/>
                 <span>#{messages['general.button.New']}</span>
             </p:commandLink>
         </li>
-        <li>
+        <li class="nav-item">
             <p:commandLink id="editSuggestion" 
                            update=":suggestionPopup" 
                            actionListener="#{suggestionBrowse.editSuggestion}" 
                            oncomplete="PF('suggestionPopup').show();"
-                           disabled="#{suggestionBrowse.selectedItem eq null }" styleClass="#{suggestionBrowse.selectedItem ne null ? '' : 'disabled'}">
+                           disabled="#{suggestionBrowse.selectedItem eq null }" styleClass="context-command nav-link #{suggestionBrowse.selectedItem ne null ? '' : 'disabled'}">
                 <i class="fa fa-edit"/>
                 <span>#{messages['general.button.Edit']}</span>
             </p:commandLink>
         </li>
-        <li>
+        <li class="nav-item">
             <p:commandLink id="deleteSuggestion" 
                            update=":browseListForm:results" 
                            actionListener="#{suggestionBrowse.deleteSuggestion}" 
-                           disabled="#{suggestionBrowse.selectedItem eq null }" styleClass="#{suggestionBrowse.selectedItem ne null ? '' : 'disabled'}">
+                           disabled="#{suggestionBrowse.selectedItem eq null }" styleClass="context-command nav-link #{suggestionBrowse.selectedItem ne null ? '' : 'disabled'}">
                 <i class="fa fa-trash"/>
                 <span>#{messages['general.button.Delete']}</span>
             </p:commandLink>

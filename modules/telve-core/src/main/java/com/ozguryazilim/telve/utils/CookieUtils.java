@@ -47,7 +47,7 @@ public class CookieUtils {
         String b64Value = "";
         try {
             encodedValue = URLEncoder.encode(value, "UTF-8");
-            b64Value = Base64.getEncoder().encodeToString(encodedValue.getBytes("UTF-8"));
+            b64Value = Base64.getEncoder().withoutPadding().encodeToString(encodedValue.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException | IllegalArgumentException ex) {
             LOG.warn("Cookie cannot write", ex);
         }

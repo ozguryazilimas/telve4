@@ -8,14 +8,14 @@
 
 
     <h:form id="pfilterForm">
-
-        <div class="box-body">
-            <p:outputPanel id="filterPanel">
-                <h:panelGroup layout="block" rendered="#{not empty bean.queryDefinition.filters }">
+        <div class="card">
+        <div class="card-body">
+            <p:outputPanel id="filterPanel" styleClass="prop">
+                <h:panelGroup layout="block" rendered="#{not empty bean.queryDefinition.filters }" styleClass="d-flex flex-column value">
 
                     <c:forEach id="filterRepeater2" items="#{bean.queryDefinition.visibleFilters}"
                                var="filter" varStatus="rowCounter">
-                        <div class="row">
+                        <div >
 
                             <ui:include src="/filterTemplates/#{filter.template}.xhtml" >
                                 <ui:param name="filter" value="#{filter}" />
@@ -31,15 +31,15 @@
 
             </p:outputPanel>
         </div>
-        <div class="box-footer">
+        <div class="card-footer">
             <h:panelGroup id="actionButtons" styleClass="pull-right" layout="block">
                 <p:commandButton value="#{messages['general.button.Search']}" actionListener="#{bean.mainSearch()}" partialSubmit="false" process="@form" icon="fa fa-search" update="@([id$=results]), actionButtons"
                                  styleClass="btn-success"/> 
                 <ui:insert name="extraButtons" />
             </h:panelGroup>
 
-        </div>    
-
+        </div>
+        </div>
     </h:form>
 
 </ui:composition>

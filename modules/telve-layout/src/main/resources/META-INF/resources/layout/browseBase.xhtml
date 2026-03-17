@@ -37,53 +37,55 @@
         </h:form>
 
 
-        <section class="content-header">
+        <section class="container-fluid">
 
             
             <h:form id="bheader">
                 <div class="row">
-                    <div class="value col-md-6">
-                        <i class="fa-3x #{messages['feature.icon.'.concat(bean.feature.name)]} pull-left" style="padding-right: 14px;" />
-                        <small class="text-muted">#{ messages[pageTitleResolver.pageTitle] }</small>
-                        <h3 style="margin-top: 0px; margin-bottom: 0px; ">
-                            <div class="dropdown" style="display: inline-block;">
-                                <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: #333;">
-                                    #{messages[bean.queryName]}  
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" >
-                                    <li class="dropdown-header">#{messages['browse.label.SystemQueries']}</li>
-                                    <ui:repeat value="#{bean.systemQueryNames}" var="qn" >
-                                        <li><p:commandLink action="#{bean.loadQuery(qn)}" process="@this" update="@([id$=results]),bheader">#{messages[qn]}</p:commandLink></li>
-                                    </ui:repeat>
-                                    <li role="separator" class="divider"></li>
-                                    <li class="dropdown-header">#{messages['browse.label.PersonalQueries']}</li>
-                                    <ui:repeat value="#{bean.queryNames}" var="qn" >
-                                        <li><p:commandLink action="#{bean.loadQuery(qn)}" process="@this" update="@([id$=results]),bheader">#{qn}</p:commandLink></li>
-                                    </ui:repeat>
-                                    <li role="separator" class="divider"></li>
-                                    <li><p:commandLink process="@this" update="qrySaveFrm" oncomplete="PF('qrySave').show();"><i class="fa fa-save"/>#{messages['general.button.SaveAsNew']}</p:commandLink></li>
-                                    <li><p:commandLink action="#{bean.save()}" process="@this" disabled="#{bean.isSystemQuery || bean.isPageDefaultQuery}"><i class="fa fa-save"/>#{messages['general.button.Update']}</p:commandLink></li>
-                                    <li><p:commandLink action="#{bean.deleteQuery()}" process="@this" disabled="#{bean.isSystemQuery || bean.isPageDefaultQuery}" update="@([id$=results]),bheader"><i class="fa fa-trash-o"/>#{messages['general.button.Delete']}</p:commandLink></li>
-                                </ul>
+                    <div class="d-flex col-6">
+                        <span class="flex-shrink-0">
+                            <i class="fa-3x #{messages['feature.icon.'.concat(bean.feature.name)]}"  />
+                        </span>
+                        <div class="flex-grow-1">
+                            <div class="text-muted">#{ messages[pageTitleResolver.pageTitle] }</div>
+                            <div style="font-size: large;">
+                                <div class="dropdown" >
+                                    <a class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                                        #{messages[bean.queryName]}
+                                        <span class="caret" />
+                                    </a>
+                                    <ul class="dropdown-menu" >
+                                        <li class="dropdown-header">#{messages['browse.label.SystemQueries']}</li>
+                                        <ui:repeat value="#{bean.systemQueryNames}" var="qn" >
+                                            <li><p:commandLink action="#{bean.loadQuery(qn)}" process="@this" update="@([id$=results]),bheader" styleClass="dropdown-item">#{messages[qn]}</p:commandLink></li>
+                                        </ui:repeat>
+                                        <li><hr class="dropdown-divider"/></li>
+                                        <li class="dropdown-header">#{messages['browse.label.PersonalQueries']}</li>
+                                        <ui:repeat value="#{bean.queryNames}" var="qn" >
+                                            <li><p:commandLink action="#{bean.loadQuery(qn)}" process="@this" update="@([id$=results]),bheader" styleClass="dropdown-item">#{qn}</p:commandLink></li>
+                                        </ui:repeat>
+                                        <li><hr class="dropdown-divider" /></li>
+                                        <li><p:commandLink process="@this" update="qrySaveFrm" oncomplete="PF('qrySave').show();" styleClass="dropdown-item"><i class="fa fa-save"/>#{messages['general.button.SaveAsNew']}</p:commandLink></li>
+                                        <li><p:commandLink action="#{bean.save()}" process="@this" disabled="#{bean.isSystemQuery || bean.isPageDefaultQuery}" styleClass="dropdown-item"><i class="fa fa-save"/>#{messages['general.button.Update']}</p:commandLink></li>
+                                        <li><p:commandLink action="#{bean.deleteQuery()}" process="@this" disabled="#{bean.isSystemQuery || bean.isPageDefaultQuery}" update="@([id$=results]),bheader" styleClass="dropdown-item"><i class="fa fa-trash-o"/>#{messages['general.button.Delete']}</p:commandLink></li>
+                                    </ul>
+                                </div>
                             </div>
-                        </h3>
+                        </div>
 
                     </div>
 
 
                     <ui:fragment rendered="#{showQuickSearch}">
-                        <div class="col-md-3 col-xs-12 pull-right">
-                            <span class="value">
-                                <div class="input-group">
+                        <div class="col-md-3 col-12">
+                            <div class="value">
+                                <div class="ui-inputgroup">
                                     <p:inputText id="filter" value="#{bean.queryDefinition.searchText}" 
-                                                 placeholder="#{messages['general.info.SearchText']}" />
+                                                 placeholder="#{messages['general.info.SearchText']}" style="width:100%"/>
                                     <p:defaultCommand target="browseSearch" />
-                                    <div class="input-group-btn">
-                                        <p:commandButton id="browseSearch" action="#{bean.mainSearch()}" process="@form" icon="fa fa-search" styleClass="ui-icon-only btn btn-default" update="@([id$=results])" />
-                                    </div>
+                                    <p:commandButton id="browseSearch" action="#{bean.mainSearch()}" process="@form" icon="fa fa-search" styleClass="ui-icon-only btn btn-default" update="@([id$=results])" />
                                 </div>
-                            </span>
+                            </div>
                         </div>
                     </ui:fragment>
 
@@ -111,17 +113,16 @@
         <h:form id="popups">
             <p:overlayPanel id="columnsPop" for="browseListForm:columnsPop" hideEffect="fade" dynamic="true" appendToBody="false" widgetVar="columnsPop">  
 
-                <div class="box-header">
+                <div class="">
                     #{messages['general.label.ResultColumns']}
                 </div>
-                <div class="box-body">
-
+                <div class="card-body">
                     <div class="row">
                         <p:pickList value="#{bean.queryDefinition.pickListColumns}" 
                                     var="item"
                                     itemValue="#{item}" itemLabel="#{messages[item.labelKey]}"
                                     showTargetControls="true"
-                                    styleClass="col-xs-12"
+                                    styleClass="col-12"
                                     converter="ColumnConverter">
                             <f:facet name="sourceCaption">#{messages['general.label.Available']}</f:facet>  
                             <f:facet name="targetCaption">#{messages['general.label.Selected']}</f:facet>
@@ -135,16 +136,16 @@
                         <t:inputText label="general.label.RowLimit" value="#{bean.queryDefinition.rowLimit}" />
                     </div>
                 </div>
-                <div class="box-footer">
-                    <div class="pull-right">
-                        <p:commandButton styleClass="btn btn-primary"
+                <div class="card-footer">
+                    <div class="d-flex flex-row p-2 justify-content-end">
+                        <p:commandButton styleClass="me-1"
                                          ajax="true"
                                          process="@form"
                                          action="#{bean.search()}"
                                          value="#{messages['general.button.Ok']}"
                                          update="@([id$=results]) :contextForm, :browseListForm:detailPanel"
                                          oncomplete="PF('columnsPop').hide();"/>
-                        <p:button styleClass="btn btn-default" onclick="PF('columnsPop').hide();return false;" value="#{messages['general.button.Cancel']}" />
+                        <p:button styleClass="me-1" onclick="PF('columnsPop').hide();return false;" value="#{messages['general.button.Cancel']}" />
                     </div>
                 </div>
             </p:overlayPanel>
@@ -152,10 +153,10 @@
 
             <p:overlayPanel id="sortersPop" for="browseListForm:sortersPop" hideEffect="fade" dynamic="true" appendToBody="false" widgetVar="sortersPop">  
 
-                <div class="box-header">
+                <div class="card-title">
                     #{messages['general.label.Sorters']}
                 </div>
-                <div class="box-body">
+                <div class="card-body">
 
                     <ui:remove>
                         FIXME: PE remote command yapısı yerine p:remoteCommand param pass yöntemini kullanmak gerekiyor. 
@@ -166,31 +167,31 @@
                     </pe:remoteCommand>  
 
 
-                    <div class="row">
+
                         <p:pickList id="sorters" value="#{bean.queryDefinition.sortListColumns}" 
                                     var="item"
                                     itemValue="#{item}" itemLabel="#{messages[item.labelKey]}"
                                     showTargetControls="true"
-                                    styleClass="col-xs-12"
+                                    styleClass=""
                                     converter="ColumnConverter">
                             <f:facet name="sourceCaption">#{messages['general.label.Available']}</f:facet>  
                             <f:facet name="targetCaption">#{messages['general.label.Selected']}</f:facet>
-                            <p:column>
+                            <p:column style="width: 100%">
                                 #{messages[item.labelKey]}
                             </p:column>
-                            <p:column class="pull-right">
+                            <p:column>
                                 <a href="javascript:" onclick="toggleSort('#{item.name}');jQuery('#str#{item.name}').toggleClass('fa-sort-alpha-asc');jQuery('#str#{item.name}').toggleClass('fa-sort-alpha-desc');">
                                     <i id="str#{item.name}" class="text-blue  fa #{item.sortAsc ? 'fa-sort-alpha-asc' : 'fa-sort-alpha-desc'}" />
                                 </a>
                             </p:column>
                         </p:pickList>
-                    </div>
+
 
                 </div>
-                <div class="box-footer">
-                    <div class="pull-right">
-                        <p:commandButton styleClass="btn btn-primary" ajax="true" process="@form" value="#{messages['general.button.Ok']}" update="@([id$=results])" oncomplete="PF('sortersPop').hide();"/>
-                        <p:button styleClass="btn btn-default" onclick="PF('sortersPop').hide();return false;" value="#{messages['general.button.Cancel']}" />
+                <div class="card-footer">
+                    <div class="d-flex flex-row p-2 justify-content-end">
+                        <p:commandButton styleClass="me-1" ajax="true" process="@form" value="#{messages['general.button.Ok']}" update="@([id$=results])" oncomplete="PF('sortersPop').hide();"/>
+                        <p:button styleClass="me-1" onclick="PF('sortersPop').hide();return false;" value="#{messages['general.button.Cancel']}" />
                     </div>
                 </div>
             </p:overlayPanel>
@@ -202,54 +203,54 @@
             <div class="row">
 
                 <div id="main-col" class="#{showDetailPanel ? 'col-md-9 col-xs-12' : 'col-xs-12' }">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
+                    <div class="card box-primary">
+                        <div class="card-header with-border">
 
                             <h:panelGroup id="browseHeader" style="display: inline-flex;">
-                                <h3 class="box-title">
+                                <h3 class="card-title">
                                     <h:outputText value="#{messages['general.label.Results']}" />
                                 </h3>
                                 <c:if test="#{bean.isShowingRowCountInformationAvailable()}">
                                     <h:panelGroup id="rowCountInformation-results" layout="block" style="padding: 0 5px; display: inline-flex">
-                                        <h3 class="box-title">
+                                        <span class="card-title">
                                             <h:outputFormat value="#{'('.concat(messages[bean.name.concat('.general.label.firstNResultsShown')]).concat(')')}" escape="false">
                                                 <f:param value="#{bean.entityListSize}" />
                                             </h:outputFormat>
-                                        </h3>
-                                        <p:outputLabel id="nResultShownInfoIcon" style="margin: 0 3px;">
-                                            <i class="fa fa-info-circle" />
-                                        </p:outputLabel>
+                                            <p:outputLabel id="nResultShownInfoIcon" style="margin: 0 3px;">
+                                                <i class="fa fa-info-circle" />
+                                            </p:outputLabel>
+                                        </span>
                                         <p:tooltip for="nResultShownInfoIcon" styleClass="generic-tooltip" value="#{messages[bean.name.concat('.general.label.firstNResultsShownGuide')]}" position="top" />
                                     </h:panelGroup>
                                 </c:if>
                             </h:panelGroup>
-                            <div class="box-tools pull-right">
-                                <p:commandLink actionListener="#{bean.search()}" styleClass="btn btn-box-tool" update="@([id$=results]) :contextForm, :browseListForm:detailPanel" process="@this" title="#{messages['general.button.Refresh']}">
+                            <div class="card-tools">
+                                <p:commandLink actionListener="#{bean.search()}" styleClass="btn btn-tool" update="@([id$=results]) :contextForm, :browseListForm:detailPanel" process="@this" title="#{messages['general.button.Refresh']}">
                                     <i class="fa fa-refresh"/>
                                 </p:commandLink>
                                
-                                <p:commandLink actionListener="#{bean.export()}" styleClass="btn btn-box-tool" ajax="false" process="@this" title="#{messages['general.button.Export']}" rendered="#{identity.hasPermission( permission, 'export')}">
+                                <p:commandLink actionListener="#{bean.export()}" styleClass="btn btn-tool" ajax="false" process="@this" title="#{messages['general.button.Export']}" rendered="#{identity.hasPermission( permission, 'export')}">
                                     <i class="fa fa-download"/>
                                 </p:commandLink>
                                 
                                 <i class="margin-r-5" />
-                                <a title="#{messages['general.button.Filter']}" href="javascript:" class="btn btn-box-tool" onclick="jQuery('#content-list-col').toggle();
+                                <a title="#{messages['general.button.Filter']}" href="javascript:" class="btn btn-tool" onclick="jQuery('#content-list-col').toggle();
                                         jQuery('#content-list-col').toggleClass('col-md-3 col-xs-12 col-md-pull-9');
                                         jQuery('#content-data-col').toggleClass('col-md-9 col-md-push-3');">
                                     <i class="fa fa-filter"/>
                                 </a>
-                                <p:commandLink id="sortersPop" styleClass="btn btn-box-tool" onclick="return false;" title="#{messages['general.button.Sort']}">
+                                <p:commandLink id="sortersPop" styleClass="btn btn-tool" onclick="return false;" title="#{messages['general.button.Sort']}">
                                     <i class="fa fa-sort-alpha-asc"/>
                                 </p:commandLink>
-                                <p:commandLink id="columnsPop" styleClass="btn btn-box-tool" onclick="return false;" title="#{messages['general.button.Columns']}">
+                                <p:commandLink id="columnsPop" styleClass="btn btn-tool" onclick="return false;" title="#{messages['general.button.Columns']}">
                                     <i class="fa fa-columns"/>
                                 </p:commandLink>
                                 <ui:fragment rendered="#{showDetailPanel eq 'true'}">
-                                    <a href="javascript:" class="btn btn-box-tool" onclick="jQuery('#detail-col').toggle();jQuery('#main-col').toggleClass('col-md-9');"><i class="fa fa-align-right pull-right"></i></a>
+                                    <a href="javascript:" class="btn btn-tool" onclick="jQuery('#detail-col').toggle();jQuery('#main-col').toggleClass('col-md-9');"><i class="fa fa-align-right pull-right"></i></a>
                                 </ui:fragment>
                             </div>
                         </div>
-                        <div class="box-body">
+                        <div class="box-body p-0">
                             <p:dataTable id="results" var="item" widgetVar="results"
                                          value="#{bean.entityList}" 
                                          paginator="true" rows="#{bean.queryDefinition.rowLimit}" 
@@ -302,8 +303,8 @@
 
                 <ui:fragment rendered="#{showDetailPanel eq 'true'}">
                     <div id="detail-col" class="col-md-3 col-xs-12">
-                        <div class="box box-info">
-                            <div class="box-header with-border">
+                        <div class="card card-outline card-secondary">
+                            <div class="card-header">
                                 #{messages['general.label.Details']}
                             </div>
                             <p:outputPanel id="detailPanel" layout="block" styleClass="box-body">
@@ -326,8 +327,8 @@
     </ui:define>
 
     <ui:define name="context-menu">
-        <li>
-            <h:link outcome="#{bean.getEditViewId()}" styleClass="context-command" rendered="#{bean.hasInsertPermission()}">
+        <li class="nav-item">
+            <h:link outcome="#{bean.getEditViewId()}" styleClass="context-command nav-link" rendered="#{bean.hasInsertPermission()}">
                 <i class="fa fa-plus-circle"></i>
                 <h:outputText value=" #{messages['general.button.Add']}" />
                 <f:param name="eid" value="0"/>

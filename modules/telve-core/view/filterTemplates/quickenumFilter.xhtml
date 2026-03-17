@@ -4,7 +4,7 @@
                 xmlns:f="jakarta.faces.core"
                 xmlns:p="primefaces">
 
-    <div class="col-md-3 col-xs-12 pull-right">
+    <div class="col-md-3 col-12 pull-right">
         <p:selectOneMenu id="qfenumINP#{idprefix}" value="#{qf.stringValue}" >
             <f:selectItem itemLabel="#{messages['general.value.All']}" itemValue="" />
             <f:selectItems value="#{qf.enums}" var="item" itemLabel="#{messages[ ''.concat( qf.keyPrefix ).concat( item )]}" />

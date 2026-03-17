@@ -10,18 +10,18 @@
     <ui:define name="form" >
         <h:form id="suggestionPopup">
             <div class="row">
-                <t:inputText label="general.label.Data" value="#{suggestionControl.data}" required="true" columnClass="col-xs-12"/>
+                <t:inputText label="general.label.Data" value="#{suggestionControl.data}" required="true" columnClass="col-12"/>
             </div>
             <div class="row">
-                <t:inputTextarea label="general.label.Info" value="#{suggestionControl.info}" maxlength="255" columnClass="col-xs-12"/>
+                <t:inputTextarea label="general.label.Info" value="#{suggestionControl.info}" maxlength="255" columnClass="col-12"/>
             </div>
             
             <h:panelGroup styleClass="actionButtons" layout="block">
                 <p:commandButton id="select" value="#{messages['general.button.Ok']}" icon="ui-icon-check" 
                                  validateClient="true"
                                  action="#{suggestionControl.closeDialog()}" 
-                                 styleClass="btn-primary"/>
-                <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="ui-icon-close" action="#{suggestionControl.cancelDialog()}" process="@this"/>
+                                 styleClass="ui-button-primary me-1"/>
+                <p:commandButton id="close" value="#{messages['general.button.Cancel']}" icon="fa fa-close" action="#{suggestionControl.cancelDialog()}" process="@this" styleClass="ui-button-secondary me-1"/>
             </h:panelGroup>
         </h:form>
     </ui:define>

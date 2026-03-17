@@ -48,7 +48,8 @@ public class GuiOptionPane extends AbstractOptionPane{
     
     @PostConstruct
     public void init(){
-        themes = new HashMap<String, String>();  
+        themes = new HashMap<String, String>();
+        /*
         themes.put("Bootstrap", "bootstrap");  
         themes.put("Aristo", "aristo");  
         themes.put("Black-Tie", "black-tie");  
@@ -82,6 +83,13 @@ public class GuiOptionPane extends AbstractOptionPane{
         themes.put("UI-Lightness", "ui-lightness");  
         themes.put("Vader", "vader");
 
+         */
+
+        themes.put("Telve", "telve");
+        themes.put("Saga", "saga");
+        themes.put("Vela", "vela");
+        themes.put("Arya", "arya");
+
         showSidebar = !"true".equals(ConfigResolver.getPropertyValue("optionPane.exclude.Sidebar", "false"));
         showThemes = !"true".equals(ConfigResolver.getPropertyValue("optionPane.exclude.Themes", "false"));
     }
@@ -100,6 +108,7 @@ public class GuiOptionPane extends AbstractOptionPane{
 
     public void setTheme(String theme) {
         this.theme = theme;
+        saveTheme();
     }
     
     public void saveTheme() {  

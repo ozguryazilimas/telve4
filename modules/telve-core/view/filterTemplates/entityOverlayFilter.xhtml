@@ -5,22 +5,22 @@
                 xmlns:t="jakarta.faces.composite/telveComponents"
                 xmlns:p="primefaces">
 
-    <div class="col-xs-12">
+    <div class="col-12">
         <h:outputText value="#{messages[filter.labelKey]}" style="font-weight: bold;"/>
     </div>
-    <div class="col-xs-12">
+    <div class="col-12">
         <p:selectOneMenu id="strOp#{idprefix}" value="#{filter.operand}" styleClass="small" >
             <f:selectItems value="#{filter.operands}" var="operand"
                            itemLabel="#{messages['filter.operand.type.'.concat( operand )]}"/>
             <p:ajax update="strInput#{idprefix}" partialSubmit="true" process="@this" />
         </p:selectOneMenu>
     </div>
-    <div class="col-xs-12">
+    <div class="col-12">
         
         <h:panelGroup id="strInput#{idprefix}" layout="block" styleClass="row">
             <t:inputLookupDialog value="#{filter.value}" label="" placeholder="" 
                                   lookupBean="#{filter.lookupBean}" lookupListener="event:#{filter.attribute.name}" 
-                                  caption="name" columnClass="col-xs-12" lookupProfile="" leafSelect="false" showLabel="false"
+                                  caption="name" columnClass="col-12" lookupProfile="" leafSelect="false" showLabel="false"
                                   rendered="#{filter.operand ne 'All' and filter.operand ne 'None'}"/>
         </h:panelGroup>
     </div>

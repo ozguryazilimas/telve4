@@ -16,15 +16,17 @@
         <title>#{telveConfigResolver.getProperty('app.title')}</title>
 
         <h:outputStylesheet library="telve" name="css/login-style.css" />
-        <h:outputStylesheet library="telve" name="css/bootstrap.css" />
-        <h:outputScript library="primefaces" name="jquery/jquery.js" />
-        <h:outputScript library="telve" name="js/jquery.backstretch.min.js" />
+        <h:outputStylesheet library="telve" name="css/adminlte.css" />
 
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
-                jQuery.backstretch("#{request.contextPath}/jakarta.faces.resource/img/#{telveConfigResolver.getProperty('app.login.image')}.jsf?ln=brand");
-            });
-        </script>
+        <style>
+            body {
+                background: url('#{request.contextPath}/jakarta.faces.resource/img/#{telveConfigResolver.getProperty('app.login.image')}.jsf?ln=brand') no-repeat center center fixed;
+                -moz-background-size: cover;
+                -webkit-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+             }
+        </style>
 
     </h:head>
 
@@ -35,7 +37,7 @@
             <div class="inner-bg">
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-6 col-sm-offset-3 form-box">
+                        <div class="col-12 form-box">
                             <div class="form-top">
                                 <div class="form-top-left">
                                     <h3>#{telveConfigResolver.getProperty('app.login.title')}</h3>
@@ -44,7 +46,7 @@
                                 </div>
                                 <div class="form-top-right" style="opacity: unset;">
                                     <ui:fragment rendered="#{telveConfigResolver.getProperty('brand.company.loginLogo') eq null }" >
-                                        <i class="fa fa-lock"></i>
+                                        <i class="pi pi-lock" style="font-size: 2rem"></i>
                                     </ui:fragment>
                                     <ui:fragment rendered="#{telveConfigResolver.getProperty('brand.company.loginLogo') ne null}" >
                                         <img src="#{request.contextPath}/jakarta.faces.resource/img/#{telveConfigResolver.getProperty('brand.company.loginLogo')}.jsf?ln=brand" class="img-thumbnail" with="128" style="background: none; border: none;" />
@@ -53,11 +55,11 @@
                             </div>
                             <div class="form-bottom">
                                 <h:form id="login-form" role="form" class="login-form">
-                                    <div class="form-group">
+                                    <div class="form-group mb-1">
                                         <label class="sr-only" for="form-username">#{messages['general.label.UserName']}</label>
                                         <p:inputText id="form-username" placeholder="#{messages['general.label.UserName']}" styleClass="form-username form-control" value="#{loginCredentials.username}" />
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group mb-2">
                                         <label class="sr-only" for="form-password">#{messages['general.label.Password']}</label>
                                         <p:password id="form-password" placeholder="#{messages['general.label.Password']}" styleClass="form-password form-control" value="#{loginCredentials.password}" />
                                     </div>

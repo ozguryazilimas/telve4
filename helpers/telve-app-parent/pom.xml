@@ -18,8 +18,7 @@
         <version.maven-processor-plugin>3.3.3</version.maven-processor-plugin>
         <version.liquibase-maven-plugin>3.6.2</version.liquibase-maven-plugin>
         <version.hibernate-jpamodelgen>5.2.1.Final</version.hibernate-jpamodelgen>
-        <version.hibernate>4.3.11.Final</version.hibernate>
-        
+        <hibernate.version>6.6.40.Final</hibernate.version>
         <!-- Bunlar aslında BOM'a alınabilir sanki -->
         <junit.version>4.12</junit.version>
         <liquibase.version>5.0.1</liquibase.version>
@@ -156,7 +155,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>${version.hibernate}</version>
+            <version>${hibernate.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -290,17 +289,17 @@
                             <dependency>
                                 <groupId>org.hibernate</groupId>
                                 <artifactId>hibernate-core</artifactId>
-                                <version>${version.hibernate}</version>
+                                <version>${hibernate.version}</version>
                             </dependency>
                             <dependency>
                                 <groupId>org.hibernate</groupId>
                                 <artifactId>hibernate-entitymanager</artifactId>
-                                <version>${version.hibernate}</version>
+                                <version>${hibernate.version}</version>
                             </dependency>
                             <dependency>
                                 <groupId>org.hibernate</groupId>
                                 <artifactId>hibernate-envers</artifactId>
-                                <version>${version.hibernate}</version>
+                                <version>${hibernate.version}</version>
                             </dependency>
                         </dependencies>
                         
